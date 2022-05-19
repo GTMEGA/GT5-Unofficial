@@ -29,7 +29,7 @@ public class GT_MetaGenerated_Item_03
         ItemList.Circuit_Board_Bio.set(addItem(tLastID = 8, "Bio Circuit Board", "Bio genetic mutated Board", o));
 
         ItemList.Circuit_Parts_ResistorSMD.set(addItem(tLastID = 11, "3216 SMD Resistor", "Impedes Electrical Current", o));
-        ItemList.Circuit_Parts_Glass_Tube.set(addItem(tLastID = 12, "Glass Tube", "Wrangles the nixie pixies", o));
+        ItemList.Circuit_Parts_Glass_Tube.set(addItem(tLastID = 12, "Vacuum Tube Glass", "Wrangles the nixie pixies", o));
         ItemList.Circuit_Parts_Coil.set(addItem(tLastID = 14, "Small Through-Hole Inductor", "Henry would be proud", o));
         ItemList.Circuit_Parts_DiodeSMD.set(addItem(tLastID = 16, "3216 SMD Rectifier Diode", "A one way wire", o));
         ItemList.Circuit_Parts_TransistorSMD.set(addItem(tLastID = 18, "3216 SMD Transistor", "Amplifies and switches signals", o));
