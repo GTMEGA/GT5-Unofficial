@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+import cpw.mods.fml.common.eventhandler.Event;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -9,10 +10,12 @@ import gregtech.api.enums.TC_Aspects;
 import gregtech.api.items.GT_MetaGenerated_Item_X32;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.covers.GT_Cover_SolarPanel;
+import lombok.*;
 
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UEV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UHV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UIV;
+import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 
 public class GT_MetaGenerated_Item_03
         extends GT_MetaGenerated_Item_X32 {
@@ -116,6 +119,13 @@ public class GT_MetaGenerated_Item_03
         ItemList.Circuit_Chip_Stemcell.set(addItem(tLastID = 73, "Stemcells", "Raw inteligence", o));
         ItemList.Circuit_Parts_RawCrystalParts.set(addItem(tLastID = 74, "Raw Crystal Chip Parts", "Raw Crystal Processor Parts", o));
         ItemList.Circuit_Chip_Biocell.set(addItem(tLastID = 76, "Biocells", "Mutated Raw inteligence", o));
+
+        val registerCircuitEvent = new RegisterCircuitEvent();
+        EVENT_BUS.post(registerCircuitEvent);
+        if (!registerCircuitEvent.isCanceled()) {
+            // Put circuits to register here
+        }
+
 //        ItemList.Circuit_Chip_BioCPU.set(addItem(tLastID = 77, "Bio Processing Unit", "Bio CPU", o));
 
 //        ItemList.NandChip.set(addItem(tLastID = 75, "NAND Chip", "A very simple Circuit", OrePrefixes.circuit.get(Materials.Primitive), SubTag.NO_UNIFICATION));
@@ -185,5 +195,13 @@ public class GT_MetaGenerated_Item_03
     @Override
     public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
         return aDoShowAllItems;
+    }
+
+    // Cancel to prevent the creation of circuit items, will leave empty values in ItemList that *must* be filled by whatever cancles it.
+    public class RegisterCircuitEvent extends Event {
+        @Override
+        public boolean isCancelable() {
+            return true;
+        }
     }
 }
