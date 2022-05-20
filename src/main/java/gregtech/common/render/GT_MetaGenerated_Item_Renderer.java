@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -80,7 +81,7 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
                 tOverlay = aIcon.getOverlayIcon();
             }
             if (tIcon == null) {
-                return;
+                tIcon = getNullTexture();
             }
             FluidStack tFluid = GT_Utility.getFluidForFilledItem(aStack, true);
             if (tOverlay != null && tFluid != null && tFluid.getFluid() != null) {
@@ -146,10 +147,7 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
             }
 
             if (tIcon == null) {
-                tIcon = ((TextureMap) getMinecraft()
-                        .getTextureManager()
-                        .getTexture(TextureMap.locationItemsTexture))
-                        .getAtlasSprite("missingno");
+                tIcon = getNullTexture();
             }
 
             ItemList largeFluidCell = getLargeFluidCell(aStack);
@@ -166,6 +164,13 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
             }
         }
         GL11.glDisable(GL11.GL_BLEND);
+    }
+
+    private static TextureAtlasSprite getNullTexture() {
+        return ((TextureMap) getMinecraft()
+                .getTextureManager()
+                .getTexture(TextureMap.locationItemsTexture))
+                .getAtlasSprite("missingno");
     }
 
     @Nullable
