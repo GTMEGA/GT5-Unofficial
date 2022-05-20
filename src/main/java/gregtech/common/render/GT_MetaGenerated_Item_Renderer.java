@@ -20,6 +20,7 @@ import org.lwjgl.opengl.GL11;
 import javax.annotation.Nullable;
 
 import static gregtech.api.enums.ItemList.*;
+import static net.minecraft.client.Minecraft.getMinecraft;
 
 public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
     public GT_MetaGenerated_Item_Renderer() {
@@ -142,6 +143,13 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
                 }
             } else {
                 tIcon = aItem.mIconList[(aMetaData - aItem.mOffset)][0];
+            }
+
+            if (tIcon == null) {
+                tIcon = ((TextureMap) getMinecraft()
+                        .getTextureManager()
+                        .getTexture(TextureMap.locationItemsTexture))
+                        .getAtlasSprite("missingno");
             }
 
             ItemList largeFluidCell = getLargeFluidCell(aStack);
