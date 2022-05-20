@@ -1564,7 +1564,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 //            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "Item55ReactorCard", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2L), 200, 30);
 //            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "CardAppeng", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 2L), 200, 30);
 //            GT_Values.RA.addAssemblerRecipe(ItemList.NC_SensorCard.get(1L), GT_Utility.getIntegratedCircuit(1), GT_ModHandler.getIC2Item("electronicCircuit", 3L), 200, 30);
-        }
+//        }
 
         if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
             GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("tinCableItem", 1L), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 1L), GT_ModHandler.getIC2Item("insulatedTinCableItem", 1L), 100, 2);
