@@ -230,7 +230,9 @@ public class GT_Achievements {
     }
 
     public Achievement registerAssAchievement(GT_Recipe recipe) {
-        if (this.achievementList.get(recipe.getOutput(0).getUnlocalizedName()) == null) {
+        if (recipe == null) return null;
+        ItemStack output = recipe.getOutput(0);
+        if (output != null && this.achievementList.get(output.getUnlocalizedName()) == null) {
             assReg++;
             return registerAchievement(recipe.getOutput(0).getUnlocalizedName(), -(11 + assReg % 5), ((assReg) / 5) - 8, recipe.getOutput(0)
                     , AchievementList.openInventory, false);
@@ -618,7 +620,9 @@ public class GT_Achievements {
             }
         }
         for(GT_Recipe recipe: GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList){
-            if(recipe.getOutput(0).getUnlocalizedName().equals(stack.getUnlocalizedName())) {
+            if (recipe == null) continue;
+            ItemStack item = recipe.getOutput(0);
+            if(item != null && item.getUnlocalizedName().equals(stack.getUnlocalizedName())) {
                 issueAchievement(player, recipe.getOutput(0).getUnlocalizedName());
                 recipe.mHidden=false;
             }
