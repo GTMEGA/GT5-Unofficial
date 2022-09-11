@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import gregtech.api.interfaces.internal.IGT_CraftingRecipe;
 import gregtech.api.objects.ReverseShapedRecipe;
+import lombok.val;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.InventoryCrafting;
@@ -11,16 +12,21 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class GT_Shaped_Recipe extends ShapedOreRecipe implements IGT_CraftingRecipe {
-    public final boolean mRemovableByGT, mKeepingNBT;
+    public final boolean mRemovableByGT, mKeepingNBT, mCheckNBT;
     private final Enchantment[] mEnchantmentsAdded;
     private final int[] mEnchantmentLevelsAdded;
 
     public GT_Shaped_Recipe(ItemStack aResult, boolean aDismantleAble, boolean aRemovableByGT, boolean aKeepingNBT, Enchantment[] aEnchantmentsAdded, int[] aEnchantmentLevelsAdded, Object... aRecipe) {
+        this(aResult,aDismantleAble,aRemovableByGT,aKeepingNBT,false,aEnchantmentsAdded,aEnchantmentLevelsAdded,aRecipe);
+    }
+
+    public GT_Shaped_Recipe(ItemStack aResult, boolean aDismantleAble, boolean aRemovableByGT, boolean aKeepingNBT, boolean aCheckNBT, Enchantment[] aEnchantmentsAdded, int[] aEnchantmentLevelsAdded ,Object... aRecipe) {
         super(aResult, aRecipe);
         mEnchantmentsAdded = aEnchantmentsAdded;
         mEnchantmentLevelsAdded = aEnchantmentLevelsAdded;
         mRemovableByGT = aRemovableByGT;
         mKeepingNBT = aKeepingNBT;
+        mCheckNBT = aCheckNBT;
         if (aDismantleAble) {
             new ReverseShapedRecipe(aResult, aRecipe);
         }
@@ -37,6 +43,19 @@ public class GT_Shaped_Recipe extends ShapedOreRecipe implements IGT_CraftingRec
                             return false;
                     }
                     tStack = aGrid.getStackInSlot(i);
+                }
+            }
+        }
+
+        if (mCheckNBT) {
+            val inputs = getInput();
+            for (int i = 0; i < aGrid.getSizeInventory(); i++) {
+                val recipe = inputs[i];
+                if (recipe instanceof ItemStack && ((ItemStack) recipe).hasTagCompound()) {
+                    val stack = aGrid.getStackInSlot(i);
+                    if (stack != null && (!stack.hasTagCompound() || !stack.stackTagCompound.equals(((ItemStack) recipe).stackTagCompound))) {
+                        return false;
+                    }
                 }
             }
         }
