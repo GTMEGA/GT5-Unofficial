@@ -24,7 +24,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:Galacticraft:master-SNAPSHOT:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:AppleCore:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:AppleCore:3.2.0:dev") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:TinkersConstruct:master-SNAPSHOT:dev") {

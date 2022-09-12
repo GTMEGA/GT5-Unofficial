@@ -860,7 +860,7 @@ public class GT_ModHandler {
      * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
      */
     public static boolean addCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded, int[] aEnchantmentLevelsAdded, Object[] aRecipe) {
-        return addCraftingRecipe(aResult, aEnchantmentsAdded, aEnchantmentLevelsAdded, false, true, false, false, false, false, false, false, false, false, false, false, true, aRecipe);
+        return addCraftingRecipe(aResult, aEnchantmentsAdded, aEnchantmentLevelsAdded, false, true, false, false, false, false, false, false, false, false, false, false, true,false, aRecipe);
     }
 
     /**
@@ -932,7 +932,8 @@ public class GT_ModHandler {
             (aBitMask & RecipeBits.DELETE_ALL_OTHER_NATIVE_RECIPES) != 0, 
             (aBitMask & RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0, 
             (aBitMask & RecipeBits.ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT) != 0, 
-            (aBitMask & RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL) != 0, 
+            (aBitMask & RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL) != 0,
+            (aBitMask & RecipeBits.CHECK_NBT) != 0,
             aRecipe);
     }
 
@@ -955,7 +956,8 @@ public class GT_ModHandler {
         boolean aRemoveAllOtherNativeRecipes, 
         boolean aCheckForCollisions, 
         boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, 
-        boolean aOnlyAddIfResultIsNotNull, 
+        boolean aOnlyAddIfResultIsNotNull,
+        boolean aCheckNBT,
         Object[] aRecipe
     ) {
         aResult = GT_OreDictUnificator.get(true, aResult);
@@ -1175,9 +1177,9 @@ public class GT_ModHandler {
 
         if (tThereWasARecipe || !aOnlyAddIfThereIsAnyRecipeOutputtingThis) {
             if (sBufferCraftingRecipes && aBuffered)
-                sBufferRecipeList.add(new GT_Shaped_Recipe(GT_Utility.copyOrNull(aResult), aDismantleable, aRemovable, aKeepNBT, aEnchantmentsAdded, aEnchantmentLevelsAdded, aRecipe).setMirrored(aMirrored));
+                sBufferRecipeList.add(new GT_Shaped_Recipe(GT_Utility.copyOrNull(aResult), aDismantleable, aRemovable, aKeepNBT, aCheckNBT, aEnchantmentsAdded, aEnchantmentLevelsAdded, aRecipe).setMirrored(aMirrored));
             else
-                GameRegistry.addRecipe(new GT_Shaped_Recipe(GT_Utility.copyOrNull(aResult), aDismantleable, aRemovable, aKeepNBT, aEnchantmentsAdded, aEnchantmentLevelsAdded, aRecipe).setMirrored(aMirrored));
+                GameRegistry.addRecipe(new GT_Shaped_Recipe(GT_Utility.copyOrNull(aResult), aDismantleable, aRemovable, aKeepNBT, aCheckNBT, aEnchantmentsAdded, aEnchantmentLevelsAdded, aRecipe).setMirrored(aMirrored));
         }
         return true;
     }
@@ -2073,6 +2075,10 @@ public class GT_ModHandler {
          * Don't remove shapeless recipes with this output
          */
         public static long DONT_REMOVE_SHAPELESS = B[13];
+        /**
+         * Check For NBT in recipe
+         */
+        public static long CHECK_NBT = B[14];
     }
 
     /**
