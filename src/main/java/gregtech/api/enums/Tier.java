@@ -6,7 +6,7 @@ package gregtech.api.enums;
 public class Tier {
     public static final Tier[]
             ELECTRIC = new Tier[]{
-            new Tier(SubTag.ENERGY_ELECTRICITY, 0, 8, 1, 1, 1, Materials.WroughtIron, ItemList.Hull_ULV, OrePrefixes.cableGt01.get(Materials.Lead), OrePrefixes.cableGt04.get(Materials.Lead), OrePrefixes.circuit.get(Materials.Primitive), OrePrefixes.circuit.get(Materials.Basic)),
+            new Tier(SubTag.ENERGY_ELECTRICITY, 0, 8, 1, 1, 1, Materials.Tin, ItemList.Hull_ULV, OrePrefixes.cableGt01.get(Materials.RedAlloy), OrePrefixes.cableGt04.get(Materials.RedAlloy), OrePrefixes.circuit.get(Materials.Primitive), OrePrefixes.circuit.get(Materials.Basic)),
             new Tier(SubTag.ENERGY_ELECTRICITY, 1, 32, 1, 1, 1, Materials.Steel, ItemList.Hull_LV, OrePrefixes.cableGt01.get(Materials.Tin), OrePrefixes.cableGt04.get(Materials.Tin), OrePrefixes.circuit.get(Materials.Basic), OrePrefixes.circuit.get(Materials.Good)),
             new Tier(SubTag.ENERGY_ELECTRICITY, 2, 128, 1, 1, 1, Materials.Aluminium, ItemList.Hull_MV, OrePrefixes.cableGt01.get(Materials.AnyCopper), OrePrefixes.cableGt04.get(Materials.AnyCopper), OrePrefixes.circuit.get(Materials.Good), OrePrefixes.circuit.get(Materials.Advanced)),
             new Tier(SubTag.ENERGY_ELECTRICITY, 3, 512, 1, 1, 1, Materials.StainlessSteel, ItemList.Hull_HV, OrePrefixes.cableGt01.get(Materials.Gold), OrePrefixes.cableGt04.get(Materials.Gold), OrePrefixes.circuit.get(Materials.Advanced), OrePrefixes.circuit.get(Materials.Data)),
