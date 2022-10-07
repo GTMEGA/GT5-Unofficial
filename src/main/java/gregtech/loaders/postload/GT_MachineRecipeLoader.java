@@ -48,7 +48,6 @@ public class GT_MachineRecipeLoader implements Runnable {
             {new MaterialStack(Materials.Tin, 9L), new MaterialStack(Materials.Antimony, 1L), new MaterialStack(Materials.SolderingAlloy, 10L)},
             {new MaterialStack(Materials.Lead, 4L), new MaterialStack(Materials.Antimony, 1L), new MaterialStack(Materials.BatteryAlloy, 5L)},
             {new MaterialStack(Materials.Gold, 1L), new MaterialStack(Materials.Silver, 1L), new MaterialStack(Materials.Electrum, 2L)},
-            {new MaterialStack(Materials.Magnesium, 1L), new MaterialStack(Materials.Aluminium, 2L), new MaterialStack(Materials.Magnalium, 3L)},
             {new MaterialStack(Materials.Silver, 1L), new MaterialStack(Materials.Electrotine, 4L), new MaterialStack(Materials.BlueAlloy, 1L)},
             {new MaterialStack(Materials.Boron, 1L), new MaterialStack(Materials.Glass, 7L), new MaterialStack(Materials.BorosilicateGlass, 8L)}};
     private static final String aTextAE = "appliedenergistics2"; private static final String aTextAEMM = "item.ItemMultiMaterial"; private static final String aTextForestry = "Forestry";
@@ -1755,6 +1754,12 @@ public class GT_MachineRecipeLoader implements Runnable {
 		
         GT_Utility.removeSimpleIC2MachineRecipe(new ItemStack(Blocks.cactus, 8, 0), GT_ModHandler.getCompressorRecipeList(), GT_ModHandler.getModItem("IC2", "itemFuelPlantBall", 1L));
         GT_Utility.removeSimpleIC2MachineRecipe(GT_ModHandler.getModItem("ExtraTrees", "food", 8L, 24), GT_ModHandler.getCompressorRecipeList(), GT_ModHandler.getModItem("IC2", "itemFuelPlantBall", 1L));
+        {
+            ItemStack alu = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Aluminium, 2);
+            GT_ModHandler.addAlloySmelterRecipe(Materials.Magnesium.getDust(1),alu,Materials.Magnalium.getIngots(3) ,100,120,false);
+            GT_ModHandler.addAlloySmelterRecipe(Materials.Magnesium.getIngots(1),alu,Materials.Magnalium.getIngots(3) ,100,120,false);
+        }
+
 
         for (MaterialStack[] tMats : mAlloySmelterList) {
             ItemStack tDust1 = GT_OreDictUnificator.get(OrePrefixes.dust, tMats[0].mMaterial, tMats[0].mAmount);
