@@ -533,7 +533,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             if (doesAutoOutput() && !isOutputEmpty() && aBaseMetaTileEntity.getFrontFacing() != mMainFacing && (tSucceeded || mOutputBlocked % 300 == 1 || aBaseMetaTileEntity.hasInventoryBeenModified() || aTick % 600 == 0)) {
                 TileEntity tTileEntity2 = aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getFrontFacing());
                 long tStoredEnergy = aBaseMetaTileEntity.getUniversalEnergyStored();
-                int tMaxStacks = (int)(tStoredEnergy/64l);
+                int tMaxStacks = (int)(tStoredEnergy/64L);
                 if (tMaxStacks > mOutputItems.length)
                     tMaxStacks = mOutputItems.length;
 
@@ -954,8 +954,19 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
+        mEUt *= getEUTModifier();
+        mMaxProgresstime *= getTimeModifier();
         return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
     }
+
+    public float getTimeModifier() {
+        return 1;
+    }
+
+    public float getEUTModifier() {
+        return 1;
+    }
+
 
     @Override
     public void getWailaBody(ItemStack stack, List<String> currentTip, MovingObjectPosition pos, NBTTagCompound tag, int side) {
