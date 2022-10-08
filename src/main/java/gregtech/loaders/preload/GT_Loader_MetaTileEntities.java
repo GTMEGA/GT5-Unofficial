@@ -346,6 +346,9 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         ItemList.Machine_HP_Compressor.set(new GT_MetaTileEntity_Compressor_Steel(116, "hpmachine.compressor", "High Pressure Compressor").getStackForm(1L));
         ItemList.Machine_Bronze_AlloySmelter.set(new GT_MetaTileEntity_AlloySmelter_Bronze(118, "bronzemachine.alloysmelter", "Steam Alloy Smelter").getStackForm(1L));
         ItemList.Machine_HP_AlloySmelter.set(new GT_MetaTileEntity_AlloySmelter_Steel(119, "hpmachine.alloysmelter", "High Pressure Alloy Smelter").getStackForm(1L));
+        ItemList.Machine_HP_Sifter.set(new GT_MetaTileEntity_Sifter_Steel(9330,"hpmachine.sifter","High Pressure Sifter","").getStackForm(1L));
+        ItemList.Machine_HP_Sifter.set(new GT_MetaTileEntity_Mixer_Steel(9331,"hpmachine.mixer","High Pressure Mixer","").getStackForm(1L));
+        ItemList.Machine_HP_Sifter.set(new GT_MetaTileEntity_Mixer_Bronze(9332,"bronzemachine.mixer","steam Mixer","").getStackForm(1L));
 
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_Bronze_Furnace.get(1L), bits, new Object[]{"XXX", "XMX", "XFX", 'M', ItemList.Hull_Bronze_Bricks, 'X', OrePrefixes.pipeSmall.get(Materials.Bronze), 'F', OreDictNames.craftingFurnace});
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_HP_Furnace.get(1L), bits, new Object[]{"XSX", "PMP", "XXX", 'M', ItemList.Machine_Bronze_Furnace, 'X', OrePrefixes.pipeSmall.get(Materials.WroughtIron), 'P', OrePrefixes.plate.get(Materials.WroughtIron), 'S', OrePrefixes.plate.get(Materials.Steel)});
