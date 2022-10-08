@@ -9,8 +9,6 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_Template_Steel;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_MetaTileEntity_Sifter_Steel extends GT_MetaTileEntity_Template_Steel {
-    private final static String overlay = "sifter";
-
     public GT_MetaTileEntity_Sifter_Steel(int aID, String aName, String aNameRegional, String aDescription) {
         super(aID, aName, aNameRegional, aDescription, 1, 9, false);
     }
@@ -35,7 +33,7 @@ public class GT_MetaTileEntity_Sifter_Steel extends GT_MetaTileEntity_Template_S
 
     @Override
     protected String getOverlay() {
-        return overlay;
+        return "sifter";
     }
 
     @Override
