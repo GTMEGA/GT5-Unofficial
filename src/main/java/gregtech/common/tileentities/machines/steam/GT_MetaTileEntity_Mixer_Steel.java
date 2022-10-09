@@ -9,9 +9,6 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_Template_Steel;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_MetaTileEntity_Mixer_Steel extends GT_MetaTileEntity_Template_Steel {
-
-    private final static String overlay = "mixer";
-
     public GT_MetaTileEntity_Mixer_Steel(int aID, String aName, String aNameRegional, String aDescription) {
         super(aID, aName, aNameRegional, aDescription, 6, 1, false);
     }
@@ -41,7 +38,7 @@ public class GT_MetaTileEntity_Mixer_Steel extends GT_MetaTileEntity_Template_St
 
     @Override
     protected String getOverlay() {
-        return overlay;
+        return "mixer";
     }
 
     @Override
