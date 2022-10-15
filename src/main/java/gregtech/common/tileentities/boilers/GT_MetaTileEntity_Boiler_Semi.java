@@ -28,7 +28,7 @@ public class GT_MetaTileEntity_Boiler_Semi extends GT_MetaTileEntity_Boiler {
 
     public GT_MetaTileEntity_Boiler_Semi(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, new String[]{
-                "Burns Ceosent or Oil at "+EFFICIENCY*100+"% efficiency",
+                "Burns creosote and oil at "+EFFICIENCY*100+"% efficiency",
                 "Produces " + PRODUCTION_PER_SECOND + "L of Steam per second",
                 "Causes " + POLLUTION_PER_SECOND + " Pollution per second"});
     }
