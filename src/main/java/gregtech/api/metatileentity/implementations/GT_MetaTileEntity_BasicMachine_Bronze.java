@@ -1,21 +1,26 @@
 package gregtech.api.metatileentity.implementations;
 
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 
-import static gregtech.api.enums.GT_Values.D1;
+import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP;
@@ -148,6 +153,68 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
             }
         }
         return !mNeedsSteamVenting;
+    }
+
+    @Override
+    public int checkRecipe(boolean skipOC) {
+        GT_Recipe.GT_Recipe_Map tMap = getRecipeList();
+        if (tMap == null) return DID_NOT_FIND_RECIPE;
+        GT_Recipe tRecipe = tMap.findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, V[1], new FluidStack[]{getFillableStack()}, getSpecialSlot(), getAllInputs());
+        if (tRecipe == null) return DID_NOT_FIND_RECIPE;
+
+        if (GT_Mod.gregtechproxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100 || tRecipe.mSpecialValue == -300) &&
+                !isValidForLowGravity(tRecipe,getBaseMetaTileEntity().getWorld().provider.dimensionId))
+            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+        if (tRecipe.mCanBeBuffered) mLastRecipe = tRecipe;
+        if (!canOutput(tRecipe)) {
+            mOutputBlocked++;
+            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+        }
+        if (tRecipe.mSpecialValue == -200 && (getCallbackBase() == null || getCallbackBase().mEfficiency == 0))
+            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+        if (!tRecipe.isRecipeInputEqual(true, new FluidStack[]{getFillableStack()}, getAllInputs()))
+            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+        for (int i = 0; i < mOutputItems.length; i++)
+            if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i))
+                mOutputItems[i] = tRecipe.getOutput(i);
+        if (tRecipe.mSpecialValue == -200 || tRecipe.mSpecialValue == -300)
+            for (int i = 0; i < mOutputItems.length; i++)
+                if (mOutputItems[i] != null && getBaseMetaTileEntity().getRandomNumber(10000) > getCallbackBase().mEfficiency)
+                {
+                    if (debugCleanroom) {
+                        GT_Log.out.println(
+                                "BasicMachine: Voiding output due to efficiency failure. mEfficiency = " +
+                                        getCallbackBase().mEfficiency
+                        );
+                    }
+                    mOutputItems[i] = null;
+                }
+        mOutputFluid = tRecipe.getFluidOutput(0);
+        if (!skipOC) {
+            calculateOverclockedNess(tRecipe);
+            //In case recipe is too OP for that machine
+            if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+        } else {
+            mEUt = tRecipe.mEUt;
+            mMaxProgresstime = tRecipe.mDuration;
+        }
+        mEUt *= getEUTModifier();
+        mMaxProgresstime *= getTimeModifier();
+        return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+    }
+
+    public float getTimeModifier() {
+        return 1;
+    }
+
+    public float getEUTModifier() {
+        return 1;
+    }
+
+    @Override
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack) && getRecipeList().containsInput( aStack);
     }
 
     @Override

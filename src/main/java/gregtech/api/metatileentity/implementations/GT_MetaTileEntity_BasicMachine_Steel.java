@@ -38,6 +38,11 @@ public abstract class GT_MetaTileEntity_BasicMachine_Steel extends GT_MetaTileEn
     }
 
     @Override
+    public int checkRecipe() {
+        return checkRecipe(true);
+    }
+
+    @Override
     public ITexture[] getSideFacingActive(byte aColor) {
         return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_STEELBRICKS_SIDE : MACHINE_STEEL_SIDE, Dyes.getModulation(aColor, Dyes._NULL.mRGBa))};
     }
