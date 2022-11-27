@@ -747,6 +747,22 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Circuit_Elite.set(addItem(tLastID = 705, "Mainframe", "An Elite Circuit", OrePrefixes.circuit.get(Materials.Elite), SubTag.NO_UNIFICATION));
         ItemList.Circuit_Master.set(addItem(tLastID = 706, "Nanoprocessor Mainframe", "A Master Circuit", OrePrefixes.circuit.get(Materials.Master), SubTag.NO_UNIFICATION));
         ItemList.Tool_DataOrb.set(addItem(tLastID = 707, "Data Orb", "A High Capacity Data Storage", SubTag.NO_UNIFICATION, new Behaviour_DataOrb()));
+
+        ItemList.LV_PWR.set(addItem(tLastID = 414, "LV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_LV), SubTag.NO_UNIFICATION));
+        ItemList.MV_PWR.set(addItem(tLastID = 415, "MV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_MV), SubTag.NO_UNIFICATION));
+        ItemList.HV_PWR.set(addItem(tLastID = 416, "HV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_HV), SubTag.NO_UNIFICATION));
+        ItemList.EV_PWR.set(addItem(tLastID = 417, "EV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_EV), SubTag.NO_UNIFICATION));
+        ItemList.IV_PWR.set(addItem(tLastID = 418, "IV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_IV), SubTag.NO_UNIFICATION));
+        ItemList.LUV_PWR.set(addItem(tLastID = 419, "LuV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_LUV), SubTag.NO_UNIFICATION));
+        ItemList.UV_PWR.set(addItem(tLastID = 420, "UV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_UV), SubTag.NO_UNIFICATION));
+        ItemList.UHV_PWR.set(addItem(tLastID = 421, "UHV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_UHV), SubTag.NO_UNIFICATION));
+        ItemList.UEV_PWR.set(addItem(tLastID = 422, "UEV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_UEV), SubTag.NO_UNIFICATION));
+        ItemList.UIV_PWR.set(addItem(tLastID = 423, "UIV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_UIV), SubTag.NO_UNIFICATION));
+        ItemList.UMV_PWR.set(addItem(tLastID = 424, "UMV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_UMV), SubTag.NO_UNIFICATION));
+        ItemList.UXV_PWR.set(addItem(tLastID = 425, "UXV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_UXV), SubTag.NO_UNIFICATION));
+        ItemList.OPV_PWR.set(addItem(tLastID = 426, "OPV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_OPV), SubTag.NO_UNIFICATION));
+        ItemList.MAX_PWR.set(addItem(tLastID = 427, "MAX HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_MAX), SubTag.NO_UNIFICATION));
+
         //ItemList.Circuit_Ultimate.set(ItemList.Tool_DataOrb.get(1L, new Object[0]));
         GT_ModHandler.addShapelessCraftingRecipe(ItemList.Tool_DataOrb.get(1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ItemList.Tool_DataOrb.get(1L)});
         ItemList.Tool_DataStick.set(addItem(tLastID = 708, "Data Stick", "A Low Capacity Data Storage", SubTag.NO_UNIFICATION, new Behaviour_DataStick()));

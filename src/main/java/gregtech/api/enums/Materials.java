@@ -338,6 +338,22 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Piko                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Piko"                     ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 13)));
     public static Materials Quantum                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Quantum"                     ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 14)));
 
+    public static Materials PWR_LV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "LVpwrCircuit", "LVpwrCircuit", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 1)));
+    public static Materials PWR_MV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "MVpwrCircuit", "MVpwrCircuit", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 2)));
+    public static Materials PWR_HV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "HVpwrCircuit", "HVpwrCircuit", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 3)));
+    public static Materials PWR_EV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "EVpwrCircuit", "EVpwrCircuit", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 4)));
+    public static Materials PWR_IV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "IVpwrCircuit", "IVpwrCircuit", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 5)));
+    public static Materials PWR_LUV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "LUVpwrCircuit", "LUVpwrCircuit", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 6)));
+    public static Materials PWR_ZPM = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "ZPMpwrCircuit", "ZPMpwrCircuit", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 7)));
+    public static Materials PWR_UV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "UVpwrCircuit", "UVpwrCircuit", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 8)));
+    public static Materials PWR_UHV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "UHVpwrCircuit", "UHVpwrCircuit", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 10)));
+    public static Materials PWR_UEV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "UEVpwrCircuit", "UEVpwrCircuit", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 11)));
+    public static Materials PWR_UIV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "UIVpwrCircuit", "UIVpwrCircuit", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 12)));
+    public static Materials PWR_UMV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "UMVpwrCircuit", "UMVpwrCircuit", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 13)));
+    public static Materials PWR_UXV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "UXVpwrCircuit", "UXVpwrCircuit", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 14)));
+    public static Materials PWR_OPV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "OPVpwrCircuit", "OPVpwrCircuit", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 14)));
+    public static Materials PWR_MAX = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "MAXpwrCircuit", "MAXpwrCircuit", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 14)));
+
     /**
      * Not possible to determine exact Components
      */
@@ -2060,6 +2076,23 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Superconductor.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Infinite.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Bio.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+
+        PWR_LV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_MV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_HV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_EV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_IV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_LUV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_UV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_UHV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_UEV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_UIV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_UMV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_UXV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_OPV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_MAX.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+
+
         SuperconductorMV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorHV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorEV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
@@ -2068,6 +2101,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         SuperconductorZPM.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         //SuperconductorUV        .add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorUHV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+
+
+
 
         Blaze.add(SubTag.MAGICAL, SubTag.SMELTING_TO_FLUID, SubTag.MORTAR_GRINDABLE, SubTag.UNBURNABLE, SubTag.BURNING);
         FierySteel.add(SubTag.MAGICAL, SubTag.UNBURNABLE, SubTag.BURNING);
