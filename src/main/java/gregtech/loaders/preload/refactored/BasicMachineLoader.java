@@ -16,7 +16,7 @@ import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.*;
 import static gregtech.loaders.preload.GT_Loader_MetaTileEntities.DISMANTLEABLE_RECIPE_MASK;
 
-public final class SingleBlockMachineLoader {
+public final class BasicMachineLoader {
     private static boolean LOADED = false;
 
     public static void load() {
@@ -364,13 +364,18 @@ public final class SingleBlockMachineLoader {
         Machine_EV_Oven.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(674, "basicmachine.e_oven.tier.04", "Advanced Electric Oven III", 4, "Just a Furnace with a different Design", sFurnaceRecipes, 1, 1, 0, 0, 1, "E_Oven.png", sSoundList.get(Integer.valueOf(207)), false, false, 0, "ELECTRIC_OVEN", new Object[]{"CEC", "CMC", "WEW", 'M', HULL, 'E', CIRCUIT, 'W', WIRE, 'C', COIL_HEATING}).getStackForm(1L));
         Machine_IV_Oven.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(675, "basicmachine.e_oven.tier.05", "Advanced Electric Oven IV", 5, "Just a Furnace with a different Design", sFurnaceRecipes, 1, 1, 0, 0, 1, "E_Oven.png", sSoundList.get(Integer.valueOf(207)), false, false, 0, "ELECTRIC_OVEN", new Object[]{"CEC", "CMC", "WEW", 'M', HULL, 'E', CIRCUIT, 'W', WIRE, 'C', COIL_HEATING}).getStackForm(1L));
 
-        Machine_LV_Miner.set(new GT_MetaTileEntity_Miner(679, "basicmachine.miner.tier.01", "Ore Drilling Rig MKI", 1).getStackForm(1L));
-        Machine_MV_Miner.set(new GT_MetaTileEntity_Miner(680, "basicmachine.miner.tier.02", "Ore Drilling Rig MKII", 2).getStackForm(1L));
-        Machine_HV_Miner.set(new GT_MetaTileEntity_Miner(681, "basicmachine.miner.tier.03", "Ore Drilling Rig MKIII", 3).getStackForm(1L));
-
         addCraftingRecipe(Machine_LV_Miner.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", "WMW", "CSC", 'M', Hull_LV, 'E', Electric_Motor_LV, 'C', circuit.get(Basic), 'W', cableGt01.get(Tin), 'S', Sensor_LV});
         addCraftingRecipe(Machine_MV_Miner.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PEP", "WMW", "CSC", 'M', Hull_MV, 'E', Electric_Motor_MV, 'P', Electric_Piston_MV, 'C', circuit.get(Good), 'W', cableGt02.get(Copper), 'S', Sensor_MV});
         addCraftingRecipe(Machine_HV_Miner.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"RPR", "WMW", "CSC", 'M', Hull_HV, 'E', Electric_Motor_HV, 'P', Electric_Piston_HV, 'R', Robot_Arm_HV, 'C', circuit.get(Advanced), 'W', cableGt04.get(Gold), 'S', Sensor_HV});
+
+        Machine_LV_CircuitAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(1180, "basicmachine.circuitassembler.tier.01", "Basic Circuit Assembling Machine", 1, "Pick-n-Place all over the place", sCircuitAssemblerRecipes, 6, 1, 16000, 0, 1, "CircuitAssembler.png", "", false, false, 0, "CIRCUITASSEMBLER", new Object[]{"ACE", "VMV", "WCW", 'M', HULL, 'V', CONVEYOR, 'A', ROBOT_ARM, 'C', BETTER_CIRCUIT, 'W', WIRE, 'E', EMITTER}).getStackForm(1L));
+        Machine_MV_CircuitAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(1181, "basicmachine.circuitassembler.tier.02", "Advanced Circuit Assembling Machine", 2, "Pick-n-Place all over the place", sCircuitAssemblerRecipes, 6, 1, 16000, 0, 1, "CircuitAssembler.png", "", false, false, 0, "CIRCUITASSEMBLER", new Object[]{"ACE", "VMV", "WCW", 'M', HULL, 'V', CONVEYOR, 'A', ROBOT_ARM, 'C', BETTER_CIRCUIT, 'W', WIRE, 'E', EMITTER}).getStackForm(1L));
+        Machine_HV_CircuitAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(1182, "basicmachine.circuitassembler.tier.03", "Advanced Circuit Assembling Machine II", 3, "Pick-n-Place all over the place", sCircuitAssemblerRecipes, 6, 1, 16000, 0, 1, "CircuitAssembler.png", "", false, false, 0, "CIRCUITASSEMBLER", new Object[]{"ACE", "VMV", "WCW", 'M', HULL, 'V', CONVEYOR, 'A', ROBOT_ARM, 'C', BETTER_CIRCUIT, 'W', WIRE, 'E', EMITTER}).getStackForm(1L));
+        Machine_EV_CircuitAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(1183, "basicmachine.circuitassembler.tier.04", "Advanced Circuit Assembling Machine III", 4, "Pick-n-Place all over the place", sCircuitAssemblerRecipes, 6, 1, 16000, 0, 1, "CircuitAssembler.png", "", false, false, 0, "CIRCUITASSEMBLER", new Object[]{"ACE", "VMV", "WCW", 'M', HULL, 'V', CONVEYOR, 'A', ROBOT_ARM, 'C', BETTER_CIRCUIT, 'W', WIRE, 'E', EMITTER}).getStackForm(1L));
+        Machine_IV_CircuitAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(1184, "basicmachine.circuitassembler.tier.05", "Advanced Circuit Assembling Machine IV", 5, "Pick-n-Place all over the place", sCircuitAssemblerRecipes, 6, 1, 16000, 0, 1, "CircuitAssembler.png", "", false, false, 0, "CIRCUITASSEMBLER", new Object[]{"ACE", "VMV", "WCW", 'M', HULL, 'V', CONVEYOR, 'A', ROBOT_ARM, 'C', BETTER_CIRCUIT, 'W', WIRE, 'E', EMITTER}).getStackForm(1L));
+        Machine_LuV_CircuitAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(1185, "basicmachine.circuitassembler.tier.06", "Advanced Circuit Assembling Machine V", 6, "Pick-n-Place all over the place", sCircuitAssemblerRecipes, 6, 1, 16000, 0, 1, "CircuitAssembler.png", "", false, false, 0, "CIRCUITASSEMBLER", new Object[]{"ACE", "VMV", "WCW", 'M', HULL, 'V', CONVEYOR, 'A', ROBOT_ARM, 'C', BETTER_CIRCUIT, 'W', WIRE, 'E', EMITTER}).getStackForm(1L));
+        Machine_ZPM_CircuitAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(1186, "basicmachine.circuitassembler.tier.07", "Advanced Circuit Assembling Machine VI", 7, "Pick-n-Place all over the place", sCircuitAssemblerRecipes, 6, 1, 16000, 0, 1, "CircuitAssembler.png", "", false, false, 0, "CIRCUITASSEMBLER", new Object[]{"ACE", "VMV", "WCW", 'M', HULL, 'V', CONVEYOR, 'A', ROBOT_ARM, 'C', BETTER_CIRCUIT, 'W', WIRE, 'E', EMITTER}).getStackForm(1L));
+        Machine_UV_CircuitAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(1187, "basicmachine.circuitassembler.tier.08", "Advanced Circuit Assembling Machine VII", 8, "Pick-n-Place all over the place", sCircuitAssemblerRecipes, 6, 1, 16000, 0, 1, "CircuitAssembler.png", "", false, false, 0, "CIRCUITASSEMBLER", new Object[]{"ACE", "VMV", "WCW", 'M', HULL, 'V', CONVEYOR, 'A', ROBOT_ARM, 'C', BETTER_CIRCUIT, 'W', WIRE, 'E', EMITTER}).getStackForm(1L));
         LOADED = true;
     }
 }
