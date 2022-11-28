@@ -26,16 +26,16 @@ import ic2.core.Ic2Items;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 
 import static gregtech.api.enums.ItemList.*;
+import static gregtech.api.enums.Materials.*;
+import static gregtech.api.enums.OrePrefixes.*;
+import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
 
 public class GT_Loader_MetaTileEntities implements Runnable {
     //TODO CHECK CIRCUIT RECIPES AND USAGES
     public static final long RECIPE_MASK = GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED;
     public static final long DISMANTLEABLE_RECIPE_MASK = GT_ModHandler.RecipeBits.DISMANTLEABLE | RECIPE_MASK; //TODO: Remove Any Dismantleable stuff
-
-    public static final String imagination = EnumChatFormatting.RESET + "Can be used with covers and to make machines.";
 
     private static void run1() {
         CasingRecipeLoader.load();
@@ -367,6 +367,10 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         Machine_LV_Miner.set(new GT_MetaTileEntity_Miner(679, "basicmachine.miner.tier.01", "Ore Drilling Rig MKI", 1).getStackForm(1L));
         Machine_MV_Miner.set(new GT_MetaTileEntity_Miner(680, "basicmachine.miner.tier.02", "Ore Drilling Rig MKII", 2).getStackForm(1L));
         Machine_HV_Miner.set(new GT_MetaTileEntity_Miner(681, "basicmachine.miner.tier.03", "Ore Drilling Rig MKIII", 3).getStackForm(1L));
+
+        addCraftingRecipe(Machine_LV_Miner.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", "WMW", "CSC", 'M', Hull_LV, 'E', Electric_Motor_LV, 'C', circuit.get(Basic), 'W', cableGt01.get(Tin), 'S', Sensor_LV});
+        addCraftingRecipe(Machine_MV_Miner.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PEP", "WMW", "CSC", 'M', Hull_MV, 'E', Electric_Motor_MV, 'P', Electric_Piston_MV, 'C', circuit.get(Good), 'W', cableGt02.get(Copper), 'S', Sensor_MV});
+        addCraftingRecipe(Machine_HV_Miner.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"RPR", "WMW", "CSC", 'M', Hull_HV, 'E', Electric_Motor_HV, 'P', Electric_Piston_HV, 'R', Robot_Arm_HV, 'C', circuit.get(Advanced), 'W', cableGt04.get(Gold), 'S', Sensor_HV});
     }
 
     private static void run3() {

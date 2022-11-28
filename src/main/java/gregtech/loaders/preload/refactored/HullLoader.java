@@ -8,6 +8,7 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_Steel;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_SteelBricks;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 import static gregtech.api.enums.ItemList.*;
 import static gregtech.api.enums.Materials.*;
@@ -16,9 +17,10 @@ import static gregtech.api.util.GT_ModHandler.RecipeBits.*;
 import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
 import static gregtech.api.util.GT_ModHandler.removeRecipeByOutput;
 import static gregtech.loaders.preload.GT_Loader_MetaTileEntities.RECIPE_MASK;
-import static gregtech.loaders.preload.GT_Loader_MetaTileEntities.imagination;
 
 public final class HullLoader {
+    private static final String IMAGINATION = EnumChatFormatting.RESET + "Can be used with covers and to make machines.";
+
     private static boolean LOADED = false;
 
     public static void load() {
@@ -34,16 +36,16 @@ public final class HullLoader {
         addCraftingRecipe(Hull_HP.get(1L), RECIPE_MASK, new Object[]{"PPP", "PhP", "PPP", 'P', plate.get(WroughtIron)});
         addCraftingRecipe(Hull_HP_Bricks.get(1L), RECIPE_MASK, new Object[]{"PPP", "PhP", "BBB", 'P', plate.get(WroughtIron), 'B', new ItemStack(Blocks.brick_block, 1)});
 
-        Hull_ULV.set(new GT_MetaTileEntity_BasicHull(10, "hull.tier.00", "ULV Machine Hull", 0, imagination).getStackForm(1L));
-        Hull_LV.set(new GT_MetaTileEntity_BasicHull(11, "hull.tier.01", "LV Machine Hull", 1, imagination).getStackForm(1L));
-        Hull_MV.set(new GT_MetaTileEntity_BasicHull(12, "hull.tier.02", "MV Machine Hull", 2, imagination).getStackForm(1L));
-        Hull_HV.set(new GT_MetaTileEntity_BasicHull(13, "hull.tier.03", "HV Machine Hull", 3, imagination).getStackForm(1L));
-        Hull_EV.set(new GT_MetaTileEntity_BasicHull(14, "hull.tier.04", "EV Machine Hull", 4, imagination).getStackForm(1L));
-        Hull_IV.set(new GT_MetaTileEntity_BasicHull(15, "hull.tier.05", "IV Machine Hull", 5, imagination).getStackForm(1L));
-        Hull_LuV.set(new GT_MetaTileEntity_BasicHull(16, "hull.tier.06", "LuV Machine Hull", 6, imagination).getStackForm(1L));
-        Hull_ZPM.set(new GT_MetaTileEntity_BasicHull(17, "hull.tier.07", "ZPM Machine Hull", 7, imagination).getStackForm(1L));
-        Hull_UV.set(new GT_MetaTileEntity_BasicHull(18, "hull.tier.08", "UV Machine Hull", 8, imagination).getStackForm(1L));
-        Hull_MAX.set(new GT_MetaTileEntity_BasicHull(19, "hull.tier.09", "UHV Machine Hull", 9, imagination).getStackForm(1L));
+        Hull_ULV.set(new GT_MetaTileEntity_BasicHull(10, "hull.tier.00", "ULV Machine Hull", 0, IMAGINATION).getStackForm(1L));
+        Hull_LV.set(new GT_MetaTileEntity_BasicHull(11, "hull.tier.01", "LV Machine Hull", 1, IMAGINATION).getStackForm(1L));
+        Hull_MV.set(new GT_MetaTileEntity_BasicHull(12, "hull.tier.02", "MV Machine Hull", 2, IMAGINATION).getStackForm(1L));
+        Hull_HV.set(new GT_MetaTileEntity_BasicHull(13, "hull.tier.03", "HV Machine Hull", 3, IMAGINATION).getStackForm(1L));
+        Hull_EV.set(new GT_MetaTileEntity_BasicHull(14, "hull.tier.04", "EV Machine Hull", 4, IMAGINATION).getStackForm(1L));
+        Hull_IV.set(new GT_MetaTileEntity_BasicHull(15, "hull.tier.05", "IV Machine Hull", 5, IMAGINATION).getStackForm(1L));
+        Hull_LuV.set(new GT_MetaTileEntity_BasicHull(16, "hull.tier.06", "LuV Machine Hull", 6, IMAGINATION).getStackForm(1L));
+        Hull_ZPM.set(new GT_MetaTileEntity_BasicHull(17, "hull.tier.07", "ZPM Machine Hull", 7, IMAGINATION).getStackForm(1L));
+        Hull_UV.set(new GT_MetaTileEntity_BasicHull(18, "hull.tier.08", "UV Machine Hull", 8, IMAGINATION).getStackForm(1L));
+        Hull_MAX.set(new GT_MetaTileEntity_BasicHull(19, "hull.tier.09", "UHV Machine Hull", 9, IMAGINATION).getStackForm(1L));
 
         addCraftingRecipe(Hull_ULV.get(1L), REVERSIBLE, new Object[]{"CMC", 'M', Casing_ULV, 'C', cableGt01.get(RedAlloy), 'H', plate.get(Tin), 'P', plate.get(Wood)});
         addCraftingRecipe(Hull_LV.get(1L), REVERSIBLE, new Object[]{"CMC", 'M', Casing_LV, 'C', cableGt01.get(Tin), 'H', plate.get(Steel), 'P', plate.get(WroughtIron)});
