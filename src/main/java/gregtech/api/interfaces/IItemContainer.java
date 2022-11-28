@@ -13,6 +13,10 @@ public interface IItemContainer {
 
     boolean isStackEqual(Object aStack, boolean aWildcard, boolean aIgnoreNBT);
 
+    default ItemStack getOne(Object... aReplacements) {
+        return get(1, aReplacements);
+    }
+
     ItemStack get(long aAmount, Object... aReplacements);
 
     ItemStack getWildcard(long aAmount, Object... aReplacements);
