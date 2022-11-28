@@ -12,7 +12,7 @@ import static gregtech.api.enums.OrePrefixes.circuit;
 import static gregtech.api.util.GT_ModHandler.RecipeBits;
 import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
 
-public final class ItemManagementLoader {
+public final class ItemStuffLoader {
     private static boolean LOADED = false;
 
     public static void load() {
