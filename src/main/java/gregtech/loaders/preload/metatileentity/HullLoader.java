@@ -1,4 +1,4 @@
-package gregtech.loaders.preload.refactored;
+package gregtech.loaders.preload.metatileentity;
 
 import gregtech.GT_Mod;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
@@ -16,14 +16,14 @@ import static gregtech.api.enums.OrePrefixes.*;
 import static gregtech.api.util.GT_ModHandler.RecipeBits.*;
 import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
 import static gregtech.api.util.GT_ModHandler.removeRecipeByOutput;
-import static gregtech.loaders.preload.GT_Loader_MetaTileEntities.RECIPE_MASK;
+import static gregtech.loaders.preload.metatileentity.MetaTileEntityLoader.RECIPE_MASK;
 
 public final class HullLoader {
     private static final String IMAGINATION = EnumChatFormatting.RESET + "Can be used with covers and to make machines.";
 
     private static boolean LOADED = false;
 
-    public static void load() {
+    static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
         Hull_Bronze.set(new GT_MetaTileEntity_BasicHull_Bronze(1, "hull.bronze", "Bronze Hull", 0, "For your first Steam Machines").getStackForm(1L));

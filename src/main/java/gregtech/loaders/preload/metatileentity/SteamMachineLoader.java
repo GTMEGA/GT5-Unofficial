@@ -1,4 +1,4 @@
-package gregtech.loaders.preload.refactored;
+package gregtech.loaders.preload.metatileentity;
 
 import gregtech.common.tileentities.boilers.*;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_BronzeBlastFurnace;
@@ -12,12 +12,12 @@ import static gregtech.api.enums.OreDictNames.*;
 import static gregtech.api.enums.OrePrefixes.*;
 import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.loaders.preload.GT_Loader_MetaTileEntities.RECIPE_MASK;
+import static gregtech.loaders.preload.metatileentity.MetaTileEntityLoader.RECIPE_MASK;
 
 public final class SteamMachineLoader {
     private static boolean LOADED = false;
 
-    public static void load() {
+    static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
         Machine_Bronze_Boiler.set(new GT_MetaTileEntity_Boiler_Bronze(100, "boiler.bronze", "Small Coal Boiler").getStackForm(1L));

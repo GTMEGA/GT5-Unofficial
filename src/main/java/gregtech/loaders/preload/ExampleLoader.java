@@ -1,4 +1,4 @@
-package gregtech.loaders.preload.refactored;
+package gregtech.loaders.preload;
 
 public final class ExampleLoader {
     private static boolean LOADED = false;

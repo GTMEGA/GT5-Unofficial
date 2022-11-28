@@ -1,4 +1,4 @@
-package gregtech.loaders.preload.refactored;
+package gregtech.loaders.preload.metatileentity;
 
 import gregtech.GT_Mod;
 import gregtech.api.enums.Materials;
@@ -23,7 +23,7 @@ public final class CableLoader {
 
     private static boolean LOADED = false;
 
-    public static void load() {
+    static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
         val extraLoss = !GT_Mod.gregtechproxy.mHardcoreCables;

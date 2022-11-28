@@ -42,6 +42,7 @@ import gregtech.loaders.misc.GT_CoverLoader;
 import gregtech.loaders.misc.NetworkDispatcher;
 import gregtech.loaders.postload.*;
 import gregtech.loaders.preload.*;
+import gregtech.loaders.preload.metatileentity.MetaTileEntityLoader;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 import net.minecraft.creativetab.CreativeTabs;
@@ -604,7 +605,7 @@ public class GT_Mod implements IGT_Mod {
         new GT_Loader_OreDictionary().run();
         new GT_Loader_ItemData().run();
         new GT_Loader_Item_Block_And_Fluid().run();
-        new GT_Loader_MetaTileEntities().run();
+        new MetaTileEntityLoader().run();
 
         new GT_Loader_CircuitBehaviors().run();
         new GT_CoverBehaviorLoader().run();

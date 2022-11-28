@@ -1,4 +1,4 @@
-package gregtech.loaders.preload.refactored;
+package gregtech.loaders.preload.metatileentity;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 public final class FluidPipeLoader {
     private static boolean LOADED = false;
 
-    public static void load() {
+    static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
         GT_OreDictUnificator.registerOre(OrePrefixes.pipeSmall.get(Materials.Wood), new GT_MetaPipeEntity_Fluid(5101, "GT_Pipe_Wood_Small", "Small Wooden Fluid Pipe", 0.375F, Materials.Wood, 10, 350, false).getStackForm(1L));

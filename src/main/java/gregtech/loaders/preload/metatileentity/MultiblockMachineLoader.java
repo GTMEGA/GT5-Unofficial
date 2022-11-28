@@ -1,4 +1,4 @@
-package gregtech.loaders.preload.refactored;
+package gregtech.loaders.preload.metatileentity;
 
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.Loader;
@@ -16,13 +16,13 @@ import static gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED;
 import static gregtech.api.util.GT_ModHandler.RecipeBits.NOT_REMOVABLE;
 import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
 import static gregtech.loaders.postload.GT_ProcessingArrayRecipeLoader.registerDefaultGregtechMaps;
-import static gregtech.loaders.preload.GT_Loader_MetaTileEntities.DISMANTLEABLE_RECIPE_MASK;
+import static gregtech.loaders.preload.metatileentity.MetaTileEntityLoader.DISMANTLEABLE_RECIPE_MASK;
 import static ic2.core.Ic2Items.reinforcedStone;
 
 public final class MultiblockMachineLoader {
     private static boolean LOADED = false;
 
-    public static void load() {
+    static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
         Machine_Bricked_BlastFurnace.set(new GT_MetaTileEntity_BrickedBlastFurnace(140, "multimachine.brickedblastfurnace", "Bricked Blast Furnace").getStackForm(1L));

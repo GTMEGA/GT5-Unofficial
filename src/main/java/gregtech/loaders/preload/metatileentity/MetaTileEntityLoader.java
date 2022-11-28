@@ -1,11 +1,10 @@
-package gregtech.loaders.preload;
+package gregtech.loaders.preload.metatileentity;
 
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
 import gregtech.api.util.GT_Log;
 import gregtech.common.tileentities.machines.basic.*;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineFluid;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineItem;
-import gregtech.loaders.preload.refactored.*;
 
 import static gregtech.api.GregTech_API.sGeneratedMaterials;
 import static gregtech.api.enums.ItemList.*;
@@ -14,7 +13,7 @@ import static gregtech.api.enums.OrePrefixes.*;
 import static gregtech.api.util.GT_LanguageManager.i18nPlaceholder;
 import static gregtech.api.util.GT_ModHandler.*;
 
-public class GT_Loader_MetaTileEntities implements Runnable {
+public final class MetaTileEntityLoader implements Runnable {
     //TODO CHECK CIRCUIT RECIPES AND USAGES
     public static final long RECIPE_MASK = RecipeBits.NOT_REMOVABLE | RecipeBits.REVERSIBLE | RecipeBits.BUFFERED;
     public static final long DISMANTLEABLE_RECIPE_MASK = RecipeBits.DISMANTLEABLE | RECIPE_MASK; //TODO: Remove Any Dismantleable stuff

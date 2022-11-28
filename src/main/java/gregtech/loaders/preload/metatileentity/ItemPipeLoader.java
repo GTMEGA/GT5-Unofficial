@@ -1,4 +1,4 @@
-package gregtech.loaders.preload.refactored;
+package gregtech.loaders.preload.metatileentity;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Item;
@@ -11,7 +11,7 @@ import static gregtech.api.util.GT_OreDictUnificator.registerOre;
 public final class ItemPipeLoader {
     private static boolean LOADED = false;
 
-    public static void load() {
+    static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
         generateItemPipes(Brass, Brass.mName, 5602, 1);
