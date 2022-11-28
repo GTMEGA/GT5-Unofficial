@@ -18,7 +18,6 @@ import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_Lon
 import gregtech.common.tileentities.machines.multi.*;
 import gregtech.common.tileentities.machines.steam.*;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_Locker;
-import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumTank;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperTank;
 import gregtech.loaders.postload.GT_ProcessingArrayRecipeLoader;
@@ -122,12 +121,6 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         ItemList.Quantum_Tank_HV.set(new GT_MetaTileEntity_QuantumTank(122, "quantum.tank.tier.08", "Quantum Tank III", 8).getStackForm(1L));
         ItemList.Quantum_Tank_EV.set(new GT_MetaTileEntity_QuantumTank(123, "quantum.tank.tier.09", "Quantum Tank IV", 9).getStackForm(1L));
         ItemList.Quantum_Tank_IV.set(new GT_MetaTileEntity_QuantumTank(124, "quantum.tank.tier.10", "Quantum Tank V", 10).getStackForm(1L));
-
-        ItemList.Quantum_Chest_LV.set(new GT_MetaTileEntity_QuantumChest(125, "quantum.chest.tier.06", "Quantum Chest I", 6).getStackForm(1L));
-        ItemList.Quantum_Chest_MV.set(new GT_MetaTileEntity_QuantumChest(126, "quantum.chest.tier.07", "Quantum Chest II", 7).getStackForm(1L));
-        ItemList.Quantum_Chest_HV.set(new GT_MetaTileEntity_QuantumChest(127, "quantum.chest.tier.08", "Quantum Chest III", 8).getStackForm(1L));
-        ItemList.Quantum_Chest_EV.set(new GT_MetaTileEntity_QuantumChest(128, "quantum.chest.tier.09", "Quantum Chest IV", 9).getStackForm(1L));
-        ItemList.Quantum_Chest_IV.set(new GT_MetaTileEntity_QuantumChest(129, "quantum.chest.tier.10", "Quantum Chest V", 10).getStackForm(1L));
 
         ItemList.Super_Tank_LV.set(new GT_MetaTileEntity_SuperTank(130, "super.tank.tier.01", "Super Tank I", 1).getStackForm(1L));
         ItemList.Super_Tank_MV.set(new GT_MetaTileEntity_SuperTank(131, "super.tank.tier.02", "Super Tank II", 2).getStackForm(1L));

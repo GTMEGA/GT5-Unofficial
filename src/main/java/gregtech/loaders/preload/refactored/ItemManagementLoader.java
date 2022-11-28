@@ -1,6 +1,7 @@
 package gregtech.loaders.preload.refactored;
 
 import gregtech.common.tileentities.automation.*;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperChest;
 
 import static gregtech.api.enums.ItemList.*;
@@ -168,6 +169,12 @@ public final class ItemManagementLoader {
         addCraftingRecipe(Automation_ItemDistributor_ZPM.get(1L), bitsd, new Object[]{"XCX", "VMV", " V ", 'M', Hull_ZPM, 'V', Conveyor_Module_ZPM, 'C', craftingChest, 'X', circuit.get(Basic)});
         addCraftingRecipe(Automation_ItemDistributor_UV.get(1L), bitsd, new Object[]{"XCX", "VMV", " V ", 'M', Hull_UV, 'V', Conveyor_Module_UV, 'C', craftingChest, 'X', circuit.get(Basic)});
         addCraftingRecipe(Automation_ItemDistributor_MAX.get(1L), bitsd, new Object[]{"XCX", "VMV", " V ", 'M', Hull_MAX, 'V', Conveyor_Module_UHV, 'C', craftingChest, 'X', circuit.get(Basic)});
+
+        Quantum_Chest_LV.set(new GT_MetaTileEntity_QuantumChest(125, "quantum.chest.tier.06", "Quantum Chest I", 6).getStackForm(1L));
+        Quantum_Chest_MV.set(new GT_MetaTileEntity_QuantumChest(126, "quantum.chest.tier.07", "Quantum Chest II", 7).getStackForm(1L));
+        Quantum_Chest_HV.set(new GT_MetaTileEntity_QuantumChest(127, "quantum.chest.tier.08", "Quantum Chest III", 8).getStackForm(1L));
+        Quantum_Chest_EV.set(new GT_MetaTileEntity_QuantumChest(128, "quantum.chest.tier.09", "Quantum Chest IV", 9).getStackForm(1L));
+        Quantum_Chest_IV.set(new GT_MetaTileEntity_QuantumChest(129, "quantum.chest.tier.10", "Quantum Chest V", 10).getStackForm(1L));
         LOADED = true;
     }
 }
