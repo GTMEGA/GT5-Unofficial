@@ -338,6 +338,38 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Piko                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Piko"                     ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 13)));
     public static Materials Quantum                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Quantum"                     ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 14)));
 
+    public static Materials LOGIC_LV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "LV", "LV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 1)));
+    public static Materials LOGIC_MV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "MV", "MV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 2)));
+    public static Materials LOGIC_HV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "HV", "HV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 3)));
+    public static Materials LOGIC_EV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "EV", "EV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 4)));
+    public static Materials LOGIC_IV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "IV", "IV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 5)));
+    public static Materials LOGIC_LUV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "LUV", "LUV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 6)));
+    public static Materials LOGIC_ZPM = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "ZPM", "ZPM", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 7)));
+    public static Materials LOGIC_UV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "UV", "UV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 8)));
+    public static Materials LOGIC_UHV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "UHV", "UHV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 10)));
+    public static Materials LOGIC_UEV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "UEV", "UEV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 11)));
+    public static Materials LOGIC_UIV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "UIV", "UIV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 12)));
+    public static Materials LOGIC_UMV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "UMV", "UMV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 13)));
+    public static Materials LOGIC_UXV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "UXV", "UXV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 14)));
+    public static Materials LOGIC_OPV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "OPV", "OPV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 14)));
+    public static Materials LOGIC_MAX = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "MAX", "MAX", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 14)));
+
+    public static Materials PWR_LV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "LV", "LV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 1)));
+    public static Materials PWR_MV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "MV", "MV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 2)));
+    public static Materials PWR_HV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "HV", "HV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 3)));
+    public static Materials PWR_EV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "EV", "EV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 4)));
+    public static Materials PWR_IV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "IV", "IV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 5)));
+    public static Materials PWR_LUV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "LUV", "LUV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 6)));
+    public static Materials PWR_ZPM = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "ZPM", "ZPM", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 7)));
+    public static Materials PWR_UV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "UV", "UV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 8)));
+    public static Materials PWR_UHV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "UHV", "UHV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 10)));
+    public static Materials PWR_UEV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "UEV", "UEV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 11)));
+    public static Materials PWR_UIV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "UIV", "UIV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 12)));
+    public static Materials PWR_UMV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "UMV", "UMV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 13)));
+    public static Materials PWR_UXV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "UXV", "UXV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 14)));
+    public static Materials PWR_OPV = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "OPV", "OPV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 14)));
+    public static Materials PWR_MAX = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "MAX", "MAX", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 14)));
+
     /**
      * Not possible to determine exact Components
      */
@@ -2060,6 +2092,38 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Superconductor.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Infinite.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Bio.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+
+        PWR_LV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_MV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_HV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_EV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_IV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_LUV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_UV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_UHV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_UEV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_UIV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_UMV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_UXV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_OPV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        PWR_MAX.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+
+        LOGIC_LV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        LOGIC_MV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        LOGIC_HV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        LOGIC_EV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        LOGIC_IV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        LOGIC_LUV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        LOGIC_UV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        LOGIC_UHV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        LOGIC_UEV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        LOGIC_UIV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        LOGIC_UMV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        LOGIC_UXV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        LOGIC_OPV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        LOGIC_MAX.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+
+
         SuperconductorMV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorHV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorEV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
@@ -2068,6 +2132,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         SuperconductorZPM.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         //SuperconductorUV        .add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorUHV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+
+
+
 
         Blaze.add(SubTag.MAGICAL, SubTag.SMELTING_TO_FLUID, SubTag.MORTAR_GRINDABLE, SubTag.UNBURNABLE, SubTag.BURNING);
         FierySteel.add(SubTag.MAGICAL, SubTag.UNBURNABLE, SubTag.BURNING);

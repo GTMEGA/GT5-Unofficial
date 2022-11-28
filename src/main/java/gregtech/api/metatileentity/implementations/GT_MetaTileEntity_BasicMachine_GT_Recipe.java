@@ -654,6 +654,55 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                     continue;
                 }
 
+//                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PWRCIRCUIT) {
+//                    switch (this.mTier) {
+//                        case 0:
+//                        case 1:
+//                            aRecipe[i] = ItemList.LV_PWR;
+//                            break;
+//                        case 2:
+//                            aRecipe[i] = ItemList.MV_PWR;
+//                            break;
+//                        case 3:
+//                            aRecipe[i] = ItemList.HV_PWR;
+//                            break;
+//                        case 4:
+//                            aRecipe[i] = ItemList.EV_PWR;
+//                            break;
+//                        case 5:
+//                            aRecipe[i] = ItemList.IV_PWR;
+//                            break;
+//                        case 6:
+//                            aRecipe[i] = ItemList.LUV_PWR;
+//                            break;
+//                        case 7:
+//                            aRecipe[i] = ItemList.UV_PWR;
+//                            break;
+//                        case 8:
+//                            aRecipe[i] = ItemList.UHV_PWR;
+//                            break;
+//                        case 9:
+//                            aRecipe[i] = ItemList.UEV_PWR;
+//                            break;
+//                        case 10:
+//                            aRecipe[i] = ItemList.UIV_PWR;
+//                            break;
+//                        case 11:
+//                            aRecipe[i] = ItemList.UMV_PWR;
+//                            break;
+//                        case 12:
+//                            aRecipe[i] = ItemList.UXV_PWR;
+//                            break;
+//                        case 13:
+//                            aRecipe[i] = ItemList.OPV_PWR;
+//                            break;
+//                        default:
+//                            aRecipe[i] = ItemList.MAX_PWR;
+//                            break;
+//                    }
+//                    continue;
+//                }
+
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.FIELD_GENERATOR) {
                     switch (this.mTier) {
                         case 0:
