@@ -376,22 +376,6 @@ public enum ItemList implements IItemContainer {
     Circuit_Ultimate,
     Circuit_Biowarecomputer,
     Circuit_Biowaresupercomputer,
-//    LV_PWR,
-//    MV_PWR,
-//    HV_PWR,
-//    EV_PWR,
-//    IV_PWR,
-//    LUV_PWR,
-//    UV_PWR,
-//    UHV_PWR,
-//    UEV_PWR,
-//    UIV_PWR,
-//    UMV_PWR,
-//    UXV_PWR,
-//    OPV_PWR,
-//    MAX_PWR,
-
-
 
     Rotor_LV,//these aren't actually used
     Rotor_MV,
