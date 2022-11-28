@@ -9,7 +9,7 @@ import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.*;
 import gregtech.common.tileentities.automation.*;
 import gregtech.common.tileentities.boilers.*;
-import gregtech.common.tileentities.generators.*;
+import gregtech.common.tileentities.generators.GT_MetaTileEntity_LightningRod;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.basic.*;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineFluid;
@@ -18,6 +18,7 @@ import gregtech.common.tileentities.machines.multi.*;
 import gregtech.common.tileentities.machines.steam.*;
 import gregtech.common.tileentities.storage.*;
 import gregtech.loaders.postload.GT_ProcessingArrayRecipeLoader;
+import gregtech.loaders.preload.refactored.BasicGeneratorLoader;
 import gregtech.loaders.preload.refactored.BasicMachineLoader;
 import gregtech.loaders.preload.refactored.CasingRecipeLoader;
 import gregtech.loaders.preload.refactored.HullLoader;
@@ -405,67 +406,13 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_Multi_LargeBoiler_Titanium.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', ItemList.Casing_Firebox_Titanium, 'C', OrePrefixes.circuit.get(Materials.Data), 'W', OrePrefixes.cableGt01.get(Materials.Gold)});
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_Multi_LargeBoiler_TungstenSteel.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', ItemList.Casing_Firebox_TungstenSteel, 'C', OrePrefixes.circuit.get(Materials.Elite), 'W', OrePrefixes.cableGt01.get(Materials.Aluminium)});
 
-        ItemList.Generator_Diesel_LV.set(new GT_MetaTileEntity_DieselGenerator(1110, "basicgenerator.diesel.tier.01", "Basic Combustion Generator", 1).getStackForm(1L));
-        ItemList.Generator_Diesel_MV.set(new GT_MetaTileEntity_DieselGenerator(1111, "basicgenerator.diesel.tier.02", "Advanced Combustion Generator", 2).getStackForm(1L));
-        ItemList.Generator_Diesel_HV.set(new GT_MetaTileEntity_DieselGenerator(1112, "basicgenerator.diesel.tier.03", "Advanced Combustion Generator II", 3).getStackForm(1L));
+        BasicGeneratorLoader.load();
 
-        GT_ModHandler.addCraftingRecipe(ItemList.Generator_Diesel_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "EME", "GWG", 'M', ItemList.Hull_LV, 'P', ItemList.Electric_Piston_LV, 'E', ItemList.Electric_Motor_LV, 'C', OrePrefixes.circuit.get(Materials.Basic), 'W', OrePrefixes.cableGt01.get(Materials.Tin), 'G', OrePrefixes.gearGt.get(Materials.Steel)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Generator_Diesel_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "EME", "GWG", 'M', ItemList.Hull_MV, 'P', ItemList.Electric_Piston_MV, 'E', ItemList.Electric_Motor_MV, 'C', OrePrefixes.circuit.get(Materials.Good), 'W', OrePrefixes.cableGt01.get(Materials.AnyCopper), 'G', OrePrefixes.gearGt.get(Materials.Aluminium)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Generator_Diesel_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "EME", "GWG", 'M', ItemList.Hull_HV, 'P', ItemList.Electric_Piston_HV, 'E', ItemList.Electric_Motor_HV, 'C', OrePrefixes.circuit.get(Materials.Advanced), 'W', OrePrefixes.cableGt01.get(Materials.Gold), 'G', OrePrefixes.gearGt.get(Materials.StainlessSteel)});
-
-        ItemList.Generator_Gas_Turbine_LV.set(new GT_MetaTileEntity_GasTurbine(1115, "basicgenerator.gasturbine.tier.01", "Basic Gas Turbine", 1).getStackForm(1L));
-        ItemList.Generator_Gas_Turbine_MV.set(new GT_MetaTileEntity_GasTurbine(1116, "basicgenerator.gasturbine.tier.02", "Advanced Gas Turbine", 2).getStackForm(1L));
-        ItemList.Generator_Gas_Turbine_HV.set(new GT_MetaTileEntity_GasTurbine(1117, "basicgenerator.gasturbine.tier.03", "Advanced Gas Turbine II", 3).getStackForm(1L));
-
-        GT_ModHandler.addCraftingRecipe(ItemList.Generator_Gas_Turbine_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CRC", "RMR", "EWE", 'M', ItemList.Hull_LV, 'E', ItemList.Electric_Motor_LV, 'R', OrePrefixes.rotor.get(Materials.Tin), 'C', OrePrefixes.circuit.get(Materials.Basic), 'W', OrePrefixes.cableGt01.get(Materials.Tin)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Generator_Gas_Turbine_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CRC", "RMR", "EWE", 'M', ItemList.Hull_MV, 'E', ItemList.Electric_Motor_MV, 'R', OrePrefixes.rotor.get(Materials.Bronze), 'C', OrePrefixes.circuit.get(Materials.Good), 'W', OrePrefixes.cableGt01.get(Materials.AnyCopper)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Generator_Gas_Turbine_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CRC", "RMR", "EWE", 'M', ItemList.Hull_HV, 'E', ItemList.Electric_Motor_HV, 'R', OrePrefixes.rotor.get(Materials.Steel), 'C', OrePrefixes.circuit.get(Materials.Advanced), 'W', OrePrefixes.cableGt01.get(Materials.Gold)});
-
-        ItemList.Generator_Steam_Turbine_LV.set(new GT_MetaTileEntity_SteamTurbine(1120, "basicgenerator.steamturbine.tier.01", "Basic Steam Turbine", 1).getStackForm(1L));
-        ItemList.Generator_Steam_Turbine_MV.set(new GT_MetaTileEntity_SteamTurbine(1121, "basicgenerator.steamturbine.tier.02", "Advanced Steam Turbine", 2).getStackForm(1L));
-        ItemList.Generator_Steam_Turbine_HV.set(new GT_MetaTileEntity_SteamTurbine(1122, "basicgenerator.steamturbine.tier.03", "Advanced Steam Turbine II", 3).getStackForm(1L));
-
-        GT_ModHandler.addCraftingRecipe(ItemList.Generator_Steam_Turbine_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "RMR", "EWE", 'M', ItemList.Hull_LV, 'E', ItemList.Electric_Motor_LV, 'R', OrePrefixes.rotor.get(Materials.Tin), 'C', OrePrefixes.circuit.get(Materials.Basic), 'W', OrePrefixes.cableGt01.get(Materials.Tin), 'P', OrePrefixes.pipeMedium.get(Materials.Bronze)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Generator_Steam_Turbine_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "RMR", "EWE", 'M', ItemList.Hull_MV, 'E', ItemList.Electric_Motor_MV, 'R', OrePrefixes.rotor.get(Materials.Bronze), 'C', OrePrefixes.circuit.get(Materials.Good), 'W', OrePrefixes.cableGt01.get(Materials.AnyCopper), 'P', OrePrefixes.pipeMedium.get(Materials.Steel)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Generator_Steam_Turbine_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "RMR", "EWE", 'M', ItemList.Hull_HV, 'E', ItemList.Electric_Motor_HV, 'R', OrePrefixes.rotor.get(Materials.Steel), 'C', OrePrefixes.circuit.get(Materials.Advanced), 'W', OrePrefixes.cableGt01.get(Materials.Gold), 'P', OrePrefixes.pipeMedium.get(Materials.StainlessSteel)});
-
-        ItemList.Generator_Naquadah_Mark_I.set(new GT_MetaTileEntity_NaquadahReactor(1190, "basicgenerator.naquadah.tier.04", new String[]{"Requires Enriched Naquadah Bolts"}, "Naquadah Reactor Mark I", 4).getStackForm(1L));
-        ItemList.Generator_Naquadah_Mark_II.set(new GT_MetaTileEntity_NaquadahReactor(1191, "basicgenerator.naquadah.tier.05", new String[]{"Requires Enriched Naquadah Rods"}, "Naquadah Reactor Mark II", 5).getStackForm(1L));
-        ItemList.Generator_Naquadah_Mark_III.set(new GT_MetaTileEntity_NaquadahReactor(1192, "basicgenerator.naquadah.tier.06", new String[]{"Requires Enriched Naquadah Long Rods"}, "Naquadah Reactor Mark III", 6).getStackForm(1L));
-        ItemList.Generator_Naquadah_Mark_IV.set(new GT_MetaTileEntity_NaquadahReactor(1188, "basicgenerator.naquadah.tier.07", new String[]{"Requires Naquadria Bolts"}, "Naquadah Reactor Mark IV", 7).getStackForm(1L));
-        ItemList.Generator_Naquadah_Mark_V.set(new GT_MetaTileEntity_NaquadahReactor(1189, "basicgenerator.naquadah.tier.08", new String[]{"Requires Naquadria Rods"}, "Naquadah Reactor Mark V", 8).getStackForm(1L));
-
-        ItemList.MagicEnergyConverter_LV.set(new GT_MetaTileEntity_MagicEnergyConverter(1123, "basicgenerator.magicenergyconverter.tier.01", "Novice Magic Energy Converter", 1).getStackForm(1L));
-        ItemList.MagicEnergyConverter_MV.set(new GT_MetaTileEntity_MagicEnergyConverter(1124, "basicgenerator.magicenergyconverter.tier.02", "Adept Magic Energy Converter", 2).getStackForm(1L));
-        ItemList.MagicEnergyConverter_HV.set(new GT_MetaTileEntity_MagicEnergyConverter(1125, "basicgenerator.magicenergyconverter.tier.03", "Master Magic Energy Converter", 3).getStackForm(1L));
-
-        ItemList.MagicEnergyAbsorber_LV.set(new GT_MetaTileEntity_MagicalEnergyAbsorber(1127, "basicgenerator.magicenergyabsorber.tier.01", "Novice Magic Energy Absorber", 1).getStackForm(1L));
-        ItemList.MagicEnergyAbsorber_MV.set(new GT_MetaTileEntity_MagicalEnergyAbsorber(1128, "basicgenerator.magicenergyabsorber.tier.02", "Adept Magic Energy Absorber", 2).getStackForm(1L));
-        ItemList.MagicEnergyAbsorber_HV.set(new GT_MetaTileEntity_MagicalEnergyAbsorber(1129, "basicgenerator.magicenergyabsorber.tier.03", "Master Magic Energy Absorber", 3).getStackForm(1L));
-        ItemList.MagicEnergyAbsorber_EV.set(new GT_MetaTileEntity_MagicalEnergyAbsorber(1130, "basicgenerator.magicenergyabsorber.tier.04", "Grandmaster Magic Energy Absorber", 4).getStackForm(1L));
-        if (!Loader.isModLoaded("Thaumcraft")) {
-            GT_ModHandler.addCraftingRecipe(ItemList.MagicEnergyConverter_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', ItemList.Hull_LV, 'B', new ItemStack(Blocks.beacon), 'C', OrePrefixes.circuit.get(Materials.Advanced), 'T', ItemList.Field_Generator_LV, 'F', OrePrefixes.plate.get(Materials.Platinum)});
-            GT_ModHandler.addCraftingRecipe(ItemList.MagicEnergyConverter_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', ItemList.Hull_MV, 'B', new ItemStack(Blocks.beacon), 'C', OrePrefixes.circuit.get(Materials.Data), 'T', ItemList.Field_Generator_MV, 'F', OrePrefixes.plate.get(Materials.Iridium)});
-            GT_ModHandler.addCraftingRecipe(ItemList.MagicEnergyConverter_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', ItemList.Hull_HV, 'B', new ItemStack(Blocks.beacon), 'C', OrePrefixes.circuit.get(Materials.Elite), 'T', ItemList.Field_Generator_HV, 'F', OrePrefixes.plate.get(Materials.Neutronium)});
-
-            GT_ModHandler.addCraftingRecipe(ItemList.MagicEnergyAbsorber_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', ItemList.Hull_LV, 'B', ItemList.MagicEnergyConverter_LV.get(1L), 'C', OrePrefixes.circuit.get(Materials.Advanced), 'T', ItemList.Field_Generator_LV, 'F', OrePrefixes.plate.get(Materials.Platinum)});
-            GT_ModHandler.addCraftingRecipe(ItemList.MagicEnergyAbsorber_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', ItemList.Hull_MV, 'B', ItemList.MagicEnergyConverter_MV.get(1L), 'C', OrePrefixes.circuit.get(Materials.Data), 'T', ItemList.Field_Generator_MV, 'F', OrePrefixes.plate.get(Materials.Iridium)});
-            GT_ModHandler.addCraftingRecipe(ItemList.MagicEnergyAbsorber_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', ItemList.Hull_HV, 'B', ItemList.MagicEnergyConverter_MV.get(1L), 'C', OrePrefixes.circuit.get(Materials.Elite), 'T', ItemList.Field_Generator_HV, 'F', OrePrefixes.plate.get(Materials.Europium)});
-            GT_ModHandler.addCraftingRecipe(ItemList.MagicEnergyAbsorber_EV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', ItemList.Hull_HV, 'B', ItemList.MagicEnergyConverter_HV.get(1L), 'C', OrePrefixes.circuit.get(Materials.Master), 'T', ItemList.Field_Generator_EV, 'F', OrePrefixes.plate.get(Materials.Neutronium)});
-        }
         ItemList.FusionComputer_LuV.set(new GT_MetaTileEntity_FusionComputer1(1193, "fusioncomputer.tier.06", "Fusion Control Computer MKI").getStackForm(1L));
         ItemList.FusionComputer_ZPMV.set(new GT_MetaTileEntity_FusionComputer2(1194, "fusioncomputer.tier.07", "Fusion Control Computer MKII").getStackForm(1L));
         ItemList.FusionComputer_UV.set(new GT_MetaTileEntity_FusionComputer3(1195, "fusioncomputer.tier.08", "Fusion Control Computer MKIII").getStackForm(1L));
 
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_Fusion_Coil.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CTC", 'M', ItemList.Casing_Coil_Superconductor, 'C', OrePrefixes.circuit.get(Materials.Master), 'F', ItemList.Field_Generator_MV, 'T', ItemList.Neutron_Reflector});
-
-        ItemList.Generator_Plasma_IV.set(new GT_MetaTileEntity_PlasmaGenerator(1196, "basicgenerator.plasmagenerator.tier.05", "Plasma Generator MKI", 4).getStackForm(1L));
-        ItemList.Generator_Plasma_LuV.set(new GT_MetaTileEntity_PlasmaGenerator(1197, "basicgenerator.plasmagenerator.tier.06", "Plasma Generator MKII", 5).getStackForm(1L));
-        ItemList.Generator_Plasma_ZPMV.set(new GT_MetaTileEntity_PlasmaGenerator(1198, "basicgenerator.plasmagenerator.tier.07", "Plasma Generator MKIII", 6).getStackForm(1L));
-
-        GT_ModHandler.addCraftingRecipe(ItemList.Generator_Plasma_IV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"UCU", "FMF", "WCW", 'M', ItemList.Hull_LuV, 'F', ItemList.Field_Generator_HV, 'C', OrePrefixes.circuit.get(Materials.Elite), 'W', OrePrefixes.cableGt04.get(Materials.Tungsten), 'U', OrePrefixes.stick.get(Materials.Plutonium241)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Generator_Plasma_LuV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"UCU", "FMF", "WCW", 'M', ItemList.Hull_ZPM, 'F', ItemList.Field_Generator_EV, 'C', OrePrefixes.circuit.get(Materials.Master), 'W', OrePrefixes.wireGt04.get(Materials.VanadiumGallium), 'U', OrePrefixes.stick.get(Materials.Europium)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Generator_Plasma_ZPMV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"UCU", "FMF", "WCW", 'M', ItemList.Hull_UV, 'F', ItemList.Field_Generator_IV, 'C', OrePrefixes.circuit.get(Materials.Ultimate), 'W', OrePrefixes.wireGt04.get(Materials.Naquadah), 'U', OrePrefixes.stick.get(Materials.Americium)});
 
         ItemList.Processing_Array.set(new GT_MetaTileEntity_ProcessingArray(1199, "multimachine.processingarray", "Processing Array").getStackForm(1L));
         GT_ModHandler.addCraftingRecipe(ItemList.Processing_Array.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', ItemList.Hull_EV, 'B', OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C', OrePrefixes.circuit.get(Materials.Elite), 'F', ItemList.Robot_Arm_EV, 'T', ItemList.Energy_LapotronicOrb});
