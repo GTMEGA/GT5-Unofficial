@@ -121,7 +121,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 2L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Charcoal, 3L), GT_Values.NI, GT_Values.NI, GT_Utility.getIntegratedCircuit(1), GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.getDust(Materials.Gunpowder, 6L * OrePrefixes.dust.mMaterialAmount), (int) (600L * OrePrefixes.dust.mMaterialAmount / 3628800L), 8);
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 2L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 3L), GT_Values.NI, GT_Values.NI, GT_Utility.getIntegratedCircuit(1), GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.getDust(Materials.Gunpowder, 6L * OrePrefixes.dust.mMaterialAmount), (int) (600L * OrePrefixes.dust.mMaterialAmount / 3628800L), 8);
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Indium, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gallium, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 1L), GT_Values.NI, GT_Values.NI, GT_Utility.getIntegratedCircuit(1), GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.getDust(Materials.IndiumGalliumPhosphide, 3L * OrePrefixes.dust.mMaterialAmount), (int) (200L * OrePrefixes.dust.mMaterialAmount / 3628800L), 8);
-        GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Brick, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.getDust(Materials.Fireclay, 2L * OrePrefixes.dust.mMaterialAmount), (int) (200L * OrePrefixes.dust.mMaterialAmount / 3628800L), 8);
+//        GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Brick, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.getDust(Materials.Fireclay, 2L * OrePrefixes.dust.mMaterialAmount), (int) (200L * OrePrefixes.dust.mMaterialAmount / 3628800L), 8);
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 4L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Utility.getIntegratedCircuit(1), GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.getDust(Materials.Nichrome, 5L * OrePrefixes.dust.mMaterialAmount), (int) (500L * OrePrefixes.dust.mMaterialAmount / 3628800L), 120);
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 3L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Utility.getIntegratedCircuit(1),GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.getDust(Materials.Osmiridium, 4L * OrePrefixes.dust.mMaterialAmount), (int) (400L * OrePrefixes.dust.mMaterialAmount / 3628800L), 2000);
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Niobium, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Utility.getIntegratedCircuit(1),GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.getDust(Materials.NiobiumTitanium, 2L * OrePrefixes.dust.mMaterialAmount), (int) (200L * OrePrefixes.dust.mMaterialAmount / 3628800L), 2000);
@@ -1043,7 +1043,7 @@ public class GT_MachineRecipeLoader implements Runnable {
             GT_ModHandler.addCompressionRecipe(GT_ModHandler.getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 4), ItemList.IC2_Plantball.get(1));
 
         }
-        GT_ModHandler.addCompressionRecipe(GT_ModHandler.getModItem("miscutils", "blockRainforestOakSapling", 8, 0), ItemList.IC2_Plantball.get(1));
+        //GT_ModHandler.addCompressionRecipe(GT_ModHandler.getModItem("miscutils", "blockRainforestOakSapling", 8, 0), ItemList.IC2_Plantball.get(1));
 
         GT_ModHandler.addCompressionRecipe(ItemList.IC2_Compressed_Coal_Chunk.get(1L), ItemList.IC2_Industrial_Diamond.get(1L));
         GT_ModHandler.addCompressionRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1L), GT_ModHandler.getIC2Item("Uran238", 1L));
@@ -1061,7 +1061,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         //GT_ModHandler.addCompressionRecipe(new ItemStack(Items.wheat, 9, 0), new ItemStack(Blocks.hay_block, 1, 0));
         GT_ModHandler.addCompressionRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 4L), new ItemStack(Blocks.glowstone, 1));
 
-        GT_Values.RA.addCompressorRecipe(Materials.Fireclay.getDust(1), ItemList.CompressedFireclay.get(1), 80, 4);
+        //GT_Values.RA.addCompressorRecipe(Materials.Fireclay.getDust(1), ItemList.CompressedFireclay.get(1), 80, 4);
         GameRegistry.addSmelting(ItemList.CompressedFireclay.get(1), ItemList.Firebrick.get(1), 0);
 
         GT_ModHandler.removeFurnaceSmelting(GT_OreDictUnificator.get(OrePrefixes.ore, Materials.Graphite, 1L));
@@ -1086,11 +1086,11 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_ModHandler.addPulverisationRecipe(ItemList.CompressedFireclay.get(1), Materials.Fireclay.getDustSmall(1));
         GT_ModHandler.addPulverisationRecipe(ItemList.Firebrick.get(1), Materials.Brick.getDust(1));
         GT_ModHandler.addPulverisationRecipe(ItemList.Casing_Firebricks.get(1), Materials.Brick.getDust(4));
-        GT_ModHandler.addPulverisationRecipe(ItemList.Machine_Bricked_BlastFurnace.get(1), Materials.Brick.getDust(8), Materials.Iron.getDust(1), true);
+        GT_ModHandler.addPulverisationRecipe(ItemList.Machine_Bricked_BlastFurnace.get(1), Materials.Fireclay.getDust(20), Materials.Iron.getDust(24), true);
         GT_Values.RA.addPulveriserRecipe(ItemList.Conveyor_Module_LV.get(1), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Rubber, 5L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 4L),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 2L)}, null, 1328, 4);
 
         GT_Values.RA.addSifterRecipe(new ItemStack(Blocks.gravel, 1, 0), new ItemStack[] {new ItemStack(Items.flint, 1, 0), new ItemStack(Items.flint, 1, 0), new ItemStack(Items.flint, 1, 0), new ItemStack(Items.flint, 1, 0), new ItemStack(Items.flint, 1, 0), new ItemStack(Items.flint, 1, 0)}, new int[] {10000, 9000, 8000, 6000, 3300, 2500}, 600, 16);
-        GT_Values.RA.addSifterRecipe(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Coal, 1L), new ItemStack[]{new ItemStack(Items.coal, 1, 0), new ItemStack(Items.coal, 1, 0), new ItemStack(Items.coal, 1, 0), new ItemStack(Items.coal, 1, 0), new ItemStack(Items.coal, 1, 0), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L)}, new int[]{10000, 9000, 8000, 7000, 6000, 5000}, 600, 16);
+        GT_Values.RA.addSifterRecipe(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Coal, 1L), new ItemStack[]{new ItemStack(Items.coal, 1, 0), new ItemStack(Items.coal, 1, 0), new ItemStack(Items.coal, 1, 0), new ItemStack(Items.coal, 1, 0), new ItemStack(Items.coal, 1, 0), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L)}, new int[]{10000, 9000, 8000, 7000, 6000, 250}, 360, 16);
 
         GT_Values.RA.addForgeHammerRecipe(new ItemStack(Blocks.stonebrick, 1, 0), new ItemStack(Blocks.stonebrick, 1, 2), 10, 16);
         GT_Values.RA.addForgeHammerRecipe(new ItemStack(Blocks.stone, 1, 0), new ItemStack(Blocks.cobblestone, 1, 0), 10, 16);
@@ -1105,7 +1105,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addForgeHammerRecipe(new ItemStack(Blocks.glass, 1, 32767), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 1L), 10, 10);
         GT_Values.RA.addForgeHammerRecipe(new ItemStack(Blocks.stained_glass_pane, 1, 32767), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L), 10, 16);
         GT_Values.RA.addForgeHammerRecipe(new ItemStack(Blocks.glass_pane, 1, 32767), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L), 10, 16);
-        GT_Values.RA.addForgeHammerRecipe(Materials.Brick.getIngots(1), Materials.Brick.getDustSmall(1), 10, 16);
+        //GT_Values.RA.addForgeHammerRecipe(Materials.Brick.getIngots(1), Materials.Brick.getDustSmall(1), 10, 16);
         GT_Values.RA.addForgeHammerRecipe(ItemList.Firebrick.get(1), Materials.Brick.getDust(1), 10, 16);
         GT_Values.RA.addForgeHammerRecipe(ItemList.Casing_Firebricks.get(1), ItemList.Firebrick.get(3), 10, 16);
         
@@ -1549,21 +1549,21 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1L), ItemList.IC2_Resin.get(1L), new ItemStack(Blocks.torch, 6), 400, 1);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 8L), new ItemStack(Items.flint, 1), ItemList.IC2_Compressed_Coal_Ball.get(1L), 400, 4);
 
-        if(Loader.isModLoaded("IC2NuclearControl")) {//Card recycling recipes
-            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemVanillaMachineCard", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 2L), 200, 30);
-            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemInventoryScannerCard", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 2L), 200, 30);
-            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemEnergySensorLocationCard", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 2L), 200, 30);
-            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "RFSensorCard", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 2L), 200, 30);
-            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 1L), 200, 30);//counter
-            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 1), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 1L), 200, 30);//liquid
-            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 2), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 2L), 200, 30);//generator
-            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemLiquidArrayLocationCard", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 2L), 200, 30);//2-6 liquid
-            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemEnergyArrayLocationCard", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 2L), 200, 30);//2-6 energy
-            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemSensorLocationCard", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2L), 200, 30);//non-fluid nuke
-            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "Item55ReactorCard", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2L), 200, 30);
-            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "CardAppeng", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 2L), 200, 30);
-            GT_Values.RA.addAssemblerRecipe(ItemList.NC_SensorCard.get(1L), GT_Utility.getIntegratedCircuit(1), GT_ModHandler.getIC2Item("electronicCircuit", 3L), 200, 30);
-        }
+//        if(Loader.isModLoaded("IC2NuclearControl")) {//Card recycling recipes
+//            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemVanillaMachineCard", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 2L), 200, 30);
+//            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemInventoryScannerCard", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 2L), 200, 30);
+//            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemEnergySensorLocationCard", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 2L), 200, 30);
+//            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "RFSensorCard", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 2L), 200, 30);
+//            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 1L), 200, 30);//counter
+//            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 1), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 1L), 200, 30);//liquid
+//            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 2), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 2L), 200, 30);//generator
+//            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemLiquidArrayLocationCard", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 2L), 200, 30);//2-6 liquid
+//            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemEnergyArrayLocationCard", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 2L), 200, 30);//2-6 energy
+//            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemSensorLocationCard", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2L), 200, 30);//non-fluid nuke
+//            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "Item55ReactorCard", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2L), 200, 30);
+//            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "CardAppeng", 1L, 0), GT_Utility.getIntegratedCircuit(1),  GT_ModHandler.getIC2Item("electronicCircuit", 2L), 200, 30);
+//            GT_Values.RA.addAssemblerRecipe(ItemList.NC_SensorCard.get(1L), GT_Utility.getIntegratedCircuit(1), GT_ModHandler.getIC2Item("electronicCircuit", 3L), 200, 30);
+//        }
 
         if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
             GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("tinCableItem", 1L), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 1L), GT_ModHandler.getIC2Item("insulatedTinCableItem", 1L), 100, 2);

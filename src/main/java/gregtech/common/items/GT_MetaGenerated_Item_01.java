@@ -89,7 +89,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Credit_Greg_Naquadah.set(addItem(tLastID = 6, "Naquadah GT Credit", "32768 Credits"));
         ItemList.Credit_Greg_Neutronium.set(addItem(tLastID = 7, "Neutronium GT Credit", "262144 Credits"));
         ItemList.Coin_Gold_Ancient.set(addItem(tLastID = 8, "Ancient Gold Coin", "Found in ancient Ruins", new ItemData(Materials.Gold, 907200L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 8L)));
-        ItemList.Coin_Doge.set(addItem(tLastID = 9, "Doge Coin", "wow much coin how money so crypto plz mine v rich very currency wow", new ItemData(Materials.Brass, 907200L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)));
+        ItemList.Coin_Doge.set(addItem(tLastID = 9, "Doge Coin", "wow such value!!! Can be traded in the quest shop.", new ItemData(Materials.Brass, 907200L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)));
         ItemList.Coin_Chocolate.set(addItem(tLastID = 10, "Chocolate Coin", "Wrapped in Gold", new ItemData(Materials.Gold, OrePrefixes.foil.mMaterialAmount), new GT_FoodStat(1, 0.1F, EnumAction.eat, GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gold, 1L), true, false, false, Potion.moveSpeed.id, 200, 1, 100)));
         ItemList.Credit_Copper.set(addItem(tLastID = 11, "Industrial Copper Credit", "0.125 Credits"));
 
@@ -134,7 +134,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GT_ModHandler.addCraftingRecipe(ItemList.Component_Minecart_Wheels_Iron.get(1L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{" h ", "RSR", " w ", 'R', OrePrefixes.ring.get(Materials.AnyIron), 'S', OrePrefixes.stick.get(Materials.AnyIron)});
         GT_ModHandler.addCraftingRecipe(ItemList.Component_Minecart_Wheels_Steel.get(1L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{" h ", "RSR", " w ", 'R', OrePrefixes.ring.get(Materials.Steel), 'S', OrePrefixes.stick.get(Materials.Steel)});
 
-        ItemList.CompressedFireclay.set(addItem(tLastID = 110, "Compressed Fireclay", "Brick-shaped"));
+        ItemList.CompressedFireclay.set(addItem(tLastID = 110, "Unfired Firebrick", "A lump of damp material."));
         ItemList.Firebrick.set(addItem(tLastID = 111, "Firebrick", "Heat resistant"));
 
         ItemList.Arrow_Head_Glass_Emtpy.set(addItem(tLastID = 200, "Empty Glass Arrow Head", "Fill with Potions before use", new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)));
@@ -228,7 +228,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Shape_Extruder_Bolt.set(addItem(tLastID = 352, "Extruder Shape (Bolt)", "Extruder Shape for making Bolts"));
         ItemList.Shape_Extruder_Ring.set(addItem(tLastID = 353, "Extruder Shape (Ring)", "Extruder Shape for making Rings"));
         ItemList.Shape_Extruder_Cell.set(addItem(tLastID = 354, "Extruder Shape (Cell)", "Extruder Shape for making Cells"));
-        ItemList.Shape_Extruder_Ingot.set(addItem(tLastID = 355, "Extruder Shape (Ingot)", "Extruder Shape for, wait, can't we just use a Furnace?"));
+        ItemList.Shape_Extruder_Ingot.set(addItem(tLastID = 355, "Extruder Shape (Ingot)", "Extruder Shape for making Ingots"));
         ItemList.Shape_Extruder_Wire.set(addItem(tLastID = 356, "Extruder Shape (Wire)", "Extruder Shape for making Wires"));
         ItemList.Shape_Extruder_Casing.set(addItem(tLastID = 357, "Extruder Shape (Casing)", "Extruder Shape for making Item Casings"));
         ItemList.Shape_Extruder_Pipe_Tiny.set(addItem(tLastID = 358, "Extruder Shape (Tiny Pipe)", "Extruder Shape for making tiny Pipes"));
@@ -747,6 +747,22 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Circuit_Elite.set(addItem(tLastID = 705, "Mainframe", "An Elite Circuit", OrePrefixes.circuit.get(Materials.Elite), SubTag.NO_UNIFICATION));
         ItemList.Circuit_Master.set(addItem(tLastID = 706, "Nanoprocessor Mainframe", "A Master Circuit", OrePrefixes.circuit.get(Materials.Master), SubTag.NO_UNIFICATION));
         ItemList.Tool_DataOrb.set(addItem(tLastID = 707, "Data Orb", "A High Capacity Data Storage", SubTag.NO_UNIFICATION, new Behaviour_DataOrb()));
+
+//        ItemList.LV_PWR.set(addItem(tLastID = 414, "LV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_LV), SubTag.NO_UNIFICATION));
+//        ItemList.MV_PWR.set(addItem(tLastID = 415, "MV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_MV), SubTag.NO_UNIFICATION));
+//        ItemList.HV_PWR.set(addItem(tLastID = 416, "HV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_HV), SubTag.NO_UNIFICATION));
+//        ItemList.EV_PWR.set(addItem(tLastID = 417, "EV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_EV), SubTag.NO_UNIFICATION));
+//        ItemList.IV_PWR.set(addItem(tLastID = 418, "IV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_IV), SubTag.NO_UNIFICATION));
+//        ItemList.LUV_PWR.set(addItem(tLastID = 419, "LuV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_LUV), SubTag.NO_UNIFICATION));
+//        ItemList.UV_PWR.set(addItem(tLastID = 420, "UV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_UV), SubTag.NO_UNIFICATION));
+//        ItemList.UHV_PWR.set(addItem(tLastID = 421, "UHV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_UHV), SubTag.NO_UNIFICATION));
+//        ItemList.UEV_PWR.set(addItem(tLastID = 422, "UEV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_UEV), SubTag.NO_UNIFICATION));
+//        ItemList.UIV_PWR.set(addItem(tLastID = 423, "UIV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_UIV), SubTag.NO_UNIFICATION));
+//        ItemList.UMV_PWR.set(addItem(tLastID = 424, "UMV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_UMV), SubTag.NO_UNIFICATION));
+//        ItemList.UXV_PWR.set(addItem(tLastID = 425, "UXV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_UXV), SubTag.NO_UNIFICATION));
+//        ItemList.OPV_PWR.set(addItem(tLastID = 426, "OPV HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_OPV), SubTag.NO_UNIFICATION));
+//        ItemList.MAX_PWR.set(addItem(tLastID = 427, "MAX HTX PWR Circuit", "Circuit or material for HTX use", OrePrefixes.pwrcircuit.get(Materials.PWR_MAX), SubTag.NO_UNIFICATION));
+
         //ItemList.Circuit_Ultimate.set(ItemList.Tool_DataOrb.get(1L, new Object[0]));
         GT_ModHandler.addShapelessCraftingRecipe(ItemList.Tool_DataOrb.get(1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ItemList.Tool_DataOrb.get(1L)});
         ItemList.Tool_DataStick.set(addItem(tLastID = 708, "Data Stick", "A Low Capacity Data Storage", SubTag.NO_UNIFICATION, new Behaviour_DataStick()));

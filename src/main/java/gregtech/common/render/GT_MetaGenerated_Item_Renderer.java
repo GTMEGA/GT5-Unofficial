@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -20,6 +21,7 @@ import org.lwjgl.opengl.GL11;
 import javax.annotation.Nullable;
 
 import static gregtech.api.enums.ItemList.*;
+import static net.minecraft.client.Minecraft.getMinecraft;
 
 public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
     public GT_MetaGenerated_Item_Renderer() {
@@ -79,7 +81,7 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
                 tOverlay = aIcon.getOverlayIcon();
             }
             if (tIcon == null) {
-                return;
+                tIcon = getNullTexture();
             }
             FluidStack tFluid = GT_Utility.getFluidForFilledItem(aStack, true);
             if (tOverlay != null && tFluid != null && tFluid.getFluid() != null) {
@@ -144,6 +146,10 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
                 tIcon = aItem.mIconList[(aMetaData - aItem.mOffset)][0];
             }
 
+            if (tIcon == null) {
+                tIcon = getNullTexture();
+            }
+
             ItemList largeFluidCell = getLargeFluidCell(aStack);
             if (largeFluidCell != null) {
                 renderLargeFluidCellExtraParts(type, largeFluidCell, aStack);
@@ -158,6 +164,13 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
             }
         }
         GL11.glDisable(GL11.GL_BLEND);
+    }
+
+    private static TextureAtlasSprite getNullTexture() {
+        return ((TextureMap) getMinecraft()
+                .getTextureManager()
+                .getTexture(TextureMap.locationItemsTexture))
+                .getAtlasSprite("missingno");
     }
 
     @Nullable

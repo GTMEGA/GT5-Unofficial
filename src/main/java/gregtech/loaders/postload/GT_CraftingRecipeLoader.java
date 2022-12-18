@@ -699,7 +699,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
             GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GraviSuite", "advJetpack", 1, GT_Values.W), bits_no_remove_buffered, new Object[]{"CJC", "EXE", "YZY", 'C', OrePrefixes.plateAlloy.get(Materials.Carbon), 'J',  GT_ModHandler.getModItem("IC2", "itemArmorJetpackElectric", 1, GT_Values.W), 'E', OrePrefixes.plate.get(Materials.Titanium), 'X', GT_ModHandler.getModItem("IC2", "itemArmorAlloyChestplate", 1L), 'Z', OrePrefixes.circuit.get(Materials.Data),  'Y', OrePrefixes.wireGt02.get(Materials.Platinum)});
         }
 
-        GT_ModHandler.addShapelessCraftingRecipe(Materials.Fireclay.getDust(2), new Object[]{Materials.Brick.getDust(1), Materials.Clay.getDust(1)});
+        //GT_ModHandler.addShapelessCraftingRecipe(Materials.Fireclay.getDust(2), new Object[]{Materials.Brick.getDust(1), Materials.Clay.getDust(1)});
         GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ball.get(0), new FluidStack(FluidRegistry.getFluid("molten.borosilicateglass"), 144), ItemList.VOLUMETRIC_FLASK.get(1), 44, 24);
         if (Loader.isModLoaded("bartworks")) {
             GT_ModHandler.addCraftingRecipe(ItemList.Casing_Advanced_Rhodium_Palladium.get(1L), bits, new Object[]{"PhP", "PFP", aTextPlateWrench, 'P', GT_ModHandler.getModItem("bartworks", "gt.bwMetaGeneratedplate", 1L, 88), 'F', OrePrefixes.frameGt.get(Materials.Chrome)});
