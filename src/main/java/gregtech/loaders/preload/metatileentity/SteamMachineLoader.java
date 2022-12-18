@@ -12,12 +12,12 @@ import static gregtech.api.enums.OreDictNames.*;
 import static gregtech.api.enums.OrePrefixes.*;
 import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.loaders.preload.metatileentity.MetaTileEntityLoader.RECIPE_MASK;
+import static gregtech.loaders.preload.GT_Loader_MetaTileEntities.RECIPE_MASK;
 
 public final class SteamMachineLoader {
     private static boolean LOADED = false;
 
-    static void load() {
+    public static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
         Machine_Bronze_Boiler.set(new GT_MetaTileEntity_Boiler_Bronze(100, "boiler.bronze", "Small Coal Boiler").getStackForm(1L));

@@ -9,12 +9,12 @@ import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.OrePrefixes.circuit;
 import static gregtech.api.enums.OrePrefixes.pipeLarge;
 import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
-import static gregtech.loaders.preload.metatileentity.MetaTileEntityLoader.DISMANTLEABLE_RECIPE_MASK;
+import static gregtech.loaders.preload.GT_Loader_MetaTileEntities.DISMANTLEABLE_RECIPE_MASK;
 
 public final class FluidStuffLoader {
     private static boolean LOADED = false;
 
-    static void load() {
+    public static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
         Quantum_Tank_LV.set(new GT_MetaTileEntity_QuantumTank(120, "quantum.tank.tier.06", "Quantum Tank I", 6).getStackForm(1L));

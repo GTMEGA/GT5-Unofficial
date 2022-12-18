@@ -9,14 +9,14 @@ import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.OrePrefixes.*;
 import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
 import static gregtech.api.util.GT_ModHandler.addShapelessCraftingRecipe;
-import static gregtech.loaders.preload.metatileentity.MetaTileEntityLoader.RECIPE_MASK;
+import static gregtech.loaders.preload.GT_Loader_MetaTileEntities.RECIPE_MASK;
 import static net.minecraft.init.Blocks.brick_block;
 import static net.minecraft.init.Blocks.iron_bars;
 
 public final class CasingRecipeLoader {
     private static boolean LOADED = false;
 
-    static void load() {
+    public static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
         addCraftingRecipe(Casing_ULV.getOne(), RECIPE_MASK, new Object[]{"PPP", "PwP", "PPP", 'P', plate.get(Tin)});
