@@ -23,7 +23,7 @@ public final class CableLoader {
 
     private static boolean LOADED = false;
 
-    static void load() {
+    public static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
         val extraLoss = !GT_Mod.gregtechproxy.mHardcoreCables;

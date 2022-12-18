@@ -15,7 +15,7 @@ import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
 public final class ItemStuffLoader {
     private static boolean LOADED = false;
 
-    static void load() {
+    public static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
         Super_Chest_LV.set(new GT_MetaTileEntity_SuperChest(135, "super.chest.tier.01", "Super Chest I", 1).getStackForm(1L));

@@ -1,10 +1,25 @@
-package gregtech.loaders.preload.metatileentity;
+package gregtech.loaders.preload;
 
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
 import gregtech.api.util.GT_Log;
 import gregtech.common.tileentities.machines.basic.*;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineFluid;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineItem;
+import gregtech.loaders.preload.metatileentity.BasicGeneratorLoader;
+import gregtech.loaders.preload.metatileentity.BasicMachineLoader;
+import gregtech.loaders.preload.metatileentity.CableLoader;
+import gregtech.loaders.preload.metatileentity.CasingRecipeLoader;
+import gregtech.loaders.preload.metatileentity.FluidPipeLoader;
+import gregtech.loaders.preload.metatileentity.FluidStuffLoader;
+import gregtech.loaders.preload.metatileentity.HatchLoader;
+import gregtech.loaders.preload.metatileentity.HullLoader;
+import gregtech.loaders.preload.metatileentity.ItemPipeLoader;
+import gregtech.loaders.preload.metatileentity.ItemStuffLoader;
+import gregtech.loaders.preload.metatileentity.MultiblockMachineLoader;
+import gregtech.loaders.preload.metatileentity.PowerStuffLoader;
+import gregtech.loaders.preload.metatileentity.SteamMachineLoader;
+
+import net.minecraft.util.EnumChatFormatting;
 
 import static gregtech.api.GregTech_API.sGeneratedMaterials;
 import static gregtech.api.enums.ItemList.*;
@@ -13,11 +28,19 @@ import static gregtech.api.enums.OrePrefixes.*;
 import static gregtech.api.util.GT_LanguageManager.i18nPlaceholder;
 import static gregtech.api.util.GT_ModHandler.*;
 
-public final class MetaTileEntityLoader implements Runnable {
+//TODO move this back after we fix coremod
+public final class GT_Loader_MetaTileEntities implements Runnable {
     //TODO CHECK CIRCUIT RECIPES AND USAGES
     public static final long RECIPE_MASK = RecipeBits.NOT_REMOVABLE | RecipeBits.REVERSIBLE | RecipeBits.BUFFERED;
     public static final long DISMANTLEABLE_RECIPE_MASK = RecipeBits.DISMANTLEABLE | RECIPE_MASK; //TODO: Remove Any Dismantleable stuff
 
+    //TODO remove this after we fix coremod
+    public static final String imagination = EnumChatFormatting.RESET + "You just need "
+                                             + EnumChatFormatting.DARK_PURPLE + "I" + EnumChatFormatting.LIGHT_PURPLE + "m" + EnumChatFormatting.DARK_RED
+                                             + "a" + EnumChatFormatting.RED + "g" + EnumChatFormatting.YELLOW + "i" + EnumChatFormatting.GREEN + "n"
+                                             + EnumChatFormatting.AQUA + "a" + EnumChatFormatting.DARK_AQUA + "t" + EnumChatFormatting.BLUE + "i"
+                                             + EnumChatFormatting.DARK_BLUE + "o" + EnumChatFormatting.DARK_PURPLE + "n" + EnumChatFormatting.RESET
+                                             + " to use this.";
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: Registering MetaTileEntities.");

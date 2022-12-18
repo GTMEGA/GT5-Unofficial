@@ -15,12 +15,12 @@ import static gregtech.api.enums.OreDictNames.craftingChest;
 import static gregtech.api.enums.OrePrefixes.*;
 import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
 import static gregtech.api.util.GT_ModHandler.getIC2Item;
-import static gregtech.loaders.preload.metatileentity.MetaTileEntityLoader.DISMANTLEABLE_RECIPE_MASK;
+import static gregtech.loaders.preload.GT_Loader_MetaTileEntities.DISMANTLEABLE_RECIPE_MASK;
 
 public final class PowerStuffLoader {
     private static boolean LOADED = false;
 
-    static void load() {
+    public static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
         Transformer_LV_ULV.set(new GT_MetaTileEntity_Transformer(20, "transformer.tier.00", "ULV Transformer", 0, "LV -> ULV (Use Soft Mallet to invert)").getStackForm(1L));

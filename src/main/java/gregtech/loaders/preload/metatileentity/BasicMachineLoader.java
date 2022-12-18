@@ -14,12 +14,12 @@ import static gregtech.api.enums.OrePrefixes.*;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.X.*;
 import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.*;
-import static gregtech.loaders.preload.metatileentity.MetaTileEntityLoader.DISMANTLEABLE_RECIPE_MASK;
+import static gregtech.loaders.preload.GT_Loader_MetaTileEntities.DISMANTLEABLE_RECIPE_MASK;
 
 public final class BasicMachineLoader {
     private static boolean LOADED = false;
 
-    static void load() {
+    public static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
         Machine_LV_AlloySmelter.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(201, "basicmachine.alloysmelter.tier.01", "Basic Alloy Smelter", 1, "HighTech combination Smelter", sAlloySmelterRecipes, 2, 1, 0, 0, 1, "AlloySmelter.png", sSoundList.get(Integer.valueOf(208)), false, false, 0, "ALLOY_SMELTER", new Object[]{"ECE", "CMC", "WCW", 'M', HULL, 'E', CIRCUIT, 'W', WIRE, 'C', COIL_HEATING_DOUBLE}).getStackForm(1L));

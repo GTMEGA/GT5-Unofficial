@@ -11,7 +11,7 @@ import static gregtech.api.util.GT_OreDictUnificator.registerOre;
 public final class ItemPipeLoader {
     private static boolean LOADED = false;
 
-    static void load() {
+    public static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
         generateItemPipes(Brass, Brass.mName, 5602, 1);
