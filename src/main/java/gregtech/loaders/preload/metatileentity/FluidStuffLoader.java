@@ -6,8 +6,7 @@ import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperTank;
 
 import static gregtech.api.enums.ItemList.*;
 import static gregtech.api.enums.Materials.*;
-import static gregtech.api.enums.OrePrefixes.circuit;
-import static gregtech.api.enums.OrePrefixes.pipeLarge;
+import static gregtech.api.enums.OrePrefixes.*;
 import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
 import static gregtech.loaders.preload.GT_Loader_MetaTileEntities.DISMANTLEABLE_RECIPE_MASK;
 
@@ -34,11 +33,11 @@ public final class FluidStuffLoader {
         Pump_HV.set(new GT_MetaTileEntity_Pump(1142, "basicmachine.pump.tier.03", "Advanced Pump II", 3).getStackForm(1L));
         Pump_EV.set(new GT_MetaTileEntity_Pump(1143, "basicmachine.pump.tier.04", "Advanced Pump III", 4).getStackForm(1L));
         Pump_IV.set(new GT_MetaTileEntity_Pump(1144, "basicmachine.pump.tier.05", "Advanced Pump IV", 5).getStackForm(1L));
-        addCraftingRecipe(Pump_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "PMP", "BPB", 'M', Hull_LV, 'B', pipeLarge.get(Bronze), 'C', circuit.get(Basic), 'P', Electric_Pump_LV});
-        addCraftingRecipe(Pump_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "PMP", "BPB", 'M', Hull_MV, 'B', pipeLarge.get(Steel), 'C', circuit.get(Good), 'P', Electric_Pump_MV});
-        addCraftingRecipe(Pump_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "PMP", "BPB", 'M', Hull_HV, 'B', pipeLarge.get(StainlessSteel), 'C', circuit.get(Advanced), 'P', Electric_Pump_HV});
-        addCraftingRecipe(Pump_EV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "PMP", "BPB", 'M', Hull_EV, 'B', pipeLarge.get(Titanium), 'C', circuit.get(Data), 'P', Electric_Pump_EV});
-        addCraftingRecipe(Pump_IV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "PMP", "BPB", 'M', Hull_IV, 'B', pipeLarge.get(TungstenSteel), 'C', circuit.get(Elite), 'P', Electric_Pump_IV});
+        addCraftingRecipe(Pump_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "PMP", "BPB", 'M', Hull_LV, 'B', pipeLarge.get(Bronze), 'C', pwrcircuit.get(PWR_LV), 'P', Electric_Pump_LV});
+        addCraftingRecipe(Pump_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "PMP", "BPB", 'M', Hull_MV, 'B', pipeLarge.get(Steel), 'C', pwrcircuit.get(PWR_MV), 'P', Electric_Pump_MV});
+        addCraftingRecipe(Pump_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "PMP", "BPB", 'M', Hull_HV, 'B', pipeLarge.get(StainlessSteel), 'C', pwrcircuit.get(PWR_HV), 'P', Electric_Pump_HV});
+        addCraftingRecipe(Pump_EV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "PMP", "BPB", 'M', Hull_EV, 'B', pipeLarge.get(Titanium), 'C', pwrcircuit.get(PWR_EV), 'P', Electric_Pump_EV});
+        addCraftingRecipe(Pump_IV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "PMP", "BPB", 'M', Hull_IV, 'B', pipeLarge.get(TungstenSteel), 'C', pwrcircuit.get(PWR_IV), 'P', Electric_Pump_IV});
         LOADED = true;
     }
 }

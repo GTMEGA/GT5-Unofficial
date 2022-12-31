@@ -19,7 +19,7 @@ import static gregtech.api.util.GT_ModHandler.removeRecipeByOutput;
 import static gregtech.loaders.preload.GT_Loader_MetaTileEntities.RECIPE_MASK;
 
 public final class HullLoader {
-    private static final String IMAGINATION = EnumChatFormatting.RESET + "Can be used with covers and to make machines.";
+    private static final String IMAGINATION = EnumChatFormatting.RESET + "Can be used with covers and also used to make machines.";
 
     private static boolean LOADED = false;
 
