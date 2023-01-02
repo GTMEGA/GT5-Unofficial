@@ -161,7 +161,7 @@ public class GT_MetaTileEntity_Boiler_Semi extends GT_MetaTileEntity_Boiler {
 
     protected boolean isValidFluid(FluidStack fluid) {
         loadFuelCache();
-        return fluid.getFluid().equals(creosent) || fluid.getFluid().equals(oil);
+        return fluid != null && (fluid.getFluid().equals(creosent) || fluid.getFluid().equals(oil));
     }
 
     @Override
