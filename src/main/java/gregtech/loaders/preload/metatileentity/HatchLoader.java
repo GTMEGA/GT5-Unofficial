@@ -121,7 +121,7 @@ public final class HatchLoader {
         Hatch_Muffler_UV.set(new GT_MetaTileEntity_Hatch_Muffler(98, "hatch.muffler.tier.08", "UV Muffler Hatch", 8).getStackForm(1L));
         Hatch_Muffler_MAX.set(new GT_MetaTileEntity_Hatch_Muffler(99, "hatch.muffler.tier.09", "UHV Muffler Hatch", 9).getStackForm(1L));
 
-        addCraftingRecipe(Hatch_Muffler_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"MX ", "PR ", 'M', Hull_LV, 'P', pipeMedium.get(Bronze), 'R', rotor.get(Brass), 'X', Electric_Motor_LV});
+        addCraftingRecipe(Hatch_Muffler_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"MX ", "PR ", 'M', Hull_LV, 'P', pipeMedium.get(Brass), 'R', rotor.get(Brass), 'X', Electric_Motor_LV});
         addCraftingRecipe(Hatch_Muffler_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"MX ", "PR ", 'M', Hull_MV, 'P', pipeMedium.get(Steel), 'R', rotor.get(Steel), 'X', Electric_Motor_MV});
 
         LOADED = true;
