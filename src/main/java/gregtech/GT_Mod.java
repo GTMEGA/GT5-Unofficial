@@ -877,7 +877,7 @@ public class GT_Mod implements IGT_Mod {
             Items.diamond_axe.setMaxDamage(768);
             Items.diamond_hoe.setMaxDamage(768);
         }
-        new GT_ExtremeDieselFuelLoader().run();
+
         
         
         /* 

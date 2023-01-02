@@ -67,13 +67,13 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Processing Array")
-                .addInfo("Runs supplied machines as if placed in the world")
-                .addInfo("Place up to 64 singleblock GT machines into the controller")
-                .addInfo("Note that you still need to supply power to them all")
-                .addInfo("Use a screwdriver to enable separate input busses")
-                .addInfo("Maximal overclockedness of machines inside: Tier 9")
-                .addInfo("Doesn't work on certain machines, deal with it")
-                .addInfo("Use it if you hate GT++, or want even more speed later on")
+                .addInfo("Runs supplied machines in parallel as if placed in the world")
+                .addInfo("Place up to 16 single-block GT machines into the controller")
+                .addInfo("You need power equal to all of the machines placed inside.")
+                .addInfo("Use a screwdriver to enable separate input hatches")
+                .addInfo("Maximal overclocking of machines inside: Tier 9")
+                .addInfo("Only certain machines can be used. Most chemical only machines")
+                .addInfo("are not allowed.")
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3, true)
                 .addController("Front center")
@@ -231,7 +231,7 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
         this.mEUt = 0;
         this.mOutputItems = null;
         this.mOutputFluids = null;
-        int machines = Math.min(64, mInventory[1].stackSize << mMult); //Upped max Cap to 64
+        int machines = Math.min(16, mInventory[1].stackSize << mMult); //Upped max Cap to 64 (Reverted max cap to 16)
         int i = 0;
         for (; i < machines; i++) {
             if (!tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {

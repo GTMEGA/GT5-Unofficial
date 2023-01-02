@@ -32,40 +32,40 @@ public final class MultiblockMachineLoader {
         Machine_Multi_ImplosionCompressor.set(new GT_MetaTileEntity_ImplosionCompressor(1001, "multimachine.implosioncompressor", "Implosion Compressor").getStackForm(1L));
         Machine_Multi_VacuumFreezer.set(new GT_MetaTileEntity_VacuumFreezer(1002, "multimachine.vacuumfreezer", "Vacuum Freezer").getStackForm(1L));
         Machine_Multi_Furnace.set(new GT_MetaTileEntity_MultiFurnace(1003, "multimachine.multifurnace", "Multi Smelter").getStackForm(1L));
-        addCraftingRecipe(Machine_Multi_BlastFurnace.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"FFF", "CMC", "WCW", 'M', Casing_HeatProof, 'F', craftingIronFurnace, 'C', circuit.get(Basic), 'W', cableGt01.get(Tin)});
-        addCraftingRecipe(Machine_Multi_VacuumFreezer.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PPP", "CMC", "WCW", 'M', Casing_FrostProof, 'P', Electric_Pump_HV, 'C', circuit.get(Data), 'W', cableGt01.get(Gold)});
-        addCraftingRecipe(Machine_Multi_ImplosionCompressor.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"OOO", "CMC", "WCW", 'M', Casing_SolidSteel, 'O', reinforcedStone, 'C', circuit.get(Advanced), 'W', cableGt01.get(Gold)});
-        addCraftingRecipe(Machine_Multi_Furnace.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"FFF", "CMC", "WCW", 'M', Casing_HeatProof, 'F', craftingIronFurnace, 'C', circuit.get(Advanced), 'W', cableGt01.get(AnnealedCopper)});
+        addCraftingRecipe(Machine_Multi_BlastFurnace.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"FFF", "YMY", "WCW", 'M', Casing_HeatProof, 'F', craftingIronFurnace, 'C', circuitLogic.get(LOGIC_LV), 'Y', circuitPower.get(PWR_LV), 'W', cableGt01.get(Tin)});
+        addCraftingRecipe(Machine_Multi_VacuumFreezer.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PPP", "CMC", "WCW", 'M', Casing_FrostProof, 'P', Electric_Pump_HV, 'C', circuitPower.get(PWR_EV), 'W', cableGt01.get(Gold)});
+        addCraftingRecipe(Machine_Multi_ImplosionCompressor.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"OOO", "CMC", "WCW", 'M', Casing_SolidSteel, 'O', reinforcedStone, 'C', circuitLogic.get(LOGIC_HV), 'W', cableGt01.get(Gold)});
+        addCraftingRecipe(Machine_Multi_Furnace.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"FFF", "CMC", "WCW", 'M', Casing_HeatProof, 'F', craftingIronFurnace, 'C', circuitPower.get(PWR_MV), 'W', cableGt01.get(AnnealedCopper)});
 
         Machine_Multi_LargeBoiler_Bronze.set(new GT_MetaTileEntity_LargeBoiler_Bronze(1020, "multimachine.boiler.bronze", "Large Bronze Boiler").getStackForm(1L));
         Machine_Multi_LargeBoiler_Steel.set(new GT_MetaTileEntity_LargeBoiler_Steel(1021, "multimachine.boiler.steel", "Large Steel Boiler").getStackForm(1L));
         Machine_Multi_LargeBoiler_Titanium.set(new GT_MetaTileEntity_LargeBoiler_Titanium(1022, "multimachine.boiler.titanium", "Large Titanium Boiler").getStackForm(1L));
         Machine_Multi_LargeBoiler_TungstenSteel.set(new GT_MetaTileEntity_LargeBoiler_TungstenSteel(1023, "multimachine.boiler.tungstensteel", "Large Tungstensteel Boiler").getStackForm(1L));
-        addCraftingRecipe(Machine_Multi_LargeBoiler_Bronze.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Firebox_Bronze, 'C', circuit.get(Good), 'W', cableGt01.get(Tin)});
-        addCraftingRecipe(Machine_Multi_LargeBoiler_Steel.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Firebox_Steel, 'C', circuit.get(Advanced), 'W', cableGt01.get(AnyCopper)});
-        addCraftingRecipe(Machine_Multi_LargeBoiler_Titanium.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Firebox_Titanium, 'C', circuit.get(Data), 'W', cableGt01.get(Gold)});
-        addCraftingRecipe(Machine_Multi_LargeBoiler_TungstenSteel.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Firebox_TungstenSteel, 'C', circuit.get(Elite), 'W', cableGt01.get(Aluminium)});
+        addCraftingRecipe(Machine_Multi_LargeBoiler_Bronze.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Firebox_Bronze, 'C', circuitPower.get(PWR_MV), 'W', cableGt01.get(Tin)});
+        addCraftingRecipe(Machine_Multi_LargeBoiler_Steel.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Firebox_Steel, 'C', circuitPower.get(PWR_HV), 'W', cableGt01.get(AnyCopper)});
+        addCraftingRecipe(Machine_Multi_LargeBoiler_Titanium.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Firebox_Titanium, 'C', circuitPower.get(PWR_EV), 'W', cableGt01.get(Gold)});
+        addCraftingRecipe(Machine_Multi_LargeBoiler_TungstenSteel.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Firebox_TungstenSteel, 'C', circuitPower.get(PWR_IV), 'W', cableGt01.get(Aluminium)});
 
         FusionComputer_LuV.set(new GT_MetaTileEntity_FusionComputer1(1193, "fusioncomputer.tier.06", "Fusion Control Computer MKI").getStackForm(1L));
         FusionComputer_ZPMV.set(new GT_MetaTileEntity_FusionComputer2(1194, "fusioncomputer.tier.07", "Fusion Control Computer MKII").getStackForm(1L));
         FusionComputer_UV.set(new GT_MetaTileEntity_FusionComputer3(1195, "fusioncomputer.tier.08", "Fusion Control Computer MKIII").getStackForm(1L));
 
-        addCraftingRecipe(Casing_Fusion_Coil.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CTC", 'M', Casing_Coil_Superconductor, 'C', circuit.get(Master), 'F', Field_Generator_MV, 'T', Neutron_Reflector});
+        addCraftingRecipe(Casing_Fusion_Coil.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CTC", 'M', Casing_Coil_Superconductor, 'C', circuitPower.get(PWR_LUV), 'F', Field_Generator_MV, 'T', Neutron_Reflector});
 
         Processing_Array.set(new GT_MetaTileEntity_ProcessingArray(1199, "multimachine.processingarray", "Processing Array").getStackForm(1L));
-        addCraftingRecipe(Processing_Array.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', Hull_EV, 'B', pipeLarge.get(StainlessSteel), 'C', circuit.get(Elite), 'F', Robot_Arm_EV, 'T', Energy_LapotronicOrb});
+        addCraftingRecipe(Processing_Array.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', Hull_EV, 'B', pipeLarge.get(StainlessSteel), 'C', circuitLogic.get(LOGIC_HV), 'F', Robot_Arm_EV, 'T', IC2_LapotronCrystal});
         registerDefaultGregtechMaps();
 
         Distillation_Tower.set(new GT_MetaTileEntity_DistillationTower(1126, "multimachine.distillationtower", "Distillation Tower").getStackForm(1L));
-        addCraftingRecipe(Distillation_Tower.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CBC", "FMF", "CBC", 'M', Hull_HV, 'B', pipeLarge.get(StainlessSteel), 'C', circuit.get(Data), 'F', Electric_Pump_HV});
+        addCraftingRecipe(Distillation_Tower.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CBC", "FMF", "CBC", 'M', Hull_HV, 'B', pipeLarge.get(StainlessSteel), 'C', circuitPower.get(PWR_HV), 'F', Electric_Pump_HV});
 
-        LargeSteamTurbine.set(new GT_MetaTileEntity_LargeTurbine_Steam(1131, "multimachine.largeturbine", "Large Steam Turbine").getStackForm(1L));
-        LargeGasTurbine.set(new GT_MetaTileEntity_LargeTurbine_Gas(1151, "multimachine.largegasturbine", "Large Gas Turbine").getStackForm(1L));
-        LargeHPSteamTurbine.set(new GT_MetaTileEntity_LargeTurbine_HPSteam(1152, "multimachine.largehpturbine", "Large HP Steam Turbine").getStackForm(1L));
-        LargePlasmaTurbine.set(new GT_MetaTileEntity_LargeTurbine_Plasma(1153, "multimachine.largeplasmaturbine", "Large Plasma Generator").getStackForm(1L));
+        LargeSteamTurbine.set(new GT_MetaTileEntity_LargeTurbine_Steam(1131, "multimachine.largeturbine", "Deprecated Steam Turbine").getStackForm(1L));
+        LargeGasTurbine.set(new GT_MetaTileEntity_LargeTurbine_Gas(1151, "multimachine.largegasturbine", "Deprecated Gas Turbine").getStackForm(1L));
+        LargeHPSteamTurbine.set(new GT_MetaTileEntity_LargeTurbine_HPSteam(1152, "multimachine.largehpturbine", "Deprecated HP Steam Turbine").getStackForm(1L));
+        LargePlasmaTurbine.set(new GT_MetaTileEntity_LargeTurbine_Plasma(1153, "multimachine.largeplasmaturbine", "Deprecated Plasma Generator").getStackForm(1L));
 
-        addCraftingRecipe(LargeSteamTurbine.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "PMP", "BPB", 'M', Hull_HV, 'B', pipeLarge.get(Steel), 'C', circuit.get(Advanced), 'P', gearGt.get(Steel)});
-        addCraftingRecipe(LargeGasTurbine.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "PMP", "BPB", 'M', Hull_EV, 'B', pipeLarge.get(StainlessSteel), 'C', circuit.get(Data), 'P', gearGt.get(StainlessSteel)});
+        addCraftingRecipe(LargeSteamTurbine.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "PMP", "BPB", 'M', Hull_HV, 'B', pipeLarge.get(Steel), 'C', circuitPower.get(PWR_MV), 'P', gearGt.get(Steel)});
+        addCraftingRecipe(LargeGasTurbine.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "PMP", "BPB", 'M', Hull_EV, 'B', pipeLarge.get(StainlessSteel), 'C', circuitLogic.get(LOGIC_EV), 'P', gearGt.get(StainlessSteel)});
         //GT_ModHandler.addCraftingRecipe(ItemList.LargeHPSteamTurbine.get(1L), bitsd, new Object[]{"CPC", aTextPlateMotor, "BPB", 'M', ItemList.Hull_IV, 'B', OrePrefixes.pipeLarge.get(Materials.Titanium), 'C', OrePrefixes.circuit.get(Materials.Elite), 'P', OrePrefixes.gearGt.get(Materials.Titanium)});
         //GT_ModHandler.addCraftingRecipe(ItemList.LargePlasmaTurbine.get(1L), bitsd, new Object[]{"CPC", aTextPlateMotor, "BPB", 'M', ItemList.Hull_UV, 'B', OrePrefixes.pipeHuge.get(Materials.TungstenSteel), 'C', OrePrefixes.circuit.get(Materials.Master), 'P', OrePrefixes.gearGt.get(Materials.TungstenSteel)});
 
@@ -81,8 +81,8 @@ public final class MultiblockMachineLoader {
 
         ConcreteBackfiller1.set(new GT_MetaTileEntity_ConcreteBackfiller1(143, "multimachine.concretebackfiller1", "Concrete Backfiller").getStackForm(1));
         ConcreteBackfiller2.set(new GT_MetaTileEntity_ConcreteBackfiller2(144, "multimachine.concretebackfiller3", "Advanced Concrete Backfiller").getStackForm(1));
-        addCraftingRecipe(ConcreteBackfiller1.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WPW", "EME", "CQC", 'M', Hull_MV, 'W', frameGt.get(Steel), 'E', circuit.get(Good), 'C', Electric_Motor_MV, 'P', pipeLarge.get(Steel), 'Q', Electric_Pump_MV});
-        addCraftingRecipe(ConcreteBackfiller2.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WPW", "EME", "CQC", 'M', ConcreteBackfiller1, 'W', frameGt.get(Titanium), 'E', circuit.get(Data), 'C', Electric_Motor_EV, 'P', pipeLarge.get(Steel), 'Q', Electric_Pump_EV});
+        addCraftingRecipe(ConcreteBackfiller1.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WPW", "EME", "CQC", 'M', Hull_LV, 'W', frameGt.get(Steel), 'E', circuitLogic.get(LOGIC_LV), 'C', Electric_Motor_LV, 'P', pipeLarge.get(Steel), 'Q', Electric_Pump_LV});
+        addCraftingRecipe(ConcreteBackfiller2.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WPW", "EME", "CQC", 'M', ConcreteBackfiller1, 'W', frameGt.get(StainlessSteel), 'E', circuitLogic.get(LOGIC_HV), 'C', Electric_Motor_HV, 'P', pipeLarge.get(StainlessSteel), 'Q', Electric_Pump_HV});
 
         OreDrill1.set(new GT_MetaTileEntity_OreDrillingPlant1(1158, "multimachine.oredrill1", "Ore Drilling Rig MKIV").getStackForm(1));
         OreDrill2.set(new GT_MetaTileEntity_OreDrillingPlant2(1177, "multimachine.oredrill2", "Ore Drilling Rig MKV").getStackForm(1));
@@ -90,26 +90,22 @@ public final class MultiblockMachineLoader {
         OreDrill4.set(new GT_MetaTileEntity_OreDrillingPlant4(1179, "multimachine.oredrill4", "Ore Drilling Rig MKVII").getStackForm(1));
 
         PyrolyseOven.set(new GT_MetaTileEntity_PyrolyseOven(1159, "multimachine.pyro", "Pyrolyse Oven").getStackForm(1));
-        addCraftingRecipe(PyrolyseOven.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WEP", "EME", "WCP", 'M', Hull_LV, 'W', Electric_Piston_LV, 'P', wireGt04.get(Cupronickel), 'E', circuit.get(Basic), 'C', Electric_Pump_LV});
+        addCraftingRecipe(PyrolyseOven.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WEP", "EME", "WCP", 'M', Hull_LV, 'W', Electric_Piston_LV, 'P', wireGt04.get(Cupronickel), 'E', circuitPower.get(PWR_LV), 'C', Electric_Pump_LV});
 
         OilCracker.set(new GT_MetaTileEntity_OilCracker(1160, "multimachine.cracker", "Oil Cracking Unit").getStackForm(1));
-        addCraftingRecipe(OilCracker.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "EME", "WCW", 'M', Hull_HV, 'W', Casing_Coil_Cupronickel, 'E', circuit.get(Advanced), 'C', Electric_Pump_HV});
+        addCraftingRecipe(OilCracker.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "EME", "WCW", 'M', Hull_HV, 'W', Casing_Coil_Cupronickel, 'E', circuitPower.get(PWR_HV), 'C', Electric_Pump_HV});
 
         Machine_Multi_Assemblyline.set(new GT_MetaTileEntity_AssemblyLine(1170, "multimachine.assemblyline", "Assembling Line").getStackForm(1L));
-        addCraftingRecipe(Machine_Multi_Assemblyline.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "EME", "WCW", 'M', Hull_IV, 'W', Casing_Assembler, 'E', circuit.get(Elite), 'C', Robot_Arm_IV});
+        addCraftingRecipe(Machine_Multi_Assemblyline.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "EME", "WCW", 'M', Hull_IV, 'W', Casing_Assembler, 'E', circuitLogic.get(LOGIC_IV), 'C', Robot_Arm_IV});
 
         Machine_Multi_DieselEngine.set(new GT_MetaTileEntity_DieselEngine(1171, "multimachine.dieselengine", "Combustion Engine").getStackForm(1L));
         addCraftingRecipe(Machine_Multi_DieselEngine.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "EME", "GWG", 'M', Hull_EV, 'P', Electric_Piston_EV, 'E', Electric_Motor_EV, 'C', circuit.get(Elite), 'W', cableGt01.get(TungstenSteel), 'G', gearGt.get(Titanium)});
         addCraftingRecipe(Casing_EngineIntake.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PhP", "RFR", "PwP", 'R', pipeMedium.get(Titanium), 'F', Casing_StableTitanium, 'P', rotor.get(Titanium)});
 
-        Machine_Multi_ExtremeDieselEngine.set(new GT_MetaTileEntity_ExtremeDieselEngine(2105, "multimachine.extremedieselengine", "Extreme Combustion Engine").getStackForm(1L));
-        addCraftingRecipe(Machine_Multi_ExtremeDieselEngine.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "EME", "GWG", 'M', Hull_IV, 'P', Electric_Piston_IV, 'E', Electric_Motor_IV, 'C', circuit.get(Master), 'W', cableGt01.get(HSSG), 'G', gearGt.get(TungstenSteel)});
-        addCraftingRecipe(Casing_ExtremeEngineIntake.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PhP", "RFR", "PwP", 'R', pipeMedium.get(TungstenSteel), 'F', Casing_RobustTungstenSteel, 'P', rotor.get(TungstenSteel)});
-
         Machine_Multi_Cleanroom.set(new GT_MetaTileEntity_Cleanroom(1172, "multimachine.cleanroom", "Cleanroom Controller").getStackForm(1));
         //If Cleanroom is enabled, add a recipe, else hide from NEI.
         if (gregtechproxy.mEnableCleanroom) {
-            addCraftingRecipe(Machine_Multi_Cleanroom.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"FFF", "RHR", "MCM", 'H', Hull_HV, 'F', Component_Filter, 'R', rotor.get(StainlessSteel), 'M', Electric_Motor_HV, 'C', circuit.get(Advanced)});
+            addCraftingRecipe(Machine_Multi_Cleanroom.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"FFF", "RHR", "MCM", 'H', Hull_HV, 'F', Component_Filter, 'R', rotor.get(StainlessSteel), 'M', Electric_Motor_HV, 'C', circuitLogic.get(LOGIC_HV)});
         } else {
             if (Loader.isModLoaded("NotEnoughItems"))
                 API.hideItem(Machine_Multi_Cleanroom.get(1L));

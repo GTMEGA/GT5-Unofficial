@@ -19,20 +19,20 @@ import static gregtech.api.util.GT_ModHandler.removeRecipeByOutput;
 import static gregtech.loaders.preload.GT_Loader_MetaTileEntities.RECIPE_MASK;
 
 public final class HullLoader {
-    private static final String IMAGINATION = EnumChatFormatting.RESET + "Can be used with covers and to make machines.";
+    private static final String IMAGINATION = EnumChatFormatting.RESET + "Can be used with covers and also used to make machines.";
 
     private static boolean LOADED = false;
 
     public static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
-        Hull_Bronze.set(new GT_MetaTileEntity_BasicHull_Bronze(1, "hull.bronze", "Bronze Hull", 0, "For your first Steam Machines").getStackForm(1L));
-        Hull_Bronze_Bricks.set(new GT_MetaTileEntity_BasicHull_BronzeBricks(2, "hull.bronze_bricked", "Bricked Bronze Hull", 0, "For your first Steam Machines").getStackForm(1L));
+        Hull_Bronze.set(new GT_MetaTileEntity_BasicHull_Bronze(1, "hull.bronze", "Brass Hull", 0, "For your first Steam Machines").getStackForm(1L));
+        Hull_Bronze_Bricks.set(new GT_MetaTileEntity_BasicHull_BronzeBricks(2, "hull.bronze_bricked", "Bricked Brass Hull", 0, "For your first Steam Machines").getStackForm(1L));
         Hull_HP.set(new GT_MetaTileEntity_BasicHull_Steel(3, "hull.steel", "Wrought Iron Hull", 0, "For improved Steam Machines").getStackForm(1L));
         Hull_HP_Bricks.set(new GT_MetaTileEntity_BasicHull_SteelBricks(4, "hull.steel_bricked", "Bricked Wrought Iron Hull", 0, "For improved Steam Machines").getStackForm(1L));
 
-        addCraftingRecipe(Hull_Bronze.get(1L), RECIPE_MASK, new Object[]{"PPP", "PhP", "PPP", 'P', plate.get(Bronze)});
-        addCraftingRecipe(Hull_Bronze_Bricks.get(1L), RECIPE_MASK, new Object[]{"PPP", "PhP", "BBB", 'P', plate.get(Bronze), 'B', new ItemStack(Blocks.brick_block, 1)});
+        addCraftingRecipe(Hull_Bronze.get(1L), RECIPE_MASK, new Object[]{"PPP", "PhP", "PPP", 'P', plate.get(Brass)});
+        addCraftingRecipe(Hull_Bronze_Bricks.get(1L), RECIPE_MASK, new Object[]{"PPP", "PhP", "BBB", 'P', plate.get(Brass), 'B', new ItemStack(Blocks.brick_block, 1)});
         addCraftingRecipe(Hull_HP.get(1L), RECIPE_MASK, new Object[]{"PPP", "PhP", "PPP", 'P', plate.get(WroughtIron)});
         addCraftingRecipe(Hull_HP_Bricks.get(1L), RECIPE_MASK, new Object[]{"PPP", "PhP", "BBB", 'P', plate.get(WroughtIron), 'B', new ItemStack(Blocks.brick_block, 1)});
 

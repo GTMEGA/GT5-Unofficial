@@ -399,6 +399,7 @@ public enum ItemList implements IItemContainer {
     Electric_Motor_OpV,
     Electric_Motor_MAX,
 
+    Electric_Pump_ULV,
     Electric_Pump_LV,
     Electric_Pump_MV,
     Electric_Pump_HV,
