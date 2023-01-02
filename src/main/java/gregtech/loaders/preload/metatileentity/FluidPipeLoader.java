@@ -22,8 +22,10 @@ public final class FluidPipeLoader {
 
         generateFluidPipes(Materials.Copper, Materials.Copper.mName, 5110, 20, 1000, true);
         generateFluidMultiPipes(Materials.Copper, Materials.Copper.mName, 5115, 20, 1000, true);
-        generateFluidPipes(Materials.Bronze, Materials.Bronze.mName, 5120, 120, 2000, true);
-        generateFluidMultiPipes(Materials.Bronze, Materials.Bronze.mName, 5125, 120, 2000, true);
+        generateFluidPipes(Materials.Lead, Materials.Lead.mName, 5093, 60, 500, true);
+        generateFluidMultiPipes(Materials.Lead, Materials.Lead.mName, 5099, 60, 500, true);
+        generateFluidPipes(Materials.Brass, Materials.Brass.mName, 5120, 120, 2000, true);
+        generateFluidMultiPipes(Materials.Brass, Materials.Brass.mName, 5125, 120, 2000, true);
         generateFluidPipes(Materials.Steel, Materials.Steel.mName, 5130, 240, 2500, true);
         generateFluidMultiPipes(Materials.Steel, Materials.Steel.mName, 5135, 240, 2500, true);
         generateFluidPipes(Materials.StainlessSteel, Materials.StainlessSteel.mName, 5140, 360, 3000, true);

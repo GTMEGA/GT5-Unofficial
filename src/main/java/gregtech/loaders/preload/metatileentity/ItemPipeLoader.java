@@ -14,7 +14,7 @@ public final class ItemPipeLoader {
     public static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
-        generateItemPipes(Brass, Brass.mName, 5602, 1);
+        generateItemPipes(Bronze, Bronze.mName, 5602, 1);
         generateItemPipes(Electrum, Electrum.mName, 5612, 2);
         generateItemPipes(Platinum, Platinum.mName, 5622, 4);
         generateItemPipes(Osmium, Osmium.mName, 5632, 8);
