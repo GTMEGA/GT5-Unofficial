@@ -145,10 +145,10 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             aRecipe[i] = OrePrefixes.plate.get(Materials.Steel);
                             break;
                         case 2:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.Aluminium);
+                            aRecipe[i] = OrePrefixes.plate.get(Materials.StainlessSteel);
                             break;
                         case 3:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.StainlessSteel);
+                            aRecipe[i] = OrePrefixes.plate.get(Materials.Aluminium);
                             break;
                         case 4:
                             aRecipe[i] = OrePrefixes.plate.get(Materials.Titanium);
@@ -173,7 +173,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                     switch (this.mTier) {
                         case 0:
                         case 1:
-                            aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Bronze);
+                            aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Brass);
                             break;
                         case 2:
                             aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Steel);

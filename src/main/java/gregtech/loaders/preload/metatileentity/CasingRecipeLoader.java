@@ -21,8 +21,8 @@ public final class CasingRecipeLoader {
             throw new RuntimeException("Already loaded!");
         addCraftingRecipe(Casing_ULV.getOne(), RECIPE_MASK, new Object[]{"PPP", "PwP", "PPP", 'P', plate.get(Tin)});
         addCraftingRecipe(Casing_LV.getOne(), RECIPE_MASK, new Object[]{"PPP", "PwP", "PPP", 'P', plate.get(Steel)});
-        addCraftingRecipe(Casing_MV.getOne(), RECIPE_MASK, new Object[]{"PPP", "PwP", "PPP", 'P', plate.get(Aluminium)});
-        addCraftingRecipe(Casing_HV.getOne(), RECIPE_MASK, new Object[]{"PPP", "PwP", "PPP", 'P', plate.get(StainlessSteel)});
+        addCraftingRecipe(Casing_MV.getOne(), RECIPE_MASK, new Object[]{"PPP", "PwP", "PPP", 'P', plate.get(StainlessSteel)});
+        addCraftingRecipe(Casing_HV.getOne(), RECIPE_MASK, new Object[]{"PPP", "PwP", "PPP", 'P', plate.get(Aluminium)});
         addCraftingRecipe(Casing_EV.getOne(), RECIPE_MASK, new Object[]{"PPP", "PwP", "PPP", 'P', plate.get(Titanium)});
         addCraftingRecipe(Casing_IV.getOne(), RECIPE_MASK, new Object[]{"PPP", "PwP", "PPP", 'P', plate.get(TungstenSteel)});
         addCraftingRecipe(Casing_LuV.getOne(), RECIPE_MASK, new Object[]{"PPP", "PwP", "PPP", 'P', plate.get(Chrome)});
