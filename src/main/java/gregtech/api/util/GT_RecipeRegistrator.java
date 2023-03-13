@@ -180,65 +180,65 @@ public class GT_RecipeRegistrator {
     }
 
     public static void registerReverseArcSmelting(ItemStack aStack, Materials aMaterial, long aMaterialAmount, MaterialStack aByProduct01, MaterialStack aByProduct02, MaterialStack aByProduct03) {
-        registerReverseArcSmelting(aStack, new ItemData(aMaterial == null ? null : new MaterialStack(aMaterial, aMaterialAmount), aByProduct01, aByProduct02, aByProduct03));
+        //registerReverseArcSmelting(aStack, new ItemData(aMaterial == null ? null : new MaterialStack(aMaterial, aMaterialAmount), aByProduct01, aByProduct02, aByProduct03));
     }
 
     public static void registerReverseArcSmelting(ItemStack aStack, ItemData aData) {
-        if (aStack == null || aData == null) return;
-        aData = new ItemData(aData);
-
-        if (!aData.hasValidMaterialData()) return;
-        boolean tIron = false;
-
-
-        for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
-            if (tMaterial.mMaterial == Materials.Iron||tMaterial.mMaterial == Materials.Copper ||
-                    tMaterial.mMaterial == Materials.WroughtIron||tMaterial.mMaterial == Materials.AnnealedCopper) tIron = true;
-
-            if (tMaterial.mMaterial.contains(SubTag.UNBURNABLE)) {
-                tMaterial.mMaterial = tMaterial.mMaterial.mSmeltInto.mArcSmeltInto;
-                continue;
-            }
-            if (tMaterial.mMaterial.contains(SubTag.EXPLOSIVE)) {
-                tMaterial.mMaterial = Materials.Ash;
-                tMaterial.mAmount /= 16;
-                continue;
-            }
-            if (tMaterial.mMaterial.contains(SubTag.FLAMMABLE)) {
-                tMaterial.mMaterial = Materials.Ash;
-                tMaterial.mAmount /= 8;
-                continue;
-            }
-            if (tMaterial.mMaterial.contains(SubTag.NO_SMELTING)) {
-                tMaterial.mAmount = 0;
-                continue;
-            }
-            if (tMaterial.mMaterial.contains(SubTag.METAL)) {
-            	if(GT_Mod.gregtechproxy.mArcSmeltIntoAnnealed){
-                tMaterial.mMaterial = tMaterial.mMaterial.mSmeltInto.mArcSmeltInto;
-            	}else{
-            		tMaterial.mMaterial = tMaterial.mMaterial.mSmeltInto.mSmeltInto;	
-            	}
-                continue;
-            }
-            tMaterial.mAmount = 0;
-        }
-
-        aData = new ItemData(aData);
-        if (aData.mByProducts.length > 3) for (MaterialStack tMaterial : aData.getAllMaterialStacks()){
-            if (tMaterial.mMaterial == Materials.Ash) tMaterial.mAmount = 0;
-        }
-
-        aData = new ItemData(aData);
-
-        if (!aData.hasValidMaterialData()) return;
-
-        long tAmount = 0;
-        for (MaterialStack tMaterial : aData.getAllMaterialStacks())
-            tAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
-
-        boolean tHide = !tIron && GT_Mod.gregtechproxy.mHideRecyclingRecipes;
-        RA.addArcFurnaceRecipe(aStack, new ItemStack[]{GT_OreDictUnificator.getIngotOrDust(aData.mMaterial), GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(0)), GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(1)), GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(2))}, null, (int) Math.max(16, tAmount / M), 90, tHide);
+//        if (aStack == null || aData == null) return;
+//        aData = new ItemData(aData);
+//
+//        if (!aData.hasValidMaterialData()) return;
+//        boolean tIron = false;
+//
+//
+//        for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
+//            if (tMaterial.mMaterial == Materials.Iron||tMaterial.mMaterial == Materials.Copper ||
+//                    tMaterial.mMaterial == Materials.WroughtIron||tMaterial.mMaterial == Materials.AnnealedCopper) tIron = true;
+//
+//            if (tMaterial.mMaterial.contains(SubTag.UNBURNABLE)) {
+//                tMaterial.mMaterial = tMaterial.mMaterial.mSmeltInto.mArcSmeltInto;
+//                continue;
+//            }
+//            if (tMaterial.mMaterial.contains(SubTag.EXPLOSIVE)) {
+//                tMaterial.mMaterial = Materials.Ash;
+//                tMaterial.mAmount /= 16;
+//                continue;
+//            }
+//            if (tMaterial.mMaterial.contains(SubTag.FLAMMABLE)) {
+//                tMaterial.mMaterial = Materials.Ash;
+//                tMaterial.mAmount /= 8;
+//                continue;
+//            }
+//            if (tMaterial.mMaterial.contains(SubTag.NO_SMELTING)) {
+//                tMaterial.mAmount = 0;
+//                continue;
+//            }
+//            if (tMaterial.mMaterial.contains(SubTag.METAL)) {
+//            	if(GT_Mod.gregtechproxy.mArcSmeltIntoAnnealed){
+//                tMaterial.mMaterial = tMaterial.mMaterial.mSmeltInto.mArcSmeltInto;
+//            	}else{
+//            		tMaterial.mMaterial = tMaterial.mMaterial.mSmeltInto.mSmeltInto;
+//            	}
+//                continue;
+//            }
+//            tMaterial.mAmount = 0;
+//        }
+//
+//        aData = new ItemData(aData);
+//        if (aData.mByProducts.length > 3) for (MaterialStack tMaterial : aData.getAllMaterialStacks()){
+//            if (tMaterial.mMaterial == Materials.Ash) tMaterial.mAmount = 0;
+//        }
+//
+//        aData = new ItemData(aData);
+//
+//        if (!aData.hasValidMaterialData()) return;
+//
+//        long tAmount = 0;
+//        for (MaterialStack tMaterial : aData.getAllMaterialStacks())
+//            tAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
+//
+//        boolean tHide = !tIron && GT_Mod.gregtechproxy.mHideRecyclingRecipes;
+//        RA.addArcFurnaceRecipe(aStack, new ItemStack[]{GT_OreDictUnificator.getIngotOrDust(aData.mMaterial), GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(0)), GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(1)), GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(2))}, null, (int) Math.max(16, tAmount / M), 90, tHide);
     }
 
     public static void registerReverseMacerating(ItemStack aStack, Materials aMaterial, long aMaterialAmount, MaterialStack aByProduct01, MaterialStack aByProduct02, MaterialStack aByProduct03, boolean aAllowHammer) {
