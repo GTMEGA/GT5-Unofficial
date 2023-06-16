@@ -1065,7 +1065,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     public void enableWorking() {
         if (!mWorks) mWorkUpdate = true;
         mWorks = true;
-        mWasShutdown = false;
+        setShutdownStatus(false);
     }
 
     @Override
