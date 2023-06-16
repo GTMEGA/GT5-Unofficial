@@ -102,7 +102,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     private NBTTagCompound mRecipeStuff = new NBTTagCompound();
     private int cableUpdateDelay = 30;
 
-    private boolean mWasShutdown = false;
+    public boolean mWasShutdown = false;
 
     private static final Field ENTITY_ITEM_HEALTH_FIELD;
     static
