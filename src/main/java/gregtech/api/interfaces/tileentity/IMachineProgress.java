@@ -81,4 +81,8 @@ public interface IMachineProgress extends IHasWorldObjectAndCoords {
         return false;
     }
 
+    default void setNotificationStatus(boolean newStatus) {
+        return;
+    }
+
 }

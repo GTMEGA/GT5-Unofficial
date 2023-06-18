@@ -6,33 +6,49 @@ import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconButton;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_ControlsWork extends GT_CoverBehavior {
+
     @Override
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         if (aTileEntity instanceof IMachineProgress) {
+            int bCoverVariable = (aCoverVariable > 2) ? aCoverVariable - 3 : aCoverVariable;
+            boolean redstoneActive = ((aInputRedstone > 0) == (bCoverVariable == 0));
             IMachineProgress machine = (IMachineProgress) aTileEntity;
             if (aCoverVariable < 2) {
-                if ((aInputRedstone > 0) == (aCoverVariable == 0)) {
-                    if (!machine.isAllowedToWork())
+                if (redstoneActive) {
+                    if (!machine.isAllowedToWork()) {
                         machine.enableWorking();
-                } else if (machine.isAllowedToWork())
+                    }
+                } else if (machine.isAllowedToWork()) {
                     machine.disableWorking();
+                }
                 machine.setWorkDataValue(aInputRedstone);
-            } else if (aCoverVariable == 2 && machine.isAllowedToWork()) {
-                machine.disableWorking();
-            } else {
-                if (machine.wasShutdown()) {
+            } else if (((aCoverVariable == 2) || (aCoverVariable == 5))) {
+                if (machine.isAllowedToWork()) {
                     machine.disableWorking();
-                    // GT_Utility.sendChatToPlayer(lastPlayer, aTileEntity.getInventoryName() + "at " + String.format("(%d,%d,%d)", aTileEntity.getXCoord(), aTileEntity.getYCoord(), aTileEntity.getZCoord()) + " shut down.");
-                    return 2;
+                }
+            } else {
+                if (redstoneActive && machine.wasShutdown()) {
+                    if (!machine.wasNotified()) {
+                        GT_Utility.sendChatToPlayer(getLastPlayer(), aTileEntity.getInventoryName() + " at " + String.format("(%d, %d, %d)", aTileEntity.getXCoord(), aTileEntity.getYCoord(), aTileEntity.getZCoord()) + " shut down.");
+                        if (aTileEntity instanceof GT_MetaTileEntity_MultiBlockBase) {
+                            GT_MetaTileEntity_MultiBlockBase base = (GT_MetaTileEntity_MultiBlockBase) aTileEntity;
+                            base.getBaseMetaTileEntity().setNotificationStatus(true);
+                            base.getBaseMetaTileEntity().setShutdownStatus(false);
+                        }
+                        return 5;
+                    }
                 } else {
                     return 3 + doCoverThings(aSide, aInputRedstone, aCoverID, aCoverVariable - 3, aTileEntity, aTimer);
                 }
@@ -82,8 +98,7 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
 
     @Override
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        aCoverVariable = (aCoverVariable + (aPlayer.isSneaking()? -1 : 1)) % 5;
-        if(aCoverVariable <0){aCoverVariable = 2;}
+        aCoverVariable = (aCoverVariable + (aPlayer.isSneaking() ? -1 : 1)) % 6;
         if (aCoverVariable == 0) {
             GT_Utility.sendChatToPlayer(aPlayer, trans("003", "Enable with Signal"));
         }
@@ -99,8 +114,14 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
         if (aCoverVariable == 4) {
             GT_Utility.sendChatToPlayer(aPlayer, trans("506", "Disable with Signal (Safe)"));
         }
-        // TODO: Set lastPlayer
-        return aCoverVariable;
+        if (aCoverVariable == 5) {
+            GT_Utility.sendChatToPlayer(aPlayer, "Disabled (Safe)"); // TODO: Localization
+        }
+        if (aTileEntity instanceof IGregTechTileEntity && aCoverVariable != 2 && aCoverVariable != 5) {
+            IGregTechTileEntity base = (IGregTechTileEntity) aTileEntity;
+            base.enableWorking();
+        }
+        return super.onCoverScrewdriverclick(aSide, aCoverID, aCoverVariable, aTileEntity, aPlayer, aX, aY, aZ);
     }
 
     @Override
@@ -118,7 +139,7 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
     }
 
     @Override
-    public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity)  {
+    public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity) {
         return new GT_Cover_ControlsWork.GUI(aSide, aCoverID, coverData, aTileEntity);
     }
 
@@ -148,10 +169,10 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(trans("243", "Enable with Redstone"), 3+startX + spaceX*1, 4+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString(trans("244", "Disable with Redstone"),3+startX + spaceX*1, 4+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(trans("245", "Disable machine"),              3+startX + spaceX*1, 4+startY+spaceY*2, 0xFF555555);
-            this.fontRendererObj.drawString(trans("507", "Safe Mode"), 3+startX + spaceX*1, 4+startY+spaceY*3, 0xFF555555);
+            this.fontRendererObj.drawString(trans("243", "Enable with Redstone"), 3 + startX + spaceX * 1, 4 + startY + spaceY * 0, 0xFF555555);
+            this.fontRendererObj.drawString(trans("244", "Disable with Redstone"), 3 + startX + spaceX * 1, 4 + startY + spaceY * 1, 0xFF555555);
+            this.fontRendererObj.drawString(trans("245", "Disable machine"), 3 + startX + spaceX * 1, 4 + startY + spaceY * 2, 0xFF555555);
+            this.fontRendererObj.drawString(trans("507", "Safe Mode"), 3 + startX + spaceX * 1, 4 + startY + spaceY * 3, 0xFF555555);
         }
 
         @Override
@@ -164,12 +185,11 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
             if (getClickable(btn.id)) {
                 int bID = btn.id;
                 if (bID == 3) {
-                    ((GT_GuiIconCheckButton) btn).setChecked(!((GT_GuiIconCheckButton) btn).isChecked());
+                    ((GT_GuiIconCheckButton) btn).toggle();
                 } else {
                     coverVariable = getNewCoverVariable(bID);
                 }
                 adjustCoverVariable();
-                // TODO: Set lastPlayer;
                 GT_Values.NW.sendToServer(new GT_Packet_TileEntityCover(side, coverID, coverVariable, tile));
             }
             updateButtons();
@@ -193,12 +213,17 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
 
         private void adjustCoverVariable() {
             boolean safeMode = ((GT_GuiIconCheckButton) buttonList.get(3)).isChecked();
-            if (safeMode && coverVariable < 2) {
+            if (safeMode && coverVariable <= 2) {
                 coverVariable += 3;
             }
             if (!safeMode && coverVariable > 2) {
                 coverVariable -= 3;
             }
+            if (tile instanceof IGregTechTileEntity && coverVariable != 2 && coverVariable != 5) {
+                IGregTechTileEntity base = (IGregTechTileEntity) tile;
+                base.enableWorking();
+            }
+            setLastPlayer(mc.thePlayer);
         }
 
     }

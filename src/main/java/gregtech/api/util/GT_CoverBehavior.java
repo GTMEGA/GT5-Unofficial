@@ -202,6 +202,7 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
      * return the new Value of the Cover Variable
      */
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        setLastPlayer(aPlayer);
         return aCoverVariable;
     }
 
@@ -210,7 +211,7 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
      */
     public boolean onCoverShiftRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer) {
         if(hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
-            lastPlayer = aPlayer;
+            setLastPlayer(aPlayer);
             GT_Values.NW.sendToPlayer(new GT_Packet_TileEntityCoverGUI(aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer), (EntityPlayerMP) aPlayer);
             return true;
         }
@@ -369,4 +370,14 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
     public ItemStack getDrop(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return GT_OreDictUnificator.get(true, aTileEntity.getCoverItemAtSide(aSide));
     }
+
+
+    public EntityPlayer getLastPlayer() {
+        return lastPlayer;
+    }
+
+    public void setLastPlayer(EntityPlayer lastPlayer) {
+        this.lastPlayer = lastPlayer;
+    }
+
 }

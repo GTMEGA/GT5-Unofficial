@@ -39,4 +39,9 @@ public class GT_GuiIconCheckButton extends GT_GuiIconButton {
         super.setTooltipText(checked ? checkedTooltip : normalTooltip);
         this.checked = checked;
     }
+
+    public boolean toggle() {
+        setChecked(!isChecked());
+        return isChecked();
+    }
 }

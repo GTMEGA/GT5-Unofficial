@@ -157,4 +157,8 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
     }
 
     default void setShutdownStatus(boolean newStatus) {return;}
+
+    default void setNotificationStatus(boolean newStatus) {return;}
+
+    default void resetShutdownInformation() {return;}
 }
