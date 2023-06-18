@@ -11,6 +11,7 @@ import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.gui.GuiButton;
@@ -41,7 +42,9 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
             } else {
                 if (redstoneActive && machine.wasShutdown()) {
                     if (!machine.wasNotified()) {
-                        GT_Utility.sendChatToPlayer(getLastPlayer(), aTileEntity.getInventoryName() + " at " + String.format("(%d, %d, %d)", aTileEntity.getXCoord(), aTileEntity.getYCoord(), aTileEntity.getZCoord()) + " shut down.");
+                        String machineName = "gt.blockmachines." + aTileEntity.getInventoryName() + ".name";
+                        machineName = GT_LanguageManager.getTranslation(machineName);
+                        GT_Utility.sendChatToPlayer(getLastPlayer(), machineName + " at " + String.format("(%d, %d, %d)", aTileEntity.getXCoord(), aTileEntity.getYCoord(), aTileEntity.getZCoord()) + " shut down.");
                         if (aTileEntity instanceof GT_MetaTileEntity_MultiBlockBase) {
                             GT_MetaTileEntity_MultiBlockBase base = (GT_MetaTileEntity_MultiBlockBase) aTileEntity;
                             base.getBaseMetaTileEntity().setNotificationStatus(true);
@@ -115,7 +118,7 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
             GT_Utility.sendChatToPlayer(aPlayer, trans("506", "Disable with Signal (Safe)"));
         }
         if (aCoverVariable == 5) {
-            GT_Utility.sendChatToPlayer(aPlayer, "Disabled (Safe)"); // TODO: Localization
+            GT_Utility.sendChatToPlayer(aPlayer, trans("507", "Disabled (Safe)"));
         }
         if (aTileEntity instanceof IGregTechTileEntity && aCoverVariable != 2 && aCoverVariable != 5) {
             IGregTechTileEntity base = (IGregTechTileEntity) aTileEntity;
