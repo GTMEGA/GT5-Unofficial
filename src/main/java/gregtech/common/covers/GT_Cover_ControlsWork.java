@@ -20,13 +20,30 @@ import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_ControlsWork extends GT_CoverBehavior {
 
+    public enum State {
+        RS_HIGH(0), RS_LOW(1), DISABLED(2), RS_HIGH_SAFE(3), RS_LOW_SAFE(4), DISABLED_SAFE(5);
+
+        private final int value;
+
+        State(int value) {
+            this.value = value;
+        }
+
+    }
+
     @Override
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         if (aTileEntity instanceof IMachineProgress) {
+            // Get cover variable ignoring safe mode
             int bCoverVariable = (aCoverVariable > 2) ? aCoverVariable - 3 : aCoverVariable;
-            boolean redstoneActive = ((aInputRedstone > 0) == (bCoverVariable == 0));
+            boolean redstoneActive;
+            if (aInputRedstone > 0) {
+                redstoneActive = bCoverVariable == State.RS_HIGH.value;
+            } else {
+                redstoneActive = bCoverVariable != State.RS_LOW.value;
+            }
             IMachineProgress machine = (IMachineProgress) aTileEntity;
-            if (aCoverVariable < 2) {
+            if (aCoverVariable < State.DISABLED.value) {
                 if (redstoneActive) {
                     if (!machine.isAllowedToWork()) {
                         machine.enableWorking();
@@ -35,7 +52,7 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
                     machine.disableWorking();
                 }
                 machine.setWorkDataValue(aInputRedstone);
-            } else if (((aCoverVariable == 2) || (aCoverVariable == 5))) {
+            } else if (((aCoverVariable == State.DISABLED.value) || (aCoverVariable == State.DISABLED_SAFE.value))) {
                 if (machine.isAllowedToWork()) {
                     machine.disableWorking();
                 }
@@ -50,10 +67,10 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
                             base.getBaseMetaTileEntity().setNotificationStatus(true);
                             base.getBaseMetaTileEntity().setShutdownStatus(false);
                         }
-                        return 5;
+                        return State.DISABLED_SAFE.value;
                     }
                 } else {
-                    return 3 + doCoverThings(aSide, aInputRedstone, aCoverID, aCoverVariable - 3, aTileEntity, aTimer);
+                    return 3 + doCoverThings(aSide, aInputRedstone, aCoverID, bCoverVariable, aTileEntity, aTimer);
                 }
             }
         }
@@ -102,25 +119,25 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
     @Override
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable = (aCoverVariable + (aPlayer.isSneaking() ? -1 : 1)) % 6;
-        if (aCoverVariable == 0) {
+        if (aCoverVariable == State.RS_HIGH.value) {
             GT_Utility.sendChatToPlayer(aPlayer, trans("003", "Enable with Signal"));
         }
-        if (aCoverVariable == 1) {
+        if (aCoverVariable == State.RS_LOW.value) {
             GT_Utility.sendChatToPlayer(aPlayer, trans("004", "Disable with Signal"));
         }
-        if (aCoverVariable == 2) {
+        if (aCoverVariable == State.DISABLED.value) {
             GT_Utility.sendChatToPlayer(aPlayer, trans("005", "Disabled"));
         }
-        if (aCoverVariable == 3) {
+        if (aCoverVariable == State.RS_HIGH_SAFE.value) {
             GT_Utility.sendChatToPlayer(aPlayer, trans("505", "Enable with Signal (Safe)"));
         }
-        if (aCoverVariable == 4) {
+        if (aCoverVariable == State.RS_LOW_SAFE.value) {
             GT_Utility.sendChatToPlayer(aPlayer, trans("506", "Disable with Signal (Safe)"));
         }
-        if (aCoverVariable == 5) {
+        if (aCoverVariable == State.DISABLED_SAFE.value) {
             GT_Utility.sendChatToPlayer(aPlayer, trans("507", "Disabled (Safe)"));
         }
-        if (aTileEntity instanceof IGregTechTileEntity && aCoverVariable != 2 && aCoverVariable != 5) {
+        if (aTileEntity instanceof IGregTechTileEntity && aCoverVariable != State.DISABLED.value && aCoverVariable != State.DISABLED_SAFE.value) {
             IGregTechTileEntity base = (IGregTechTileEntity) aTileEntity;
             base.enableWorking();
         }
@@ -216,13 +233,13 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
 
         private void adjustCoverVariable() {
             boolean safeMode = ((GT_GuiIconCheckButton) buttonList.get(3)).isChecked();
-            if (safeMode && coverVariable <= 2) {
+            if (safeMode && coverVariable <= State.DISABLED.value) {
                 coverVariable += 3;
             }
-            if (!safeMode && coverVariable > 2) {
+            if (!safeMode && coverVariable > State.DISABLED.value) {
                 coverVariable -= 3;
             }
-            if (tile instanceof IGregTechTileEntity && coverVariable != 2 && coverVariable != 5) {
+            if (tile instanceof IGregTechTileEntity && coverVariable != State.DISABLED.value && coverVariable != State.DISABLED_SAFE.value) {
                 IGregTechTileEntity base = (IGregTechTileEntity) tile;
                 base.enableWorking();
             }
