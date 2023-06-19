@@ -104,6 +104,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     public boolean mWasShutdown = false;
 
+    public boolean mWasNotified = false;
+
     private static final Field ENTITY_ITEM_HEALTH_FIELD;
     static
     {
@@ -1065,7 +1067,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     public void enableWorking() {
         if (!mWorks) mWorkUpdate = true;
         mWorks = true;
-        setShutdownStatus(false);
+        mWasShutdown = false;
     }
 
     @Override
@@ -2440,12 +2442,28 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public boolean wasShutdown() {
-         return mWasShutdown;
+        return mWasShutdown;
+    }
+
+    @Override
+    public boolean wasNotified() {
+        return mWasNotified;
     }
 
     @Override
     public void setShutdownStatus(boolean newStatus) {
-         mWasShutdown = newStatus;
+        mWasShutdown = newStatus;
+    }
+
+    @Override
+    public void setNotificationStatus(boolean newStatus) {
+        mWasNotified = newStatus;
+    }
+
+    @Override
+    public void resetShutdownInformation() {
+        setShutdownStatus(false);
+        setNotificationStatus(false);
     }
 
     @Override
