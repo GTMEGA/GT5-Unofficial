@@ -458,22 +458,24 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
             }
             return true;
         }
-        if (use(aStack, (int) aAmount, null)) {
-            if (java.util.concurrent.ThreadLocalRandom.current().nextInt(0, 25) == 0) {
-                long tNewDamage = getToolDamage(aStack) + aAmount;
-                setToolDamage(aStack, tNewDamage);
-                if (tNewDamage >= getToolMaxDamage(aStack)) {
-                    IToolStats tStats = getToolStats(aStack);
-                    if (tStats == null || GT_Utility.setStack(aStack, tStats.getBrokenItem(aStack)) == null) {
-                        if (tStats != null) GT_Utility.doSoundAtClient(tStats.getBreakingSound(), 1, 1.0F);
-                        if (aStack.stackSize > 0) aStack.stackSize--;
-                    }
-                }
-            }
-            return true;
-        }
-        return false;
+        return use(aStack, (int) aAmount, null);
     }
+//        if (use(aStack, (int) aAmount, null)) {
+//            if (java.util.concurrent.ThreadLocalRandom.current().nextInt(0, 25) == 0) {
+//                long tNewDamage = getToolDamage(aStack) + aAmount;
+//                setToolDamage(aStack, tNewDamage);
+//                if (tNewDamage >= getToolMaxDamage(aStack)) {
+//                    IToolStats tStats = getToolStats(aStack);
+//                    if (tStats == null || GT_Utility.setStack(aStack, tStats.getBrokenItem(aStack)) == null) {
+//                        if (tStats != null) GT_Utility.doSoundAtClient(tStats.getBreakingSound(), 1, 1.0F);
+//                        if (aStack.stackSize > 0) aStack.stackSize--;
+//                    }
+//                }
+//            }
+//            return true;
+//        }
+//        return false;
+//    }
 
 
     //TODO simplify this

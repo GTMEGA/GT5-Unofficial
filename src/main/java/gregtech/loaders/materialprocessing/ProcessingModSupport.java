@@ -57,7 +57,7 @@ public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHa
         }
         if (!aEnableMetallurgyMats) {
             Materials.Angmallen.mHasParentMod = false;
-            Materials.Atlarus.mHasParentMod = false;
+//            Materials.Atlarus.mHasParentMod = false;
             Materials.Carmot.mHasParentMod = false;
             Materials.Celenegil.mHasParentMod = false;
             Materials.Ceruclase.mHasParentMod = false;
