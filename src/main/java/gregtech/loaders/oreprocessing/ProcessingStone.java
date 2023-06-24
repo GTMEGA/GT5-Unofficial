@@ -41,7 +41,7 @@ public class ProcessingStone
             case "Obsidian":
                 if (aBlock != Blocks.air) aBlock.setResistance(20.0F);
                 GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.IC2_Compressed_Coal_Ball.get(8L), ItemList.IC2_Compressed_Coal_Chunk.get(1L), 400, 4);
-                GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, aStack), GT_ModHandler.getModItem("Railcraft", "cube.crushed.obsidian", 1L, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L)), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), 10, true);
+                GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, aStack), GT_ModHandler.getModItem("Railcraft", "cube.crushed.obsidian", 8L, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L)), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), 10, true);
                 break;
             case "Concrete":
                 GT_Values.RA.addCutterRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L), null, 100, 30);
