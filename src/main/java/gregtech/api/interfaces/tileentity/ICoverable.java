@@ -1,6 +1,6 @@
 package gregtech.api.interfaces.tileentity;
 
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.GT_CoverBehaviorLegacy;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -37,7 +37,7 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
     ItemStack getCoverItemAtSide(byte aSide);
 
     @Deprecated
-    GT_CoverBehavior getCoverBehaviorAtSide(byte aSide);
+    GT_CoverBehaviorLegacy getCoverBehaviorAtSide(byte aSide);
 
     default GT_CoverBehaviorBase<?> getCoverBehaviorAtSideNew(byte aSide) {
         return getCoverBehaviorAtSide(aSide);

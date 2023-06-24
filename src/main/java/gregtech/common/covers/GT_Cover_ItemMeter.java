@@ -10,7 +10,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GT_Packet_TileEntityCover;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.GT_CoverBehaviorLegacy;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
@@ -20,7 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.Fluid;
 
-public class GT_Cover_ItemMeter extends GT_CoverBehavior {
+public class GT_Cover_ItemMeter extends GT_CoverBehaviorLegacy {
 
     // format:
     private static final int SLOT_MASK = 0x3FFFFFF; // 0 = all, 1 = 0 ...

@@ -14,7 +14,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.GT_CoverBehaviorLegacy;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
@@ -414,12 +414,12 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     }
 
     @Override
-    public boolean letsIn(GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsIn(GT_CoverBehaviorLegacy coverBehavior, byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return coverBehavior.letsFluidIn(aSide, aCoverID, aCoverVariable, null, aTileEntity);
     }
 
     @Override
-    public boolean letsOut(GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsOut(GT_CoverBehaviorLegacy coverBehavior, byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return coverBehavior.letsFluidOut(aSide, aCoverID, aCoverVariable, null, aTileEntity);
     }
 

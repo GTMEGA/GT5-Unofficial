@@ -10,14 +10,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.net.GT_Packet_TileEntityCover;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.GT_CoverBehaviorLegacy;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
-public class GT_Cover_ControlsWork extends GT_CoverBehavior {
+public class GT_Cover_ControlsWork extends GT_CoverBehaviorLegacy {
 
     public enum State {
         RS_HIGH(0), RS_LOW(1), DISABLED(2), RS_HIGH_SAFE(3), RS_LOW_SAFE(4), DISABLED_SAFE(5);

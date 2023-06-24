@@ -14,11 +14,11 @@ import static gregtech.api.enums.GT_Values.E;
 /**
  * For Covers with a special behavior. Has fixed storage format of 4 byte. Not very convenient...
  */
-public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializableObject.LegacyCoverData> {
+public abstract class GT_CoverBehaviorLegacy extends GT_CoverBehaviorBase<ISerializableObject.LegacyCoverData> {
 
     public EntityPlayer lastPlayer = null;
 
-    public GT_CoverBehavior() {
+    public GT_CoverBehaviorLegacy() {
         super(ISerializableObject.LegacyCoverData.class);
     }
 

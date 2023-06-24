@@ -8,19 +8,14 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IBatteryContainer;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
 import gregtech.api.net.GT_Packet_TileEntityCover;
-import gregtech.api.util.GT_CoverBehavior;
-import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_CoverBehaviorLegacy;
 import gregtech.api.util.GT_Utility;
-import ic2.api.item.IElectricItem;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
-public class GT_Cover_EUMeter extends GT_CoverBehavior {
+public class GT_Cover_EUMeter extends GT_CoverBehaviorLegacy {
     @Override
     public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return false;

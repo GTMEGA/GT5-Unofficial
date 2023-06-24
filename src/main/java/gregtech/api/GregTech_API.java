@@ -178,7 +178,7 @@ public class GregTech_API {
     /**
      * This is the generic Cover behavior. Used for the default Covers, which have no Behavior.
      */
-    public static final GT_CoverBehavior
+    public static final GT_CoverBehaviorLegacy
             sDefaultBehavior = new GT_Cover_Default(),
             sNoBehavior = new GT_Cover_None();
     /**
@@ -614,7 +614,7 @@ public class GregTech_API {
         }
     }
 
-    public static void registerCover(ItemStack aStack, ITexture aCover, GT_CoverBehavior aBehavior) {
+    public static void registerCover(ItemStack aStack, ITexture aCover, GT_CoverBehaviorLegacy aBehavior) {
         registerCover(aStack, aCover, (GT_CoverBehaviorBase<?>) aBehavior);
     }
 
@@ -625,7 +625,7 @@ public class GregTech_API {
             sCoverBehaviors.put(new GT_ItemStack(aStack), aBehavior);
     }
 
-    public static void registerCoverBehavior(ItemStack aStack, GT_CoverBehavior aBehavior) {
+    public static void registerCoverBehavior(ItemStack aStack, GT_CoverBehaviorLegacy aBehavior) {
         registerCoverBehavior(aStack, (GT_CoverBehaviorBase<?>) aBehavior);
     }
 
@@ -638,7 +638,7 @@ public class GregTech_API {
      *
      * @param aBehavior can be null
      */
-    public static void registerCover(Collection<ItemStack> aStackList, ITexture aCover, GT_CoverBehavior aBehavior) {
+    public static void registerCover(Collection<ItemStack> aStackList, ITexture aCover, GT_CoverBehaviorLegacy aBehavior) {
         registerCover(aStackList, aCover, aBehavior);
     }
 
@@ -656,13 +656,13 @@ public class GregTech_API {
      * returns a Cover behavior, guaranteed to not return null after preload
      */
     @Deprecated
-    public static GT_CoverBehavior getCoverBehavior(ItemStack aStack) {
+    public static GT_CoverBehaviorLegacy getCoverBehavior(ItemStack aStack) {
         if (aStack == null || aStack.getItem() == null)
             return sNoBehavior;
         GT_CoverBehaviorBase<?> rCover = sCoverBehaviors.get(new GT_ItemStack(aStack));
-        if (!(rCover instanceof GT_CoverBehavior) || rCover == null)
+        if (!(rCover instanceof GT_CoverBehaviorLegacy) || rCover == null)
             return sDefaultBehavior;
-        return (GT_CoverBehavior) rCover;
+        return (GT_CoverBehaviorLegacy) rCover;
     }
 
     /**
@@ -682,7 +682,7 @@ public class GregTech_API {
      * returns a Cover behavior, guaranteed to not return null
      */
     @Deprecated
-    public static GT_CoverBehavior getCoverBehavior(int aStack) {
+    public static GT_CoverBehaviorLegacy getCoverBehavior(int aStack) {
         if (aStack == 0)
             return sNoBehavior;
         return getCoverBehavior(GT_Utility.intToStack(aStack));

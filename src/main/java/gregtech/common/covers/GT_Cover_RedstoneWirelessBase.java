@@ -8,16 +8,15 @@ import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.interfaces.IGuiScreen;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.net.GT_Packet_WirelessRedstoneCover;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.GT_CoverBehaviorLegacy;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
-public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
+public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehaviorLegacy {
 
     private static final int MAX_CHANNEL = 65535;
     private static final int PRIVATE_MASK = 0xFFFE0000;

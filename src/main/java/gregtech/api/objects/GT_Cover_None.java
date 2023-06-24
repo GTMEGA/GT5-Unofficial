@@ -1,7 +1,7 @@
 package gregtech.api.objects;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.GT_CoverBehaviorLegacy;
 import gregtech.api.util.ISerializableObject;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -10,7 +10,7 @@ import net.minecraftforge.fluids.Fluid;
 
 import static gregtech.api.enums.GT_Values.E;
 
-public class GT_Cover_None extends GT_CoverBehavior {
+public class GT_Cover_None extends GT_CoverBehaviorLegacy {
 
     /**
      * This is the Dummy, if there is no Cover

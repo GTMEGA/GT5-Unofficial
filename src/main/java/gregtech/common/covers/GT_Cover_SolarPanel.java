@@ -1,7 +1,7 @@
 package gregtech.common.covers;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.GT_CoverBehaviorLegacy;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-public class GT_Cover_SolarPanel extends GT_CoverBehavior {
+public class GT_Cover_SolarPanel extends GT_CoverBehaviorLegacy {
     private final int mVoltage;
 
     public GT_Cover_SolarPanel(int aVoltage) {
