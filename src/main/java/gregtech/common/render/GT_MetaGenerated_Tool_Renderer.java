@@ -112,39 +112,41 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                     }
                 }
             }
+            Long[] tStats = aItem.getElectricStats(aStack);
             if ((aType == IItemRenderer.ItemRenderType.INVENTORY) && (GT_MetaGenerated_Tool.getPrimaryMaterial(aStack) != Materials._NULL)) {
                 long tDamage = GT_MetaGenerated_Tool.getToolDamage(aStack);
                 long tMaxDamage = GT_MetaGenerated_Tool.getToolMaxDamage(aStack);
-                if (tDamage <= 0L) {
-                    aIcon = gregtech.api.enums.Textures.ItemIcons.DURABILITY_BAR[8];
-                } else if (tDamage >= tMaxDamage) {
-                    aIcon = gregtech.api.enums.Textures.ItemIcons.DURABILITY_BAR[0];
-                } else {
-                    aIcon = gregtech.api.enums.Textures.ItemIcons.DURABILITY_BAR[((int) java.lang.Math.max(0L, java.lang.Math.min(7L, (tMaxDamage - tDamage) * 8L / tMaxDamage)))];
-                }
-                if (aIcon != null) {
-                    IIcon tIcon = aIcon.getIcon();
-                    IIcon tOverlay = aIcon.getOverlayIcon();
-                    if (tIcon != null) {
-                        Minecraft.getMinecraft().renderEngine.bindTexture(aIcon.getTextureFile());
-                        GL11.glBlendFunc(770, 771);
-                        if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
-                            GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
-                        } else {
-                            ItemRenderer.renderItemIn2D(Tessellator.instance, tIcon.getMaxU(), tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(), tIcon.getIconHeight(), 0.0625F);
+                if (tStats == null) {
+                    if (tDamage <= 0L) {
+                        aIcon = gregtech.api.enums.Textures.ItemIcons.DURABILITY_BAR[8];
+                    } else if (tDamage >= tMaxDamage) {
+                        aIcon = gregtech.api.enums.Textures.ItemIcons.DURABILITY_BAR[0];
+                    } else {
+                        aIcon = gregtech.api.enums.Textures.ItemIcons.DURABILITY_BAR[((int) java.lang.Math.max(0L, java.lang.Math.min(7L, (tMaxDamage - tDamage) * 8L / tMaxDamage)))];
+                    }
+                    if (aIcon != null) {
+                        IIcon tIcon = aIcon.getIcon();
+                        IIcon tOverlay = aIcon.getOverlayIcon();
+                        if (tIcon != null) {
+                            Minecraft.getMinecraft().renderEngine.bindTexture(aIcon.getTextureFile());
+                            GL11.glBlendFunc(770, 771);
+                            if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+                                GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+                            } else {
+                                ItemRenderer.renderItemIn2D(Tessellator.instance, tIcon.getMaxU(), tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(), tIcon.getIconHeight(), 0.0625F);
+                            }
+                        }
+                        if (tOverlay != null) {
+                            Minecraft.getMinecraft().renderEngine.bindTexture(aIcon.getTextureFile());
+                            GL11.glBlendFunc(770, 771);
+                            if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+                                GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+                            } else {
+                                ItemRenderer.renderItemIn2D(Tessellator.instance, tOverlay.getMaxU(), tOverlay.getMinV(), tOverlay.getMinU(), tOverlay.getMaxV(), tOverlay.getIconWidth(), tOverlay.getIconHeight(), 0.0625F);
+                            }
                         }
                     }
-                    if (tOverlay != null) {
-                        Minecraft.getMinecraft().renderEngine.bindTexture(aIcon.getTextureFile());
-                        GL11.glBlendFunc(770, 771);
-                        if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
-                            GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
-                        } else {
-                            ItemRenderer.renderItemIn2D(Tessellator.instance, tOverlay.getMaxU(), tOverlay.getMinV(), tOverlay.getMinU(), tOverlay.getMaxV(), tOverlay.getIconWidth(), tOverlay.getIconHeight(), 0.0625F);
-                        }
-                    }
                 }
-                Long[] tStats = aItem.getElectricStats(aStack);
                 if ((tStats != null) && (tStats[3] < 0L)) {
                     long tCharge = aItem.getRealCharge(aStack);
                     if (tCharge <= 0L) {
