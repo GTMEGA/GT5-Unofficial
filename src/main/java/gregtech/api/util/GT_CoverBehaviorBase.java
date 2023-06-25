@@ -280,7 +280,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
      */
     protected boolean onCoverShiftRightClickImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer) {
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
-            lastPlayer = aPlayer;
+            setLastPlayer(aPlayer);
             GT_Values.NW.sendToPlayer(new GT_Packet_TileEntityCoverGUI(aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer), (EntityPlayerMP) aPlayer);
             return true;
         }
@@ -482,5 +482,14 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     public String trans(String aNr, String aEnglish) {
         return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aNr, aEnglish, false);
     }
+
+    public EntityPlayer getLastPlayer() {
+        return lastPlayer;
+    }
+
+    public void setLastPlayer(EntityPlayer lastPlayer) {
+        this.lastPlayer = lastPlayer;
+    }
+
     // endregion
 }

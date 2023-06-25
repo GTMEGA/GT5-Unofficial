@@ -51,7 +51,6 @@ import java.util.Map;
 
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.OrePrefixes.circuitLogic;
-import static gregtech.api.enums.OrePrefixes.circuitPower;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
