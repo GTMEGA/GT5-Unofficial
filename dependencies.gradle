@@ -55,19 +55,13 @@ dependencies {
     compileOnly("codechicken:Translocator:1.7.10-1.1.2.16:dev") {  // TODO: use in-house version (?)
         transitive = false
     }
-    compileOnly("curse.maven:cofh-lib-220333:2388749") {
-        transitive = false
-    }
     compileOnly("curse.maven:nuclear-control-2-236813:2464681") {  // TODO: use in-house version
-        transitive = false
-    }
-    compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") {
         transitive = false
     }
     compileOnly("team.chisel:chisel-mc1.7.10:2.10.1:dev")
 
-    compileOnly("org.projectlombok:lombok:1.18.24") {
+    compileOnly("org.projectlombok:lombok:1.18.26") {
         transitive = false
     }
-    annotationProcessor('org.projectlombok:lombok:1.18.24')
+    annotationProcessor('org.projectlombok:lombok:1.18.26')
 }

@@ -30,4 +30,14 @@ repositories {
         name = 'tterrag Repo'
         url = "https://maven.tterrag.com"
     }
+
+
+    maven {
+        name = "chickenbones"
+        url = "https://nexus.covers1624.net/repository/maven-hosted/"
+        metadataSources {
+            mavenPom()
+            artifact()
+        }
+    }
 }
