@@ -13,14 +13,14 @@ def deobfCurse(curseDep) {
 }
 
 dependencies {
-    compile("mega:structurelib-mc1.7.10:1.1.2:dev")
-    compile("codechicken:codechickencore-mc1.7.10:1.0.9-gtmega:dev")
-    compile("codechicken:codechickenlib-mc1.7.10:1.1.4-gtmega:dev")
-    compile("codechicken:notenoughitems-mc1.7.10:2.1.5-gtmega:dev")
+    implementation("mega:structurelib-mc1.7.10:1.1.2:dev")
+    implementation("codechicken:codechickencore-mc1.7.10:1.0.9-gtmega:dev")
+    implementation("codechicken:codechickenlib-mc1.7.10:1.1.4-gtmega:dev")
+    implementation("codechicken:notenoughitems-mc1.7.10:2.1.5-gtmega:dev")
 
-    compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
+    implementation("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
 
-    compile("eu.usrv:YAMCore:1.7.10-0.5.79:deobf") {
+    implementation("eu.usrv:YAMCore:1.7.10-0.5.79:deobf") {
         transitive = false
     }
 
