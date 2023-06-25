@@ -7,7 +7,7 @@ import gregtech.api.gui.widgets.GT_GuiIconButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCover;
-import gregtech.api.util.GT_CoverBehaviorLegacy;
+import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import net.minecraft.client.gui.GuiButton;
@@ -31,7 +31,7 @@ import net.minecraftforge.fluids.IFluidHandler;
  * The stored bits will be flipped bitwise if speed is negative.
  * This way, `0` means 1tick interval, while `-1` means 1 tick interval as well, preserving the legacy behavior.
  */
-public class GT_Cover_FluidRegulator extends GT_CoverBehaviorLegacy {
+public class GT_Cover_FluidRegulator extends GT_CoverBehavior {
 	private static final int SPEED_LENGTH = 20;
 	private static final int TICK_RATE_LENGTH = Integer.SIZE - SPEED_LENGTH - 1;
 	private static final int TICK_RATE_MIN = 1;

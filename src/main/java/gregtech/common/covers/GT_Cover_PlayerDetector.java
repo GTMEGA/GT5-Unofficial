@@ -7,14 +7,14 @@ import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GT_Packet_TileEntityCover;
-import gregtech.api.util.GT_CoverBehaviorLegacy;
+import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fluids.Fluid;
 
-public class GT_Cover_PlayerDetector extends GT_CoverBehaviorLegacy {
+public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
 
     private String placer = "";
     private int range = 8;

@@ -1,12 +1,12 @@
 package gregtech.api.objects;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehaviorLegacy;
+import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
-public class GT_Cover_Default extends GT_CoverBehaviorLegacy {
+public class GT_Cover_Default extends GT_CoverBehavior {
     /**
      * This is the Dummy, if there is a generic Cover without behavior
      */

@@ -2,10 +2,10 @@ package gregtech.common.covers;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GT_CoverBehaviorLegacy;
+import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 
-public class GT_Cover_Vent extends GT_CoverBehaviorLegacy {
+public class GT_Cover_Vent extends GT_CoverBehavior {
     private final int mEfficiency;
 
     public GT_Cover_Vent(int aEfficiency) {

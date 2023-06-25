@@ -1,7 +1,7 @@
 package gregtech.api.interfaces;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehaviorLegacy;
+import gregtech.api.util.GT_CoverBehavior;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 
@@ -33,7 +33,7 @@ public interface IRedstoneCircuitBlock {
     /**
      * If this Side is Covered up and therefor not doing any Redstone
      */
-    GT_CoverBehaviorLegacy getCover(byte aSide);
+    GT_CoverBehavior getCover(byte aSide);
 
     int getCoverID(byte aSide);
 

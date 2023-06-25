@@ -1810,9 +1810,9 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     @Deprecated
-    public GT_CoverBehaviorLegacy getCoverBehaviorAtSide(byte aSide) {
-        if (aSide >= 0 && aSide < mCoverBehaviors.length && mCoverBehaviors[aSide] instanceof GT_CoverBehaviorLegacy)
-            return (GT_CoverBehaviorLegacy) mCoverBehaviors[aSide];
+    public GT_CoverBehavior getCoverBehaviorAtSide(byte aSide) {
+        if (aSide >= 0 && aSide < mCoverBehaviors.length && mCoverBehaviors[aSide] instanceof GT_CoverBehavior)
+            return (GT_CoverBehavior) mCoverBehaviors[aSide];
         return GregTech_API.sNoBehavior;
     }
 

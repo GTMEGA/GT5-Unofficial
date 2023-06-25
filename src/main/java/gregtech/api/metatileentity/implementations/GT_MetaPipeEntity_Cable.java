@@ -245,12 +245,12 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     }
 
     @Override
-    public boolean letsIn(GT_CoverBehaviorLegacy coverBehavior, byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsIn(GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return coverBehavior.letsEnergyIn(aSide, aCoverID, aCoverVariable, aTileEntity);
     }
 
     @Override
-    public boolean letsOut(GT_CoverBehaviorLegacy coverBehavior, byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsOut(GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return coverBehavior.letsEnergyOut(aSide, aCoverID, aCoverVariable, aTileEntity);
     }
 
