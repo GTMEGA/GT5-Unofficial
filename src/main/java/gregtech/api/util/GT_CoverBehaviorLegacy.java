@@ -16,8 +16,6 @@ import static gregtech.api.enums.GT_Values.E;
  */
 public abstract class GT_CoverBehaviorLegacy extends GT_CoverBehaviorBase<ISerializableObject.LegacyCoverData> {
 
-    public EntityPlayer lastPlayer = null;
-
     public GT_CoverBehaviorLegacy() {
         super(ISerializableObject.LegacyCoverData.class);
     }
@@ -369,15 +367,6 @@ public abstract class GT_CoverBehaviorLegacy extends GT_CoverBehaviorBase<ISeria
      */
     public ItemStack getDrop(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return GT_OreDictUnificator.get(true, aTileEntity.getCoverItemAtSide(aSide));
-    }
-
-
-    public EntityPlayer getLastPlayer() {
-        return lastPlayer;
-    }
-
-    public void setLastPlayer(EntityPlayer lastPlayer) {
-        this.lastPlayer = lastPlayer;
     }
 
 }
