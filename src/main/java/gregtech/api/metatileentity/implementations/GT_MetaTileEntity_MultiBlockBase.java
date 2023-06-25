@@ -17,6 +17,8 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -31,8 +33,7 @@ import org.lwjgl.input.Keyboard;
 import java.util.ArrayList;
 import java.util.List;
 
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.GT_Values.*;
 import static net.minecraft.util.EnumChatFormatting.*;
 
 public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
@@ -348,7 +349,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         }
         if (mEUt < 0) {
             if (!drainEnergyInput(((long) -mEUt * 10000) / Math.max(1000, mEfficiency))) {
-                criticalStopMachine();
+                if (!getBaseMetaTileEntity().wasShutdown()) {
+                    criticalStopMachine();
+                }
                 return false;
             }
         }
@@ -403,6 +406,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     public void criticalStopMachine() {
         stopMachine();
         getBaseMetaTileEntity().setShutdownStatus(true);
+        getBaseMetaTileEntity().setNotificationStatus(false);
     }
 
     public int getRepairStatus() {

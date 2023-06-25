@@ -74,4 +74,15 @@ public interface IMachineProgress extends IHasWorldObjectAndCoords {
         return false;
     }
 
+    /*
+    * Whether a player was notified about a shutdown
+    * */
+    default boolean wasNotified() {
+        return false;
+    }
+
+    default void setNotificationStatus(boolean newStatus) {
+        return;
+    }
+
 }

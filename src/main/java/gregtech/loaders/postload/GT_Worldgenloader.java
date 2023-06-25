@@ -23,7 +23,7 @@ public class GT_Worldgenloader implements Runnable {
         new GT_Worldgen_Stone("overworld.stone.blackgranite.medium", true, GregTech_API.sBlockGranites, 0, 0, 1, 200, 10, 0, 180, null, false);
         new GT_Worldgen_Stone("overworld.stone.blackgranite.large", true, GregTech_API.sBlockGranites, 0, 0, 1, 300, 70, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.blackgranite.huge", true, GregTech_API.sBlockGranites, 0, 0, 1, 400, 150, 0, 120, null, false);
-        
+
         new GT_Worldgen_Stone("overworld.stone.redgranite.tiny", true, GregTech_API.sBlockGranites, 8, 0, 1, 75, 5, 0, 180, null, false);
         new GT_Worldgen_Stone("overworld.stone.redgranite.small", true, GregTech_API.sBlockGranites, 8, 0, 1, 100, 10, 0, 180, null, false);
         new GT_Worldgen_Stone("overworld.stone.redgranite.medium", true, GregTech_API.sBlockGranites, 8, 0, 1, 200, 10, 0, 180, null, false);
@@ -35,7 +35,7 @@ public class GT_Worldgenloader implements Runnable {
         new GT_Worldgen_Stone("overworld.stone.marble.medium", true, GregTech_API.sBlockStones, 0, 0, 1, 200, 10, 0, 180, null, false);
         new GT_Worldgen_Stone("overworld.stone.marble.large", true, GregTech_API.sBlockStones, 0, 0, 1, 300, 70, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.marble.huge", true, GregTech_API.sBlockStones, 0, 0, 1, 400, 150, 0, 120, null, false);
-        
+
         new GT_Worldgen_Stone("overworld.stone.basalt.tiny", true, GregTech_API.sBlockStones, 8, 0, 1, 75, 5, 0, 180, null, false);
         new GT_Worldgen_Stone("overworld.stone.basalt.small", true, GregTech_API.sBlockStones, 8, 0, 1, 100, 10, 0, 180, null, false);
         new GT_Worldgen_Stone("overworld.stone.basalt.medium", true, GregTech_API.sBlockStones, 8, 0, 1, 200, 10, 0, 180, null, false);
@@ -47,7 +47,7 @@ public class GT_Worldgenloader implements Runnable {
         new GT_Worldgen_Stone("nether.stone.blackgranite.medium", false, GregTech_API.sBlockGranites, 0, -1, 1, 200, 80, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.blackgranite.large", false, GregTech_API.sBlockGranites, 0, -1, 1, 300, 70, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.blackgranite.huge", false, GregTech_API.sBlockGranites, 0, -1, 1, 400, 150, 0, 120, null, false);
-        
+
         new GT_Worldgen_Stone("nether.stone.redgranite.tiny", false, GregTech_API.sBlockGranites, 8, -1, 1, 50, 45, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.redgranite.small", false, GregTech_API.sBlockGranites, 8, -1, 1, 100, 60, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.redgranite.medium", false, GregTech_API.sBlockGranites, 8, -1, 1, 200, 80, 0, 120, null, false);
@@ -59,7 +59,7 @@ public class GT_Worldgenloader implements Runnable {
         new GT_Worldgen_Stone("nether.stone.marble.medium", false, GregTech_API.sBlockStones, 0, -1, 1, 200, 80, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.marble.large", false, GregTech_API.sBlockStones, 0, -1, 1, 300, 70, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.marble.huge", false, GregTech_API.sBlockStones, 0, -1, 1, 400, 150, 0, 120, null, false);
-        
+
         new GT_Worldgen_Stone("nether.stone.basalt.tiny", false, GregTech_API.sBlockStones, 8, -1, 1, 50, 45, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.basalt.small", false, GregTech_API.sBlockStones, 8, -1, 1, 100, 60, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.basalt.medium", false, GregTech_API.sBlockStones, 8, -1, 1, 200, 80, 0, 120, null, false);
@@ -98,8 +98,8 @@ public class GT_Worldgenloader implements Runnable {
         new GT_Worldgen_GT_Ore_SmallPieces("ore.small.netherquartz", true, 30, 120, 64, false, true, false, false, false, false, Materials.NetherQuartz);
         new GT_Worldgen_GT_Ore_SmallPieces("ore.small.saltpeter", true, 10, 60, 8, false, true, false, false, false, false, Materials.Saltpeter);
         new GT_Worldgen_GT_Ore_SmallPieces("ore.small.sulfur", true, 5, 60, 40, false, true, false, false, false, false, Materials.Sulfur);
-        
-        //TODO: GTNH Custom Small Ores 
+
+        //TODO: GTNH Custom Small Ores
         new GT_Worldgen_GT_Ore_SmallPieces("ore.small.titanium",true,10,180,32,false, false, false, Materials.Titanium);
         new GT_Worldgen_GT_Ore_SmallPieces("ore.small.tungsten",true,10,120,16,false, false, false, Materials.Tungsten);
         new GT_Worldgen_GT_Ore_SmallPieces("ore.small.meteoriciron",true,50,70,8,false, false, false, Materials.MeteoricIron);
@@ -158,7 +158,7 @@ public class GT_Worldgenloader implements Runnable {
         new GT_Worldgen_GT_Ore_Layer("ore.mix.beryllium", true, 5, 30, 30, 2, 16, false, true, true, Materials.Beryllium, Materials.Beryllium, Materials.Emerald, Materials.Thorium);
         new GT_Worldgen_GT_Ore_Layer("ore.mix.uranium", true, 20, 30, 20, 2, 16, false, false, false, Materials.Uraninite, Materials.Uraninite, Materials.Uranium, Materials.Uranium);
         new GT_Worldgen_GT_Ore_Layer("ore.mix.oilsand", true, 50, 80, 50, 2, 32, true, false, false, Materials.Oilsands, Materials.Oilsands, Materials.Oilsands, Materials.Oilsands);
-        
+
         /*
          * TODO: custom GTNH OreMixes
          * WARNING: NO DUPLICATS IN aName OR DEPRECATED MATERIALS IN HERE.
@@ -207,7 +207,7 @@ public class GT_Worldgenloader implements Runnable {
         new GT_Worldgen_GT_Ore_Layer("ore.mix.rutile", true, 5, 20, 15, 4, 12, false, false, false, Materials.Rutile, Materials.Titanium, Materials.Bauxite, Materials.MeteoricIron);
         new GT_Worldgen_GT_Ore_Layer("ore.mix.TFgalena", true, 5, 35, 50, 5, 16, false, false, false, Materials.Galena, Materials.Galena, Materials.Silver, Materials.Lead);
         new GT_Worldgen_GT_Ore_Layer("ore.mix.luvtantalite", true, 20, 30, 10, 4, 16, false, false, false, Materials.Pyrolusite, Materials.Apatite, Materials.Tantalite, Materials.Pyrochlore);
-        
+
         //DO NOT DELETE V THIS V - this is needed so that gregtech generates its Ore Layer's first (the ones up there), which can then be transformed into "GT_Worldgen_GT_Ore_Layer_Space". Also Reflexion is slow.
         try {
             Class clazz = Class.forName("bloodasp.galacticgreg.WorldGenGaGT");
@@ -224,6 +224,6 @@ public class GT_Worldgenloader implements Runnable {
             }
         }
         //DO NOT DELETE ^ THIS ^
-        
+
     }
 }

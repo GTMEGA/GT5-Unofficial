@@ -104,6 +104,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     public boolean mWasShutdown = false;
 
+    public boolean mWasNotified = false;
+
     private static final Field ENTITY_ITEM_HEALTH_FIELD;
     static
     {
@@ -247,8 +249,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
             // check legacy data
             mCoverData = new ISerializableObject[6];
-            if (aNBT.hasKey("mCoverData", 11) && aNBT.getIntArray("mCoverData").length == 6) {
-                int[] tOldData = aNBT.getIntArray("mCoverData");
+            int[] tOldData = aNBT.getIntArray("mCoverData");
+            if (aNBT.hasKey("mCoverData", 11) && tOldData.length == 6) {
                 for (int i = 0; i < tOldData.length; i++) {
                     if (mCoverBehaviors[i] != null)
                         mCoverData[i] = mCoverBehaviors[i].createDataObject(tOldData[i]);
@@ -2440,12 +2442,28 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public boolean wasShutdown() {
-         return mWasShutdown;
+        return mWasShutdown;
+    }
+
+    @Override
+    public boolean wasNotified() {
+        return mWasNotified;
     }
 
     @Override
     public void setShutdownStatus(boolean newStatus) {
-         mWasShutdown = newStatus;
+        mWasShutdown = newStatus;
+    }
+
+    @Override
+    public void setNotificationStatus(boolean newStatus) {
+        mWasNotified = newStatus;
+    }
+
+    @Override
+    public void resetShutdownInformation() {
+        setShutdownStatus(false);
+        setNotificationStatus(false);
     }
 
     @Override

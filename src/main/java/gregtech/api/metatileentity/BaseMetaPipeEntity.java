@@ -192,8 +192,8 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
 
             // check old form of data
             mCoverData = new ISerializableObject[6];
-            if (aNBT.hasKey("mCoverData", 11) && aNBT.getIntArray("mCoverData").length == 6) {
-                int[] tOldData = aNBT.getIntArray("mCoverData");
+            int[] tOldData = aNBT.getIntArray("mCoverData");
+            if (aNBT.hasKey("mCoverData", 11) && tOldData.length == 6) {
                 for (int i = 0; i < tOldData.length; i++) {
                     if(mCoverBehaviors[i] instanceof GT_Cover_Fluidfilter) {
                         final String filterKey = String.format("fluidFilter%d", i);
