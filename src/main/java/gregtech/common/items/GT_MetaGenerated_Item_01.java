@@ -51,7 +51,6 @@ import java.util.Map;
 
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.OrePrefixes.circuitLogic;
-import static gregtech.api.enums.OrePrefixes.circuitPower;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
@@ -808,7 +807,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Cover_PlayerDetector.set(addItem(tLastID = 735, "Player Detector Cover", "Gives out close Players as Redstone", new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Sensor_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_PlayerDetector.get(1L), 3200, 128);
 
-        GregTech_API.registerCover(ItemList.Cover_Controller.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_CONTROLLER)), new GT_Cover_ControlsWork_New());
+        GregTech_API.registerCover(ItemList.Cover_Controller.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_CONTROLLER)), new GT_Cover_ControlsWork());
         GregTech_API.registerCover(ItemList.Cover_ActivityDetector.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(TextureFactory.of(OVERLAY_ACTIVITYDETECTOR), TextureFactory.builder().addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW).glow().build())), new GT_Cover_DoesWork());
         GregTech_API.registerCover(ItemList.Cover_FluidDetector.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_FLUIDDETECTOR)), new GT_Cover_LiquidMeter());
         GregTech_API.registerCover(ItemList.Cover_ItemDetector.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ITEMDETECTOR)), new GT_Cover_ItemMeter());

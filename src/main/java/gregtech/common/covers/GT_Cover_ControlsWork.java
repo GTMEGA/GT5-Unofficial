@@ -1,5 +1,6 @@
 package gregtech.common.covers;
 
+import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
@@ -9,170 +10,168 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.net.GT_Packet_TileEntityCover;
-import gregtech.api.util.GT_CoverBehavior;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.net.GT_Packet_TileEntityCoverNew;
+import gregtech.api.util.*;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 
-public class GT_Cover_ControlsWork extends GT_CoverBehavior {
+import javax.annotation.Nonnull;
 
-    public enum State {
-        RS_HIGH(0), RS_LOW(1), DISABLED(2), RS_HIGH_SAFE(3), RS_LOW_SAFE(4), DISABLED_SAFE(5);
+public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_ControlsWork.InternalData> {
 
-        private final int value;
+    public static class InternalData implements INewCoverData {
 
-        State(int value) {
-            this.value = value;
+        private static final String STATE_FIELD = "state", SAFE_FIELD = "safe";
+
+        private byte state;
+        private boolean safe;
+
+        public InternalData() {
+            this((byte) 0, false);
         }
 
-    }
+        public InternalData(int aLegacyData) {
+            setFromInt(aLegacyData);
+        }
 
-    @Override
-    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        if (aTileEntity instanceof IMachineProgress) {
-            // Get cover variable ignoring safe mode
-            int bCoverVariable = (aCoverVariable > 2) ? aCoverVariable - 3 : aCoverVariable;
-            boolean redstoneActive;
-            if (aInputRedstone > 0) {
-                redstoneActive = bCoverVariable == State.RS_HIGH.value;
+        public InternalData(byte state, boolean safe) {
+            setState(state);
+            setSafe(safe);
+        }
+
+        public static InternalData getSafeDisabled() {
+            return new InternalData((byte) 2, true);
+        }
+
+        public void setFromInt(int aLegacyData) {
+            boolean safe = aLegacyData > 2;
+            setState(safe ? aLegacyData - 3 : aLegacyData);
+            setSafe(safe);
+        }
+
+        @Override
+        public void screwDriverClick() {
+            if (getState() < 2) {
+                setState(getState() + 1);
             } else {
-                redstoneActive = bCoverVariable != State.RS_LOW.value;
+                setState(0);
+                toggleSafe();
             }
-            IMachineProgress machine = (IMachineProgress) aTileEntity;
-            if (aCoverVariable < State.DISABLED.value) {
-                if (redstoneActive) {
-                    if (!machine.isAllowedToWork()) {
-                        machine.enableWorking();
-                    }
-                } else if (machine.isAllowedToWork()) {
-                    machine.disableWorking();
-                }
-                machine.setWorkDataValue(aInputRedstone);
-            } else if (((aCoverVariable == State.DISABLED.value) || (aCoverVariable == State.DISABLED_SAFE.value))) {
-                if (machine.isAllowedToWork()) {
-                    machine.disableWorking();
-                }
+        }
+
+        @Override
+        public void screwDriverClickSneak() {
+            if (getState() > 0) {
+                setState(getState() - 1);
             } else {
-                if (redstoneActive && machine.wasShutdown()) {
-                    if (!machine.wasNotified()) {
-                        String machineName = "gt.blockmachines." + aTileEntity.getInventoryName() + ".name";
-                        machineName = GT_LanguageManager.getTranslation(machineName);
-                        GT_Utility.sendChatToPlayer(getLastPlayer(), machineName + " at " + String.format("(%d, %d, %d)", aTileEntity.getXCoord(), aTileEntity.getYCoord(), aTileEntity.getZCoord()) + " shut down.");
-                        if (aTileEntity instanceof GT_MetaTileEntity_MultiBlockBase) {
-                            GT_MetaTileEntity_MultiBlockBase base = (GT_MetaTileEntity_MultiBlockBase) aTileEntity;
-                            base.getBaseMetaTileEntity().setNotificationStatus(true);
-                            base.getBaseMetaTileEntity().setShutdownStatus(false);
-                        }
-                        return State.DISABLED_SAFE.value;
-                    }
+                setState(2);
+                toggleSafe();
+            }
+        }
+
+        public boolean toggleSafe() {
+            safe = !safe;
+            return safe;
+        }
+
+        public boolean isRSHigh() {
+            return getState() == 0;
+        }
+
+        public boolean isDisabled() {
+            return getState() == 2;
+        }
+
+        public byte getState() {
+            return state;
+        }
+
+        public void setState(byte state) {
+            if (state > 2) {
+                this.state = 0;
+            } else {
+                this.state = state;
+            }
+        }
+
+        public void setState(int state) {
+            setState((byte) state);
+        }
+
+        public boolean isSafe() {
+            return safe;
+        }
+
+        public void setSafe(boolean safe) {
+            this.safe = safe;
+        }
+
+        @Nonnull
+        @Override
+        public ISerializableObject copy() {
+            return new InternalData(state, safe);
+        }
+
+        @Nonnull
+        @Override
+        public NBTBase saveDataToNBT() {
+            NBTTagCompound result = new NBTTagCompound();
+            result.setByte(InternalData.STATE_FIELD, getState());
+            result.setBoolean(InternalData.SAFE_FIELD, isSafe());
+            return result;
+        }
+
+        @Override
+        public void writeToByteBuf(ByteBuf aBuf) {
+            aBuf.writeByte(state);
+            aBuf.writeBoolean(safe);
+        }
+
+        @Override
+        public void loadDataFromNBT(NBTBase aNBT) {
+            if (aNBT instanceof NBTBase.NBTPrimitive) {
+                setFromInt(((NBTBase.NBTPrimitive) aNBT).func_150287_d());
+            } else {
+                NBTTagCompound compound = (NBTTagCompound) aNBT;
+                if (compound.hasKey(STATE_FIELD, 1)) {
+                    setState(compound.getByte(STATE_FIELD));
                 } else {
-                    return 3 + doCoverThings(aSide, aInputRedstone, aCoverID, bCoverVariable, aTileEntity, aTimer);
+                    setState(0);
+                }
+                if (compound.hasKey(SAFE_FIELD, 1)) {
+                    setSafe(compound.getBoolean(SAFE_FIELD));
+                } else {
+                    setSafe(false);
                 }
             }
         }
-        return aCoverVariable;
-    }
 
-    @Override
-    public boolean letsEnergyIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean letsEnergyOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean letsFluidIn(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean letsFluidOut(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean letsItemsIn(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean letsItemsOut(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean onCoverRemoval(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, boolean aForced) {
-        if ((aTileEntity instanceof IMachineProgress)) {
-            ((IMachineProgress) aTileEntity).enableWorking();
-            ((IMachineProgress) aTileEntity).setWorkDataValue((byte) 0);
+        @Nonnull
+        @Override
+        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
+            setState(aBuf.readByte());
+            setSafe(aBuf.readBoolean());
+            return this;
         }
-        return true;
-    }
-
-    @Override
-    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        aCoverVariable = (aCoverVariable + (aPlayer.isSneaking() ? -1 : 1)) % 6;
-        if (aCoverVariable == State.RS_HIGH.value) {
-            GT_Utility.sendChatToPlayer(aPlayer, trans("003", "Enable with Signal"));
-        }
-        if (aCoverVariable == State.RS_LOW.value) {
-            GT_Utility.sendChatToPlayer(aPlayer, trans("004", "Disable with Signal"));
-        }
-        if (aCoverVariable == State.DISABLED.value) {
-            GT_Utility.sendChatToPlayer(aPlayer, trans("005", "Disabled"));
-        }
-        if (aCoverVariable == State.RS_HIGH_SAFE.value) {
-            GT_Utility.sendChatToPlayer(aPlayer, trans("505", "Enable with Signal (Safe)"));
-        }
-        if (aCoverVariable == State.RS_LOW_SAFE.value) {
-            GT_Utility.sendChatToPlayer(aPlayer, trans("506", "Disable with Signal (Safe)"));
-        }
-        if (aCoverVariable == State.DISABLED_SAFE.value) {
-            GT_Utility.sendChatToPlayer(aPlayer, trans("507", "Disabled (Safe)"));
-        }
-        if (aTileEntity instanceof IGregTechTileEntity && aCoverVariable != State.DISABLED.value && aCoverVariable != State.DISABLED_SAFE.value) {
-            IGregTechTileEntity base = (IGregTechTileEntity) aTileEntity;
-            base.enableWorking();
-        }
-        return super.onCoverScrewdriverclick(aSide, aCoverID, aCoverVariable, aTileEntity, aPlayer, aX, aY, aZ);
-    }
-
-    @Override
-    public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return 1;
-    }
-
-    /**
-     * GUI Stuff
-     */
-
-    @Override
-    public boolean hasCoverGUI() {
-        return true;
-    }
-
-    @Override
-    public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity) {
-        return new GT_Cover_ControlsWork.GUI(aSide, aCoverID, coverData, aTileEntity);
     }
 
     private class GUI extends GT_GUICover {
         private final byte side;
         private final int coverID;
-        private int coverVariable;
+        private final InternalData coverVariable;
 
         private static final int startX = 10;
         private static final int startY = 25;
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+        public GUI(byte aSide, int aCoverID, InternalData aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
             this.side = aSide;
             this.coverID = aCoverID;
@@ -182,7 +181,7 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
             new GT_GuiIconButton(this, 1, startX + spaceX * 0, startY + spaceY * 1, GT_GuiIcon.REDSTONE_OFF);
             new GT_GuiIconButton(this, 2, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.CROSS);
 
-            new GT_GuiIconCheckButton(this, 3, startX + spaceX * 0, startY + spaceY * 3, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS).setChecked(aCoverVariable > 2);
+            new GT_GuiIconCheckButton(this, 3, startX + spaceX * 0, startY + spaceY * 3, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS).setChecked(aCoverVariable.isSafe());
         }
 
         @Override
@@ -206,10 +205,10 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
                 if (bID == 3) {
                     ((GT_GuiIconCheckButton) btn).toggle();
                 } else {
-                    coverVariable = getNewCoverVariable(bID);
+                    coverVariable.setState((byte) bID);
                 }
                 adjustCoverVariable();
-                GT_Values.NW.sendToServer(new GT_Packet_TileEntityCover(side, coverID, coverVariable, tile));
+                GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
             }
             updateButtons();
         }
@@ -222,28 +221,194 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
             }
         }
 
-        private int getNewCoverVariable(int id) {
-            return id;
-        }
-
         private boolean getClickable(int id) {
-            return ((id != coverVariable && id != coverVariable - 3) || id == 3);
+            return (id != coverVariable.state || id == 3);
         }
 
         private void adjustCoverVariable() {
             boolean safeMode = ((GT_GuiIconCheckButton) buttonList.get(3)).isChecked();
-            if (safeMode && coverVariable <= State.DISABLED.value) {
-                coverVariable += 3;
+            if (safeMode && !coverVariable.isSafe()) {
+                coverVariable.setSafe(true);
             }
-            if (!safeMode && coverVariable > State.DISABLED.value) {
-                coverVariable -= 3;
+            if (!safeMode && coverVariable.isSafe()) {
+                coverVariable.setSafe(false);
             }
-            if (tile instanceof IGregTechTileEntity && coverVariable != State.DISABLED.value && coverVariable != State.DISABLED_SAFE.value) {
+            if (tile instanceof IGregTechTileEntity && !coverVariable.isDisabled()) {
                 IGregTechTileEntity base = (IGregTechTileEntity) tile;
                 base.enableWorking();
             }
             setLastPlayer(mc.thePlayer);
         }
 
+    }
+
+    public GT_Cover_ControlsWork() {
+        super(InternalData.class);
+    }
+
+    @Override
+    public InternalData createDataObject(int aLegacyData) {
+        return new InternalData(aLegacyData);
+    }
+
+    @Override
+    public InternalData createDataObject() {
+        return new InternalData();
+    }
+
+    @Override
+    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, InternalData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        return super.isRedstoneSensitiveImpl(aSide, aCoverID, aCoverVariable, aTileEntity, aTimer);
+    }
+
+    @Override
+    protected InternalData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID, InternalData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        if (aTileEntity instanceof IMachineProgress) {
+            boolean redstoneActive;
+            if (aInputRedstone > 0) {
+                redstoneActive = aCoverVariable.isRSHigh();
+            } else {
+                redstoneActive = !aCoverVariable.isRSHigh();
+            }
+            IMachineProgress machine = (IMachineProgress) aTileEntity;
+            if (!aCoverVariable.isSafe()) {
+                if (redstoneActive) {
+                    if (!machine.isAllowedToWork()) {
+                        machine.enableWorking();
+                    }
+                } else if (machine.isAllowedToWork()) {
+                    machine.disableWorking();
+                }
+                machine.setWorkDataValue(aInputRedstone);
+            } else if (aCoverVariable.isDisabled()) {
+                if (machine.isAllowedToWork()) {
+                    machine.disableWorking();
+                }
+            } else {
+                if (redstoneActive && machine.wasShutdown()) {
+                    if (!machine.wasNotified()) {
+                        String machineName = "gt.blockmachines." + aTileEntity.getInventoryName() + ".name";
+                        machineName = GT_LanguageManager.getTranslation(machineName);
+                        GT_Utility.sendChatToPlayer(getLastPlayer(), machineName + " at " + String.format("(%d, %d, %d)", aTileEntity.getXCoord(), aTileEntity.getYCoord(), aTileEntity.getZCoord()) + " shut down.");
+                        if (aTileEntity instanceof GT_MetaTileEntity_MultiBlockBase) {
+                            GT_MetaTileEntity_MultiBlockBase base = (GT_MetaTileEntity_MultiBlockBase) aTileEntity;
+                            base.getBaseMetaTileEntity().setNotificationStatus(true);
+                            base.getBaseMetaTileEntity().setShutdownStatus(false);
+                        }
+                        return InternalData.getSafeDisabled();
+                    }
+                } else {
+                    InternalData modified = (InternalData) aCoverVariable.copy();
+                    modified.setSafe(false);
+                    modified = doCoverThingsImpl(aSide, aInputRedstone, aCoverID, modified, aTileEntity, aTimer);
+                    modified.setSafe(true);
+                    return modified;
+                }
+            }
+        }
+        return aCoverVariable;
+    }
+
+    @Override
+    protected InternalData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, InternalData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        setLastPlayer(aPlayer);
+        if (!aPlayer.isSneaking()) {
+            aCoverVariable.screwDriverClick();
+        } else {
+            aCoverVariable.screwDriverClickSneak();
+        }
+        if (!aCoverVariable.isSafe()) {
+            switch (aCoverVariable.getState()) {
+                case 0: {
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("003", "Enable with Signal"));
+                    break;
+                }
+                case 1: {
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("004", "Disable with Signal"));
+                    break;
+                }
+                case 2: {
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("005", "Disabled"));
+                } default: {
+                    break;
+                }
+            }
+        } else {
+            switch (aCoverVariable.getState()) {
+                case 0: {
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("505", "Enable with Signal (Safe)"));
+                    break;
+                }
+                case 1: {
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("506", "Disable with Signal (Safe)"));
+                    break;
+                }
+                case 2: {
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("507", "Disabled (Safe)"));
+                } default: {
+                    break;
+                }
+            }
+        }
+        if (aTileEntity instanceof IGregTechTileEntity && !aCoverVariable.isDisabled()) {
+            IGregTechTileEntity base = (IGregTechTileEntity) aTileEntity;
+            base.enableWorking();
+        }
+        return aCoverVariable;
+    }
+
+    @Override
+    protected Object getClientGUIImpl(byte aSide, int aCoverID, InternalData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
+        return new GT_Cover_ControlsWork.GUI(aSide, aCoverID, aCoverVariable, aTileEntity);
+    }
+
+    @Override
+    protected boolean onCoverRemovalImpl(byte aSide, int aCoverID, InternalData aCoverVariable, ICoverable aTileEntity, boolean aForced) {
+        if ((aTileEntity) instanceof IMachineProgress) {
+            IMachineProgress bTileEntity = (IMachineProgress) aTileEntity;
+            bTileEntity.enableWorking();
+            bTileEntity.setWorkDataValue((byte) 0);
+        }
+        return true;
+    }
+
+    @Override
+    protected boolean letsEnergyInImpl(byte aSide, int aCoverID, InternalData aCoverVariable, ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    protected boolean letsEnergyOutImpl(byte aSide, int aCoverID, InternalData aCoverVariable, ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    protected boolean letsFluidInImpl(byte aSide, int aCoverID, InternalData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    protected boolean letsFluidOutImpl(byte aSide, int aCoverID, InternalData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    protected boolean letsItemsInImpl(byte aSide, int aCoverID, InternalData aCoverVariable, int aSlot, ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    protected boolean letsItemsOutImpl(byte aSide, int aCoverID, InternalData aCoverVariable, int aSlot, ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    public boolean hasCoverGUI() {
+        return true;
+    }
+
+    @Override
+    protected int getTickRateImpl(byte aSide, int aCoverID, InternalData aCoverVariable, ICoverable aTileEntity) {
+        return 1;
     }
 }
