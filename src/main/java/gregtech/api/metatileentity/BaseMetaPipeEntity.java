@@ -356,12 +356,16 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                             }
 
                             if (mTickTimer > 10) {
-                                if (mConnections != oTextureData) sendBlockEvent((byte) 0, oTextureData = mConnections);
+                                if (mConnections != oTextureData)
+                                    sendBlockEvent((byte) 0, oTextureData = mConnections);
                                 byte tData = mMetaTileEntity.getUpdateData();
-                                if (tData != oUpdateData) sendBlockEvent((byte) 1, oUpdateData = tData);
-                                if (mColor != oColor) sendBlockEvent((byte) 2, oColor = mColor);
+                                if (tData != oUpdateData)
+                                    sendBlockEvent((byte) 1, oUpdateData = tData);
+                                if (mColor != oColor)
+                                    sendBlockEvent((byte) 2, oColor = mColor);
                                 tData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0) | ((mSidedRedstone[2] > 0) ? 4 : 0) | ((mSidedRedstone[3] > 0) ? 8 : 0) | ((mSidedRedstone[4] > 0) ? 16 : 0) | ((mSidedRedstone[5] > 0) ? 32 : 0));
-                                if (tData != oRedstoneData) sendBlockEvent((byte) 3, oRedstoneData = tData);
+                                if (tData != oRedstoneData)
+                                    sendBlockEvent((byte) 3, oRedstoneData = tData);
                             }
 
                             if (mNeedsBlockUpdate) {
