@@ -180,7 +180,7 @@ public class GT_MetaGenerated_Item_03
         GregTech_API.registerCover(ItemList.Cover_SolarPanel_UEV.get(1L), TextureFactory.of(SOLARPANEL_UEV), new GT_Cover_SolarPanel(8388608));
         GregTech_API.registerCover(ItemList.Cover_SolarPanel_UIV.get(1L), TextureFactory.of(SOLARPANEL_UIV), new GT_Cover_SolarPanel(33554432));
 
-        ItemList.ULV_Coil.set(addItem(tLastID = 140, "Magnetic Coil ULV", "Tin Coil", o));
+        ItemList.ULV_Coil.set(addItem(tLastID = 140, "Magnetic Coil ULV", "Red Alloy Coil", o));
         ItemList.LV_Coil.set(addItem(tLastID = 141, "Magnetic Coil LV", "Steel Coil", o));
         ItemList.MV_Coil.set(addItem(tLastID = 142, "Magnetic Coil MV", "Stainless Coil", o));
         ItemList.HV_Coil.set(addItem(tLastID = 143, "Magnetic Coil HV", "Energetic Coil", o));
