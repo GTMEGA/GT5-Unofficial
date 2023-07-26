@@ -311,7 +311,4 @@ public class GT_Values {
      *  If true, then digital chest with AE2 storage bus will be accessible only through AE2
      */
     public static boolean disableDigitalChestsExternalAccess = false;
-
-    public static boolean renderPipesFullBlock = false;
-
 }

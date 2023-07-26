@@ -4,13 +4,11 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
-import gregtech.api.util.GT_Config;
 import gregtech.common.blocks.GT_Block_Machines;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
@@ -96,7 +94,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer);
         }
         final float thickness = aTileEntity.getThickNess();
-        if (thickness >= 0.99F || GT_Values.renderPipesFullBlock) {
+        if (thickness >= 0.99F) {
             return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer);
         }
         // Range of block occupied by pipe
