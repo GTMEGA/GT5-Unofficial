@@ -1,6 +1,7 @@
 package gregtech.loaders.preload.metatileentity;
 
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Pump;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_DevTank;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumTank;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperTank;
 
@@ -27,6 +28,8 @@ public final class FluidStuffLoader {
         Super_Tank_HV.set(new GT_MetaTileEntity_SuperTank(132, "super.tank.tier.03", "Super Tank III", 3).getStackForm(1L));
         Super_Tank_EV.set(new GT_MetaTileEntity_SuperTank(133, "super.tank.tier.04", "Super Tank IV", 4).getStackForm(1L));
         Super_Tank_IV.set(new GT_MetaTileEntity_SuperTank(134, "super.tank.tier.05", "Super Tank V", 5).getStackForm(1L));
+
+        DEV_TANK.set(new GT_MetaTileEntity_DevTank(749, "dev.tank", "Developer Tank", 10).getStackForm(1L));
 
         Pump_LV.set(new GT_MetaTileEntity_Pump(1140, "basicmachine.pump.tier.01", "Basic Pump", 1).getStackForm(1L));
         Pump_MV.set(new GT_MetaTileEntity_Pump(1141, "basicmachine.pump.tier.02", "Advanced Pump", 2).getStackForm(1L));
