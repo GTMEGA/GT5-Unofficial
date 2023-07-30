@@ -1795,7 +1795,13 @@ public enum ItemList implements IItemContainer {
     UV_Coil,
     UHV_Coil,
 
-    VOLUMETRIC_FLASK;
+    VOLUMETRIC_FLASK,
+
+    // Dev stuff
+    DEV_ITEM_SOURCE,
+    DEV_FLUID_SOURCE,
+    DEV_ENERGY_INPUT_HATCH,
+    DEV_ENERGY_SOURCE;
 	
     public static final ItemList[]
             DYE_ONLY_ITEMS = {

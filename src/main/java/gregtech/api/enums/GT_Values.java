@@ -311,4 +311,10 @@ public class GT_Values {
      *  If true, then digital chest with AE2 storage bus will be accessible only through AE2
      */
     public static boolean disableDigitalChestsExternalAccess = false;
+
+    /**
+     * Allows the game to dump free metatileentity spaces
+     * */
+    public static boolean dump_meta_entity_space = false;
+
 }

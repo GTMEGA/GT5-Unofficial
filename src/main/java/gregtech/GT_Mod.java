@@ -260,9 +260,20 @@ public class GT_Mod implements IGT_Mod {
             }
             try {
                 GT_Log.pal = new PrintStream(GT_Log.mPlayerActivityLogFile);
-            } catch (Throwable ignored) {
-            }
+            } catch (Throwable ignored) {}
         }
+        if (tMainConfig.get(aTextGeneral, "MTEDefrag", false, "Shows free MTE space in the event of a conflict").getBoolean(false)) {
+            GT_Log.mMTELogFile = new File(aEvent.getModConfigurationDirectory().getParent(), "logs/MetaTileEntity.log");
+            if (!GT_Log.mMTELogFile.exists()) {
+                try {
+                    GT_Log.mMTELogFile.createNewFile();
+                } catch (Throwable ignored) {}
+            }
+            try {
+                GT_Log.mte = new PrintStream(GT_Log.mMTELogFile);
+            } catch (Throwable ignored) {}
+        }
+
         try {
             List<String> tList = ((GT_Log.LogBuffer) GT_Log.ore).mBufferedOreDictLog;
             GT_Log.ore.println("******************************************************************************");
@@ -283,6 +294,7 @@ public class GT_Mod implements IGT_Mod {
         GT_Values.hideAssLineRecipes = tMainConfig.get(aTextGeneral, "hide assline recipes", false).getBoolean(false);
         GT_Values.updateFluidDisplayItems = tMainConfig.get(aTextGeneral, "update fluid display items", true).getBoolean(true);
         GT_Values.allow_broken_recipemap = tMainConfig.get(aTextGeneral, "debug allow broken recipemap", false).getBoolean(false);
+        GT_Values.dump_meta_entity_space = tMainConfig.get(aTextGeneral, "MTEDefrag", true, "Shows free MTE space in the event of a conflict").getBoolean(true);
         GT_Values.debugCleanroom = tMainConfig.get(aTextGeneral, "debugCleanroom", false).getBoolean(false);
         GT_Values.debugDriller = tMainConfig.get(aTextGeneral, "debugDriller", false).getBoolean(false);
         GT_Values.debugWorldGen = tMainConfig.get(aTextGeneral, "debugWorldGen", false).getBoolean(false);

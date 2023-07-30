@@ -17,10 +17,13 @@ public class GT_Log {
     public static PrintStream ore = new LogBuffer();
     public static PrintStream pal = null;
     public static PrintStream exp = new LogBuffer();
+    public static PrintStream mte = null;
     public static File mLogFile;
     public static File mOreDictLogFile;
     public static File mPlayerActivityLogFile;
     public static File mExplosionLog;
+
+    public static File mMTELogFile;
 
     public static class LogBuffer extends PrintStream {
         public final List<String> mBufferedOreDictLog = new ArrayList<String>();

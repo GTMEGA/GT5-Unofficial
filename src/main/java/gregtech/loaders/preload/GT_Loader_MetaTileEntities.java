@@ -5,19 +5,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.common.tileentities.machines.basic.*;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineFluid;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineItem;
-import gregtech.loaders.preload.metatileentity.BasicGeneratorLoader;
-import gregtech.loaders.preload.metatileentity.BasicMachineLoader;
-import gregtech.loaders.preload.metatileentity.CableLoader;
-import gregtech.loaders.preload.metatileentity.CasingRecipeLoader;
-import gregtech.loaders.preload.metatileentity.FluidPipeLoader;
-import gregtech.loaders.preload.metatileentity.FluidStuffLoader;
-import gregtech.loaders.preload.metatileentity.HatchLoader;
-import gregtech.loaders.preload.metatileentity.HullLoader;
-import gregtech.loaders.preload.metatileentity.ItemPipeLoader;
-import gregtech.loaders.preload.metatileentity.ItemStuffLoader;
-import gregtech.loaders.preload.metatileentity.MultiblockMachineLoader;
-import gregtech.loaders.preload.metatileentity.PowerStuffLoader;
-import gregtech.loaders.preload.metatileentity.SteamMachineLoader;
+import gregtech.loaders.preload.metatileentity.*;
 
 import net.minecraft.util.EnumChatFormatting;
 
@@ -63,6 +51,7 @@ public final class GT_Loader_MetaTileEntities implements Runnable {
         FluidPipeLoader.load();
         ItemPipeLoader.load();
         ItemStuffLoader.load();
+        DevLoader.load();
     }
 
     private static void loadLongDistancePipelines() {
