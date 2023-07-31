@@ -23,6 +23,7 @@ import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.graphs.GenerateNodeMap;
 import gregtech.api.graphs.GenerateNodeMapPower;
 import gregtech.api.graphs.Node;
+import gregtech.api.interfaces.IRedstoneSensitive;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
@@ -400,6 +401,14 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                 case 6:
                 case 7:
                     if (aSideServer && mTickTimer > 10) {
+                        if (getMetaTileEntity() instanceof IRedstoneSensitive) {
+                            final IRedstoneSensitive rs = (IRedstoneSensitive) getMetaTileEntity();
+                            for (byte i = 0; i < 6; i++) {
+                                byte rsIn = getInputRedstoneSignal(i);
+                                rs.updateRSValues(i, rsIn);
+                            }
+                            rs.processRS();
+                        }
                         for (byte i = (byte) (tCode - 2); i < 6; i++)
                             if (getCoverIDAtSide(i) != 0) {
                                 tCode++;

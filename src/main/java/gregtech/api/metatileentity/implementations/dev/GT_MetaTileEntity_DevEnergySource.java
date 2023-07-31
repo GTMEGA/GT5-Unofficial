@@ -1,19 +1,29 @@
 package gregtech.api.metatileentity.implementations.dev;
 
 
+import com.google.common.io.ByteArrayDataInput;
+import gregtech.api.interfaces.IAdvancedGUIEntity;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.net.GT_Packet_TileEntityGUI;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.GT_Container_DevEnergySource;
 import gregtech.common.gui.GT_GUIContainer_DevEnergySource;
+import io.netty.buffer.ByteBuf;
 import lombok.Getter;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import org.apache.commons.lang3.ArrayUtils;
+
+import javax.annotation.Nonnull;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
@@ -21,9 +31,87 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 
 
 @Getter
-public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredMachineBlock {
+public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredMachineBlock implements IAdvancedGUIEntity {
 
-    private static final int numSlots = 0;
+    public static class GUIData implements ISerializableObject {
+
+        private int tier;
+
+        private int amps;
+
+        private boolean enabled;
+
+        public GUIData() {
+
+        }
+
+        public GUIData(final GT_MetaTileEntity_DevEnergySource source) {
+            this(source.energyTier, source.amperage, source.enabled);
+        }
+
+        public GUIData(final int tier, final int amps, final boolean enabled) {
+            this.tier = tier;
+            this.amps = amps;
+            this.enabled = enabled;
+        }
+
+        /**
+         * @return
+         */
+        @Nonnull
+        @Override
+        public ISerializableObject copy() {
+            return new GUIData(tier, amps, enabled);
+        }
+
+        /**
+         * @return
+         */
+        @Deprecated
+        @Nonnull
+        @Override
+        public NBTBase saveDataToNBT() {
+            return new NBTTagCompound();
+        }
+
+        /**
+         * Write data to given ByteBuf
+         * The data saved this way is intended to be stored for short amount of time over network.
+         * DO NOT store it to disks.
+         *
+         * @param aBuf
+         */
+        @Override
+        public void writeToByteBuf(final ByteBuf aBuf) {
+            aBuf.writeInt(tier);
+            aBuf.writeInt(amps);
+            aBuf.writeBoolean(enabled);
+        }
+
+        /**
+         * @param aNBT
+         */
+        @Deprecated
+        @Override
+        public void loadDataFromNBT(final NBTBase aNBT) {
+
+        }
+
+        /**
+         * Read data from given parameter and return this.
+         * The data read this way is intended to be stored for short amount of time over network.
+         *
+         * @param aBuf
+         * @param aPlayer
+         */
+        @Nonnull
+        @Override
+        public ISerializableObject readFromPacket(final ByteArrayDataInput aBuf, final EntityPlayerMP aPlayer) {
+            return new GUIData(aBuf.readInt(), aBuf.readInt(), aBuf.readBoolean());
+        }
+
+    }
+
 
     private int energyTier = 0;
 
@@ -32,15 +120,13 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     private boolean enabled = true;
 
     public GT_MetaTileEntity_DevEnergySource(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 16, numSlots, new String[]{
+        super(aID, aName, aNameRegional, 15, 0, new String[]{
                 "Draws unlimited energy from quirks of the quantum foam", "You ARE supposed to have this, aren't you?"
         });
     }
 
-    public GT_MetaTileEntity_DevEnergySource(
-            String aName, int mTier, String[] aDescriptionArray, ITexture[][][] aTextures
-                                            ) {
-        super(aName, mTier, numSlots, aDescriptionArray, aTextures);
+    public GT_MetaTileEntity_DevEnergySource(String aName, String[] aDescriptionArray, ITexture[][][] aTextures) {
+        super(aName, 16, 0, aDescriptionArray, aTextures);
     }
 
     public void zeroOut() {
@@ -67,7 +153,7 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_DevEnergySource(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new GT_MetaTileEntity_DevEnergySource(this.mName, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
@@ -99,8 +185,7 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
 
     @Override
     public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive,
-            boolean aRedstone
+            IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone
                                 ) {
         final int color = aColorIndex + 1;
         return mTextures[aSide == aFacing ? 0 : 1][color];
@@ -195,8 +280,7 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     @Override
     public String[] getDescription() {
         final String flavor =
-                String.format("Generating %d amps of %s power (%d Eu/t)%s", amperage, tierName(), maxEUTheoretical() * amperage,
-                              enabled ? "" : " [Disabled]");
+                String.format("Generating %d amps of %s power (%d Eu/t)%s", amperage, tierName(), maxEUTheoretical() * amperage, enabled ? "" : " [Disabled]");
         return ArrayUtils.addAll(mDescriptionArray, flavor);
     }
 
@@ -237,5 +321,39 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         markDirty();
     }
 
+
+    /**
+     * Get the packet representing the current state of the TE
+     */
+    @Override
+    public ISerializableObject getData() {
+        return new GUIData(this);
+    }
+
+    /**
+     * Receive and accept the packet
+     *
+     * @param data
+     * @param player
+     */
+    @Override
+    public void receiveGuiData(final ISerializableObject data, final EntityClientPlayerMP player) {
+        if (data instanceof GUIData) {
+            setEnergyTier(((GUIData) data).tier);
+            setAmperage(((GUIData) data).amps);
+            this.enabled = ((GUIData) data).enabled;
+            markDirty();
+        }
+    }
+
+    /**
+     * Decodes the packet, machine type specific
+     *
+     * @param aData
+     */
+    @Override
+    public ISerializableObject decodePacket(final ByteArrayDataInput aData) {
+        return new GUIData().readFromPacket(aData, null);
+    }
 
 }
