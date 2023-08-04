@@ -75,8 +75,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_AE;
-import static gregtech.api.enums.GT_Values.MOD_ID_FR;
+import static gregtech.api.enums.GT_Values.*;
+
 
 @SuppressWarnings("ALL")
 @Mod(modid = "gregtech", name = "GregTech", version = "MC1710", useMetadata = false,
@@ -214,9 +214,11 @@ public class GT_Mod implements IGT_Mod {
         GregTech_API.mTConstruct = Loader.isModLoaded("TConstruct");
         GregTech_API.mGalacticraft = Loader.isModLoaded("GalacticraftCore");
         GregTech_API.mAE2 = Loader.isModLoaded(MOD_ID_AE);
+        GregTech_API.mNEI = Loader.isModLoaded(MOD_ID_NEI);
         GT_Log.out.println("GT_Mod: Are you there Translocator? " + GregTech_API.mTranslocator);
         GT_Log.out.println("GT_Mod: Are you there TConstruct? " + GregTech_API.mTConstruct);
         GT_Log.out.println("GT_Mod: Are you there GalacticraftCore? " + GregTech_API.mGalacticraft);
+        GT_Log.out.println("GT_Mod: Are you there NEI? " + GregTech_API.mNEI);
 
         GT_Log.mLogFile = new File(aEvent.getModConfigurationDirectory().getParentFile(), "logs/GregTech.log");
         if (!GT_Log.mLogFile.exists()) {

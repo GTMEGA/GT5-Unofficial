@@ -12,6 +12,8 @@ public class GT_GuiIntegerTextBox extends GuiTextField implements IGuiScreen.IGu
     public final int id;
     private boolean enabled;
 
+    private GT_GuiTooltip tooltip = null;
+
     public GT_GuiIntegerTextBox(IGuiScreen gui, int id, int x, int y, int width, int height) {
         super(Minecraft.getMinecraft().fontRenderer, x, y, width, height);
         super.setText("");
@@ -32,6 +34,28 @@ public class GT_GuiIntegerTextBox extends GuiTextField implements IGuiScreen.IGu
     @Override
     public void draw(int mouseX, int mouseY, float parTicks) {
         super.drawTextBox();
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public GT_GuiTooltip getTooltip() {
+        return tooltip;
+    }
+
+    /**
+     * @param text
+     * @return
+     */
+    @Override
+    public IGuiScreen.IGuiElement setTooltipText(final String... text) {
+        if (tooltip == null) {
+            this.tooltip = new GT_GuiTooltip(getBounds(), text);
+        } else {
+            this.tooltip.setToolTipText(text);
+        }
+        return this;
     }
 
     public Rectangle getBounds() {

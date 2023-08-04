@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 
+
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
  * <p/>
@@ -53,6 +54,7 @@ public class GT_GUIContainer extends GuiContainer {
             }
         }
     }
+
     /*
     @Override
     protected void drawSlotInventory(Slot par1Slot) {

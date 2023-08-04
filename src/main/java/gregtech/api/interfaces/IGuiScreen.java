@@ -11,6 +11,15 @@ public interface IGuiScreen {
     interface IGuiElement {
         void onInit();
         void draw(int mouseX, int mouseY, float parTicks);
+
+        GT_GuiTooltip getTooltip();
+
+        IGuiElement setTooltipText(String... text);
+
+        default boolean inBounds(final int mouseX, final int mouseY, final int clickType) {
+            return false;
+        }
+
     }
 
     void addToolTip(GT_GuiTooltip toolTip);

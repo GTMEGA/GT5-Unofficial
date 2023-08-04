@@ -6,9 +6,11 @@ import net.minecraft.client.gui.GuiButton;
 import org.lwjgl.opengl.GL11;
 import java.awt.Rectangle;
 
-public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElement {
+public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
     public static final int DEFAULT_WIDTH = 16;
     public static final int DEFAULT_HEIGHT = 16;
+
+    public IGT_GuiButtonHook hook = null;
 
     protected GT_GuiIcon icon;
     private int x0, y0;
@@ -77,8 +79,10 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
     @Override
     public void mouseReleased(int mouseX, int mouseY) {
         this.gui.clearSelectedButton();
-        if(mousePressed(Minecraft.getMinecraft(), mouseX, mouseY))
+        if(mousePressed(Minecraft.getMinecraft(), mouseX, mouseY)) {
+            this.onClick(this.gui, mouseX, mouseY);
             this.gui.buttonClicked(this);
+        }
     }
 
     public GT_GuiIcon getButtonTexture(boolean mouseOver) {
@@ -98,11 +102,13 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
         return this;
     }
 
+    @Override
     public GT_GuiTooltip getTooltip() {
         return tooltip;
     }
 
-    public GT_GuiIconButton setTooltipText(String... text) {
+    @Override
+    public IGuiScreen.IGuiElement setTooltipText(String... text) {
         if (tooltip == null)
             tooltip = new GT_GuiTooltip(getBounds(), text);
         else
@@ -114,4 +120,23 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
     public Rectangle getBounds() {
         return new Rectangle(x0, y0, width, height);
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public IGT_GuiButtonHook getOnClickBehavior() {
+        return hook;
+    }
+
+    /**
+     * @param hook
+     * @return
+     */
+    @Override
+    public IGT_GuiButton setOnClickBehavior(final IGT_GuiButtonHook hook) {
+        this.hook = hook;
+        return IGT_GuiButton.super.setOnClickBehavior(hook);
+    }
+
 }

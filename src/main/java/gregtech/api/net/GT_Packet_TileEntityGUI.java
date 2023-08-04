@@ -6,7 +6,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IAdvancedGUIEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
@@ -15,12 +14,14 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import org.lwjgl.Sys;
+import net.minecraftforge.common.DimensionManager;
 
 
 public class GT_Packet_TileEntityGUI extends GT_Packet_New {
 
     protected int mID;
+
+    protected int dimID;
 
     protected int mX;
 
@@ -30,16 +31,22 @@ public class GT_Packet_TileEntityGUI extends GT_Packet_New {
 
     protected ISerializableObject data;
 
+    public static GT_Packet_TileEntityGUI createFromMachine(IAdvancedGUIEntity entity, final int dimension) {
+        IGregTechTileEntity gtEntity = entity.getBaseMetaTileEntity();
+        return new GT_Packet_TileEntityGUI(gtEntity.getMetaTileID(), dimension, gtEntity.getXCoord(), gtEntity.getYCoord(), gtEntity.getZCoord(),
+                                           entity.getData());
+    }
+
     public GT_Packet_TileEntityGUI() {
         super(true);
     }
 
     public GT_Packet_TileEntityGUI(
-            final int mID, final int x, final short y, final int z,
-            final ISerializableObject data
+            final int mID, final int dimID, final int x, final short y, final int z, final ISerializableObject data
                                   ) {
         super(false);
         this.mID = mID;
+        this.dimID = dimID;
         this.mX = x;
         this.mY = y;
         this.mZ = z;
@@ -63,15 +70,14 @@ public class GT_Packet_TileEntityGUI extends GT_Packet_New {
      */
     @Override
     public void process(final IBlockAccess aWorld) {
-        if (aWorld instanceof World) {
-            EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-            TileEntity tile = aWorld.getTileEntity(mX, mY, mZ);
-            if (tile instanceof IGregTechTileEntity && ((IGregTechTileEntity) tile).getMetaTileEntity() instanceof IAdvancedGUIEntity) {
-                if (data != null) {
-                    ((IAdvancedGUIEntity) (((IGregTechTileEntity) tile).getMetaTileEntity())).receiveGuiData(this.data, player);
-                } else {
-                    GT_Log.err.println("Got bad gui packet :/");
-                }
+        final World world = DimensionManager.getWorld(dimID);
+        EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+        TileEntity tile = world.getTileEntity(mX, mY, mZ);
+        if (tile instanceof IGregTechTileEntity && ((IGregTechTileEntity) tile).getMetaTileEntity() instanceof IAdvancedGUIEntity) {
+            if (data != null) {
+                ((IAdvancedGUIEntity) (((IGregTechTileEntity) tile).getMetaTileEntity())).receiveGuiData(this.data, player);
+            } else {
+                GT_Log.err.println("Got bad gui packet :/");
             }
         }
     }
@@ -82,6 +88,7 @@ public class GT_Packet_TileEntityGUI extends GT_Packet_New {
     @Override
     public void encode(final ByteBuf aOut) {
         aOut.writeInt(mID);
+        aOut.writeInt(dimID);
         aOut.writeInt(mX);
         aOut.writeShort(mY);
         aOut.writeInt(mZ);
@@ -96,7 +103,8 @@ public class GT_Packet_TileEntityGUI extends GT_Packet_New {
     public GT_Packet_New decode(final ByteArrayDataInput aData) {
         int mID = aData.readInt();
         IAdvancedGUIEntity gui = getGUI(mID);
-        return new GT_Packet_TileEntityGUI(mID, aData.readInt(), aData.readShort(), aData.readInt(), gui != null ? gui.decodePacket(aData) : null);
+        return new GT_Packet_TileEntityGUI(mID, aData.readInt(), aData.readInt(), aData.readShort(), aData.readInt(),
+                                           gui != null ? gui.decodePacket(aData) : null);
     }
 
     public static IAdvancedGUIEntity getGUI(final int mID) {
@@ -111,11 +119,6 @@ public class GT_Packet_TileEntityGUI extends GT_Packet_New {
             gui = (IAdvancedGUIEntity) entity;
         }
         return gui;
-    }
-
-    public static GT_Packet_TileEntityGUI createFromMachine(IAdvancedGUIEntity entity) {
-        IGregTechTileEntity gtEntity = entity.getBaseMetaTileEntity();
-        return new GT_Packet_TileEntityGUI(gtEntity.getMetaTileID(), gtEntity.getXCoord(), gtEntity.getYCoord(), gtEntity.getZCoord(), entity.getData());
     }
 
 }

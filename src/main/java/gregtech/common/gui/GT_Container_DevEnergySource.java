@@ -35,7 +35,7 @@ public class GT_Container_DevEnergySource extends GT_ContainerMetaTile_Machine {
 
     @Override
     public boolean doesBindPlayerInventory() {
-        return false;
+        return true;
     }
 
     @Override

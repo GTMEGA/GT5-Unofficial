@@ -7,13 +7,15 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
-public class GT_GuiFakeItemButton implements IGuiScreen.IGuiElement {
+public class GT_GuiFakeItemButton implements IGT_GuiButton {
 
     private final GT_GuiIcon bgIcon;
     private ItemStack item;
     private IGuiScreen gui;
     private int x0, y0, xPosition, yPosition;
     private int width, height;
+
+    private GT_GuiTooltip tooltip = null;
 
     public GT_GuiFakeItemButton(IGuiScreen gui, int x, int y, GT_GuiIcon bgIcon) {
         this.gui = gui;
@@ -56,6 +58,28 @@ public class GT_GuiFakeItemButton implements IGuiScreen.IGuiElement {
             gui.getItemRenderer().renderItemAndEffectIntoGUI(gui.getFontRenderer(), Minecraft.getMinecraft().getTextureManager(), item, xPosition, yPosition);
 
         GL11.glPopAttrib();
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public GT_GuiTooltip getTooltip() {
+        return tooltip;
+    }
+
+    /**
+     * @param text
+     * @return
+     */
+    @Override
+    public IGuiScreen.IGuiElement setTooltipText(final String... text) {
+        if (tooltip == null) {
+            this.tooltip = new GT_GuiTooltip(getBounds(), text);
+        } else {
+            this.tooltip.setToolTipText(text);
+        }
+        return this;
     }
 
     public Rectangle getBounds() {
