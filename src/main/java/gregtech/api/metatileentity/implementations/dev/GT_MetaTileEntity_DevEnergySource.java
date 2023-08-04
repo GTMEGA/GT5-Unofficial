@@ -7,13 +7,14 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
-import gregtech.api.net.GT_Packet_TileEntityGUI;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.GT_Container_DevEnergySource;
 import gregtech.common.gui.GT_GUIContainer_DevEnergySource;
 import io.netty.buffer.ByteBuf;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -21,7 +22,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nonnull;
@@ -34,39 +34,29 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 @Getter
 public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredMachineBlock implements IAdvancedGUIEntity {
 
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class GUIData implements ISerializableObject {
 
         private int tier;
+
+        private long voltage;
 
         private int amps;
 
         private boolean enabled;
 
-        public GUIData() {
-
-        }
-
-        public GUIData(final GT_MetaTileEntity_DevEnergySource source) {
-            this(source.energyTier, source.amperage, source.enabled);
-        }
-
-        public GUIData(final int tier, final int amps, final boolean enabled) {
-            this.tier = tier;
-            this.amps = amps;
-            this.enabled = enabled;
-        }
-
         /**
-         * @return
+         * @return A copy
          */
         @Nonnull
         @Override
         public ISerializableObject copy() {
-            return new GUIData(tier, amps, enabled);
+            return new GUIData(tier, voltage, amps, enabled);
         }
 
         /**
-         * @return
+         * @return Unused here
          */
         @Deprecated
         @Nonnull
@@ -80,17 +70,18 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
          * The data saved this way is intended to be stored for short amount of time over network.
          * DO NOT store it to disks.
          *
-         * @param aBuf
+         * @param aBuf Buffer to write into
          */
         @Override
         public void writeToByteBuf(final ByteBuf aBuf) {
             aBuf.writeInt(tier);
+            aBuf.writeLong(voltage);
             aBuf.writeInt(amps);
             aBuf.writeBoolean(enabled);
         }
 
         /**
-         * @param aNBT
+         * @param aNBT Unused
          */
         @Deprecated
         @Override
@@ -102,19 +93,21 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
          * Read data from given parameter and return this.
          * The data read this way is intended to be stored for short amount of time over network.
          *
-         * @param aBuf
-         * @param aPlayer
+         * @param aBuf    Buffer
+         * @param aPlayer Player, unused
          */
         @Nonnull
         @Override
         public ISerializableObject readFromPacket(final ByteArrayDataInput aBuf, final EntityPlayerMP aPlayer) {
-            return new GUIData(aBuf.readInt(), aBuf.readInt(), aBuf.readBoolean());
+            return new GUIData(aBuf.readInt(), aBuf.readLong(), aBuf.readInt(), aBuf.readBoolean());
         }
 
     }
 
 
     private int energyTier = 0;
+
+    private long voltage = 0;
 
     private int amperage = 0;
 
@@ -130,28 +123,6 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         super(aName, 16, 0, aDescriptionArray, aTextures);
     }
 
-    public void zeroOut() {
-        setEnergyTier(0);
-        setAmperage(0);
-        markDirty();
-    }
-
-    public void setEnergyTier(final int energyTier) {
-        this.energyTier = energyTier;
-        if (this.energyTier < 0) {
-            this.energyTier = 0;
-        }
-        markDirty();
-    }
-
-    public void setAmperage(final int amperage) {
-        this.amperage = amperage;
-        if (this.amperage < 0) {
-            this.amperage = 0;
-        }
-        markDirty();
-    }
-
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_DevEnergySource(this.mName, this.mDescriptionArray, this.mTextures);
@@ -161,6 +132,7 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     public void saveNBTData(NBTTagCompound aNBT) {
         NBTTagCompound devNBT = new NBTTagCompound();
         devNBT.setBoolean("enabled", this.enabled);
+        devNBT.setLong("voltage", this.voltage);
         devNBT.setInteger("amps", this.amperage);
         devNBT.setInteger("tier", this.energyTier);
         aNBT.setTag("dev", devNBT);
@@ -170,6 +142,7 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     public void loadNBTData(NBTTagCompound aNBT) {
         NBTTagCompound devNBT = aNBT.getCompoundTag("dev");
         this.enabled = devNBT.getBoolean("enabled");
+        this.voltage = devNBT.getLong("voltage");
         this.amperage = devNBT.getInteger("amps");
         this.energyTier = devNBT.getInteger("tier");
     }
@@ -230,7 +203,7 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
 
     @Override
     public long maxEUOutput() {
-        return enabled ? maxEUTheoretical() : 0L;
+        return enabled ? voltage : 0L;
     }
 
     @Override
@@ -274,14 +247,10 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         return new GT_GUIContainer_DevEnergySource(aPlayerInventory, aBaseMetaTileEntity);
     }
 
-    public long maxEUTheoretical() {
-        return V[energyTier];
-    }
-
     @Override
     public String[] getDescription() {
-        final String flavor =
-                String.format("Generating %d amps of %s power (%d Eu/t)%s", amperage, tierName(), maxEUTheoretical() * amperage, enabled ? "" : " [Disabled]");
+        final String flavor = String.format(
+                "Generating %d amps of %s power (%d Eu/t)%s", amperage, tierName(), maxEUOutput() * amperage, enabled ? "" : " [Disabled]");
         return ArrayUtils.addAll(mDescriptionArray, flavor);
     }
 
@@ -300,57 +269,54 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         return VN[energyTier];
     }
 
-    public void bumpAmperage(int amount) {
-        this.amperage += amount;
-        if (this.amperage < 0) {
-            this.amperage = 0;
-        }
-        markDirty();
-    }
-
-    public boolean toggleEnabled() {
-        this.enabled = !this.enabled;
-        markDirty();
-        return this.enabled;
-    }
-
-    public void scaleAmperage(final float factor) {
-        this.amperage = (int) (this.amperage * factor);
-        if (this.amperage < 0) {
-            this.amperage = 0;
-        }
-        markDirty();
-    }
-
-
-    /**
-     * Get the packet representing the current state of the TE
-     */
-    @Override
-    public ISerializableObject getData() {
-        return new GUIData(this);
-    }
-
     /**
      * Receive and accept the packet
      *
-     * @param data
-     * @param player
+     * @param data   data to read from
+     * @param player unused
      */
     @Override
     public void receiveGuiData(final ISerializableObject data, final EntityClientPlayerMP player) {
         if (data instanceof GUIData) {
             setEnergyTier(((GUIData) data).tier);
             setAmperage(((GUIData) data).amps);
+            setVoltage(((GUIData) data).voltage);
             this.enabled = ((GUIData) data).enabled;
             markDirty();
         }
     }
 
+    public void setEnergyTier(final int energyTier) {
+        this.energyTier = energyTier;
+        if (this.energyTier < 0) {
+            this.energyTier = 0;
+        }
+        markDirty();
+    }
+
+    public void setAmperage(final int amperage) {
+        this.amperage = amperage;
+        if (this.amperage < 0) {
+            this.amperage = 0;
+        }
+        markDirty();
+    }
+
+    public void setVoltage(final long voltage) {
+        this.voltage = voltage;
+        if (this.voltage < 0) {
+            this.voltage = 0;
+        }
+        if (this.voltage > V[getEnergyTier()]) {
+            this.voltage = V[getEnergyTier()];
+        }
+        this.markDirty();
+    }
+
     /**
      * Decodes the packet, machine type specific
      *
-     * @param aData
+     * @param aData Packet to decipher
      */
     @Override
     public ISerializableObject decodePacket(final ByteArrayDataInput aData) {

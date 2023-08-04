@@ -38,6 +38,8 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
 
     protected final List<GT_GuiIntegerTextBox> textBoxes = new ArrayList<>();
 
+    protected final List<GT_GuiSlider> sliders = new ArrayList<>();
+
     protected final RenderItem itemRenderer = new RenderItem();
 
     protected final GT_GuiTooltipManager tooltipManager = new GT_GuiTooltipManager();
@@ -190,6 +192,9 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
             if (element instanceof GT_GuiIntegerTextBox) {
                 textBoxes.add((GT_GuiIntegerTextBox) element);
             }
+            if (element instanceof GT_GuiSlider) {
+                sliders.add((GT_GuiSlider) element);
+            }
         }
     }
 
@@ -207,10 +212,7 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
     @Override
     protected void mouseClicked(final int mouseX, final int mouseY, final int clickType) {
         super.mouseClicked(mouseX, mouseY, clickType);
-        elements.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType) && (element instanceof GT_GuiSlider)).forEach(element -> {
-            final GT_GuiSlider slider = (GT_GuiSlider) element;
-            slider.onMousePressed(mouseX, mouseY, clickType);
-        });
+        sliders.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType)).forEach(slider -> slider.onMousePressed(mouseX, mouseY, clickType));
     }
 
     /**
@@ -224,10 +226,7 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
     @Override
     protected void mouseMovedOrUp(final int mouseX, final int mouseY, final int clickState) {
         super.mouseMovedOrUp(mouseX, mouseY, clickState);
-        elements.stream().filter(element -> element.inBounds(mouseX, mouseY, clickState) && element instanceof GT_GuiSlider).forEach(element -> {
-            final GT_GuiSlider slider = (GT_GuiSlider) element;
-            slider.onMouseReleased(mouseX, mouseY, clickState);
-        });
+        sliders.forEach(slider -> slider.onMouseReleased(mouseX, mouseY, clickState));
     }
 
     public Slot getClickedSlot() {

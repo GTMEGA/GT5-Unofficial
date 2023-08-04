@@ -14,11 +14,6 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 public interface IAdvancedGUIEntity extends IMetaTileEntity {
 
     /**
-     * Get the packet representing the current state of the TE
-     * */
-    ISerializableObject getData();
-
-    /**
      * Receive and accept the packet
      * */
     void receiveGuiData(final ISerializableObject data, final EntityClientPlayerMP player);

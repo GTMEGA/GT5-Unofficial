@@ -10,7 +10,7 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
     public static final int DEFAULT_WIDTH = 16;
     public static final int DEFAULT_HEIGHT = 16;
 
-    public IGT_GuiButtonHook hook = null;
+    public IGT_GuiButtonHook onClick = null, onInit = null, onUpdate = null;
 
     protected GT_GuiIcon icon;
     private int x0, y0;
@@ -19,6 +19,23 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
 
     private GT_GuiTooltip tooltip;
 
+    /**
+     * @return
+     */
+    @Override
+    public IGT_GuiButtonHook getOnUpdateBehavior() {
+        return onUpdate;
+    }
+
+    /**
+     * @param hook
+     * @return
+     */
+    @Override
+    public IGT_GuiButton setOnUpdateBehavior(final IGT_GuiButtonHook hook) {
+        this.onUpdate = hook;
+        return IGT_GuiButton.super.setOnUpdateBehavior(hook);
+    }
 
     public GT_GuiIconButton(IGuiScreen gui, int id, int x, int y, GT_GuiIcon icon) {
         super(id, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, "");
@@ -74,14 +91,15 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
 
             GL11.glPopAttrib();
         }
+        onUpdate(this.gui, mouseX, mouseY);
     }
 
     @Override
     public void mouseReleased(int mouseX, int mouseY) {
         this.gui.clearSelectedButton();
         if(mousePressed(Minecraft.getMinecraft(), mouseX, mouseY)) {
-            this.onClick(this.gui, mouseX, mouseY);
             this.gui.buttonClicked(this);
+            this.onClick(this.gui, mouseX, mouseY);
         }
     }
 
@@ -126,7 +144,7 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
      */
     @Override
     public IGT_GuiButtonHook getOnClickBehavior() {
-        return hook;
+        return onClick;
     }
 
     /**
@@ -135,7 +153,7 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
      */
     @Override
     public IGT_GuiButton setOnClickBehavior(final IGT_GuiButtonHook hook) {
-        this.hook = hook;
+        this.onClick = hook;
         return IGT_GuiButton.super.setOnClickBehavior(hook);
     }
 

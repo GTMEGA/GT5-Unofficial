@@ -31,10 +31,10 @@ public class GT_Packet_TileEntityGUI extends GT_Packet_New {
 
     protected ISerializableObject data;
 
-    public static GT_Packet_TileEntityGUI createFromMachine(IAdvancedGUIEntity entity, final int dimension) {
+    public static GT_Packet_TileEntityGUI createFromMachine(final IAdvancedGUIEntity entity, final ISerializableObject data, final int dimension) {
         IGregTechTileEntity gtEntity = entity.getBaseMetaTileEntity();
         return new GT_Packet_TileEntityGUI(gtEntity.getMetaTileID(), dimension, gtEntity.getXCoord(), gtEntity.getYCoord(), gtEntity.getZCoord(),
-                                           entity.getData());
+                                           data);
     }
 
     public GT_Packet_TileEntityGUI() {
