@@ -1,12 +1,15 @@
 package gregtech.api.gui.widgets;
 
 import gregtech.api.interfaces.IGuiScreen;
+import lombok.Getter;
+
 
 public class GT_GuiIconCheckButton extends GT_GuiIconButton {
     private final GT_GuiIcon checkedIcon;
     private final GT_GuiIcon normalIcon;
     private final String checkedTooltip;
     private final String normalTooltip;
+    @Getter
     private boolean checked = false;
 
     public GT_GuiIconCheckButton(IGuiScreen gui, int id, int x, int y, GT_GuiIcon checkedIcon, GT_GuiIcon normalIcon) {
@@ -21,23 +24,11 @@ public class GT_GuiIconCheckButton extends GT_GuiIconButton {
         this.normalTooltip = normalTooltip;
     }
 
-    @Override
-    public GT_GuiIcon getButtonTexture(boolean mouseOver) {
-        if (!enabled)
-            return GT_GuiIcon.BUTTON_DISABLED;
-        if (this.equals(super.gui.getSelectedButton()))
-            return mouseOver ? GT_GuiIcon.BUTTON_HIGHLIGHT_DOWN : GT_GuiIcon.BUTTON_DOWN;
-        return mouseOver ? GT_GuiIcon.BUTTON_HIGHLIGHT : GT_GuiIcon.BUTTON_NORMAL;
-    }
-
-    public boolean isChecked() {
-        return checked;
-    }
-
-    public void setChecked(boolean checked) {
+    public GT_GuiIconCheckButton setChecked(boolean checked) {
         super.setIcon(checked ? checkedIcon : normalIcon);
         super.setTooltipText(checked ? checkedTooltip : normalTooltip);
         this.checked = checked;
+        return this;
     }
 
     public boolean toggle() {

@@ -10,7 +10,13 @@ public interface IRedstoneSensitive {
 
     byte[] getRSValues();
 
-    byte getMaxRSValue();
+    default byte getMaxRSValue() {
+        byte max = 0;
+        for (byte i = 0; i < getRSValues().length; i++) {
+            max = (byte) Math.max(max, getRSValues()[i]);
+        }
+        return max;
+    }
 
     default void setMode(final int newMode) {
         setMode(RSControlMode.getMode(newMode));

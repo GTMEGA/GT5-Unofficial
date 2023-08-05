@@ -33,6 +33,7 @@ import java.util.List;
 
 public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT_GuiTooltipManager.GT_IToolTipRenderer, IGuiScreen {
 
+    protected static final boolean debug = false;
 
     protected final List<IGuiElement> elements = new ArrayList<>();
 
@@ -52,8 +53,8 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
 
     public GT_GUIContainer_Plus(final Container aContainer, final String aGuiBackground, final int width, final int height) {
         super(aContainer, aGuiBackground);
-        this.guiWidth = width;
-        this.guiHeight = height;
+        this.guiWidth = this.xSize = width;
+        this.guiHeight = this.ySize = height;
     }
 
     /**
@@ -162,6 +163,11 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         return fontRendererObj;
     }
 
+    @SuppressWarnings("rawtypes")
+    public void drawHoveringText(final List text, final int x, final int y) {
+        this.drawHoveringText(text, x, y, this.fontRendererObj);
+    }
+
     /**
      * @param par1List List of tooltips
      * @param par2     x?
@@ -170,7 +176,7 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
      */
     @Override
     public void drawHoveringText(final List par1List, final int par2, final int par3, final FontRenderer font) {
-        super.drawHoveringText(par1List, par2, par3, fontRendererObj);
+        super.drawHoveringText(par1List, par2, par3, font);
     }
 
     @Override
@@ -205,14 +211,42 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
     /**
      * Called when the mouse is clicked.
      *
-     * @param mouseX
-     * @param mouseY
+     * @param rawMX
+     * @param rawMY
      * @param clickType
      */
     @Override
-    protected void mouseClicked(final int mouseX, final int mouseY, final int clickType) {
-        super.mouseClicked(mouseX, mouseY, clickType);
+    protected void mouseClicked(final int rawMX, final int rawMY, final int clickType) {
+        super.mouseClicked(rawMX, rawMY, clickType);
+        final int mouseX = getMouseX(rawMX);
+        final int mouseY = getMouseY(rawMY);
         sliders.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType)).forEach(slider -> slider.onMousePressed(mouseX, mouseY, clickType));
+        textBoxes.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType)).forEach(this::setFocusedTextBox);
+    }
+
+    /**
+     * @param mouseX Raw mouse X
+     * @return mouseX within Gui
+     */
+    public int getMouseX(final int mouseX) {
+        return mouseX - guiLeft;
+    }
+
+    /**
+     * @param mouseY Raw mouse Y
+     * @return mouseY within Gui
+     */
+    public int getMouseY(final int mouseY) {
+        return mouseY - guiTop;
+    }
+
+    /**
+     * TextBoxes
+     */
+    protected void setFocusedTextBox(GT_GuiIntegerTextBox boxToFocus) {
+        for (GT_GuiIntegerTextBox textBox : textBoxes) {
+            textBox.setFocused(textBox.equals(boxToFocus) && textBox.isEnabled());
+        }
     }
 
     /**
@@ -227,6 +261,87 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
     protected void mouseMovedOrUp(final int mouseX, final int mouseY, final int clickState) {
         super.mouseMovedOrUp(mouseX, mouseY, clickState);
         sliders.forEach(slider -> slider.onMouseReleased(mouseX, mouseY, clickState));
+    }
+
+    /**
+     * Fired when a key is typed. This is the equivalent of KeyListener.keyTyped(KeyEvent e).
+     *
+     * @param c
+     * @param key
+     */
+    @Override
+    protected void keyTyped(final char c, final int key) {
+        GT_GuiIntegerTextBox focusedTextBox = null;
+        for (GT_GuiIntegerTextBox textBox : textBoxes) {
+            if (textBox.isFocused()) {
+                focusedTextBox = textBox;
+            }
+        }
+
+        if (key == 1) { //esc
+            if (focusedTextBox != null) {
+                resetTextBox(focusedTextBox);
+                setFocusedTextBox(null);
+                return;
+            } else {
+                closeScreen();
+            }
+        }
+
+        if (c == '\t') { //tab
+            for (int i = 0; i < textBoxes.size(); i++) {
+                GT_GuiIntegerTextBox box = textBoxes.get(i);
+                if (box.isFocused()) {
+                    applyTextBox(box);
+                    setFocusedTextBox(((i + 1) < textBoxes.size()) ? textBoxes.get(i + 1) : null);
+                    return;
+                }
+            }
+            if (!textBoxes.isEmpty()) {
+                setFocusedTextBox(textBoxes.get(0));
+            }
+            return;
+        }
+
+        if (focusedTextBox != null && focusedTextBox.textboxKeyTyped(c, key)) {
+            return;
+        }
+
+        if (key == 28 && focusedTextBox != null) { // enter
+            applyTextBox(focusedTextBox);
+            setFocusedTextBox(null);
+            return;
+        }
+
+        if (key == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
+            if (focusedTextBox != null) {
+                applyTextBox(focusedTextBox);
+                setFocusedTextBox(null);
+                return;
+            }
+            closeScreen();
+            return;
+        }
+        super.keyTyped(c, key);
+    }
+
+    /**
+     * Reset the given textbox to the last valid value, <b>NOT</b> 0.
+     */
+    public void resetTextBox(GT_GuiIntegerTextBox box) {
+
+    }
+
+    public void closeScreen() {
+        this.mc.displayGuiScreen(null);
+        this.mc.setIngameFocus();
+    }
+
+    /**
+     * Given textbox's value might have changed.
+     */
+    public void applyTextBox(GT_GuiIntegerTextBox box) {
+
     }
 
     public Slot getClickedSlot() {
@@ -557,6 +672,11 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         final Field result = GuiContainer.class.getDeclaredField(name);
         result.setAccessible(true);
         result.set(this, newValue);
+    }
+
+    public int drawString(final String text, final int x, final int y, final int color) {
+        getFontRenderer().drawString(text, x, y, color);
+        return getFontRenderer().getStringWidth(text);
     }
 
     public void setTheSlot(final Slot slot) {

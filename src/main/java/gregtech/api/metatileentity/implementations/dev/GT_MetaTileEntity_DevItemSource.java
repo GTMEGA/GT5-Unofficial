@@ -48,18 +48,6 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_DigitalCh
     }
 
     @Override
-    public byte getMaxRSValue() {
-        byte max = 0;
-        for (int i = 0; i < 6; i++) {
-            final byte cur = getRSValues()[i];
-            if (cur > max) {
-                max = cur;
-            }
-        }
-        return max;
-    }
-
-    @Override
     public void setMode(final RSControlMode newMode) {
         this.redstoneMode = newMode;
     }

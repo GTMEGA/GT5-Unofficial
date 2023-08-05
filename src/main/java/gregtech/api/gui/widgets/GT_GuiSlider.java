@@ -34,9 +34,15 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     private final IGuiScreen gui;
 
-    private final int x;
+    @Getter
+    private int x;
 
-    private final int y;
+    @Getter
+    private int y;
+
+    private int guiX = 0;
+
+    private int guiY = 0;
 
     private final int width;
 
@@ -55,7 +61,7 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     private GT_GuiTooltip tooltip = null;
 
-    private IGT_GuiButtonHook hook = null;
+    private IGT_GuiHook hook = null;
 
     private IOnChange onChange = null;
 
@@ -65,6 +71,12 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
     private int precision = 0;
 
     private ITextHandler textHandler = null;
+
+    private boolean inside = false;
+
+    @Getter
+    @Setter
+    private boolean drawOnDrag = false;
 
     public GT_GuiSlider(
             final int id, final IGuiScreen gui, final int x, final int y, final int width, final int height, double min, double max, final double current
@@ -93,8 +105,8 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
             newMin = newMax;
             newMax = temp;
         }
-        double oldRange = max - min;
-        double oldMin = min;
+        final double oldRange = max - min;
+        final double oldMin = min;
         this.min = newMin;
         this.max = newMax;
         final double newRange = this.max - this.min;
@@ -136,7 +148,7 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
      * @return
      */
     @Override
-    public IGT_GuiButtonHook getOnClickBehavior() {
+    public IGT_GuiHook getOnClickHook() {
         return hook;
     }
 
@@ -145,7 +157,7 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
      * @return
      */
     @Override
-    public IGT_GuiButton setOnClickBehavior(final IGT_GuiButtonHook hook) {
+    public IGuiScreen.IGuiElement setOnClickHook(final IGT_GuiHook hook) {
         this.hook = hook;
         return this;
     }
@@ -158,6 +170,8 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         if (onChange != null) {
             onChange.hook(this);
         }
+        this.guiX = this.x + this.gui.getGuiLeft();
+        this.guiY = this.y + this.gui.getGuiTop();
     }
 
     /**
@@ -169,7 +183,7 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
     public void draw(final int mouseX, final int mouseY, final float parTicks) {
         drawBackground(mouseX, mouseY, parTicks);
         drawInfo(mouseX, mouseY, parTicks);
-        onMouseDragged(mouseX, mouseY, 0);
+        onMouseDragged(mouseX - this.gui.getGuiLeft(), mouseY - this.gui.getGuiTop());
         drawSlide(mouseX, mouseY, parTicks);
     }
 
@@ -199,14 +213,6 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         return new Rectangle(getX(), getY(), getX() + width, getY() + height);
     }
 
-    public int getX() {
-        return x + this.gui.getGuiLeft();
-    }
-
-    public int getY() {
-        return y + this.gui.getGuiTop();
-    }
-
     /**
      * @param mouseX
      * @param mouseY
@@ -215,12 +221,14 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
      */
     @Override
     public boolean inBounds(final int mouseX, final int mouseY, final int clickType) {
-        return mouseX > getX() - width / 20 && mouseX < getX() + width + width / 20 && mouseY > getY() && mouseY < getY() + height;
+        final boolean inside = mouseX > getX() - width / 20 && mouseX < getX() + width + width / 20 && mouseY > getY() && mouseY < getY() + height;
+        this.inside = inside;
+        return inside;
     }
 
-    public void onMouseDragged(final int mouseX, final int mouseY, final int clickType) {
+    public void onMouseDragged(final int mouseX, final int mouseY) {
         if (this.isDragged) {
-            onMousePressed(mouseX, mouseY, clickType);
+            onMousePressed(mouseX, mouseY, 0);
         } else {
             if (this.onChange != null) {
                 this.onChange.hook(this);
@@ -241,19 +249,19 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
     }
 
     public void onMousePressed(final int mouseX, final int mouseY, final int clickType) {
-        if (clickType >= 0 && mouseInBar(mouseX, mouseY, clickType)) {
-            this.current = (double) (mouseX - (getX() + width / 20)) / (double) (this.width - width / 10);
+        if (clickType == 0 && mouseInBar(mouseX, mouseY, clickType)) {
+            this.current = (double) (mouseX - (x + width / 20)) / (double) (this.width - width / 10);
             updateSlider(true);
             this.isDragged = true;
         } else {
             this.isDragged = false;
             updateSlider(true);
         }
-        onClick(this.gui, mouseX, mouseY);
+        onClick(this.gui, mouseX, mouseY, clickType);
     }
 
     public void onMouseReleased(final int mouseX, final int mouseY, final int clickState) {
-        if (clickState == 0 || clickState == 1) {
+        if (clickState == 1) {
             this.isDragged = false;
         }
     }
@@ -270,11 +278,12 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     protected void drawBackground(final int mouseX, final int mouseY, final float parTicks) {
         final int edgeColor, midColor;
-        edgeColor = 0xFF0000FF;
-        midColor = 0x3F0000FF;
-        final int left = getX();
-        final int right = getX() + width;
-        final int midPoint = (int) (getX() + width * current);
+        final int hoverModifier = this.inBounds(mouseX, mouseY, 0) ? 0x00303000 : 0;
+        edgeColor = 0xFF3030FF ^ hoverModifier;
+        midColor = 0x3F3030FF ^ hoverModifier;
+        final int left = guiX;
+        final int right = guiX + width;
+        final int midPoint = (int) (guiX + width * current);
         final int mpLeft;
         final int mpRight;
         if (isDragged) {
@@ -283,8 +292,8 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         } else {
             mpLeft = mpRight = midPoint;
         }
-        drawGradientRect(left, getY(), mpLeft, getY() + height, edgeColor, midColor, false);
-        drawGradientRect(mpRight, getY(), right, getY() + height, midColor, edgeColor, false);
+        drawGradientRect(left, guiY, mpLeft, guiY + height, edgeColor, midColor, false);
+        drawGradientRect(mpRight, guiY, right, guiY + height, midColor, edgeColor, false);
     }
 
     protected int getLogTen(double val) {
@@ -307,61 +316,30 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         return result;
     }
 
-    protected double getMantissa(double amt) {
-        if (amt > 10.0) {
-            while (amt > 10.0) {
-                amt /= 10.0;
-            }
-        } else if (amt < 10.0) {
-            while (amt < 1.0) {
-                amt *= 10.0;
-            }
-        }
-        return amt;
-    }
-
     protected void drawInfo(final int mouseX, final int mouseY, final float parTicks) {
-        final String[] negPrefix = {"", "m", "μ", "p", "f", "a", "z", "y", "q"};
-        final String[] posPrefix = {"", "k", "M", "b", "t", "q", "Q", "s", "S", "o", "n", "d"};
         final String format = String.format("%%.%df", precision);
         String aStr = String.format(format, min);
         String bStr = String.format(format, max);
         final int aWidth = this.gui.getFontRenderer().getStringWidth(aStr);
         int bWidth = this.gui.getFontRenderer().getStringWidth(bStr);
-        int firLoc = getX();
-        int secLoc = getX() + width - bWidth;
-        int aY = getY() + height + Math.max(1, height / 10);
-        int bY = aY;
+        int firLoc = guiX;
+        int secLoc = guiX + width - bWidth;
+        int aY = guiY + height + Math.max(1, height / 10);
         if (aWidth + bWidth > width * 0.8) {
             final double aAbs = Math.abs(min);
             final double bAbs = Math.abs(max);
-            String fmt = String.format("%%.%df%%s", 1);
             if (aAbs > Math.pow(10, 3)) {
-                final int pow = getLogTen(min);
-                final String suffix;
-                if (pow < 0) {
-                    suffix = negPrefix[-pow / 3];
-                } else {
-                    suffix = posPrefix[pow / 3];
-                }
-                aStr = String.format(fmt, min * Math.pow(10, -pow), suffix);
+                aStr = getCompressedString(min);
             }
             if (bAbs > Math.pow(10, 3)) {
-                final int pow = getLogTen(max);
-                final String suffix;
-                if (pow < 0) {
-                    suffix = negPrefix[-pow / 3];
-                } else {
-                    suffix = posPrefix[pow / 3];
-                }
-                bStr = String.format(fmt, max * Math.pow(10, -pow), suffix);
+                bStr = getCompressedString(max);
                 bWidth = this.gui.getFontRenderer().getStringWidth(bStr);
-                secLoc = getX() + width - bWidth;
+                secLoc = guiX + width - bWidth;
             }
         }
         this.gui.getFontRenderer().drawString(aStr, firLoc, aY, textColor());
-        this.gui.getFontRenderer().drawString(bStr, secLoc, bY, textColor());
-        if (isDragged) {
+        this.gui.getFontRenderer().drawString(bStr, secLoc, aY, textColor());
+        if (isDragged && isDrawOnDrag()) {
             final String str;
             if (textHandler == null) {
                 str = String.format(format, getValue());
@@ -369,21 +347,35 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
                 str = textHandler.handle(this);
             }
             final int sWidth = this.gui.getFontRenderer().getStringWidth(str);
-            this.gui.getFontRenderer().drawString(str, mouseX - sWidth / 2, mouseY - height, textColor());
+            this.gui.getFontRenderer().drawString(str, mouseX - sWidth / 2, Math.min(guiY - height * 2, mouseY - height), textColor());
         }
+    }
+
+    private String getCompressedString(final double amt) {
+        final String fmt = String.format("%%.%df%%s", 1);
+        final String[] negPrefix = {"", "m", "μ", "p", "f", "a", "z", "y", "q"};
+        final String[] posPrefix = {"", "k", "M", "b", "t", "q", "Q", "s", "S", "o", "n", "d"};
+        final int pow = getLogTen(amt);
+        final String suffix;
+        if (pow < 0) {
+            suffix = negPrefix[-pow / 3];
+        } else {
+            suffix = posPrefix[pow / 3];
+        }
+        return String.format(fmt, amt * Math.pow(10, -((double)((pow / 3) * 3))), suffix);
     }
 
     protected void drawSlide(final int mouseX, final int mouseY, final float parTicks) {
         final double barWidth = 0.2;
-        final int positionLeft = (int) (getX() + width * (current - barWidth / 2));
-        final int positionRight = (int) (getX() + width * (current + barWidth / 2));
+        final int positionLeft = (int) (guiX + width * (current - barWidth / 2));
+        final int positionRight = (int) (guiX + width * (current + barWidth / 2));
         final int color;
         if (isDragged) {
             color = 0xFF3F3F7F;
         } else {
             color = 0x7F3F3F7F;
         }
-        drawRect(positionLeft, getY(), positionRight, getY() + height, color);
+        drawRect(positionLeft, guiY, positionRight, guiY + height, color);
     }
 
     /**
@@ -438,28 +430,7 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
     }
 
     protected boolean mouseInBar(final int mouseX, final int mouseY, final int clickState) {
-        return mouseX > getX() - width / 20 && mouseX < getX() + width + width / 20;
-    }
-
-    /**
-     * Draws a rectangle with a vertical gradient between the specified colors.
-     *
-     * @param left
-     * @param top
-     * @param right
-     * @param bottom
-     * @param colorA
-     * @param colorB
-     */
-    @Override
-    protected void drawGradientRect(
-            final int left, final int top, final int right, final int bottom, final int colorA, final int colorB
-                                   ) {
-        super.drawGradientRect(left, top, right, bottom, colorA, colorB);
-    }
-
-    protected int sliderBackgroundColor() {
-        return 0xAF7F7FFF;
+        return mouseX > getX() - width / 20 && mouseX < getX() + width + width / 20 && mouseY > getY() - height / 20 && mouseY < getY() + height + height / 20;
     }
 
 }

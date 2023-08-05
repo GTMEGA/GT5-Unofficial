@@ -1,6 +1,7 @@
 package gregtech.api.gui.widgets;
 
 import gregtech.api.interfaces.IGuiScreen;
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import org.lwjgl.opengl.GL11;
@@ -10,8 +11,9 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
     public static final int DEFAULT_WIDTH = 16;
     public static final int DEFAULT_HEIGHT = 16;
 
-    public IGT_GuiButtonHook onClick = null, onInit = null, onUpdate = null;
+    public IGT_GuiHook onClick = null, onInit = null, onUpdate = null;
 
+    @Getter
     protected GT_GuiIcon icon;
     private int x0, y0;
     protected IGuiScreen gui;
@@ -19,11 +21,13 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
 
     private GT_GuiTooltip tooltip;
 
+    private int updateCooldown = 0;
+
     /**
      * @return
      */
     @Override
-    public IGT_GuiButtonHook getOnUpdateBehavior() {
+    public IGT_GuiHook getOnUpdateBehavior() {
         return onUpdate;
     }
 
@@ -32,7 +36,7 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
      * @return
      */
     @Override
-    public IGT_GuiButton setOnUpdateBehavior(final IGT_GuiButtonHook hook) {
+    public IGuiScreen.IGuiElement setOnUpdateBehavior(final IGT_GuiHook hook) {
         this.onUpdate = hook;
         return IGT_GuiButton.super.setOnUpdateBehavior(hook);
     }
@@ -91,7 +95,7 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
 
             GL11.glPopAttrib();
         }
-        onUpdate(this.gui, mouseX, mouseY);
+        onUpdate(this.gui, mouseX, mouseY, 0);
     }
 
     @Override
@@ -99,7 +103,7 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
         this.gui.clearSelectedButton();
         if(mousePressed(Minecraft.getMinecraft(), mouseX, mouseY)) {
             this.gui.buttonClicked(this);
-            this.onClick(this.gui, mouseX, mouseY);
+            this.onClick(this.gui, mouseX, mouseY, 1);
         }
     }
 
@@ -112,9 +116,6 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
         return mouseOver ? GT_GuiIcon.BUTTON_HIGHLIGHT : GT_GuiIcon.BUTTON_NORMAL;
     }
 
-    public GT_GuiIcon getIcon() {
-        return icon;
-    }
     public GT_GuiIconButton setIcon(GT_GuiIcon icon) {
         this.icon = icon;
         return this;
@@ -143,7 +144,7 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
      * @return
      */
     @Override
-    public IGT_GuiButtonHook getOnClickBehavior() {
+    public IGT_GuiHook getOnClickHook() {
         return onClick;
     }
 
@@ -152,9 +153,25 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
      * @return
      */
     @Override
-    public IGT_GuiButton setOnClickBehavior(final IGT_GuiButtonHook hook) {
+    public IGuiScreen.IGuiElement setOnClickHook(final IGT_GuiHook hook) {
         this.onClick = hook;
-        return IGT_GuiButton.super.setOnClickBehavior(hook);
+        return IGT_GuiButton.super.setOnClickHook(hook);
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public int getUpdateCooldown() {
+        return updateCooldown;
+    }
+
+    /**
+     * @param val
+     */
+    @Override
+    public void setUpdateCooldown(final int val) {
+        this.updateCooldown = val;
     }
 
 }
