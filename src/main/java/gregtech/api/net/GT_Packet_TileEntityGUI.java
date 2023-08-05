@@ -71,7 +71,7 @@ public class GT_Packet_TileEntityGUI extends GT_Packet_New {
     @Override
     public void process(final IBlockAccess aWorld) {
         final World world = DimensionManager.getWorld(dimID);
-        EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+        EntityClientPlayerMP player = null;
         TileEntity tile = world.getTileEntity(mX, mY, mZ);
         if (tile instanceof IGregTechTileEntity && ((IGregTechTileEntity) tile).getMetaTileEntity() instanceof IAdvancedGUIEntity) {
             if (data != null) {
