@@ -41,18 +41,7 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
 
 
     public GT_ContainerMetaTile_Machine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
-        super(aInventoryPlayer, aTileEntity);
-
-        mTileEntity = aTileEntity;
-
-        if (mTileEntity != null && mTileEntity.getMetaTileEntity() != null) {
-            addSlots(aInventoryPlayer);
-            if (doesBindPlayerInventory())
-                bindPlayerInventory(aInventoryPlayer);
-            detectAndSendChanges();
-        } else {
-            aInventoryPlayer.player.openContainer = aInventoryPlayer.player.inventoryContainer;
-        }
+        this(aInventoryPlayer, aTileEntity, true);
     }
 
     public GT_ContainerMetaTile_Machine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean doesBindInventory) {

@@ -149,7 +149,7 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         devNBT.setBoolean("enabled", this.enabled);
         devNBT.setLong("voltage", this.voltage);
         devNBT.setInteger("amps", this.amperage);
-        devNBT.setInteger("rsMode", this.rsMode.ordinal());
+        rsMode.saveNBTData(devNBT);
         devNBT.setInteger("tier", this.energyTier);
         aNBT.setTag("dev", devNBT);
     }
@@ -160,7 +160,7 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         this.enabled = devNBT.getBoolean("enabled");
         this.voltage = devNBT.getLong("voltage");
         this.amperage = devNBT.getInteger("amps");
-        this.rsMode = RSControlMode.getMode(devNBT.getInteger("rsMode"));
+        this.rsMode = RSControlMode.loadFromNBTData(devNBT);
         this.energyTier = devNBT.getInteger("tier");
         processRS();
     }
@@ -179,8 +179,7 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     public ITexture[] getTexture(
             IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone
                                 ) {
-        final int color = aColorIndex + 1;
-        return mTextures[aSide == aFacing ? 0 : 1][color];
+        return mTextures[aSide == aFacing ? 0 : 1][aColorIndex + 1];
     }
 
     @Override

@@ -19,8 +19,17 @@ import java.util.List;
  * Main Container-Class, used for all my GUIs
  */
 public class GT_Container extends Container {
+
     public IGregTechTileEntity mTileEntity;
     public InventoryPlayer mPlayerInventory;
+
+    protected int getGuiWidth() {
+        return 176;
+    }
+
+    protected int getGuiHeight() {
+        return 166;
+    }
 
     public GT_Container(InventoryPlayer aPlayerInventory, IGregTechTileEntity aTileEntityInventory) {
 
@@ -87,15 +96,67 @@ public class GT_Container extends Container {
         return false;
     }
 
-    protected void bindPlayerInventory(InventoryPlayer aInventoryPlayer) {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 9; j++) {
-                addSlotToContainer(new Slot(aInventoryPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-            }
-        }
+    protected int getXSlotOffset(final InventoryPlayer aInventoryPlayer, final int row) {
+        return (getGuiWidth() - slotsInRow(aInventoryPlayer, row) * getXSlotSpacing()) / 2 + xBump();
+    }
 
-        for (int i = 0; i < 9; i++) {
-            addSlotToContainer(new Slot(aInventoryPlayer, i, 8 + i * 18, 142));
+    protected int xBump() {
+        return 1;
+    }
+
+    protected int getXSlotSpacing() {
+        return 18;
+    }
+
+    protected int getYSlotOffset() {
+        return getGuiHeight() - (getHotBarOffset() + getNumRows() * getYSlotSpacing()) + yBump();
+    }
+
+    protected int yBump() {
+        return -6;
+    }
+
+    protected int getYSlotSpacing() {
+        return 18;
+    }
+
+    protected int getHotBarOffset() {
+        return 4;
+    }
+
+    protected int slotsInRow(final InventoryPlayer aInventoryPlayer, final int row) {
+        return getPlayerInventorySize(aInventoryPlayer) / getNumRows();
+    }
+
+    protected int getPlayerInventorySize(final InventoryPlayer aInventoryPlayer) {
+        return aInventoryPlayer.mainInventory.length;
+    }
+
+    protected int getNumRows() {
+        return 4;
+    }
+
+    protected void bindPlayerInventory(final InventoryPlayer aInventoryPlayer) {
+        final int nRows = getNumRows();
+        final int numSlots = getPlayerInventorySize(aInventoryPlayer);
+        int total = 0;
+        final int ySlotSpacing = getYSlotSpacing(), xSlotSpacing = getXSlotSpacing();
+        final int hotBarSpacing = getHotBarOffset();
+        for (int i = 0;  i < nRows; i++) {
+            final int nSlotsInRow = slotsInRow(aInventoryPlayer, i);
+            final boolean isHB = i == 0;
+            final int y = getYSlotOffset() + (isHB ? hotBarSpacing + nRows * ySlotSpacing : 0) + (i - 1) * ySlotSpacing;
+            final int xOffset = getXSlotOffset(aInventoryPlayer, i);
+            for (int j = 0; j < nSlotsInRow; j++) {
+                if (total >= numSlots) {
+                    return;
+                }
+                final int index, x;
+                index = j + i * nSlotsInRow;
+                x = xOffset + j * xSlotSpacing;
+                addSlotToContainer(new Slot(aInventoryPlayer, index, x, y));
+                total += 1;
+            }
         }
     }
 
