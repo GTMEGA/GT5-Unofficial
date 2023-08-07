@@ -9,8 +9,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -71,11 +69,10 @@ public class GT_Packet_TileEntityGUI extends GT_Packet_New {
     @Override
     public void process(final IBlockAccess aWorld) {
         final World world = DimensionManager.getWorld(dimID);
-        EntityClientPlayerMP player = null;
         TileEntity tile = world.getTileEntity(mX, mY, mZ);
         if (tile instanceof IGregTechTileEntity && ((IGregTechTileEntity) tile).getMetaTileEntity() instanceof IAdvancedGUIEntity) {
             if (data != null) {
-                ((IAdvancedGUIEntity) (((IGregTechTileEntity) tile).getMetaTileEntity())).receiveGuiData(this.data, player);
+                ((IAdvancedGUIEntity) (((IGregTechTileEntity) tile).getMetaTileEntity())).receiveGuiData(this.data);
             } else {
                 GT_Log.err.println("Got bad gui packet :/");
             }

@@ -17,7 +17,6 @@ import io.netty.buffer.ByteBuf;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -299,11 +298,10 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     /**
      * Receive and accept the packet
      *
-     * @param data   data to read from
-     * @param player unused
+     * @param data data to read from
      */
     @Override
-    public void receiveGuiData(final ISerializableObject data, final EntityClientPlayerMP player) {
+    public void receiveGuiData(final ISerializableObject data) {
         if (data instanceof GUIData) {
             setEnergyTier(((GUIData) data).tier);
             setAmperage(((GUIData) data).amps);

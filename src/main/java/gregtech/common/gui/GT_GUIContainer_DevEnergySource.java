@@ -29,9 +29,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
             if (screen instanceof GT_GUIContainer_DevEnergySource && button instanceof GT_GuiIconCheckButton) {
                 ((GT_GuiIconCheckButton) button).setChecked(((GT_GUIContainer_DevEnergySource) screen).getSource().isEnabled());
             }
-        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
-            button.setUpdateCooldown(20);
-        });
+        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
         new GT_GuiIconButton(this, 1, 24, 8, GT_GuiIcon.MATH_ZERO).setTooltipText("Sets amperage and voltage to 0");
         addRedstoneButton();
         addVoltTierSlider();
@@ -157,6 +155,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
             final int l = (int) Math.max(0, i);
             getSource().setAmperage(l);
         }
+        box.setUpdateCooldown(20);
         box.setText(String.valueOf(i));
         getSource().sendPacket();
     }
