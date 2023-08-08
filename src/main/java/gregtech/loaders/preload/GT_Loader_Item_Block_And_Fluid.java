@@ -17,6 +17,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.*;
 import gregtech.common.items.*;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -220,7 +221,9 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockLongDistancePipes = new GT_Block_LongDistancePipe();
         GregTech_API.sBlockConcretes = new GT_Block_Concretes();
         GregTech_API.sBlockStones = new GT_Block_Stones();
-        GregTech_API.sBlockOres1 = new GT_Block_Ores();
+//        GregTech_API.sBlockOres1 = new GT_Block_Ores();
+        GregTech_API.sBlockOres1 = Blocks.stone;
+        GT_Block_Ore.registerOres();
 
         GregTech_API.sBlockMetal1 = new GT_Block_Metal("gt.blockmetal1", new Materials[]{
                 Materials.Adamantium,
