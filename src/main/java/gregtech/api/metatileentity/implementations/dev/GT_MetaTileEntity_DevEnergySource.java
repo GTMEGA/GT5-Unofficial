@@ -135,7 +135,7 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     }
 
     public GT_MetaTileEntity_DevEnergySource(String aName, String[] aDescriptionArray, ITexture[][][] aTextures) {
-        super(aName, 16, 0, aDescriptionArray, aTextures);
+        super(aName, 15, 0, aDescriptionArray, aTextures);
     }
 
     @Override

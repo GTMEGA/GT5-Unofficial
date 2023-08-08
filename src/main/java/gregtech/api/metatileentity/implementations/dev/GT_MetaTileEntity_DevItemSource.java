@@ -58,7 +58,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_DevItemSource(mName, mDescriptionArray, mTextures);
+        return new GT_MetaTileEntity_DevItemSource(this.mName, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
@@ -252,10 +252,18 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
         return super.getStackInSlot(aIndex);
     }
 
+    /**
+     * @return
+     */
+    @Override
+    public boolean isSimpleMachine() {
+        return false;
+    }
+
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide() && !aPlayer.capabilities.isCreativeMode) {
-            return false;
+        if (aBaseMetaTileEntity.isClientSide()) {
+            return true;
         }
         aBaseMetaTileEntity.openGUI(aPlayer);
         return true;

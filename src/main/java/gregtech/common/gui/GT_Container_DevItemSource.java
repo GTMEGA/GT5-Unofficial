@@ -25,14 +25,6 @@ public class GT_Container_DevItemSource extends GT_ContainerMetaTile_Machine {
     }
 
     /**
-     * Is Player-Inventory visible?
-     */
-    @Override
-    public boolean doesBindPlayerInventory() {
-        return super.doesBindPlayerInventory();
-    }
-
-    /**
      * @param aSlotIndex
      * @param aMouseclick
      * @param aShifthold
@@ -41,7 +33,16 @@ public class GT_Container_DevItemSource extends GT_ContainerMetaTile_Machine {
      */
     @Override
     public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold, final EntityPlayer aPlayer) {
-        return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
+        final ItemStack itemStack = super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
+        return itemStack;
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void detectAndSendChanges() {
+        super.detectAndSendChanges();
     }
 
 }

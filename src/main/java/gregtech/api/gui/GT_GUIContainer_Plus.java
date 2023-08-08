@@ -344,6 +344,9 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
 
     }
 
+    /**
+     * @return private field clickedSlot, only usable with touchscreens, but I wanted parity
+     */
     public Slot getClickedSlot() {
         try {
             return (Slot) getField("clickedSlot");
@@ -388,6 +391,11 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
 
     public int getDimension() {
         return this.mc.thePlayer.dimension;
+    }
+
+    public int drawString(final String text, final int x, final int y, final int color) {
+        getFontRenderer().drawString(text, x, y, color);
+        return getFontRenderer().getStringWidth(text);
     }
 
     @Override
@@ -609,8 +617,11 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         }
     }
 
+    /**
+     * @return whether to automatically generate slots
+     * */
     protected boolean autoDrawSlots() {
-        return true;
+        return false;
     }
 
     protected void drawSlot(final Slot slot) {
@@ -672,11 +683,6 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         final Field result = GuiContainer.class.getDeclaredField(name);
         result.setAccessible(true);
         result.set(this, newValue);
-    }
-
-    public int drawString(final String text, final int x, final int y, final int color) {
-        getFontRenderer().drawString(text, x, y, color);
-        return getFontRenderer().getStringWidth(text);
     }
 
     public void setTheSlot(final Slot slot) {

@@ -162,6 +162,7 @@ public class GT_Container extends Container {
 
     @Override
     public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
+        System.out.printf("%s %s %s %s%n", aPlayer, this, aPlayer.openContainer, aPlayer.worldObj.isRemote);
         mTileEntity.markDirty();
 
         if (aSlotIndex >= 0) {
