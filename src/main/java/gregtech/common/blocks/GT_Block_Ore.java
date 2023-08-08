@@ -23,7 +23,10 @@ public class GT_Block_Ore extends GT_Generic_Block {
     private final ITexture[] textures;
 
     protected GT_Block_Ore(Materials oreType, GT_Block_Ore_StoneType stoneType) {
-        super(GT_Item_Ores.class, String.join(".", "gt.blockore", oreType.mName, stoneType.name()), Material.rock);
+        super(GT_Item_Ores.class,
+              String.join(".", "gt.blockore", oreType.mName, stoneType.name().toLowerCase()),
+              Material.rock);
+
         this.setStepSound(soundTypeStone);
         this.setCreativeTab(GregTech_API.TAB_GREGTECH_ORES);
         this.oreType = oreType;
@@ -38,7 +41,7 @@ public class GT_Block_Ore extends GT_Generic_Block {
                (GregTech_API.sGeneratedMaterials[i].mTypes & 0x8) != 0) {
                 registerOresForMaterial(material);
             }
-//
+
 //                if (GT_LanguageManager.i18nPlaceholder)
 //                    GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + (j * 1000)) + aTextName, getLocalizedNameFormat(GregTech_API.sGeneratedMaterials[i]));
 //                else
@@ -59,9 +62,52 @@ public class GT_Block_Ore extends GT_Generic_Block {
     private static void registerOresForMaterial(Materials oreType) {
         for (val stoneType : GT_Block_Ore_StoneType.values()) {
             if (stoneType.isEnabled) {
-                new GT_Block_Ore(oreType, stoneType);
+                val ore = new GT_Block_Ore(oreType, stoneType);
+
+                val oreNameUnlocalized = ore.getUnlocalizedName() + ".0.name";
+
+                String oreNameLocalized;
+                if (GT_LanguageManager.i18nPlaceholder)
+                    oreNameLocalized = String.format(getLocalizedNameFormat(oreType), oreType.mLocalizedName);
+                else
+                    oreNameLocalized = getLocalizedName(oreType);
+
+                GT_LanguageManager.addStringLocalization(oreNameUnlocalized, oreNameLocalized);
             }
         }
+    }
+
+    private static String getLocalizedNameFormat(Materials aMaterial) {
+        switch (aMaterial.mName) {
+            case "InfusedAir":
+            case "InfusedDull":
+            case "InfusedEarth":
+            case "InfusedEntropy":
+            case "InfusedFire":
+            case "InfusedOrder":
+            case "InfusedVis":
+            case "InfusedWater":
+                return "%s Infused Stone";
+            case "Vermiculite":
+            case "Bentonite":
+            case "Kaolinite":
+            case "Talc":
+            case "BasalticMineralSand":
+            case "GraniticMineralSand":
+            case "GlauconiteSand":
+            case "CassiteriteSand":
+            case "GarnetSand":
+            case "QuartzSand":
+            case "Pitchblende":
+            case "FullersEarth":
+                return "%s";
+            default:
+                return "%s" + OrePrefixes.ore.mLocalizedMaterialPost;
+        }
+    }
+
+    private static String getLocalizedName(Materials aMaterial) {
+        return aMaterial.getDefaultLocalizedNameForItem(getLocalizedNameFormat(aMaterial));
     }
 
     private static ITexture getOreTexture(Materials oreType) {
