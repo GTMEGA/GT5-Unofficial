@@ -9,17 +9,18 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.render.GT_Renderer_Block;
 import lombok.val;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public class GT_Block_Ore extends GT_Generic_Block {
     private static boolean hideUnusedOresInNEI = Loader.isModLoaded("NotEnoughItems") &&
                                                  GT_Mod.gregtechproxy.mHideUnusedOres;
     private final Materials oreType;
+    private final GT_Block_Ore_StoneType stoneType;
     private final ITexture[] textures;
 
     protected GT_Block_Ore(Materials oreType, GT_Block_Ore_StoneType stoneType) {
@@ -30,6 +31,7 @@ public class GT_Block_Ore extends GT_Generic_Block {
         this.setStepSound(soundTypeStone);
         this.setCreativeTab(GregTech_API.TAB_GREGTECH_ORES);
         this.oreType = oreType;
+        this.stoneType = stoneType;
         this.textures = new ITexture[] { stoneType.texture, getOreTexture(this.oreType) };
     }
 
@@ -37,8 +39,7 @@ public class GT_Block_Ore extends GT_Generic_Block {
         for (int i = 1; i < GregTech_API.sGeneratedMaterials.length; i++) {
             val material = GregTech_API.sGeneratedMaterials[i];
 
-            if (GregTech_API.sGeneratedMaterials[i] != null &&
-               (GregTech_API.sGeneratedMaterials[i].mTypes & 0x8) != 0) {
+            if (material != null && (material.mTypes & 0x8) != 0) {
                 registerOresForMaterial(material);
             }
 
@@ -143,5 +144,25 @@ public class GT_Block_Ore extends GT_Generic_Block {
     @Override
     public boolean isBlockNormalCube() {
         return true;
+    }
+
+    @Override
+    public float getBlockHardness(World world, int x, int y, int z) {
+        return 1.0F + this.stoneType.baseBlockHarvestLevel;
+    }
+
+    @Override
+    public int getHarvestLevel(int metadata) {
+        return this.stoneType.baseBlockHarvestLevel;
+    }
+
+    @Override
+    public String getHarvestTool(int metadata) {
+        return "pickaxe";
+    }
+
+    @Override
+    public IIcon getIcon(int side, int meta) {
+        return this.stoneType.icon.get();
     }
 }
