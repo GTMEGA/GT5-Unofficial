@@ -112,44 +112,6 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
         return false;
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound aNBT) {
-        super.readFromNBT(aNBT);
-        this.mMetaData = aNBT.getShort("m");
-        this.mNatural = aNBT.getBoolean("n");
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound aNBT) {
-        super.writeToNBT(aNBT);
-        aNBT.setShort("m", this.mMetaData);
-        aNBT.setBoolean("n", this.mNatural);
-    }
-
-    public void onUpdated() {
-        if ((!this.worldObj.isRemote) && (this.mBlocked)) {
-            this.mBlocked = false;
-            GT_Values.NW.sendPacketToAllPlayersInRange(this.worldObj, new GT_Packet_Ores(this.xCoord, (short) this.yCoord, this.zCoord, this.mMetaData), this.xCoord, this.zCoord);
-        }
-    }
-
-    @Override
-    public Packet getDescriptionPacket() {
-        if (!this.worldObj.isRemote) {
-            if (!(this.mBlocked = (
-                    GT_Utility.isOpaqueBlock(this.worldObj, this.xCoord + 1, this.yCoord, this.zCoord) &&
-                    GT_Utility.isOpaqueBlock(this.worldObj, this.xCoord - 1, this.yCoord, this.zCoord) &&
-                    GT_Utility.isOpaqueBlock(this.worldObj, this.xCoord, this.yCoord + 1, this.zCoord) &&
-                    GT_Utility.isOpaqueBlock(this.worldObj, this.xCoord, this.yCoord - 1, this.zCoord) &&
-                    GT_Utility.isOpaqueBlock(this.worldObj, this.xCoord, this.yCoord, this.zCoord + 1) &&
-                    GT_Utility.isOpaqueBlock(this.worldObj, this.xCoord, this.yCoord, this.zCoord - 1)
-            ))) {
-                GT_Values.NW.sendPacketToAllPlayersInRange(this.worldObj, new GT_Packet_Ores(this.xCoord, (short) this.yCoord, this.zCoord, this.mMetaData), this.xCoord, this.zCoord);
-            }
-        }
-        return null;
-    }
-
     public void overrideOreBlockMaterial(Block aOverridingStoneBlock, byte aOverridingStoneMeta) {
         if (this.worldObj == null || blockType == null) return;
         this.mMetaData = ((short) (int) (this.mMetaData % 1000L + this.mMetaData / 16000L * 16000L));
@@ -189,15 +151,6 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
             ((GT_TileEntity_Ores) tTileEntity).mMetaData = aMeta;
             this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, getHarvestData(aMeta, ((GT_Block_Ores_Abstract) tTileEntity.blockType).getBaseBlockHarvestLevel(aMeta % 16000 / 1000)), 0);
         }
-    }
-
-    public short getMetaData() {
-        return this.mMetaData;
-    }
-
-    @Override
-    public boolean canUpdate() {
-        return false;
     }
 
     public ArrayList<ItemStack> getDrops(Block aDroppedOre, int aFortune) {

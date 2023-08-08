@@ -29,7 +29,14 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
 
     @Override
     public OrePrefixes[] getProcessingPrefix() { //Must have 8 entries; an entry can be null to disable automatic recipes.
-        return new OrePrefixes[]{OrePrefixes.ore, OrePrefixes.oreNetherrack, OrePrefixes.oreEndstone, OrePrefixes.oreBlackgranite, OrePrefixes.oreRedgranite, OrePrefixes.oreMarble, OrePrefixes.oreBasalt, null};
+        return new OrePrefixes[]{ OrePrefixes.ore,
+                                  OrePrefixes.oreNetherrack,
+                                  OrePrefixes.oreEndstone,
+                                  OrePrefixes.oreBlackgranite,
+                                  OrePrefixes.oreRedgranite,
+                                  OrePrefixes.oreMarble,
+                                  OrePrefixes.oreBasalt,
+                                  null };
     }
 
     @Override
@@ -53,12 +60,26 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
 
     @Override
     public Materials[] getDroppedDusts() { //Must have 8 entries; can be null.
-        return new Materials[]{Materials.Stone, Materials.Netherrack, Materials.Endstone, Materials.GraniteBlack, Materials.GraniteRed, Materials.Marble, Materials.Basalt, Materials.Stone};
+        return new Materials[]{ Materials.Stone,
+                                Materials.Netherrack,
+                                Materials.Endstone,
+                                Materials.GraniteBlack,
+                                Materials.GraniteRed,
+                                Materials.Marble,
+                                Materials.Basalt,
+                                Materials.Stone };
     }
 
     @Override
     public boolean[] getEnabledMetas() {
-        return new boolean[]{true, true, true, GT_Mod.gregtechproxy.enableBlackGraniteOres, GT_Mod.gregtechproxy.enableRedGraniteOres, GT_Mod.gregtechproxy.enableMarbleOres, GT_Mod.gregtechproxy.enableBasaltOres, true};
+        return new boolean[]{ true,
+                              true,
+                              true,
+                              GT_Mod.gregtechproxy.enableBlackGraniteOres,
+                              GT_Mod.gregtechproxy.enableRedGraniteOres,
+                              GT_Mod.gregtechproxy.enableMarbleOres,
+                              GT_Mod.gregtechproxy.enableBasaltOres,
+                              true };
     }
 
     @Override

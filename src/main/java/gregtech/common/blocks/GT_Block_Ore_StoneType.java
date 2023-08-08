@@ -25,28 +25,28 @@ public enum GT_Block_Ore_StoneType {
                    () -> Blocks.end_stone.getIcon(0, 0),
                    TextureFactory.of(Blocks.end_stone)),
     BLACK_GRANITE (3,
-                   GT_Mod.gregtechproxy.enableBlackGraniteOres,
+                   GT_Mod.gregtechproxy.enableBlackGraniteOres && false,
                    Textures.BlockIcons.GRANITE_BLACK_STONE::getIcon,
                    TextureFactory.builder()
                                   .addIcon(Textures.BlockIcons.GRANITE_BLACK_STONE)
                                   .stdOrient()
                                   .build()),
     RED_GRANITE   (3,
-                   GT_Mod.gregtechproxy.enableRedGraniteOres,
+                   GT_Mod.gregtechproxy.enableRedGraniteOres && false,
                    Textures.BlockIcons.GRANITE_RED_STONE::getIcon,
                    TextureFactory.builder()
                                  .addIcon(Textures.BlockIcons.GRANITE_RED_STONE)
                                  .stdOrient()
                                  .build()),
     MARBLE        (0,
-                   GT_Mod.gregtechproxy.enableMarbleOres,
+                   GT_Mod.gregtechproxy.enableMarbleOres && false,
                    Textures.BlockIcons.MARBLE_STONE::getIcon,
                    TextureFactory.builder()
                                  .addIcon(Textures.BlockIcons.MARBLE_STONE)
                                  .stdOrient()
                                  .build()),
     BASALT        (0,
-                   GT_Mod.gregtechproxy.enableBasaltOres,
+                   GT_Mod.gregtechproxy.enableBasaltOres && false,
                    Textures.BlockIcons.BASALT_STONE::getIcon,
                    TextureFactory.builder()
                                  .addIcon(Textures.BlockIcons.BASALT_STONE)

@@ -36,9 +36,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements ITileEntityProvider {
-    public static ThreadLocal<GT_TileEntity_Ores> mTemporaryTileEntity = new ThreadLocal();
-    public static boolean FUCKING_LOCK = false;
+public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block  {
     public static boolean tHideOres;
     private final String aTextName = ".name";
     private final String aTextSmall = "Small ";
@@ -79,30 +77,6 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
         return 0;
     }
 
-    @Override
-    public void onNeighborChange(IBlockAccess aWorld, int aX, int aY, int aZ, int aTileX, int aTileY, int aTileZ) {
-        if (!FUCKING_LOCK) {
-            FUCKING_LOCK = true;
-            TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-            if ((tTileEntity instanceof GT_TileEntity_Ores)) {
-                ((GT_TileEntity_Ores) tTileEntity).onUpdated();
-            }
-        }
-        FUCKING_LOCK = false;
-    }
-
-    @Override
-    public void onNeighborBlockChange(World aWorld, int aX, int aY, int aZ, Block aBlock) {
-        if (!FUCKING_LOCK) {
-            FUCKING_LOCK = true;
-            TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-            if ((tTileEntity instanceof GT_TileEntity_Ores)) {
-                ((GT_TileEntity_Ores) tTileEntity).onUpdated();
-            }
-        }
-        FUCKING_LOCK = false;
-    }
-
     public String getLocalizedNameFormat(Materials aMaterial) {
     	switch (aMaterial.mName) {
         case "InfusedAir":
@@ -134,22 +108,6 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
 
     public String getLocalizedName(Materials aMaterial) {
         return aMaterial.getDefaultLocalizedNameForItem(getLocalizedNameFormat(aMaterial));
-    }
-
-    @Override
-    public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int aSide, float par1, float par2, float par3) {
-        if (!aPlayer.isSneaking() || !aPlayer.capabilities.isCreativeMode) {
-            return false;
-        }
-
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (!(tTileEntity instanceof GT_TileEntity_Ores)) {
-            return false;
-        }
-
-        boolean tNatural = (((GT_TileEntity_Ores) tTileEntity).mNatural = !((GT_TileEntity_Ores) tTileEntity).mNatural);
-        GT_Utility.sendChatToPlayer(aPlayer, "Ore \"mNatural\" flag set to: " + tNatural);
-        return true;
     }
 
     @Override
@@ -216,11 +174,6 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     @Override
-    public boolean hasTileEntity(int aMeta) {
-        return true;
-    }
-
-    @Override
     public boolean renderAsNormalBlock() {
         return true;
     }
@@ -228,11 +181,6 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     @Override
     public boolean isOpaqueCube() {
         return true;
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World aWorld, int aMeta) {
-        return createTileEntity(aWorld, aMeta);
     }
 
     @Override
@@ -250,25 +198,6 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     public void registerBlockIcons(IIconRegister aIconRegister) {
     }
 
-    @Override
-    public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (((tTileEntity instanceof GT_TileEntity_Ores))) {
-            return ((GT_TileEntity_Ores) tTileEntity).getMetaData();
-        }
-        return 0;
-    }
-
-    @Override
-    public void breakBlock(World aWorld, int aX, int aY, int aZ, Block par5, int par6) {
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof GT_TileEntity_Ores)) {
-            mTemporaryTileEntity.set((GT_TileEntity_Ores) tTileEntity);
-        }
-        super.breakBlock(aWorld, aX, aY, aZ, par5, par6);
-        aWorld.removeTileEntity(aX, aY, aZ);
-    }
-
     public abstract OrePrefixes[] getProcessingPrefix(); //Must have 8 entries; an entry can be null to disable automatic recipes.
 
     public abstract boolean[] getEnabledMetas(); //Must have 8 entries.
@@ -279,11 +208,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
 
     @Override
     public ArrayList<ItemStack> getDrops(World aWorld, int aX, int aY, int aZ, int aMeta, int aFortune) {
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof GT_TileEntity_Ores)) {
-            return ((GT_TileEntity_Ores) tTileEntity).getDrops(getDroppedBlock(), aFortune);
-        }
-        return mTemporaryTileEntity.get() == null ? new ArrayList() : ((GT_TileEntity_Ores) mTemporaryTileEntity.get()).getDrops(getDroppedBlock(), aFortune);
+        return new ArrayList<>();
     }
 
     @Override

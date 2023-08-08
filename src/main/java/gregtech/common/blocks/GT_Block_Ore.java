@@ -9,12 +9,16 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.render.GT_Renderer_Block;
 import lombok.val;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import java.util.ArrayList;
 
 public class GT_Block_Ore extends GT_Generic_Block {
     private static boolean hideUnusedOresInNEI = Loader.isModLoaded("NotEnoughItems") &&
@@ -129,6 +133,17 @@ public class GT_Block_Ore extends GT_Generic_Block {
             return super.getRenderType();
         }
         return GT_Renderer_Block.INSTANCE.mRenderID;
+    }
+
+    @Override
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+        val drops = new ArrayList<ItemStack>();
+
+        val drop = GT_OreDictUnificator.get(OrePrefixes.oreChunk, this.oreType, Math.max(1L, fortune));
+
+        drops.add(drop);
+
+        return drops;
     }
 
     @Override
