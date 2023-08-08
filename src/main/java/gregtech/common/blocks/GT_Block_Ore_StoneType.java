@@ -16,7 +16,7 @@ public enum GT_Block_Ore_StoneType {
                    true,
                    TextureFactory.of(Blocks.netherrack)),
     ENDSTONE      (0,
-                   true,
+                   false,
                    TextureFactory.of(Blocks.end_stone)),
     BLACK_GRANITE (3,
                    GT_Mod.gregtechproxy.enableBlackGraniteOres,
@@ -42,9 +42,10 @@ public enum GT_Block_Ore_StoneType {
                                  .addIcon(Textures.BlockIcons.BASALT_STONE)
                                  .stdOrient()
                                  .build()),
-
+    //yeah idk what this next one is for, but I copied it over anyways...Maybe it's the magical 8th entry that makes
+    //the preexisting system work?
     NULL          (0,
-                   true,
+                   false,
                    TextureFactory.of(Blocks.stone)),
 
     ;
