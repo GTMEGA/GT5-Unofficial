@@ -11,6 +11,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.render.GT_Renderer_Block;
+import lombok.Getter;
 import lombok.val;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
@@ -20,6 +21,7 @@ import net.minecraft.world.World;
 
 import java.util.ArrayList;
 
+@Getter
 public class GT_Block_Ore extends GT_Generic_Block {
     private static boolean hideUnusedOresInNEI = Loader.isModLoaded("NotEnoughItems") &&
                                                  GT_Mod.gregtechproxy.mHideUnusedOres;
@@ -121,10 +123,6 @@ public class GT_Block_Ore extends GT_Generic_Block {
                              .setRGBA(oreType.mRGBa)
                              .stdOrient()
                              .build();
-    }
-
-    public ITexture[] getTextures() {
-        return this.textures;
     }
 
     @Override

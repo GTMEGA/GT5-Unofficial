@@ -5,11 +5,13 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
 
 import java.util.function.Supplier;
 
+@Getter
 @AllArgsConstructor
 public enum GT_Block_Ore_StoneType {
     STONE         (0,

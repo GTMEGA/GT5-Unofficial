@@ -40,7 +40,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.threads.GT_Runnable_Sound;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.GT_Pollution;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
+import gregtech.common.blocks.GT_Block_Ore;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
@@ -2798,16 +2798,8 @@ public class GT_Utility {
         return GT_OreDictUnificator.getAssociation(aStack) != null && GT_OreDictUnificator.getAssociation(aStack).mPrefix.equals(aPrefix);
     }
 
-    public static final ImmutableSet<String> ORE_BLOCK_CLASSES = ImmutableSet.of(
-            "com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Ores",
-            "com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_SmallOres",
-            "gtPlusPlus.core.block.base.BlockBaseOre"
-    );
-
     public static boolean isOre(Block aBlock, int aMeta) {
-        return (aBlock instanceof GT_Block_Ores_Abstract)
-                || isOre(new ItemStack(aBlock, 1, aMeta))
-                || ORE_BLOCK_CLASSES.contains(aBlock.getClass().getName());
+        return (aBlock instanceof GT_Block_Ore) || isOre(new ItemStack(aBlock, 1, aMeta));
     }
 
     public static boolean isOre(ItemStack aStack) {
@@ -3029,5 +3021,20 @@ public class GT_Utility {
         }
         Vec3 vec31 = vec3.addVector((double) f7 * d3, (double) f6 * d3, (double) f8 * d3);
         return world.func_147447_a(vec3, vec31, par3, !par3, par3);
+    }
+
+    public static boolean isBlockReplaceableForOreGeneration(World world,
+                                                             int x,
+                                                             int y,
+                                                             int z,
+                                                             Block toReplace,
+                                                             Block... blocks) {
+        for (Block block : blocks) {
+            if (toReplace.isReplaceableOreGen(world, x, y, z, block)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

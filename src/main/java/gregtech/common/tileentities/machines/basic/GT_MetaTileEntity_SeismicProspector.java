@@ -12,8 +12,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_UndergroundOil;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.GT_Block_Ore;
 import ic2.core.Ic2Items;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -116,17 +115,12 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
                     for (int f = min; f <= max; f+=step) {
                         for (int g = min; g <= max; g+=step) {
                             Block tBlock = this.getBaseMetaTileEntity().getBlockOffset(f, -i, g);
-                            if ((tBlock instanceof GT_Block_Ores_Abstract)) {
-                                TileEntity tTileEntity = getBaseMetaTileEntity().getWorld().getTileEntity(getBaseMetaTileEntity().getXCoord() + f, getBaseMetaTileEntity().getYCoord() + (-i), getBaseMetaTileEntity().getZCoord() + g);
-                                if ((tTileEntity instanceof GT_TileEntity_Ores)) {
-                                	if(((GT_TileEntity_Ores) tTileEntity).mMetaData < 16000){
-                                    Materials tMaterial = GregTech_API.sGeneratedMaterials[(((GT_TileEntity_Ores) tTileEntity).mMetaData % 1000)];
-                                    if ((tMaterial != null) && (tMaterial != Materials._NULL)) {
-                                        if (!tStringList.contains(tMaterial.mDefaultLocalName)) {
-                                            tStringList.add(tMaterial.mDefaultLocalName);
-                                        }
+                            if (tBlock instanceof GT_Block_Ore) {
+                                Materials tMaterial = ((GT_Block_Ore) tBlock).getOreType();
+                                if ((tMaterial != null) && (tMaterial != Materials._NULL)) {
+                                    if (!tStringList.contains(tMaterial.mDefaultLocalName)) {
+                                        tStringList.add(tMaterial.mDefaultLocalName);
                                     }
-                                  }
                                 }
                             } else {
                                 int tMetaID = getBaseMetaTileEntity().getWorld().getBlockMetadata(getBaseMetaTileEntity().getXCoord() + f, getBaseMetaTileEntity().getYCoord() + (-i), getBaseMetaTileEntity().getZCoord() + g);
