@@ -10,35 +10,42 @@ import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_Renderer_Block;
 import lombok.Getter;
 import lombok.val;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 public class GT_Block_Ore extends GT_Generic_Block {
-    private static boolean hideUnusedOresInNEI = Loader.isModLoaded("NotEnoughItems") &&
-                                                 GT_Mod.gregtechproxy.mHideUnusedOres;
+    private static final boolean hideUnusedOresInNEI = Loader.isModLoaded("NotEnoughItems") &&
+                                                       GT_Mod.gregtechproxy.mHideUnusedOres;
     private final Materials oreType;
-    private final GT_Block_Ore_StoneType stoneType;
     private final ITexture[] textures;
 
-    protected GT_Block_Ore(Materials oreType, GT_Block_Ore_StoneType stoneType) {
+    private static final Map<Materials, GT_Block_Ore> oreMap = new HashMap<>();
+    private static final ITexture stone = TextureFactory.of(Blocks.stone);
+
+    protected GT_Block_Ore(Materials oreType) {
         super(GT_Item_Ores.class,
-              String.join(".", "gt.blockore", oreType.mName, stoneType.name().toLowerCase()),
+              String.join(".", "gt.blockore", oreType.mName),
               Material.rock);
 
         this.setStepSound(soundTypeStone);
         this.setCreativeTab(GregTech_API.TAB_GREGTECH_ORES);
         this.oreType = oreType;
-        this.stoneType = stoneType;
-        this.textures = new ITexture[] { stoneType.texture, getOreTexture(this.oreType) };
+        this.textures = new ITexture[] { stone, getOreTexture(this.oreType) };
     }
 
     public static void registerOres() {
@@ -46,42 +53,52 @@ public class GT_Block_Ore extends GT_Generic_Block {
             val material = GregTech_API.sGeneratedMaterials[i];
 
             if (material != null && (material.mTypes & 0x8) != 0) {
-                registerOresForMaterial(material);
-            }
-
-//                if (GT_LanguageManager.i18nPlaceholder)
-//                    GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + (j * 1000)) + aTextName, getLocalizedNameFormat(GregTech_API.sGeneratedMaterials[i]));
-//                else
-//                    GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + (j * 1000)) + aTextName, getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
-//                GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + ((i + 16000) + (j * 1000)) + aTextName, aTextSmall + (GT_LanguageManager.i18nPlaceholder ? getLocalizedNameFormat(GregTech_API.sGeneratedMaterials[i]) : getLocalizedName(GregTech_API.sGeneratedMaterials[i])));
-//                    if ((GregTech_API.sGeneratedMaterials[i].mTypes & 0x8) != 0 && !aBlockedOres.contains(GregTech_API.sGeneratedMaterials[i])) {
-//                        GT_OreDictUnificator.registerOre(this.getProcessingPrefix()[j] != null ? this.getProcessingPrefix()[j].get(GregTech_API.sGeneratedMaterials[i]) : "", new ItemStack(this, 1, i + (j * 1000)));
-//                        if (tHideOres) {
-//                            if (!(j == 0 && !aHideFirstMeta)) {
-//                                codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + (j * 1000)));
-//                            }
-//                            codechicken.nei.api.API.hideItem(new ItemStack(this, 1, (i + 16000) + (j * 1000)));
-//                        }
-//                    }
-        }
-    }
-
-    private static void registerOresForMaterial(Materials oreType) {
-        for (val stoneType : GT_Block_Ore_StoneType.values()) {
-            if (stoneType.isEnabled) {
-                val ore = new GT_Block_Ore(oreType, stoneType);
+                val ore = new GT_Block_Ore(material);
+                oreMap.put(material, ore);
 
                 val oreNameUnlocalized = ore.getUnlocalizedName() + ".0.name";
 
                 String oreNameLocalized;
                 if (GT_LanguageManager.i18nPlaceholder)
-                    oreNameLocalized = String.format(getLocalizedNameFormat(oreType), oreType.mLocalizedName);
+                    oreNameLocalized = String.format(getLocalizedNameFormat(material), material.mLocalizedName);
                 else
-                    oreNameLocalized = getLocalizedName(oreType);
+                    oreNameLocalized = getLocalizedName(material);
 
                 GT_LanguageManager.addStringLocalization(oreNameUnlocalized, oreNameLocalized);
             }
         }
+    }
+
+    public static GT_Block_Ore getOre(Materials material) {
+        return oreMap.get(material);
+    }
+
+    public static boolean setOreBlock(World world, int x, int y, int z, Materials material, boolean air) {
+        if (!air) {
+            y = Math.min(world.getActualHeight(), Math.max(y, 1));
+        }
+
+        Block tBlock = world.getBlock(x, y, z);
+        GT_Block_Ore ore = getOre(material);
+
+        if ((tBlock != Blocks.air) || air) {
+            if (!GT_Utility.isBlockReplaceableForOreGeneration(world,
+                                                               x,
+                                                               y,
+                                                               z,
+                                                               tBlock,
+                                                               Blocks.stone,
+                                                               Blocks.netherrack,
+                                                               Blocks.end_stone,
+                                                               GregTech_API.sBlockGranites,
+                                                               GregTech_API.sBlockStones)) {
+                return false;
+            }
+            //GT_FML_LOGGER.info(tOreBlock);
+            world.setBlock(x, y, z, ore, 0, 0);
+            return true;
+        }
+        return false;
     }
 
     private static String getLocalizedNameFormat(Materials aMaterial) {
@@ -161,12 +178,12 @@ public class GT_Block_Ore extends GT_Generic_Block {
 
     @Override
     public float getBlockHardness(World world, int x, int y, int z) {
-        return 1.0F + this.stoneType.baseBlockHarvestLevel;
+        return 1.0F;
     }
 
     @Override
     public int getHarvestLevel(int metadata) {
-        return this.stoneType.baseBlockHarvestLevel;
+        return 0;
     }
 
     @Override
@@ -176,6 +193,6 @@ public class GT_Block_Ore extends GT_Generic_Block {
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        return this.stoneType.icon.get();
+        return Blocks.stone.getIcon(0, 0);
     }
 }

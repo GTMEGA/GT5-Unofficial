@@ -221,7 +221,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                 try {
                                     // Adjust the seed so that this layer has a series of unique random numbers.  Otherwise multiple attempts at this same oreseed will get the same offset and X/Z values. If an orevein failed, any orevein with the
                                     // same minimum heights would fail as well.  This prevents that, giving each orevein a unique height each pass through here.
-                                    int placementResult = tWorldGen.executeWorldgenChunkified(this.mWorld, new XSTR( oreveinSeed ^ (tWorldGen.mPrimaryMeta)), this.mBiome, this.mDimensionType, this.mX*16, this.mZ*16, oreseedX*16, oreseedZ*16, this.mChunkGenerator, this.mChunkProvider);
+                                    int placementResult = tWorldGen.executeWorldgenChunkified(this.mWorld, new XSTR( oreveinSeed ^ (tWorldGen.mPrimary.mMetaItemSubID)), this.mBiome, this.mDimensionType, this.mX*16, this.mZ*16, oreseedX*16, oreseedZ*16, this.mChunkGenerator, this.mChunkProvider);
                                     switch(placementResult) {
                                         case GT_Worldgen_GT_Ore_Layer.ORE_PLACED:
                                             if (debugOrevein) GT_Log.out.println(
@@ -310,7 +310,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                     " validOreveins.size()=" + validOreveins.size() + " "
                 );
                 GT_Worldgen_GT_Ore_Layer tWorldGen = validOreveins.get(oreveinSeed);
-                oreveinRNG.setSeed(oreveinSeed ^ (tWorldGen.mPrimaryMeta));  // Reset RNG to only be based on oreseed X/Z and type of vein
+                oreveinRNG.setSeed(oreveinSeed ^ (tWorldGen.mPrimary.mMetaItemSubID));  // Reset RNG to only be based on oreseed X/Z and type of vein
                 int placementResult = tWorldGen.executeWorldgenChunkified(this.mWorld, oreveinRNG, this.mBiome, this.mDimensionType, this.mX*16, this.mZ*16, oreseedX*16, oreseedZ*16, this.mChunkGenerator, this.mChunkProvider);
                 switch( placementResult )
                 {
