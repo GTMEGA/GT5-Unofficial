@@ -1140,7 +1140,8 @@ public class Textures {
         PIPE_RESTRICTOR_DR,
         PIPE_RESTRICTOR_LR,
 
-        OVERLAY_ME_HATCH;
+        OVERLAY_ME_HATCH,
+        MINING_EXPLOSIVE;
 
         /**
          * Icon for Fresh CFoam
