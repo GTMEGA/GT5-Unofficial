@@ -46,7 +46,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
             final int aID, final String aName, final String aNameRegional
                                           ) {
         super(aID, aName, aNameRegional, 15, 3, new String[]{
-                "Synthesizes items from... You know, you don't really care do you?"
+                "Synthesizes items from... You know, you don't really care, do you?"
         });
     }
 
@@ -138,6 +138,14 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
         return mTextures[aSide == aFacing ? 0 : 1][aColorIndex + 1];
     }
 
+    public boolean canOutputItems() {
+        return canRun() && hasItem() && tCount == 0;
+    }
+
+    public boolean canRun() {
+        return active && rsActive;
+    }
+
     public boolean hasItem() {
         return getStored() != null;
     }
@@ -200,7 +208,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
     public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
         if (getBaseMetaTileEntity().isServerSide() && getBaseMetaTileEntity().isAllowedToWork()) {
             if (hasItem() && canRun()) {
-                mInventory[1] = GT_Utility.copyAmount(getAmount(), getAmount());
+                mInventory[1] = GT_Utility.copyAmount(getAmount(), getStored());
             } else {
                 mInventory[1] = null;
             }
@@ -219,47 +227,6 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
         }
     }
 
-    private void moveItems(final IGregTechTileEntity aBaseMetaTileEntity, final IInventory atSide) {
-        final byte sideInputtedInto = aBaseMetaTileEntity.getBackFacing();
-        int[] targetSlots = null;
-        if (atSide instanceof ISidedInventory) {
-            targetSlots = ((ISidedInventory) atSide).getAccessibleSlotsFromSide(sideInputtedInto);
-        }
-        if (targetSlots == null) {
-            targetSlots = new int[atSide.getSizeInventory()];
-            for (int i = 0; i < targetSlots.length; i++) {
-                targetSlots[i] = i;
-            }
-        }
-        int moved = 0;
-        for (int targetSlot: targetSlots) {
-            if (moved >= getAmount()) {
-                break;
-            }
-            moved += GT_Utility.moveStackFromSlotAToSlotB(aBaseMetaTileEntity, atSide, 2, targetSlot, (byte)64, (byte)1, (byte) getStored().getMaxStackSize(), (byte)1);
-        }
-    }
-
-    /**
-     * @param aIndex
-     * @return
-     */
-    @Override
-    public ItemStack getStackInSlot(final int aIndex) {
-        if (aIndex == 2) {
-            return GT_Utility.copyAmount(getAmount(), getStored());
-        }
-        return super.getStackInSlot(aIndex);
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) {
@@ -276,6 +243,43 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
     @Override
     public boolean isFacingValid(final byte aFacing) {
         return true;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public boolean isSimpleMachine() {
+        return false;
+    }
+
+    @Override
+    public int getMaxItemCount() {
+        return 2147483647;
+    }
+
+    /**
+     * @param aIndex
+     * @return
+     */
+    @Override
+    public ItemStack getStackInSlot(final int aIndex) {
+        if (aIndex == 2) {
+            return GT_Utility.copyAmount(getAmount(), getStored());
+        }
+        return super.getStackInSlot(aIndex);
+    }
+
+    /**
+     * @param aSide
+     * @return
+     */
+    @Override
+    public int[] getAccessibleSlotsFromSide(final int aSide) {
+        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+            return new int[]{1};
+        }
+        return new int[]{};
     }
 
     /**
@@ -300,27 +304,6 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
         return new GT_GUIContainer_DevItemSource(aPlayerInventory, aBaseMetaTileEntity);
     }
 
-    @Override
-    public int getMaxItemCount() {
-        return 2147483647;
-    }
-
-    /**
-     * @param aSide
-     * @return
-     */
-    @Override
-    public int[] getAccessibleSlotsFromSide(final int aSide) {
-        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
-            return new int[]{1};
-        }
-        return new int[]{};
-    }
-
-    public boolean canRun() {
-        return active && rsActive;
-    }
-
     private int getAmount() {
         if (perTick) {
             return itemPerTick;
@@ -329,8 +312,26 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
         }
     }
 
-    public boolean canOutputItems() {
-        return canRun() && hasItem() && tCount == 0;
+    private void moveItems(final IGregTechTileEntity aBaseMetaTileEntity, final IInventory atSide) {
+        final byte sideInputtedInto = aBaseMetaTileEntity.getBackFacing();
+        int[] targetSlots = null;
+        if (atSide instanceof ISidedInventory) {
+            targetSlots = ((ISidedInventory) atSide).getAccessibleSlotsFromSide(sideInputtedInto);
+        }
+        if (targetSlots == null) {
+            targetSlots = new int[atSide.getSizeInventory()];
+            for (int i = 0; i < targetSlots.length; i++) {
+                targetSlots[i] = i;
+            }
+        }
+        int moved = 0;
+        for (int targetSlot : targetSlots) {
+            if (moved >= getAmount()) {
+                break;
+            }
+            moved += GT_Utility.moveStackFromSlotAToSlotB(
+                    aBaseMetaTileEntity, atSide, 2, targetSlot, (byte) 64, (byte) 1, (byte) getStored().getMaxStackSize(), (byte) 1);
+        }
     }
 
     private void tickForward() {
@@ -339,6 +340,9 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
     }
 
     private void adjustCount() {
+        if (this.tPeriod <= 0) {
+            this.tPeriod = 1;
+        }
         this.tCount = this.tCount % this.tPeriod;
     }
 

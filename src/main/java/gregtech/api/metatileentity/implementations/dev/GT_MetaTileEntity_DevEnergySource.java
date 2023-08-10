@@ -50,7 +50,7 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         private boolean enabled;
 
         /**
-         * @return A copy
+         * @return
          */
         @Nonnull
         @Override
@@ -59,13 +59,13 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         }
 
         /**
-         * @return Unused here
+         * @return
          */
         @Deprecated
         @Nonnull
         @Override
         public NBTBase saveDataToNBT() {
-            return new NBTTagCompound();
+            return null;
         }
 
         /**
@@ -85,7 +85,7 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         }
 
         /**
-         * @param aNBT Unused
+         * @param aNBT
          */
         @Deprecated
         @Override
@@ -116,11 +116,6 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     private long voltage = 0;
 
     private int amperage = 0;
-
-    protected void setEnabled(final boolean enabled) {
-        this.enabled = enabled;
-        markDirty();
-    }
 
     private boolean enabled = true;
 
@@ -182,6 +177,50 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         return mTextures[aSide == aFacing ? 0 : 1][aColorIndex + 1];
     }
 
+    /**
+     * @return
+     */
+    @Override
+    public RSControlMode getMode() {
+        return rsMode;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public byte[] getRSValues() {
+        return rsValues;
+    }
+
+    /**
+     * @param newMode
+     */
+    @Override
+    public void setMode(final RSControlMode newMode) {
+        if (isValidMode(newMode)) {
+            this.rsMode = newMode;
+        }
+        markDirty();
+    }
+
+    /**
+     * @param side
+     * @param rsSignal
+     */
+    @Override
+    public void updateRSValues(final byte side, final byte rsSignal) {
+        rsValues[side] = rsSignal;
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void processRS() {
+        rsEnabled = getMode().checkPredicate(getMaxRSValue());
+    }
+
     @Override
     public boolean onWrenchRightClick(
             byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ
@@ -223,17 +262,17 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         return canRun() ? voltage : 0L;
     }
 
+    @Override
+    public long maxAmperesOut() {
+        return canRun() ? amperage : 0;
+    }
+
     /**
      * How many Amperes this Block can suck at max. Surpassing this value won't blow it up.
      */
     @Override
     public long maxAmperesIn() {
         return 0;
-    }
-
-    @Override
-    public long maxAmperesOut() {
-        return canRun() ? amperage : 0;
     }
 
     @Override
@@ -272,10 +311,16 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         return new GT_GUIContainer_DevEnergySource(aPlayerInventory, aBaseMetaTileEntity);
     }
 
+    public boolean canRun() {
+        return this.isEnabled() && this.isRsEnabled();
+    }
+
     @Override
     public String[] getDescription() {
         final String flavor = String.format(
-                "Generating %d amps of %s power (%d Eu/t)%s", amperage, tierName(), maxEUOutput() * amperage, canRun() ? "" : (enabled ? "[Disabled by Redstone]" : "[Disabled by User]"));
+                "Generating %d amps of %s power (%d Eu/t)%s", amperage, tierName(), maxEUOutput() * amperage,
+                canRun() ? "" : (enabled ? "[Disabled by Redstone]" : "[Disabled by User]")
+                                           );
         return ArrayUtils.addAll(mDescriptionArray, flavor);
     }
 
@@ -339,6 +384,11 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         this.markDirty();
     }
 
+    protected void setEnabled(final boolean enabled) {
+        this.enabled = enabled;
+        markDirty();
+    }
+
     /**
      * Decodes the packet, machine type specific
      *
@@ -347,54 +397,6 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     @Override
     public ISerializableObject decodePacket(final ByteArrayDataInput aData) {
         return new GUIData().readFromPacket(aData, null);
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public RSControlMode getMode() {
-        return rsMode;
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public byte[] getRSValues() {
-        return rsValues;
-    }
-
-    /**
-     * @param newMode
-     */
-    @Override
-    public void setMode(final RSControlMode newMode) {
-        if (isValidMode(newMode)) {
-            this.rsMode = newMode;
-        }
-        markDirty();
-    }
-
-    /**
-     * @param side
-     * @param rsSignal
-     */
-    @Override
-    public void updateRSValues(final byte side, final byte rsSignal) {
-        rsValues[side] = rsSignal;
-    }
-
-    /**
-     *
-     */
-    @Override
-    public void processRS() {
-        rsEnabled = getMode().checkPredicate(getMaxRSValue());
-    }
-
-    public boolean canRun() {
-        return this.isEnabled() && this.isRsEnabled();
     }
 
 }
