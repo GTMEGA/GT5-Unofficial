@@ -62,7 +62,9 @@ public class GT_Item_MiningExplosive extends ItemBlock {
         final String[] lines = {"An ideal explosive created for extracting ore from the world",
                                 "Lacks compressive power",
                                 String.format("Fortune bonus of %d", GT_Values.MEFortune),
-                                "Only effective on rocks, soil, and ore"};
+                                "Only effective on rocks, soil, and ore",
+                                "Right click the center of the block to trigger",
+                                "Not affected by gravity"};
         lore.addAll(Arrays.asList(lines));
     }
 
