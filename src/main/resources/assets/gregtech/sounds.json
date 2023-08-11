@@ -1,9 +1,18 @@
 {
-    "mining_explosives": {
+    "mining_explosives_explosion": {
         "category": "block",
         "sounds": [
             {
-                "name": "mining_explosives",
+                "name": "mining_explosives_explosion",
+                "stream": false
+            }
+        ]
+    },
+    "mining_explosives_trigger": {
+        "category": "block",
+        "sounds": [
+            {
+                "name": "mining_explosives_trigger",
                 "stream": false
             }
         ]

@@ -3,6 +3,7 @@ package gregtech.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_Generic_Block;
@@ -51,7 +52,7 @@ public class GT_Block_MiningExplosive extends GT_Generic_Block {
         if (!world.isRemote) {
             final GT_Entity_MiningExplosive explosive = new GT_Entity_MiningExplosive(world, x, y, z, player);
             world.spawnEntityInWorld(explosive);
-            world.playSoundAtEntity(explosive, "game.tnt.primed", 1.0F, 1.0F);
+            world.playSoundAtEntity(explosive, GregTech_API.sSoundList.get(214), 1.0F, 1.0F);
             world.setBlockToAir(x, y, z);
         }
     }

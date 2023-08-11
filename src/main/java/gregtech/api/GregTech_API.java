@@ -372,7 +372,8 @@ public class GregTech_API {
         sSoundList.put(210, aTextIC2Lower + ":" + "machines.InterruptOne");
         sSoundList.put(211, aTextIC2Lower + ":" + "machines.KaChing");
         sSoundList.put(212, aTextIC2Lower + ":" + "machines.MagnetizerLoop");
-        sSoundList.put(213, MOD_ID.toLowerCase() + ":" + "mining_explosives");
+        sSoundList.put(213, MOD_ID.toLowerCase() + ":" + "mining_explosives_explosion");
+        sSoundList.put(214, MOD_ID.toLowerCase() + ":" + "mining_explosives_trigger");
     }
 
     /**
