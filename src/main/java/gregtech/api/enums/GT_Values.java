@@ -316,8 +316,8 @@ public class GT_Values {
     public static int MEFortune = 3, MERays = 32, MEFuse = 100;
 
     public static float MERayBaseRayDist = 0.3f, MERayPowerDropRatio = 0.5f, MERayDropBump = 0.3f, MEOrePowerBoost = 3.0f, MERockResistanceDrop = 0.333f,
-            MESoilPowerBoost = 1.0f, MEOtherResistanceDrop = 10.0f, MEExplosionPower = 12.0f, MEMaxEntitySize = 2.5f, MEOreChance = 1.0f, MESoilChance = 0.666f,
-            MERockChance = 0.1f, MEOtherChance = 0.0f, MEMaxRange = 18.0f, MEMinEntitySize = 0.1f;
+            MESoilPowerBoost = 1.0f, MEOtherResistanceDrop = 10.0f, MEExplosionPower = 12.0f, MEMaxEntitySize = 1.2f, MEOreChance = 1.0f, MESoilChance = 0.3333f,
+            MERockChance = 0.1f, MEOtherChance = 0.0f, MEMaxRange = 14.0f, MEMinEntitySize = 0.8f;
 
     public static boolean MEFancyDrops = true;
 

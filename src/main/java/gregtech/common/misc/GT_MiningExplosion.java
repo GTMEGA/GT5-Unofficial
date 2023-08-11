@@ -1,6 +1,7 @@
 package gregtech.common.misc;
 
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import net.minecraft.block.Block;
@@ -71,11 +72,8 @@ public class GT_MiningExplosion extends Explosion {
                         expX = explosionX;
                         expY = explosionY;
                         expZ = explosionZ;
-                        for (float rayDist = getBaseRayDist(); power > 0.0f; power -= rayDist * getRayPowerDropRatio()) {
-                            double rayLength = magnitude(expX - explosionX, expY - explosionY, expZ - explosionZ);
-                            if (rayLength > GT_Values.MEMaxRange) {
-                                break;
-                            }
+                        double rayLength = magnitude(expX - explosionX, expY - explosionY, expZ - explosionZ);
+                        for (float rayDist = getBaseRayDist(); power > 0.0f && rayLength < GT_Values.MEMaxRange; power -= rayDist * getRayPowerDropRatio(), rayLength = magnitude(expX - explosionX, expY - explosionY, expZ - explosionZ)) {
                             int posX, posY, posZ;
                             posX = MathHelper.floor_double(expX);
                             posY = MathHelper.floor_double(expY);
@@ -116,7 +114,7 @@ public class GT_MiningExplosion extends Explosion {
      */
     @Override
     public void doExplosionB(final boolean b0) {
-        pubWorld.playSoundEffect(explosionX, explosionY, explosionZ, "random.explode", 4.0f, soundVolume());
+        pubWorld.playSoundEffect(explosionX, explosionY, explosionZ, GregTech_API.sSoundList.get(213), 4.0f, soundVolume());
         pubWorld.spawnParticle("hugeexplosion", explosionX, explosionY, explosionZ, 1.0, 0.0, 0.0);
         for (Object oPosition : affectedBlockPositions) {
             if (!(oPosition instanceof ChunkPosition)) {

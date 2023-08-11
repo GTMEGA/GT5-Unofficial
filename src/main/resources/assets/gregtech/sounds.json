@@ -1,0 +1,11 @@
+{
+    "mining_explosives": {
+        "category": "block",
+        "sounds": [
+            {
+                "name": "mining_explosives",
+                "stream": false
+            }
+        ]
+    }
+}
