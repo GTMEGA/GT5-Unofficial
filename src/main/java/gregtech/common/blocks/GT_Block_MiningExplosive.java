@@ -16,7 +16,6 @@ import net.minecraft.world.World;
 
 public class GT_Block_MiningExplosive extends GT_Generic_Block {
 
-    @SideOnly(Side.CLIENT)
     private static final IIconContainer iIconContainer = Textures.BlockIcons.MINING_EXPLOSIVE;
 
     public GT_Block_MiningExplosive() {
