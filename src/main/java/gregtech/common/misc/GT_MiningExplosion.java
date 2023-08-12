@@ -8,12 +8,16 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockGrass;
 import net.minecraft.block.BlockOre;
 import net.minecraft.block.material.Material;
+import net.minecraft.enchantment.EnchantmentProtection;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -100,7 +104,59 @@ public class GT_MiningExplosion extends Explosion {
         }
         //noinspection unchecked
         affectedBlockPositions.addAll(hashSet);
+        explosionSize *= 2.0F * 3.0F;
+        doEntityStuff();
         explosionSize = ogExplosionSize;
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private void doEntityStuff() {
+        final int i, j, k, i2, l, j2;
+        i = MathHelper.floor_double(this.explosionX - (double)this.explosionSize - 1.0D);
+        j = MathHelper.floor_double(this.explosionX + (double)this.explosionSize + 1.0D);
+        k = MathHelper.floor_double(this.explosionY - (double)this.explosionSize - 1.0D);
+        i2 = MathHelper.floor_double(this.explosionY + (double)this.explosionSize + 1.0D);
+        l = MathHelper.floor_double(this.explosionZ - (double)this.explosionSize - 1.0D);
+        j2 = MathHelper.floor_double(this.explosionZ + (double)this.explosionSize + 1.0D);
+        final List entities = pubWorld.getEntitiesWithinAABBExcludingEntity(this.exploder, AxisAlignedBB.getBoundingBox(i, k, l, j, i2, j2));
+        net.minecraftforge.event.ForgeEventFactory.onExplosionDetonate(pubWorld, this, entities, explosionSize);
+        final Vec3 expVec = Vec3.createVectorHelper(explosionX, explosionY, explosionZ);
+        entities.forEach(oEntity -> {
+            if (!(oEntity instanceof Entity)) {
+                return;
+            }
+            final Entity entity = (Entity) oEntity;
+            final double distance = entity.getDistance(explosionX, explosionY, explosionZ) / ((double) explosionSize);
+            if (distance <= 1.0) {
+                double disX, disY, disZ, disMag;
+                disX = entity.posX - explosionX;
+                disY = entity.getEyeHeight() - explosionY;
+                disZ = entity.posZ - explosionZ;
+                disMag = magnitude(disX, disY, disZ);
+                if (disMag != 0.0) {
+                    double blockDensity, invDist;
+                    disX /= disMag;
+                    disY /= disMag;
+                    disZ /= disMag;
+                    blockDensity = pubWorld.getBlockDensity(expVec, entity.boundingBox) * 1.5;
+                    invDist = (1.0 - distance) * blockDensity;
+                    if (!(entity instanceof EntityItem)) {
+                        entity.attackEntityFrom(
+                                DamageSource.setExplosionSource(this),
+                                (float) ((int) ((invDist * invDist + invDist) / 2.0 * 8.0 * (double) explosionSize + 1.0))
+                                               );
+                    }
+                    final double enchantProtection = EnchantmentProtection.func_92092_a(entity, invDist) * 3.0;
+                    entity.motionX += (disX * enchantProtection) * 20 * disMag;
+                    entity.motionY += (disY * enchantProtection) * 30 * disMag;
+                    entity.motionZ += (disZ * enchantProtection) * 20 * disMag;
+                    if (entity instanceof EntityPlayer)
+                    {
+                        func_77277_b().put(entity, Vec3.createVectorHelper(disX * invDist, disY * invDist, disZ * invDist));
+                    }
+                }
+            }
+        });
     }
 
     public double magnitude(final double x, final double y, final double z) {
