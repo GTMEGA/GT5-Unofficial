@@ -104,7 +104,7 @@ public class GT_MiningExplosion extends Explosion {
         }
         //noinspection unchecked
         affectedBlockPositions.addAll(hashSet);
-        explosionSize *= 2.0F * 3.0F;
+        explosionSize *= 2.0F;
         doEntityStuff();
         explosionSize = ogExplosionSize;
     }
@@ -138,7 +138,7 @@ public class GT_MiningExplosion extends Explosion {
                     disX /= disMag;
                     disY /= disMag;
                     disZ /= disMag;
-                    blockDensity = pubWorld.getBlockDensity(expVec, entity.boundingBox) * 1.5;
+                    blockDensity = pubWorld.getBlockDensity(expVec, entity.boundingBox);
                     invDist = (1.0 - distance) * blockDensity;
                     if (!(entity instanceof EntityItem)) {
                         entity.attackEntityFrom(

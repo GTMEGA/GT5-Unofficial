@@ -8,7 +8,6 @@ import gregtech.common.misc.GT_MiningExplosion;
 import io.netty.buffer.ByteBuf;
 import lombok.Getter;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockGlass;
 import net.minecraft.block.BlockGrass;
 import net.minecraft.block.BlockOre;
 import net.minecraft.block.material.Material;
@@ -23,7 +22,7 @@ public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntit
 
     /**
      * Don't touch this, I know it's unused, but it needs to be here for the FML entity rendering
-     * */
+     */
     public GT_Entity_MiningExplosive(final World world) {
         super(world);
     }
@@ -35,6 +34,25 @@ public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntit
         this.setSize();
         moveEntity(0.0, 0.0, 0.0);
         this.fuse = GT_Values.MEFuse;
+    }
+
+    private void setSize() {
+        final float newSize = getNewSize();
+        this.setSize(newSize, newSize);
+    }
+
+    /**
+     * Tries to moves the entity by the passed in displacement. Args: x, y, z
+     *
+     * @param x
+     * @param y
+     * @param z
+     */
+    @Override
+    public void moveEntity(final double x, final double y, final double z) {
+        this.motionX = 0.0f;
+        this.motionY = 0.0f;
+        this.motionZ = 0.0f;
     }
 
     /**
@@ -64,29 +82,8 @@ public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntit
         }
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
-    @Override
-    public void onUpdate() {
-        this.moveEntity(0.0f, 0.0f, 0.0f);
-        if (fuse-- <= 0)
-        {
-            this.setDead();
-
-            if (!this.worldObj.isRemote)
-            {
-                this.doExplode();
-            }
-        }
-        else
-        {
-            this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
-        }
-    }
-
     private float getNewSize() {
-        return 0.5f + ((float)(fuse - GT_Values.MEFuse)) / GT_Values.MEFuse;
+        return 0.5f + ((float) (fuse - GT_Values.MEFuse)) / GT_Values.MEFuse;
     }
 
     /**
@@ -98,17 +95,25 @@ public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntit
     }
 
     /**
-     * Tries to moves the entity by the passed in displacement. Args: x, y, z
-     *
-     * @param x
-     * @param y
-     * @param z
+     * Called to update the entity's position/logic.
      */
     @Override
-    public void moveEntity(final double x, final double y, final double z) {
-        this.motionX = 0.0f;
-        this.motionY = 0.0f;
-        this.motionZ = 0.0f;
+    public void onUpdate() {
+        this.moveEntity(0.0f, 0.0f, 0.0f);
+        if (fuse-- <= 0) {
+            this.setDead();
+
+            if (!this.worldObj.isRemote) {
+                this.doExplode();
+            }
+        } else {
+            this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
+        }
+    }
+
+    private void doExplode() {
+        GT_MiningExplosion explosion = new GT_MiningExplosion(worldObj, this, posX, posY, posZ, GT_Values.MEExplosionPower);
+        explosion.perform();
     }
 
     /**
@@ -119,7 +124,7 @@ public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntit
      */
     @Override
     public void writeSpawnData(final ByteBuf buffer) {
-        buffer.writeByte(fuse);
+        buffer.writeInt(fuse);
     }
 
     /**
@@ -130,17 +135,7 @@ public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntit
      */
     @Override
     public void readSpawnData(final ByteBuf additionalData) {
-        this.fuse = additionalData.readByte();
-    }
-
-    private void doExplode() {
-        GT_MiningExplosion explosion = new GT_MiningExplosion(worldObj, this, posX, posY, posZ, GT_Values.MEExplosionPower);
-        explosion.perform();
-    }
-
-    private void setSize() {
-        final float newSize = getNewSize();
-        this.setSize(newSize, newSize);
+        this.fuse = additionalData.readInt();
     }
 
 }

@@ -64,7 +64,9 @@ public class GT_Item_MiningExplosive extends ItemBlock {
                                 String.format("Fortune bonus of %d", GT_Values.MEFortune),
                                 "Only effective on rocks, soil, and ore",
                                 "Right click the center of the block to trigger",
-                                "Not affected by gravity"};
+                                "Not affected by gravity",
+                                "Packs a pretty mean punch",
+                                String.format("I'd take cover if I were you, you've got a little less than %d seconds", GT_Values.MEFuse / 20)};
         lore.addAll(Arrays.asList(lines));
     }
 

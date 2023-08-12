@@ -313,7 +313,7 @@ public class GT_Values {
      */
     public static boolean disableDigitalChestsExternalAccess = false;
 
-    public static int MEFortune = 3, MERays = 32, MEFuse = 120;
+    public static int MEFortune = 3, MERays = 32, MEFuse = 160;
 
     public static float MERayBaseRayDist = 0.3f, MERayPowerDropRatio = 0.5f, MERayDropBump = 0.3f, MEOrePowerBoost = 3.0f, MERockResistanceDrop = 0.25f,
             MESoilPowerBoost = 1.0f, MEOtherResistanceDrop = 10.0f, MEExplosionPower = 12.0f, MEMaxEntitySize = 1.2f, MEOreChance = 1.0f, MESoilChance = 0.15f,
