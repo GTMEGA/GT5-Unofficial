@@ -1140,7 +1140,10 @@ public class Textures {
         PIPE_RESTRICTOR_DR,
         PIPE_RESTRICTOR_LR,
 
-        OVERLAY_ME_HATCH;
+        OVERLAY_ME_HATCH,
+
+        BLOCK_POTENTIOMETER_BACKGROUND,
+        BLOCK_POTENTIOMETER_FOREGROUND;
 
         /**
          * Icon for Fresh CFoam

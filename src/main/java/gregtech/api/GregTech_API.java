@@ -268,6 +268,11 @@ public class GregTech_API {
             sBlockCasings8;
     public static Block
             sBlockLongDistancePipes;
+
+    public static Item sMEGAnet;
+
+    public static Block sPotentiometer;
+
     /**
      * Getting assigned by the Config
      */
