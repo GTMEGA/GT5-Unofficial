@@ -11,12 +11,12 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
 
+import gregtech.common.blocks.GT_Block_Ore;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -125,15 +125,9 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             return false;
         }
         if (oreBlock != null && GT_Utility.isOre(oreBlock, oreBlockMetadata)) {
-            short metaData = 0;
-            TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntity(x, y, z);
-            if (tTileEntity instanceof GT_TileEntity_Ores) {
-                metaData = ((GT_TileEntity_Ores) tTileEntity).mMetaData;
-            }
-
+            //TODO replace with proper rock variant
             Collection<ItemStack> oreBlockDrops = getBlockDrops(oreBlock, x, y, z);
-            ItemStack cobble = GT_Utility.getCobbleForOre(oreBlock, metaData);
-            getBaseMetaTileEntity().getWorld().setBlock(x, y, z, Block.getBlockFromItem(cobble.getItem()), cobble.getItemDamage(), 3);
+            getBaseMetaTileEntity().getWorld().setBlock(x, y, z, Blocks.cobblestone, 0, 3);
             mOutputItems = getOutputByDrops(oreBlockDrops);
         }
         return true;
@@ -328,11 +322,10 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         Block block = getBaseMetaTileEntity().getBlock(x, y, z);
         int blockMeta = getBaseMetaTileEntity().getMetaID(x, y, z);
         ChunkPosition blockPos = new ChunkPosition(x, y, z);
+
         if (!oreBlockPositions.contains(blockPos)) {
-            if (block instanceof GT_Block_Ores_Abstract) {
-                TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntity(x, y, z);
-                if (tTileEntity instanceof GT_TileEntity_Ores && ((GT_TileEntity_Ores) tTileEntity).mNatural)
-                    oreBlockPositions.add(blockPos);
+            if (block instanceof GT_Block_Ore) {
+                oreBlockPositions.add(blockPos);
             } else if (GT_Utility.isOre(block, blockMeta))
                 oreBlockPositions.add(blockPos);
         }

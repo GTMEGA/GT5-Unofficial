@@ -9,8 +9,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.GT_Block_Ore;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -203,12 +202,10 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine {
             for (int x = -radiusConfig; x <= radiusConfig; ++x) {
                 Block block = aBaseMetaTileEntity.getBlockOffset(x, drillY, z);
                 int blockMeta = aBaseMetaTileEntity.getMetaIDOffset(x, drillY, z);
-                if (block instanceof GT_Block_Ores_Abstract) {
-                    TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityOffset(x, drillY, z);
-                    if (tTileEntity instanceof GT_TileEntity_Ores && ((GT_TileEntity_Ores) tTileEntity).mNatural)
-                        oreBlockPositions.add(new ChunkPosition(x, drillY, z));
-                } else if (GT_Utility.isOre(block, blockMeta))
-                    oreBlockPositions.add(new ChunkPosition(x, drillY, z));
+
+                if (GT_Utility.isOre(block, blockMeta)) {
+                    this.oreBlockPositions.add(new ChunkPosition(x, drillY, z));
+                }
             }
         }
     }
@@ -269,14 +266,8 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine {
             if (drops.size() > 1)
                 mOutputItems[1] = drops.get(1);
 
-            short metaData = 0;
-            TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntity(x, y, z);
-            if (tTileEntity instanceof GT_TileEntity_Ores) {
-                metaData = ((GT_TileEntity_Ores) tTileEntity).mMetaData;
-            }
-
-            ItemStack cobble = GT_Utility.getCobbleForOre(block, metaData);
-            aBaseMetaTileEntity.getWorld().setBlock(x, y, z, Block.getBlockFromItem(cobble.getItem()), cobble.getItemDamage(), 3);
+            //TODO nether ores should replace with netherrack
+            aBaseMetaTileEntity.getWorld().setBlock(x, y, z, Blocks.cobblestone, 0, 3);
             if (debugBlockMiner)
                 GT_Log.out.println("MINER: Mining GT ore block at " + x + " " + y + " " + z);
         }
