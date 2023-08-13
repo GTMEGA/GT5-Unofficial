@@ -32,27 +32,12 @@ public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntit
                                     ) {
         super(world, x + 0.5, y, z + 0.5, placedBy);
         this.setSize();
-        moveEntity(0.0, 0.0, 0.0);
         this.fuse = GT_Values.MEFuse;
     }
 
     private void setSize() {
         final float newSize = getNewSize();
         this.setSize(newSize, newSize);
-    }
-
-    /**
-     * Tries to moves the entity by the passed in displacement. Args: x, y, z
-     *
-     * @param x
-     * @param y
-     * @param z
-     */
-    @Override
-    public void moveEntity(final double x, final double y, final double z) {
-        this.motionX = 0.0f;
-        this.motionY = 0.0f;
-        this.motionZ = 0.0f;
     }
 
     /**
@@ -99,7 +84,21 @@ public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntit
      */
     @Override
     public void onUpdate() {
-        this.moveEntity(0.0f, 0.0f, 0.0f);
+        this.prevPosX = this.posX;
+        this.prevPosY = this.posY;
+        this.prevPosZ = this.posZ;
+        this.motionY -= 0.03999999910593033D;
+        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        this.motionX *= 0.9800000190734863D;
+        this.motionY *= 0.9800000190734863D;
+        this.motionZ *= 0.9800000190734863D;
+
+        if (this.onGround)
+        {
+            this.motionX *= 0.699999988079071D;
+            this.motionZ *= 0.699999988079071D;
+            this.motionY *= -0.5D;
+        }
         if (fuse-- <= 0) {
             this.setDead();
 
