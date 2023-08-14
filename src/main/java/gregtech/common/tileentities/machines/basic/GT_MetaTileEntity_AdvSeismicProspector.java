@@ -11,8 +11,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.GT_Block_Ore;
 import ic2.core.Ic2Items;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -224,17 +223,8 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
     private String checkForOre(int x, int y, int z) {
         Block tBlock = this.getBaseMetaTileEntity().getBlock(x, y, z);
 
-        if (tBlock instanceof GT_Block_Ores_Abstract) {
-            TileEntity tTileEntity = getBaseMetaTileEntity().getWorld().getTileEntity(x, y, z);
-
-            if ((tTileEntity instanceof GT_TileEntity_Ores)
-                && (((GT_TileEntity_Ores) tTileEntity).mMetaData < 16000)) { // Filtering small ores
-                Materials tMaterial
-                    = GregTech_API.sGeneratedMaterials[((GT_TileEntity_Ores) tTileEntity).mMetaData % 1000];
-
-                if ((tMaterial != null) && (tMaterial != Materials._NULL))
-                    return tMaterial.mDefaultLocalName;
-            }
+        if (tBlock instanceof GT_Block_Ore) {
+            return ((GT_Block_Ore) tBlock).getOreType().mDefaultLocalName;
         } else {
             int tMetaID = getBaseMetaTileEntity().getWorld().getBlockMetadata(x, y, z);
             ItemStack is = new ItemStack(tBlock, 1, tMetaID);

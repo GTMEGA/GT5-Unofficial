@@ -3,9 +3,8 @@ package gregtech.common;
 import gregtech.api.GregTech_API;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.world.GT_Worldgen_Ore;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -195,15 +194,8 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
                             } else {
                                 // Yay! We can actually place a block now. (this part copied from original code)
                                 Block tTargetedBlock = aWorld.getBlock(iX, iY, iZ);
-                                if (tTargetedBlock instanceof GT_Block_Ores_Abstract) {
-                                    TileEntity tTileEntity = aWorld.getTileEntity(iX, iY, iZ);
-                                    if ((tTileEntity instanceof GT_TileEntity_Ores)) {
-                                        if (tTargetedBlock != GregTech_API.sBlockOres1) {
-                                            ((GT_TileEntity_Ores) tTileEntity).convertOreBlock(aWorld, iX, iY, iZ);
-                                        }
-                                        ((GT_TileEntity_Ores)tTileEntity).overrideOreBlockMaterial(this.mBlock, (byte) this.mBlockMeta);
-                                    }
-                                } else if (((this.mAllowToGenerateinVoid) && (aWorld.getBlock(iX, iY, iZ).isAir(aWorld, iX, iY, iZ))) || ((tTargetedBlock != null) && ((tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.stone)) || (tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.stained_hardened_clay)) || (tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.cobblestone)) || (tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.end_stone)) || (tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.netherrack)) || (tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, GregTech_API.sBlockGranites)) || (tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, GregTech_API.sBlockStones))))) {
+                                if (((this.mAllowToGenerateinVoid) && (aWorld.getBlock(iX, iY, iZ).isAir(aWorld, iX, iY, iZ))) ||
+                                    ((tTargetedBlock != null) && (GT_Utility.isBlockReplaceableForOreGeneration(aWorld, iX, iY, iZ, tTargetedBlock, Blocks.stone, Blocks.stained_hardened_clay, Blocks.cobblestone, Blocks.end_stone, Blocks.netherrack, GregTech_API.sBlockGranites, GregTech_API.sBlockStones)))) {
                                     aWorld.setBlock(iX, iY, iZ, this.mBlock, this.mBlockMeta, 0);
                                 }
                             }
