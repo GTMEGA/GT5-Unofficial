@@ -1140,10 +1140,7 @@ public class Textures {
         PIPE_RESTRICTOR_DR,
         PIPE_RESTRICTOR_LR,
 
-        OVERLAY_ME_HATCH,
-
-        AUTOMATION_RECIPEFILTER,
-        AUTOMATION_RECIPEFILTER_GLOW;
+        OVERLAY_ME_HATCH;
 
         /**
          * Icon for Fresh CFoam

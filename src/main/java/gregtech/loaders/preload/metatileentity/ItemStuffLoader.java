@@ -175,19 +175,6 @@ public final class ItemStuffLoader {
         Quantum_Chest_HV.set(new GT_MetaTileEntity_QuantumChest(127, "quantum.chest.tier.08", "Quantum Chest III", 8).getStackForm(1L));
         Quantum_Chest_EV.set(new GT_MetaTileEntity_QuantumChest(128, "quantum.chest.tier.09", "Quantum Chest IV", 9).getStackForm(1L));
         Quantum_Chest_IV.set(new GT_MetaTileEntity_QuantumChest(129, "quantum.chest.tier.10", "Quantum Chest V", 10).getStackForm(1L));
-
-
-        Automation_RecipeFilter_ULV.set(new GT_MetaTileEntity_RecipeFilter(9334, "automation.recipefilter.tier.00", "ULV Recipe Filter", 0).getStackForm(1L));
-        Automation_RecipeFilter_LV.set(new GT_MetaTileEntity_RecipeFilter(9335, "automation.recipefilter.tier.01", "LV Recipe Filter", 1).getStackForm(1L));
-        Automation_RecipeFilter_MV.set(new GT_MetaTileEntity_RecipeFilter(9336, "automation.recipefilter.tier.02", "MV Recipe Filter", 2).getStackForm(1L));
-        Automation_RecipeFilter_HV.set(new GT_MetaTileEntity_RecipeFilter(9337, "automation.recipefilter.tier.03", "HV Recipe Filter", 3).getStackForm(1L));
-        Automation_RecipeFilter_EV.set(new GT_MetaTileEntity_RecipeFilter(9338, "automation.recipefilter.tier.04", "EV Recipe Filter", 4).getStackForm(1L));
-        Automation_RecipeFilter_IV.set(new GT_MetaTileEntity_RecipeFilter(9339, "automation.recipefilter.tier.05", "IV Recipe Filter", 5).getStackForm(1L));
-        Automation_RecipeFilter_LuV.set(new GT_MetaTileEntity_RecipeFilter(9340, "automation.recipefilter.tier.06", "LuV Recipe Filter", 6).getStackForm(1L));
-        Automation_RecipeFilter_ZPM.set(new GT_MetaTileEntity_RecipeFilter(9341, "automation.recipefilter.tier.07", "ZPM Recipe Filter", 7).getStackForm(1L));
-        Automation_RecipeFilter_UV.set(new GT_MetaTileEntity_RecipeFilter(9342, "automation.recipefilter.tier.08", "UV Recipe Filter", 8).getStackForm(1L));
-        Automation_RecipeFilter_MAX.set(new GT_MetaTileEntity_RecipeFilter(9343, "automation.recipefilter.tier.09", "UHV Recipe Filter", 9).getStackForm(1L));
-
         LOADED = true;
     }
 }
