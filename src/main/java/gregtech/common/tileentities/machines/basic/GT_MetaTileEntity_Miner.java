@@ -38,6 +38,9 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine {
     static final int[] SPEED = {160, 160, 80, 40, 20}; //Miner cycle time per tier
     static final int[] ENERGY = {8, 8, 32, 128, 512}; //Miner energy consumption per tier
 
+    // Fortune bonus per tier
+    static final int[] FORTUNE = {3, 6, 9, 12};
+
     private int radiusConfig; //Miner configured radius
     private final ArrayList<ChunkPosition> oreBlockPositions = new ArrayList<>();
 
@@ -275,7 +278,8 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine {
 
     private ArrayList<ItemStack> getBlockDrops(final Block oreBlock, int posX, int posY, int posZ) {
         final int blockMeta = getBaseMetaTileEntity().getMetaID(posX, posY, posZ);
-        return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, mTier);
+        final int tIndex = mTier >= FORTUNE.length ? FORTUNE[FORTUNE.length - 1] : FORTUNE[mTier];
+        return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, tIndex);
     }
 
     @Override

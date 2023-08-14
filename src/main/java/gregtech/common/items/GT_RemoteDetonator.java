@@ -1,6 +1,7 @@
 package gregtech.common.items;
 
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_Utility;
@@ -386,16 +387,16 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
         return !world.isRemote;
     }
 
-    public boolean trigger(
+    public void trigger(
             final @NonNull World aWorld, final @NonNull EntityPlayer player, final @NonNull RemoteDetonationTargetList remoteDetonationTargetList, final int x,
             final int y, final int z
-                          ) {
+                       ) {
         if (remoteDetonationTargetList.validDimension(player)) {
+            aWorld.playSoundEffect(x, y, z, GregTech_API.sSoundList.get(220), 8.0f, aWorld.rand.nextFloat() + 1.0f);
             remoteDetonationTargetList.trigger(aWorld, player, x, y, z);
         } else {
             sendChat(aWorld, player, "Nothing to detonate!");
         }
-        return !aWorld.isRemote;
     }
 
     public void removeTarget(
@@ -408,6 +409,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
         boolean valid = contains && validDim;
         if (valid) {
             remoteDetonationTargetList.removeTarget(x, y, z);
+            aWorld.playSoundEffect(x, y, z, GregTech_API.sSoundList.get(219), 4.0f, aWorld.rand.nextFloat() + 1.0f);
             sendChat(aWorld, player, String.format("Removed target (%d %d %d)", x, y, z));
         } else if (!validDim) {
             sendChat(aWorld, player, "Out of range!");
@@ -422,6 +424,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
             final boolean valid = remoteDetonationTargetList.validDimension(player);
             if (valid) {
                 remoteDetonationTargetList.addTarget(x, y, z);
+                aWorld.playSoundEffect(x, y, z, GregTech_API.sSoundList.get(218), 4.0f, aWorld.rand.nextFloat() + 1.0f);
                 sendChat(aWorld, player, String.format("Added target (%d %d %d)", x, y, z));
             } else {
                 sendChat(aWorld, player, "Unable to add target, do you have them in multiple dimensions?");

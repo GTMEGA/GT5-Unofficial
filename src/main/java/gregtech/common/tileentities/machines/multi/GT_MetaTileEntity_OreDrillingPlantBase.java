@@ -38,6 +38,8 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     protected int mTier = 1;
     private int chunkRadiusConfig = getRadiusInChunks();
 
+    private static final int[] FORTUNE = {12, 15, 18, 21, 24};
+
     GT_MetaTileEntity_OreDrillingPlantBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -271,8 +273,10 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         final int blockMeta = getBaseMetaTileEntity().getMetaID(posX, posY, posZ);
         if (oreBlock.canSilkHarvest(getBaseMetaTileEntity().getWorld(), null, posX, posY, posZ, blockMeta)) {
             return Collections.singleton(new ItemStack(oreBlock, 1, blockMeta));
-        } else
-            return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, mTier + 3);
+        } else {
+            final int fort = mTier > FORTUNE.length ? FORTUNE[FORTUNE.length - 1] : FORTUNE[mTier];
+            return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, fort);
+        }
     }
 
     private boolean tryConsumeDrillingFluid() {

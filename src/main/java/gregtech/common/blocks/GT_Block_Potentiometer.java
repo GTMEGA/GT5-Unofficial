@@ -1,6 +1,7 @@
 package gregtech.common.blocks;
 
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GT_Generic_Block;
@@ -52,6 +53,7 @@ public class GT_Block_Potentiometer extends GT_Generic_Block {
                                    ) {
         if (!world.isRemote) {
             final int bump = player.isSneaking() ? -1 : 1;
+            world.playSoundEffect(x, y, z, GregTech_API.sSoundList.get(221), 4.0f, world.rand.nextFloat() + 1.0f);
             int metadata = (world.getBlockMetadata(x, y, z) + bump) % 16;
             if (metadata < 0) {
                 metadata += 16;
