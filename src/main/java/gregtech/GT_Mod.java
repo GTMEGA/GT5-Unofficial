@@ -319,6 +319,8 @@ public class GT_Mod implements IGT_Mod {
         GT_Values.MEFortune = GT_Values.getConfigValue(tMainConfig, meSection, "fortune", GT_Values.MEFortune, "Fortune bonus");
         GT_Values.MERays = GT_Values.getConfigValue(tMainConfig, meSection, "numRays", GT_Values.MERays, "Number of rays to cast along each axis");
         GT_Values.MEFuse = GT_Values.getConfigValue(tMainConfig, meSection, "fuse", GT_Values.MEFuse, "Fuse length in ticks");
+        GT_Values.MERemoteDelay = GT_Values.getConfigValue(tMainConfig, meSection, "remoteDelay", GT_Values.MERemoteDelay, "Time between detonations when the remoted is activated");
+        GT_Values.MEMaxRemoteRange = GT_Values.getConfigValue(tMainConfig, meSection, "remoteRange", GT_Values.MEMaxRemoteRange, "Maximum distance the player can go while still detonating explosives");
         //
         GT_Values.MERayBaseRayDist = GT_Values.getConfigValue(tMainConfig, meSection, "baseRayDistance", GT_Values.MERayBaseRayDist, "Base length of the ray");
         GT_Values.MERayPowerDropRatio = GT_Values.getConfigValue(tMainConfig, meSection, "rayPowerDropRatio", GT_Values.MERayPowerDropRatio, "The amount the ray power is multiplied by each step");

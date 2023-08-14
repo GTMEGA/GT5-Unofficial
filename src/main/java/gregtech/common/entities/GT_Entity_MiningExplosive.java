@@ -3,6 +3,7 @@ package gregtech.common.entities;
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import gregtech.api.enums.GT_Values;
+import gregtech.common.blocks.GT_Block_MiningExplosive;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.misc.GT_MiningExplosion;
 import io.netty.buffer.ByteBuf;
@@ -122,6 +123,24 @@ public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntit
     private void doExplode() {
         GT_MiningExplosion explosion = new GT_MiningExplosion(worldObj, this, posX, posY, posZ, GT_Values.MEExplosionPower);
         explosion.perform();
+    }
+
+    /**
+     * @param explosion
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @param block
+     * @param explosionPower
+     * @return
+     */
+    @Override
+    public boolean func_145774_a(
+            final Explosion explosion, final World world, final int x, final int y, final int z, final Block block,
+            final float explosionPower
+                                ) {
+        return !(block instanceof GT_Block_MiningExplosive);
     }
 
     /**
