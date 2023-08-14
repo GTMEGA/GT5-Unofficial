@@ -21,6 +21,7 @@ import gregtech.api.threads.GT_Runnable_Cable_Update;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
 import gregtech.api.world.GT_Worldgen;
+import gregtech.common.blocks.GT_Block_MiningExplosive;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -329,6 +330,11 @@ public class GregTech_API {
             sLoadFinished = false,
             sPostloadStarted = false,
             sPostloadFinished = false;
+
+    public static Block sBlockMiningExplosive;
+
+    public static Item sItemRemoteDetonator;
+
     private static Class sBaseMetaTileEntityClass = null;
 
     /**
@@ -373,6 +379,8 @@ public class GregTech_API {
         sSoundList.put(210, aTextIC2Lower + ":" + "machines.InterruptOne");
         sSoundList.put(211, aTextIC2Lower + ":" + "machines.KaChing");
         sSoundList.put(212, aTextIC2Lower + ":" + "machines.MagnetizerLoop");
+        sSoundList.put(213, MOD_ID.toLowerCase() + ":" + "mining_explosives_explosion");
+        sSoundList.put(214, MOD_ID.toLowerCase() + ":" + "mining_explosives_trigger");
     }
 
     /**

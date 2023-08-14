@@ -1143,7 +1143,8 @@ public class Textures {
         OVERLAY_ME_HATCH,
 
         BLOCK_POTENTIOMETER_BACKGROUND,
-        BLOCK_POTENTIOMETER_FOREGROUND;
+        BLOCK_POTENTIOMETER_FOREGROUND,
+        MINING_EXPLOSIVE;
 
         /**
          * Icon for Fresh CFoam

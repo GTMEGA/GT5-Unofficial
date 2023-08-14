@@ -6,6 +6,7 @@ import gregtech.api.net.IGT_NetworkHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -311,4 +312,25 @@ public class GT_Values {
      *  If true, then digital chest with AE2 storage bus will be accessible only through AE2
      */
     public static boolean disableDigitalChestsExternalAccess = false;
+
+    public static int MEFortune = 3, MERays = 32, MEFuse = 160, MEMaxRemoteRange = 256, MERemoteDelay = 40;
+
+    public static float MERayBaseRayDist = 0.3f, MERayPowerDropRatio = 0.5f, MERayDropBump = 0.3f, MEOrePowerBoost = 3.0f, MERockResistanceDrop = 0.25f,
+            MESoilPowerBoost = 1.0f, MEOtherResistanceDrop = 10.0f, MEExplosionPower = 12.0f, MEMaxEntitySize = 1.2f, MEOreChance = 1.0f, MESoilChance = 0.15f,
+            MERockChance = 0.1f, MEOtherChance = 0.0f, MEMaxRange = 10.0f, MEMinEntitySize = 0.8f;
+
+    public static boolean MEFancyDrops = true, MERequiresRemote = true;
+
+    public static boolean getConfigValue(final Configuration config, final String category, final String key, final boolean defValue, final String comment) {
+        return config.get(category, key, defValue, comment).getBoolean(defValue);
+    }
+
+    public static int getConfigValue(final Configuration config, final String category, final String key, final int defValue, final String comment) {
+        return config.get(category, key, defValue, comment).getInt(defValue);
+    }
+
+    public static float getConfigValue(final Configuration config, final String category, final String key, final float defValue, final String comment) {
+        return (float) config.get(category, key, defValue, comment).getDouble(defValue);
+    }
+
 }
