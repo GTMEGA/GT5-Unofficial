@@ -120,7 +120,7 @@ public class GT_MiningExplosion extends Explosion {
      */
     @Override
     public void doExplosionB(final boolean b0) {
-        pubWorld.playSoundEffect(explosionX, explosionY, explosionZ, GregTech_API.sSoundList.get(213), 4.0f, soundVolume());
+        playSound();
         pubWorld.spawnParticle("hugeexplosion", explosionX, explosionY, explosionZ, 1.0, 0.0, 0.0);
         for (Object oPosition : affectedBlockPositions) {
             if (!(oPosition instanceof ChunkPosition)) {
@@ -144,6 +144,11 @@ public class GT_MiningExplosion extends Explosion {
             }
         }
         processDrops();
+    }
+
+    private void playSound() {
+        final int sound = pubWorld.rand.nextInt(2) + 222;
+        pubWorld.playSoundEffect(explosionX, explosionY, explosionZ, GregTech_API.sSoundList.get(sound), 4.0f, soundVolume());
     }
 
     protected int getMaxRays() {

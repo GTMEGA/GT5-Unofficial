@@ -2,8 +2,13 @@
     "mining_explosives_explosion": {
         "category": "block",
         "sounds": [
-            "mining_explosives_explosion_2",
             "mining_explosives_explosion"
+        ]
+    },
+    "mining_explosives_explosion_2": {
+        "category": "block",
+        "sounds": [
+            "mining_explosives_explosion_2"
         ]
     },
     "mining_explosives_trigger": {

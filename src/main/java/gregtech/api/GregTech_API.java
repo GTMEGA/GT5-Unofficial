@@ -379,7 +379,10 @@ public class GregTech_API {
         sSoundList.put(210, aTextIC2Lower + ":" + "machines.InterruptOne");
         sSoundList.put(211, aTextIC2Lower + ":" + "machines.KaChing");
         sSoundList.put(212, aTextIC2Lower + ":" + "machines.MagnetizerLoop");
-        sSoundList.put(213, MOD_ID.toLowerCase() + ":" + "mining_explosives_explosion");
+        //
+        // Empty sound slot
+        // sSoundList.put(213, MOD_ID.toLowerCase() + ":" + "");
+        //
         sSoundList.put(214, MOD_ID.toLowerCase() + ":" + "mining_explosives_trigger");
         sSoundList.put(215, MOD_ID.toLowerCase() + ":" + "meganet_pickup");
         sSoundList.put(216, MOD_ID.toLowerCase() + ":" + "meganet_active");
@@ -388,6 +391,8 @@ public class GregTech_API {
         sSoundList.put(219, MOD_ID.toLowerCase() + ":" + "remote_detonator_remove");
         sSoundList.put(220, MOD_ID.toLowerCase() + ":" + "remote_detonator_trigger");
         sSoundList.put(221, MOD_ID.toLowerCase() + ":" + "potentiometer_click");
+        sSoundList.put(222, MOD_ID.toLowerCase() + ":" + "mining_explosives_explosion");
+        sSoundList.put(223, MOD_ID.toLowerCase() + ":" + "mining_explosives_explosion_2");
     }
 
     /**
