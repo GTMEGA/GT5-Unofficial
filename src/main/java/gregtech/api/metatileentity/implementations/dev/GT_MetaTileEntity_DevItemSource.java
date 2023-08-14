@@ -229,6 +229,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
+        // TODO: Figure out why this isn't firing on the server
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
