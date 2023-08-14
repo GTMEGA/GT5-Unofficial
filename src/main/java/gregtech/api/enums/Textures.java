@@ -1144,7 +1144,10 @@ public class Textures {
 
         BLOCK_POTENTIOMETER_BACKGROUND,
         BLOCK_POTENTIOMETER_FOREGROUND,
-        MINING_EXPLOSIVE;
+        MINING_EXPLOSIVE,
+
+        AUTOMATION_RECIPEFILTER,
+        AUTOMATION_RECIPEFILTER_GLOW;
 
         /**
          * Icon for Fresh CFoam
