@@ -40,6 +40,7 @@ public enum OrePrefixes {
     oreEndstone("Endstone Ores", "End ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
     oreEnd("End Ores", "End ", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, -1), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
     @Deprecated oreGem("Ores", "", "", false, false, false, false, false, true, false, false, false, true, B[3], -1, 64, -1),
+    oreChunk("Ore Chunks", "Chunk of ", " Ore", true, true, false, false, false, false, false, true, false, true, B[3], -1, 64, 101),
     ore("Ores", "", " Ore", true, true, false, false, false, true, false, false, false, true, B[3], -1, 64, 68), // Regular Ore Prefix. Ore -> Material is a Oneway Operation! Introduced by Eloraam
     crushedCentrifuged("Centrifuged Ores", "Centrifuged ", " Ore", true, true, false, false, false, false, false, true, false, true, B[3], -1, 64, 7),
     crushedPurified("Purified Ores", "Purified ", " Ore", true, true, false, false, false, false, false, true, false, true, B[3], -1, 64, 6),
@@ -592,7 +593,59 @@ public enum OrePrefixes {
     public MaterialStack mSecondaryMaterial = null;
     public OrePrefixes mPrefixInto = this;
     public float mHeatDamage = 0.0F; // Negative for Frost Damage
-    public static List<OrePrefixes> mPreventableComponents = new LinkedList<>(Arrays.asList(OrePrefixes.gem, OrePrefixes.ingotHot, OrePrefixes.ingotDouble, OrePrefixes.ingotTriple, OrePrefixes.ingotQuadruple, OrePrefixes.ingotQuintuple, OrePrefixes.plate, OrePrefixes.plateDouble, OrePrefixes.plateTriple, OrePrefixes.plateQuadruple, OrePrefixes.plateQuintuple, OrePrefixes.plateDense, OrePrefixes.stick, OrePrefixes.round, OrePrefixes.bolt, OrePrefixes.screw, OrePrefixes.ring, OrePrefixes.foil, OrePrefixes.toolHeadSword, OrePrefixes.toolHeadPickaxe, OrePrefixes.toolHeadShovel, OrePrefixes.toolHeadAxe, OrePrefixes.toolHeadHoe, OrePrefixes.toolHeadHammer, OrePrefixes.toolHeadFile, OrePrefixes.toolHeadSaw, OrePrefixes.toolHeadDrill, OrePrefixes.toolHeadChainsaw, OrePrefixes.toolHeadWrench, OrePrefixes.toolHeadUniversalSpade, OrePrefixes.toolHeadSense, OrePrefixes.toolHeadPlow, OrePrefixes.toolHeadArrow, OrePrefixes.toolHeadBuzzSaw, OrePrefixes.turbineBlade, OrePrefixes.wireFine, OrePrefixes.gearGtSmall, OrePrefixes.rotor, OrePrefixes.stickLong, OrePrefixes.springSmall, OrePrefixes.spring, OrePrefixes.arrowGtWood, OrePrefixes.arrowGtPlastic, OrePrefixes.gemChipped, OrePrefixes.gemFlawed, OrePrefixes.gemFlawless, OrePrefixes.gemExquisite, OrePrefixes.gearGt, OrePrefixes.crateGtDust, OrePrefixes.crateGtIngot, OrePrefixes.crateGtGem, OrePrefixes.crateGtPlate, OrePrefixes.itemCasing));
+    public static List<OrePrefixes> mPreventableComponents = new LinkedList<>(Arrays.asList(OrePrefixes.gem,
+                                                                                            OrePrefixes.ingotHot,
+                                                                                            OrePrefixes.ingotDouble,
+                                                                                            OrePrefixes.ingotTriple,
+                                                                                            OrePrefixes.ingotQuadruple,
+                                                                                            OrePrefixes.ingotQuintuple,
+                                                                                            OrePrefixes.plate,
+                                                                                            OrePrefixes.plateDouble,
+                                                                                            OrePrefixes.plateTriple,
+                                                                                            OrePrefixes.plateQuadruple,
+                                                                                            OrePrefixes.plateQuintuple,
+                                                                                            OrePrefixes.plateDense,
+                                                                                            OrePrefixes.stick,
+                                                                                            OrePrefixes.round,
+                                                                                            OrePrefixes.bolt,
+                                                                                            OrePrefixes.screw,
+                                                                                            OrePrefixes.ring,
+                                                                                            OrePrefixes.foil,
+                                                                                            OrePrefixes.toolHeadSword,
+                                                                                            OrePrefixes.toolHeadPickaxe,
+                                                                                            OrePrefixes.toolHeadShovel,
+                                                                                            OrePrefixes.toolHeadAxe,
+                                                                                            OrePrefixes.toolHeadHoe,
+                                                                                            OrePrefixes.toolHeadHammer,
+                                                                                            OrePrefixes.toolHeadFile,
+                                                                                            OrePrefixes.toolHeadSaw,
+                                                                                            OrePrefixes.toolHeadDrill,
+                                                                                            OrePrefixes.toolHeadChainsaw,
+                                                                                            OrePrefixes.toolHeadWrench,
+                                                                                            OrePrefixes.toolHeadUniversalSpade,
+                                                                                            OrePrefixes.toolHeadSense,
+                                                                                            OrePrefixes.toolHeadPlow,
+                                                                                            OrePrefixes.toolHeadArrow,
+                                                                                            OrePrefixes.toolHeadBuzzSaw,
+                                                                                            OrePrefixes.turbineBlade,
+                                                                                            OrePrefixes.wireFine,
+                                                                                            OrePrefixes.gearGtSmall,
+                                                                                            OrePrefixes.rotor,
+                                                                                            OrePrefixes.stickLong,
+                                                                                            OrePrefixes.springSmall,
+                                                                                            OrePrefixes.spring,
+                                                                                            OrePrefixes.arrowGtWood,
+                                                                                            OrePrefixes.arrowGtPlastic,
+                                                                                            OrePrefixes.gemChipped,
+                                                                                            OrePrefixes.gemFlawed,
+                                                                                            OrePrefixes.gemFlawless,
+                                                                                            OrePrefixes.gemExquisite,
+                                                                                            OrePrefixes.gearGt,
+                                                                                            OrePrefixes.crateGtDust,
+                                                                                            OrePrefixes.crateGtIngot,
+                                                                                            OrePrefixes.crateGtGem,
+                                                                                            OrePrefixes.crateGtPlate,
+                                                                                            OrePrefixes.itemCasing));
     /**
      * Yes this Value can be changed to add Bits for the MetaGenerated-Item-Check.
      */
@@ -654,34 +707,34 @@ public enum OrePrefixes {
     }
 
     public static void initMaterialComponents() {
-        boolean enablePerItemSettings = GregTech_API.sMaterialComponents.get("general", "enablePerItemSettings", false);
-        boolean enableUnusedPlates = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedPlates", false);
+        boolean enablePerItemSettings    = GregTech_API.sMaterialComponents.get("general", "enablePerItemSettings", false);
+        boolean enableUnusedPlates       = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedPlates", false);
         boolean enableUnusedDoubleIngots = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedDoubleIngots", false);
         boolean enableUnusedTripleIngots = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedTripleIngots", false);
-        boolean enableUnusedQuadIngots = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedQuadIngots", false);
-        boolean enableUnusedQuinIngots = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedQuinIngots", false);
+        boolean enableUnusedQuadIngots   = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedQuadIngots", false);
+        boolean enableUnusedQuinIngots   = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedQuinIngots", false);
         boolean enableUnusedDoublePlates = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedDoublePlates", false);
         boolean enableUnusedTriplePlates = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedTriplePlates", false);
-        boolean enableUnusedQuadPlates = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedQuadPlates", false);
-        boolean enableUnusedQuinPlates = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedQuinPlates", false);
-        boolean enableUnusedDensePlates = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedDensePlates", false);
-        boolean enableUnusedGears = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedGears", false);
-        boolean enableUnusedSmallGears = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedSmallGears", false);
-        boolean enableUnusedRings = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedRings", false);
-        boolean enableUnusedSprings = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedSprings", false);
+        boolean enableUnusedQuadPlates   = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedQuadPlates", false);
+        boolean enableUnusedQuinPlates   = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedQuinPlates", false);
+        boolean enableUnusedDensePlates  = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedDensePlates", false);
+        boolean enableUnusedGears        = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedGears", false);
+        boolean enableUnusedSmallGears   = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedSmallGears", false);
+        boolean enableUnusedRings        = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedRings", false);
+        boolean enableUnusedSprings      = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedSprings", false);
         boolean enableUnusedSmallSprings = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedSmallSprings", false);
-        boolean enableUnusedRounds = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedRounds", false);
-        boolean enableUnusedRotors = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedRotors", false);
-        boolean enableUnusedFineWires = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedFineWires", false);
-        boolean enableUnusedFoil = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedFoil", false);
-        boolean enableUnusedArrows = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedArrowHeads", false);
-        boolean enableUnusedCrates = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedCrates", false);
-        boolean enableUnusedBolts = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedBolts", false);
-        boolean enableUnusedScrews = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedScrews", false);
-        boolean enableUnusedRods = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedRods", false);
-        boolean enableUnusedLongRods = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedLongRods", false);
-        boolean enableUnusedGems = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedGems", false);
-        boolean enableUnusedItemCasing = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedItemCasing", false);
+        boolean enableUnusedRounds       = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedRounds", false);
+        boolean enableUnusedRotors       = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedRotors", false);
+        boolean enableUnusedFineWires    = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedFineWires", false);
+        boolean enableUnusedFoil         = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedFoil", false);
+        boolean enableUnusedArrows       = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedArrowHeads", false);
+        boolean enableUnusedCrates       = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedCrates", false);
+        boolean enableUnusedBolts        = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedBolts", false);
+        boolean enableUnusedScrews       = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedScrews", false);
+        boolean enableUnusedRods         = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedRods", false);
+        boolean enableUnusedLongRods     = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedLongRods", false);
+        boolean enableUnusedGems         = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedGems", false);
+        boolean enableUnusedItemCasing   = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedItemCasing", false);
 
         //TODO possibly use OrePrefix mNotGeneratedItems/mGeneratedItems instead of a static List for every material instance?
         //TODO Make sure stuff like gem plates / standard plates / paper plates all generate with the current condition
@@ -944,7 +997,13 @@ public enum OrePrefixes {
     }
 
     public boolean doGenerateItem(Materials aMaterial) {
-        return aMaterial != null && aMaterial != Materials._NULL && ((aMaterial.mTypes & mMaterialGenerationBits) != 0 || mGeneratedItems.contains(aMaterial) /*|| mDynamicItems.contains(aMaterial)*/) && !mNotGeneratedItems.contains(aMaterial) && !mDisabledItems.contains(aMaterial) && (mCondition == null || mCondition.isTrue(aMaterial));
+        return aMaterial != null &&
+               aMaterial != Materials._NULL &&
+                ((aMaterial.mTypes & mMaterialGenerationBits) != 0 ||
+                  mGeneratedItems.contains(aMaterial) /*|| mDynamicItems.contains(aMaterial)*/) &&
+               !mNotGeneratedItems.contains(aMaterial) &&
+               !mDisabledItems.contains(aMaterial) &&
+               (mCondition == null || mCondition.isTrue(aMaterial));
     }
 
     public boolean ignoreMaterials(Materials... aMaterials) {
