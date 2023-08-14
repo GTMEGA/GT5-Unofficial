@@ -1795,18 +1795,7 @@ public enum ItemList implements IItemContainer {
     UV_Coil,
     UHV_Coil,
 
-    VOLUMETRIC_FLASK,
-
-    Automation_RecipeFilter_ULV,
-    Automation_RecipeFilter_LV,
-    Automation_RecipeFilter_MV,
-    Automation_RecipeFilter_HV,
-    Automation_RecipeFilter_EV,
-    Automation_RecipeFilter_IV,
-    Automation_RecipeFilter_LuV,
-    Automation_RecipeFilter_ZPM,
-    Automation_RecipeFilter_UV,
-    Automation_RecipeFilter_MAX;
+    VOLUMETRIC_FLASK;
 	
     public static final ItemList[]
             DYE_ONLY_ITEMS = {
