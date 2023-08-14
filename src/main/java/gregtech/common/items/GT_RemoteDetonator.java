@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -266,7 +267,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
     }
 
     public GT_RemoteDetonator() {
-        super("remote_detonator", "Remote Detonator", "Triggers distant explosions");
+        super("remote_detonator", "Remote Detonator", "Triggers mining explosives remotely.");
         setMaxStackSize(1);
         setMaxDamage(0);
         setHasSubtypes(false);
@@ -378,7 +379,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
                     addTarget(world, player, remoteDetonationTargetList, x, y, z);
                 }
             } else {
-                sendChat(world, player, "You're in the wrong dimension");
+                sendChat(world, player, "Cannot trigger THAT remotely...");
             }
         }
         stack.setTagCompound(remoteDetonationTargetList.writeToNBT(compound));
@@ -392,7 +393,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
         if (remoteDetonationTargetList.validDimension(player)) {
             remoteDetonationTargetList.trigger(aWorld, player, x, y, z);
         } else {
-            sendChat(aWorld, player, "Unable to trigger explosives, either you don't have any placed or you're in a different dimension");
+            sendChat(aWorld, player, "Nothing to detonate!");
         }
         return !aWorld.isRemote;
     }
@@ -409,7 +410,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
             remoteDetonationTargetList.removeTarget(x, y, z);
             sendChat(aWorld, player, String.format("Removed target (%d %d %d)", x, y, z));
         } else if (!validDim) {
-            sendChat(aWorld, player, "You're not in the same dimension");
+            sendChat(aWorld, player, "Out of range!");
         }
     }
 
@@ -448,12 +449,14 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
     protected void addAdditionalToolTips(final List aList, final ItemStack aStack, final EntityPlayer aPlayer) {
         final NBTTagCompound compound = validateNBT(aStack);
         final RemoteDetonationTargetList remoteDetonationTargetList = RemoteDetonationTargetList.readFromNBT(compound, aPlayer);
+        aList.add("Can prime and detonate multiple mining explosives sequentially.");
+        aList.add("Has a transmission range of 256 blocks.");
         final int numTargets = compound.getInteger("num");
         if (numTargets > 0) {
-            aList.add(String.format("Number of targets: %d", numTargets));
+            aList.add(String.format("Explosives armed: %d", numTargets));
         }
         if (remoteDetonationTargetList.isTriggered()) {
-            aList.add("DETONATION IN PROGRESS, RUN!");
+            aList.add(EnumChatFormatting.DARK_RED+"DETONATING!"+EnumChatFormatting.GRAY+" Stand Clear!");
         }
         aStack.setTagCompound(remoteDetonationTargetList.writeToNBT(compound));
     }

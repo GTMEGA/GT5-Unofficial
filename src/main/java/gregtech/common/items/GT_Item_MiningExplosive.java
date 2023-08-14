@@ -24,7 +24,7 @@ public class GT_Item_MiningExplosive extends ItemBlock {
         setMaxDamage(0);
         setHasSubtypes(false);
         setCreativeTab(GregTech_API.TAB_GREGTECH);
-        GT_LanguageManager.addStringLocalization(mName + ".name", "Mining Explosives", true);
+        GT_LanguageManager.addStringLocalization(mName + ".name", "Mining Charge", true);
     }
 
     /**
@@ -59,14 +59,12 @@ public class GT_Item_MiningExplosive extends ItemBlock {
     @SuppressWarnings("unchecked")
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer player, final List lore, final boolean b0) {
-        final String[] lines = {"An ideal explosive created for extracting ore from the world",
-                                "Lacks compressive power",
+        final String[] lines = {"An extraordinary explosive for extracting ore from the world.",
                                 String.format("Fortune bonus of %d", GT_Values.MEFortune),
-                                "Only effective on rocks, soil, and ore",
-                                "Right click the center of the block to trigger",
-                                "Packs a pretty mean punch",
-                                String.format("I'd take cover if I were you, you've got a little less than %d seconds", GT_Values.MEFuse / 20)};
+                                "Mainly effective on ore, but will destroy most terrain.",
+                                "Prime with a Remote Detonator",
+                                "Packs a pretty mean punch, so take",
+                                String.format("cover or you'll be mist in %d seconds!", GT_Values.MEFuse / 20)};
         lore.addAll(Arrays.asList(lines));
     }
-
 }

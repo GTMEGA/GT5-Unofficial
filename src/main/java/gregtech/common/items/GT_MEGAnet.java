@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
@@ -129,7 +130,7 @@ public class GT_MEGAnet extends GT_Generic_Item {
     }
 
     public GT_MEGAnet() {
-        super("MEGAnet", "MEGAnet", "Puts adjacent items into your inventory");
+        super("MEGAnet", "MEGA Magnet", "Attracts nearby items and inserts them into your inventory.");
         setMaxDamage(0);
         setMaxStackSize(1);
         setHasSubtypes(false);
@@ -241,12 +242,13 @@ public class GT_MEGAnet extends GT_Generic_Item {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     protected void addAdditionalToolTips(final List aList, final ItemStack aStack, final EntityPlayer aPlayer) {
-        aList.add("Shift+RClick to " + (isActive(aStack) ? "Deactivate" : "Activate"));
+        aList.add((isActive(aStack) ?   EnumChatFormatting.GREEN +"Active" : EnumChatFormatting.RED +"Inactive"));
+        aList.add("Shift + RMB to toggle.");
         final int range = getRange(aStack);
         aList.add((String.format("Range of (%d / %d)", range, heldRange(range))));
         final MEGAnetFilter filter = getFilter(aStack);
         if (filter.isEnabled()) {
-            aList.add("Filter mode: " + (filter.isWhitelist() ? "Whitelist" : "Blacklist"));
+            aList.add("Filter mode: " + (filter.isWhitelist() ? EnumChatFormatting.WHITE+"Whitelist" : EnumChatFormatting.DARK_GRAY+"Blacklist"));
             final int filSize = filter.getFilter().size();
             if (filSize > 0) {
                 aList.add(String.format("Filtering %d items", filSize));
@@ -254,7 +256,8 @@ public class GT_MEGAnet extends GT_Generic_Item {
         } else {
             aList.add("Filter disabled");
         }
-        aList.add(String.format("Magnetized %d items", getPickedUp(aStack)));
+        aList.add(String.format("Magnetized"+EnumChatFormatting.GOLD+" %d "+ EnumChatFormatting.GRAY+"items!", getPickedUp(aStack)));
+        aList.add(EnumChatFormatting.DARK_BLUE+""+EnumChatFormatting.BOLD+""+EnumChatFormatting.ITALIC+"The MEGAnet!");
     }
 
     /**
