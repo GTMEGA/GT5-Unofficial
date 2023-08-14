@@ -328,6 +328,8 @@ public class GregTech_API {
 
     public static Block sBlockMiningExplosive;
 
+    public static Item sItemRemoteDetonator;
+
     private static Class sBaseMetaTileEntityClass = null;
 
     /**

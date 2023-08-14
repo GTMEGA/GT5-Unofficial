@@ -20,6 +20,8 @@ import net.minecraft.world.World;
 @Getter
 public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntityAdditionalSpawnData {
 
+    private boolean gravityAffected;
+
     /**
      * Don't touch this, I know it's unused, but it needs to be here for the FML entity rendering
      */
@@ -28,11 +30,12 @@ public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntit
     }
 
     public GT_Entity_MiningExplosive(
-            final World world, final double x, final double y, final double z, final EntityLivingBase placedBy
+            final World world, final double x, final double y, final double z, final EntityLivingBase placedBy, final boolean gravityAffected
                                     ) {
         super(world, x + 0.5, y, z + 0.5, placedBy);
         this.setSize();
         this.fuse = GT_Values.MEFuse;
+        this.gravityAffected = gravityAffected;
     }
 
     private void setSize() {
@@ -84,6 +87,21 @@ public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntit
      */
     @Override
     public void onUpdate() {
+        if (gravityAffected) {
+            moveDown();
+        }
+        if (fuse-- <= 0) {
+            this.setDead();
+
+            if (!this.worldObj.isRemote) {
+                this.doExplode();
+            }
+        } else {
+            this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
+        }
+    }
+
+    private void moveDown() {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
@@ -98,15 +116,6 @@ public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntit
             this.motionX *= 0.699999988079071D;
             this.motionZ *= 0.699999988079071D;
             this.motionY *= -0.5D;
-        }
-        if (fuse-- <= 0) {
-            this.setDead();
-
-            if (!this.worldObj.isRemote) {
-                this.doExplode();
-            }
-        } else {
-            this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
         }
     }
 

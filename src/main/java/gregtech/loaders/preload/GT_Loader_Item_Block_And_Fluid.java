@@ -221,7 +221,9 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockConcretes = new GT_Block_Concretes();
         GregTech_API.sBlockStones = new GT_Block_Stones();
         GregTech_API.sBlockOres1 = new GT_Block_Ores();
+
         GregTech_API.sBlockMiningExplosive = new GT_Block_MiningExplosive();
+        GregTech_API.sItemRemoteDetonator = new GT_RemoteDetonator();
 
         GregTech_API.sBlockMetal1 = new GT_Block_Metal("gt.blockmetal1", new Materials[]{
                 Materials.Adamantium,

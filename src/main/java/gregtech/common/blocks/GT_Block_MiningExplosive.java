@@ -4,12 +4,15 @@ package gregtech.common.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.common.entities.GT_Entity_MiningExplosive;
 import gregtech.common.items.GT_Item_MiningExplosive;
+import gregtech.common.items.GT_RemoteDetonator;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -41,16 +44,21 @@ public class GT_Block_MiningExplosive extends GT_Generic_Block {
             final World world, final int x, final int y, final int z, final EntityPlayer player, final int side, final float hitX, final float hitY,
             final float hitZ
                                    ) {
-        if (!playerActivatedMe(side, hitX, hitY, hitZ)) {
+        if (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof GT_RemoteDetonator || !playerActivatedMe(side, hitX, hitY, hitZ) ||
+            GT_Values.MERequiresRemote) {
             return true;
         }
-        goBoom(world, x, y, z, player);
+        goBoom(world, x, y, z, player, true);
         return false;
     }
 
-    private void goBoom(final World world, final int x, final int y, final int z, final EntityPlayer player) {
+    public void remoteTrigger(final World world, final int x, final int y, final int z, final EntityPlayer player) {
+        goBoom(world, x, y, z, player, false);
+    }
+
+    protected void goBoom(final World world, final int x, final int y, final int z, final EntityPlayer player, final boolean gravity) {
         if (!world.isRemote) {
-            final GT_Entity_MiningExplosive explosive = new GT_Entity_MiningExplosive(world, x, y, z, player);
+            final GT_Entity_MiningExplosive explosive = new GT_Entity_MiningExplosive(world, x, y, z, player, gravity);
             world.spawnEntityInWorld(explosive);
             world.playSoundAtEntity(explosive, GregTech_API.sSoundList.get(214), 1.0F, 1.0F);
             world.setBlockToAir(x, y, z);

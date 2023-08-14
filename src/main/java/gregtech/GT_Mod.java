@@ -337,6 +337,7 @@ public class GT_Mod implements IGT_Mod {
         GT_Values.MEMinEntitySize = GT_Values.getConfigValue(tMainConfig, meSection, "minSize", GT_Values.MEMinEntitySize, "Minimum entity size");
         //
         GT_Values.MEFancyDrops = GT_Values.getConfigValue(tMainConfig, meSection, "doFancyDrops", GT_Values.MEFancyDrops, "Whether to deliver the items to the player directly");
+        GT_Values.MERequiresRemote = GT_Values.getConfigValue(tMainConfig, meSection, "requireRemote", GT_Values.MEFancyDrops, "Whether the mining explosives require remote activation");
         //
         /*if (tMainConfig.get(aTextGeneral, "disable_STDERR", false).getBoolean(false)) {
             System.err.close();
