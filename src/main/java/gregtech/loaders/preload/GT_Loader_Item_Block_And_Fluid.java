@@ -225,6 +225,9 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockOres1 = Blocks.stone;
         GT_Block_Ore.registerOres();
 
+        GregTech_API.sBlockMiningExplosive = new GT_Block_MiningExplosive();
+        GregTech_API.sItemRemoteDetonator = new GT_RemoteDetonator();
+
         GregTech_API.sBlockMetal1 = new GT_Block_Metal("gt.blockmetal1", new Materials[]{
                 Materials.Adamantium,
                 Materials.Aluminium,
@@ -424,6 +427,9 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS11);
 
         GregTech_API.sBlockReinforced = new GT_Block_Reinforced("gt.blockreinforced");
+
+        GregTech_API.sMEGAnet = new GT_MEGAnet();
+        GregTech_API.sPotentiometer = new GT_Block_Potentiometer();
 
 
         GT_Log.out.println("GT_Mod: Register TileEntities.");

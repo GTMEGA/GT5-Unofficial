@@ -10,6 +10,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.common.blocks.GT_Block_Machines;
+import gregtech.common.blocks.GT_Block_Potentiometer;
 import gregtech.common.blocks.GT_Block_Ore;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -503,6 +504,34 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 && (GregTech_API.METATILEENTITIES[aMeta] != null)
                 && (!GregTech_API.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer))) {
             renderNormalInventoryMetaTileEntity(aBlock, aMeta, aRenderer);
+        } else if (aBlock instanceof GT_Block_Potentiometer) {
+            final GT_Block_Potentiometer potentiometer = (GT_Block_Potentiometer) aBlock;
+            aBlock.setBlockBoundsForItemRender();
+            aRenderer.setRenderBoundsFromBlock(aBlock);
+            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            Tessellator.instance.setNormal(0, -1, 0); // TODO: Remove this once all addons have migrated to the new Texture API
+            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, potentiometer.getInventoryTexture(aMeta), true);
+            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            Tessellator.instance.setNormal(0, 1, 0); // TODO: Remove this once all addons have migrated to the new Texture API
+            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, potentiometer.getInventoryTexture(aMeta), true);
+            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            Tessellator.instance.setNormal(0, 0, -1); // TODO: Remove this once all addons have migrated to the new Texture API
+            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, potentiometer.getInventoryTexture(aMeta), true);
+            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            Tessellator.instance.setNormal(0, 0, 1); // TODO: Remove this once all addons have migrated to the new Texture API
+            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, potentiometer.getInventoryTexture(aMeta), true);
+            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            Tessellator.instance.setNormal(-1, 0, 0); // TODO: Remove this once all addons have migrated to the new Texture API
+            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, potentiometer.getInventoryTexture(aMeta), true);
+            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            Tessellator.instance.setNormal(1, 0, 0); // TODO: Remove this once all addons have migrated to the new Texture API
+            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, potentiometer.getInventoryTexture(aMeta), true);
+            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
         }
 
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
@@ -666,11 +695,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
     public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID, RenderBlocks aRenderer) {
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion;
         aRenderer.useInventoryTint = false;
-
         if (aBlock instanceof GT_Block_Ore) {
             return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, ((GT_Block_Ore) aBlock).getTextures());
         }
-
+        if (aBlock instanceof GT_Block_Potentiometer) {
+            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, ((GT_Block_Potentiometer) aBlock).getPotentiometerTextures(aWorld, aX, aY, aZ));
+        }
         TileEntity tileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tileEntity == null) return false;
         if (tileEntity instanceof IGregTechTileEntity) {

@@ -185,6 +185,8 @@ public class GT_Achievements {
             MinecraftForge.EVENT_BUS.register(this);
             FMLCommonHandler.instance().bus().register(this);
         }
+        registerAchievement("lottaItems", 0, 0, new ItemStack(GregTech_API.sMEGAnet, Integer.MAX_VALUE), "", false);
+        registerAchievement("wholeLottaItems", 0, 0, new ItemStack(GregTech_API.sMEGAnet, Integer.MAX_VALUE, 1), "lottaItems", true);
     }
 
     public static void registerOre(Materials aMaterial, int min, int max, int chance, boolean overworld, boolean nether, boolean end) {
