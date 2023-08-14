@@ -10,8 +10,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.GT_Block_Ore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.entity.player.EntityPlayer;
@@ -99,14 +98,12 @@ public class Behaviour_Prospecting extends Behaviour_None {
 					tY = aY-4-tQuality+tRandom.nextInt(j);
 					tZ = aZ-4-tQuality+tRandom.nextInt(j);
 					tBlock = aWorld.getBlock(tX, tY, tZ);
-                    if ((tBlock instanceof GT_Block_Ores_Abstract)) {
-                        TileEntity tTileEntity = aWorld.getTileEntity(tX, tY, tZ);
-                        if ((tTileEntity instanceof GT_TileEntity_Ores)) {
-                            Materials tMaterial = GregTech_API.sGeneratedMaterials[(((GT_TileEntity_Ores) tTileEntity).mMetaData % 1000)];
-                            if ((tMaterial != null) && (tMaterial != Materials._NULL)) {
-                                GT_Utility.sendChatToPlayer(aPlayer, trans("106","Found traces of ") + tMaterial.mDefaultLocalName + trans("101"," Ore."));
-                                return true;
-                            }
+                    if (tBlock instanceof GT_Block_Ore) {
+                        Materials tMaterial = ((GT_Block_Ore) tBlock).getOreType();
+
+                        if ((tMaterial != null) && (tMaterial != Materials._NULL)) {
+                            GT_Utility.sendChatToPlayer(aPlayer, trans("106","Found traces of ") + tMaterial.mDefaultLocalName + trans("101"," Ore."));
+                            return true;
                         }
                     } else {
                         tMetaID = aWorld.getBlockMetadata(tX, tY, tZ);

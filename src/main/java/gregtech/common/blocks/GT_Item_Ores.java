@@ -29,7 +29,7 @@ public class GT_Item_Ores extends ItemBlock {
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
     	String aName = super.getItemStackDisplayName(aStack);
-    	if (this.field_150939_a instanceof GT_Block_Ores_Abstract) {
+    	if (this.field_150939_a instanceof GT_Block_Ore) {
     		aName = Materials.getLocalizedNameForItem(aName, aStack.getItemDamage() % 1000);
     	}
     	return aName;
@@ -39,12 +39,9 @@ public class GT_Item_Ores extends ItemBlock {
     public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side, float hitX, float hitY, float hitZ, int aMeta) {
         short tDamage = (short) getDamage(aStack);
         if (tDamage > 0) {
-            if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, GT_TileEntity_Ores.getHarvestData(tDamage, ((GT_Block_Ores_Abstract) field_150939_a).getBaseBlockHarvestLevel(aMeta % 16000 / 1000)), 3)) {
+            if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, 0, 3)) {
                 return false;
             }
-            GT_TileEntity_Ores tTileEntity = (GT_TileEntity_Ores) aWorld.getTileEntity(aX, aY, aZ);
-            tTileEntity.mMetaData = tDamage;
-            tTileEntity.mNatural = false;
         } else if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, 0, 3)) {
             return false;
         }
