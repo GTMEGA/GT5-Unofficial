@@ -90,7 +90,7 @@ public class GT_Block_Potentiometer extends GT_Generic_Block {
     public int isProvidingWeakPower(
             final IBlockAccess world, final int x, final int y, final int z, final int side
                                    ) {
-        return world.getBlockMetadata(x, y, z);
+        return world.getBlockMetadata(x, y, z) + 1;
     }
 
     /**
