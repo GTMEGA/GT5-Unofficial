@@ -154,7 +154,7 @@ public class GT_Block_Ore extends GT_Generic_Block {
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         val drops = new ArrayList<ItemStack>();
 
-        val drop = GT_OreDictUnificator.get(OrePrefixes.oreChunk, this.oreType, Math.max(1L, fortune));
+        val drop = GT_OreDictUnificator.get(OrePrefixes.oreChunk, this.oreType, Math.max(1L, fortune + 1));
 
         drops.add(drop);
 
