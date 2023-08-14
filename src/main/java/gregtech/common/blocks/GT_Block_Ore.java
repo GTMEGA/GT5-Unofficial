@@ -14,6 +14,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_Renderer_Block;
 import lombok.Getter;
 import lombok.val;
+import lombok.var;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -153,11 +154,13 @@ public class GT_Block_Ore extends GT_Generic_Block {
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         val drops = new ArrayList<ItemStack>();
-
-        val drop = GT_OreDictUnificator.get(OrePrefixes.oreChunk, this.oreType, Math.max(1L, fortune + 1));
-
-        drops.add(drop);
-
+        val fortuneFactor = fortune + 1;
+        val numStacks = Math.max(1, fortuneFactor / 64);
+        var stackAmount = fortuneFactor;
+        for (int i = 0; i <= numStacks && stackAmount > 0; i++, stackAmount = fortuneFactor - i * 64){
+            val drop = GT_OreDictUnificator.get(OrePrefixes.oreChunk, this.oreType, Math.min(64L, stackAmount));
+            drops.add(drop);
+        }
         return drops;
     }
 
