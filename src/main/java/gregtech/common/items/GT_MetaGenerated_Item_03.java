@@ -22,7 +22,7 @@ public class GT_MetaGenerated_Item_03
     public static GT_MetaGenerated_Item_03 INSTANCE;
 
     public GT_MetaGenerated_Item_03() {
-        super("metaitem.03", OrePrefixes.crateGtDust, OrePrefixes.crateGtIngot, OrePrefixes.crateGtGem, OrePrefixes.crateGtPlate);
+        super("metaitem.03", OrePrefixes.crateGtDust, OrePrefixes.crateGtIngot, OrePrefixes.crateGtGem, OrePrefixes.crateGtPlate, OrePrefixes.oreChunk);
         INSTANCE = this;
         int tLastID = 0;
         Object[] o = new Object[0];
@@ -180,16 +180,16 @@ public class GT_MetaGenerated_Item_03
         GregTech_API.registerCover(ItemList.Cover_SolarPanel_UEV.get(1L), TextureFactory.of(SOLARPANEL_UEV), new GT_Cover_SolarPanel(8388608));
         GregTech_API.registerCover(ItemList.Cover_SolarPanel_UIV.get(1L), TextureFactory.of(SOLARPANEL_UIV), new GT_Cover_SolarPanel(33554432));
 
-        ItemList.ULV_Coil.set(addItem(tLastID = 140, "ULV Coil", "Primitive Coil", o));
-        ItemList.LV_Coil.set(addItem(tLastID = 141, "LV Coil", "Basic Coil", o));
-        ItemList.MV_Coil.set(addItem(tLastID = 142, "MV Coil", "Good Coil", o));
-        ItemList.HV_Coil.set(addItem(tLastID = 143, "HV Coil", "Advanced Coil", o));
-        ItemList.EV_Coil.set(addItem(tLastID = 144, "EV Coil", "Extreme Coil", o));
-        ItemList.IV_Coil.set(addItem(tLastID = 145, "IV Coil", "Elite Coil", o));
-        ItemList.LuV_Coil.set(addItem(tLastID = 146, "LuV Coil", "Master Coil", o));
-        ItemList.ZPM_Coil.set(addItem(tLastID = 147, "ZPM Coil", "Ultimate Coil", o));
-        ItemList.UV_Coil.set(addItem(tLastID = 148, "UV Coil", "Super Coil", o));
-        ItemList.UHV_Coil.set(addItem(tLastID = 149, "UHV Coil", "Infinite Coil", o));
+        ItemList.ULV_Coil.set(addItem(tLastID = 140, "Magnetic Coil ULV", "Red Alloy Coil", o));
+        ItemList.LV_Coil.set(addItem(tLastID = 141, "Magnetic Coil LV", "Steel Coil", o));
+        ItemList.MV_Coil.set(addItem(tLastID = 142, "Magnetic Coil MV", "Stainless Coil", o));
+        ItemList.HV_Coil.set(addItem(tLastID = 143, "Magnetic Coil HV", "Energetic Coil", o));
+        ItemList.EV_Coil.set(addItem(tLastID = 144, "Magnetic Coil EV", "Tungstensteel Coil", o));
+        ItemList.IV_Coil.set(addItem(tLastID = 145, "Magnetic Coil IV", "Iridium Coil", o));
+        ItemList.LuV_Coil.set(addItem(tLastID = 146, "Magnetic Coil LuV", "Osmiridium Coil", o));
+        ItemList.ZPM_Coil.set(addItem(tLastID = 147, "Magnetic Coil ZPM", "Europium Coil", o));
+        ItemList.UV_Coil.set(addItem(tLastID = 148, "Magnetic Coil UV", "Fluxed Coil", o));
+        ItemList.UHV_Coil.set(addItem(tLastID = 149, "Magnetic Coil UHV", "Tritanium Coil", o));
     }
 
     @Override
