@@ -92,7 +92,7 @@ public class GT_Block_Potentiometer extends GT_Generic_Block {
     public int isProvidingWeakPower(
             final IBlockAccess world, final int x, final int y, final int z, final int side
                                    ) {
-        return world.getBlockMetadata(x, y, z) + 1;
+        return world.getBlockMetadata(x, y, z);
     }
 
     /**
@@ -138,20 +138,6 @@ public class GT_Block_Potentiometer extends GT_Generic_Block {
 
     public ITexture[] getInventoryTexture(final int aMeta) {
         return getPotentiometerTexture(15);
-    }
-
-    /**
-     * Get a light value for the block at the specified coordinates, normal ranges are between 0 and 15
-     *
-     * @param world The current world
-     * @param x     X Position
-     * @param y     Y position
-     * @param z     Z position
-     * @return The light value
-     */
-    @Override
-    public int getLightValue(final IBlockAccess world, final int x, final int y, final int z) {
-        return world.getBlockMetadata(x, y, z);
     }
 
 }
