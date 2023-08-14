@@ -278,7 +278,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine {
 
     private ArrayList<ItemStack> getBlockDrops(final Block oreBlock, int posX, int posY, int posZ) {
         final int blockMeta = getBaseMetaTileEntity().getMetaID(posX, posY, posZ);
-        final int tIndex = mTier >= FORTUNE.length ? FORTUNE[3] : FORTUNE[mTier];
+        final int tIndex = mTier >= FORTUNE.length ? FORTUNE[FORTUNE.length - 1] : FORTUNE[mTier];
         return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, tIndex);
     }
 
