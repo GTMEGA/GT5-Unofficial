@@ -4,7 +4,7 @@ package gregtech.common.entities;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import gregtech.api.enums.GT_Values;
 import gregtech.common.blocks.GT_Block_MiningExplosive;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
+import gregtech.common.blocks.GT_Block_Ore;
 import gregtech.common.misc.GT_MiningExplosion;
 import io.netty.buffer.ByteBuf;
 import lombok.Getter;
@@ -57,7 +57,7 @@ public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntit
     public float func_145772_a(
             final Explosion explosion, final World world, final int x, final int y, final int z, final Block block
                               ) {
-        if (block instanceof BlockOre || block instanceof GT_Block_Ores_Abstract) {
+        if (block instanceof BlockOre || block instanceof GT_Block_Ore) {
             return -GT_Values.MEOrePowerBoost;
         }
         final Material material = block.getMaterial();
