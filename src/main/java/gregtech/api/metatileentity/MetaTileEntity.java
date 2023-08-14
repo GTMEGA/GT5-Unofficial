@@ -88,6 +88,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         if (GregTech_API.METATILEENTITIES[aID] == null) {
             GregTech_API.METATILEENTITIES[aID] = this;
         } else {
+            // TODO: Remove
+            for (int i = 0; i < GregTech_API.METATILEENTITIES.length; i++) {
+                IMetaTileEntity entity = GregTech_API.METATILEENTITIES[i];
+                if (entity == null) {
+                    continue;
+                }
+                System.out.printf("%d ====> %s%n", i, entity);
+            }
             throw new IllegalArgumentException("MetaMachine-Slot Nr. " + aID + " is already occupied!");
         }
         mName = aBasicName.replace(" ", "_").toLowerCase(Locale.ENGLISH);
