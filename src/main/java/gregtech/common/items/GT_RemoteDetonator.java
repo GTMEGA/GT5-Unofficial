@@ -1,8 +1,6 @@
 package gregtech.common.items;
 
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_Utility;
@@ -347,6 +345,21 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
             final float hitY, final float hitZ
                                  ) {
         return itemUse(stack, world, player, x, y, z);
+    }
+
+    /**
+     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
+     *
+     * @param stack
+     * @param world
+     * @param player
+     */
+    @Override
+    public ItemStack onItemRightClick(final ItemStack stack, final World world, final EntityPlayer player) {
+        if (player.isSneaking()) {
+            itemUse(stack, world, player, (int) player.posX, (int) player.posY, (int) player.posZ);
+        }
+        return stack;
     }
 
     private boolean itemUse(
