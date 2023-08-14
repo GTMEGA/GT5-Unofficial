@@ -2,6 +2,7 @@ package gregtech.common.items;
 
 
 import gregtech.GT_Mod;
+import gregtech.api.GregTech_API;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_Utility;
 import lombok.*;
@@ -313,6 +314,7 @@ public class GT_MEGAnet extends GT_Generic_Item {
             if (oEntity instanceof EntityItem) {
                 final EntityItem itemEntity = (EntityItem) oEntity;
                 if (canPickup(stack, itemEntity)) {
+                    world.playSoundEffect(entity.posX, entity.posY, entity.posZ, GregTech_API.sSoundList.get(215), 4.0f, world.rand.nextFloat() + 1.0f);
                     pickup(stack, entity, itemEntity);
                 }
             }
@@ -392,7 +394,9 @@ public class GT_MEGAnet extends GT_Generic_Item {
         if (!world.isRemote && player.isSneaking()) {
             final NBTTagCompound comp = validateNBT(stack);
             final boolean active = isActive(stack);
+            final String sound = GregTech_API.sSoundList.get(active ? 217 : 216);
             GT_Utility.sendChatToPlayer(player, active ? "Deactivated" : "Activated");
+            world.playSoundEffect(player.posX, player.posY, player.posZ, sound, 4.0f, world.rand.nextFloat() + 1.0f);
             comp.setBoolean("enabled", !active);
             stack.setTagCompound(comp);
             setNBT(stack);
