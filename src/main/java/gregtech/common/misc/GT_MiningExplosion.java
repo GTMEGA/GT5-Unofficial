@@ -147,8 +147,7 @@ public class GT_MiningExplosion extends Explosion {
     }
 
     private void playSound() {
-        final int sound = pubWorld.rand.nextInt(2) + 222;
-        pubWorld.playSoundEffect(explosionX, explosionY, explosionZ, GregTech_API.sSoundList.get(sound), 4.0f, soundVolume());
+        pubWorld.playSoundEffect(explosionX, explosionY, explosionZ, GregTech_API.sSoundList.get(213), 4.0f, soundVolume());
     }
 
     protected int getMaxRays() {
