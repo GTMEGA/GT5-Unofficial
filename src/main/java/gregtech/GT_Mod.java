@@ -338,6 +338,7 @@ public class GT_Mod implements IGT_Mod {
         GT_Values.MEOtherChance = GT_Values.getConfigValue(tMainConfig, meSection, "otherChance", GT_Values.MEOtherChance, "Odds of getting an other drop");
         GT_Values.MEMaxRange = GT_Values.getConfigValue(tMainConfig, meSection, "maxRange", GT_Values.MEMaxRange, "Maximum range of the explosion");
         GT_Values.MEMinEntitySize = GT_Values.getConfigValue(tMainConfig, meSection, "minSize", GT_Values.MEMinEntitySize, "Minimum entity size");
+        GT_Values.MEOffsetRatio = GT_Values.getConfigValue(tMainConfig, meSection, "offsetRatio", GT_Values.MEOffsetRatio, "Ratio of the total radius that the explosion is offset by");
         //
         GT_Values.MEFancyDrops = GT_Values.getConfigValue(tMainConfig, meSection, "doFancyDrops", GT_Values.MEFancyDrops, "Whether to deliver the items to the player directly");
         GT_Values.MERequiresRemote = GT_Values.getConfigValue(tMainConfig, meSection, "requireRemote", GT_Values.MEFancyDrops, "Whether the mining explosives require remote activation");

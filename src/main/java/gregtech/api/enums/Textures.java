@@ -1735,6 +1735,13 @@ public class Textures {
          */
         public static ITexture[][] casingTexturePages = new ITexture[128][];//page holder so we don't make an short long array
 
+        public static IIconContainer[] MINING_EXPLOSIVES = {
+                new CustomIcon("iconsets/EXPLOSIVES/" + "MINING_EXPLOSIVE_SIDES"),
+                new CustomIcon("iconsets/EXPLOSIVES/" + "MINING_EXPLOSIVE_BOTTOM"),
+                new CustomIcon("iconsets/EXPLOSIVES/" + "MINING_EXPLOSIVE_TOP"),
+                new CustomIcon("iconsets/EXPLOSIVES/" + "MINING_EXPLOSIVE_TOP_ACTIVE")
+        };
+
         static {
             for (byte i = 0; i < MACHINE_CASINGS.length; i++)
                 for (byte j = 0; j < MACHINE_CASINGS[i].length; j++)

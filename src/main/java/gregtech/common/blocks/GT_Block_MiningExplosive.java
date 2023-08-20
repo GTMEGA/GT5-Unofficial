@@ -1,29 +1,76 @@
 package gregtech.common.blocks;
 
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.common.entities.GT_Entity_MiningExplosive;
 import gregtech.common.items.GT_Item_MiningExplosive;
 import gregtech.common.items.GT_RemoteDetonator;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 
 public class GT_Block_MiningExplosive extends GT_Generic_Block {
 
-    private static final IIconContainer iIconContainer = Textures.BlockIcons.MINING_EXPLOSIVE;
+    public static final int primeMask = 1 << 3, sideMask = primeMask - 1;
 
     public GT_Block_MiningExplosive() {
         super(GT_Item_MiningExplosive.class, "gt.mining_explosives", Material.tnt);
+    }
+
+    public void remoteTrigger(final World world, final int x, final int y, final int z, final EntityPlayer player) {
+        goBoom(world, x, y, z, player);
+    }
+
+    protected void goBoom(final World world, final int x, final int y, final int z, final EntityPlayer player) {
+        if (!world.isRemote) {
+            final int metadata = world.getBlockMetadata(x, y, z);
+            final GT_Entity_MiningExplosive explosive = new GT_Entity_MiningExplosive(world, x, y, z, player, metadata);
+            world.spawnEntityInWorld(explosive);
+            world.playSoundAtEntity(explosive, GregTech_API.sSoundList.get(214), 1.0F, 1.0F);
+            world.setBlockToAir(x, y, z);
+        }
+    }
+
+    /**
+     * Gets the block's texture. Args: side, meta
+     *
+     * @param side
+     * @param meta
+     */
+    @Override
+    public IIcon getIcon(final int side, final int meta) {
+        return Textures.BlockIcons.MINING_EXPLOSIVES[getIconIndex(side, meta)].getIcon();
+    }
+
+    protected int getIconIndex(final int side, final int meta) {
+        final boolean activated = isPrimed(meta);
+        final ForgeDirection sideRendered = ForgeDirection.getOrientation(side);
+        final ForgeDirection sideFacing = getFacing(meta).getOpposite();
+        int index = 0;
+        if (sideRendered == sideFacing) {
+            if (activated) {
+                index = 3;
+            } else {
+                index = 2;
+            }
+        } else if (sideRendered == sideFacing.getOpposite()) {
+            index = 1;
+        }
+        return index;
+    }
+
+    protected boolean isPrimed(final int meta) {
+        return (meta & primeMask) != 0;
+    }
+
+    public ForgeDirection getFacing(final int meta) {
+        return ForgeDirection.getOrientation(meta & sideMask);
     }
 
     /**
@@ -48,21 +95,40 @@ public class GT_Block_MiningExplosive extends GT_Generic_Block {
             GT_Values.MERequiresRemote) {
             return true;
         }
-        goBoom(world, x, y, z, player, true);
+        goBoom(world, x, y, z, player);
         return false;
     }
 
-    public void remoteTrigger(final World world, final int x, final int y, final int z, final EntityPlayer player) {
-        goBoom(world, x, y, z, player, false);
+    /**
+     * Called when a block is placed using its ItemBlock. Args: World, X, Y, Z, side, hitX, hitY, hitZ, block metadata
+     *
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @param side
+     * @param hitX
+     * @param hitY
+     * @param hitZ
+     * @param metadata
+     */
+    @Override
+    public int onBlockPlaced(
+            final World world, final int x, final int y, final int z, final int side, final float hitX, final float hitY, final float hitZ, final int metadata
+                            ) {
+        return ForgeDirection.getOrientation(side).getOpposite().ordinal();
     }
 
-    protected void goBoom(final World world, final int x, final int y, final int z, final EntityPlayer player, final boolean gravity) {
-        if (!world.isRemote) {
-            final GT_Entity_MiningExplosive explosive = new GT_Entity_MiningExplosive(world, x, y, z, player, gravity);
-            world.spawnEntityInWorld(explosive);
-            world.playSoundAtEntity(explosive, GregTech_API.sSoundList.get(214), 1.0F, 1.0F);
-            world.setBlockToAir(x, y, z);
-        }
+    /**
+     * Queries the class of tool required to harvest this block, if null is returned
+     * we assume that anything can harvest this block.
+     *
+     * @param metadata
+     * @return
+     */
+    @Override
+    public String getHarvestTool(final int metadata) {
+        return null;
     }
 
     private boolean playerActivatedMe(final int side, final float hitX, final float hitY, final float hitZ) {
@@ -96,27 +162,17 @@ public class GT_Block_MiningExplosive extends GT_Generic_Block {
         return result;
     }
 
-    /**
-     * Queries the class of tool required to harvest this block, if null is returned
-     * we assume that anything can harvest this block.
-     *
-     * @param metadata
-     * @return
-     */
-    @Override
-    public String getHarvestTool(final int metadata) {
-        return null;
+    public void setPrimed(final World world, final int x, final int y, final int z, final boolean primed) {
+        int metadata = world.getBlockMetadata(x, y, z);
+        if (primed) {
+            metadata = metadata | primeMask;
+        } else {
+            metadata = metadata & sideMask;
+        }
+        world.setBlockMetadataWithNotify(x, y, z, metadata, 3);
     }
 
-    /**
-     * Gets the block's texture. Args: side, meta
-     *
-     * @param side
-     * @param meta
-     */
-    @Override
-    public IIcon getIcon(final int side, final int meta) {
-        return iIconContainer.getIcon();
-    }
+
+
 
 }

@@ -2,6 +2,7 @@ package gregtech.common.entities;
 
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.common.blocks.GT_Block_MiningExplosive;
 import gregtech.common.blocks.GT_Block_Ore;
@@ -14,14 +15,18 @@ import net.minecraft.block.BlockOre;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 
 @Getter
 public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntityAdditionalSpawnData {
 
-    private boolean gravityAffected;
+    private int metadata;
+
+    private double realX, realY, realZ;
 
     /**
      * Don't touch this, I know it's unused, but it needs to be here for the FML entity rendering
@@ -30,18 +35,26 @@ public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntit
         super(world);
     }
 
-    public GT_Entity_MiningExplosive(
-            final World world, final double x, final double y, final double z, final EntityLivingBase placedBy, final boolean gravityAffected
-                                    ) {
-        super(world, x + 0.5, y, z + 0.5, placedBy);
+    public GT_Entity_MiningExplosive(final World world, final double x, final double y, final double z, final EntityLivingBase placedBy, final int metadata) {
+        super(world, x + 0.5, y + 0.5, z + 0.5, placedBy);
         this.setSize();
+        this.realX = this.posX;
+        this.realY = this.posY;
+        this.realZ = this.posZ;
+        this.motionX = 0.0;
+        this.motionY = 0.0;
+        this.motionZ = 0.0;
         this.fuse = GT_Values.MEFuse;
-        this.gravityAffected = gravityAffected;
+        this.metadata = metadata;
     }
 
     private void setSize() {
         final float newSize = getNewSize();
         this.setSize(newSize, newSize);
+    }
+
+    private float getNewSize() {
+        return 0.5f + ((float) (fuse - GT_Values.MEFuse)) / GT_Values.MEFuse;
     }
 
     /**
@@ -71,8 +84,21 @@ public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntit
         }
     }
 
-    private float getNewSize() {
-        return 0.5f + ((float) (fuse - GT_Values.MEFuse)) / GT_Values.MEFuse;
+    /**
+     * @param explosion
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @param block
+     * @param explosionPower
+     * @return
+     */
+    @Override
+    public boolean func_145774_a(
+            final Explosion explosion, final World world, final int x, final int y, final int z, final Block block, final float explosionPower
+                                ) {
+        return !(block instanceof GT_Block_MiningExplosive);
     }
 
     /**
@@ -88,9 +114,7 @@ public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntit
      */
     @Override
     public void onUpdate() {
-        if (gravityAffected) {
-            moveDown();
-        }
+        setPosition(realX, realY, realZ);
         if (fuse-- <= 0) {
             this.setDead();
 
@@ -98,49 +122,59 @@ public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntit
                 this.doExplode();
             }
         } else {
-            this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
-        }
-    }
-
-    private void moveDown() {
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
-        this.motionY -= 0.03999999910593033D;
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
-        this.motionX *= 0.9800000190734863D;
-        this.motionY *= 0.9800000190734863D;
-        this.motionZ *= 0.9800000190734863D;
-
-        if (this.onGround)
-        {
-            this.motionX *= 0.699999988079071D;
-            this.motionZ *= 0.699999988079071D;
-            this.motionY *= -0.5D;
+            final int n = rand.nextInt(10) + 1;
+            for (int i = 0; i < n; i++){
+                final double x, y, z, xVel, yVel, zVel;
+                x = posX + rand.nextDouble() * 1.4 - 0.7;
+                y = posY + rand.nextDouble() * 1.4 - 0.7;
+                z = posZ + rand.nextDouble() * 1.4 - 0.7;
+                xVel = rand.nextDouble() * 3.0 - 1.5;
+                yVel = rand.nextDouble() * 3.0 - 1.5;
+                zVel = rand.nextDouble() * 3.0 - 1.5;
+                this.worldObj.spawnParticle("smoke", x, y, z, xVel, yVel, zVel);
+            }
         }
     }
 
     private void doExplode() {
-        GT_MiningExplosion explosion = new GT_MiningExplosion(worldObj, this, posX, posY, posZ, GT_Values.MEExplosionPower);
-        explosion.perform();
+        final ForgeDirection side = ((GT_Block_MiningExplosive) GregTech_API.sBlockMiningExplosive).getFacing(metadata);
+        final double xOffset, yOffset, zOffset;
+        xOffset = rangeOffset() * side.offsetX;
+        yOffset = rangeOffset() * side.offsetY;
+        zOffset = rangeOffset() * side.offsetZ;
+        new GT_MiningExplosion(worldObj, this, posX + xOffset, posY + yOffset, posZ + zOffset, GT_Values.MEExplosionPower).perform();
+    }
+
+    private double rangeOffset() {
+        return GT_Values.MEMaxRange * GT_Values.MEOffsetRatio;
     }
 
     /**
-     * @param explosion
-     * @param world
-     * @param x
-     * @param y
-     * @param z
-     * @param block
-     * @param explosionPower
-     * @return
+     * (abstract) Protected helper method to write subclass entity data to NBT.
+     *
+     * @param compound
      */
     @Override
-    public boolean func_145774_a(
-            final Explosion explosion, final World world, final int x, final int y, final int z, final Block block,
-            final float explosionPower
-                                ) {
-        return !(block instanceof GT_Block_MiningExplosive);
+    protected void writeEntityToNBT(final NBTTagCompound compound) {
+        super.writeEntityToNBT(compound);
+        compound.setInteger("meta", metadata);
+        compound.setDouble("rX", realX);
+        compound.setDouble("rY", realY);
+        compound.setDouble("rZ", realZ);
+    }
+
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     *
+     * @param compound
+     */
+    @Override
+    protected void readEntityFromNBT(final NBTTagCompound compound) {
+        super.readEntityFromNBT(compound);
+        this.metadata = compound.getInteger("meta");
+        this.realX = compound.getDouble("rX");
+        this.realY = compound.getDouble("rY");
+        this.realZ = compound.getDouble("rZ");
     }
 
     /**
@@ -152,6 +186,10 @@ public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntit
     @Override
     public void writeSpawnData(final ByteBuf buffer) {
         buffer.writeInt(fuse);
+        buffer.writeInt(metadata);
+        buffer.writeDouble(realX);
+        buffer.writeDouble(realY);
+        buffer.writeDouble(realZ);
     }
 
     /**
@@ -163,6 +201,10 @@ public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntit
     @Override
     public void readSpawnData(final ByteBuf additionalData) {
         this.fuse = additionalData.readInt();
+        this.metadata = additionalData.readInt();
+        this.realX = additionalData.readDouble();
+        this.realY = additionalData.readDouble();
+        this.realZ = additionalData.readDouble();
     }
 
 }

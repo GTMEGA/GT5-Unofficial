@@ -372,15 +372,18 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
         if (player.isSneaking()) {
             trigger(world, player, remoteDetonationTargetList, x, y, z);
         } else {
-            boolean valid = remoteDetonationTargetList.validDimension(player);
-            if (valid) {
-                if (remoteDetonationTargetList.containsTarget(x, y, z)) {
-                    removeTarget(world, player, remoteDetonationTargetList, x, y, z);
+            final Block target = world.getBlock(x, y, z);
+            if (target instanceof GT_Block_MiningExplosive) {
+                boolean valid = remoteDetonationTargetList.validDimension(player);
+                if (valid) {
+                    if (remoteDetonationTargetList.containsTarget(x, y, z)) {
+                        removeTarget(world, player, remoteDetonationTargetList, x, y, z);
+                    } else {
+                        addTarget(world, player, remoteDetonationTargetList, x, y, z);
+                    }
                 } else {
-                    addTarget(world, player, remoteDetonationTargetList, x, y, z);
+                    sendChat(world, player, "Cannot trigger THAT remotely...");
                 }
-            } else {
-                sendChat(world, player, "Cannot trigger THAT remotely...");
             }
         }
         stack.setTagCompound(remoteDetonationTargetList.writeToNBT(compound));
@@ -403,12 +406,13 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
             final @NonNull World aWorld, final @NonNull EntityPlayer player, final @NonNull RemoteDetonationTargetList remoteDetonationTargetList, final int x,
             final int y, final int z
                             ) {
-        boolean contains, validDim;
+        final boolean contains, validDim;
+        final Block target = aWorld.getBlock(x, y, z);
         contains = remoteDetonationTargetList.containsTarget(x, y, z);
         validDim = remoteDetonationTargetList.validDimension(player);
-        boolean valid = contains && validDim;
-        if (valid) {
+        if (contains && validDim && target instanceof GT_Block_MiningExplosive) {
             remoteDetonationTargetList.removeTarget(x, y, z);
+            ((GT_Block_MiningExplosive) target).setPrimed(aWorld, x, y, z, false);
             aWorld.playSoundEffect(x, y, z, GregTech_API.sSoundList.get(219), 4.0f, aWorld.rand.nextFloat() + 1.0f);
             sendChat(aWorld, player, String.format("Removed target (%d %d %d)", x, y, z));
         } else if (!validDim) {
@@ -420,10 +424,11 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
             final @NonNull World aWorld, final @NonNull EntityPlayer player, final @NonNull RemoteDetonationTargetList remoteDetonationTargetList, final int x,
             final int y, final int z
                          ) {
-        if (validTarget(aWorld.getBlock(x, y, z))) {
-            final boolean valid = remoteDetonationTargetList.validDimension(player);
-            if (valid) {
+        final Block target = aWorld.getBlock(x, y, z);
+        if (target instanceof GT_Block_MiningExplosive) {
+            if (remoteDetonationTargetList.validDimension(player)) {
                 remoteDetonationTargetList.addTarget(x, y, z);
+                ((GT_Block_MiningExplosive) target).setPrimed(aWorld, x, y, z, true);
                 aWorld.playSoundEffect(x, y, z, GregTech_API.sSoundList.get(218), 4.0f, aWorld.rand.nextFloat() + 1.0f);
                 sendChat(aWorld, player, String.format("Added target (%d %d %d)", x, y, z));
             } else {
@@ -436,10 +441,6 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
         if (!world.isRemote) {
             GT_Utility.sendChatToPlayer(player, msg);
         }
-    }
-
-    private boolean validTarget(final @NonNull Block target) {
-        return target instanceof GT_Block_MiningExplosive;
     }
 
     /**
