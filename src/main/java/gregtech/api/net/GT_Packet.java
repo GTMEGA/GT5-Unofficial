@@ -1,7 +1,10 @@
 package gregtech.api.net;
 
 import com.google.common.io.ByteArrayDataInput;
+import gregtech.common.GT_Network;
 import io.netty.buffer.ByteBuf;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.network.INetHandler;
 import net.minecraft.world.IBlockAccess;
 
@@ -10,16 +13,21 @@ import net.minecraft.world.IBlockAccess;
  */
 @Deprecated
 public abstract class GT_Packet {
+
     public GT_Packet(boolean aIsReference) {
         //
     }
 
     /**
      * I use constant IDs instead of Dynamic ones, since that is much more fail safe
+     * ^ NOPE ^
+     * This statement was BS, hence why this method is now implemented, and FINAL.
      *
      * @return a Packet ID for this Class
      */
-    public abstract byte getPacketID();
+    public final byte getPacketID() {
+        return GT_Network.PacketEnum.getID(this.getClass());
+    }
 
     /**
      * @return encoded byte Stream

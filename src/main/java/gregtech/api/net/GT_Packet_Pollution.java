@@ -38,8 +38,4 @@ public class GT_Packet_Pollution extends GT_Packet_New {
         GT_Client.recieveChunkPollutionPacket(chunk, pollution);
     }
 
-    @Override
-    public byte getPacketID() {
-        return 3;
-    }
 }
