@@ -64,44 +64,7 @@ public class GT_MiningExplosion extends Explosion {
             for (j = 0; j < getMaxRays(); ++j) {
                 for (k = 0; k < getMaxRays(); ++k) {
                     if (atEdge(i, j, k)) {
-                        double rayX, rayY, rayZ, length;
-                        rayX = getRayValue(i);
-                        rayY = getRayValue(j);
-                        rayZ = getRayValue(k);
-                        length = magnitude(rayX, rayY, rayZ);
-                        rayX /= length;
-                        rayY /= length;
-                        rayZ /= length;
-                        float power = getRayPower();
-                        expX = explosionX;
-                        expY = explosionY;
-                        expZ = explosionZ;
-                        double rayLength = magnitude(expX - explosionX, expY - explosionY, expZ - explosionZ);
-                        for (
-                                float rayDist = getBaseRayDist();
-                                power > 0.0f && rayLength < GT_Values.MEMaxRange;
-                                power -= rayDist * getRayPowerDropRatio(), rayLength = magnitude(expX - explosionX, expY - explosionY, expZ - explosionZ)
-                        ) {
-                            int posX, posY, posZ;
-                            posX = MathHelper.floor_double(expX);
-                            posY = MathHelper.floor_double(expY);
-                            posZ = MathHelper.floor_double(expZ);
-                            Block block = pubWorld.getBlock(posX, posY, posZ);
-                            if (block.getMaterial() != Material.air) {
-                                float expDrop = exploder != null ? exploder.func_145772_a(this, pubWorld, posX, posY, posZ, block)
-                                                                 : block.getExplosionResistance(
-                                                                         null, pubWorld, posX, posY, posZ, explosionX, explosionY, explosionZ);
-                                power -= (expDrop + getRayDropBump()) * rayDist;
-                            }
-
-                            if (power > 0.0f && (exploder == null || exploder.func_145774_a(this, pubWorld, posX, posY, posZ, block, power))) {
-                                hashSet.add(new ChunkPosition(posX, posY, posZ));
-                            }
-
-                            expX += rayX * rayDist;
-                            expY += rayY * rayDist;
-                            expZ += rayZ * rayDist;
-                        }
+                        fireRay(i, j, k, hashSet);
                     }
                 }
             }
@@ -111,6 +74,50 @@ public class GT_MiningExplosion extends Explosion {
         explosionSize *= 2.0F;
         doEntityStuff();
         explosionSize = ogExplosionSize;
+    }
+
+    protected void fireRay(final int rayI, final int rayJ, final int rayK, final HashSet<ChunkPosition> chunkPositions) {
+        double expZ;
+        double expX;
+        double expY;
+        double rayX, rayY, rayZ, length;
+        rayX = getRayValue(rayI);
+        rayY = getRayValue(rayJ);
+        rayZ = getRayValue(rayK);
+        length = magnitude(rayX, rayY, rayZ);
+        rayX /= length;
+        rayY /= length;
+        rayZ /= length;
+        float power = getRayPower();
+        expX = explosionX;
+        expY = explosionY;
+        expZ = explosionZ;
+        double rayLength = 0.0;
+        for (
+                float rayDist = getBaseRayDist();
+                power > 0.0f && rayLength < GT_Values.MEMaxRange;
+                power -= rayDist * getRayPowerDropRatio(), rayLength = magnitude(expX - explosionX, expY - explosionY, expZ - explosionZ)
+        ) {
+            int posX, posY, posZ;
+            posX = MathHelper.floor_double(expX);
+            posY = MathHelper.floor_double(expY);
+            posZ = MathHelper.floor_double(expZ);
+            Block block = pubWorld.getBlock(posX, posY, posZ);
+            if (block.getMaterial() != Material.air) {
+                float expDrop = exploder != null ? exploder.func_145772_a(this, pubWorld, posX, posY, posZ, block)
+                                                 : block.getExplosionResistance(
+                                                         null, pubWorld, posX, posY, posZ, explosionX, explosionY, explosionZ);
+                power -= (expDrop + getRayDropBump()) * rayDist;
+            }
+
+            if (power > 0.0f && (exploder == null || exploder.func_145774_a(this, pubWorld, posX, posY, posZ, block, power))) {
+                chunkPositions.add(new ChunkPosition(posX, posY, posZ));
+            }
+
+            expX += rayX * rayDist;
+            expY += rayY * rayDist;
+            expZ += rayZ * rayDist;
+        }
     }
 
     /**

@@ -81,7 +81,7 @@ public class GT_MiningExplosiveRenderer extends RenderTNTPrimed {
     protected void renderTheBlock(final int metadata, final float brightness) {
         final RenderBlocks renderer = RenderBlocks.getInstance();
         GL11.glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
-        renderer.renderBlockAsItem(getBlockToRenderAs(), metadata & GT_Block_MiningExplosive.sideMask, brightness);
+        renderer.renderBlockAsItem(getBlockToRenderAs(), metadata | GT_Block_MiningExplosive.sideMask, brightness);
     }
 
 }

@@ -124,14 +124,11 @@ public class GT_Entity_MiningExplosive extends EntityTNTPrimed implements IEntit
         } else {
             final int n = rand.nextInt(10) + 1;
             for (int i = 0; i < n; i++){
-                final double x, y, z, xVel, yVel, zVel;
-                x = posX + rand.nextDouble() * 1.4 - 0.7;
-                y = posY + rand.nextDouble() * 1.4 - 0.7;
-                z = posZ + rand.nextDouble() * 1.4 - 0.7;
-                xVel = rand.nextDouble() * 3.0 - 1.5;
-                yVel = rand.nextDouble() * 3.0 - 1.5;
-                zVel = rand.nextDouble() * 3.0 - 1.5;
-                this.worldObj.spawnParticle("smoke", x, y, z, xVel, yVel, zVel);
+                final double x, y, z;
+                x = rand.nextDouble() * 1.4 - 0.7;
+                y = rand.nextDouble() * 1.4 - 0.7;
+                z = rand.nextDouble() * 1.4 - 0.7;
+                this.worldObj.spawnParticle("smoke", posX + x, posY + y, posZ + z, x / 4, y / 4, z / 4);
             }
         }
     }
