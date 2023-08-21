@@ -40,6 +40,6 @@ public class GT_Packet_Pollution extends GT_Packet_New {
 
     @Override
     public byte getPacketID() {
-        return 4;
+        return 3;
     }
 }

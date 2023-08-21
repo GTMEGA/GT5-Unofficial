@@ -103,7 +103,7 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
 
     @Override
     public byte getPacketID() {
-        return 7;
+        return 6;
     }
 
     @Override

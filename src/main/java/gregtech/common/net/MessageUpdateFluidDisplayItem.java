@@ -27,7 +27,7 @@ public class MessageUpdateFluidDisplayItem extends GT_Packet_New {
 
     @Override
     public byte getPacketID() {
-        return 8;
+        return 7;
     }
 
     @Override

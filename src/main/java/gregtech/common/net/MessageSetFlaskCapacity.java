@@ -34,7 +34,7 @@ public final class MessageSetFlaskCapacity extends GT_Packet_New {
 
     @Override
     public byte getPacketID() {
-        return 5;
+        return 4;
     }
 
     @Override

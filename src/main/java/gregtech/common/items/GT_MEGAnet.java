@@ -38,6 +38,11 @@ public class GT_MEGAnet extends GT_Generic_Item {
         @AllArgsConstructor
         public static class ItemSetting {
 
+            @NonNull
+            public static ItemSetting readFromNBT(final @NonNull NBTTagCompound compound) {
+                return compound.hasKey("setting") ? new ItemSetting(compound.getCompoundTag("setting")) : new ItemSetting();
+            }
+
             @Builder.Default
             private ItemStack stack = null;
 
@@ -46,11 +51,6 @@ public class GT_MEGAnet extends GT_Generic_Item {
 
             @Builder.Default
             private boolean ignoreNBTData = false;
-
-            @NonNull
-            public static ItemSetting readFromNBT(final @NonNull NBTTagCompound compound) {
-                return compound.hasKey("setting") ? new ItemSetting(compound.getCompoundTag("setting")) : new ItemSetting();
-            }
 
             public ItemSetting(final @NonNull NBTTagCompound compound) {
                 this(ItemStack.loadItemStackFromNBT(compound.getCompoundTag("item")), defBool(compound, "iMeta", false), defBool(compound, "iNBT", false));
@@ -75,6 +75,11 @@ public class GT_MEGAnet extends GT_Generic_Item {
 
         public static final int MAX_FILTERED = 15;
 
+        @NonNull
+        public static MEGAnetFilter readFromNBT(final @NonNull NBTTagCompound nbt) {
+            return nbt.hasKey("filter") ? new MEGAnetFilter(nbt.getCompoundTag("filter")) : new MEGAnetFilter();
+        }
+
         private final List<ItemSetting> filter = new ArrayList<>();
 
         @Builder.Default
@@ -82,11 +87,6 @@ public class GT_MEGAnet extends GT_Generic_Item {
 
         @Builder.Default
         private boolean whitelist = false;
-
-        @NonNull
-        public static MEGAnetFilter readFromNBT(final @NonNull NBTTagCompound nbt) {
-            return nbt.hasKey("filter") ? new MEGAnetFilter(nbt.getCompoundTag("filter")) : new MEGAnetFilter();
-        }
 
         public MEGAnetFilter(final @NonNull NBTTagCompound filterNBT) {
             this(defBool(filterNBT, "enabled", false), defBool(filterNBT, "whitelist", false));
@@ -121,7 +121,7 @@ public class GT_MEGAnet extends GT_Generic_Item {
     }
 
 
-    public static final int TIMER = 2, BASE_RANGE = 12, MAX_RANGE = 16;
+    public static final int TIMER = 10, BASE_RANGE = 12, MAX_RANGE = 16;
 
     public static boolean defBool(final @NonNull NBTTagCompound comp, final @NonNull String tag, final boolean defVal) {
         if (comp.hasKey(tag)) {
@@ -146,9 +146,7 @@ public class GT_MEGAnet extends GT_Generic_Item {
      */
     @Override
     public ItemStack onItemRightClick(final ItemStack stack, final World world, final EntityPlayer player) {
-        if (getTimer(stack) % TIMER == 0) {
-            itemUse(stack, player, world);
-        }
+        itemUse(stack, player, world);
         return setNBT(stack);
     }
 
@@ -243,13 +241,13 @@ public class GT_MEGAnet extends GT_Generic_Item {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     protected void addAdditionalToolTips(final List aList, final ItemStack aStack, final EntityPlayer aPlayer) {
-        aList.add((isActive(aStack) ?   EnumChatFormatting.GREEN +"Active" : EnumChatFormatting.RED +"Inactive"));
+        aList.add((isActive(aStack) ? EnumChatFormatting.GREEN + "Active" : EnumChatFormatting.RED + "Inactive"));
         aList.add("Shift + RMB to toggle.");
         final int range = getRange(aStack);
         aList.add((String.format("Range of (%d / %d)", range, heldRange(range))));
         final MEGAnetFilter filter = getFilter(aStack);
         if (filter.isEnabled()) {
-            aList.add("Filter mode: " + (filter.isWhitelist() ? EnumChatFormatting.WHITE+"Whitelist" : EnumChatFormatting.DARK_GRAY+"Blacklist"));
+            aList.add("Filter mode: " + (filter.isWhitelist() ? EnumChatFormatting.WHITE + "Whitelist" : EnumChatFormatting.DARK_GRAY + "Blacklist"));
             final int filSize = filter.getFilter().size();
             if (filSize > 0) {
                 aList.add(String.format("Filtering %d items", filSize));
@@ -257,8 +255,8 @@ public class GT_MEGAnet extends GT_Generic_Item {
         } else {
             aList.add("Filter disabled");
         }
-        aList.add(String.format("Magnetized"+EnumChatFormatting.GOLD+" %d "+ EnumChatFormatting.GRAY+"items!", getPickedUp(aStack)));
-        aList.add(EnumChatFormatting.DARK_BLUE+""+EnumChatFormatting.BOLD+""+EnumChatFormatting.ITALIC+"The MEGAnet!");
+        aList.add(String.format("Magnetized" + EnumChatFormatting.GOLD + " %d " + EnumChatFormatting.GRAY + "items!", getPickedUp(aStack)));
+        aList.add(EnumChatFormatting.DARK_BLUE + "" + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + "The MEGAnet!");
     }
 
     /**
