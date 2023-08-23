@@ -1,4 +1,4 @@
-package gregtech.common.misc;
+package gregtech.common.misc.explosions;
 
 
 import gregtech.api.GregTech_API;
@@ -28,21 +28,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class GT_MiningExplosion extends Explosion {
+public abstract class GT_Explosion extends Explosion {
 
     protected final List<ItemStack> harvested = new ArrayList<>();
 
     protected World pubWorld;
 
-    public GT_MiningExplosion(
+    public GT_Explosion(
             final World world, final Entity entity, final double x, final double y, final double z, final float power
-                             ) {
+                       ) {
         super(world, entity, x, y, z, power);
         this.pubWorld = world;
         this.isSmoking = true;
     }
 
-    public GT_MiningExplosion perform() {
+    public GT_Explosion perform() {
         if (net.minecraftforge.event.ForgeEventFactory.onExplosionStart(this.exploder.worldObj, this)) {
             return this;
         }
@@ -59,7 +59,6 @@ public class GT_MiningExplosion extends Explosion {
         final float ogExplosionSize = explosionSize;
         HashSet<ChunkPosition> hashSet = new HashSet<>();
         int i, j, k;
-        double expX, expY, expZ;
         for (i = 0; i < getMaxRays(); ++i) {
             for (j = 0; j < getMaxRays(); ++j) {
                 for (k = 0; k < getMaxRays(); ++k) {
@@ -74,50 +73,6 @@ public class GT_MiningExplosion extends Explosion {
         explosionSize *= 2.0F;
         doEntityStuff();
         explosionSize = ogExplosionSize;
-    }
-
-    protected void fireRay(final int rayI, final int rayJ, final int rayK, final HashSet<ChunkPosition> chunkPositions) {
-        double expZ;
-        double expX;
-        double expY;
-        double rayX, rayY, rayZ, length;
-        rayX = getRayValue(rayI);
-        rayY = getRayValue(rayJ);
-        rayZ = getRayValue(rayK);
-        length = magnitude(rayX, rayY, rayZ);
-        rayX /= length;
-        rayY /= length;
-        rayZ /= length;
-        float power = getRayPower();
-        expX = explosionX;
-        expY = explosionY;
-        expZ = explosionZ;
-        double rayLength = 0.0;
-        for (
-                float rayDist = getBaseRayDist();
-                power > 0.0f && rayLength < GT_Values.MEMaxRange;
-                power -= rayDist * getRayPowerDropRatio(), rayLength = magnitude(expX - explosionX, expY - explosionY, expZ - explosionZ)
-        ) {
-            int posX, posY, posZ;
-            posX = MathHelper.floor_double(expX);
-            posY = MathHelper.floor_double(expY);
-            posZ = MathHelper.floor_double(expZ);
-            Block block = pubWorld.getBlock(posX, posY, posZ);
-            if (block.getMaterial() != Material.air) {
-                float expDrop = exploder != null ? exploder.func_145772_a(this, pubWorld, posX, posY, posZ, block)
-                                                 : block.getExplosionResistance(
-                                                         null, pubWorld, posX, posY, posZ, explosionX, explosionY, explosionZ);
-                power -= (expDrop + getRayDropBump()) * rayDist;
-            }
-
-            if (power > 0.0f && (exploder == null || exploder.func_145774_a(this, pubWorld, posX, posY, posZ, block, power))) {
-                chunkPositions.add(new ChunkPosition(posX, posY, posZ));
-            }
-
-            expX += rayX * rayDist;
-            expY += rayY * rayDist;
-            expZ += rayZ * rayDist;
-        }
     }
 
     /**
@@ -153,41 +108,58 @@ public class GT_MiningExplosion extends Explosion {
         processDrops();
     }
 
-    private void playSound() {
-        pubWorld.playSoundEffect(explosionX, explosionY, explosionZ, GregTech_API.sSoundList.get(213), 4.0f, soundVolume());
-    }
-
     protected int getMaxRays() {
         return GT_Values.MERays;
     }
 
-    private boolean atEdge(final int i, final int j, final int k) {
+    protected boolean atEdge(final int i, final int j, final int k) {
         return atEdge(i) || atEdge(j) || atEdge(k);
     }
 
-    private double getRayValue(final int val) {
-        return ((float) val / (float) (getMaxRays() - 1)) * 2.0f - 1.0f;
+    protected void fireRay(final int rayI, final int rayJ, final int rayK, final HashSet<ChunkPosition> chunkPositions) {
+        double expZ;
+        double expX;
+        double expY;
+        double rayX, rayY, rayZ, length;
+        rayX = getRayValue(rayI);
+        rayY = getRayValue(rayJ);
+        rayZ = getRayValue(rayK);
+        length = magnitude(rayX, rayY, rayZ);
+        rayX /= length;
+        rayY /= length;
+        rayZ /= length;
+        float power = getRayPower();
+        expX = explosionX;
+        expY = explosionY;
+        expZ = explosionZ;
+        double rayLength = 0.0;
+        int rayMarches = 0;
+        for (
+                float rayDist = GT_Explosion.getBaseRayDist(); rayValid(power, rayLength, expX, expY, expZ);
+                power -= rayDist * GT_Explosion.getRayPowerDropRatio(), rayLength = magnitude(expX - explosionX, expY - explosionY, expZ - explosionZ)
+        ) {
+            int posX, posY, posZ;
+            posX = MathHelper.floor_double(expX);
+            posY = MathHelper.floor_double(expY);
+            posZ = MathHelper.floor_double(expZ);
+            Block block = pubWorld.getBlock(posX, posY, posZ);
+            if (block.getMaterial() != Material.air) {
+                float expDrop = exploder != null ? exploder.func_145772_a(this, pubWorld, posX, posY, posZ, block) : block.getExplosionResistance(
+                        null, pubWorld, posX, posY, posZ, explosionX, explosionY, explosionZ);
+                power -= (expDrop + GT_Explosion.getRayDropBump()) * rayDist;
+            }
+
+            if (power > 0.0f && (exploder == null || exploder.func_145774_a(this, pubWorld, posX, posY, posZ, block, power))) {
+                chunkPositions.add(new ChunkPosition(posX, posY, posZ));
+            }
+
+            expX += rayX * rayDist;
+            expY += rayY * rayDist;
+            expZ += rayZ * rayDist;
+        }
     }
 
-    public double magnitude(final double x, final double y, final double z) {
-        return Math.sqrt(x * x + y * y + z * z);
-    }
-
-    private float getRayPower() {
-        return explosionSize * (0.7f + pubWorld.rand.nextFloat() * 0.6f);
-    }
-
-    private static float getBaseRayDist() {
-        return GT_Values.MERayBaseRayDist;
-    }
-
-    private static float getRayPowerDropRatio() {
-        return GT_Values.MERayPowerDropRatio;
-    }
-
-    private static float getRayDropBump() {
-        return GT_Values.MERayDropBump;
-    }
+    protected abstract boolean rayValid(final float power, final double rayLength, final double posX, final double posY, final double posZ);
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     private void doEntityStuff() {
@@ -237,11 +209,11 @@ public class GT_MiningExplosion extends Explosion {
         });
     }
 
-    private float soundVolume() {
-        return 1.0f + (pubWorld.rand.nextFloat() - pubWorld.rand.nextFloat() * 0.2f) * 0.7f;
+    private void playSound() {
+        pubWorld.playSoundEffect(explosionX, explosionY, explosionZ, GregTech_API.sSoundList.get(213), 4.0f, soundVolume());
     }
 
-    private void doParticles(final boolean p_77279_1_, final float i, final float j, final float k) {
+    protected void doParticles(final boolean p_77279_1_, final float i, final float j, final float k) {
         if (p_77279_1_) {
             double d0 = i + pubWorld.rand.nextFloat();
             double d1 = j + pubWorld.rand.nextFloat();
@@ -275,7 +247,7 @@ public class GT_MiningExplosion extends Explosion {
         }
     }
 
-    private void processDrops() {
+    protected void processDrops() {
         EntityLivingBase entity = getExplosivePlacedBy();
         if (entity instanceof EntityPlayer) {
             harvested.forEach(stack -> {
@@ -291,8 +263,36 @@ public class GT_MiningExplosion extends Explosion {
         }
     }
 
-    private boolean atEdge(final int val) {
+    protected boolean atEdge(final int val) {
         return val == 0 || val == getMaxRays() - 1;
+    }
+
+    private double getRayValue(final int val) {
+        return ((float) val / (float) (getMaxRays() - 1)) * 2.0f - 1.0f;
+    }
+
+    public double magnitude(final double x, final double y, final double z) {
+        return Math.sqrt(x * x + y * y + z * z);
+    }
+
+    private float getRayPower() {
+        return explosionSize * (0.7f + pubWorld.rand.nextFloat() * 0.6f);
+    }
+
+    private static float getBaseRayDist() {
+        return GT_Values.MERayBaseRayDist;
+    }
+
+    private static float getRayPowerDropRatio() {
+        return GT_Values.MERayPowerDropRatio;
+    }
+
+    private static float getRayDropBump() {
+        return GT_Values.MERayDropBump;
+    }
+
+    protected float soundVolume() {
+        return 1.0f + (pubWorld.rand.nextFloat() - pubWorld.rand.nextFloat() * 0.2f) * 0.7f;
     }
 
     protected float getDropChance(final Block block) {

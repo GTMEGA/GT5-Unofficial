@@ -6,7 +6,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.common.blocks.GT_Block_MiningExplosive;
 import gregtech.common.blocks.GT_Block_Ore;
-import gregtech.common.misc.GT_MiningExplosion;
+import gregtech.common.misc.explosions.GT_MiningExplosion;
 import io.netty.buffer.ByteBuf;
 import lombok.Getter;
 import net.minecraft.block.Block;
