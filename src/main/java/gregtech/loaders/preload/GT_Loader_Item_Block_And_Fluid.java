@@ -16,8 +16,10 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.*;
+import gregtech.common.blocks.explosives.GT_Block_DaisyCutter;
+import gregtech.common.blocks.explosives.GT_Block_MiningExplosive;
 import gregtech.common.items.*;
-import net.minecraft.block.Block;
+import gregtech.common.items.explosives.GT_RemoteDetonator;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -226,6 +228,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Block_Ore.registerOres();
 
         GregTech_API.sBlockMiningExplosive = new GT_Block_MiningExplosive();
+        GregTech_API.sBlockDaisyCutter = new GT_Block_DaisyCutter();
         GregTech_API.sItemRemoteDetonator = new GT_RemoteDetonator();
 
         GregTech_API.sBlockMetal1 = new GT_Block_Metal("gt.blockmetal1", new Materials[]{

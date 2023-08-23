@@ -1144,7 +1144,7 @@ public class Textures {
 
         BLOCK_POTENTIOMETER_BACKGROUND,
         BLOCK_POTENTIOMETER_FOREGROUND,
-        MINING_EXPLOSIVE,
+        MINING_EXPLOSIVE, DAISY_CUTTER,
 
         AUTOMATION_RECIPEFILTER,
         AUTOMATION_RECIPEFILTER_GLOW;
@@ -1740,6 +1740,13 @@ public class Textures {
                 new CustomIcon("iconsets/EXPLOSIVES/" + "MINING_EXPLOSIVE_BOTTOM"),
                 new CustomIcon("iconsets/EXPLOSIVES/" + "MINING_EXPLOSIVE_TOP"),
                 new CustomIcon("iconsets/EXPLOSIVES/" + "MINING_EXPLOSIVE_TOP_ACTIVE")
+        };
+
+        public static IIconContainer[] DAISY_CUTTERS = {
+                new CustomIcon("iconsets/EXPLOSIVES/" + "DAISY_CUTTER_SIDES"),
+                new CustomIcon("iconsets/EXPLOSIVES/" + "DAISY_CUTTER_BOTTOM"),
+                new CustomIcon("iconsets/EXPLOSIVES/" + "DAISY_CUTTER_TOP"),
+                new CustomIcon("iconsets/EXPLOSIVES/" + "DAISY_CUTTER_TOP_ACTIVE"),
         };
 
         static {

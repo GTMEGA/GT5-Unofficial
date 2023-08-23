@@ -2,47 +2,51 @@ package gregtech.api.util;
 
 
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
-import lombok.AllArgsConstructor;
+import gregtech.api.enums.OrePrefixes;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockWood;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkPosition;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayDeque;
-import java.util.HashSet;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 
 @Getter
 @RequiredArgsConstructor
 public class GT_TreeBorker {
 
-    private final @NonNull EntityPlayer player;
+    public static Vec3 getVec3(final Vec3Impl impl) {
+        return Vec3.createVectorHelper(impl.get0(), impl.get1(), impl.get2());
+    }
+
+    public static ChunkPosition getChunkPosition(final Vec3Impl impl) {
+        return new ChunkPosition(impl.get0(), impl.get1(), impl.get2());
+    }
+
+    private final @NonNull Entity entity;
 
     private final @NonNull World world;
 
-    private final int startX, startY, startZ;
-
     private final Set<Vec3Impl> positions = new HashSet<>();
 
+    private final Map<Block, Boolean> blocksValid = new HashMap<>();
+
+    private final Set<Vec3Impl> seen = new HashSet<>();
+
     @NonNull
-    public GT_TreeBorker borkTrees() {
+    public GT_TreeBorker borkTrees(final int sX, final int sY, final int sZ) {
         final Queue<Vec3Impl> queue = new ArrayDeque<>();
-        final Set<Vec3Impl> seen = new HashSet<>();
-        queue.add(new Vec3Impl(startX, startY, startZ));
+        queue.add(new Vec3Impl(sX, sY, sZ));
         while (!queue.isEmpty()) {
             final Vec3Impl current = queue.poll();
-            if (seen.contains(current)) {
+            if (seen.contains(current) || positions.contains(current)) {
                 continue;
             }
             seen.add(current);
@@ -52,13 +56,18 @@ public class GT_TreeBorker {
             z = current.get2();
             final Block block = world.getBlock(x, y, z);
             final int metadata = world.getBlockMetadata(x, y, z);
-            if (!isValidBlock(block, x, y, z, metadata)) {
+            if (block == Blocks.air || !isValidBlock(block, metadata, x, y, z)) {
                 continue;
             }
             positions.add(current);
             addNewPositions(queue, current);
         }
         return this;
+    }
+
+    public boolean isValidBlock(final @NonNull Block block, final int metadata, final int x, final int y, final int z) {
+        final ItemStack item = new ItemStack(block, 1, metadata);
+        return blocksValid.computeIfAbsent(block, b -> isWood(b, item, metadata, x, y, z));
     }
 
     private static void addNewPositions(final Queue<Vec3Impl> queue, final Vec3Impl current) {
@@ -71,9 +80,16 @@ public class GT_TreeBorker {
         }
     }
 
-    protected boolean isValidBlock(final Block block, final int x, final int y, final int z, final int metadata) {
-        final ItemStack item = new ItemStack(block.getItem(world, x, y, z), 1, metadata);
-        return block instanceof BlockWood || OreDictionary.getOres("logWood").stream().anyMatch(stack -> GT_Utility.areStacksEqual(stack, item));
+    protected boolean isWood(final @NonNull Block block, final ItemStack stack, final int metadata, final int x, final int y, final int z) {
+        if (block == Blocks.air || block == Blocks.bedrock) {
+            return false;
+        }
+        return block.isWood(world, x, y, z) || OrePrefixes.log.contains(stack);
+    }
+
+    public boolean isPlant(final Block block) {
+        return (block.getMaterial() == Material.leaves) || (block.getMaterial() == Material.vine) || (block.getMaterial() == Material.plants) ||
+               (block.getMaterial() == Material.gourd);
     }
 
 }

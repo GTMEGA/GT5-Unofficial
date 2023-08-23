@@ -21,7 +21,6 @@ import gregtech.api.threads.GT_Runnable_Cable_Update;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
 import gregtech.api.world.GT_Worldgen;
-import gregtech.common.blocks.GT_Block_MiningExplosive;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -331,7 +330,7 @@ public class GregTech_API {
             sPostloadStarted = false,
             sPostloadFinished = false;
 
-    public static Block sBlockMiningExplosive;
+    public static Block sBlockMiningExplosive, sBlockDaisyCutter;
 
     public static Item sItemRemoteDetonator;
 

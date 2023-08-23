@@ -1,77 +1,40 @@
-package gregtech.common.blocks;
+package gregtech.common.blocks.explosives;
 
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_Generic_Block;
-import gregtech.common.entities.GT_Entity_MiningExplosive;
-import gregtech.common.items.GT_Item_MiningExplosive;
-import gregtech.common.items.GT_RemoteDetonator;
+import gregtech.common.items.explosives.GT_RemoteDetonator;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 
-public class GT_Block_MiningExplosive extends GT_Generic_Block {
+public abstract class GT_Block_Explosive extends GT_Generic_Block {
 
-    public static final int primeMask = 1 << 3, sideMask = primeMask - 1;
+    public static final int primeMask = 1 << 3;
 
-    public GT_Block_MiningExplosive() {
-        super(GT_Item_MiningExplosive.class, "gt.mining_explosives", Material.tnt);
+    public static final int sideMask = primeMask - 1;
+
+    protected final IIconContainer[] icons;
+
+    protected GT_Block_Explosive(final Class<? extends ItemBlock> aItemClass, final String aName, final IIconContainer[] icons) {
+        super(aItemClass, aName, Material.tnt);
+        this.icons = icons;
     }
 
     public void remoteTrigger(final World world, final int x, final int y, final int z, final EntityPlayer player) {
         goBoom(world, x, y, z, player);
     }
 
-    protected void goBoom(final World world, final int x, final int y, final int z, final EntityPlayer player) {
-        if (!world.isRemote) {
-            final int metadata = world.getBlockMetadata(x, y, z);
-            final GT_Entity_MiningExplosive explosive = new GT_Entity_MiningExplosive(world, x, y, z, player, metadata);
-            world.spawnEntityInWorld(explosive);
-            world.playSoundAtEntity(explosive, GregTech_API.sSoundList.get(214), 1.0F, 1.0F);
-            world.setBlockToAir(x, y, z);
-        }
-    }
-
-    /**
-     * Gets the block's texture. Args: side, meta
-     *
-     * @param side
-     * @param meta
-     */
-    @Override
-    public IIcon getIcon(final int side, final int meta) {
-        return Textures.BlockIcons.MINING_EXPLOSIVES[getIconIndex(side, meta)].getIcon();
-    }
-
-    protected int getIconIndex(final int side, final int meta) {
-        final boolean activated = isPrimed(meta);
-        final ForgeDirection sideRendered = ForgeDirection.getOrientation(side);
-        final ForgeDirection sideFacing = getFacing(meta).getOpposite();
-        int index = 0;
-        if (sideRendered == sideFacing) {
-            if (activated) {
-                index = 3;
-            } else {
-                index = 2;
-            }
-        } else if (sideRendered == sideFacing.getOpposite()) {
-            index = 1;
-        }
-        return index;
-    }
-
-    protected boolean isPrimed(final int meta) {
-        return (meta & primeMask) != 0;
-    }
-
     public ForgeDirection getFacing(final int meta) {
         return ForgeDirection.getOrientation(meta & sideMask);
     }
+
+    protected abstract void goBoom(final World world, final int x, final int y, final int z, final EntityPlayer player);
 
     /**
      * Called upon block activation (right click on the block.)
@@ -131,6 +94,48 @@ public class GT_Block_MiningExplosive extends GT_Generic_Block {
         return null;
     }
 
+    /**
+     * Gets the block's texture. Args: side, meta
+     *
+     * @param side
+     * @param meta
+     */
+    @Override
+    public IIcon getIcon(final int side, final int meta) {
+        return this.icons[getIconIndex(side, meta)].getIcon();
+    }
+
+    protected int getIconIndex(final int side, final int meta) {
+        final boolean activated = isPrimed(meta);
+        final ForgeDirection sideRendered = ForgeDirection.getOrientation(side);
+        final ForgeDirection sideFacing = getFacing(meta).getOpposite();
+        int index = 0;
+        if (sideRendered == sideFacing) {
+            if (activated) {
+                index = 3;
+            } else {
+                index = 2;
+            }
+        } else if (sideRendered == sideFacing.getOpposite()) {
+            index = 1;
+        }
+        return index;
+    }
+
+    public void setPrimed(final World world, final int x, final int y, final int z, final boolean primed) {
+        int metadata = world.getBlockMetadata(x, y, z);
+        if (primed) {
+            metadata = metadata | primeMask;
+        } else {
+            metadata = metadata & sideMask;
+        }
+        world.setBlockMetadataWithNotify(x, y, z, metadata, 3);
+    }
+
+    protected boolean isPrimed(final int meta) {
+        return (meta & primeMask) != 0;
+    }
+
     private boolean playerActivatedMe(final int side, final float hitX, final float hitY, final float hitZ) {
         float[] hits = getAppropriateHits(side, hitX, hitY, hitZ);
         return hits[0] > 0.3f && hits[0] < 0.7f && hits[1] > 0.3f && hits[1] < 0.8f;
@@ -161,18 +166,5 @@ public class GT_Block_MiningExplosive extends GT_Generic_Block {
         }
         return result;
     }
-
-    public void setPrimed(final World world, final int x, final int y, final int z, final boolean primed) {
-        int metadata = world.getBlockMetadata(x, y, z);
-        if (primed) {
-            metadata = metadata | primeMask;
-        } else {
-            metadata = metadata & sideMask;
-        }
-        world.setBlockMetadataWithNotify(x, y, z, metadata, 3);
-    }
-
-
-
 
 }

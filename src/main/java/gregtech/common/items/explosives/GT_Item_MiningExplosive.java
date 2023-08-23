@@ -1,51 +1,19 @@
-package gregtech.common.items;
+package gregtech.common.items.explosives;
 
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 import java.util.Arrays;
 import java.util.List;
 
 
-public class GT_Item_MiningExplosive extends ItemBlock {
-
-    private final String mName;
+public class GT_Item_MiningExplosive extends GT_Item_Explosive {
 
     public GT_Item_MiningExplosive(final Block block) {
-        super(block);
-        this.mName = "gt." + "mining_explosives";
-        setMaxDamage(0);
-        setHasSubtypes(false);
-        setCreativeTab(GregTech_API.TAB_GREGTECH);
-        GT_LanguageManager.addStringLocalization(mName + ".name", "Mining Charge", true);
-    }
-
-    /**
-     * Returns the unlocalized name of this item. This version accepts an ItemStack so different stacks can have
-     * different names based on their damage or NBT.
-     *
-     * @param stack
-     */
-    @Override
-    public String getUnlocalizedName(final ItemStack stack) {
-        return mName;
-    }
-
-    /**
-     * Sets the unlocalized name of this item to the string passed as the parameter, prefixed by "item."
-     *
-     * @param newName
-     */
-    @Override
-    public ItemBlock setUnlocalizedName(final String newName) {
-        return this;
+        super(block, "mining_explosives", "Mining Charge");
     }
 
     /**

@@ -36,6 +36,8 @@ import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.net.MessageUpdateFluidDisplayItem;
 import gregtech.common.render.*;
+import gregtech.common.render.explosives.GT_DaisyCutterRenderer;
+import gregtech.common.render.explosives.GT_MiningExplosiveRenderer;
 import ic2.api.tile.IWrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -434,6 +436,7 @@ public class GT_Client extends GT_Proxy
         new GT_Renderer_Entity_Arrow(GT_Entity_Arrow.class, "arrow");
         new GT_Renderer_Entity_Arrow(GT_Entity_Arrow_Potion.class, "arrow_potions");
         new GT_MiningExplosiveRenderer();
+        new GT_DaisyCutterRenderer();
         new GT_FlaskRenderer();
         new GT_FluidDisplayStackRenderer();
     }
