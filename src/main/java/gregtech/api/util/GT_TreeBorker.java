@@ -34,13 +34,15 @@ public class GT_TreeBorker {
 
     private final @NonNull World world;
 
-    private final Set<Vec3Impl> positions = new HashSet<>();
+    private final int initialX, initialY, initialZ;
+
+    private final int scanRadius, maxDistance, maxScannable;
+
+    private final Queue<Vec3Impl> positions = new ArrayDeque<>();
 
     private final Map<Block, Boolean> blocksValid = new HashMap<>();
 
     private final Set<Vec3Impl> seen = new HashSet<>();
-
-    private final int radius;
 
     @NonNull
     public GT_TreeBorker borkTrees(final int sX, final int sY, final int sZ) {
@@ -51,6 +53,9 @@ public class GT_TreeBorker {
         final Queue<Vec3Impl> queue = new ArrayDeque<>();
         queue.add(new Vec3Impl(sX, sY, sZ));
         while (!queue.isEmpty()) {
+            if (maxScannable > 0 && positions.size() > maxScannable) {
+                break;
+            }
             final Vec3Impl current = queue.poll();
             if (hasSeen(current)) {
                 continue;
@@ -60,6 +65,9 @@ public class GT_TreeBorker {
             x = current.get0();
             y = current.get1();
             z = current.get2();
+            if (maxDistance > 0 && magnitude(x - initialX, y - initialY, z - initialZ) > maxDistance) {
+                continue;
+            }
             final Block block = world.getBlock(x, y, z);
             final int metadata = world.getBlockMetadata(x, y, z);
             if (block == Blocks.air || !isValidBlock(block, metadata, x, y, z)) {
@@ -69,6 +77,14 @@ public class GT_TreeBorker {
             addNewPositions(queue, current);
         }
         return this;
+    }
+
+    public int numScanned() {
+        return positions.size();
+    }
+
+    public double magnitude(final int x, final int y, final int z) {
+        return Math.sqrt(x * x + y * y + z * z);
     }
 
     public boolean isValidBlock(final @NonNull Block block, final int metadata, final int x, final int y, final int z) {
@@ -84,10 +100,14 @@ public class GT_TreeBorker {
     }
 
     protected void addNewPositions(final Queue<Vec3Impl> queue, final Vec3Impl current) {
-        final int r = getRadius();
-        for (int x = -r; x <= r; x++) {
-            for (int y = -r; y <= r; y++) {
-                for (int z = -r; z <= r; z++) {
+        final int r = getScanRadius();
+        final int iX, iY, iZ;
+        iX = current.get0();
+        iY = current.get1();
+        iZ = current.get2();
+        for (int x = iX - r; x <= iX + r; x++) {
+            for (int y = iY - r; y <= iY + r; y++) {
+                for (int z = iZ - r; z <= iZ + r; z++) {
                     final Vec3Impl pos = new Vec3Impl(x, y, z);
                     if (hasSeen(pos)) {
                         continue;
@@ -97,7 +117,7 @@ public class GT_TreeBorker {
                     if (!isValidBlock(block, metadata, x, y, z)) {
                         continue;
                     }
-                    queue.add(current.add(x, y, z));
+                    queue.add(pos);
                 }
             }
         }

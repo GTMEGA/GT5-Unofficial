@@ -11,6 +11,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -47,6 +48,7 @@ public abstract class GT_Explosion extends Explosion {
         }
         doExplosionA();
         doExplosionB(true);
+        explosionPost();
         return this;
     }
 
@@ -75,41 +77,8 @@ public abstract class GT_Explosion extends Explosion {
         explosionAPost();
     }
 
-    protected void explosionAPost() {
+    protected void explosionPost() {
 
-    }
-
-    /**
-     * Does the second part of the explosion (sound, particles, drop spawn)
-     *
-     * @param b0
-     */
-    @Override
-    public void doExplosionB(final boolean b0) {
-        playSound();
-        pubWorld.spawnParticle("hugeexplosion", explosionX, explosionY, explosionZ, 1.0, 0.0, 0.0);
-        for (Object oPosition : affectedBlockPositions) {
-            if (!(oPosition instanceof ChunkPosition)) {
-                continue;
-            }
-            int i, j, k, meta;
-            Block block;
-            ChunkPosition position = (ChunkPosition) oPosition;
-            i = position.chunkPosX;
-            j = position.chunkPosY;
-            k = position.chunkPosZ;
-            block = pubWorld.getBlock(i, j, k);
-            meta = pubWorld.getBlockMetadata(i, j, k);
-            //
-            doParticles(b0, (float) i, (float) j, (float) k);
-            if (block.getMaterial() != Material.air) {
-                if (block.canDropFromExplosion(this)) {
-                    getDrops(block, i, j, k, meta);
-                }
-                block.onBlockExploded(pubWorld, i, j, k, this);
-            }
-        }
-        processDrops();
     }
 
     protected int getMaxRays() {
@@ -117,17 +86,18 @@ public abstract class GT_Explosion extends Explosion {
     }
 
     protected boolean atEdge(final int i, final int j, final int k) {
-        return atEdge(i) || atEdge(j) || atEdge(k);
+        return atEdge(i, getMaxX()) || atEdge(j, getMaxY()) || atEdge(k, getMaxZ());
     }
 
     protected void fireRay(final int rayI, final int rayJ, final int rayK, final HashSet<ChunkPosition> chunkPositions) {
+        final HashSet<ChunkPosition> seen = new HashSet<>();
         double expZ;
         double expX;
         double expY;
         double rayX, rayY, rayZ, length;
-        rayX = getRayValue(rayI);
-        rayY = getRayValue(rayJ);
-        rayZ = getRayValue(rayK);
+        rayX = getRayValue(rayI, getMaxX());
+        rayY = getRayValue(rayJ, getMaxY());
+        rayZ = getRayValue(rayK, getMaxZ());
         length = magnitude(rayX, rayY, rayZ);
         rayX /= length;
         rayY /= length;
@@ -146,18 +116,22 @@ public abstract class GT_Explosion extends Explosion {
             posX = MathHelper.floor_double(expX);
             posY = MathHelper.floor_double(expY);
             posZ = MathHelper.floor_double(expZ);
-            final Block block = pubWorld.getBlock(posX, posY, posZ);
-            final int bMetadata = pubWorld.getBlockMetadata(posX, posY, posZ);
-            if (canDamage(block, bMetadata, posX, posY, posZ)) {
-                if (block.getMaterial() != Material.air) {
-                    final float expDrop = exploder != null ? exploder.func_145772_a(this, pubWorld, posX, posY, posZ, block) : block.getExplosionResistance(
-                            null, pubWorld, posX, posY, posZ, explosionX, explosionY, explosionZ);
-                    power -= (expDrop + GT_Explosion.getRayDropBump()) * rayDist;
-                }
+            final ChunkPosition pos = new ChunkPosition(posX, posY, posZ);
+            if (!seen.contains(pos) && !chunkPositions.contains(pos)) {
+                seen.add(pos);
+                // System.out.printf("(%d, %d, %d) -> (%d, %d, %d)%n", rayI, rayJ, rayK, posX, posY, posZ);
+                final Block block = pubWorld.getBlock(posX, posY, posZ);
+                final int bMetadata = pubWorld.getBlockMetadata(posX, posY, posZ);
+                if (block != Blocks.air && canDamage(block, bMetadata, posX, posY, posZ)) {
+                    if (block.getMaterial() != Material.air) {
+                        final float expDrop = exploder != null ? exploder.func_145772_a(this, pubWorld, posX, posY, posZ, block) : block.getExplosionResistance(
+                                null, pubWorld, posX, posY, posZ, explosionX, explosionY, explosionZ);
+                        power -= (expDrop + getRayDropBump()) * rayDist;
+                    }
 
-                if (power > 0.0f && (exploder == null || exploder.func_145774_a(this, pubWorld, posX, posY, posZ, block, power))) {
-                    final ChunkPosition pos = new ChunkPosition(posX, posY, posZ);
-                    handleChunkPosition(chunkPositions, pos);
+                    if (power > 0.0f && (exploder == null || exploder.func_145774_a(this, pubWorld, posX, posY, posZ, block, power))) {
+                        handleChunkPosition(chunkPositions, pos);
+                    }
                 }
             }
 
@@ -199,8 +173,9 @@ public abstract class GT_Explosion extends Explosion {
                     blockDensity = pubWorld.getBlockDensity(expVec, entity.boundingBox);
                     invDist = (1.0 - distance) * blockDensity;
                     if (!(entity instanceof EntityItem)) {
-                        entity.attackEntityFrom(DamageSource.setExplosionSource(this),
-                                                (float) ((int) ((invDist * invDist + invDist) / 2.0 * 8.0 * (double) explosionSize + 1.0))
+                        entity.attackEntityFrom(
+                                DamageSource.setExplosionSource(this),
+                                (float) ((int) ((invDist * invDist + invDist) / 2.0 * 8.0 * (double) explosionSize + 1.0))
                                                );
                     }
                     final double enchantProtection = EnchantmentProtection.func_92092_a(entity, invDist) * 3.0;
@@ -215,12 +190,8 @@ public abstract class GT_Explosion extends Explosion {
         });
     }
 
-    protected boolean canDamage(final Block block, final int metadata, final int x, final int y, final int z) {
-        return getDamageChance(block, metadata, x, y, z) > pubWorld.rand.nextFloat();
-    }
+    protected void explosionAPost() {
 
-    protected float getDamageChance(final Block block, final int metadata, final int x, final int y, final int z) {
-        return 1.0f;
     }
 
     protected void playSound() {
@@ -277,12 +248,24 @@ public abstract class GT_Explosion extends Explosion {
         }
     }
 
-    protected boolean atEdge(final int val) {
-        return val == 0 || val == getMaxRays() - 1;
+    protected boolean atEdge(final int val, final int max) {
+        return val == 0 || val == max - 1;
     }
 
-    protected double getRayValue(final int val) {
-        return ((float) val / (float) (getMaxRays() - 1)) * 2.0f - 1.0f;
+    protected int getMaxX() {
+        return getMaxRays();
+    }
+
+    protected int getMaxY() {
+        return getMaxRays();
+    }
+
+    protected int getMaxZ() {
+        return getMaxRays();
+    }
+
+    protected double getRayValue(final int val, final int max) {
+        return ((float) val / (float) (max - 1)) * 2.0f - 1.0f;
     }
 
     public double magnitude(final double x, final double y, final double z) {
@@ -303,7 +286,11 @@ public abstract class GT_Explosion extends Explosion {
         return GT_Values.MERayPowerDropRatio;
     }
 
-    protected static float getRayDropBump() {
+    protected boolean canDamage(final Block block, final int metadata, final int x, final int y, final int z) {
+        return getDamageChance(block, metadata, x, y, z) > pubWorld.rand.nextFloat();
+    }
+
+    protected float getRayDropBump() {
         return GT_Values.MERayDropBump;
     }
 
@@ -333,8 +320,45 @@ public abstract class GT_Explosion extends Explosion {
         spawnItem(stack, explosionX, explosionY, explosionZ);
     }
 
+    protected float getDamageChance(final Block block, final int metadata, final int x, final int y, final int z) {
+        return 1.0f;
+    }
+
     protected void spawnItem(final ItemStack stack, final double x, final double y, final double z) {
         pubWorld.spawnEntityInWorld(new EntityItem(pubWorld, x, y, z, stack));
+    }
+
+    /**
+     * Does the second part of the explosion (sound, particles, drop spawn)
+     *
+     * @param b0
+     */
+    @Override
+    public void doExplosionB(final boolean b0) {
+        playSound();
+        pubWorld.spawnParticle("hugeexplosion", explosionX, explosionY, explosionZ, 1.0, 0.0, 0.0);
+        for (Object oPosition : affectedBlockPositions) {
+            if (!(oPosition instanceof ChunkPosition)) {
+                continue;
+            }
+            int i, j, k, meta;
+            Block block;
+            ChunkPosition position = (ChunkPosition) oPosition;
+            i = position.chunkPosX;
+            j = position.chunkPosY;
+            k = position.chunkPosZ;
+            block = pubWorld.getBlock(i, j, k);
+            meta = pubWorld.getBlockMetadata(i, j, k);
+            //
+            doParticles(b0, (float) i, (float) j, (float) k);
+            if (block.getMaterial() != Material.air) {
+                if (block.canDropFromExplosion(this)) {
+                    getDrops(block, i, j, k, meta);
+                }
+                block.onBlockExploded(pubWorld, i, j, k, this);
+            }
+        }
+        processDrops();
     }
 
 }

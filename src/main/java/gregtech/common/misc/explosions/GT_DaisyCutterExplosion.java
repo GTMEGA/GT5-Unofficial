@@ -19,7 +19,7 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
             final World world, final EntityTNTPrimed entity, final double x, final double y, final double z, final float power
                                   ) {
         super(world, entity, x, y, z, power);
-        this.borker = new GT_TreeBorker(entity, world, 5);
+        this.borker = new GT_TreeBorker(entity, world, (int) x, (int) y, (int) z, 8, 80, 2048);
     }
 
     /**
@@ -32,7 +32,7 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
      */
     @Override
     protected boolean rayValid(final float power, final double rayLength, final double posX, final double posY, final double posZ) {
-        return power > 0.0f && rayLength < 40;
+        return rayLength < 40;
     }
 
     /**
@@ -44,11 +44,25 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
     }
 
     /**
+     *
+     */
+    @Override
+    protected void explosionPost() {
+        System.out.println("Starting output report");
+        int i = 0;
+        for (final Object oPosition: affectedBlockPositions) {
+            final ChunkPosition position = (ChunkPosition) oPosition;
+            System.out.printf("\t%d: %d %d %d%n", ++i, position.chunkPosX, position.chunkPosY, position.chunkPosZ);
+        }
+        System.out.printf("Total: %d%n", i);
+    }
+
+    /**
      * @return
      */
     @Override
     protected float getRayPower() {
-        return super.getRayPower() * 4.0f;
+        return super.getRayPower() * 16.0f;
     }
 
     /**
@@ -64,7 +78,15 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
      */
     @Override
     protected float getBaseRayDist() {
-        return super.getBaseRayDist() * 4.0f;
+        return super.getBaseRayDist() / 4.0f;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    protected float getRayDropBump() {
+        return 0.001f;
     }
 
     /**

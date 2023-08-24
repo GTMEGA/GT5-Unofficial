@@ -20,6 +20,7 @@ import gregtech.common.blocks.explosives.GT_Block_DaisyCutter;
 import gregtech.common.blocks.explosives.GT_Block_MiningExplosive;
 import gregtech.common.items.*;
 import gregtech.common.items.explosives.GT_RemoteDetonator;
+import gregtech.common.items.TreeBorkTester;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -230,6 +231,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockMiningExplosive = new GT_Block_MiningExplosive();
         GregTech_API.sBlockDaisyCutter = new GT_Block_DaisyCutter();
         GregTech_API.sItemRemoteDetonator = new GT_RemoteDetonator();
+        GregTech_API.sBorker = new TreeBorkTester();
 
         GregTech_API.sBlockMetal1 = new GT_Block_Metal("gt.blockmetal1", new Materials[]{
                 Materials.Adamantium,

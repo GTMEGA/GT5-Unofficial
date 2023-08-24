@@ -332,7 +332,7 @@ public class GregTech_API {
 
     public static Block sBlockMiningExplosive, sBlockDaisyCutter;
 
-    public static Item sItemRemoteDetonator;
+    public static Item sItemRemoteDetonator, sBorker;
 
     private static Class sBaseMetaTileEntityClass = null;
 
