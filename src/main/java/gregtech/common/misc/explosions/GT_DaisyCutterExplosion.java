@@ -48,13 +48,13 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
      */
     @Override
     protected void explosionPost() {
-        System.out.println("Starting output report");
+        /* System.out.println("Starting output report");
         int i = 0;
         for (final Object oPosition: affectedBlockPositions) {
             final ChunkPosition position = (ChunkPosition) oPosition;
             System.out.printf("\t%d: %d %d %d%n", ++i, position.chunkPosX, position.chunkPosY, position.chunkPosZ);
         }
-        System.out.printf("Total: %d%n", i);
+        System.out.printf("Total: %d%n", i); */
     }
 
     /**
