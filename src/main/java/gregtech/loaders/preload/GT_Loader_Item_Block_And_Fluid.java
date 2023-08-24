@@ -11,10 +11,7 @@ import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.items.GT_RadioactiveCellIC_Item;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import gregtech.common.blocks.*;
 import gregtech.common.blocks.explosives.GT_Block_DaisyCutter;
 import gregtech.common.blocks.explosives.GT_Block_MiningExplosive;
@@ -226,7 +223,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockStones = new GT_Block_Stones();
 //        GregTech_API.sBlockOres1 = new GT_Block_Ores();
         GregTech_API.sBlockOres1 = Blocks.stone;
-        GT_Block_Ore.registerOres();
+        GT_Block_Ore_Abstract.registerOres();
 
         GregTech_API.sBlockMiningExplosive = new GT_Block_MiningExplosive();
         GregTech_API.sBlockDaisyCutter = new GT_Block_DaisyCutter();

@@ -10,13 +10,12 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Ore;
+import gregtech.common.blocks.GT_Block_Ore_Abstract;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidBlock;
@@ -98,8 +97,8 @@ public class Behaviour_Prospecting extends Behaviour_None {
 					tY = aY-4-tQuality+tRandom.nextInt(j);
 					tZ = aZ-4-tQuality+tRandom.nextInt(j);
 					tBlock = aWorld.getBlock(tX, tY, tZ);
-                    if (tBlock instanceof GT_Block_Ore) {
-                        Materials tMaterial = ((GT_Block_Ore) tBlock).getOreType();
+                    if (tBlock instanceof GT_Block_Ore_Abstract) {
+                        Materials tMaterial = ((GT_Block_Ore_Abstract) tBlock).getOreType();
 
                         if ((tMaterial != null) && (tMaterial != Materials._NULL)) {
                             GT_Utility.sendChatToPlayer(aPlayer, trans("106","Found traces of ") + tMaterial.mDefaultLocalName + trans("101"," Ore."));
