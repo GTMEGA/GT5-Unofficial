@@ -72,6 +72,11 @@ public abstract class GT_Explosion extends Explosion {
         explosionSize *= 2.0F;
         doEntityStuff();
         explosionSize = ogExplosionSize;
+        explosionAPost();
+    }
+
+    protected void explosionAPost() {
+
     }
 
     /**
@@ -135,7 +140,7 @@ public abstract class GT_Explosion extends Explosion {
         for (
                 float rayDist = getBaseRayDist();
                 rayValid(power, rayLength, expX, expY, expZ);
-                power -= rayDist * GT_Explosion.getRayPowerDropRatio(), rayLength = magnitude(expX - explosionX, expY - explosionY, expZ - explosionZ)
+                power -= rayDist * getRayPowerDropRatio(), rayLength = magnitude(expX - explosionX, expY - explosionY, expZ - explosionZ)
         ) {
             final int posX, posY, posZ;
             posX = MathHelper.floor_double(expX);
@@ -294,7 +299,7 @@ public abstract class GT_Explosion extends Explosion {
 
     protected abstract boolean rayValid(final float power, final double rayLength, final double posX, final double posY, final double posZ);
 
-    protected static float getRayPowerDropRatio() {
+    protected float getRayPowerDropRatio() {
         return GT_Values.MERayPowerDropRatio;
     }
 

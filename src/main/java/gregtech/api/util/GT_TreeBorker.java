@@ -40,13 +40,19 @@ public class GT_TreeBorker {
 
     private final Set<Vec3Impl> seen = new HashSet<>();
 
+    private final int radius;
+
     @NonNull
     public GT_TreeBorker borkTrees(final int sX, final int sY, final int sZ) {
+        if (hasSeen(sX, sY, sZ) || !isValidBlock(sX, sY, sZ)) {
+            seen.add(new Vec3Impl(sX, sY, sZ));
+            return this;
+        }
         final Queue<Vec3Impl> queue = new ArrayDeque<>();
         queue.add(new Vec3Impl(sX, sY, sZ));
         while (!queue.isEmpty()) {
             final Vec3Impl current = queue.poll();
-            if (seen.contains(current) || positions.contains(current)) {
+            if (hasSeen(current)) {
                 continue;
             }
             seen.add(current);
@@ -66,14 +72,31 @@ public class GT_TreeBorker {
     }
 
     public boolean isValidBlock(final @NonNull Block block, final int metadata, final int x, final int y, final int z) {
+        if (block == Blocks.air || block == Blocks.bedrock) {
+            return false;
+        }
         final ItemStack item = new ItemStack(block, 1, metadata);
-        return blocksValid.computeIfAbsent(block, b -> isWood(b, item, metadata, x, y, z));
+        return blocksValid.computeIfAbsent(block, b -> isWood(b, item, metadata, x, y, z) || isPlant(b));
     }
 
-    private static void addNewPositions(final Queue<Vec3Impl> queue, final Vec3Impl current) {
-        for (int x = -1; x <= 1; x++) {
-            for (int y = -1; y <= 1; y++) {
-                for (int z = -1; z <= 1; z++) {
+    public boolean isValidBlock(final int x, final int y, final int z) {
+        return isValidBlock(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z), x, y, z);
+    }
+
+    protected void addNewPositions(final Queue<Vec3Impl> queue, final Vec3Impl current) {
+        final int r = getRadius();
+        for (int x = -r; x <= r; x++) {
+            for (int y = -r; y <= r; y++) {
+                for (int z = -r; z <= r; z++) {
+                    final Vec3Impl pos = new Vec3Impl(x, y, z);
+                    if (hasSeen(pos)) {
+                        continue;
+                    }
+                    final Block block = world.getBlock(x, y, z);
+                    final int metadata = world.getBlockMetadata(x, y, z);
+                    if (!isValidBlock(block, metadata, x, y, z)) {
+                        continue;
+                    }
                     queue.add(current.add(x, y, z));
                 }
             }
@@ -90,6 +113,18 @@ public class GT_TreeBorker {
     public boolean isPlant(final Block block) {
         return (block.getMaterial() == Material.leaves) || (block.getMaterial() == Material.vine) || (block.getMaterial() == Material.plants) ||
                (block.getMaterial() == Material.gourd);
+    }
+
+    public boolean hasSeen(final ChunkPosition position) {
+        return hasSeen(new Vec3Impl(position.chunkPosX, position.chunkPosY, position.chunkPosZ));
+    }
+
+    public boolean hasSeen(final int x, final int y, final int z) {
+        return hasSeen(new Vec3Impl(x, y, z));
+    }
+
+    public boolean hasSeen(final Vec3Impl vec3) {
+        return seen.contains(vec3) || positions.contains(vec3);
     }
 
 }

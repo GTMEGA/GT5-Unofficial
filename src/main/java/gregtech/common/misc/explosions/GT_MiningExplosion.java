@@ -26,14 +26,6 @@ public class GT_MiningExplosion extends GT_Explosion {
         return power > 0.0f && rayLength < GT_Values.MEMaxRange;
     }
 
-    /**
-     * @return
-     */
-    @Override
-    protected float getBaseRayDist() {
-        return super.getBaseRayDist() * 4.0f;
-    }
-
     @Override
     protected float getDropChance(final Block block) {
         if (block instanceof BlockOre || block instanceof GT_Block_Ore) {
