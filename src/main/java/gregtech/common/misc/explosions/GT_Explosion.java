@@ -326,7 +326,13 @@ public abstract class GT_Explosion extends Explosion {
     }
 
     protected boolean canDamage(final Block block, final int metadata, final int x, final int y, final int z) {
-        return getDamageChance(block, metadata, x, y, z) > pubWorld.rand.nextFloat();
+        final float chance = getDamageChance(block, metadata, x, y, z);
+        if (chance <= 0) {
+            return false;
+        } else if (chance >= 1) {
+            return true;
+        }
+        return chance > pubWorld.rand.nextFloat();
     }
 
     protected float getRayDropBump() {
