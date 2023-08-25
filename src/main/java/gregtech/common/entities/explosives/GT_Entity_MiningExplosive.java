@@ -20,9 +20,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 @Getter
 public class GT_Entity_MiningExplosive extends GT_Entity_Explosive {
 
-    /**
-     * Don't touch this, I know it's unused, but it needs to be here for the FML entity rendering
-     */
+    @SuppressWarnings("unused")
     public GT_Entity_MiningExplosive(final World world) {
         super(world);
     }

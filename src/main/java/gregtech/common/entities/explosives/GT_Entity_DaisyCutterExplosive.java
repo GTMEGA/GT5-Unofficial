@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 
 public class GT_Entity_DaisyCutterExplosive extends GT_Entity_Explosive{
 
+    @SuppressWarnings("unused")
     public GT_Entity_DaisyCutterExplosive(final World world) {
         super(world);
     }
