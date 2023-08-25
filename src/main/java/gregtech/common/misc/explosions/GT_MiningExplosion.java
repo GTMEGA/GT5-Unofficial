@@ -21,7 +21,11 @@ public class GT_MiningExplosion extends GT_Explosion {
 
     @Override
     protected boolean rayValid(final float power, final double rayLength, final double posX, final double posY, final double posZ) {
-        return power > 0.0f && rayLength < GT_Values.MEMaxRange;
+        return power > 0.0f && rayLength < getExpRadius();
+    }
+
+    private double getExpRadius() {
+        return GT_Values.MEMaxRange + (pubWorld.rand.nextDouble() * 1.5) - 0.5;
     }
 
     @Override

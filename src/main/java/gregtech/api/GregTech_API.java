@@ -330,7 +330,7 @@ public class GregTech_API {
             sPostloadStarted = false,
             sPostloadFinished = false;
 
-    public static Block sBlockMiningExplosive, sBlockDaisyCutter;
+    public static Block sBlockMiningExplosive, sBlockDaisyCutter, sBlockTunEx;
 
     public static Item sItemRemoteDetonator, sBorker;
 

@@ -27,12 +27,12 @@ public class GT_Item_MiningExplosive extends GT_Item_Explosive {
     @SuppressWarnings("unchecked")
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer player, final List lore, final boolean b0) {
-        final String[] lines = {"An extraordinary explosive for extracting ore from the world.",
-                                String.format("Fortune bonus of %d", GT_Values.MEFortune),
-                                "Mainly effective on ore, but will destroy most terrain.",
-                                "Prime with a Remote Detonator",
-                                "Packs a pretty mean punch, so take",
-                                String.format("cover or you'll be mist in %d seconds!", GT_Values.MEFuse / 20)};
+        final String[] lines = {
+                "An extraordinary explosive for extracting ore from the world.", String.format("Fortune bonus of %d", GT_Values.MEFortune),
+                "Mainly effective on ore, but will destroy most terrain.", "Prime with a Remote Detonator", "Packs a pretty mean punch, so take", String.format(
+                "cover or you'll be mist in %d seconds!", GT_Values.MEFuse / 20)
+        };
         lore.addAll(Arrays.asList(lines));
     }
+
 }

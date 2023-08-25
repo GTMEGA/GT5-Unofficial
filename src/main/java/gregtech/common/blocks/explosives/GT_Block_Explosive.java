@@ -27,14 +27,23 @@ public abstract class GT_Block_Explosive extends GT_Generic_Block {
     }
 
     public void remoteTrigger(final World world, final int x, final int y, final int z, final EntityPlayer player) {
-        goBoom(world, x, y, z, player);
-    }
-
-    public ForgeDirection getFacing(final int meta) {
-        return ForgeDirection.getOrientation(meta & sideMask);
+        if (!world.isRemote) {
+            goBoom(world, x, y, z, player);
+        }
     }
 
     protected abstract void goBoom(final World world, final int x, final int y, final int z, final EntityPlayer player);
+
+    /**
+     * Gets the block's texture. Args: side, meta
+     *
+     * @param side
+     * @param meta
+     */
+    @Override
+    public IIcon getIcon(final int side, final int meta) {
+        return this.icons[getIconIndex(side, meta)].getIcon();
+    }
 
     /**
      * Called upon block activation (right click on the block.)
@@ -58,7 +67,9 @@ public abstract class GT_Block_Explosive extends GT_Generic_Block {
             GT_Values.MERequiresRemote) {
             return true;
         }
-        goBoom(world, x, y, z, player);
+        if (!world.isRemote) {
+            goBoom(world, x, y, z, player);
+        }
         return false;
     }
 
@@ -94,48 +105,6 @@ public abstract class GT_Block_Explosive extends GT_Generic_Block {
         return null;
     }
 
-    /**
-     * Gets the block's texture. Args: side, meta
-     *
-     * @param side
-     * @param meta
-     */
-    @Override
-    public IIcon getIcon(final int side, final int meta) {
-        return this.icons[getIconIndex(side, meta)].getIcon();
-    }
-
-    protected int getIconIndex(final int side, final int meta) {
-        final boolean activated = isPrimed(meta);
-        final ForgeDirection sideRendered = ForgeDirection.getOrientation(side);
-        final ForgeDirection sideFacing = getFacing(meta).getOpposite();
-        int index = 0;
-        if (sideRendered == sideFacing) {
-            if (activated) {
-                index = 3;
-            } else {
-                index = 2;
-            }
-        } else if (sideRendered == sideFacing.getOpposite()) {
-            index = 1;
-        }
-        return index;
-    }
-
-    public void setPrimed(final World world, final int x, final int y, final int z, final boolean primed) {
-        int metadata = world.getBlockMetadata(x, y, z);
-        if (primed) {
-            metadata = metadata | primeMask;
-        } else {
-            metadata = metadata & sideMask;
-        }
-        world.setBlockMetadataWithNotify(x, y, z, metadata, 3);
-    }
-
-    protected boolean isPrimed(final int meta) {
-        return (meta & primeMask) != 0;
-    }
-
     private boolean playerActivatedMe(final int side, final float hitX, final float hitY, final float hitZ) {
         float[] hits = getAppropriateHits(side, hitX, hitY, hitZ);
         return hits[0] > 0.3f && hits[0] < 0.7f && hits[1] > 0.3f && hits[1] < 0.8f;
@@ -165,6 +134,41 @@ public abstract class GT_Block_Explosive extends GT_Generic_Block {
             }
         }
         return result;
+    }
+
+    protected int getIconIndex(final int side, final int meta) {
+        final boolean activated = isPrimed(meta);
+        final ForgeDirection sideRendered = ForgeDirection.getOrientation(side);
+        final ForgeDirection sideFacing = getFacing(meta).getOpposite();
+        int index = 0;
+        if (sideRendered == sideFacing) {
+            if (activated) {
+                index = 3;
+            } else {
+                index = 2;
+            }
+        } else if (sideRendered == sideFacing.getOpposite()) {
+            index = 1;
+        }
+        return index;
+    }
+
+    protected boolean isPrimed(final int meta) {
+        return (meta & primeMask) != 0;
+    }
+
+    public ForgeDirection getFacing(final int meta) {
+        return ForgeDirection.getOrientation(meta & sideMask);
+    }
+
+    public void setPrimed(final World world, final int x, final int y, final int z, final boolean primed) {
+        int metadata = world.getBlockMetadata(x, y, z);
+        if (primed) {
+            metadata = metadata | primeMask;
+        } else {
+            metadata = metadata & sideMask;
+        }
+        world.setBlockMetadataWithNotify(x, y, z, metadata, 3);
     }
 
 }

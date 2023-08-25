@@ -3,11 +3,15 @@ package gregtech.common.entities.explosives;
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import gregtech.api.enums.GT_Values;
+import gregtech.common.blocks.explosives.GT_Block_Explosive;
 import io.netty.buffer.ByteBuf;
 import lombok.Getter;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 
@@ -107,6 +111,51 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
     protected abstract void doExplode();
 
     /**
+     * @param explosion
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @param block
+     * @return
+     */
+    @Override
+    public float func_145772_a(
+            final Explosion explosion, final World world, final int x, final int y, final int z, final Block block
+                              ) {
+        return getBlockResistance(explosion, world, x, y, z, block);
+    }
+
+    /**
+     * @param explosion
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @param block
+     * @param power
+     * @return
+     */
+    @Override
+    public boolean func_145774_a(
+            final Explosion explosion, final World world, final int x, final int y, final int z, final Block block, final float power
+                                ) {
+        return canBlockBeExploded(explosion, world, x, y, z, block, power);
+    }
+
+    public boolean canBlockBeExploded(
+            final Explosion explosion, final World world, final int x, final int y, final int z, final Block block, final float power
+                                     ) {
+        return !(block instanceof GT_Block_Explosive);
+    }
+
+    public abstract float getBlockResistance(final Explosion explosion, final World world, final int x, final int y, final int z, final Block block);
+
+    public float defaultBlockResistance(final Explosion explosion, final World world, final int x, final int y, final int z, final Block block) {
+        return super.func_145772_a(explosion, world, x, y, z, block);
+    }
+
+    /**
      * Called by the server when constructing the spawn packet.
      * Data should be added to the provided stream.
      *
@@ -135,5 +184,9 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
         this.realY = additionalData.readDouble();
         this.realZ = additionalData.readDouble();
     }
+
+    public abstract Block getBlockToRenderAs();
+
+    public abstract ResourceLocation getEntityTexture();
 
 }

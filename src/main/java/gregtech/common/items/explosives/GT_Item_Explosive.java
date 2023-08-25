@@ -22,6 +22,16 @@ public class GT_Item_Explosive extends ItemBlock {
     }
 
     /**
+     * Sets the unlocalized name of this item to the string passed as the parameter, prefixed by "item."
+     *
+     * @param newName
+     */
+    @Override
+    public ItemBlock setUnlocalizedName(final String newName) {
+        return this;
+    }
+
+    /**
      * Returns the unlocalized name of this item. This version accepts an ItemStack so different stacks can have
      * different names based on their damage or NBT.
      *
@@ -30,16 +40,6 @@ public class GT_Item_Explosive extends ItemBlock {
     @Override
     public String getUnlocalizedName(final ItemStack stack) {
         return mName;
-    }
-
-    /**
-     * Sets the unlocalized name of this item to the string passed as the parameter, prefixed by "item."
-     *
-     * @param newName
-     */
-    @Override
-    public ItemBlock setUnlocalizedName(final String newName) {
-        return this;
     }
 
 }

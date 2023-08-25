@@ -28,11 +28,9 @@ public class GT_Item_DaisyCutter extends GT_Item_Explosive {
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer player, final List lore, final boolean b0) {
         final String[] lines = {
-                "A unique explosive, developed by a bygone civilization in order to clear foliage for construction",
-                "Unsuitable for resource gathering",
-                "Prime with a Remote Detonator",
-                "Packs a pretty mean punch, so take",
-                String.format("cover or you'll be mist in %d seconds!", GT_Values.MEFuse / 20)
+                "A unique explosive, developed by a bygone civilization in order to clear foliage for construction", "Unsuitable for resource gathering",
+                "Prime with a Remote Detonator", "Packs a pretty mean punch, so take", String.format(
+                "cover or you'll be mist in %d seconds!", GT_Values.MEFuse / 20)
         };
         lore.addAll(Arrays.asList(lines));
     }

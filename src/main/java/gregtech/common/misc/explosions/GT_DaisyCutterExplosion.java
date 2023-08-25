@@ -23,27 +23,6 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
     }
 
     /**
-     * @param power
-     * @param rayLength
-     * @param posX
-     * @param posY
-     * @param posZ
-     * @return
-     */
-    @Override
-    protected boolean rayValid(final float power, final double rayLength, final double posX, final double posY, final double posZ) {
-        return rayLength < 40;
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    protected int getMaxRays() {
-        return super.getMaxRays() * 3;
-    }
-
-    /**
      *
      */
     @Override
@@ -61,8 +40,46 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
      * @return
      */
     @Override
+    protected int getMaxRays() {
+        return super.getMaxRays() * 3;
+    }
+
+    /**
+     *
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void explosionAPost() {
+        affectedBlockPositions.addAll(borker.getPositions().stream().map(GT_TreeBorker::getChunkPosition).collect(Collectors.toSet()));
+    }
+
+    /**
+     * @return
+     */
+    @Override
     protected float getRayPower() {
         return super.getRayPower() * 16.0f;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    protected float getBaseRayDist() {
+        return super.getBaseRayDist() / 4.0f;
+    }
+
+    /**
+     * @param power
+     * @param rayLength
+     * @param posX
+     * @param posY
+     * @param posZ
+     * @return
+     */
+    @Override
+    protected boolean rayValid(final float power, final double rayLength, final double posX, final double posY, final double posZ) {
+        return rayLength < 40;
     }
 
     /**
@@ -77,25 +94,8 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
      * @return
      */
     @Override
-    protected float getBaseRayDist() {
-        return super.getBaseRayDist() / 4.0f;
-    }
-
-    /**
-     * @return
-     */
-    @Override
     protected float getRayDropBump() {
         return 0.001f;
-    }
-
-    /**
-     * @param block
-     * @return
-     */
-    @Override
-    protected float getDropChance(final Block block) {
-        return 0.01f;
     }
 
     /**
@@ -119,19 +119,13 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
         }
     }
 
-    protected void bork(final int x, final int y, final int z) {
-        if (borker.isValidBlock(x, y, z)) {
-            borker.borkTrees(x, y, z);
-        }
-    }
-
     /**
-     *
+     * @param block
+     * @return
      */
-    @SuppressWarnings("unchecked")
     @Override
-    protected void explosionAPost() {
-        affectedBlockPositions.addAll(borker.getPositions().stream().map(GT_TreeBorker::getChunkPosition).collect(Collectors.toSet()));
+    protected float getDropChance(final Block block) {
+        return 0.01f;
     }
 
     /**
@@ -152,6 +146,12 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
 
     public boolean isPlant(final Block block, final int metadata, final int x, final int y, final int z) {
         return borker.isValidBlock(block, metadata, x, y, z) || borker.isPlant(block);
+    }
+
+    protected void bork(final int x, final int y, final int z) {
+        if (borker.isValidBlock(x, y, z)) {
+            borker.borkTrees(x, y, z);
+        }
     }
 
 }
