@@ -12,7 +12,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
-import gregtech.common.blocks.GT_Block_Ore;
+import gregtech.common.blocks.GT_Block_Ore_Abstract;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -328,7 +328,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         ChunkPosition blockPos = new ChunkPosition(x, y, z);
 
         if (!oreBlockPositions.contains(blockPos)) {
-            if (block instanceof GT_Block_Ore) {
+            if (block instanceof GT_Block_Ore_Abstract) {
                 oreBlockPositions.add(blockPos);
             } else if (GT_Utility.isOre(block, blockMeta))
                 oreBlockPositions.add(blockPos);

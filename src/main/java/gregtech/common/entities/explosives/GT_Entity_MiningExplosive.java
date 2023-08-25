@@ -3,8 +3,8 @@ package gregtech.common.entities.explosives;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.common.blocks.GT_Block_Ore_Abstract;
 import gregtech.common.blocks.explosives.GT_Block_MiningExplosive;
-import gregtech.common.blocks.GT_Block_Ore;
 import gregtech.common.misc.explosions.GT_MiningExplosion;
 import lombok.Getter;
 import net.minecraft.block.Block;
@@ -42,7 +42,7 @@ public class GT_Entity_MiningExplosive extends GT_Entity_Explosive {
     public float func_145772_a(
             final Explosion explosion, final World world, final int x, final int y, final int z, final Block block
                               ) {
-        if (block instanceof BlockOre || block instanceof GT_Block_Ore) {
+        if (block instanceof BlockOre || block instanceof GT_Block_Ore_Abstract) {
             return -GT_Values.MEOrePowerBoost;
         }
         final Material material = block.getMaterial();

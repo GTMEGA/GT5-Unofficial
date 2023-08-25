@@ -2,13 +2,11 @@ package gregtech.common.misc.explosions;
 
 
 import gregtech.api.enums.GT_Values;
-import gregtech.common.blocks.GT_Block_Ore;
+import gregtech.common.blocks.GT_Block_Ore_Abstract;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGrass;
 import net.minecraft.block.BlockOre;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.world.World;
 
@@ -28,7 +26,7 @@ public class GT_MiningExplosion extends GT_Explosion {
 
     @Override
     protected float getDropChance(final Block block) {
-        if (block instanceof BlockOre || block instanceof GT_Block_Ore) {
+        if (block instanceof BlockOre || block instanceof GT_Block_Ore_Abstract) {
             return GT_Values.MEOreChance;
         } else {
             final Material material = block.getMaterial();
