@@ -3,7 +3,6 @@ package gregtech.common.blocks.explosives;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
-import gregtech.common.entities.explosives.GT_Entity_MiningExplosive;
 import gregtech.common.entities.explosives.GT_Entity_TunnelExplosive;
 import gregtech.common.items.explosives.GT_Item_TunnelExplosive;
 import net.minecraft.entity.player.EntityPlayer;

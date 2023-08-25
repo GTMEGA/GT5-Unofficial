@@ -66,22 +66,6 @@ public abstract class GT_Explosion extends Explosion {
         explosionAPost();
     }
 
-    protected HashSet<ChunkPosition> fireRays() {
-        final HashSet<ChunkPosition> hashSet = new HashSet<>();
-        final int iMax = getMaxX(), jMax = getMaxY(), kMax = getMaxZ();
-        int i, j, k;
-        for (i = 0; i < iMax; ++i) {
-            for (j = 0; j < jMax; ++j) {
-                for (k = 0; k < kMax; ++k) {
-                    if (atEdge(i, j, k)) {
-                        fireRay(i, j, k, hashSet);
-                    }
-                }
-            }
-        }
-        return hashSet;
-    }
-
     /**
      * Does the second part of the explosion (sound, particles, drop spawn)
      *
@@ -117,6 +101,22 @@ public abstract class GT_Explosion extends Explosion {
 
     public double magnitude(final double x, final double y, final double z) {
         return Math.sqrt(x * x + y * y + z * z);
+    }
+
+    protected HashSet<ChunkPosition> fireRays() {
+        final HashSet<ChunkPosition> hashSet = new HashSet<>();
+        final int iMax = getMaxX(), jMax = getMaxY(), kMax = getMaxZ();
+        int i, j, k;
+        for (i = 0; i < iMax; ++i) {
+            for (j = 0; j < jMax; ++j) {
+                for (k = 0; k < kMax; ++k) {
+                    if (atEdge(i, j, k)) {
+                        fireRay(i, j, k, hashSet);
+                    }
+                }
+            }
+        }
+        return hashSet;
     }
 
     protected void explosionPost() {
