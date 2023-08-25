@@ -146,6 +146,7 @@ public abstract class GT_Explosion extends Explosion {
         rayY /= length;
         rayZ /= length;
         float power = getRayPower();
+        final float dropBump = getRayDropBump(), dropRatio = getRayPowerDropRatio();
         expX = explosionX;
         expY = explosionY;
         expZ = explosionZ;
@@ -153,7 +154,7 @@ public abstract class GT_Explosion extends Explosion {
         for (
                 float rayDist = getBaseRayDist();
                 rayValid(power, rayLength, expX, expY, expZ);
-                power -= rayDist * getRayPowerDropRatio(), rayLength = magnitude(expX - explosionX, expY - explosionY, expZ - explosionZ)
+                power -= rayDist * dropRatio, rayLength = magnitude(expX - explosionX, expY - explosionY, expZ - explosionZ)
         ) {
             final int posX, posY, posZ;
             posX = MathHelper.floor_double(expX);
@@ -169,7 +170,7 @@ public abstract class GT_Explosion extends Explosion {
                     if (block.getMaterial() != Material.air) {
                         final float expDrop = exploder != null ? exploder.func_145772_a(this, pubWorld, posX, posY, posZ, block) : block.getExplosionResistance(
                                 null, pubWorld, posX, posY, posZ, explosionX, explosionY, explosionZ);
-                        power -= (expDrop + getRayDropBump()) * rayDist;
+                        power -= (expDrop + dropBump) * rayDist;
                     }
 
                     if (power > 0.0f && (exploder == null || exploder.func_145774_a(this, pubWorld, posX, posY, posZ, block, power))) {
