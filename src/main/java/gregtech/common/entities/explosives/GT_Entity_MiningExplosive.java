@@ -34,9 +34,10 @@ public class GT_Entity_MiningExplosive extends GT_Entity_Explosive {
     protected void doExplode() {
         final ForgeDirection side = ((GT_Block_MiningExplosive) GregTech_API.sBlockMiningExplosive).getFacing(metadata);
         final double xOffset, yOffset, zOffset;
-        xOffset = rangeOffset() * side.offsetX;
-        yOffset = rangeOffset() * side.offsetY;
-        zOffset = rangeOffset() * side.offsetZ;
+        final double offset = rangeOffset();
+        xOffset = offset * side.offsetX;
+        yOffset = offset * side.offsetY;
+        zOffset = offset * side.offsetZ;
         new GT_MiningExplosion(worldObj, this, posX + xOffset, posY + yOffset, posZ + zOffset, GT_Values.MEExplosionPower).perform();
     }
 

@@ -51,7 +51,11 @@ public class GT_Entity_TunnelExplosive extends GT_Entity_Explosive {
      */
     @Override
     public float getBlockResistance(final Explosion explosion, final World world, final int x, final int y, final int z, final Block block) {
-        return defaultBlockResistance(explosion, world, x, y, z, block) * 0.05f;
+        final float defaultResistance = defaultBlockResistance(explosion, world, x, y, z, block);
+        if (defaultResistance > 10) {
+            return defaultResistance;
+        }
+        return defaultResistance * 0.05f;
     }
 
     /**
