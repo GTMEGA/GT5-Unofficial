@@ -19,11 +19,35 @@ import java.util.*;
 @RequiredArgsConstructor
 public class GT_TreeBorker {
 
+    /**
+     * World
+     * */
     private final /* @NonNull */ World world;
 
+    /**
+     * Initial position the borker starts from
+     * */
     private final int initialX, initialY, initialZ;
 
-    private final int scanRadius, maxDistance, maxSpread, maxScannable;
+    /**
+     * How far from a given plant block it will scan, negative means unlimited
+     * */
+    private final int scanRadius;
+
+    /**
+     * Maximum radius of borking, negative means unlimited
+     * */
+    private final int maxDistance;
+
+    /**
+     * Maximum spread from a given block, negative means unlimited
+     * */
+    private final int maxSpread;
+
+    /**
+     * Maximum total blocks it will process, negative means unlimited
+     * */
+    private final int maxScannable;
 
     private final Queue<int[]> positions = new ArrayDeque<>();
 
