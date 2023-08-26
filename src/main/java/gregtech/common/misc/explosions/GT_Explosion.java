@@ -11,7 +11,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -31,6 +30,8 @@ import java.util.stream.Collectors;
 public abstract class GT_Explosion extends Explosion {
 
     protected final List<ItemStack> harvested = new ArrayList<>();
+
+    protected final Set<ChunkPosition> seen = new HashSet<>(), targeted = new HashSet<>();
 
     protected World pubWorld;
 
@@ -58,8 +59,7 @@ public abstract class GT_Explosion extends Explosion {
     @Override
     public void doExplosionA() {
         final float ogExplosionSize = explosionSize;
-        //noinspection unchecked
-        affectedBlockPositions.addAll(fireRays());
+        fireRays();
         explosionSize *= 2.0F;
         doEntityStuff();
         explosionSize = ogExplosionSize;
@@ -75,13 +75,9 @@ public abstract class GT_Explosion extends Explosion {
     public void doExplosionB(final boolean b0) {
         playSound();
         pubWorld.spawnParticle("hugeexplosion", explosionX, explosionY, explosionZ, 1.0, 0.0, 0.0);
-        for (Object oPosition : affectedBlockPositions) {
-            if (!(oPosition instanceof ChunkPosition)) {
-                continue;
-            }
+        for (ChunkPosition position : targeted) {
             int i, j, k, meta;
             Block block;
-            ChunkPosition position = (ChunkPosition) oPosition;
             i = position.chunkPosX;
             j = position.chunkPosY;
             k = position.chunkPosZ;
@@ -93,7 +89,7 @@ public abstract class GT_Explosion extends Explosion {
                 if (block.canDropFromExplosion(this)) {
                     getDrops(block, i, j, k, meta);
                 }
-                block.onBlockExploded(pubWorld, i, j, k, this);
+                destroyBlock(block, i, j, k);
             }
         }
         processDrops();
@@ -103,20 +99,22 @@ public abstract class GT_Explosion extends Explosion {
         return Math.sqrt(x * x + y * y + z * z);
     }
 
-    protected HashSet<ChunkPosition> fireRays() {
-        final HashSet<ChunkPosition> hashSet = new HashSet<>();
+    protected void destroyBlock(final Block block, final int i, final int j, final int k) {
+        block.onBlockExploded(pubWorld, i, j, k, this);
+    }
+
+    protected void fireRays() {
         final int iMax = getMaxX(), jMax = getMaxY(), kMax = getMaxZ();
         int i, j, k;
         for (i = 0; i < iMax; ++i) {
             for (j = 0; j < jMax; ++j) {
                 for (k = 0; k < kMax; ++k) {
                     if (atEdge(i, j, k)) {
-                        fireRay(i, j, k, hashSet);
+                        fireRay(i, j, k);
                     }
                 }
             }
         }
-        return hashSet;
     }
 
     protected void explosionPost() {
@@ -131,8 +129,7 @@ public abstract class GT_Explosion extends Explosion {
         return atEdge(i, getMaxX()) || atEdge(j, getMaxY()) || atEdge(k, getMaxZ());
     }
 
-    protected void fireRay(final int rayI, final int rayJ, final int rayK, final HashSet<ChunkPosition> chunkPositions) {
-        final HashSet<ChunkPosition> seen = new HashSet<>();
+    protected void fireRay(final int rayI, final int rayJ, final int rayK) {
         double expX;
         double expY;
         double expZ;
@@ -161,12 +158,12 @@ public abstract class GT_Explosion extends Explosion {
             posY = MathHelper.floor_double(expY);
             posZ = MathHelper.floor_double(expZ);
             final ChunkPosition pos = new ChunkPosition(posX, posY, posZ);
-            if (!seen.contains(pos) && !chunkPositions.contains(pos)) {
+            if (!hasEncountered(pos) && handlePositionPre(pos)) {
                 seen.add(pos);
                 // pubWorld.setBlock(posX, posY, posZ, Blocks.glass);
                 final Block block = pubWorld.getBlock(posX, posY, posZ);
                 final int bMetadata = pubWorld.getBlockMetadata(posX, posY, posZ);
-                if (block != Blocks.air && canDamage(block, bMetadata, posX, posY, posZ)) {
+                if (canDamage(block, bMetadata, posX, posY, posZ)) {
                     if (block.getMaterial() != Material.air) {
                         final float expDrop = exploder != null ? exploder.func_145772_a(this, pubWorld, posX, posY, posZ, block) : block.getExplosionResistance(
                                 null, pubWorld, posX, posY, posZ, explosionX, explosionY, explosionZ);
@@ -174,7 +171,7 @@ public abstract class GT_Explosion extends Explosion {
                     }
 
                     if (power > 0.0f && (exploder == null || exploder.func_145774_a(this, pubWorld, posX, posY, posZ, block, power))) {
-                        handleChunkPosition(chunkPositions, pos);
+                        handleChunkPosition(pos);
                     }
                 }
             }
@@ -183,6 +180,18 @@ public abstract class GT_Explosion extends Explosion {
             expY += rayY * rayDist;
             expZ += rayZ * rayDist;
         }
+    }
+
+    protected boolean handlePositionPre(final ChunkPosition pos) {
+        return true;
+    }
+
+    protected boolean hasEncountered(final int x, final int y, final int z) {
+        return hasEncountered(new ChunkPosition(x, y, z));
+    }
+
+    protected boolean hasEncountered(final ChunkPosition pos) {
+        return seen.contains(pos) || targeted.contains(pos);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -340,8 +349,8 @@ public abstract class GT_Explosion extends Explosion {
         return GT_Values.MERayDropBump;
     }
 
-    protected void handleChunkPosition(final Set<ChunkPosition> chunkPositions, final ChunkPosition pos) {
-        chunkPositions.add(pos);
+    protected void handleChunkPosition(final ChunkPosition pos) {
+        targeted.add(pos);
     }
 
     protected float soundVolume() {

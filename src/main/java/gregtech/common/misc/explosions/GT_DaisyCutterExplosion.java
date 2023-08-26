@@ -4,10 +4,10 @@ package gregtech.common.misc.explosions;
 import gregtech.api.util.GT_TreeBorker;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityTNTPrimed;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -15,11 +15,25 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
 
     private final GT_TreeBorker borker;
 
+    // private final Set<ChunkPosition> tempSet = new HashSet<>();
+
     public GT_DaisyCutterExplosion(
             final World world, final EntityTNTPrimed entity, final double x, final double y, final double z, final float power
                                   ) {
         super(world, entity, x, y, z, power);
-        this.borker = new GT_TreeBorker(entity, world, (int) x, (int) y, (int) z, 8, 80, 2048);
+        this.borker = new GT_TreeBorker(world, MathHelper.floor_double(x), MathHelper.floor_double(y), MathHelper.floor_double(z), 3, 64, 12, -1);
+    }
+
+    /**
+     * @param block
+     * @param i
+     * @param j
+     * @param k
+     */
+    @Override
+    protected void destroyBlock(final Block block, final int i, final int j, final int k) {
+        super.destroyBlock(block, i, j, k);
+        // pubWorld.setBlock(i, j, k, Blocks.glass, 0, 3);
     }
 
     /**
@@ -27,13 +41,10 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
      */
     @Override
     protected void explosionPost() {
-        /* System.out.println("Starting output report");
-        int i = 0;
-        for (final Object oPosition: affectedBlockPositions) {
-            final ChunkPosition position = (ChunkPosition) oPosition;
-            System.out.printf("\t%d: %d %d %d%n", ++i, position.chunkPosX, position.chunkPosY, position.chunkPosZ);
-        }
-        System.out.printf("Total: %d%n", i); */
+        /* tempSet.addAll(targeted);
+        for (ChunkPosition position: tempSet) {
+            pubWorld.setBlock(position.chunkPosX, position.chunkPosY, position.chunkPosZ, Blocks.glass, 0, 3);
+        } */
     }
 
     /**
@@ -41,16 +52,34 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
      */
     @Override
     protected int getMaxRays() {
-        return super.getMaxRays() * 3;
+        return super.getMaxRays() / 8;
+    }
+
+    /**
+     * @param pos
+     * @return
+     */
+    @Override
+    protected boolean handlePositionPre(final ChunkPosition pos) {
+        // tempSet.add(pos);
+        return true;
+    }
+
+    /**
+     * @param pos
+     * @return
+     */
+    @Override
+    protected boolean hasEncountered(final ChunkPosition pos) {
+        return super.hasEncountered(pos) || borker.hasSeen(pos);
     }
 
     /**
      *
      */
-    @SuppressWarnings("unchecked")
     @Override
     protected void explosionAPost() {
-        affectedBlockPositions.addAll(borker.getPositions().stream().map(GT_TreeBorker::getChunkPosition).collect(Collectors.toSet()));
+        targeted.addAll(borker.getPositions().stream().map(borker::getChunkPosition).collect(Collectors.toSet()));
     }
 
     /**
@@ -79,7 +108,7 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
      */
     @Override
     protected boolean rayValid(final float power, final double rayLength, final double posX, final double posY, final double posZ) {
-        return rayLength < 40;
+        return rayLength < 24;
     }
 
     /**
@@ -99,24 +128,24 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
     }
 
     /**
-     * @param chunkPositions
      * @param pos
      */
     @Override
-    protected void handleChunkPosition(final Set<ChunkPosition> chunkPositions, final ChunkPosition pos) {
-        super.handleChunkPosition(chunkPositions, pos);
-        final int r = 1;
+    protected void handleChunkPosition(final ChunkPosition pos) {
+        final int r = 8;
         final int bX = pos.chunkPosX, bY = pos.chunkPosY, bZ = pos.chunkPosZ;
         for (int x = bX - r; x <= bX + r; x++) {
-            for (int y = bY - r; y <= bX + r; y++) {
-                for (int z = bZ - r; z <= bX + r; z++) {
-                    if (borker.hasSeen(x, y, z) || !borker.isValidBlock(x, y, z)) {
+            for (int y = bY - r; y <= bY + r; y++) {
+                for (int z = bZ - r; z <= bZ + r; z++) {
+                    // tempSet.add(new ChunkPosition(x, y, z));
+                    if (!borker.isValidBlock(x, y, z) || hasEncountered(x, y, z)) {
                         continue;
                     }
                     bork(x, y, z);
                 }
             }
         }
+        super.handleChunkPosition(pos);
     }
 
     /**

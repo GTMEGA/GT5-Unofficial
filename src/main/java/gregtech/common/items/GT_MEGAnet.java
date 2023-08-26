@@ -8,6 +8,7 @@ import gregtech.api.util.GT_Utility;
 import lombok.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -317,6 +318,17 @@ public class GT_MEGAnet extends GT_Generic_Item {
                 }
             }
         });
+        world.getEntitiesWithinAABB(EntityXPOrb.class, boundingBox).forEach(oEntity -> {
+            if (oEntity instanceof EntityXPOrb) {
+                final EntityXPOrb xpOrb = (EntityXPOrb) oEntity;
+                world.playSoundEffect(entity.posX, entity.posY, entity.posZ, GregTech_API.sSoundList.get(215), 4.0f, world.rand.nextFloat() + 0.5f);
+                xpOrb.setPosition(entity.posX, entity.posY, entity.posZ);
+                if (entity instanceof EntityPlayer) {
+                    xpOrb.onCollideWithPlayer((EntityPlayer) entity);
+                    ((EntityPlayer) entity).xpCooldown = 0;
+                }
+            }
+        });
     }
 
     protected void pickup(final @NonNull ItemStack stack, final @NonNull Entity entity, @NonNull EntityItem itemEntity) {
@@ -355,7 +367,7 @@ public class GT_MEGAnet extends GT_Generic_Item {
     }
 
     protected int heldRange(final int baseRange) {
-        return baseRange * 2;
+        return baseRange * 8;
     }
 
     protected int getTimer(final @NonNull ItemStack stack) {

@@ -3,7 +3,6 @@ package gregtech.common.items;
 
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_TreeBorker;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -37,9 +36,11 @@ public class TreeBorkTester extends GT_Generic_Item {
             final float hitY, final float hitZ
                                  ) {
         if (!world.isRemote) {
-            final GT_TreeBorker borker = new GT_TreeBorker(player, world, x, y, z, 3, 64, 1024);
+            final GT_TreeBorker borker = new GT_TreeBorker(world, x, y, z, 3, 64, 16, 1024);
             borker.borkTrees(x, y, z);
-            borker.getPositions().forEach(vec3 -> world.setBlockToAir(vec3.get0(), vec3.get1(), vec3.get2()));
+            borker.getPositions().forEach(coords -> {
+                world.setBlockToAir(coords[0], coords[1], coords[2]);
+            });
             return true;
         }
         return false;

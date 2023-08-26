@@ -25,7 +25,7 @@ public class GT_MiningExplosion extends GT_Explosion {
     }
 
     private double getExpRadius() {
-        return GT_Values.MEMaxRange + (pubWorld.rand.nextDouble() * 1.5) - 0.5;
+        return GT_Values.MEMaxRange + (pubWorld.rand.nextDouble() * 2.5) - 1.5;
     }
 
     @Override

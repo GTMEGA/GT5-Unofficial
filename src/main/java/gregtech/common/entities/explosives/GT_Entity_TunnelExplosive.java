@@ -55,7 +55,7 @@ public class GT_Entity_TunnelExplosive extends GT_Entity_Explosive {
         if (defaultResistance > 10) {
             return defaultResistance;
         }
-        return defaultResistance * 0.05f;
+        return 0.0f;
     }
 
     /**

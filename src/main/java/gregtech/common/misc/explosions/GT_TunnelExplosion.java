@@ -72,9 +72,26 @@ public class GT_TunnelExplosion extends GT_Explosion {
         final double radius = getRadius(rayX, rayY, rayZ);
         double range = GT_Values.MEMaxRange;
         if (facingCorrectly(rayX, rayY, rayZ)) {
-            range *= 16;
+            range *= 6;
         }
         return power > 0.0 && rayLength < range && radius < getTunnelRadius();
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    protected float getRayPowerDropRatio() {
+        return super.getRayPowerDropRatio() * 0.1f;
+    }
+
+    /**
+     * @param block
+     * @return
+     */
+    @Override
+    protected float getDropChance(final Block block) {
+        return 0.001f;
     }
 
     private double getRadius(final double rayX, final double rayY, final double rayZ) {
@@ -118,7 +135,7 @@ public class GT_TunnelExplosion extends GT_Explosion {
     }
 
     private double getTunnelRadius() {
-        return GT_Values.MEMaxRange * 0.8 + (pubWorld.rand.nextDouble() * 1.5) - 0.5;
+        return GT_Values.MEMaxRange * 0.8 + (pubWorld.rand.nextDouble() * 2.5) - 1.5;
     }
 
     protected int getAxisIndex() {
@@ -134,15 +151,6 @@ public class GT_TunnelExplosion extends GT_Explosion {
             case SOUTH:
                 return 2;
         }
-    }
-
-    /**
-     * @param block
-     * @return
-     */
-    @Override
-    protected float getDropChance(final Block block) {
-        return 0.001f;
     }
 
 }
