@@ -38,11 +38,6 @@ public class GT_Packet_WirelessRedstoneCover extends GT_Packet_TileEntityCover {
     }
 
     @Override
-    public byte getPacketID() {
-        return 10;
-    }
-
-    @Override
     public void setINetHandler(INetHandler aHandler) {
         if (aHandler instanceof NetHandlerPlayServer) {
             mPlayer = ((NetHandlerPlayServer) aHandler).playerEntity;

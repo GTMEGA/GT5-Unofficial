@@ -2,17 +2,20 @@ package gregtech.common.items;
 
 
 import gregtech.GT_Mod;
+import gregtech.api.GregTech_API;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_Utility;
 import lombok.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
@@ -36,6 +39,11 @@ public class GT_MEGAnet extends GT_Generic_Item {
         @AllArgsConstructor
         public static class ItemSetting {
 
+            @NonNull
+            public static ItemSetting readFromNBT(final @NonNull NBTTagCompound compound) {
+                return compound.hasKey("setting") ? new ItemSetting(compound.getCompoundTag("setting")) : new ItemSetting();
+            }
+
             @Builder.Default
             private ItemStack stack = null;
 
@@ -44,11 +52,6 @@ public class GT_MEGAnet extends GT_Generic_Item {
 
             @Builder.Default
             private boolean ignoreNBTData = false;
-
-            @NonNull
-            public static ItemSetting readFromNBT(final @NonNull NBTTagCompound compound) {
-                return compound.hasKey("setting") ? new ItemSetting(compound.getCompoundTag("setting")) : new ItemSetting();
-            }
 
             public ItemSetting(final @NonNull NBTTagCompound compound) {
                 this(ItemStack.loadItemStackFromNBT(compound.getCompoundTag("item")), defBool(compound, "iMeta", false), defBool(compound, "iNBT", false));
@@ -73,6 +76,11 @@ public class GT_MEGAnet extends GT_Generic_Item {
 
         public static final int MAX_FILTERED = 15;
 
+        @NonNull
+        public static MEGAnetFilter readFromNBT(final @NonNull NBTTagCompound nbt) {
+            return nbt.hasKey("filter") ? new MEGAnetFilter(nbt.getCompoundTag("filter")) : new MEGAnetFilter();
+        }
+
         private final List<ItemSetting> filter = new ArrayList<>();
 
         @Builder.Default
@@ -80,11 +88,6 @@ public class GT_MEGAnet extends GT_Generic_Item {
 
         @Builder.Default
         private boolean whitelist = false;
-
-        @NonNull
-        public static MEGAnetFilter readFromNBT(final @NonNull NBTTagCompound nbt) {
-            return nbt.hasKey("filter") ? new MEGAnetFilter(nbt.getCompoundTag("filter")) : new MEGAnetFilter();
-        }
 
         public MEGAnetFilter(final @NonNull NBTTagCompound filterNBT) {
             this(defBool(filterNBT, "enabled", false), defBool(filterNBT, "whitelist", false));
@@ -118,8 +121,9 @@ public class GT_MEGAnet extends GT_Generic_Item {
 
     }
 
+    public static final int TIMER = 10, BASE_RANGE = 12, MAX_RANGE = 16;
 
-    public static final int TIMER = 2, BASE_RANGE = 12, MAX_RANGE = 16;
+    private static final boolean FILTER_WORKS = false;
 
     public static boolean defBool(final @NonNull NBTTagCompound comp, final @NonNull String tag, final boolean defVal) {
         if (comp.hasKey(tag)) {
@@ -129,7 +133,7 @@ public class GT_MEGAnet extends GT_Generic_Item {
     }
 
     public GT_MEGAnet() {
-        super("MEGAnet", "MEGAnet", "Puts adjacent items into your inventory");
+        super("MEGAnet", "MEGA Magnet", "Attracts nearby items and inserts them into your inventory.");
         setMaxDamage(0);
         setMaxStackSize(1);
         setHasSubtypes(false);
@@ -144,9 +148,7 @@ public class GT_MEGAnet extends GT_Generic_Item {
      */
     @Override
     public ItemStack onItemRightClick(final ItemStack stack, final World world, final EntityPlayer player) {
-        if (getTimer(stack) % TIMER == 0) {
-            itemUse(stack, player, world);
-        }
+        itemUse(stack, player, world);
         return setNBT(stack);
     }
 
@@ -170,7 +172,7 @@ public class GT_MEGAnet extends GT_Generic_Item {
         }
     }
 
-    /**
+/*      *//**
      * This is called when the item is used, before the block is activated.
      *
      * @param stack  The Item Stack
@@ -184,14 +186,14 @@ public class GT_MEGAnet extends GT_Generic_Item {
      * @param hitY   Hit location y
      * @param hitZ   Hit location z
      * @return Return true to prevent any further processing.
-     */
+     *//*
     @Override
     public boolean onItemUseFirst(
             final ItemStack stack, final EntityPlayer player, final World world, final int x, final int y, final int z, final int side, final float hitX,
             final float hitY, final float hitZ
                                  ) {
         return itemUse(stack, player, world) || super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
-    }
+    } */
 
     /**
      * Render Pass sensitive version of hasEffect()
@@ -241,20 +243,24 @@ public class GT_MEGAnet extends GT_Generic_Item {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     protected void addAdditionalToolTips(final List aList, final ItemStack aStack, final EntityPlayer aPlayer) {
-        aList.add("Shift+RClick to " + (isActive(aStack) ? "Deactivate" : "Activate"));
+        aList.add((isActive(aStack) ? EnumChatFormatting.GREEN + "Active" : EnumChatFormatting.RED + "Inactive"));
+        aList.add("Shift + RMB to toggle.");
         final int range = getRange(aStack);
         aList.add((String.format("Range of (%d / %d)", range, heldRange(range))));
         final MEGAnetFilter filter = getFilter(aStack);
-        if (filter.isEnabled()) {
-            aList.add("Filter mode: " + (filter.isWhitelist() ? "Whitelist" : "Blacklist"));
-            final int filSize = filter.getFilter().size();
-            if (filSize > 0) {
-                aList.add(String.format("Filtering %d items", filSize));
+        if (FILTER_WORKS) {
+            if (filter.isEnabled()) {
+                aList.add("Filter mode: " + (filter.isWhitelist() ? EnumChatFormatting.WHITE + "Whitelist" : EnumChatFormatting.DARK_GRAY + "Blacklist"));
+                final int filSize = filter.getFilter().size();
+                if (filSize > 0) {
+                    aList.add(String.format("Filtering %d items", filSize));
+                }
+            } else {
+                aList.add("Filter disabled");
             }
-        } else {
-            aList.add("Filter disabled");
         }
-        aList.add(String.format("Magnetized %d items", getPickedUp(aStack)));
+        aList.add(String.format("Magnetized" + EnumChatFormatting.GOLD + " %d " + EnumChatFormatting.GRAY + "items!", getPickedUp(aStack)));
+        aList.add(EnumChatFormatting.DARK_BLUE + "" + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + "The MEGAnet!");
     }
 
     /**
@@ -310,24 +316,39 @@ public class GT_MEGAnet extends GT_Generic_Item {
             if (oEntity instanceof EntityItem) {
                 final EntityItem itemEntity = (EntityItem) oEntity;
                 if (canPickup(stack, itemEntity)) {
-                    pickup(stack, entity, itemEntity);
+                    pickup(world, stack, entity, itemEntity);
+                }
+            }
+        });
+        world.getEntitiesWithinAABB(EntityXPOrb.class, boundingBox).forEach(oEntity -> {
+            if (oEntity instanceof EntityXPOrb) {
+                final EntityXPOrb xpOrb = (EntityXPOrb) oEntity;
+                world.playSoundEffect(entity.posX, entity.posY, entity.posZ, GregTech_API.sSoundList.get(215), 4.0f, world.rand.nextFloat() + 0.5f);
+                xpOrb.setPosition(entity.posX, entity.posY, entity.posZ);
+                if (entity instanceof EntityPlayer) {
+                    xpOrb.onCollideWithPlayer((EntityPlayer) entity);
+                    ((EntityPlayer) entity).xpCooldown = 0;
                 }
             }
         });
     }
 
-    protected void pickup(final @NonNull ItemStack stack, final @NonNull Entity entity, @NonNull EntityItem itemEntity) {
-        if (!(entity instanceof EntityPlayer) || itemEntity.isDead) {
+    protected void pickup(final @NonNull World world, final @NonNull ItemStack stack, final @NonNull Entity entity, @NonNull EntityItem itemEntity) {
+        if (!(entity instanceof EntityPlayer) || itemEntity.isDead || itemEntity.getEntityItem() == null || itemEntity.getEntityItem().stackSize <= 0) {
             return;
         }
         final EntityPlayer player = (EntityPlayer) entity;
         final NBTTagCompound compound = validateNBT(stack);
-        itemEntity.delayBeforeCanPickup = 0;
+        // itemEntity.delayBeforeCanPickup = 0;
         //
         long pickupCount = getPickedUp(stack);
         itemEntity.setPosition(player.posX, player.eyeHeight, player.posZ);
+        itemEntity.motionX = 0;
+        itemEntity.motionY = 0;
+        itemEntity.motionZ = 0;
         final int originalAmount = itemEntity.getEntityItem().stackSize;
         itemEntity.onCollideWithPlayer(player);
+        player.onItemPickup(itemEntity, originalAmount);
         pickupCount += originalAmount - itemEntity.getEntityItem().stackSize;
         if (pickupCount < 0) {
             pickupCount = Long.MAX_VALUE;
@@ -342,6 +363,11 @@ public class GT_MEGAnet extends GT_Generic_Item {
             ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
         }
         compound.setLong("pickedUp", pickupCount);
+        if (itemEntity.getEntityItem().stackSize <= 0) {
+            itemEntity.setDead();
+        } else {
+            world.playSoundEffect(entity.posX, entity.posY, entity.posZ, GregTech_API.sSoundList.get(215), 4.0f, world.rand.nextFloat() + 0.5f);
+        }
         itemEntity.delayBeforeCanPickup = 20;
         stack.setTagCompound(compound);
         setNBT(stack);
@@ -352,7 +378,7 @@ public class GT_MEGAnet extends GT_Generic_Item {
     }
 
     protected int heldRange(final int baseRange) {
-        return baseRange * 2;
+        return baseRange * 8;
     }
 
     protected int getTimer(final @NonNull ItemStack stack) {
@@ -389,7 +415,9 @@ public class GT_MEGAnet extends GT_Generic_Item {
         if (!world.isRemote && player.isSneaking()) {
             final NBTTagCompound comp = validateNBT(stack);
             final boolean active = isActive(stack);
+            final String sound = GregTech_API.sSoundList.get(active ? 217 : 216);
             GT_Utility.sendChatToPlayer(player, active ? "Deactivated" : "Activated");
+            world.playSoundEffect(player.posX, player.posY, player.posZ, sound, 4.0f, world.rand.nextFloat() + 0.5f);
             comp.setBoolean("enabled", !active);
             stack.setTagCompound(comp);
             setNBT(stack);

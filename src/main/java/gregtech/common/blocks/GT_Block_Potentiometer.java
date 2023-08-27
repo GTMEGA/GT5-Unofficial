@@ -1,6 +1,7 @@
 package gregtech.common.blocks;
 
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GT_Generic_Block;
@@ -52,6 +53,7 @@ public class GT_Block_Potentiometer extends GT_Generic_Block {
                                    ) {
         if (!world.isRemote) {
             final int bump = player.isSneaking() ? -1 : 1;
+            world.playSoundEffect(x, y, z, GregTech_API.sSoundList.get(221), 4.0f, world.rand.nextFloat() + 1.0f);
             int metadata = (world.getBlockMetadata(x, y, z) + bump) % 16;
             if (metadata < 0) {
                 metadata += 16;
@@ -90,7 +92,7 @@ public class GT_Block_Potentiometer extends GT_Generic_Block {
     public int isProvidingWeakPower(
             final IBlockAccess world, final int x, final int y, final int z, final int side
                                    ) {
-        return world.getBlockMetadata(x, y, z) + 1;
+        return world.getBlockMetadata(x, y, z);
     }
 
     /**
@@ -136,20 +138,6 @@ public class GT_Block_Potentiometer extends GT_Generic_Block {
 
     public ITexture[] getInventoryTexture(final int aMeta) {
         return getPotentiometerTexture(15);
-    }
-
-    /**
-     * Get a light value for the block at the specified coordinates, normal ranges are between 0 and 15
-     *
-     * @param world The current world
-     * @param x     X Position
-     * @param y     Y position
-     * @param z     Z position
-     * @return The light value
-     */
-    @Override
-    public int getLightValue(final IBlockAccess world, final int x, final int y, final int z) {
-        return world.getBlockMetadata(x, y, z);
     }
 
 }

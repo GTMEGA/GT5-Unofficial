@@ -24,7 +24,9 @@ import gregtech.common.GT_Proxy;
 import gregtech.common.GT_RecipeAdder;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
-import gregtech.common.entities.GT_Entity_MiningExplosive;
+import gregtech.common.entities.explosives.GT_Entity_DaisyCutterExplosive;
+import gregtech.common.entities.explosives.GT_Entity_MiningExplosive;
+import gregtech.common.entities.explosives.GT_Entity_TunnelExplosive;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gregtech.common.misc.GT_Command;
@@ -352,6 +354,7 @@ public class GT_Mod implements IGT_Mod {
         GT_Values.MEOtherChance = GT_Values.getConfigValue(tMainConfig, meSection, "otherChance", GT_Values.MEOtherChance, "Odds of getting an other drop");
         GT_Values.MEMaxRange = GT_Values.getConfigValue(tMainConfig, meSection, "maxRange", GT_Values.MEMaxRange, "Maximum range of the explosion");
         GT_Values.MEMinEntitySize = GT_Values.getConfigValue(tMainConfig, meSection, "minSize", GT_Values.MEMinEntitySize, "Minimum entity size");
+        GT_Values.MEOffsetRatio = GT_Values.getConfigValue(tMainConfig, meSection, "offsetRatio", GT_Values.MEOffsetRatio, "Ratio of the total radius that the explosion is offset by");
         //
         GT_Values.MEFancyDrops = GT_Values.getConfigValue(tMainConfig, meSection, "doFancyDrops", GT_Values.MEFancyDrops, "Whether to deliver the items to the player directly");
         GT_Values.MERequiresRemote = GT_Values.getConfigValue(tMainConfig, meSection, "requireRemote", GT_Values.MEFancyDrops, "Whether the mining explosives require remote activation");
@@ -522,7 +525,10 @@ public class GT_Mod implements IGT_Mod {
 
         EntityRegistry.registerModEntity(GT_Entity_Arrow.class, "GT_Entity_Arrow", 1, GT_Values.GT, 160, 1, true);
         EntityRegistry.registerModEntity(GT_Entity_Arrow_Potion.class, "GT_Entity_Arrow_Potion", 2, GT_Values.GT, 160, 1, true);
+
         EntityRegistry.registerModEntity(GT_Entity_MiningExplosive.class, "GT_Entity_MiningExplosive", 3, GT_Values.GT, 160, 1, false);
+        EntityRegistry.registerModEntity(GT_Entity_DaisyCutterExplosive.class, "GT_Entity_DaisyCutter", 4, GT_Values.GT, 160, 1, false);
+        EntityRegistry.registerModEntity(GT_Entity_TunnelExplosive.class, "GT_Entity_TunnelExplosive", 5, GT_Values.GT, 160, 1, false);
 
         GT_FML_LOGGER.info("preReader");
         List<String> oreTags = new ArrayList<>();

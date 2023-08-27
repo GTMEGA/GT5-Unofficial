@@ -21,7 +21,6 @@ import gregtech.api.threads.GT_Runnable_Cable_Update;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
 import gregtech.api.world.GT_Worldgen;
-import gregtech.common.blocks.GT_Block_MiningExplosive;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -332,9 +331,9 @@ public class GregTech_API {
             sPostloadStarted = false,
             sPostloadFinished = false;
 
-    public static Block sBlockMiningExplosive;
+    public static Block sBlockMiningExplosive, sBlockDaisyCutter, sBlockTunEx;
 
-    public static Item sItemRemoteDetonator;
+    public static Item sItemRemoteDetonator, sBorker;
 
     private static Class sBaseMetaTileEntityClass = null;
 
@@ -380,8 +379,16 @@ public class GregTech_API {
         sSoundList.put(210, aTextIC2Lower + ":" + "machines.InterruptOne");
         sSoundList.put(211, aTextIC2Lower + ":" + "machines.KaChing");
         sSoundList.put(212, aTextIC2Lower + ":" + "machines.MagnetizerLoop");
+        //
         sSoundList.put(213, MOD_ID.toLowerCase() + ":" + "mining_explosives_explosion");
         sSoundList.put(214, MOD_ID.toLowerCase() + ":" + "mining_explosives_trigger");
+        sSoundList.put(215, MOD_ID.toLowerCase() + ":" + "meganet_pickup");
+        sSoundList.put(216, MOD_ID.toLowerCase() + ":" + "meganet_active");
+        sSoundList.put(217, MOD_ID.toLowerCase() + ":" + "meganet_inactive");
+        sSoundList.put(218, MOD_ID.toLowerCase() + ":" + "remote_detonator_add");
+        sSoundList.put(219, MOD_ID.toLowerCase() + ":" + "remote_detonator_remove");
+        sSoundList.put(220, MOD_ID.toLowerCase() + ":" + "remote_detonator_trigger");
+        sSoundList.put(221, MOD_ID.toLowerCase() + ":" + "potentiometer_click");
     }
 
     /**

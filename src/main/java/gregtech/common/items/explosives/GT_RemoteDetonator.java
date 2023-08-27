@@ -1,12 +1,11 @@
-package gregtech.common.items;
+package gregtech.common.items.explosives;
 
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_MiningExplosive;
+import gregtech.common.blocks.explosives.GT_Block_Explosive;
 import lombok.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -14,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -73,14 +73,6 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
                 return this;
             }
 
-            public int getDistanceFromTarget(final int pX, final int pY, final int pZ) {
-                return magnitude(pX - this.x, pY - this.y, pZ - this.z);
-            }
-
-            private int magnitude(final int x, final int y, final int z) {
-                return MathHelper.floor_double(Math.sqrt(x * x + y * y + z * z));
-            }
-
             @NonNull
             protected NBTTagCompound writeToNBT(final @NonNull NBTTagCompound nbtTagCompound) {
                 nbtTagCompound.setInteger("index", index);
@@ -93,14 +85,10 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
 
             protected void trigger(final @NonNull World world, final @NonNull EntityPlayer player) {
                 final Block block = world.getBlock(x, y, z);
-                if (block instanceof GT_Block_MiningExplosive && !world.isRemote) {
-                    ((GT_Block_MiningExplosive) block).remoteTrigger(world, x, y, z, player);
+                if (block instanceof GT_Block_Explosive && !world.isRemote) {
+                    ((GT_Block_Explosive) block).remoteTrigger(world, x, y, z, player);
                 }
                 triggered = true;
-            }
-
-            protected boolean isLoaded(final @NonNull World world) {
-                return world.getChunkProvider().chunkExists(x >> 4, z >> 4);
             }
 
             protected boolean canDetonate(final @NonNull World world, final int pX, final int pY, final int pZ) {
@@ -108,20 +96,19 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
                 return loaded && inRange && !triggered;
             }
 
+            protected boolean isLoaded(final @NonNull World world) {
+                return world.getChunkProvider().chunkExists(x >> 4, z >> 4);
+            }
+
+            public int getDistanceFromTarget(final int pX, final int pY, final int pZ) {
+                return magnitude(pX - this.x, pY - this.y, pZ - this.z);
+            }
+
+            private int magnitude(final int x, final int y, final int z) {
+                return MathHelper.floor_double(Math.sqrt(x * x + y * y + z * z));
+            }
+
         }
-
-
-        private final Map<Integer, Target> targets = new HashMap<>();
-
-        private final Map<Target, Integer> targetsReversed = new HashMap<>();
-
-        private int dimension;
-
-        @Builder.Default
-        private int maxTarget = -1, timer = -1;
-
-        @Builder.Default
-        private boolean triggered = false, done = true;
 
         @NonNull
         public static RemoteDetonationTargetList readFromNBT(final @NonNull NBTTagCompound compound, final @NonNull EntityPlayer player) {
@@ -158,6 +145,18 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
             return temp;
         }
 
+        private final Map<Integer, Target> targets = new HashMap<>();
+
+        private final Map<Target, Integer> targetsReversed = new HashMap<>();
+
+        private int dimension;
+
+        @Builder.Default
+        private int maxTarget = -1, timer = -1;
+
+        @Builder.Default
+        private boolean triggered = false, done = true;
+
         public RemoteDetonationTargetList(final @NonNull EntityPlayer player) {
             this(player.dimension, -1, -1, false, false);
         }
@@ -173,10 +172,6 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
             maxTarget = -1;
             targets.clear();
             targetsReversed.clear();
-        }
-
-        public boolean hasUntriggered(final @NonNull World world, final int x, final int y, final int z) {
-            return targets.values().stream().anyMatch(target -> target.canDetonate(world, x, y, z));
         }
 
         public boolean containsTarget(final int x, final int y, final int z) {
@@ -201,6 +196,10 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
             return compound;
         }
 
+        public int numTargets() {
+            return targets.size();
+        }
+
         public void tick(final @NonNull World world, final @NonNull EntityPlayer player, final int x, final int y, final int z) {
             if (!triggered) {
                 return;
@@ -214,8 +213,8 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
             }
         }
 
-        public int numTargets() {
-            return targets.size();
+        public boolean hasUntriggered(final @NonNull World world, final int x, final int y, final int z) {
+            return targets.values().stream().anyMatch(target -> target.canDetonate(world, x, y, z));
         }
 
         public void addTarget(final int x, final int y, final int z) {
@@ -243,13 +242,6 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
             setTimer(0);
         }
 
-        private void triggerAll(final @NonNull World world, final @NonNull EntityPlayer player, final int x, final int y, final int z) {
-            targets.values().stream().filter(target -> target.canDetonate(world, x, y, z)).sorted(
-                    Comparator.comparingInt(target -> target.index)).forEach(target -> {
-                target.trigger(world, player);
-            });
-        }
-
         public boolean isEmpty() {
             return targets.isEmpty();
         }
@@ -265,10 +257,17 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
             return this.dimension == dimension;
         }
 
+        private void triggerAll(final @NonNull World world, final @NonNull EntityPlayer player, final int x, final int y, final int z) {
+            targets.values().stream().filter(target -> target.canDetonate(world, x, y, z)).sorted(Comparator.comparingInt(target -> target.index)).forEach(
+                    target -> {
+                        target.trigger(world, player);
+                    });
+        }
+
     }
 
     public GT_RemoteDetonator() {
-        super("remote_detonator", "Remote Detonator", "Triggers distant explosions");
+        super("remote_detonator", "Remote Detonator", "Triggers gregtech explosives remotely.");
         setMaxStackSize(1);
         setMaxDamage(0);
         setHasSubtypes(false);
@@ -285,6 +284,28 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
     @Override
     public boolean doesSneakBypassUse(final World aWorld, final int aX, final int aY, final int aZ, final EntityPlayer aPlayer) {
         return false;
+    }
+
+    /**
+     * @param aList
+     * @param aStack
+     * @param aPlayer
+     */
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Override
+    protected void addAdditionalToolTips(final List aList, final ItemStack aStack, final EntityPlayer aPlayer) {
+        final NBTTagCompound compound = validateNBT(aStack);
+        final RemoteDetonationTargetList remoteDetonationTargetList = RemoteDetonationTargetList.readFromNBT(compound, aPlayer);
+        aList.add("Can prime and detonate multiple gregtech explosives sequentially.");
+        aList.add("Has a transmission range of 256 blocks.");
+        final int numTargets = compound.getInteger("num");
+        if (numTargets > 0) {
+            aList.add(String.format("Explosives armed: %d", numTargets));
+        }
+        if (remoteDetonationTargetList.isTriggered()) {
+            aList.add(EnumChatFormatting.DARK_RED + "DETONATING!" + EnumChatFormatting.GRAY + " Stand Clear!");
+        }
+        aStack.setTagCompound(remoteDetonationTargetList.writeToNBT(compound));
     }
 
     /**
@@ -306,6 +327,22 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
         }
         return stack.getTagCompound();
     }
+
+    /**
+     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
+     *
+     * @param stack
+     * @param world
+     * @param player
+     */
+    @Override
+    public ItemStack onItemRightClick(final ItemStack stack, final World world, final EntityPlayer player) {
+        if (player.isSneaking()) {
+            itemUse(stack, world, player, (int) player.posX, (int) player.posY, (int) player.posZ);
+        }
+        return stack;
+    }
+
     /**
      * Called each tick as long the item is on a player inventory. Uses by maps to check if is on a player hand and
      * update it's contents.
@@ -357,46 +394,51 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
         if (player.isSneaking()) {
             trigger(world, player, remoteDetonationTargetList, x, y, z);
         } else {
-            boolean valid = remoteDetonationTargetList.validDimension(player);
-            if (valid) {
-                if (remoteDetonationTargetList.containsTarget(x, y, z)) {
-                    removeTarget(world, player, remoteDetonationTargetList, x, y, z);
+            final Block target = world.getBlock(x, y, z);
+            if (target instanceof GT_Block_Explosive) {
+                boolean valid = remoteDetonationTargetList.validDimension(player);
+                if (valid) {
+                    if (remoteDetonationTargetList.containsTarget(x, y, z)) {
+                        removeTarget(world, player, remoteDetonationTargetList, x, y, z);
+                    } else {
+                        addTarget(world, player, remoteDetonationTargetList, x, y, z);
+                    }
                 } else {
-                    addTarget(world, player, remoteDetonationTargetList, x, y, z);
+                    sendChat(world, player, "Cannot trigger THAT remotely...");
                 }
-            } else {
-                sendChat(world, player, "You're in the wrong dimension");
             }
         }
         stack.setTagCompound(remoteDetonationTargetList.writeToNBT(compound));
         return !world.isRemote;
     }
 
-    public boolean trigger(
+    public void trigger(
             final @NonNull World aWorld, final @NonNull EntityPlayer player, final @NonNull RemoteDetonationTargetList remoteDetonationTargetList, final int x,
             final int y, final int z
-                          ) {
+                       ) {
         if (remoteDetonationTargetList.validDimension(player)) {
+            aWorld.playSoundEffect(x, y, z, GregTech_API.sSoundList.get(220), 8.0f, aWorld.rand.nextFloat() + 1.0f);
             remoteDetonationTargetList.trigger(aWorld, player, x, y, z);
         } else {
-            sendChat(aWorld, player, "Unable to trigger explosives, either you don't have any placed or you're in a different dimension");
+            sendChat(aWorld, player, "Nothing to detonate!");
         }
-        return !aWorld.isRemote;
     }
 
     public void removeTarget(
             final @NonNull World aWorld, final @NonNull EntityPlayer player, final @NonNull RemoteDetonationTargetList remoteDetonationTargetList, final int x,
             final int y, final int z
                             ) {
-        boolean contains, validDim;
+        final boolean contains, validDim;
+        final Block target = aWorld.getBlock(x, y, z);
         contains = remoteDetonationTargetList.containsTarget(x, y, z);
         validDim = remoteDetonationTargetList.validDimension(player);
-        boolean valid = contains && validDim;
-        if (valid) {
+        if (contains && validDim && target instanceof GT_Block_Explosive) {
             remoteDetonationTargetList.removeTarget(x, y, z);
+            ((GT_Block_Explosive) target).setPrimed(aWorld, x, y, z, false);
+            aWorld.playSoundEffect(x, y, z, GregTech_API.sSoundList.get(219), 4.0f, aWorld.rand.nextFloat() + 1.0f);
             sendChat(aWorld, player, String.format("Removed target (%d %d %d)", x, y, z));
         } else if (!validDim) {
-            sendChat(aWorld, player, "You're not in the same dimension");
+            sendChat(aWorld, player, "Out of range!");
         }
     }
 
@@ -404,10 +446,12 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
             final @NonNull World aWorld, final @NonNull EntityPlayer player, final @NonNull RemoteDetonationTargetList remoteDetonationTargetList, final int x,
             final int y, final int z
                          ) {
-        if (validTarget(aWorld.getBlock(x, y, z))) {
-            final boolean valid = remoteDetonationTargetList.validDimension(player);
-            if (valid) {
+        final Block target = aWorld.getBlock(x, y, z);
+        if (target instanceof GT_Block_Explosive) {
+            if (remoteDetonationTargetList.validDimension(player)) {
                 remoteDetonationTargetList.addTarget(x, y, z);
+                ((GT_Block_Explosive) target).setPrimed(aWorld, x, y, z, true);
+                aWorld.playSoundEffect(x, y, z, GregTech_API.sSoundList.get(218), 4.0f, aWorld.rand.nextFloat() + 1.0f);
                 sendChat(aWorld, player, String.format("Added target (%d %d %d)", x, y, z));
             } else {
                 sendChat(aWorld, player, "Unable to add target, do you have them in multiple dimensions?");
@@ -419,30 +463,6 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
         if (!world.isRemote) {
             GT_Utility.sendChatToPlayer(player, msg);
         }
-    }
-
-    private boolean validTarget(final @NonNull Block target) {
-        return target instanceof GT_Block_MiningExplosive;
-    }
-
-    /**
-     * @param aList
-     * @param aStack
-     * @param aPlayer
-     */
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    @Override
-    protected void addAdditionalToolTips(final List aList, final ItemStack aStack, final EntityPlayer aPlayer) {
-        final NBTTagCompound compound = validateNBT(aStack);
-        final RemoteDetonationTargetList remoteDetonationTargetList = RemoteDetonationTargetList.readFromNBT(compound, aPlayer);
-        final int numTargets = compound.getInteger("num");
-        if (numTargets > 0) {
-            aList.add(String.format("Number of targets: %d", numTargets));
-        }
-        if (remoteDetonationTargetList.isTriggered()) {
-            aList.add("DETONATION IN PROGRESS, RUN!");
-        }
-        aStack.setTagCompound(remoteDetonationTargetList.writeToNBT(compound));
     }
 
 }

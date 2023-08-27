@@ -2,10 +2,8 @@
     "mining_explosives_explosion": {
         "category": "block",
         "sounds": [
-            {
-                "name": "mining_explosives_explosion",
-                "stream": false
-            }
+            "mining_explosives_explosion",
+            "mining_explosives_explosion_2"
         ]
     },
     "mining_explosives_trigger": {
@@ -13,6 +11,69 @@
         "sounds": [
             {
                 "name": "mining_explosives_trigger",
+                "stream": false
+            }
+        ]
+    },
+    "meganet_pickup": {
+        "category": "block",
+        "sounds": [
+            {
+                "name": "meganet_pickup",
+                "stream": false
+            }
+        ]
+    },
+    "meganet_active": {
+        "category": "block",
+        "sounds": [
+            {
+                "name": "meganet_active",
+                "stream": false
+            }
+        ]
+    },
+    "meganet_inactive": {
+        "category": "block",
+        "sounds": [
+            {
+                "name": "meganet_inactive",
+                "stream": false
+            }
+        ]
+    },
+    "remote_detonator_add": {
+        "category": "block",
+        "sounds": [
+            {
+                "name": "remote_detonator_add",
+                "stream": false
+            }
+        ]
+    },
+    "remote_detonator_remove": {
+        "category": "block",
+        "sounds": [
+            {
+                "name": "remote_detonator_remove",
+                "stream": false
+            }
+        ]
+    },
+    "remote_detonator_trigger": {
+        "category": "block",
+        "sounds": [
+            {
+                "name": "remote_detonator_trigger",
+                "stream": false
+            }
+        ]
+    },
+    "potentiometer_click": {
+        "category": "block",
+        "sounds": [
+            {
+                "name": "potentiometer_click",
                 "stream": false
             }
         ]

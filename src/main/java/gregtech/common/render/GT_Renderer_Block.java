@@ -10,8 +10,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.common.blocks.GT_Block_Machines;
+import gregtech.common.blocks.GT_Block_Ore_Abstract;
 import gregtech.common.blocks.GT_Block_Potentiometer;
-import gregtech.common.blocks.GT_Block_Ore;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -468,8 +468,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
-        if (aBlock instanceof GT_Block_Ore) {
-            ITexture[] textures = ((GT_Block_Ore) aBlock).getTextures();
+        if (aBlock instanceof GT_Block_Ore_Abstract) {
+            ITexture[] textures = ((GT_Block_Ore_Abstract) aBlock).getTextures();
 
             aBlock.setBlockBoundsForItemRender();
             aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -695,8 +695,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
     public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID, RenderBlocks aRenderer) {
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion;
         aRenderer.useInventoryTint = false;
-        if (aBlock instanceof GT_Block_Ore) {
-            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, ((GT_Block_Ore) aBlock).getTextures());
+        if (aBlock instanceof GT_Block_Ore_Abstract) {
+            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, ((GT_Block_Ore_Abstract) aBlock).getTextures());
         }
         if (aBlock instanceof GT_Block_Potentiometer) {
             return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, ((GT_Block_Potentiometer) aBlock).getPotentiometerTextures(aWorld, aX, aY, aZ));

@@ -29,12 +29,13 @@ public class GT_Container_RecipeFilter extends GT_ContainerMetaTile_Machine {
         addSlotToContainer(new Slot(this.mTileEntity, 7, 116, 41));
         addSlotToContainer(new Slot(this.mTileEntity, 8, 134, 41));
 
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 9, 35, 23, false, true, 1));
+        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 9, 35, 14, false, true, 1));
+        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 10, 35, 32, false, true, 1));
 
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 10, 8, 63, false, true, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 10, 26, 63, false, true, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 10, 44, 63, false, true, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 10, 62, 63, false, true, 1));
+        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 11, 8, 63, false, true, 1));
+        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 11, 26, 63, false, true, 1));
+        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 11, 44, 63, false, true, 1));
+        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 11, 62, 63, false, true, 1));
     }
 
     @Override
@@ -57,7 +58,7 @@ public class GT_Container_RecipeFilter extends GT_ContainerMetaTile_Machine {
             if (!(this.mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_RecipeFilter)) {
                 return null;
             }
-            if (aSlotIndex < 10) {
+            if (aSlotIndex == 9) {
                 ItemStack stack = aPlayer.inventory.getItemStack();
                 if (stack == null) {
                     ((GT_MetaTileEntity_RecipeFilter) this.mTileEntity.getMetaTileEntity()).clear();
@@ -67,8 +68,12 @@ public class GT_Container_RecipeFilter extends GT_ContainerMetaTile_Machine {
                     }
                 }
                 return null;
-            }
-            if (aSlotIndex == 10) {
+            } else if (aSlotIndex == 10) {
+                ItemStack stack = aPlayer.inventory.getItemStack();
+                if (((GT_MetaTileEntity_RecipeFilter) this.mTileEntity.getMetaTileEntity()).setCircuitFromStack(stack)) {
+                    tSlot.putStack(GT_Utility.copyAmount(1L, stack.copy()));
+                }
+            } else if (aSlotIndex == 11) {
                 ((GT_MetaTileEntity_RecipeFilter) this.mTileEntity.getMetaTileEntity()).bOutput = !((GT_MetaTileEntity_RecipeFilter) this.mTileEntity.getMetaTileEntity()).bOutput;
                 if (((GT_MetaTileEntity_RecipeFilter) this.mTileEntity.getMetaTileEntity()).bOutput) {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("116", "Emit Energy to Outputside"));
@@ -76,8 +81,7 @@ public class GT_Container_RecipeFilter extends GT_ContainerMetaTile_Machine {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("117", "Don't emit Energy"));
                 }
                 return null;
-            }
-            if (aSlotIndex == 11) {
+            } else if (aSlotIndex == 12) {
                 ((GT_MetaTileEntity_RecipeFilter) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull = (!((GT_MetaTileEntity_RecipeFilter) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull);
                 if (((GT_MetaTileEntity_RecipeFilter) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull) {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("122", "Emit Redstone if slots contain something"));
@@ -85,8 +89,7 @@ public class GT_Container_RecipeFilter extends GT_ContainerMetaTile_Machine {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("123", "Don't emit Redstone"));
                 }
                 return null;
-            }
-            if (aSlotIndex == 12) {
+            } else if (aSlotIndex == 13) {
                 ((GT_MetaTileEntity_RecipeFilter) this.mTileEntity.getMetaTileEntity()).bInvert = (!((GT_MetaTileEntity_RecipeFilter) this.mTileEntity.getMetaTileEntity()).bInvert);
                 if (((GT_MetaTileEntity_RecipeFilter) this.mTileEntity.getMetaTileEntity()).bInvert) {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("120", "Invert Redstone"));
@@ -94,8 +97,7 @@ public class GT_Container_RecipeFilter extends GT_ContainerMetaTile_Machine {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("121", "Don't invert Redstone"));
                 }
                 return null;
-            }
-            if (aSlotIndex == 13) {
+            } else if (aSlotIndex == 14) {
                 ((GT_MetaTileEntity_RecipeFilter) this.mTileEntity.getMetaTileEntity()).invertFilter = (!((GT_MetaTileEntity_RecipeFilter) this.mTileEntity.getMetaTileEntity()).invertFilter);
                 if (((GT_MetaTileEntity_RecipeFilter) this.mTileEntity.getMetaTileEntity()).invertFilter) {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("124", "Invert Filter"));

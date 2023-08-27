@@ -972,7 +972,7 @@ public enum OrePrefixes {
     }
 
     public boolean contains(ItemStack aStack) {
-        if (aStack == null) {
+        if (aStack == null || aStack.getItem() == null) {
             return false;
         }
 

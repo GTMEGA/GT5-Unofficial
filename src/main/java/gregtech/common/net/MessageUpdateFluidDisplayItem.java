@@ -26,11 +26,6 @@ public class MessageUpdateFluidDisplayItem extends GT_Packet_New {
     }
 
     @Override
-    public byte getPacketID() {
-        return 8;
-    }
-
-    @Override
     public void encode(ByteBuf aOut) {
         aOut.writeInt(mBlockX);
         aOut.writeInt(mBlockY);
