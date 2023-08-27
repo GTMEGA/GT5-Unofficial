@@ -52,16 +52,6 @@ public class GT_Packet_TileEntityGUI extends GT_Packet_New {
     }
 
     /**
-     * I use constant IDs instead of Dynamic ones, since that is much more fail safe
-     *
-     * @return a Packet ID for this Class
-     */
-    @Override
-    public byte getPacketID() {
-        return 11;
-    }
-
-    /**
      * Process the packet
      *
      * @param aWorld null if message is received on server side, the client world if message is received on client side

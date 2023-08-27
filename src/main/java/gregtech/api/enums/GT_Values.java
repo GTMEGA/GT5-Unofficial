@@ -148,6 +148,9 @@ public class GT_Values {
      * This way it is possible to have a Call Hierarchy of NullPointers in FluidStack based Functions, and also because most of the time I don't know what kind of Data Type the "null" stands for
      */
     public static final FluidStack NF = null;
+
+    public static boolean dump_meta_entity_space = true;
+
     /**
      * MOD ID Strings, since they are very common Parameters.
      */
@@ -178,7 +181,8 @@ public class GT_Values {
             MOD_ID_GC_CORE = "GalacticraftCore",
             MOD_ID_GC_MARS = "GalacticraftMars",
             MOD_ID_GC_PLANETS = "GalacticraftPlanets",
-            MOD_ID_DC = "dreamcraft";
+            MOD_ID_DC = "dreamcraft",
+            MOD_ID_NEI = "NotEnoughItems";
     /**
      * File Paths and Resource Paths
      */
