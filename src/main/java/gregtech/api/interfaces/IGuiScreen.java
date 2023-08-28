@@ -59,6 +59,8 @@ public interface IGuiScreen {
             }
             if (getUpdateCooldown() > 0) {
                 setUpdateCooldown(getUpdateCooldown() - 1);
+            } else {
+                setUpdateCooldown(0);
             }
         }
 

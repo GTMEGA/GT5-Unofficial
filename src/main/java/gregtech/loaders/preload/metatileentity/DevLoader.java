@@ -20,8 +20,7 @@ public final class DevLoader {
         if (LOADED) {
             throw new RuntimeException("Already loaded!");
         }
-        DEV_ENERGY_SOURCE.set(new GT_MetaTileEntity_DevEnergySource(700, "dev.energy_source",
-                                                                    "Developer Energy Source").getStackForm(1L));
+        DEV_ENERGY_SOURCE.set(new GT_MetaTileEntity_DevEnergySource(700, "dev.energy_source", "Developer Energy Source").getStackForm(1L));
         DEV_ITEM_SOURCE.set(new GT_MetaTileEntity_DevItemSource(701, "dev.item_source", "Developer Item Source").getStackForm(1L));
         LOADED = true;
     }

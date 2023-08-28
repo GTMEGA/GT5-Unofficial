@@ -37,9 +37,13 @@ public class GT_GUIContainer extends GuiContainer {
         //
     }
 
+    public ResourceLocation getGUIBackground() {
+        return mGUIbackground;
+    }
+
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-        mc.renderEngine.bindTexture(mGUIbackground);
+        mc.renderEngine.bindTexture(getGUIBackground());
     }
 
     @Override

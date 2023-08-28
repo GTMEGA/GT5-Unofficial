@@ -317,9 +317,8 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
 
     @Override
     public String[] getDescription() {
-        final String flavor = String.format(
-                "Generating %d amps of %s power (%d Eu/t)%s", amperage, tierName(), maxEUOutput() * amperage,
-                canRun() ? "" : (enabled ? "[Disabled by Redstone]" : "[Disabled by User]")
+        final String flavor = String.format("Generating %d amps of %s power (%d Eu/t)%s", amperage, tierName(), maxEUOutput() * amperage,
+                                            canRun() ? "" : (enabled ? "[Disabled by Redstone]" : "[Disabled by User]")
                                            );
         return ArrayUtils.addAll(mDescriptionArray, flavor);
     }

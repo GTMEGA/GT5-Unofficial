@@ -182,7 +182,8 @@ public class GT_Values {
             MOD_ID_GC_MARS = "GalacticraftMars",
             MOD_ID_GC_PLANETS = "GalacticraftPlanets",
             MOD_ID_DC = "dreamcraft",
-            MOD_ID_NEI = "NotEnoughItems";
+            MOD_ID_NEI = "NotEnoughItems",
+            MOD_ID_DWS = "dws";
     /**
      * File Paths and Resource Paths
      */

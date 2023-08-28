@@ -1,7 +1,9 @@
 package gregtech.api.metatileentity.implementations.dev;
 
 
+import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.enums.RSControlMode;
+import gregtech.api.interfaces.IAdvancedGUIEntity;
 import gregtech.api.interfaces.IRedstoneSensitive;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -9,26 +11,110 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.GT_Container_DevItemSource;
 import gregtech.common.gui.GT_GUIContainer_DevItemSource;
+import io.netty.buffer.ByteBuf;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.val;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+
+import javax.annotation.Nonnull;
 
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
 
-public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMachineBlock implements IRedstoneSensitive {
+@Getter
+public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMachineBlock implements IAdvancedGUIEntity, IRedstoneSensitive {
+
+    public static final int numSlots = 3;
+
+    public static final int slotManualOutput = 0, slotStorage = 1, slotOutput = 2;
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GUIData implements ISerializableObject {
+
+        private RSControlMode redstoneMode = RSControlMode.IGNORE;
+
+        private int itemPerTick = 1, itemPerSecond = 20;
+
+        private boolean perTick = true, active = true;
+
+        /**
+         * @return
+         */
+        @Nonnull
+        @Override
+        public ISerializableObject copy() {
+            return new GUIData(redstoneMode, itemPerTick, itemPerSecond, perTick, active);
+        }
+
+        /**
+         * @return
+         */
+        @Nonnull
+        @Deprecated
+        @Override
+        public NBTBase saveDataToNBT() {
+            return null;
+        }
+
+        /**
+         * Write data to given ByteBuf
+         * The data saved this way is intended to be stored for short amount of time over network.
+         * DO NOT store it to disks.
+         *
+         * @param aBuf
+         */
+        @Override
+        public void writeToByteBuf(final ByteBuf aBuf) {
+            aBuf.writeInt(redstoneMode.ordinal());
+            aBuf.writeInt(itemPerTick);
+            aBuf.writeInt(itemPerSecond);
+            aBuf.writeBoolean(perTick);
+            aBuf.writeBoolean(active);
+        }
+
+        /**
+         * @param aNBT
+         */
+        @Deprecated
+        @Override
+        public void loadDataFromNBT(final NBTBase aNBT) {
+
+        }
+
+        /**
+         * Read data from given parameter and return this.
+         * The data read this way is intended to be stored for short amount of time over network.
+         *
+         * @param aBuf
+         * @param aPlayer
+         */
+        @Nonnull
+        @Override
+        public ISerializableObject readFromPacket(final ByteArrayDataInput aBuf, final EntityPlayerMP aPlayer) {
+            return new GUIData(RSControlMode.getMode(aBuf.readInt()), aBuf.readInt(), aBuf.readInt(), aBuf.readBoolean(), aBuf.readBoolean());
+        }
+
+    }
 
     private final byte[] rsValues = {0, 0, 0, 0, 0, 0};
 
     private RSControlMode redstoneMode = RSControlMode.IGNORE;
 
-    private int itemPerTick = 0;
+    private int itemPerTick = 1;
 
     private int itemPerSecond = 0;
 
@@ -45,7 +131,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
     public GT_MetaTileEntity_DevItemSource(
             final int aID, final String aName, final String aNameRegional
                                           ) {
-        super(aID, aName, aNameRegional, 15, 3, new String[]{
+        super(aID, aName, aNameRegional, 15, numSlots, new String[]{
                 "Synthesizes items from... You know, you don't really care, do you?"
         });
     }
@@ -53,7 +139,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
     public GT_MetaTileEntity_DevItemSource(
             final String aName, final String[] aDescription, final ITexture[][][] aTextures
                                           ) {
-        super(aName, 15, 3, aDescription, aTextures);
+        super(aName, 15, numSlots, aDescription, aTextures);
     }
 
     @Override
@@ -102,7 +188,8 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
      */
     @Override
     public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
-        return canOutputItems() && aIndex == 1 && aSide == aBaseMetaTileEntity.getFrontFacing();
+        refreshOutput();
+        return canOutputItems() && aIndex == slotOutput && aSide == aBaseMetaTileEntity.getFrontFacing();
     }
 
     /**
@@ -151,12 +238,32 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
     }
 
     public ItemStack getStored() {
-        return mInventory[2];
+        return mInventory[slotStorage];
     }
 
-    public void setStored(final ItemStack newStored) {
-        mInventory[2] = newStored;
+    public void setStored(ItemStack newStored) {
+        if (newStored != null) {
+            newStored = GT_Utility.copyAmount(1, newStored);
+        }
+        mInventory[slotStorage] = newStored;
         markDirty();
+    }
+
+    /**
+     * @param aSide
+     * @param aWrenchingSide
+     * @param aPlayer
+     * @param aX
+     * @param aY
+     * @param aZ
+     * @return
+     */
+    @Override
+    public boolean onWrenchRightClick(final byte aSide, final byte aWrenchingSide, final EntityPlayer aPlayer, final float aX, final float aY, final float aZ) {
+        if (!isAccessAllowed(aPlayer)) {
+            return false;
+        }
+        return super.onWrenchRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
     }
 
     @Override
@@ -207,17 +314,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
     @Override
     public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
         if (getBaseMetaTileEntity().isServerSide() && getBaseMetaTileEntity().isAllowedToWork()) {
-            if (hasItem() && canRun()) {
-                mInventory[1] = GT_Utility.copyAmount(getAmount(), getStored());
-            } else {
-                mInventory[1] = null;
-            }
-            if (mInventory[0] != null && !hasItem()) {
-                setStored(GT_Utility.copyAmount(getMaxItemCount(), mInventory[0]));
-            }
-            if (mInventory[0] != null && GT_Utility.areStacksEqual(getStored(), mInventory[0])) {
-                mInventory[0] = null;
-            }
+            refreshOutput();
             final IInventory atSide = aBaseMetaTileEntity.getIInventoryAtSide(aBaseMetaTileEntity.getFrontFacing());
             if (canOutputItems() && atSide != null) {
                 moveItems(aBaseMetaTileEntity, atSide);
@@ -227,10 +324,18 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
         }
     }
 
+    /**
+     * @param aPlayer
+     * @return
+     */
+    @Override
+    public boolean isAccessAllowed(final EntityPlayer aPlayer) {
+        return aPlayer.capabilities.isCreativeMode;
+    }
+
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        // TODO: Figure out why this isn't firing on the server
-        if (aBaseMetaTileEntity.isClientSide()) {
+        if (aBaseMetaTileEntity.isClientSide() || !isAccessAllowed(aPlayer)) {
             return true;
         }
         aBaseMetaTileEntity.openGUI(aPlayer);
@@ -244,6 +349,10 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
     @Override
     public boolean isFacingValid(final byte aFacing) {
         return true;
+    }
+
+    public void clearItem() {
+        setStored(null);
     }
 
     /**
@@ -265,7 +374,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
      */
     @Override
     public ItemStack getStackInSlot(final int aIndex) {
-        if (aIndex == 2) {
+        if (aIndex == slotStorage) {
             return GT_Utility.copyAmount(getAmount(), getStored());
         }
         return super.getStackInSlot(aIndex);
@@ -278,7 +387,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
     @Override
     public int[] getAccessibleSlotsFromSide(final int aSide) {
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
-            return new int[]{1};
+            return new int[]{slotOutput};
         }
         return new int[]{};
     }
@@ -305,6 +414,66 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
         return new GT_GUIContainer_DevItemSource(aPlayerInventory, aBaseMetaTileEntity);
     }
 
+    /**
+     * Receive and accept the packet
+     *
+     * @param data
+     */
+    @Override
+    public void receiveGuiData(final ISerializableObject data) {
+        if (data instanceof GUIData) {
+            val gData = (GUIData) data;
+            setMode(gData.redstoneMode);
+            setPerTick(gData.perTick);
+            setItemPerTick(gData.itemPerTick);
+            setItemPerSecond(gData.itemPerSecond);
+            adjustItemRate();
+            setActive(gData.active);
+            processRS();
+            markDirty();
+        }
+    }
+
+    public void adjustItemRate() {
+        if (perTick) {
+            itemPerSecond = itemPerTick * 20;
+            tPeriod = 1;
+        } else {
+            tPeriod = 20;
+        }
+        adjustCount();
+        markDirty();
+    }
+
+    public void setActive(final boolean active) {
+        this.active = active;
+    }
+
+    public void setItemPerSecond(final int itemPerSecond) {
+        this.itemPerSecond = itemPerSecond;
+        markDirty();
+    }
+
+    public void setItemPerTick(final int itemPerTick) {
+        this.itemPerTick = itemPerTick;
+        markDirty();
+    }
+
+    public void setPerTick(final boolean perTick) {
+        this.perTick = perTick;
+        markDirty();
+    }
+
+    /**
+     * Decodes the packet, machine type specific
+     *
+     * @param aData
+     */
+    @Override
+    public ISerializableObject decodePacket(final ByteArrayDataInput aData) {
+        return new GUIData().readFromPacket(aData, null);
+    }
+
     private int getAmount() {
         if (perTick) {
             return itemPerTick;
@@ -314,6 +483,9 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
     }
 
     private void moveItems(final IGregTechTileEntity aBaseMetaTileEntity, final IInventory atSide) {
+        if (!hasItem()) {
+            return;
+        }
         final byte sideInputtedInto = aBaseMetaTileEntity.getBackFacing();
         int[] targetSlots = null;
         if (atSide instanceof ISidedInventory) {
@@ -325,13 +497,24 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
                 targetSlots[i] = i;
             }
         }
-        int moved = 0;
+        int moved = 0, max = getAmount();
         for (int targetSlot : targetSlots) {
-            if (moved >= getAmount()) {
+            if (moved >= max) {
                 break;
             }
             moved += GT_Utility.moveStackFromSlotAToSlotB(
-                    aBaseMetaTileEntity, atSide, 2, targetSlot, (byte) 64, (byte) 1, (byte) getStored().getMaxStackSize(), (byte) 1);
+                    aBaseMetaTileEntity, atSide, slotOutput, targetSlot, (byte) 64, (byte) 1, (byte) Math.min(max - moved, getStored().getMaxStackSize()), (byte) 1);
+            refreshOutput();
+        }
+    }
+
+    public void refreshOutput() {
+        if (hasItem()) {
+            mInventory[slotManualOutput] = GT_Utility.copyAmount(64, getStored());
+            mInventory[slotOutput] = GT_Utility.copyAmount(getAmount(), getStored());
+        } else {
+            mInventory[slotManualOutput] = null;
+            mInventory[slotOutput] = null;
         }
     }
 
@@ -345,6 +528,25 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
             this.tPeriod = 1;
         }
         this.tCount = this.tCount % this.tPeriod;
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void markDirty() {
+        super.markDirty();
+        getBaseMetaTileEntity().markDirty();
+    }
+
+    /**
+     * @param aIndex
+     * @param aStack
+     * @return
+     */
+    @Override
+    public boolean isItemValidForSlot(final int aIndex, final ItemStack aStack) {
+        return getStored() == null || GT_Utility.areStacksEqual(getStored(), aStack);
     }
 
 }

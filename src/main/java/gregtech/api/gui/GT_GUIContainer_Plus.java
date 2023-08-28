@@ -7,8 +7,11 @@ import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.gui.widgets.GT_GuiSlider;
 import gregtech.api.gui.widgets.GT_GuiTooltip;
 import gregtech.api.gui.widgets.GT_GuiTooltipManager;
+import gregtech.api.interfaces.IDWSCompatibleGUI;
 import gregtech.api.interfaces.IGuiScreen;
 import gregtech.api.util.interop.NEIInterop;
+import lombok.Getter;
+import lombok.NonNull;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -21,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.GuiScreenEvent;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -31,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT_GuiTooltipManager.GT_IToolTipRenderer, IGuiScreen {
+public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT_GuiTooltipManager.GT_IToolTipRenderer, IGuiScreen, IDWSCompatibleGUI {
 
     protected static final boolean debug = false;
 
@@ -45,16 +49,38 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
 
     protected final GT_GuiTooltipManager tooltipManager = new GT_GuiTooltipManager();
 
+    @Getter
     private final int guiWidth;
 
+    @Getter
     private final int guiHeight;
+
+    private final String dwsGuiBackgroundPath;
+
+    private final ResourceLocation dwsGuiBackground;
+
+    private final int baseGuiWidth;
 
     protected GuiButton selectedButton = null;
 
     public GT_GUIContainer_Plus(final Container aContainer, final String aGuiBackground, final int width, final int height) {
         super(aContainer, aGuiBackground);
-        this.guiWidth = this.xSize = width;
+        this.dwsGuiBackground = new ResourceLocation(this.dwsGuiBackgroundPath = getDWSGuiBackgroundPath(aGuiBackground));
+        this.baseGuiWidth = width;
+        this.guiWidth = this.xSize = applyDWSBump(baseWidth());
         this.guiHeight = this.ySize = height;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public int baseWidth() {
+        return baseGuiWidth;
+    }
+
+    public int getDWSWidthBump() {
+        return 0;
     }
 
     /**
@@ -222,6 +248,17 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         final int mouseY = getMouseY(rawMY);
         sliders.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType)).forEach(slider -> slider.onMousePressed(mouseX, mouseY, clickType));
         textBoxes.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType)).forEach(this::setFocusedTextBox);
+    }
+
+    /**
+     * @param slot
+     * @param slotIndex
+     * @param controlDown
+     * @param mouseButton
+     */
+    @Override
+    protected void handleMouseClick(final Slot slot, int slotIndex, final int controlDown, final int mouseButton) {
+        super.handleMouseClick(slot, slotIndex, controlDown, mouseButton);
     }
 
     /**
@@ -400,10 +437,10 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
 
     @Override
     protected void drawGuiContainerBackgroundLayer(final float par1, final int par2, final int par3) {
-        super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+        /* super.drawGuiContainerBackgroundLayer(par1, par2, par3);
         int x = (this.width - this.xSize) / 2;
         int y = (this.height - this.ySize) / 2;
-        drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
+        drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize); */
     }
 
     /**
@@ -443,11 +480,66 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
     public void drawBackground() {
         short[] color = Dyes.MACHINE_METAL.getRGBA();
         GL11.glColor3ub((byte) color[0], (byte) color[1], (byte) color[2]);
-        this.mc.renderEngine.bindTexture(new ResourceLocation(mGUIbackgroundPath));
-        drawTexturedModalRect(guiLeft, guiTop, 0, 0, guiWidth, guiHeight);
+        final ResourceLocation bg = getGUIBackground();
+        this.mc.renderEngine.bindTexture(bg);
+        final int x, y;
+        x = (width - xSize) / 2;
+        y = (height - ySize) / 2;
+        drawBigTexturedModalRect(x, y, 0, 0, guiWidth, guiHeight, 512, 512);
     }
 
-    private static void magicGLPre() {
+    /**
+     * Draws a textured rectangle at the stored z-value. Args: x, y, u, v, width, height
+     *
+     * @param x
+     * @param y
+     * @param u
+     * @param v
+     * @param width
+     * @param height
+     */
+    @Override
+    public void drawTexturedModalRect(
+            final int x, final int y, final int u, final int v, final int width, final int height
+                                     ) {
+        super.drawTexturedModalRect(x, y, u, v, width, height);
+    }
+
+    /**
+     * Allows you to draw textures bigger than 256x256
+     *
+     * @param x
+     * @param y
+     * @param u
+     * @param v
+     * @param width
+     * @param height
+     * @param texMaxWidth
+     * @param textMaxHeight
+     */
+    public void drawBigTexturedModalRect(
+            final int x, final int y, final int u, final int v, final int width, final int height, final int texMaxWidth, final int textMaxHeight
+                                        ) {
+        func_146110_a(x, y, u, v, width, height, texMaxWidth, textMaxHeight);
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public @NonNull ResourceLocation getDWSGuiBackground() {
+        return dwsGuiBackground;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public ResourceLocation getGUIBackground() {
+        return GregTech_API.mDWS && hasDWSAlternativeBackground() ? getDWSGuiBackground() : super.getGUIBackground();
+    }
+
+    protected void magicGLPre() {
         RenderHelper.disableStandardItemLighting();
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -461,7 +553,7 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         }
     }
 
-    private void magicGLMid1() {
+    protected void magicGLMid1() {
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glPushMatrix();
         GL11.glTranslatef(guiLeft, guiTop, 0.0F);
@@ -471,8 +563,7 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
 
     public void drawSlots(final int mouseX, final int mouseY) {
         for (int i = 0; i < this.inventorySlots.inventorySlots.size(); i++) {
-            final Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i);
-            handleDrawSlot(slot, mouseX, mouseY);
+            handleDrawSlot((Slot)inventorySlots.inventorySlots.get(i), mouseX, mouseY);
         }
     }
 
@@ -481,13 +572,13 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         tooltipManager.onTick(this, mouseX, mouseY);
     }
 
-    private void neiRenderObjects(final int mouseX, final int mouseY) {
+    protected void neiRenderObjects(final int mouseX, final int mouseY) {
         if (isNEIEnabled() && isNEILoaded()) {
             NEIInterop.INSTANCE.renderObjects(this, mouseX, mouseY);
         }
     }
 
-    private static void magicGLMid1dot5() {
+    protected void magicGLMid1dot5() {
         GL11.glEnable(GL11.GL_LIGHTING);
     }
 
@@ -619,7 +710,7 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
 
     /**
      * @return whether to automatically generate slots
-     * */
+     */
     protected boolean autoDrawSlots() {
         return false;
     }
@@ -660,13 +751,15 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
     protected void renderSlotHighlight(final Slot slot) {
         final int x = slot.xDisplayPosition;
         final int y = slot.yDisplayPosition;
+        GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glColorMask(true, true, true, false);
-        this.drawGradientRect(x, y, x + 16, y + 16, -2130706433, -2130706433);
+        drawGradientRect(x, y, x + 16, y + 16, 0x80FFFFFF, 0x80AFAFFF);
         GL11.glColorMask(true, true, true, true);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glPopMatrix();
     }
 
     protected int rgbaToInt(final int red, final int green, final int blue, final int alpha) {

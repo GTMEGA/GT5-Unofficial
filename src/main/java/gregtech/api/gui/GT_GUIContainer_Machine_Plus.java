@@ -15,4 +15,6 @@ public abstract class GT_GUIContainer_Machine_Plus extends GT_GUIContainer_Plus 
         this.mContainer = aContainer;
     }
 
+    public abstract void sendUpdateToServer();
+
 }
