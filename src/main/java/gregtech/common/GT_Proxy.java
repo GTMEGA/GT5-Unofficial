@@ -656,7 +656,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         GT_Log.out.println("GT_Mod: Beginning PostLoad-Phase.");
         GT_Log.ore.println("GT_Mod: Beginning PostLoad-Phase.");
         GregTech_API.mDWS = Loader.isModLoaded(MOD_ID_DWS);
-        GT_Log.out.println("GT_Mod: Brochacho? Brochacho??? BROOOOCHACHOOOOOOOO!!!! dws: " + GregTech_API.mDWS);
+        GT_Log.out.println("GT_Mod: Are you there DWS? " + GregTech_API.mDWS);
         if (GT_Log.pal != null) {
             new Thread(new GT_PlayerActivityLogger()).start();
         }
