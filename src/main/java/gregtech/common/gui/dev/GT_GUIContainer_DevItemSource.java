@@ -1,4 +1,4 @@
-package gregtech.common.gui;
+package gregtech.common.gui.dev;
 
 
 import gregtech.api.GregTech_API;
@@ -19,8 +19,7 @@ public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus 
     }
 
     private void addGuiElements() {
-        new GT_GuiIconCheckButton(
-                this, 0, buttonX(), 24, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Enable Activity", "Disable Activity").setChecked(
+        new GT_GuiIconCheckButton(this, 0, buttonX(), 24, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Enable Activity", "Disable Activity").setChecked(
                 !getSource().isActive()).setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
             if (screen instanceof GT_GUIContainer_DevItemSource && button instanceof GT_GuiIconCheckButton) {
                 ((GT_GuiIconCheckButton) button).setChecked(((GT_GUIContainer_DevItemSource) screen).getSource().isActive());
@@ -123,7 +122,8 @@ public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus 
     }
 
     /**
-     * @param button Handler for a button click
+     * @param button
+     *         Handler for a button click
      */
     @Override
     public void buttonClicked(final GuiButton button) {

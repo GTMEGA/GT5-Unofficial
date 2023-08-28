@@ -1,4 +1,4 @@
-package gregtech.common.gui;
+package gregtech.common.gui.dev;
 
 
 import gregtech.api.GregTech_API;
@@ -26,6 +26,8 @@ public class GT_Container_DevItemSource extends GT_ContainerMetaTile_Machine imp
 
     private final boolean serverSide;
 
+    private GT_MetaTileEntity_DevItemSource.GUIData data;
+
     private RSControlMode redstoneMode;
 
     private int itemPerTick, itemPerSecond;
@@ -37,12 +39,13 @@ public class GT_Container_DevItemSource extends GT_ContainerMetaTile_Machine imp
                                      ) {
         super(aInventoryPlayer, aTileEntity);
         if (aTileEntity instanceof GT_MetaTileEntity_DevItemSource) {
-            redstoneMode = getSource().getMode();
+            data = (GT_MetaTileEntity_DevItemSource.GUIData) getSource().getTEGUIData();
+            /*redstoneMode = getSource().getMode();
             itemPerTick = getSource().getItemPerTick();
             itemPerSecond = getSource().getItemPerSecond();
             perTick = getSource().isPerTick();
             active = getSource().isActive();
-            rsActive = getSource().isRsActive();
+            rsActive = getSource().isRsActive();*/
         }
         serverSide = aTileEntity.isServerSide();
         detectAndSendChanges();
@@ -50,8 +53,8 @@ public class GT_Container_DevItemSource extends GT_ContainerMetaTile_Machine imp
 
     public void sendPacket() {
         final int dimension = mPlayerInventory.player.dimension;
-        final GT_MetaTileEntity_DevItemSource.GUIData data = new GT_MetaTileEntity_DevItemSource.GUIData(
-                redstoneMode, itemPerTick, itemPerSecond, perTick, active);
+        /*final GT_MetaTileEntity_DevItemSource.GUIData data = new GT_MetaTileEntity_DevItemSource.GUIData(
+                redstoneMode, itemPerTick, itemPerSecond, perTick, active);*/
         GT_Values.NW.sendToServer(GT_Packet_TileEntityGUI.createFromMachine(getSource(), data, dimension));
     }
 
@@ -192,29 +195,38 @@ public class GT_Container_DevItemSource extends GT_ContainerMetaTile_Machine imp
     @Override
     public void updateProgressBar(final int par1, final int par2) {
         super.updateProgressBar(par1, par2);
+        if (mTileEntity.isServerSide()) {
+            return;
+        }
         switch (par1) {
             case 200: {
-                redstoneMode = RSControlMode.getMode(par2);
+                data.setRedstoneMode(RSControlMode.getMode(par2));
+                // redstoneMode = RSControlMode.getMode(par2);
                 break;
             }
             case 201: {
-                itemPerTick = par2;
+                data.setItemPerTick(par2);
+                // itemPerTick = par2;
                 break;
             }
             case 202: {
-                itemPerSecond = par2;
+                data.setItemPerSecond(par2);
+                // itemPerSecond = par2;
                 break;
             }
             case 203: {
-                perTick = par2 != 0;
+                data.setPerTick(par2 != 0);
+                // perTick = par2 != 0;
                 break;
             }
             case 204: {
-                active = par2 != 0;
+                data.setActive(par2 != 0);
+                // active = par2 != 0;
                 break;
             }
             case 205: {
-                rsActive = par2 != 0;
+                data.setRsActive(par2 != 0);
+                // rsActive = par2 != 0;
                 break;
             }
         }

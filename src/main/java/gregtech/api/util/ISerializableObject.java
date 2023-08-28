@@ -64,6 +64,31 @@ public interface ISerializableObject {
         }
     }
 
+    default void writeString(ByteBuf buffer, String s) {
+        // TODO: Check safety
+        if (s == null) {
+            buffer.writeInt(0);
+            return;
+        }
+        buffer.writeInt(s.length());
+        for (char c: s.toCharArray()) {
+            buffer.writeChar(c);
+        }
+    }
+
+    default String readString(ByteArrayDataInput buffer) {
+        // TODO: Check safety
+        StringBuilder temp = new StringBuilder();
+        int l = buffer.readInt();
+        if (l == 0) {
+            return null;
+        }
+        for (int i = 0; i < l; i++) {
+            temp.append(buffer.readChar());
+        }
+        return temp.toString();
+    }
+
     /**
      * Reverse engineered and adapted {@link cpw.mods.fml.common.network.ByteBufUtils#readItemStack(ByteBuf)}
      * Given buffer must contain a serialized ItemStack in minecraft encoding

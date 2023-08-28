@@ -1,4 +1,4 @@
-package gregtech.common.gui;
+package gregtech.common.gui.dev;
 
 
 import gregtech.api.enums.RSControlMode;

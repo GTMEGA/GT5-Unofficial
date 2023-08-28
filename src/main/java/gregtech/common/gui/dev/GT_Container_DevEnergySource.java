@@ -1,4 +1,4 @@
-package gregtech.common.gui;
+package gregtech.common.gui.dev;
 
 
 import cpw.mods.fml.relauncher.Side;

@@ -10,9 +10,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.INonNBTSerializable;
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.gui.GT_Container_DevEnergySource;
-import gregtech.common.gui.GT_GUIContainer_DevEnergySource;
+import gregtech.common.gui.dev.GT_Container_DevEnergySource;
+import gregtech.common.gui.dev.GT_GUIContainer_DevEnergySource;
 import io.netty.buffer.ByteBuf;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +22,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -33,11 +33,12 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 
 
 @Getter
-public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredMachineBlock implements IAdvancedGUIEntity, IRedstoneSensitive {
+public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredMachineBlock
+        implements IAdvancedGUIEntity, IRedstoneSensitive {
 
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class GUIData implements ISerializableObject {
+    public static class GUIData implements INonNBTSerializable {
 
         private int tier;
 
@@ -58,22 +59,13 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
             return new GUIData(tier, voltage, amps, mode, enabled);
         }
 
-        /**
-         * @return
-         */
-        @Deprecated
-        @Nonnull
-        @Override
-        public NBTBase saveDataToNBT() {
-            return null;
-        }
 
         /**
-         * Write data to given ByteBuf
-         * The data saved this way is intended to be stored for short amount of time over network.
-         * DO NOT store it to disks.
+         * Write data to given ByteBuf The data saved this way is intended to be stored for short amount of time over
+         * network. DO NOT store it to disks.
          *
-         * @param aBuf Buffer to write into
+         * @param aBuf
+         *         Buffer to write into
          */
         @Override
         public void writeToByteBuf(final ByteBuf aBuf) {
@@ -85,25 +77,19 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         }
 
         /**
-         * @param aNBT
-         */
-        @Deprecated
-        @Override
-        public void loadDataFromNBT(final NBTBase aNBT) {
-
-        }
-
-        /**
-         * Read data from given parameter and return this.
-         * The data read this way is intended to be stored for short amount of time over network.
+         * Read data from given parameter and return this. The data read this way is intended to be stored for short
+         * amount of time over network.
          *
-         * @param aBuf    Buffer
-         * @param aPlayer Player, unused
+         * @param aBuf
+         *         Buffer
+         * @param aPlayer
+         *         Player, unused
          */
         @Nonnull
         @Override
         public ISerializableObject readFromPacket(final ByteArrayDataInput aBuf, final EntityPlayerMP aPlayer) {
-            return new GUIData(aBuf.readInt(), aBuf.readLong(), aBuf.readInt(), RSControlMode.getMode(aBuf.readInt()), aBuf.readBoolean());
+            return new GUIData(aBuf.readInt(), aBuf.readLong(), aBuf.readInt(), RSControlMode.getMode(aBuf.readInt()),
+                               aBuf.readBoolean());
         }
 
     }
@@ -171,9 +157,8 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone
-                                ) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+                                 boolean aActive, boolean aRedstone) {
         return mTextures[aSide == aFacing ? 0 : 1][aColorIndex + 1];
     }
 
@@ -222,9 +207,8 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public boolean onWrenchRightClick(
-            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ
-                                     ) {
+    public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
+                                      float aZ) {
         if (!isAccessAllowed(aPlayer)) {
             return false;
         }
@@ -233,6 +217,7 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
 
     @Override
     public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
             setEUVar(getMinimumStoredEU() * (1 << 9));
         }
@@ -317,9 +302,14 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
 
     @Override
     public String[] getDescription() {
-        final String flavor = String.format("Generating %d amps of %s power (%d Eu/t)%s", amperage, tierName(), maxEUOutput() * amperage,
-                                            canRun() ? "" : (enabled ? "[Disabled by Redstone]" : "[Disabled by User]")
-                                           );
+        final String flavor = String.format("Generating %d amps of %s power (%d Eu/t)%s", amperage, tierName(),
+                                            maxEUOutput() * amperage, canRun()
+                                                                      ? ""
+                                                                      : (
+                                                                              enabled
+                                                                              ? "[Disabled by Redstone]"
+                                                                              : "[Disabled by User]"
+                                                                      ));
         return ArrayUtils.addAll(mDescriptionArray, flavor);
     }
 
@@ -341,7 +331,8 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     /**
      * Receive and accept the packet
      *
-     * @param data data to read from
+     * @param data
+     *         data to read from
      */
     @Override
     public void receiveGuiData(final ISerializableObject data) {
@@ -391,7 +382,8 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     /**
      * Decodes the packet, machine type specific
      *
-     * @param aData Packet to decipher
+     * @param aData
+     *         Packet to decipher
      */
     @Override
     public ISerializableObject decodePacket(final ByteArrayDataInput aData) {

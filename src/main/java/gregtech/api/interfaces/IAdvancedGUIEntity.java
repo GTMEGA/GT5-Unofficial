@@ -21,4 +21,9 @@ public interface IAdvancedGUIEntity extends IMetaTileEntity {
      * */
     ISerializableObject decodePacket(ByteArrayDataInput aData);
 
+    /**
+     * Dumps the relevant data from the TE
+     * */
+    ISerializableObject getTEGUIData();
+
 }
