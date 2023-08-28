@@ -2,10 +2,10 @@ package gregtech.loaders.preload.metatileentity;
 
 
 import gregtech.api.metatileentity.implementations.dev.GT_MetaTileEntity_DevEnergySource;
+import gregtech.api.metatileentity.implementations.dev.GT_MetaTileEntity_DevFluidSource;
 import gregtech.api.metatileentity.implementations.dev.GT_MetaTileEntity_DevItemSource;
 
-import static gregtech.api.enums.ItemList.DEV_ENERGY_SOURCE;
-import static gregtech.api.enums.ItemList.DEV_ITEM_SOURCE;
+import static gregtech.api.enums.ItemList.*;
 
 
 public final class DevLoader {
@@ -22,6 +22,7 @@ public final class DevLoader {
         }
         DEV_ENERGY_SOURCE.set(new GT_MetaTileEntity_DevEnergySource(700, "dev.energy_source", "Developer Energy Source").getStackForm(1L));
         DEV_ITEM_SOURCE.set(new GT_MetaTileEntity_DevItemSource(701, "dev.item_source", "Developer Item Source").getStackForm(1L));
+        DEV_FLUID_SOURCE.set(new GT_MetaTileEntity_DevFluidSource(702, "dev.fluid_source", "Developer Fluid Source").getStackForm(1));
         LOADED = true;
     }
 
