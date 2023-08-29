@@ -348,7 +348,19 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         boolean aSideServer = isServerSide();
         boolean aSideClient = isClientSide();
 
-        try { for (tCode = 0; hasValidMetaTileEntity() && tCode >= 0; ) {
+
+        if (getMetaTileEntity() instanceof IRedstoneSensitive) {
+            final IRedstoneSensitive rs = (IRedstoneSensitive) getMetaTileEntity();
+            if (mTickTimer % rs.rsTickRate() == 0 && (aSideServer || (aSideClient && rs.receiveRSClientUpdates()))) {
+                for (byte i = 0; i < 6; i++) {
+                    byte rsIn = getInputRedstoneSignal(i);
+                    rs.updateRSValues(i, rsIn);
+                }
+                rs.processRS();
+            }
+        }
+
+        try { for (tCode = 0; hasValidMetaTileEntity() && tCode >= 0;) {
             switch (tCode) {
                 case 0:
                     tCode++;
@@ -356,10 +368,15 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                         oX = xCoord;
                         oY = yCoord;
                         oZ = zCoord;
-                        if (aSideServer) for (byte i = 0; i < 6; i++)
-                            if (getCoverIDAtSide(i) != 0)
-                                if (!mMetaTileEntity.allowCoverOnSide(i, new GT_ItemStack(getCoverIDAtSide(i))))
-                                    dropCover(i, i, true);
+                        if (aSideServer) {
+                            for (byte i = 0; i < 6; i++) {
+                                if (getCoverIDAtSide(i) != 0) {
+                                    if (!mMetaTileEntity.allowCoverOnSide(i, new GT_ItemStack(getCoverIDAtSide(i)))) {
+                                        dropCover(i, i, true);
+                                    }
+                                }
+                            }
+                        }
                         worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
                         mMetaTileEntity.onFirstTick(this);
                         if (!hasValidMetaTileEntity()) {
@@ -401,14 +418,6 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                 case 6:
                 case 7:
                     if (aSideServer && mTickTimer > 10) {
-                        if (getMetaTileEntity() instanceof IRedstoneSensitive) {
-                            final IRedstoneSensitive rs = (IRedstoneSensitive) getMetaTileEntity();
-                            for (byte i = 0; i < 6; i++) {
-                                byte rsIn = getInputRedstoneSignal(i);
-                                rs.updateRSValues(i, rsIn);
-                            }
-                            rs.processRS();
-                        }
                         for (byte i = (byte) (tCode - 2); i < 6; i++)
                             if (getCoverIDAtSide(i) != 0) {
                                 tCode++;

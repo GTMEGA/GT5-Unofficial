@@ -613,6 +613,35 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         }
     }
 
+    public static void renderFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock, byte side) {
+        switch (side) {
+            case 0: {
+                renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aIcon, aFullBlock);
+                break;
+            }
+            case 1: {
+                renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aIcon, aFullBlock);
+                break;
+            }
+            case 2: {
+                renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aIcon, aFullBlock);
+                break;
+            }
+            case 3: {
+                renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aIcon, aFullBlock);
+                break;
+            }
+            case 4: {
+                renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aIcon, aFullBlock);
+                break;
+            }
+            case 5: {
+                renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aIcon, aFullBlock);
+                break;
+            }
+        }
+    }
+
     public static void renderNegativeYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY - 1, aZ, 0))) return;

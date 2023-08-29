@@ -8,8 +8,6 @@ public interface IRedstoneSensitive {
 
     RSControlMode getRedstoneMode();
 
-    byte[] getRSValues();
-
     default byte getMaxRSValue() {
         byte max = 0;
         for (byte i = 0; i < getRSValues().length; i++) {
@@ -17,6 +15,8 @@ public interface IRedstoneSensitive {
         }
         return max;
     }
+
+    byte[] getRSValues();
 
     default void setMode(final int newMode) {
         setMode(RSControlMode.getMode(newMode));
@@ -26,10 +26,27 @@ public interface IRedstoneSensitive {
 
     void updateRSValues(final byte side, final byte rsSignal);
 
+    /**
+     * Update state based upon redstone input
+     */
     void processRS();
 
     default boolean isValidMode(final RSControlMode mode) {
         return true;
+    }
+
+    /**
+     * Indicates whether the client MTE should be updated, useful for texture stuff
+     */
+    default boolean receiveRSClientUpdates() {
+        return false;
+    }
+
+    /**
+     * How many ticks apart the checks are
+     */
+    default int rsTickRate() {
+        return 2;
     }
 
 }

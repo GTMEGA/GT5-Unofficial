@@ -33,8 +33,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import javax.annotation.Nonnull;
 
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
+import static gregtech.api.enums.Textures.BlockIcons.*;
 
 
 @Getter
@@ -213,6 +212,11 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
         }
     }
 
+    @Override
+    public boolean receiveRSClientUpdates() {
+        return true;
+    }
+
     /**
      * Decodes the packet, machine type specific
      *
@@ -229,6 +233,11 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     @Override
     public ISerializableObject getTEGUIData() {
         return internalData;
+    }
+
+    @Override
+    public void onNeighborChange(final int x, final int y, final int z) {
+        processRS();
     }
 
     /**
@@ -270,7 +279,10 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
      */
     @Override
     public void processRS() {
-        internalData.setRsActive(internalData.getMode().checkPredicate(getMaxRSValue()));
+        val te = getBaseMetaTileEntity();
+        internalData.setRsActive(getRedstoneMode().checkPredicate(getMaxRSValue()));
+        te.getWorld().scheduleBlockUpdate(te.getXCoord(), te.getYCoord(), te.getZCoord(), te.getBlockOffset(0, 0, 0), 3);
+        getBaseMetaTileEntity().issueClientUpdate();
     }
 
     /**
@@ -303,7 +315,10 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
             final boolean aActive,
             final boolean aRedstone
                                 ) {
-        return mTextures[aSide == aFacing ? 0 : 1][aColorIndex + 1];
+        boolean caresAboutRS = internalData.mode != RSControlMode.IGNORE;
+        int rsBump = 2 * (caresAboutRS ? (internalData.rsActive ? 2 : 1) : 0);
+        int facingBump = aSide == aFacing ? 0 : 1;
+        return mTextures[facingBump + rsBump][aColorIndex + 1];
     }
 
     @Override
@@ -569,11 +584,18 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
      */
     @Override
     public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
-        ITexture[][][] rTextures = new ITexture[2][17][];
-        ITexture out = TextureFactory.of(OVERLAY_PIPE_OUT);
+        ITexture[][][] rTextures = new ITexture[6][17][];
+        val pipe = TextureFactory.of(OVERLAY_PIPE_OUT);
+        val fluidSource = TextureFactory.of(OVERLAY_DEV_FLUID_SOURCE);
+        val rsInactive = TextureFactory.of(OVERLAY_RS_INACTIVE);
+        val rsActive = TextureFactory.of(OVERLAY_RS_ACTIVE);
         for (int i = 0; i < rTextures[0].length; i++) {
-            rTextures[0][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], out};
-            rTextures[1][i] = new ITexture[]{MACHINE_CASINGS[mTier][i]};
+            rTextures[0][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], fluidSource, pipe};
+            rTextures[1][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], fluidSource};
+            rTextures[2][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], rsInactive, fluidSource, pipe};
+            rTextures[3][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], rsInactive, fluidSource};
+            rTextures[4][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], rsActive, fluidSource, pipe};
+            rTextures[5][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], rsActive, fluidSource};
         }
         return rTextures;
     }

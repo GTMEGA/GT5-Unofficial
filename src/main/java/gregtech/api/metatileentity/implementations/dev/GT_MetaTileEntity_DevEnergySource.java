@@ -14,8 +14,11 @@ import gregtech.api.util.IAdvancedTEData;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.dev.GT_Container_DevEnergySource;
 import gregtech.common.gui.dev.GT_GUIContainer_DevEnergySource;
+import gregtech.common.render.GT_Renderer_Block;
 import io.netty.buffer.ByteBuf;
 import lombok.*;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -24,6 +27,7 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.IBlockAccess;
 
 import javax.annotation.Nonnull;
 
@@ -76,6 +80,7 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
             compound.setLong("voltage", getVoltage());
             compound.setInteger("amps", getAmps());
             compound.setBoolean("enabled", isEnabled());
+            mode.saveNBTData(compound);
             return compound;
         }
 
@@ -107,6 +112,7 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
             setVoltage(aNBT.getLong("voltage"));
             setAmps(aNBT.getInteger("amps"));
             setEnabled(aNBT.getBoolean("enabled"));
+            setMode(RSControlMode.loadFromNBTData(aNBT));
         }
 
         public void setTier(final int tier) {
@@ -280,7 +286,10 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     public ITexture[] getTexture(
             IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone
                                 ) {
-        return mTextures[aSide == aFacing ? 0 : 1][aColorIndex + 1];
+        boolean caresAboutRS = internalData.mode != RSControlMode.IGNORE;
+        int rsBump = 2 * (caresAboutRS ? (internalData.rsActive ? 2 : 1) : 0);
+        int facingBump = aSide == aFacing ? 0 : 1;
+        return mTextures[facingBump + rsBump][aColorIndex + 1];
     }
 
     /**
@@ -324,7 +333,15 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
      */
     @Override
     public void processRS() {
+        val te = getBaseMetaTileEntity();
         internalData.setRsActive(getRedstoneMode().checkPredicate(getMaxRSValue()));
+        te.getWorld().scheduleBlockUpdate(te.getXCoord(), te.getYCoord(), te.getZCoord(), te.getBlockOffset(0, 0, 0), 3);
+        getBaseMetaTileEntity().issueClientUpdate();
+    }
+
+    @Override
+    public boolean receiveRSClientUpdates() {
+        return true;
     }
 
     @Override
@@ -409,6 +426,17 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     }
 
     @Override
+    public boolean renderInWorld(final IBlockAccess aWorld, final int aX, final int aY, final int aZ, final Block aBlock, final RenderBlocks aRenderer) {
+        val te = getBaseMetaTileEntity();
+        byte facing = te.getFrontFacing();
+        for (byte side = 0; side < 6; side++) {
+            val tex = getTexture(te, side, facing, te.getColorization(), te.isActive(), true);
+            GT_Renderer_Block.renderFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tex, true, side);
+        }
+        return true;
+    }
+
+    @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_Container_DevEnergySource(aPlayerInventory, aBaseMetaTileEntity);
     }
@@ -424,17 +452,20 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
 
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
-        ITexture[][][] rTextures = new ITexture[2][17][];
-        ITexture out = TextureFactory.of(OVERLAYS_ENERGY_OUT[mTier]);
+        ITexture[][][] rTextures = new ITexture[6][17][];
+        val pipe = TextureFactory.of(OVERLAYS_ENERGY_OUT);
+        val energySource = TextureFactory.of(OVERLAY_DEV_ENERGY_SOURCE);
+        val rsInactive = TextureFactory.of(OVERLAY_RS_INACTIVE);
+        val rsActive = TextureFactory.of(OVERLAY_RS_ACTIVE);
         for (int i = 0; i < rTextures[0].length; i++) {
-            rTextures[0][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], out};
-            rTextures[1][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], TextureFactory.of(OVERLAY_DEV_ENERGY_SOURCE)};
+            rTextures[0][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], energySource, pipe};
+            rTextures[1][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], energySource};
+            rTextures[2][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], rsInactive, energySource, pipe};
+            rTextures[3][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], rsInactive, energySource};
+            rTextures[4][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], rsActive, energySource, pipe};
+            rTextures[5][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], rsActive, energySource};
         }
         return rTextures;
-    }
-
-    public String tierName() {
-        return VN[internalData.getTier()];
     }
 
     /**
@@ -469,24 +500,9 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         return internalData;
     }
 
-    public void setEnergyTier(final int energyTier) {
-        internalData.setTier(energyTier);
-        markDirty();
-    }
-
-    public void setAmperage(final int amperage) {
-        internalData.setAmps(amperage);
-        markDirty();
-    }
-
-    public void setVoltage(final long voltage) {
-        internalData.setVoltage(voltage);
-        this.markDirty();
-    }
-
-    protected void setEnabled(final boolean enabled) {
-        internalData.setEnabled(enabled);
-        markDirty();
+    @Override
+    public void onNeighborChange(final int x, final int y, final int z) {
+        processRS();
     }
 
 }
