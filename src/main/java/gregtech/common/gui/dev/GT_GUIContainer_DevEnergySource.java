@@ -46,6 +46,14 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
         return (GT_Container_DevEnergySource) mContainer;
     }
 
+    /**
+     *
+     */
+    @Override
+    public void sendUpdateToServer() {
+        getSource().sendPacket();
+    }
+
     private void updateButtons() {
         GuiButton button;
         for (Object o : buttonList) {
@@ -70,7 +78,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
             return;
         }
         if (box.id == 3) {
-            i = Math.max(0, Math.min(i, V[getSource().getEnergyTier()]));
+            i = Math.max(0, Math.min(i, V[getSource().getData().getTier()]));
             getSource().setVoltage(i);
         }
         if (box.id == 4) {
@@ -80,14 +88,6 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
         box.setUpdateCooldown(20);
         box.setText(String.valueOf(i));
         sendUpdateToServer();
-    }
-
-    /**
-     *
-     */
-    @Override
-    public void sendUpdateToServer() {
-        getSource().sendPacket();
     }
 
     /**
@@ -107,23 +107,29 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
     public void drawExtras(final int mouseX, final int mouseY, final float parTicks) {
         final int tColor = 0xFF3030FF;
         final int left = 140;
-        drawString(String.format("%s(%d Eu/t)", getTierString(), V[getSource().getEnergyTier()]), left, 40, tColor);
-        drawString(String.format("%d Eu/t(%s)", getSource().getVoltage(), VN[GT_Utility.getTier(getSource().getVoltage())]), left, 61, tColor);
+        drawString(String.format("%s(%d Eu/t)", getTierString(), V[getSource().getData().getTier()]), left, 40, tColor);
+        long volt = getSource().getData().getVoltage();
+        drawString(String.format("%d Eu/t(%s)", volt, VN[GT_Utility.getTier(volt)]), left, 61, tColor);
         drawString("Amperage", left, 81, tColor);
-        if (!getSource().isActive()) {
+        if (!getSource().getData().canRun()) {
             drawString(getSource().getDisabledStatus(), 8, 100, rgbaToInt(0xFF, 0x55, 0x55, 0xFF));
         }
     }
 
     public String getTierString() {
-        return VN[getSource().getEnergyTier()];
+        return VN[getSource().getData().getTier()];
+    }
+
+    @Override
+    public boolean hasDWSAlternativeBackground() {
+        return false;
     }
 
     private void addGUIElements() {
         new GT_GuiIconCheckButton(this, 0, 8, 8, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Enable Activity", "Disable Activity").setChecked(
-                !getSource().isEnabled()).setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
+                !getSource().getData().isEnabled()).setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
             if (screen instanceof GT_GUIContainer_DevEnergySource && button instanceof GT_GuiIconCheckButton) {
-                ((GT_GuiIconCheckButton) button).setChecked(((GT_GUIContainer_DevEnergySource) screen).getSource().isEnabled());
+                ((GT_GuiIconCheckButton) button).setChecked(((GT_GUIContainer_DevEnergySource) screen).getSource().getData().isEnabled());
             }
         }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
         new GT_GuiIconButton(this, 1, 24, 8, GT_GuiIcon.MATH_ZERO).setTooltipText("Sets amperage and voltage to 0");
@@ -141,7 +147,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
                 });
         rsButton.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
             if (screen instanceof GT_GUIContainer_DevEnergySource && button instanceof GT_GuiCycleButton) {
-                ((GT_GuiCycleButton) button).setState(((GT_GUIContainer_DevEnergySource) screen).getSource().getMode().ordinal());
+                ((GT_GuiCycleButton) button).setState(((GT_GUIContainer_DevEnergySource) screen).getSource().getData().getMode().ordinal());
             }
         }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
             if (screen instanceof GT_GUIContainer_DevEnergySource && button instanceof GT_GuiCycleButton) {
@@ -155,12 +161,12 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
     }
 
     private void addVoltTierSlider() {
-        final GT_GuiSlider voltTierSlider = new GT_GuiSlider(0, this, 8, 40, 128, 8, 0.0, 15.0, getSource().getEnergyTier());
+        final GT_GuiSlider voltTierSlider = new GT_GuiSlider(0, this, 8, 40, 128, 8, 0.0, 15.0, getSource().getData().getTier());
         voltTierSlider.setTextHandler(slider -> String.format("Tier: %s", VN[(int) slider.getValue()]));
         voltTierSlider.setOnChange(slider -> {
             final IGuiScreen gui = slider.getGui();
             if (gui instanceof GT_GUIContainer_DevEnergySource) {
-                slider.setValue(((GT_GUIContainer_DevEnergySource) gui).getSource().getEnergyTier());
+                slider.setValue(((GT_GUIContainer_DevEnergySource) gui).getSource().getData().getTier());
             }
         });
         voltTierSlider.setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
@@ -175,7 +181,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
         final GT_GuiIntegerTextBox vBox = new GT_GuiIntegerTextBox(this, 3, 8, 60, 128, 10);
         vBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
             if (screen instanceof GT_GUIContainer_DevEnergySource && button instanceof GT_GuiIntegerTextBox && !((GT_GuiIntegerTextBox) button).isFocused()) {
-                ((GT_GuiIntegerTextBox) button).setText(String.valueOf(((GT_GUIContainer_DevEnergySource) screen).getSource().getVoltage()));
+                ((GT_GuiIntegerTextBox) button).setText(String.valueOf(((GT_GUIContainer_DevEnergySource) screen).getSource().getData().getVoltage()));
             }
         }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
             button.setUpdateCooldown(20);
@@ -186,7 +192,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
         final GT_GuiIntegerTextBox aBox = new GT_GuiIntegerTextBox(this, 4, 8, 80, 128, 10);
         aBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
             if (screen instanceof GT_GUIContainer_DevEnergySource && button instanceof GT_GuiIntegerTextBox && !((GT_GuiIntegerTextBox) button).isFocused()) {
-                ((GT_GuiIntegerTextBox) button).setText(String.valueOf(((GT_GUIContainer_DevEnergySource) screen).getSource().getAmperage()));
+                ((GT_GuiIntegerTextBox) button).setText(String.valueOf(((GT_GUIContainer_DevEnergySource) screen).getSource().getData().getAmps()));
             }
         }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
             button.setUpdateCooldown(20);

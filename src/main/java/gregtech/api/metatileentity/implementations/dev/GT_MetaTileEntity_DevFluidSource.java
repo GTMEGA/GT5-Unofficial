@@ -11,12 +11,19 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.INonNBTSerializable;
+import gregtech.api.util.IAdvancedTEData;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.gui.dev.GT_Container_DevFluidSource;
+import gregtech.common.gui.dev.GT_GUIContainer_DevFluidSource;
 import io.netty.buffer.ByteBuf;
 import lombok.*;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -33,46 +40,44 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 @Getter
 public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTank implements IAdvancedGUIEntity, IRedstoneSensitive {
 
-    public static final int numSlots = 3;
-
-    public static final int inputSlot = 0, outputSlot = 1, displaySlot = 2;
-
-    private final byte[] rsInputs = new byte[6];
-
-    private RSControlMode mode = RSControlMode.IGNORE;
-
-    private boolean rsActive = true;
-
-    private boolean active = true;
-
-    private boolean perTick = true;
-
-    private int ratePerTick = 1;
-
-    private int ratePerSecond = 20;
-
-    private String fluidName = null;
-
-    private int tPeriod = 1;
-
-    private int tCount = 0;
-
     @Getter
     @Setter
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class GUIData implements INonNBTSerializable {
+    public static class GUIData implements IAdvancedTEData {
 
-        private RSControlMode mode;
+        @Builder.Default
+        private RSControlMode mode = RSControlMode.IGNORE;
 
-        private boolean active, perTick;
+        @Builder.Default
+        private boolean active = true;
 
-        private int rPT, rPS;
+        @Builder.Default
+        private boolean perTick = true;
 
+        @Builder.Default
+        private boolean rsActive = true;
+
+        @Builder.Default
+        private int rPT = 1;
+
+        @Builder.Default
+        private int rPS = 20;
+
+        /**
+         * @return
+         */
         @Nonnull
         @Override
-        public ISerializableObject copy() {
-            return new GUIData(mode, active, perTick, rPT, rPS);
+        public NBTBase saveDataToNBT() {
+            final NBTTagCompound result = new NBTTagCompound();
+            mode.saveNBTData(result);
+            result.setBoolean("active", active);
+            result.setBoolean("perTick", perTick);
+            result.setInteger("rPT", rPT);
+            result.setInteger("rPS", rPS);
+            return result;
         }
 
         @Override
@@ -84,13 +89,105 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
             aBuf.writeInt(rPS);
         }
 
+        /**
+         * @param oNBT
+         */
+        @Override
+        public void loadDataFromNBT(final NBTBase oNBT) {
+            if (!(oNBT instanceof NBTTagCompound)) {
+                return;
+            }
+            NBTTagCompound aNBT = (NBTTagCompound) oNBT;
+            setMode(RSControlMode.loadFromNBTData(aNBT));
+            setActive(aNBT.getBoolean("active"));
+            setPerTick(aNBT.getBoolean("perTick"));
+            setRPT(aNBT.getInteger("rPT"));
+            setRPS(aNBT.getInteger("rPS"));
+        }
+
         @Nonnull
         @Override
         public ISerializableObject readFromPacket(final ByteArrayDataInput aBuf, final EntityPlayerMP aPlayer) {
-            return new GUIData(RSControlMode.getMode(aBuf.readInt()), aBuf.readBoolean(), aBuf.readBoolean(), aBuf.readInt(), aBuf.readInt());
+            return new GUIData(
+                    RSControlMode.getMode(aBuf.readInt()), aBuf.readBoolean(), aBuf.readBoolean(), aBuf.readBoolean(), aBuf.readInt(), aBuf.readInt());
+        }
+
+        /**
+         * @param other
+         */
+        @Override
+        public void readFrom(final ISerializableObject other) {
+            GUIData toReadFrom = (GUIData) other;
+            setActive(toReadFrom.active);
+            setMode(toReadFrom.getMode());
+            setPerTick(toReadFrom.perTick);
+            setRPT(toReadFrom.rPT);
+            setRPS(toReadFrom.rPS);
+        }
+
+        /**
+         * Actually sends the changes
+         *
+         * @param container
+         * @param crafter
+         */
+        @Override
+        public void sendChange(final Container container, final ICrafting crafter) {
+            crafter.sendProgressBarUpdate(container, 200, active ? 1 : 0);
+            crafter.sendProgressBarUpdate(container, 201, mode.ordinal());
+            crafter.sendProgressBarUpdate(container, 202, perTick ? 1 : 0);
+            crafter.sendProgressBarUpdate(container, 203, rPT);
+            crafter.sendProgressBarUpdate(container, 204, rPS);
+        }
+
+        /**
+         * Receives changed data
+         *
+         * @param changeID
+         * @param data
+         */
+        @Override
+        public void receiveChange(final int changeID, final int data) {
+            switch (changeID) {
+                case 200: {
+                    setActive(data != 0);
+                    break;
+                }
+                case 201: {
+                    setMode(RSControlMode.getMode(data));
+                    break;
+                }
+                case 202: {
+                    setPerTick(data != 0);
+                    break;
+                }
+                case 203: {
+                    setRPT(data);
+                    break;
+                }
+                case 204: {
+                    setRPS(data);
+                    break;
+                }
+            }
         }
 
     }
+
+
+    public static final int numSlots = 3;
+
+    public static final int inputSlot = 0, outputSlot = 1, displaySlot = 2;
+
+    private final byte[] rsInputs = new byte[6];
+
+    private final GUIData internalData = new GUIData();
+
+    private String fluidName = null;
+
+    private int tPeriod = 1;
+
+    private int tCount = 0;
 
     public GT_MetaTileEntity_DevFluidSource(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional, 15, numSlots, new String[]{
@@ -102,10 +199,6 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
         super(aName, 15, numSlots, aDescription, aTextures);
     }
 
-    public boolean hasFluid() {
-        return fluidName != null;
-    }
-
     /**
      * Receive and accept the packet
      *
@@ -113,7 +206,11 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
      */
     @Override
     public void receiveGuiData(final ISerializableObject data) {
-
+        if (data instanceof GUIData) {
+            internalData.readFrom(data);
+            processRS();
+            markDirty();
+        }
     }
 
     /**
@@ -123,7 +220,23 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
      */
     @Override
     public ISerializableObject decodePacket(final ByteArrayDataInput aData) {
-        return null;
+        return new GUIData().readFromPacket(aData, null);
+    }
+
+    /**
+     * Dumps the relevant data from the TE
+     */
+    @Override
+    public ISerializableObject getTEGUIData() {
+        return internalData;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public RSControlMode getRedstoneMode() {
+        return internalData.mode;
     }
 
     /**
@@ -139,7 +252,7 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
      */
     @Override
     public void setMode(final RSControlMode newMode) {
-        mode = newMode;
+        internalData.setMode(newMode);
         markDirty();
     }
 
@@ -157,13 +270,11 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
      */
     @Override
     public void processRS() {
-        this.rsActive = mode.checkPredicate(getMaxRSValue());
+        internalData.setRsActive(internalData.getMode().checkPredicate(getMaxRSValue()));
     }
 
     /**
-     * @param aTileEntity
-     *         is just because the internal Variable "mBaseMetaTileEntity" is set after this Call.
-     *
+     * @param aTileEntity is just because the internal Variable "mBaseMetaTileEntity" is set after this Call.
      * @return a newly created and ready MetaTileEntity
      */
     @Override
@@ -175,21 +286,23 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
      * Icon of the Texture. If this returns null then it falls back to getTextureIndex.
      *
      * @param aBaseMetaTileEntity
-     * @param aSide
-     *         is the Side of the Block
-     * @param aFacing
-     *         is the direction the Block is facing (or a Bitmask of all Connections in case of Pipes)
-     * @param aColorIndex
-     *         The Minecraft Color the Block is having
-     * @param aActive
-     *         if the Machine is currently active (use this instead of calling mBaseMetaTileEntity.mActive!!!). Note: In case of Pipes this means if this Side
-     *         is connected to something or not.
-     * @param aRedstone
-     *         if the Machine is currently outputting a RedstoneSignal (use this instead of calling mBaseMetaTileEntity.mRedstone!!!)
+     * @param aSide               is the Side of the Block
+     * @param aFacing             is the direction the Block is facing (or a Bitmask of all Connections in case of Pipes)
+     * @param aColorIndex         The Minecraft Color the Block is having
+     * @param aActive             if the Machine is currently active (use this instead of calling mBaseMetaTileEntity.mActive!!!). Note: In case of Pipes
+     *                            this means if this Side
+     *                            is connected to something or not.
+     * @param aRedstone           if the Machine is currently outputting a RedstoneSignal (use this instead of calling mBaseMetaTileEntity.mRedstone!!!)
      */
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex,
-                                 final boolean aActive, final boolean aRedstone) {
+    public ITexture[] getTexture(
+            final IGregTechTileEntity aBaseMetaTileEntity,
+            final byte aSide,
+            final byte aFacing,
+            final byte aColorIndex,
+            final boolean aActive,
+            final boolean aRedstone
+                                ) {
         return mTextures[aSide == aFacing ? 0 : 1][aColorIndex + 1];
     }
 
@@ -206,17 +319,17 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     @Override
     public void saveNBTData(final NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        final NBTTagCompound devNBT = new NBTTagCompound();
+        final NBTTagCompound devNBT = (NBTTagCompound) internalData.saveDataToNBT();
         if (hasFluid()) {
             devNBT.setString("fName", fluidName);
         }
-        devNBT.setBoolean("mode", perTick);
-        devNBT.setInteger("perTick", ratePerTick);
-        devNBT.setInteger("perSecond", ratePerSecond);
         devNBT.setInteger("tick", tCount);
         devNBT.setInteger("period", tPeriod);
-        mode.saveNBTData(devNBT);
         aNBT.setTag("dev", devNBT);
+    }
+
+    public boolean hasFluid() {
+        return fluidName != null;
     }
 
     /**
@@ -227,16 +340,12 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         final NBTTagCompound devNBT = aNBT.getCompoundTag("dev");
-        if (devNBT.hasKey("item")) {
-            mInventory[2] = ItemStack.loadItemStackFromNBT(devNBT.getCompoundTag("item"));
+        if (devNBT.hasKey("fName")) {
+            fluidName = devNBT.getString("fname");
         }
-        active = devNBT.getBoolean("active");
-        ratePerTick = devNBT.getInteger("perTick");
-        ratePerSecond = devNBT.getInteger("perSecond");
-        perTick = devNBT.getBoolean("mode");
+        internalData.loadDataFromNBT(devNBT);
         tCount = devNBT.getInteger("tick");
         tPeriod = devNBT.getInteger("period");
-        mode = RSControlMode.loadFromNBTData(devNBT);
     }
 
     @Override
@@ -272,6 +381,28 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     @Override
     public int getStackDisplaySlot() {
         return displaySlot;
+    }
+
+    /**
+     * @param aID
+     * @param aPlayerInventory
+     * @param aBaseMetaTileEntity
+     * @return
+     */
+    @Override
+    public Object getServerGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_Container_DevFluidSource(aPlayerInventory, aBaseMetaTileEntity);
+    }
+
+    /**
+     * @param aID
+     * @param aPlayerInventory
+     * @param aBaseMetaTileEntity
+     * @return
+     */
+    @Override
+    public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_GUIContainer_DevFluidSource(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
@@ -331,11 +462,15 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
 
     }
 
+    public boolean isExecutionTick() {
+        return tCount == 0;
+    }
+
     private void doFluidPush(final IGregTechTileEntity aBaseMetaTileEntity) {
         IFluidHandler atSide = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
         if (atSide != null) {
             byte front = aBaseMetaTileEntity.getFrontFacing(), back = aBaseMetaTileEntity.getBackFacing();
-            FluidStack simDrained = aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(front), Integer.MAX_VALUE, false);
+            FluidStack simDrained = aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(front), 0, false);
             if (simDrained != null) {
                 int simFilledAmount = atSide.fill(ForgeDirection.getOrientation(back), simDrained, false);
                 if (simFilledAmount > 0) {
@@ -346,14 +481,50 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
         }
     }
 
+    private void tickForward() {
+        this.tCount += 1;
+        adjustCount();
+    }
+
+    private void adjustCount() {
+        if (this.tPeriod <= 0) {
+            this.tPeriod = 1;
+        }
+        this.tCount = this.tCount % this.tPeriod;
+    }
+
+    /**
+     * a Player rightclicks the Machine
+     * Sneaky rightclicks are not getting passed to this!
+     *
+     * @param aBaseMetaTileEntity
+     * @param aPlayer
+     */
+    @Override
+    public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
+        if (aBaseMetaTileEntity.isClientSide() || !isAccessAllowed(aPlayer)) {
+            return true;
+        }
+        aBaseMetaTileEntity.openGUI(aPlayer);
+        return true;
+    }
+
     /**
      * @param aFacing
-     *
      * @return
      */
     @Override
     public boolean isFacingValid(final byte aFacing) {
         return true;
+    }
+
+    /**
+     * @param aPlayer
+     * @return
+     */
+    @Override
+    public boolean isAccessAllowed(final EntityPlayer aPlayer) {
+        return aPlayer.capabilities.isCreativeMode;
     }
 
     @Override
@@ -364,7 +535,6 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     /**
      * @param aSide
      * @param aFluid
-     *
      * @return
      */
     @Override
@@ -373,13 +543,9 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     }
 
     /**
-     * @param aSide
-     *         Orientation the fluid is drained to.
-     * @param maxDrain
-     *         Maximum amount of fluid to drain.
-     * @param doDrain
-     *         If false, drain will only be simulated.
-     *
+     * @param aSide    Orientation the fluid is drained to.
+     * @param maxDrain Maximum amount of fluid to drain.
+     * @param doDrain  If false, drain will only be simulated.
      * @return
      */
     @Override
@@ -399,8 +565,7 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     /**
      * Used Client Side to get a Texture Set for this Block. Called after setting the Tier and the Description so that those two are accessible.
      *
-     * @param aTextures
-     *         is the optional Array you can give to the Constructor.
+     * @param aTextures is the optional Array you can give to the Constructor.
      */
     @Override
     public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
@@ -410,20 +575,16 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
             rTextures[0][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], out};
             rTextures[1][i] = new ITexture[]{MACHINE_CASINGS[mTier][i]};
         }
-        return new ITexture[0][][];
-    }
-
-    public boolean isExecutionTick() {
-        return tCount == 0;
+        return rTextures;
     }
 
     public boolean canRun() {
-        return isActive() && isRsActive();
+        return internalData.isActive() && internalData.isRsActive();
     }
 
     public void syncRates() {
-        if (perTick) {
-            ratePerSecond = ratePerTick * 20;
+        if (internalData.isPerTick()) {
+            internalData.setRPS(internalData.rPT * 20);
             tPeriod = 1;
         } else {
             tPeriod = 20;
@@ -433,45 +594,33 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     }
 
     protected void setPerTick(final boolean perTick) {
-        this.perTick = perTick;
+        internalData.setPerTick(perTick);
         markDirty();
     }
 
     protected void setRatePerTick(final int ratePerTick) {
-        this.ratePerTick = ratePerTick;
+        internalData.setRPT(ratePerTick);
         markDirty();
     }
 
     protected void setRatePerSecond(final int ratePerSecond) {
-        this.ratePerSecond = ratePerSecond;
+        internalData.setRPS(ratePerSecond);
         markDirty();
     }
 
     protected void setRsActive(final boolean rsActive) {
-        this.rsActive = rsActive;
+        internalData.setRsActive(rsActive);
         markDirty();
     }
 
     protected void setActive(final boolean active) {
-        this.active = active;
+        internalData.setActive(active);
         markDirty();
     }
 
-    protected void setFluidName(final String fluidName) {
+    public void setFluidName(final String fluidName) {
         this.fluidName = fluidName;
         markDirty();
-    }
-
-    private void tickForward() {
-        this.tCount += 1;
-        adjustCount();
-    }
-
-    private void adjustCount() {
-        if (this.tPeriod <= 0) {
-            this.tPeriod = 1;
-        }
-        this.tCount = this.tCount % this.tPeriod;
     }
 
 }

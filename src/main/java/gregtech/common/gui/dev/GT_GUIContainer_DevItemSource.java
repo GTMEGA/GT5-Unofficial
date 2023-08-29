@@ -20,9 +20,9 @@ public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus 
 
     private void addGuiElements() {
         new GT_GuiIconCheckButton(this, 0, buttonX(), 24, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Enable Activity", "Disable Activity").setChecked(
-                !getSource().isActive()).setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
+                !getSource().getData().isActive()).setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
             if (screen instanceof GT_GUIContainer_DevItemSource && button instanceof GT_GuiIconCheckButton) {
-                ((GT_GuiIconCheckButton) button).setChecked(((GT_GUIContainer_DevItemSource) screen).getSource().isActive());
+                ((GT_GuiIconCheckButton) button).setChecked(((GT_GUIContainer_DevItemSource) screen).getSource().getData().isActive());
             }
         }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
         new GT_GuiIconButton(this, 1, buttonX(), 42, GT_GuiIcon.MATH_ZERO).setTooltipText("Set output rate to zero");
@@ -46,7 +46,7 @@ public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus 
                 });
         rsButton.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
             if (screen instanceof GT_GUIContainer_DevItemSource && button instanceof GT_GuiCycleButton) {
-                ((GT_GuiCycleButton) button).setState(((GT_GUIContainer_DevItemSource) screen).getSource().getRedstoneMode().ordinal());
+                ((GT_GuiCycleButton) button).setState(((GT_GUIContainer_DevItemSource) screen).getSource().getData().getRedstoneMode().ordinal());
             }
         }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
             if (screen instanceof GT_GUIContainer_DevItemSource && button instanceof GT_GuiCycleButton) {
@@ -91,8 +91,8 @@ public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus 
     }
 
     public String getIPTString() {
-        final int pT = getSource().getItemPerTick(), pS = getSource().getItemPerSecond();
-        if (getSource().isPerTick()) {
+        final int pT = getSource().getData().getItemPerTick(), pS = getSource().getData().getItemPerSecond();
+        if (getSource().getData().isPerTick()) {
             return String.valueOf(pT);
         } else {
             if (pS == 0) {
@@ -106,10 +106,10 @@ public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus 
     }
 
     public String getIPSString() {
-        if (!getSource().isPerTick()) {
-            return String.valueOf(getSource().getItemPerSecond());
+        if (!getSource().getData().isPerTick()) {
+            return String.valueOf(getSource().getData().getItemPerSecond());
         } else {
-            return String.valueOf(getSource().getItemPerTick() * 20);
+            return String.valueOf(getSource().getData().getItemPerTick() * 20);
         }
     }
 
@@ -122,8 +122,7 @@ public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus 
     }
 
     /**
-     * @param button
-     *         Handler for a button click
+     * @param button Handler for a button click
      */
     @Override
     public void buttonClicked(final GuiButton button) {
@@ -198,7 +197,7 @@ public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus 
         final int inactiveColor = 0xFF30304F;
         final int activeColor = 0xFF3030FF;
         final int left = boxX() + 3 + boxWidth();
-        final boolean pT = getSource().isPerTick();
+        final boolean pT = getSource().getData().isPerTick();
         drawString("Items / tick", left, 24, pT ? activeColor : inactiveColor);
         drawString("Items / second", left, 34, pT ? inactiveColor : activeColor);
         if (!getSource().canRun()) {

@@ -6,7 +6,7 @@ import gregtech.api.enums.RSControlMode;
 
 public interface IRedstoneSensitive {
 
-    RSControlMode getMode();
+    RSControlMode getRedstoneMode();
 
     byte[] getRSValues();
 

@@ -11,7 +11,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.INonNBTSerializable;
+import gregtech.api.util.IAdvancedTEData;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.dev.GT_Container_DevItemSource;
 import gregtech.common.gui.dev.GT_GUIContainer_DevItemSource;
@@ -20,6 +20,8 @@ import lombok.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -32,16 +34,14 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
 
-@Getter
-public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMachineBlock
-        implements IAdvancedGUIEntity, IRedstoneSensitive {
+public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMachineBlock implements IAdvancedGUIEntity, IRedstoneSensitive {
 
     @Getter
     @Setter
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class GUIData implements ISerializableObject {
+    public static class GUIData implements IAdvancedTEData {
 
         @Builder.Default
         private RSControlMode redstoneMode = RSControlMode.IGNORE;
@@ -61,19 +61,15 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
         @Builder.Default
         private boolean rsActive = true;
 
-        /**
-         * @return
-         */
-        @Nonnull
-        @Override
-        public ISerializableObject copy() {
-            return new GUIData(redstoneMode, itemPerTick, itemPerSecond, perTick, active, rsActive);
-        }
-
         @Nonnull
         @Override
         public NBTBase saveDataToNBT() {
             NBTTagCompound result = new NBTTagCompound();
+            result.setBoolean("active", active);
+            result.setInteger("iPerTick", itemPerTick);
+            result.setInteger("iPerSecond", itemPerSecond);
+            result.setBoolean("perTick", perTick);
+            redstoneMode.saveNBTData(result);
             return result;
         }
 
@@ -100,9 +96,9 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
             }
             NBTTagCompound devNBT = (NBTTagCompound) oNBT;
             active = devNBT.getBoolean("active");
-            itemPerTick = devNBT.getInteger("perTick");
-            itemPerSecond = devNBT.getInteger("perSecond");
-            perTick = devNBT.getBoolean("mode");
+            itemPerTick = devNBT.getInteger("iPerTick");
+            itemPerSecond = devNBT.getInteger("iPerSecond");
+            perTick = devNBT.getBoolean("perTick");
             redstoneMode = RSControlMode.loadFromNBTData(devNBT);
         }
 
@@ -116,11 +112,78 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
         @Nonnull
         @Override
         public ISerializableObject readFromPacket(final ByteArrayDataInput aBuf, final EntityPlayerMP aPlayer) {
-            return new GUIData(RSControlMode.getMode(aBuf.readInt()), aBuf.readInt(), aBuf.readInt(),
-                               aBuf.readBoolean(), aBuf.readBoolean(), aBuf.readBoolean());
+            return new GUIData(RSControlMode.getMode(aBuf.readInt()), aBuf.readInt(), aBuf.readInt(), aBuf.readBoolean(), aBuf.readBoolean(),
+                               aBuf.readBoolean()
+            );
+        }
+
+        /**
+         * @param other
+         */
+        @Override
+        public void readFrom(final ISerializableObject other) {
+            GUIData toReadFrom = (GUIData) other;
+            setRedstoneMode(toReadFrom.redstoneMode);
+            setItemPerTick(toReadFrom.itemPerTick);
+            setItemPerSecond(toReadFrom.itemPerSecond);
+            setPerTick(toReadFrom.perTick);
+            setActive(toReadFrom.active);
+        }
+
+        /**
+         * Sends itself to crafters
+         *
+         * @param source
+         * @param crafter
+         */
+        @Override
+        public void sendChange(final Container source, final ICrafting crafter) {
+            crafter.sendProgressBarUpdate(source, 200, getRedstoneMode().ordinal());
+            crafter.sendProgressBarUpdate(source, 201, getItemPerTick());
+            crafter.sendProgressBarUpdate(source, 202, getItemPerSecond());
+            crafter.sendProgressBarUpdate(source, 203, isPerTick() ? 1 : 0);
+            crafter.sendProgressBarUpdate(source, 204, isActive() ? 1 : 0);
+            crafter.sendProgressBarUpdate(source, 205, isRsActive() ? 1 : 0);
+        }
+
+        /**
+         * Receives changed data
+         *
+         * @param changeID
+         * @param data
+         */
+        @Override
+        public void receiveChange(final int changeID, final int data) {
+            switch (changeID) {
+                case 200: {
+                    setRedstoneMode(RSControlMode.getMode(data));
+                    break;
+                }
+                case 201: {
+                    setItemPerTick(data);
+                    break;
+                }
+                case 202: {
+                    setItemPerSecond(data);
+                    break;
+                }
+                case 203: {
+                    setPerTick(data != 0);
+                    break;
+                }
+                case 204: {
+                    setActive(data != 0);
+                    break;
+                }
+                case 205: {
+                    setRsActive(data != 0);
+                    break;
+                }
+            }
         }
 
     }
+
 
     public static final int numSlots = 3;
 
@@ -128,23 +191,11 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
 
     private final byte[] rsValues = {0, 0, 0, 0, 0, 0};
 
-    private GUIData internalData = new GUIData();
-
-    private RSControlMode redstoneMode = RSControlMode.IGNORE;
-
-    private int itemPerTick = 1;
-
-    private int itemPerSecond = 0;
+    private final GUIData internalData = new GUIData();
 
     private int tCount = 0;
 
     private int tPeriod = 1;
-
-    private boolean perTick = true;
-
-    private boolean active = true;
-
-    private boolean rsActive = true;
 
     public GT_MetaTileEntity_DevItemSource(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional, 15, numSlots, new String[]{
@@ -152,8 +203,9 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
         });
     }
 
-    public GT_MetaTileEntity_DevItemSource(final String aName, final String[] aDescription,
-                                           final ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_DevItemSource(
+            final String aName, final String[] aDescription, final ITexture[][][] aTextures
+                                          ) {
         super(aName, 15, numSlots, aDescription, aTextures);
     }
 
@@ -164,17 +216,12 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
 
     @Override
     public void saveNBTData(final NBTTagCompound aNBT) {
-        final NBTTagCompound devNBT = new NBTTagCompound();
+        final NBTTagCompound devNBT = (NBTTagCompound) internalData.saveDataToNBT();
         if (hasItem()) {
             devNBT.setTag("item", getStored().writeToNBT(new NBTTagCompound()));
         }
-        devNBT.setBoolean("mode", perTick);
-        devNBT.setBoolean("active", active);
-        devNBT.setInteger("perTick", itemPerTick);
-        devNBT.setInteger("perSecond", itemPerSecond);
         devNBT.setInteger("tick", tCount);
         devNBT.setInteger("period", tPeriod);
-        redstoneMode.saveNBTData(devNBT);
         aNBT.setTag("dev", devNBT);
     }
 
@@ -184,13 +231,9 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
         if (devNBT.hasKey("item")) {
             mInventory[2] = ItemStack.loadItemStackFromNBT(devNBT.getCompoundTag("item"));
         }
-        /*active = devNBT.getBoolean("active");
-        itemPerTick = devNBT.getInteger("perTick");
-        itemPerSecond = devNBT.getInteger("perSecond");
-        perTick = devNBT.getBoolean("mode");
+        internalData.loadDataFromNBT(devNBT);
         tCount = devNBT.getInteger("tick");
         tPeriod = devNBT.getInteger("period");
-        redstoneMode = RSControlMode.loadFromNBTData(devNBT);*/
     }
 
     /**
@@ -202,8 +245,9 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
      * @param aStack
      */
     @Override
-    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-                                  final ItemStack aStack) {
+    public boolean allowPullStack(
+            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack
+                                 ) {
         refreshOutput();
         return canOutputItems() && aIndex == slotOutput && aSide == aBaseMetaTileEntity.getFrontFacing();
     }
@@ -217,8 +261,9 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
      * @param aStack
      */
     @Override
-    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-                                 final ItemStack aStack) {
+    public boolean allowPutStack(
+            final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack
+                                ) {
         return false;
         // return aIndex == 0 && (!hasItem() || GT_Utility.areStacksEqual(getStored(), aStack)) && aSide != aBaseMetaTileEntity.getFrontFacing();
     }
@@ -226,24 +271,24 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
     /**
      * Icon of the Texture. If this returns null then it falls back to getTextureIndex.
      *
-     * @param aBaseMetaTileEntity
-     *         base entity
-     * @param aSide
-     *         is the Side of the Block
-     * @param aFacing
-     *         is the direction the Block is facing (or a Bitmask of all Connections in case of Pipes)
-     * @param aColorIndex
-     *         The Minecraft Color the Block is having
-     * @param aActive
-     *         if the Machine is currently active (use this instead of calling mBaseMetaTileEntity.mActive!!!). Note: In
-     *         case of Pipes this means if this Side is connected to something or not.
-     * @param aRedstone
-     *         if the Machine is currently outputting a RedstoneSignal (use this instead of calling
-     *         mBaseMetaTileEntity.mRedstone!!!)
+     * @param aBaseMetaTileEntity base entity
+     * @param aSide               is the Side of the Block
+     * @param aFacing             is the direction the Block is facing (or a Bitmask of all Connections in case of Pipes)
+     * @param aColorIndex         The Minecraft Color the Block is having
+     * @param aActive             if the Machine is currently active (use this instead of calling mBaseMetaTileEntity.mActive!!!). Note: In
+     *                            case of Pipes this means if this Side is connected to something or not.
+     * @param aRedstone           if the Machine is currently outputting a RedstoneSignal (use this instead of calling
+     *                            mBaseMetaTileEntity.mRedstone!!!)
      */
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-                                 final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+    public ITexture[] getTexture(
+            final IGregTechTileEntity aBaseMetaTileEntity,
+            final byte aSide,
+            final byte aFacing,
+            final byte aColorIndex,
+            final boolean aActive,
+            final boolean aRedstone
+                                ) {
         return mTextures[aSide == aFacing ? 0 : 1][aColorIndex + 1];
     }
 
@@ -268,7 +313,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
     }
 
     public boolean canRun() {
-        return active && rsActive;
+        return internalData.isActive() && internalData.isRsActive();
     }
 
     /**
@@ -278,12 +323,12 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
      * @param aX
      * @param aY
      * @param aZ
-     *
      * @return
      */
     @Override
-    public boolean onWrenchRightClick(final byte aSide, final byte aWrenchingSide, final EntityPlayer aPlayer,
-                                      final float aX, final float aY, final float aZ) {
+    public boolean onWrenchRightClick(
+            final byte aSide, final byte aWrenchingSide, final EntityPlayer aPlayer, final float aX, final float aY, final float aZ
+                                     ) {
         if (!isAccessAllowed(aPlayer)) {
             return false;
         }
@@ -319,7 +364,6 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
 
     /**
      * @param aFacing
-     *
      * @return
      */
     @Override
@@ -329,7 +373,6 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
 
     /**
      * @param aPlayer
-     *
      * @return
      */
     @Override
@@ -352,7 +395,6 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
 
     /**
      * @param aIndex
-     *
      * @return
      */
     @Override
@@ -364,17 +406,43 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
     }
 
     private int getAmount() {
-        if (perTick) {
-            return itemPerTick;
+        if (isPerTick()) {
+            return getItemPerTick();
         } else {
-            return itemPerSecond;
+            return getItemPerSecond();
         }
+    }
+
+    public boolean isPerTick() {
+        return internalData.isPerTick();
+    }
+
+    public int getItemPerTick() {
+        return internalData.getItemPerTick();
+    }
+
+    public int getItemPerSecond() {
+        return internalData.getItemPerSecond();
+    }
+
+    public void setItemPerSecond(final int itemPerSecond) {
+        internalData.setItemPerSecond(itemPerSecond);
+        markDirty();
+    }
+
+    public void setItemPerTick(final int itemPerTick) {
+        internalData.setItemPerTick(itemPerTick);
+        markDirty();
+    }
+
+    public void setPerTick(final boolean perTick) {
+        internalData.setPerTick(perTick);
+        markDirty();
     }
 
     /**
      * @param aIndex
      * @param aStack
-     *
      * @return
      */
     @Override
@@ -384,7 +452,6 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
 
     /**
      * @param aSide
-     *
      * @return
      */
     @Override
@@ -408,12 +475,12 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
      * @param aID
      * @param aPlayerInventory
      * @param aBaseMetaTileEntity
-     *
      * @return
      */
     @Override
-    public Object getServerGUI(final int aID, final InventoryPlayer aPlayerInventory,
-                               final IGregTechTileEntity aBaseMetaTileEntity) {
+    public Object getServerGUI(
+            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity
+                              ) {
         return new GT_Container_DevItemSource(aPlayerInventory, aBaseMetaTileEntity);
     }
 
@@ -421,46 +488,20 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
      * @param aID
      * @param aPlayerInventory
      * @param aBaseMetaTileEntity
-     *
      * @return
      */
     @Override
-    public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory,
-                               final IGregTechTileEntity aBaseMetaTileEntity) {
+    public Object getClientGUI(
+            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity
+                              ) {
         return new GT_GUIContainer_DevItemSource(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public RSControlMode getMode() {
-        return redstoneMode;
-    }
-
-    @Override
-    public byte[] getRSValues() {
-        return rsValues;
-    }
-
-    @Override
-    public void setMode(final RSControlMode newMode) {
-        this.redstoneMode = newMode;
-    }
-
-    @Override
-    public void updateRSValues(final byte side, final byte rsSignal) {
-        rsValues[side] = rsSignal;
-    }
-
-    @Override
-    public void processRS() {
-        this.rsActive = redstoneMode.checkPredicate(getMaxRSValue());
     }
 
     /**
      * Used Client Side to get a Texture Set for this Block. Called after setting the Tier and the Description so that
      * those two are accessible.
      *
-     * @param aTextures
-     *         is the optional Array you can give to the Constructor.
+     * @param aTextures is the optional Array you can give to the Constructor.
      */
     @Override
     public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
@@ -489,41 +530,26 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
             setPerTick(gData.perTick);
             setItemPerTick(gData.itemPerTick);
             setItemPerSecond(gData.itemPerSecond);
-            adjustItemRate();
             setActive(gData.active);
+            adjustItemRate();
             processRS();
             markDirty();
         }
     }
 
-    public void setPerTick(final boolean perTick) {
-        this.perTick = perTick;
-        markDirty();
-    }
-
-    public void setItemPerTick(final int itemPerTick) {
-        this.itemPerTick = itemPerTick;
-        markDirty();
-    }
-
-    public void setItemPerSecond(final int itemPerSecond) {
-        this.itemPerSecond = itemPerSecond;
-        markDirty();
+    public void setActive(final boolean active) {
+        internalData.setActive(active);
     }
 
     public void adjustItemRate() {
-        if (perTick) {
-            itemPerSecond = itemPerTick * 20;
+        if (isPerTick()) {
+            setItemPerSecond(getItemPerTick() * 20);
             tPeriod = 1;
         } else {
             tPeriod = 20;
         }
         adjustCount();
         markDirty();
-    }
-
-    public void setActive(final boolean active) {
-        this.active = active;
     }
 
     private void adjustCount() {
@@ -545,7 +571,32 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
 
     @Override
     public ISerializableObject getTEGUIData() {
-        return new GUIData(redstoneMode, itemPerTick, itemPerSecond, perTick, active, rsActive);
+        return internalData;
+    }
+
+    @Override
+    public RSControlMode getRedstoneMode() {
+        return internalData.getRedstoneMode();
+    }
+
+    @Override
+    public byte[] getRSValues() {
+        return rsValues;
+    }
+
+    @Override
+    public void setMode(final RSControlMode newMode) {
+        internalData.setRedstoneMode(newMode);
+    }
+
+    @Override
+    public void updateRSValues(final byte side, final byte rsSignal) {
+        rsValues[side] = rsSignal;
+    }
+
+    @Override
+    public void processRS() {
+        internalData.setRsActive(internalData.redstoneMode.checkPredicate(getMaxRSValue()));
     }
 
     public void refreshOutput() {
@@ -578,10 +629,9 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
             if (moved >= max) {
                 break;
             }
-            moved += GT_Utility.moveStackFromSlotAToSlotB(aBaseMetaTileEntity, atSide, slotOutput, targetSlot,
-                                                          (byte) 64, (byte) 1,
-                                                          (byte) Math.min(max - moved, getStored().getMaxStackSize()),
-                                                          (byte) 1);
+            moved += GT_Utility.moveStackFromSlotAToSlotB(aBaseMetaTileEntity, atSide, slotOutput, targetSlot, (byte) 64, (byte) 1,
+                                                          (byte) Math.min(max - moved, getStored().getMaxStackSize()), (byte) 1
+                                                         );
             refreshOutput();
         }
     }

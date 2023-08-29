@@ -13,8 +13,11 @@ public interface IDWSCompatibleGUI extends IDWSCompatible {
         return path.replace(".png", "_dws.png");
     }
 
+    /**
+     * True by default specifically so that anyone implementing this wrong gets a nice fat purple and black checkerboard
+     * */
     default boolean hasDWSAlternativeBackground() {
-        return false;
+        return true;
     }
 
 }

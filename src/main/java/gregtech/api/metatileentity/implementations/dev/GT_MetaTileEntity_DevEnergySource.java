@@ -10,20 +10,20 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.INonNBTSerializable;
+import gregtech.api.util.IAdvancedTEData;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.dev.GT_Container_DevEnergySource;
 import gregtech.common.gui.dev.GT_GUIContainer_DevEnergySource;
 import io.netty.buffer.ByteBuf;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nonnull;
 
@@ -33,39 +33,57 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 
 
 @Getter
-public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredMachineBlock
-        implements IAdvancedGUIEntity, IRedstoneSensitive {
+public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredMachineBlock implements IAdvancedGUIEntity, IRedstoneSensitive {
 
+    @Getter
+    @Setter
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class GUIData implements INonNBTSerializable {
+    @EqualsAndHashCode
+    public static class GUIData implements IAdvancedTEData {
 
-        private int tier;
+        @Builder.Default
+        private int tier = 0;
 
-        private long voltage;
+        @Builder.Default
+        private long voltage = 0;
 
-        private int amps;
+        @Builder.Default
+        private int amps = 0;
 
-        private RSControlMode mode;
+        @Builder.Default
+        private RSControlMode mode = RSControlMode.IGNORE;
 
-        private boolean enabled;
+        @Builder.Default
+        private boolean enabled = true;
+
+        @Builder.Default
+        private boolean rsActive = true;
+
+        public boolean canRun() {
+            return enabled && rsActive;
+        }
 
         /**
          * @return
          */
         @Nonnull
         @Override
-        public ISerializableObject copy() {
-            return new GUIData(tier, voltage, amps, mode, enabled);
+        public NBTBase saveDataToNBT() {
+            final NBTTagCompound compound = new NBTTagCompound();
+            compound.setInteger("tier", getTier());
+            compound.setLong("voltage", getVoltage());
+            compound.setInteger("amps", getAmps());
+            compound.setBoolean("enabled", isEnabled());
+            return compound;
         }
-
 
         /**
          * Write data to given ByteBuf The data saved this way is intended to be stored for short amount of time over
          * network. DO NOT store it to disks.
          *
-         * @param aBuf
-         *         Buffer to write into
+         * @param aBuf Buffer to write into
          */
         @Override
         public void writeToByteBuf(final ByteBuf aBuf) {
@@ -77,19 +95,113 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         }
 
         /**
+         * @param oNBT
+         */
+        @Override
+        public void loadDataFromNBT(final NBTBase oNBT) {
+            if (!(oNBT instanceof NBTTagCompound)) {
+                return;
+            }
+            NBTTagCompound aNBT = (NBTTagCompound) oNBT;
+            setTier(aNBT.getInteger("tier"));
+            setVoltage(aNBT.getLong("voltage"));
+            setAmps(aNBT.getInteger("amps"));
+            setEnabled(aNBT.getBoolean("enabled"));
+        }
+
+        public void setTier(final int tier) {
+            this.tier = tier;
+            if (this.tier < 0) {
+                this.tier = 0;
+            }
+        }
+
+        public void setVoltage(final long voltage) {
+            this.voltage = voltage;
+            if (this.voltage < 0) {
+                this.voltage = 0;
+            }
+            if (this.voltage > V[getTier()]) {
+                this.voltage = V[getTier()];
+            }
+        }
+
+        public void setAmps(final int amps) {
+            this.amps = amps;
+            if (this.amps < 0) {
+                this.amps = 0;
+            }
+        }
+
+        /**
          * Read data from given parameter and return this. The data read this way is intended to be stored for short
          * amount of time over network.
          *
-         * @param aBuf
-         *         Buffer
-         * @param aPlayer
-         *         Player, unused
+         * @param aBuf    Buffer
+         * @param aPlayer Player, unused
          */
         @Nonnull
         @Override
         public ISerializableObject readFromPacket(final ByteArrayDataInput aBuf, final EntityPlayerMP aPlayer) {
-            return new GUIData(aBuf.readInt(), aBuf.readLong(), aBuf.readInt(), RSControlMode.getMode(aBuf.readInt()),
-                               aBuf.readBoolean());
+            return new GUIData(aBuf.readInt(), aBuf.readLong(), aBuf.readInt(), RSControlMode.getMode(aBuf.readInt()), aBuf.readBoolean(), aBuf.readBoolean());
+        }
+
+        /**
+         * @param other
+         */
+        @Override
+        public void readFrom(final ISerializableObject other) {
+            GUIData toReadFrom = (GUIData) other;
+            setEnabled(toReadFrom.enabled);
+            setAmps(toReadFrom.amps);
+            setTier(toReadFrom.tier);
+            setVoltage(toReadFrom.voltage);
+            setMode(toReadFrom.mode);
+        }
+
+        @Override
+        public void sendChange(final Container source, final ICrafting crafter) {
+            crafter.sendProgressBarUpdate(source, 200, getTier());
+            crafter.sendProgressBarUpdate(source, 201, getAmps());
+            crafter.sendProgressBarUpdate(source, 202, isEnabled() ? 1 : 0);
+            crafter.sendProgressBarUpdate(source, 203, (int) (getVoltage()));
+            crafter.sendProgressBarUpdate(source, 204, (int) ((getVoltage() & 0xFFFFFFFF00000000L) >> 32));
+            crafter.sendProgressBarUpdate(source, 205, getMode().ordinal());
+            crafter.sendProgressBarUpdate(source, 206, isRsActive() ? 1 : 0);
+        }
+
+        @Override
+        public void receiveChange(final int changeID, final int data) {
+            switch (changeID) {
+                case 200: {
+                    setTier(data);
+                    break;
+                }
+                case 201: {
+                    setAmps(data);
+                    break;
+                }
+                case 202: {
+                    setEnabled(data != 0);
+                    break;
+                }
+                case 203: {
+                    setVoltage(((getVoltage() & 0xFFFFFFFF00000000L) | data));
+                    break;
+                }
+                case 204: {
+                    setVoltage((getVoltage() & 0xFFFFFFFFL) | (long) data << 32);
+                    break;
+                }
+                case 205: {
+                    setMode(RSControlMode.getMode(data));
+                    break;
+                }
+                case 206: {
+                    setRsActive(data != 0);
+                    break;
+                }
+            }
         }
 
     }
@@ -97,7 +209,9 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
 
     private final byte[] rsValues = {0, 0, 0, 0, 0, 0};
 
-    private int energyTier = 0;
+    private GUIData internalData = new GUIData();
+
+    /* private int energyTier = 0;
 
     private long voltage = 0;
 
@@ -105,9 +219,8 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
 
     private boolean enabled = true;
 
-    private boolean rsEnabled = true;
+    private RSControlMode rsMode = RSControlMode.IGNORE; */
 
-    private RSControlMode rsMode = RSControlMode.IGNORE;
 
     public GT_MetaTileEntity_DevEnergySource(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 15, 0, new String[]{
@@ -126,23 +239,30 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
+        /*
         NBTTagCompound devNBT = new NBTTagCompound();
-        devNBT.setBoolean("enabled", this.enabled);
-        devNBT.setLong("voltage", this.voltage);
-        devNBT.setInteger("amps", this.amperage);
-        rsMode.saveNBTData(devNBT);
-        devNBT.setInteger("tier", this.energyTier);
+        devNBT.setBoolean("enabled", isEnabled());
+        devNBT.setLong("voltage", getVoltage());
+        devNBT.setInteger("amps", getAmperage());
+        getRedstoneMode().saveNBTData(devNBT);
+        devNBT.setInteger("tier", getEnergyTier());
         aNBT.setTag("dev", devNBT);
+        */
+        aNBT.setTag("dev", internalData.saveDataToNBT());
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
+        internalData = new GUIData();
+        internalData.loadDataFromNBT(aNBT.getCompoundTag("dev"));
+        /*
         NBTTagCompound devNBT = aNBT.getCompoundTag("dev");
         this.enabled = devNBT.getBoolean("enabled");
         this.voltage = devNBT.getLong("voltage");
         this.amperage = devNBT.getInteger("amps");
         this.rsMode = RSControlMode.loadFromNBTData(devNBT);
         this.energyTier = devNBT.getInteger("tier");
+        */
         processRS();
     }
 
@@ -157,8 +277,9 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-                                 boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone
+                                ) {
         return mTextures[aSide == aFacing ? 0 : 1][aColorIndex + 1];
     }
 
@@ -166,8 +287,8 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
      * @return
      */
     @Override
-    public RSControlMode getMode() {
-        return rsMode;
+    public RSControlMode getRedstoneMode() {
+        return internalData.getMode();
     }
 
     /**
@@ -184,7 +305,7 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     @Override
     public void setMode(final RSControlMode newMode) {
         if (isValidMode(newMode)) {
-            this.rsMode = newMode;
+            internalData.setMode(newMode);
         }
         markDirty();
     }
@@ -203,12 +324,13 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
      */
     @Override
     public void processRS() {
-        rsEnabled = getMode().checkPredicate(getMaxRSValue());
+        internalData.setRsActive(getRedstoneMode().checkPredicate(getMaxRSValue()));
     }
 
     @Override
-    public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-                                      float aZ) {
+    public boolean onWrenchRightClick(
+            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ
+                                     ) {
         if (!isAccessAllowed(aPlayer)) {
             return false;
         }
@@ -219,7 +341,7 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
-            setEUVar(getMinimumStoredEU() * (1 << 9));
+            setEUVar(internalData.voltage * Math.max(2, internalData.amps) * (1 << 4));
         }
     }
 
@@ -244,12 +366,12 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
 
     @Override
     public long maxEUOutput() {
-        return canRun() ? voltage : 0L;
+        return canRun() ? internalData.getVoltage() : 0L;
     }
 
     @Override
     public long maxAmperesOut() {
-        return canRun() ? amperage : 0;
+        return canRun() ? internalData.getAmps() : 0;
     }
 
     /**
@@ -297,20 +419,7 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     }
 
     public boolean canRun() {
-        return this.isEnabled() && this.isRsEnabled();
-    }
-
-    @Override
-    public String[] getDescription() {
-        final String flavor = String.format("Generating %d amps of %s power (%d Eu/t)%s", amperage, tierName(),
-                                            maxEUOutput() * amperage, canRun()
-                                                                      ? ""
-                                                                      : (
-                                                                              enabled
-                                                                              ? "[Disabled by Redstone]"
-                                                                              : "[Disabled by User]"
-                                                                      ));
-        return ArrayUtils.addAll(mDescriptionArray, flavor);
+        return internalData.canRun();
     }
 
     @Override
@@ -325,69 +434,59 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     }
 
     public String tierName() {
-        return VN[energyTier];
+        return VN[internalData.getTier()];
     }
 
     /**
      * Receive and accept the packet
      *
-     * @param data
-     *         data to read from
+     * @param data data to read from
      */
     @Override
     public void receiveGuiData(final ISerializableObject data) {
         if (data instanceof GUIData) {
-            setEnergyTier(((GUIData) data).tier);
-            setAmperage(((GUIData) data).amps);
-            setVoltage(((GUIData) data).voltage);
-            setMode(((GUIData) data).mode);
-            setEnabled(((GUIData) data).enabled);
+            internalData.readFrom(data);
             processRS();
             markDirty();
         }
     }
 
-    public void setEnergyTier(final int energyTier) {
-        this.energyTier = energyTier;
-        if (this.energyTier < 0) {
-            this.energyTier = 0;
-        }
-        markDirty();
-    }
-
-    public void setAmperage(final int amperage) {
-        this.amperage = amperage;
-        if (this.amperage < 0) {
-            this.amperage = 0;
-        }
-        markDirty();
-    }
-
-    public void setVoltage(final long voltage) {
-        this.voltage = voltage;
-        if (this.voltage < 0) {
-            this.voltage = 0;
-        }
-        if (this.voltage > V[getEnergyTier()]) {
-            this.voltage = V[getEnergyTier()];
-        }
-        this.markDirty();
-    }
-
-    protected void setEnabled(final boolean enabled) {
-        this.enabled = enabled;
-        markDirty();
-    }
-
     /**
      * Decodes the packet, machine type specific
      *
-     * @param aData
-     *         Packet to decipher
+     * @param aData Packet to decipher
      */
     @Override
     public ISerializableObject decodePacket(final ByteArrayDataInput aData) {
         return new GUIData().readFromPacket(aData, null);
+    }
+
+    /**
+     * Dumps the relevant data from the TE
+     */
+    @Override
+    public ISerializableObject getTEGUIData() {
+        return internalData;
+    }
+
+    public void setEnergyTier(final int energyTier) {
+        internalData.setTier(energyTier);
+        markDirty();
+    }
+
+    public void setAmperage(final int amperage) {
+        internalData.setAmps(amperage);
+        markDirty();
+    }
+
+    public void setVoltage(final long voltage) {
+        internalData.setVoltage(voltage);
+        this.markDirty();
+    }
+
+    protected void setEnabled(final boolean enabled) {
+        internalData.setEnabled(enabled);
+        markDirty();
     }
 
 }
