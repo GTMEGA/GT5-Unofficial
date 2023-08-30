@@ -353,8 +353,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             final IRedstoneSensitive rs = (IRedstoneSensitive) getMetaTileEntity();
             if (mTickTimer % rs.rsTickRate() == 0 && (aSideServer || (aSideClient && rs.receiveRSClientUpdates()))) {
                 for (byte i = 0; i < 6; i++) {
-                    byte rsIn = getInputRedstoneSignal(i);
-                    rs.updateRSValues(i, rsIn);
+                    rs.updateRSValues(i, getInputRedstoneSignal(i));
                 }
                 rs.processRS();
             }
