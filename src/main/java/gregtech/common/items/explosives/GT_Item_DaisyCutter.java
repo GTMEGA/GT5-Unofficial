@@ -13,7 +13,7 @@ import java.util.List;
 public class GT_Item_DaisyCutter extends GT_Item_Explosive {
 
     public GT_Item_DaisyCutter(final Block block) {
-        super(block, "daisy_cutter", "Daisy Cutter");
+        super(block, "daisy_cutter", "Foliage Explosive");
     }
 
     /**
@@ -28,8 +28,11 @@ public class GT_Item_DaisyCutter extends GT_Item_Explosive {
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer player, final List lore, final boolean b0) {
         final String[] lines = {
-                "A unique explosive, developed by a bygone civilization in order to clear foliage for construction", "Unsuitable for resource gathering",
-                "Prime with a Remote Detonator", "Packs a pretty mean punch, so take", String.format(
+                "The Daisy Cutter",
+                "An explosive, developed by a bygone civilization, which blows away only foliage",
+                "to make room for industrial progress. Destroys most items.",
+                "Prime with a Remote Detonator",
+                "Packs a pretty mean punch, so take", String.format(
                 "cover or you'll be mist in %d seconds!", GT_Values.MEFuse / 20)
         };
         lore.addAll(Arrays.asList(lines));
