@@ -18,6 +18,7 @@ import gregtech.api.objects.ReverseShapelessRecipe;
 import gregtech.api.objects.XSTR;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
+import gregtech.api.util.keybind.GT_KeyHandler;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
 import gregtech.common.GT_Proxy;
@@ -27,6 +28,7 @@ import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.entities.explosives.GT_Entity_DaisyCutterExplosive;
 import gregtech.common.entities.explosives.GT_Entity_MiningExplosive;
 import gregtech.common.entities.explosives.GT_Entity_TunnelExplosive;
+import gregtech.common.items.GT_MEGAnet;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gregtech.common.misc.GT_Command;
@@ -745,6 +747,14 @@ public class GT_Mod implements IGT_Mod {
         }
         new NetworkDispatcher();
 
+        initKeybinds(aEvent);
+
+    }
+
+    public void initKeybinds(final FMLInitializationEvent aEvent) {
+        new GT_KeyHandler("key.meganet.toggle", "Toggle MEGAnet", (final EntityPlayer player) -> {
+            return GT_MEGAnet.MEGANetHotkeyHandler.INSTANCE.doMeganetThings(player);
+        });
     }
 
     @Mod.EventHandler

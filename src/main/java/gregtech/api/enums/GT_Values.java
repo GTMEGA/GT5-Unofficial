@@ -3,6 +3,7 @@ package gregtech.api.enums;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
+import gregtech.api.util.keybind.GT_KeyBindings;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -148,6 +149,8 @@ public class GT_Values {
      * This way it is possible to have a Call Hierarchy of NullPointers in FluidStack based Functions, and also because most of the time I don't know what kind of Data Type the "null" stands for
      */
     public static final FluidStack NF = null;
+
+    public static final GT_KeyBindings KB = GT_KeyBindings.INSTANCE;
 
     public static boolean dump_meta_entity_space = true;
 

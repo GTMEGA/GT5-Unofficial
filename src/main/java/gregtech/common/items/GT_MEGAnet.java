@@ -1,29 +1,90 @@
 package gregtech.common.items;
 
 
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
+import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.interfaces.IPacketReceivableItem;
 import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.net.GT_Packet_InventoryUpdate;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.ISerializableObject;
+import gregtech.api.util.interop.BaublesInterop;
 import lombok.*;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class GT_MEGAnet extends GT_Generic_Item {
+@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles", striprefs = true)
+public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketReceivableItem {
+
+    public static class MEGANetHotkeyHandler {
+
+        public static MEGANetHotkeyHandler INSTANCE = new MEGANetHotkeyHandler();
+
+        private MEGANetHotkeyHandler() {
+        }
+
+        public boolean doMeganetThings(final EntityPlayer player) {
+            if (player != null && player.worldObj.isRemote) {
+                int idx = 0;
+                if (BaublesInterop.INSTANCE.isBaublesLoaded()) {
+                    for (val stack : BaublesInterop.INSTANCE.getBaubles(player)) {
+                        if (stack != null && stack.getItem() instanceof GT_MEGAnet) {
+                            doToggle(player, (GT_MEGAnet) stack.getItem(), true, idx);
+                            return true;
+                        }
+                        idx += 1;
+                    }
+                }
+                idx = 0;
+                for (Object o : player.inventoryContainer.getInventory()) {
+                    if (o instanceof ItemStack) {
+                        final ItemStack stack = (ItemStack) o;
+                        if (stack.getItem() instanceof GT_MEGAnet) {
+                            doToggle(player, (GT_MEGAnet) stack.getItem(), false, idx);
+                            return true;
+                        }
+                    }
+                    idx += 1;
+                }
+            }
+            return false;
+        }
+
+        private void doToggle(final EntityPlayer player, final GT_MEGAnet item, final boolean bauble, final int slot) {
+            GT_Values.NW.sendToServer(new GT_Packet_InventoryUpdate(player, item, bauble, slot, null));
+        }
+
+    }
 
     @Getter
     @Setter
@@ -44,14 +105,11 @@ public class GT_MEGAnet extends GT_Generic_Item {
                 return compound.hasKey("setting") ? new ItemSetting(compound.getCompoundTag("setting")) : new ItemSetting();
             }
 
-            @Builder.Default
-            private ItemStack stack = null;
+            @Builder.Default private ItemStack stack = null;
 
-            @Builder.Default
-            private boolean ignoreMetadata = false;
+            @Builder.Default private boolean ignoreMetadata = false;
 
-            @Builder.Default
-            private boolean ignoreNBTData = false;
+            @Builder.Default private boolean ignoreNBTData = false;
 
             public ItemSetting(final @NonNull NBTTagCompound compound) {
                 this(ItemStack.loadItemStackFromNBT(compound.getCompoundTag("item")), defBool(compound, "iMeta", false), defBool(compound, "iNBT", false));
@@ -83,11 +141,9 @@ public class GT_MEGAnet extends GT_Generic_Item {
 
         private final List<ItemSetting> filter = new ArrayList<>();
 
-        @Builder.Default
-        private boolean enabled = false;
+        @Builder.Default private boolean enabled = false;
 
-        @Builder.Default
-        private boolean whitelist = false;
+        @Builder.Default private boolean whitelist = false;
 
         public MEGAnetFilter(final @NonNull NBTTagCompound filterNBT) {
             this(defBool(filterNBT, "enabled", false), defBool(filterNBT, "whitelist", false));
@@ -142,9 +198,12 @@ public class GT_MEGAnet extends GT_Generic_Item {
     /**
      * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
      *
-     * @param stack  Stack being used
-     * @param world  World
-     * @param player Player using
+     * @param stack
+     *         Stack being used
+     * @param world
+     *         World
+     * @param player
+     *         Player using
      */
     @Override
     public ItemStack onItemRightClick(final ItemStack stack, final World world, final EntityPlayer player) {
@@ -153,53 +212,31 @@ public class GT_MEGAnet extends GT_Generic_Item {
     }
 
     /**
-     * Called each tick as long the item is on a player inventory. Uses by maps to check if is on a player hand and
-     * update it's contents.
+     * Called each tick as long the item is on a player inventory. Uses by maps to check if is on a player hand and update it's contents.
      *
-     * @param stack       Stack to check
-     * @param world       World in which entity is
-     * @param entity      Entity holding it
-     * @param slotIndex   Index of slot
-     * @param currentItem If the item is the entity's main item
+     * @param stack
+     *         Stack to check
+     * @param world
+     *         World in which entity is
+     * @param entity
+     *         Entity holding it
+     * @param slotIndex
+     *         Index of slot
+     * @param currentItem
+     *         If the item is the entity's main item
      */
     @Override
     public void onUpdate(final ItemStack stack, final World world, final Entity entity, final int slotIndex, final boolean currentItem) {
-        if (!world.isRemote) {
-            if (defBool(validateNBT(stack), "enabled", true) && getTimer(stack) % TIMER == 0) {
-                magnetize(stack, world, entity, currentItem);
-            }
-            adjustTimer(stack);
-        }
+        doMagnetStuff(stack, world, entity, currentItem);
     }
-
-/*      *//**
-     * This is called when the item is used, before the block is activated.
-     *
-     * @param stack  The Item Stack
-     * @param player The Player that used the item
-     * @param world  The Current World
-     * @param x      Target X Position
-     * @param y      Target Y Position
-     * @param z      Target Z Position
-     * @param side   The side of the target hit
-     * @param hitX   Hit location X
-     * @param hitY   Hit location y
-     * @param hitZ   Hit location z
-     * @return Return true to prevent any further processing.
-     *//*
-    @Override
-    public boolean onItemUseFirst(
-            final ItemStack stack, final EntityPlayer player, final World world, final int x, final int y, final int z, final int side, final float hitX,
-            final float hitY, final float hitZ
-                                 ) {
-        return itemUse(stack, player, world) || super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
-    } */
 
     /**
      * Render Pass sensitive version of hasEffect()
      *
-     * @param stack Stack
-     * @param pass  Pass, not used
+     * @param stack
+     *         Stack
+     * @param pass
+     *         Pass, not used
      */
     @Override
     public boolean hasEffect(final ItemStack stack, final int pass) {
@@ -211,66 +248,9 @@ public class GT_MEGAnet extends GT_Generic_Item {
         return !comp.hasKey("enabled") || comp.getBoolean("enabled");
     }
 
-    public NBTTagCompound validateNBT(final @NonNull ItemStack stack) {
-        return validateNBT(stack.getTagCompound());
-    }
-
-    public NBTTagCompound validateNBT(final NBTTagCompound compound) {
-        if (compound == null) {
-            return new NBTTagCompound();
-        }
-        return compound;
-    }
-
-    /**
-     * @param aWorld  The world
-     * @param aX      The X Position
-     * @param aY      The X Position
-     * @param aZ      The X Position
-     * @param aPlayer The Player that is wielding the item
-     * @return False
-     */
-    @Override
-    public boolean doesSneakBypassUse(final World aWorld, final int aX, final int aY, final int aZ, final EntityPlayer aPlayer) {
-        return false;
-    }
-
-    /**
-     * @param aList   List of tooltips
-     * @param aStack  Stack
-     * @param aPlayer Player holding it
-     */
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    @Override
-    protected void addAdditionalToolTips(final List aList, final ItemStack aStack, final EntityPlayer aPlayer) {
-        aList.add((isActive(aStack) ? EnumChatFormatting.GREEN + "Active" : EnumChatFormatting.RED + "Inactive"));
-        aList.add("Shift + RMB to toggle.");
-        final int range = getRange(aStack);
-        aList.add((String.format("Range of (%d / %d)", range, heldRange(range))));
-        final MEGAnetFilter filter = getFilter(aStack);
-        if (FILTER_WORKS) {
-            if (filter.isEnabled()) {
-                aList.add("Filter mode: " + (filter.isWhitelist() ? EnumChatFormatting.WHITE + "Whitelist" : EnumChatFormatting.DARK_GRAY + "Blacklist"));
-                final int filSize = filter.getFilter().size();
-                if (filSize > 0) {
-                    aList.add(String.format("Filtering %d items", filSize));
-                }
-            } else {
-                aList.add("Filter disabled");
-            }
-        }
-        aList.add(String.format("Magnetized" + EnumChatFormatting.GOLD + " %d " + EnumChatFormatting.GRAY + "items!", getPickedUp(aStack)));
-        aList.add(EnumChatFormatting.DARK_BLUE + "" + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + "The MEGAnet!");
-    }
-
-    /**
-     * @param aStack  Stack
-     * @param aWorld  World
-     * @param aPlayer Player crafting it
-     */
-    @Override
-    public void onCreated(final ItemStack aStack, final World aWorld, final EntityPlayer aPlayer) {
-        setNBT(aStack);
+    private boolean itemUse(final ItemStack stack, final EntityPlayer player, final World world) {
+        // toggle(world, player, stack);
+        return !world.isRemote && player.isSneaking();
     }
 
     public ItemStack setNBT(final @NonNull ItemStack stack) {
@@ -296,6 +276,128 @@ public class GT_MEGAnet extends GT_Generic_Item {
         return stack;
     }
 
+    public NBTTagCompound validateNBT(final @NonNull ItemStack stack) {
+        return validateNBT(stack.getTagCompound());
+    }
+
+    public NBTTagCompound validateNBT(final NBTTagCompound compound) {
+        if (compound == null) {
+            return new NBTTagCompound();
+        }
+        return compound;
+    }
+
+    @Override
+    public void onPacketReceived(final World world, final EntityPlayer player, final ItemStack stack, final ISerializableObject data) {
+        toggle(world, player, stack);
+    }
+
+    @Override
+    public ISerializableObject readFromBytes(final ByteArrayDataInput aData) {
+        val id = aData.readByte();
+        return null;
+    }
+
+    @Optional.Method(modid = "Baubles")
+    @Override
+    public BaubleType getBaubleType(final ItemStack itemstack) {
+        return BaubleType.RING;
+    }
+
+    @Optional.Method(modid = "Baubles")
+    @Override
+    public void onWornTick(final ItemStack itemstack, final EntityLivingBase player) {
+        if (player.isSneaking()) {
+            doMagnetStuff(itemstack, player.worldObj, player, false);
+        }
+    }
+
+    @Optional.Method(modid = "Baubles")
+    @Override
+    public void onEquipped(final ItemStack itemstack, final EntityLivingBase player) {
+    }
+
+    @Optional.Method(modid = "Baubles")
+    @Override
+    public void onUnequipped(final ItemStack itemstack, final EntityLivingBase player) {
+
+    }
+
+    @Optional.Method(modid = "Baubles")
+    @Override
+    public boolean canEquip(final ItemStack itemstack, final EntityLivingBase player) {
+        return true;
+    }
+
+    @Optional.Method(modid = "Baubles")
+    @Override
+    public boolean canUnequip(final ItemStack itemstack, final EntityLivingBase player) {
+        return true;
+    }
+
+    /**
+     * @param aWorld
+     *         The world
+     * @param aX
+     *         The X Position
+     * @param aY
+     *         The X Position
+     * @param aZ
+     *         The X Position
+     * @param aPlayer
+     *         The Player that is wielding the item
+     *
+     * @return False
+     */
+    @Override
+    public boolean doesSneakBypassUse(final World aWorld, final int aX, final int aY, final int aZ, final EntityPlayer aPlayer) {
+        return false;
+    }
+
+    /**
+     * @param aList
+     *         List of tooltips
+     * @param aStack
+     *         Stack
+     * @param aPlayer
+     *         Player holding it
+     */
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    protected void addAdditionalToolTips(final List aList, final ItemStack aStack, final EntityPlayer aPlayer) {
+        aList.add((isActive(aStack) ? EnumChatFormatting.GREEN + "Active" : EnumChatFormatting.RED + "Inactive"));
+        aList.add("Shift + RMB to toggle.");
+        final int range = getRange(aStack);
+        aList.add((String.format("Range of (%d / %d)", range, heldRange(range))));
+        final MEGAnetFilter filter = getFilter(aStack);
+        if (FILTER_WORKS) {
+            if (filter.isEnabled()) {
+                aList.add("Filter mode: " + (filter.isWhitelist() ? EnumChatFormatting.WHITE + "Whitelist" : EnumChatFormatting.DARK_GRAY + "Blacklist"));
+                final int filSize = filter.getFilter().size();
+                if (filSize > 0) {
+                    aList.add(String.format("Filtering %d items", filSize));
+                }
+            } else {
+                aList.add("Filter disabled");
+            }
+        }
+        aList.add(String.format("Magnetized" + EnumChatFormatting.GOLD + " %d " + EnumChatFormatting.GRAY + "items!", getPickedUp(aStack)));
+        aList.add(EnumChatFormatting.DARK_BLUE + "" + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + "The MEGAnet!");
+    }
+
+    /**
+     * @param aStack
+     *         Stack
+     * @param aWorld
+     *         World
+     * @param aPlayer
+     *         Player crafting it
+     */
+    @Override
+    public void onCreated(final ItemStack aStack, final World aWorld, final EntityPlayer aPlayer) {
+        setNBT(aStack);
+    }
+
     public void adjustTimer(final ItemStack stack) {
         final NBTTagCompound compound = validateNBT(stack);
         int timer = getTimer(stack);
@@ -310,8 +412,8 @@ public class GT_MEGAnet extends GT_Generic_Item {
     protected void magnetize(final ItemStack stack, final World world, final Entity entity, final boolean currentItem) {
         final int baseRange = getRange(stack);
         final int range = currentItem ? heldRange(baseRange) : baseRange;
-        final AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(
-                entity.posX - range, entity.posY - range, entity.posZ - range, entity.posX + range, entity.posY + range, entity.posZ + range);
+        final AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(entity.posX - range, entity.posY - range, entity.posZ - range, entity.posX + range,
+                                                                       entity.posY + range, entity.posZ + range);
         world.getEntitiesWithinAABB(EntityItem.class, boundingBox).forEach(oEntity -> {
             if (oEntity instanceof EntityItem) {
                 final EntityItem itemEntity = (EntityItem) oEntity;
@@ -411,19 +513,24 @@ public class GT_MEGAnet extends GT_Generic_Item {
         return MEGAnetFilter.readFromNBT(validateNBT(stack));
     }
 
-    private boolean itemUse(final ItemStack stack, final EntityPlayer player, final World world) {
-        if (!world.isRemote && player.isSneaking()) {
-            final NBTTagCompound comp = validateNBT(stack);
-            final boolean active = isActive(stack);
-            final String sound = GregTech_API.sSoundList.get(active ? 217 : 216);
-            GT_Utility.sendChatToPlayer(player, active ? "Deactivated" : "Activated");
-            world.playSoundEffect(player.posX, player.posY, player.posZ, sound, 4.0f, world.rand.nextFloat() + 0f);
-            comp.setBoolean("enabled", !active);
-            stack.setTagCompound(comp);
-            setNBT(stack);
-            return true;
+    private void toggle(final World world, final EntityPlayer player, final ItemStack stack) {
+        final NBTTagCompound comp = validateNBT(stack);
+        final boolean active = isActive(stack);
+        final String sound = GregTech_API.sSoundList.get(active ? 217 : 216);
+        GT_Utility.sendChatToPlayer(player, active ? "Deactivated" : "Activated");
+        world.playSoundEffect(player.posX, player.posY, player.posZ, sound, 4.0f, world.rand.nextFloat() + 0f);
+        comp.setBoolean("enabled", !active);
+        stack.setTagCompound(comp);
+        setNBT(stack);
+    }
+
+    private void doMagnetStuff(final ItemStack stack, final World world, final Entity entity, final boolean currentItem) {
+        if (!world.isRemote) {
+            if (defBool(validateNBT(stack), "enabled", true) && getTimer(stack) % TIMER == 0) {
+                magnetize(stack, world, entity, currentItem);
+            }
+            adjustTimer(stack);
         }
-        return false;
     }
 
 }

@@ -47,7 +47,8 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
         CLIENT_PREFERENCE(new GT_Packet_ClientPreference()),
         WIRELESS_REDSTONE_COVER(new GT_Packet_WirelessRedstoneCover()),
         TILE_ENTITY_COVER_NEW(new GT_Packet_TileEntityCoverNew()),
-        TILE_ENTITY_GUI(new GT_Packet_TileEntityGUI());
+        TILE_ENTITY_GUI(new GT_Packet_TileEntityGUI()),
+        INVENTORY_UPDATE(new GT_Packet_InventoryUpdate());
 
         private final GT_Packet_New packet;
 
