@@ -323,7 +323,7 @@ public class GT_MEGAnet extends GT_Generic_Item {
         world.getEntitiesWithinAABB(EntityXPOrb.class, boundingBox).forEach(oEntity -> {
             if (oEntity instanceof EntityXPOrb) {
                 final EntityXPOrb xpOrb = (EntityXPOrb) oEntity;
-                world.playSoundEffect(entity.posX, entity.posY, entity.posZ, GregTech_API.sSoundList.get(215), 4.0f, world.rand.nextFloat() + 0.5f);
+                world.playSoundEffect(entity.posX, entity.posY, entity.posZ, GregTech_API.sSoundList.get(215), 4.0f, world.rand.nextFloat() + 0f);
                 xpOrb.setPosition(entity.posX, entity.posY, entity.posZ);
                 if (entity instanceof EntityPlayer) {
                     xpOrb.onCollideWithPlayer((EntityPlayer) entity);
@@ -378,7 +378,7 @@ public class GT_MEGAnet extends GT_Generic_Item {
     }
 
     protected int heldRange(final int baseRange) {
-        return baseRange * 8;
+        return baseRange * 2;
     }
 
     protected int getTimer(final @NonNull ItemStack stack) {
@@ -417,7 +417,7 @@ public class GT_MEGAnet extends GT_Generic_Item {
             final boolean active = isActive(stack);
             final String sound = GregTech_API.sSoundList.get(active ? 217 : 216);
             GT_Utility.sendChatToPlayer(player, active ? "Deactivated" : "Activated");
-            world.playSoundEffect(player.posX, player.posY, player.posZ, sound, 4.0f, world.rand.nextFloat() + 0.5f);
+            world.playSoundEffect(player.posX, player.posY, player.posZ, sound, 4.0f, world.rand.nextFloat() + 0f);
             comp.setBoolean("enabled", !active);
             stack.setTagCompound(comp);
             setNBT(stack);
