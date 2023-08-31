@@ -1,16 +1,28 @@
 package gregtech.api.gui.widgets;
 
+
 import gregtech.api.interfaces.IGuiScreen;
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiTextField;
 
 import java.awt.*;
 
+
 public class GT_GuiIntegerTextBox extends GuiTextField implements IGuiScreen.IGuiElement {
-    private final int x0, y0;
-    private final IGuiScreen gui;
+
     public final int id;
+
+    private final int x0, y0;
+
+    private final IGuiScreen gui;
+
+    @Getter
     private boolean enabled;
+
+    private GT_GuiTooltip tooltip = null;
+
+    private IGT_GuiHook onInitHook = null, onUpdateHook = null, onClickHook = null;
 
     public GT_GuiIntegerTextBox(IGuiScreen gui, int id, int x, int y, int width, int height) {
         super(Minecraft.getMinecraft().fontRenderer, x, y, width, height);
@@ -23,23 +35,107 @@ public class GT_GuiIntegerTextBox extends GuiTextField implements IGuiScreen.IGu
         gui.addElement(this);
     }
 
+    /**
+     * @param hook
+     * @return
+     */
+    @Override
+    public IGuiScreen.IGuiElement setOnClickHook(final IGT_GuiHook hook) {
+        this.onClickHook = hook;
+        return IGuiScreen.IGuiElement.super.setOnClickHook(hook);
+    }
+
     @Override
     public void onInit() {
         xPosition = x0 + gui.getGuiLeft();
         yPosition = y0 + gui.getGuiTop();
+        onInit(this.gui, 0, 0, 0);
     }
 
     @Override
     public void draw(int mouseX, int mouseY, float parTicks) {
         super.drawTextBox();
+        onUpdate(this.gui, mouseX, mouseY, 0);
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public GT_GuiTooltip getTooltip() {
+        return tooltip;
+    }
+
+    /**
+     * @param text
+     * @return
+     */
+    @Override
+    public IGuiScreen.IGuiElement setTooltipText(final String... text) {
+        if (tooltip == null) {
+            this.tooltip = new GT_GuiTooltip(getBounds(), text);
+        } else {
+            this.tooltip.setToolTipText(text);
+        }
+        return this;
     }
 
     public Rectangle getBounds() {
         return new Rectangle(x0, y0, width, height);
     }
 
-    public boolean validChar(char c, int key) {
-        return Character.isDigit(c);
+    /**
+     * @param mouseX
+     * @param mouseY
+     * @param clickType
+     * @return
+     */
+    @Override
+    public boolean inBounds(final int mouseX, final int mouseY, final int clickType) {
+        return getBounds().contains(mouseX, mouseY);
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public IGT_GuiHook getOnInitBehavior() {
+        return onInitHook;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public IGuiScreen.IGuiElement setOnInitBehavior(final IGT_GuiHook hook) {
+        this.onInitHook = hook;
+        return IGuiScreen.IGuiElement.super.setOnInitBehavior(hook);
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public IGT_GuiHook getOnUpdateBehavior() {
+        return onUpdateHook;
+    }
+
+    /**
+     * @param hook
+     * @return
+     */
+    @Override
+    public IGuiScreen.IGuiElement setOnUpdateBehavior(final IGT_GuiHook hook) {
+        this.onUpdateHook = hook;
+        return IGuiScreen.IGuiElement.super.setOnUpdateBehavior(hook);
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public IGT_GuiHook getOnClickHook() {
+        return onClickHook;
     }
 
     @Override
@@ -50,13 +146,22 @@ public class GT_GuiIntegerTextBox extends GuiTextField implements IGuiScreen.IGu
         return false;
     }
 
+    /**
+     * Draws the textbox
+     */
+    @Override
+    public void drawTextBox() {
+        super.drawTextBox();
+    }
+
     @Override
     public void setEnabled(boolean p_146184_1_) {
         super.setEnabled(p_146184_1_);
         enabled = p_146184_1_;
     }
 
-    public boolean isEnabled() {
-        return enabled;
+    public boolean validChar(char c, int key) {
+        return Character.isDigit(c);
     }
+
 }

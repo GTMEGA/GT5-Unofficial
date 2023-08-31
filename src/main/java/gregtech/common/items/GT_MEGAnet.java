@@ -121,8 +121,9 @@ public class GT_MEGAnet extends GT_Generic_Item {
 
     }
 
-
     public static final int TIMER = 10, BASE_RANGE = 12, MAX_RANGE = 16;
+
+    private static final boolean FILTER_WORKS = false;
 
     public static boolean defBool(final @NonNull NBTTagCompound comp, final @NonNull String tag, final boolean defVal) {
         if (comp.hasKey(tag)) {
@@ -171,7 +172,7 @@ public class GT_MEGAnet extends GT_Generic_Item {
         }
     }
 
-    /**
+/*      *//**
      * This is called when the item is used, before the block is activated.
      *
      * @param stack  The Item Stack
@@ -185,14 +186,14 @@ public class GT_MEGAnet extends GT_Generic_Item {
      * @param hitY   Hit location y
      * @param hitZ   Hit location z
      * @return Return true to prevent any further processing.
-     */
+     *//*
     @Override
     public boolean onItemUseFirst(
             final ItemStack stack, final EntityPlayer player, final World world, final int x, final int y, final int z, final int side, final float hitX,
             final float hitY, final float hitZ
                                  ) {
         return itemUse(stack, player, world) || super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
-    }
+    } */
 
     /**
      * Render Pass sensitive version of hasEffect()
@@ -247,14 +248,16 @@ public class GT_MEGAnet extends GT_Generic_Item {
         final int range = getRange(aStack);
         aList.add((String.format("Range of (%d / %d)", range, heldRange(range))));
         final MEGAnetFilter filter = getFilter(aStack);
-        if (filter.isEnabled()) {
-            aList.add("Filter mode: " + (filter.isWhitelist() ? EnumChatFormatting.WHITE + "Whitelist" : EnumChatFormatting.DARK_GRAY + "Blacklist"));
-            final int filSize = filter.getFilter().size();
-            if (filSize > 0) {
-                aList.add(String.format("Filtering %d items", filSize));
+        if (FILTER_WORKS) {
+            if (filter.isEnabled()) {
+                aList.add("Filter mode: " + (filter.isWhitelist() ? EnumChatFormatting.WHITE + "Whitelist" : EnumChatFormatting.DARK_GRAY + "Blacklist"));
+                final int filSize = filter.getFilter().size();
+                if (filSize > 0) {
+                    aList.add(String.format("Filtering %d items", filSize));
+                }
+            } else {
+                aList.add("Filter disabled");
             }
-        } else {
-            aList.add("Filter disabled");
         }
         aList.add(String.format("Magnetized" + EnumChatFormatting.GOLD + " %d " + EnumChatFormatting.GRAY + "items!", getPickedUp(aStack)));
         aList.add(EnumChatFormatting.DARK_BLUE + "" + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + "The MEGAnet!");
@@ -313,8 +316,7 @@ public class GT_MEGAnet extends GT_Generic_Item {
             if (oEntity instanceof EntityItem) {
                 final EntityItem itemEntity = (EntityItem) oEntity;
                 if (canPickup(stack, itemEntity)) {
-                    world.playSoundEffect(entity.posX, entity.posY, entity.posZ, GregTech_API.sSoundList.get(215), 4.0f, world.rand.nextFloat() + 0.5f);
-                    pickup(stack, entity, itemEntity);
+                    pickup(world, stack, entity, itemEntity);
                 }
             }
         });
@@ -331,18 +333,22 @@ public class GT_MEGAnet extends GT_Generic_Item {
         });
     }
 
-    protected void pickup(final @NonNull ItemStack stack, final @NonNull Entity entity, @NonNull EntityItem itemEntity) {
-        if (!(entity instanceof EntityPlayer) || itemEntity.isDead) {
+    protected void pickup(final @NonNull World world, final @NonNull ItemStack stack, final @NonNull Entity entity, @NonNull EntityItem itemEntity) {
+        if (!(entity instanceof EntityPlayer) || itemEntity.isDead || itemEntity.getEntityItem() == null || itemEntity.getEntityItem().stackSize <= 0) {
             return;
         }
         final EntityPlayer player = (EntityPlayer) entity;
         final NBTTagCompound compound = validateNBT(stack);
-        itemEntity.delayBeforeCanPickup = 0;
+        // itemEntity.delayBeforeCanPickup = 0;
         //
         long pickupCount = getPickedUp(stack);
         itemEntity.setPosition(player.posX, player.eyeHeight, player.posZ);
+        itemEntity.motionX = 0;
+        itemEntity.motionY = 0;
+        itemEntity.motionZ = 0;
         final int originalAmount = itemEntity.getEntityItem().stackSize;
         itemEntity.onCollideWithPlayer(player);
+        player.onItemPickup(itemEntity, originalAmount);
         pickupCount += originalAmount - itemEntity.getEntityItem().stackSize;
         if (pickupCount < 0) {
             pickupCount = Long.MAX_VALUE;
@@ -357,6 +363,11 @@ public class GT_MEGAnet extends GT_Generic_Item {
             ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
         }
         compound.setLong("pickedUp", pickupCount);
+        if (itemEntity.getEntityItem().stackSize <= 0) {
+            itemEntity.setDead();
+        } else {
+            world.playSoundEffect(entity.posX, entity.posY, entity.posZ, GregTech_API.sSoundList.get(215), 4.0f, world.rand.nextFloat() + 0.5f);
+        }
         itemEntity.delayBeforeCanPickup = 20;
         stack.setTagCompound(compound);
         setNBT(stack);

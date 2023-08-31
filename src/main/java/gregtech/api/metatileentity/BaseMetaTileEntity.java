@@ -23,6 +23,7 @@ import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.graphs.GenerateNodeMap;
 import gregtech.api.graphs.GenerateNodeMapPower;
 import gregtech.api.graphs.Node;
+import gregtech.api.interfaces.IRedstoneSensitive;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
@@ -347,7 +348,18 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         boolean aSideServer = isServerSide();
         boolean aSideClient = isClientSide();
 
-        try { for (tCode = 0; hasValidMetaTileEntity() && tCode >= 0; ) {
+
+        if (getMetaTileEntity() instanceof IRedstoneSensitive) {
+            final IRedstoneSensitive rs = (IRedstoneSensitive) getMetaTileEntity();
+            if (mTickTimer % rs.rsTickRate() == 0 && (aSideServer || (aSideClient && rs.receiveRSClientUpdates()))) {
+                for (byte i = 0; i < 6; i++) {
+                    rs.updateRSValues(i, getInputRedstoneSignal(i));
+                }
+                rs.processRS();
+            }
+        }
+
+        try { for (tCode = 0; hasValidMetaTileEntity() && tCode >= 0;) {
             switch (tCode) {
                 case 0:
                     tCode++;
@@ -355,10 +367,15 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                         oX = xCoord;
                         oY = yCoord;
                         oZ = zCoord;
-                        if (aSideServer) for (byte i = 0; i < 6; i++)
-                            if (getCoverIDAtSide(i) != 0)
-                                if (!mMetaTileEntity.allowCoverOnSide(i, new GT_ItemStack(getCoverIDAtSide(i))))
-                                    dropCover(i, i, true);
+                        if (aSideServer) {
+                            for (byte i = 0; i < 6; i++) {
+                                if (getCoverIDAtSide(i) != 0) {
+                                    if (!mMetaTileEntity.allowCoverOnSide(i, new GT_ItemStack(getCoverIDAtSide(i)))) {
+                                        dropCover(i, i, true);
+                                    }
+                                }
+                            }
+                        }
                         worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
                         mMetaTileEntity.onFirstTick(this);
                         if (!hasValidMetaTileEntity()) {
@@ -1619,7 +1636,9 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         }
 
         try {
-            if (!aPlayer.isSneaking() && hasValidMetaTileEntity()) return mMetaTileEntity.onRightclick(this, aPlayer, aSide, aX, aY, aZ);
+            if (!aPlayer.isSneaking() && hasValidMetaTileEntity()) {
+                return mMetaTileEntity.onRightclick(this, aPlayer, aSide, aX, aY, aZ);
+            }
         } catch (Throwable e) {
             GT_Log.err.println("Encountered Exception while rightclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
             e.printStackTrace(GT_Log.err);

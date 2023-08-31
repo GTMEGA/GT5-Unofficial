@@ -7,6 +7,7 @@ import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity.ClientEvents;
@@ -32,12 +33,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import org.apache.logging.log4j.Level;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.V;
 
 /**
@@ -85,24 +89,70 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     public MetaTileEntity(int aID, String aBasicName, String aRegionalName, int aInvSlotCount) {
         if (GregTech_API.sPostloadStarted || !GregTech_API.sPreloadStarted)
             throw new IllegalAccessError("This Constructor has to be called in the load Phase");
+        mName = aBasicName.replace(" ", "_").toLowerCase(Locale.ENGLISH);
         if (GregTech_API.METATILEENTITIES[aID] == null) {
             GregTech_API.METATILEENTITIES[aID] = this;
         } else {
-            // TODO: Remove
-            for (int i = 0; i < GregTech_API.METATILEENTITIES.length; i++) {
-                IMetaTileEntity entity = GregTech_API.METATILEENTITIES[i];
-                if (entity == null) {
-                    continue;
-                }
-                System.out.printf("%d ====> %s%n", i, entity);
-            }
+            handleBadID(this, aID);
             throw new IllegalArgumentException("MetaMachine-Slot Nr. " + aID + " is already occupied!");
         }
-        mName = aBasicName.replace(" ", "_").toLowerCase(Locale.ENGLISH);
         setBaseMetaTileEntity(GregTech_API.constructBaseMetaTileEntity());
         getBaseMetaTileEntity().setMetaTileID((short) aID);
         GT_LanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", aRegionalName);
         mInventory = new ItemStack[aInvSlotCount];
+    }
+
+    public static void handleBadID(MetaTileEntity entity, int aID) {
+        final String otherName, thisName;
+        otherName = GregTech_API.METATILEENTITIES[aID].getMetaName();
+        thisName = entity.getMetaName();
+        final String nameMsg = String.format("Existing: '%s' cannot coexist with '%s'", otherName, thisName);
+        GT_FML_LOGGER.printf(Level.ERROR, "Conflict at ID: %d", aID);
+        GT_FML_LOGGER.printf(Level.ERROR, nameMsg);
+        if (GT_Values.dump_meta_entity_space) {
+            dump_meta_spaces();
+        } else {
+            final String msg_0 = "Change the 'MTEDefrag' option in the main config to see free space. ";
+            final String msg_1 = "The output from this will be in 'logs/MetaTileEntity.log'";
+            final String msg = msg_0 + msg_1;
+            GT_FML_LOGGER.printf(Level.ERROR, msg);
+        }
+    }
+
+    public static void dump_meta_spaces() {
+        if (!GT_Values.dump_meta_entity_space) {
+            return;
+        }
+        if (GT_Log.mte == null) {
+            GT_FML_LOGGER.printf(Level.ERROR, "MetaTileEntity Log File not created :/");
+            return;
+        }
+        final PrintStream mte = GT_Log.mte;
+        int rangeStart = 0;
+        int rangeEnd = 0;
+        boolean inRange = false;
+        for (int i = 0; i < GregTech_API.METATILEENTITIES.length; i++) {
+            final IMetaTileEntity atLoc = GregTech_API.METATILEENTITIES[i];
+            if (atLoc == null) {
+                inRange = true;
+                rangeEnd = i;
+            } else {
+                if (inRange) {
+                    final int range = rangeEnd - rangeStart;
+                    if (range == 0) {
+                        mte.printf("Free ID: %d%n", rangeStart);
+                    } else {
+                        mte.printf("Free Range of %d IDs: [%d, %d]%n", range, rangeStart, rangeEnd);
+                    }
+                }
+                inRange = false;
+                rangeStart = i + 1;
+                rangeEnd = i + 1;
+            }
+        }
+        if (inRange) {
+            mte.printf("IDs from %d onward are free%n", rangeStart);
+        }
     }
 
     /**
@@ -949,16 +999,16 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         //
     }
-    
+
     @Override
     public boolean allowGeneralRedstoneOutput(){
     	return false;
     }
-    
+
     public String trans(String aKey, String aEnglish){
     	return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_"+aKey, aEnglish, false);
     }
-    
+
     @Override
     public boolean hasAlternativeModeText(){
     	return false;

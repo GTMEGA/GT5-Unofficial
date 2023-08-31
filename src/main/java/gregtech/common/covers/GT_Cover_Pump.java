@@ -179,7 +179,7 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
 
-            GT_GuiIconButton b;
+            IGuiElement b;
             b = new GT_GuiIconButton(this, 0, startX + spaceX*0, startY+spaceY*0, GT_GuiIcon.EXPORT).setTooltipText(trans("006","Export"));
             b = new GT_GuiIconButton(this, 1, startX + spaceX*1, startY+spaceY*0, GT_GuiIcon.IMPORT).setTooltipText(trans("007","Import"));
             b = new GT_GuiIconButton(this, 2, startX + spaceX*0, startY+spaceY*1, GT_GuiIcon.CHECKMARK).setTooltipText(trans("224","Ignore"));

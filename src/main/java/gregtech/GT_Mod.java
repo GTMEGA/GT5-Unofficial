@@ -78,8 +78,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_AE;
-import static gregtech.api.enums.GT_Values.MOD_ID_FR;
+import static gregtech.api.enums.GT_Values.*;
+
 
 @SuppressWarnings("ALL")
 @Mod(modid = "gregtech", name = "GregTech", version = "MC1710", useMetadata = false,
@@ -218,9 +218,11 @@ public class GT_Mod implements IGT_Mod {
         GregTech_API.mTConstruct = Loader.isModLoaded("TConstruct");
         GregTech_API.mGalacticraft = Loader.isModLoaded("GalacticraftCore");
         GregTech_API.mAE2 = Loader.isModLoaded(MOD_ID_AE);
+        GregTech_API.mNEI = Loader.isModLoaded(MOD_ID_NEI);
         GT_Log.out.println("GT_Mod: Are you there Translocator? " + GregTech_API.mTranslocator);
         GT_Log.out.println("GT_Mod: Are you there TConstruct? " + GregTech_API.mTConstruct);
         GT_Log.out.println("GT_Mod: Are you there GalacticraftCore? " + GregTech_API.mGalacticraft);
+        GT_Log.out.println("GT_Mod: Are you there NEI? " + GregTech_API.mNEI);
 
         GT_Log.mLogFile = new File(aEvent.getModConfigurationDirectory().getParentFile(), "logs/GregTech.log");
         if (!GT_Log.mLogFile.exists()) {
@@ -264,9 +266,20 @@ public class GT_Mod implements IGT_Mod {
             }
             try {
                 GT_Log.pal = new PrintStream(GT_Log.mPlayerActivityLogFile);
-            } catch (Throwable ignored) {
-            }
+            } catch (Throwable ignored) {}
         }
+        if (tMainConfig.get(aTextGeneral, "MTEDefrag", false, "Shows free MTE space in the event of a conflict").getBoolean(false)) {
+            GT_Log.mMTELogFile = new File(aEvent.getModConfigurationDirectory().getParent(), "logs/MetaTileEntity.log");
+            if (!GT_Log.mMTELogFile.exists()) {
+                try {
+                    GT_Log.mMTELogFile.createNewFile();
+                } catch (Throwable ignored) {}
+            }
+            try {
+                GT_Log.mte = new PrintStream(GT_Log.mMTELogFile);
+            } catch (Throwable ignored) {}
+        }
+
         try {
             List<String> tList = ((GT_Log.LogBuffer) GT_Log.ore).mBufferedOreDictLog;
             GT_Log.ore.println("******************************************************************************");
@@ -287,6 +300,7 @@ public class GT_Mod implements IGT_Mod {
         GT_Values.hideAssLineRecipes = tMainConfig.get(aTextGeneral, "hide assline recipes", false).getBoolean(false);
         GT_Values.updateFluidDisplayItems = tMainConfig.get(aTextGeneral, "update fluid display items", true).getBoolean(true);
         GT_Values.allow_broken_recipemap = tMainConfig.get(aTextGeneral, "debug allow broken recipemap", false).getBoolean(false);
+        GT_Values.dump_meta_entity_space = tMainConfig.get(aTextGeneral, "MTEDefrag", dump_meta_entity_space, "Shows free MTE space in the event of a conflict").getBoolean(dump_meta_entity_space);
         GT_Values.debugCleanroom = tMainConfig.get(aTextGeneral, "debugCleanroom", false).getBoolean(false);
         GT_Values.debugDriller = tMainConfig.get(aTextGeneral, "debugDriller", false).getBoolean(false);
         GT_Values.debugWorldGen = tMainConfig.get(aTextGeneral, "debugWorldGen", false).getBoolean(false);
@@ -647,7 +661,7 @@ public class GT_Mod implements IGT_Mod {
         new GT_CoverBehaviorLoader().run();
         new GT_SonictronLoader().run();
         new GT_SpawnEventHandler();
-        
+
         if (gregtechproxy.mSortToTheEnd) {
             try {
                 GT_Log.out.println("GT_Mod: Sorting GregTech to the end of the Mod List for further processing.");
@@ -757,7 +771,7 @@ public class GT_Mod implements IGT_Mod {
                 GT_Log.out.println("META " + i + " " + GregTech_API.METATILEENTITIES[i].getMetaName());
             }
         }
-        
+
         if (gregtechproxy.mSortToTheEnd) {
             gregtechproxy.registerUnificationEntries();
         } else {
@@ -842,8 +856,8 @@ public class GT_Mod implements IGT_Mod {
         GT_ModHandler.addIC2RecipesToGT(aOreWashingRecipeList, GT_Recipe.GT_Recipe_Map.sOreWasherRecipes, false, true, true);
         GT_ModHandler.addIC2RecipesToGT(aThermalCentrifugeRecipeList, GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes, true, true, true);
         GT_FML_LOGGER.info("IC2 Removal (" + stopwatch.stop() + "). Have a Cake.");
-        
-        
+
+
         if (GT_Values.D1) {
             GT_ModHandler.sSingleNonBlockDamagableRecipeList.forEach(iRecipe -> GT_Log.out.println("=> " + iRecipe.getRecipeOutput().getDisplayName()));
         }
@@ -879,7 +893,7 @@ public class GT_Mod implements IGT_Mod {
             })
            .filter(tName -> GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + tName, true))
            .map(tName -> GT_ModHandler.getIC2Item(tName, 1L)).forEach(GT_ModHandler::removeRecipeByOutputDelayed);
-        
+
 
         if (gregtechproxy.mNerfedVanillaTools) {
             GT_Log.out.println("GT_Mod: Nerfing Vanilla Tool Durability");
@@ -914,9 +928,9 @@ public class GT_Mod implements IGT_Mod {
             Items.diamond_hoe.setMaxDamage(768);
         }
 
-        
-        
-        /* 
+
+
+        /*
          * Until this point most crafting recipe additions, and removals, have been buffered.
          * Go through, execute the removals in bulk, and then any deferred additions.  The bulk removals in particular significantly speed up the recipe list
          * modifications.
@@ -927,7 +941,7 @@ public class GT_Mod implements IGT_Mod {
         GT_Log.out.println("GT_Mod: Adding buffered Recipes.");
         GT_ModHandler.stopBufferingCraftingRecipes();
         GT_FML_LOGGER.info("Executed delayed Crafting Recipes (" + stopwatch.stop() + "). Have a Cake.");
-        
+
         GT_Log.out.println("GT_Mod: Saving Lang File.");
         GT_LanguageManager.sEnglishFile.save();
         GregTech_API.sPostloadFinished = true;

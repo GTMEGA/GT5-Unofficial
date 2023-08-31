@@ -189,7 +189,7 @@ public class GT_Cover_EUMeter extends GT_CoverBehavior {
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
 
-            GuiButton b;
+            IGuiElement b;
             b = new GT_GuiIconCheckButton(this, 0, startX + spaceX*0, startY+spaceY*1, GT_GuiIcon.CHECKMARK, null)
                     .setTooltipText(trans("256", "Universal Storage"));
             b = new GT_GuiIconCheckButton(this, 1, startX + spaceX*0, startY+spaceY*0, GT_GuiIcon.CHECKMARK, null)

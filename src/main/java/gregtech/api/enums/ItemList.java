@@ -1797,6 +1797,12 @@ public enum ItemList implements IItemContainer {
 
     VOLUMETRIC_FLASK,
 
+    // Dev stuff
+    DEV_ITEM_SOURCE,
+    DEV_FLUID_SOURCE,
+    DEV_ENERGY_INPUT_HATCH,
+    DEV_ENERGY_SOURCE,
+
     Automation_RecipeFilter_ULV,
     Automation_RecipeFilter_LV,
     Automation_RecipeFilter_MV,
@@ -1807,7 +1813,7 @@ public enum ItemList implements IItemContainer {
     Automation_RecipeFilter_ZPM,
     Automation_RecipeFilter_UV,
     Automation_RecipeFilter_MAX;
-	
+
     public static final ItemList[]
             DYE_ONLY_ITEMS = {
             Color_00,

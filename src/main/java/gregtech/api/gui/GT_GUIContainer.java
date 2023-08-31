@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 
+
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
  * <p/>
@@ -36,9 +37,13 @@ public class GT_GUIContainer extends GuiContainer {
         //
     }
 
+    public ResourceLocation getGUIBackground() {
+        return mGUIbackground;
+    }
+
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-        mc.renderEngine.bindTexture(mGUIbackground);
+        mc.renderEngine.bindTexture(getGUIBackground());
     }
 
     @Override
@@ -53,6 +58,7 @@ public class GT_GUIContainer extends GuiContainer {
             }
         }
     }
+
     /*
     @Override
     protected void drawSlotInventory(Slot par1Slot) {

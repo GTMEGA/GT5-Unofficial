@@ -2,6 +2,7 @@ package gregtech.api.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,20 +40,11 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
             oDisplayErrorCode = 0;
     protected int mTimer = 0;
 
+    protected IMetaTileEntity mMetaTileEntity = null;
+
 
     public GT_ContainerMetaTile_Machine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
-        super(aInventoryPlayer, aTileEntity);
-
-        mTileEntity = aTileEntity;
-
-        if (mTileEntity != null && mTileEntity.getMetaTileEntity() != null) {
-            addSlots(aInventoryPlayer);
-            if (doesBindPlayerInventory())
-                bindPlayerInventory(aInventoryPlayer);
-            detectAndSendChanges();
-        } else {
-            aInventoryPlayer.player.openContainer = aInventoryPlayer.player.inventoryContainer;
-        }
+        this(aInventoryPlayer, aTileEntity, true);
     }
 
     public GT_ContainerMetaTile_Machine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean doesBindInventory) {
@@ -60,6 +52,7 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
         mTileEntity = aTileEntity;
 
         if (mTileEntity != null && mTileEntity.getMetaTileEntity() != null) {
+            this.mMetaTileEntity = mTileEntity.getMetaTileEntity();
             addSlots(aInventoryPlayer);
             if (doesBindPlayerInventory() && doesBindInventory)
                 bindPlayerInventory(aInventoryPlayer);
@@ -67,6 +60,10 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
         } else {
             aInventoryPlayer.player.openContainer = aInventoryPlayer.player.inventoryContainer;
         }
+    }
+
+    public IMetaTileEntity getMetaTileEntity() {
+        return mMetaTileEntity;
     }
 
     @Override

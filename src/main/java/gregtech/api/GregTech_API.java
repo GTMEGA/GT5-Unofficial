@@ -303,7 +303,9 @@ public class GregTech_API {
             mTranslocator = false,
             mTConstruct = false,
             mGalacticraft = false,
-            mAE2 = false;
+            mAE2 = false,
+            mNEI = false,
+            mDWS = false;
     public static int
             mEUtoRF = 360,
             mRFtoEU = 20;

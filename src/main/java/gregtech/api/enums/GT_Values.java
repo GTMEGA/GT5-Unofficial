@@ -148,6 +148,9 @@ public class GT_Values {
      * This way it is possible to have a Call Hierarchy of NullPointers in FluidStack based Functions, and also because most of the time I don't know what kind of Data Type the "null" stands for
      */
     public static final FluidStack NF = null;
+
+    public static boolean dump_meta_entity_space = true;
+
     /**
      * MOD ID Strings, since they are very common Parameters.
      */
@@ -178,7 +181,9 @@ public class GT_Values {
             MOD_ID_GC_CORE = "GalacticraftCore",
             MOD_ID_GC_MARS = "GalacticraftMars",
             MOD_ID_GC_PLANETS = "GalacticraftPlanets",
-            MOD_ID_DC = "dreamcraft";
+            MOD_ID_DC = "dreamcraft",
+            MOD_ID_NEI = "NotEnoughItems",
+            MOD_ID_DWS = "dws";
     /**
      * File Paths and Resource Paths
      */
@@ -225,7 +230,7 @@ public class GT_Values {
      * Whether or not to place small ores as placer ores for an orevein
      */
     public static boolean oreveinPlacerOres;
-    /** 
+    /**
      * Multiplier to control how many placer ores get generated.
      */
     public static int oreveinPlacerOresMultiplier;
@@ -233,18 +238,18 @@ public class GT_Values {
      * How wide to look for oreveins that affect a requested chunk. Trying to use oreveins larger than this will not work correctly. Increasing the size will cause additional worldgenerator lag.
      * Disabled for now, using 64 in Deep Dark, 32 elsewhere
      */
-    // public static int oreveinMaxSize; 
+    // public static int oreveinMaxSize;
     /**
      * Not really Constants, but they set using the Config and therefore should be constant (those are for the Debug Mode)
      */
     public static boolean D1 = false, D2 = false;
     /**
      * Debug parameter for cleanroom testing.
-     */     
+     */
     public static boolean debugCleanroom = false;
     /**
      * Debug parameter for driller testing.
-     */     
+     */
     public static boolean debugDriller = false;
     /**
      * Debug parameter for world generation. Tracks chunks added/removed from run queue.
@@ -306,7 +311,7 @@ public class GT_Values {
 
     public static boolean debugChunkloaders = false;
     public static boolean cls_enabled;
-    
+
     public static boolean hideAssLineRecipes = false;
     public static boolean updateFluidDisplayItems = true;
     public static final int STEAM_PER_WATER = 160;
