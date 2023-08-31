@@ -75,9 +75,9 @@ public final class GT_Loader_MetaTileEntities implements Runnable {
         Machine_MV_Miner.set(new GT_MetaTileEntity_Miner(680, "basicmachine.miner.tier.02", "Ore Drilling Rig MKII", 2).getStackForm(1L));
         Machine_HV_Miner.set(new GT_MetaTileEntity_Miner(681, "basicmachine.miner.tier.03", "Ore Drilling Rig MKIII", 3).getStackForm(1L));
 
-        addCraftingRecipe(Machine_LV_Miner.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", "WMW", "CSC", 'M', Hull_LV, 'E', Electric_Motor_LV, 'C', circuit.get(Basic), 'W', cableGt01.get(Tin), 'S', Sensor_LV});
-        addCraftingRecipe(Machine_MV_Miner.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PEP", "WMW", "CSC", 'M', Hull_MV, 'E', Electric_Motor_MV, 'P', Electric_Piston_MV, 'C', circuit.get(Good), 'W', cableGt02.get(Copper), 'S', Sensor_MV});
-        addCraftingRecipe(Machine_HV_Miner.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"RPR", "WMW", "CSC", 'M', Hull_HV, 'E', Electric_Motor_HV, 'P', Electric_Piston_HV, 'R', Robot_Arm_HV, 'C', circuit.get(Advanced), 'W', cableGt04.get(Gold), 'S', Sensor_HV});
+        addCraftingRecipe(Machine_LV_Miner.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", "WMW", "CSC", 'M', Hull_LV, 'E', Electric_Motor_LV, 'C', circuitLogic.get(LOGIC_LV), 'W', cableGt01.get(Tin), 'S', Sensor_LV});
+        addCraftingRecipe(Machine_MV_Miner.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PEP", "WMW", "CSC", 'M', Hull_MV, 'E', Electric_Motor_MV, 'P', Electric_Piston_MV, 'C',circuitLogic.get(LOGIC_MV), 'W', cableGt02.get(Copper), 'S', Sensor_MV});
+        addCraftingRecipe(Machine_HV_Miner.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"RPR", "WMW", "CSC", 'M', Hull_HV, 'E', Electric_Motor_HV, 'P', Electric_Piston_HV, 'R', Robot_Arm_HV, 'C', circuitLogic.get(LOGIC_HV), 'W', cableGt04.get(Gold), 'S', Sensor_HV});
     }
 
     private static void loadTeleporter() {
@@ -93,14 +93,14 @@ public final class GT_Loader_MetaTileEntities implements Runnable {
         MobRep_LuV.set(new GT_MetaTileEntity_MonsterRepellent(1135, "basicmachine.mobrep.tier.06", "Advanced Monster Repellator V", 6).getStackForm(1L));
         MobRep_ZPM.set(new GT_MetaTileEntity_MonsterRepellent(1136, "basicmachine.mobrep.tier.07", "Advanced Monster Repellator VI", 7).getStackForm(1L));
         MobRep_UV.set(new GT_MetaTileEntity_MonsterRepellent(1137, "basicmachine.mobrep.tier.08", "Advanced Monster Repellator VII", 8).getStackForm(1L));
-        addCraftingRecipe(MobRep_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", " M ", "CCC", 'M', Hull_LV, 'E', Emitter_LV.get(1L), 'C', circuit.get(Basic)});
-        addCraftingRecipe(MobRep_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", " M ", "CCC", 'M', Hull_MV, 'E', Emitter_MV.get(1L), 'C', circuit.get(Good)});
-        addCraftingRecipe(MobRep_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", " M ", "CCC", 'M', Hull_HV, 'E', Emitter_HV.get(1L), 'C', circuit.get(Advanced)});
-        addCraftingRecipe(MobRep_EV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", " M ", "CCC", 'M', Hull_EV, 'E', Emitter_EV.get(1L), 'C', circuit.get(Data)});
-        addCraftingRecipe(MobRep_IV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", " M ", "CCC", 'M', Hull_IV, 'E', Emitter_IV.get(1L), 'C', circuit.get(Elite)});
-        addCraftingRecipe(MobRep_LuV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", " M ", "CCC", 'M', Hull_LuV, 'E', Emitter_LuV.get(1L), 'C', circuit.get(Master)});
-        addCraftingRecipe(MobRep_ZPM.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", " M ", "CCC", 'M', Hull_ZPM, 'E', Emitter_ZPM.get(1L), 'C', circuit.get(Ultimate)});
-        addCraftingRecipe(MobRep_UV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", " M ", "CCC", 'M', Hull_UV, 'E', Emitter_UV.get(1L), 'C', circuit.get(Superconductor)});
+        addCraftingRecipe(MobRep_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", " M ", "CCC", 'M', Hull_LV, 'E', Emitter_LV.get(1L), 'C', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(MobRep_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", " M ", "CCC", 'M', Hull_MV, 'E', Emitter_MV.get(1L), 'C', circuitLogic.get(LOGIC_MV)});
+        addCraftingRecipe(MobRep_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", " M ", "CCC", 'M', Hull_HV, 'E', Emitter_HV.get(1L), 'C', circuitLogic.get(LOGIC_HV)});
+        addCraftingRecipe(MobRep_EV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", " M ", "CCC", 'M', Hull_EV, 'E', Emitter_EV.get(1L), 'C', circuitLogic.get(LOGIC_EV)});
+        addCraftingRecipe(MobRep_IV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", " M ", "CCC", 'M', Hull_IV, 'E', Emitter_IV.get(1L), 'C', circuitLogic.get(LOGIC_IV)});
+        addCraftingRecipe(MobRep_LuV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", " M ", "CCC", 'M', Hull_LuV, 'E', Emitter_LuV.get(1L), 'C', circuitLogic.get(LOGIC_LUV)});
+        addCraftingRecipe(MobRep_ZPM.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", " M ", "CCC", 'M', Hull_ZPM, 'E', Emitter_ZPM.get(1L), 'C', circuitLogic.get(LOGIC_ZPM)});
+        addCraftingRecipe(MobRep_UV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", " M ", "CCC", 'M', Hull_UV, 'E', Emitter_UV.get(1L), 'C', circuitLogic.get(LOGIC_UV)});
     }
 
     private static void loadSesmicProspector() {
@@ -115,10 +115,10 @@ public final class GT_Loader_MetaTileEntities implements Runnable {
         addShapelessCraftingRecipe(Seismic_Prospector_Adv_LV.get(1L), RECIPE_MASK, new Object[]{Seismic_Prospector_LV});
         addShapelessCraftingRecipe(Seismic_Prospector_Adv_MV.get(1L), RECIPE_MASK, new Object[]{Seismic_Prospector_MV});
         addShapelessCraftingRecipe(Seismic_Prospector_Adv_HV.get(1L), RECIPE_MASK, new Object[]{Seismic_Prospector_HV});
-        addCraftingRecipe(Seismic_Prospector_Adv_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WWW", "EME", "CXC", 'M', Hull_LV, 'W', plateDouble.get(Steel), 'E', circuit.get(Basic), 'C', Sensor_LV, 'X', cableGt02.get(Tin)});
-        addCraftingRecipe(Seismic_Prospector_Adv_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WWW", "EME", "CXC", 'M', Hull_MV, 'W', plateDouble.get(BlackSteel), 'E', circuit.get(Good), 'C', Sensor_MV, 'X', cableGt02.get(Copper)});
-        addCraftingRecipe(Seismic_Prospector_Adv_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WWW", "EME", "CXC", 'M', Hull_HV, 'W', plateDouble.get(StainlessSteel), 'E', circuit.get(Advanced), 'C', Sensor_HV, 'X', cableGt04.get(Gold)});
-        addCraftingRecipe(Seismic_Prospector_Adv_EV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WWW", "EME", "CXC", 'M', Hull_EV, 'W', plateDouble.get(VanadiumSteel), 'E', circuit.get(Data), 'C', Sensor_EV, 'X', cableGt04.get(Aluminium)});
+        addCraftingRecipe(Seismic_Prospector_Adv_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WWW", "EME", "CXC", 'M', Hull_LV, 'W', plateDouble.get(Steel), 'E', circuitLogic.get(LOGIC_LV), 'C', Sensor_LV, 'X', cableGt02.get(Tin)});
+        addCraftingRecipe(Seismic_Prospector_Adv_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WWW", "EME", "CXC", 'M', Hull_MV, 'W', plateDouble.get(BlackSteel), 'E', circuitLogic.get(LOGIC_MV), 'C', Sensor_MV, 'X', cableGt02.get(Copper)});
+        addCraftingRecipe(Seismic_Prospector_Adv_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WWW", "EME", "CXC", 'M', Hull_HV, 'W', plateDouble.get(StainlessSteel), 'E', circuitLogic.get(LOGIC_HV), 'C', Sensor_HV, 'X', cableGt04.get(Gold)});
+        addCraftingRecipe(Seismic_Prospector_Adv_EV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WWW", "EME", "CXC", 'M', Hull_EV, 'W', plateDouble.get(VanadiumSteel), 'E', circuitLogic.get(LOGIC_EV), 'C', Sensor_EV, 'X', cableGt04.get(Aluminium)});
     }
 
     private static void loadFrames() {

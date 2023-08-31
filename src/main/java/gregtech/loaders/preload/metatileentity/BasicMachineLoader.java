@@ -16,6 +16,9 @@ import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.*;
 import static gregtech.loaders.preload.GT_Loader_MetaTileEntities.DISMANTLEABLE_RECIPE_MASK;
 
+/*
+TIRED OF DOOMSCROLLING LOOKING FOR THE FUCKING RECIPES IN GREGTECH? CLICK HERE TO FIND THEM
+ */
 public final class BasicMachineLoader {
     private static boolean LOADED = false;
 
