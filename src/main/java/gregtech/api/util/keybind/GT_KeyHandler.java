@@ -1,6 +1,7 @@
 package gregtech.api.util.keybind;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
 import gregtech.GT_Mod;
@@ -8,16 +9,13 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.common.MinecraftForge;
+
 
 public class GT_KeyHandler extends KeyBinding {
 
     public interface GT_KeyCallback {
 
-        /**
-         * @return Whether to cancel the event, most likely you want "false"
-         */
-        boolean onPress(final EntityPlayer player);
+        void onPress(final EntityPlayer player);
 
     }
 
@@ -55,13 +53,13 @@ public class GT_KeyHandler extends KeyBinding {
     }
 
     protected void registerAsEvent() {
-        MinecraftForge.EVENT_BUS.register(this);
+        FMLCommonHandler.instance().bus().register(this);
     }
 
     @SubscribeEvent
-    public void onKey(final InputEvent.KeyInputEvent event) {
+    public void onKeyInput(final InputEvent.KeyInputEvent event) {
         if (this.isPressed()) {
-            event.setCanceled(this.callback.onPress(GT_Mod.gregtechproxy.getThePlayer()));
+            this.callback.onPress(GT_Mod.gregtechproxy.getThePlayer());
         }
     }
 

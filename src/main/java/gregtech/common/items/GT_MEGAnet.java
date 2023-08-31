@@ -66,9 +66,8 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
                     }
                 }
                 idx = 0;
-                for (Object o : player.inventoryContainer.getInventory()) {
-                    if (o instanceof ItemStack) {
-                        final ItemStack stack = (ItemStack) o;
+                for (ItemStack stack : player.inventory.mainInventory) {
+                    if (stack != null) {
                         if (stack.getItem() instanceof GT_MEGAnet) {
                             doToggle(player, (GT_MEGAnet) stack.getItem(), false, idx);
                             return true;
