@@ -5,6 +5,7 @@ GT5-Unofficial
 
 GT5-Unofficial is a decompiled and modified version of GT5.07.07. The goal of the mod is to maintain and extend the end game of GT5.
 This version has been heavily modified for use with the MEGA modpack.
+Now IC2 free(tm)!
 
 ## Installation
 
