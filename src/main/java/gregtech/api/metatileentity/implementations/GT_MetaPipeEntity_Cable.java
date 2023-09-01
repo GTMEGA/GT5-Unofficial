@@ -25,14 +25,16 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GT_Cover_None;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
+import gregtech.api.util.interop.ic2.IC2Interop;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.GT_Cover_SolarPanel;
-import ic2.api.energy.EnergyNet;
+/* import ic2.api.energy.EnergyNet;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySink;
 import ic2.api.energy.tile.IEnergySource;
 import ic2.api.energy.tile.IEnergyTile;
-import ic2.api.reactor.IReactorChamber;
+import ic2.api.reactor.IReactorChamber; */
+import lombok.val;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -290,33 +292,16 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
                 return true;
         }
 
-        // IC2 Compat
-        {
-            final TileEntity ic2Energy;
+        val ic2 = IC2Interop.INSTANCE.getIC2EnergyTile(tTileEntity);
 
-            if (tTileEntity instanceof IReactorChamber)
-                ic2Energy = (TileEntity) ((IReactorChamber) tTileEntity).getReactor();
-            else
-                ic2Energy = (tTileEntity == null || tTileEntity instanceof IEnergyTile || EnergyNet.instance == null) ? tTileEntity :
-                    EnergyNet.instance.getTileEntity(tTileEntity.getWorldObj(), tTileEntity.xCoord, tTileEntity.yCoord, tTileEntity.zCoord);
-
-            // IC2 Sink Compat
-            if ((ic2Energy instanceof IEnergySink) && ((IEnergySink) ic2Energy).acceptsEnergyFrom((TileEntity) baseMetaTile, tDir))
+        if (ic2 != null) {
+            if (IC2Interop.INSTANCE.isValidIC2Tile((TileEntity) baseMetaTile, ic2, tDir)) {
                 return true;
-
-            // IC2 Source Compat
-            if (GT_Mod.gregtechproxy.ic2EnergySourceCompat && (ic2Energy instanceof IEnergySource)) {
-                if (((IEnergySource) ic2Energy).emitsEnergyTo((TileEntity) baseMetaTile, tDir)) {
-                    return true;
-                }
             }
         }
-        // RF Output Compat
-        if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver && ((IEnergyReceiver) tTileEntity).canConnectEnergy(tDir))
-            return true;
 
-        // RF Input Compat
-        return GregTech_API.mInputRF && (tTileEntity instanceof IEnergyEmitter && ((IEnergyEmitter) tTileEntity).emitsEnergyTo((TileEntity) baseMetaTile, tDir));
+        // RF Output Compat
+        return GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver && ((IEnergyReceiver) tTileEntity).canConnectEnergy(tDir);
     }
 
     @Override
@@ -413,14 +398,14 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     	float tSide3 = 1f - tSpace;
     	float tSide4 = tSpace;
     	float tSide5 = 1f - tSpace;
-    	
+
     	if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 0) != 0){tSide0=tSide2=tSide4=0;tSide3=tSide5=1;}
     	if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 1) != 0){tSide2=tSide4=0;tSide1=tSide3=tSide5=1;}
     	if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 2) != 0){tSide0=tSide2=tSide4=0;tSide1=tSide5=1;}
     	if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 3) != 0){tSide0=tSide4=0;tSide1=tSide3=tSide5=1;}
     	if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 4) != 0){tSide0=tSide2=tSide4=0;tSide1=tSide3=1;}
     	if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 5) != 0){tSide0=tSide2=0;tSide1=tSide3=tSide5=1;}
-    	
+
     	byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
     	if((tConn & (1 << ForgeDirection.DOWN.ordinal()) ) != 0) tSide0 = 0f;
     	if((tConn & (1 << ForgeDirection.UP.ordinal())   ) != 0) tSide1 = 1f;
@@ -428,7 +413,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     	if((tConn & (1 << ForgeDirection.SOUTH.ordinal())) != 0) tSide3 = 1f;
     	if((tConn & (1 << ForgeDirection.WEST.ordinal()) ) != 0) tSide4 = 0f;
     	if((tConn & (1 << ForgeDirection.EAST.ordinal()) ) != 0) tSide5 = 1f;
-    	
+
     	return AxisAlignedBB.getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
     }
 
@@ -449,12 +434,9 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
             final IGregTechTileEntity baseMeta = getBaseMetaTileEntity();
             for( byte aSide = 0 ; aSide < 6 ; aSide++) if(isConnectedAtSide(aSide)) {
                 final TileEntity tTileEntity = baseMeta.getTileEntityAtSide(aSide);
-                final TileEntity tEmitter = (tTileEntity == null || tTileEntity instanceof IEnergyTile || EnergyNet.instance == null) ? tTileEntity :
-                        EnergyNet.instance.getTileEntity(tTileEntity.getWorldObj(), tTileEntity.xCoord, tTileEntity.yCoord, tTileEntity.zCoord);
-
-                if (tEmitter instanceof IEnergyEmitter)
+                if (IC2Interop.INSTANCE.shouldJoinIC2Enet(tTileEntity)) {
                     return true;
-
+                }
             }
         }
         return false;

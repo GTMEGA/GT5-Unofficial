@@ -48,8 +48,8 @@ import gregtech.loaders.misc.NetworkDispatcher;
 import gregtech.loaders.postload.*;
 import gregtech.loaders.preload.*;
 import gregtech.loaders.preload.GT_Loader_MetaTileEntities;
-import ic2.api.recipe.IRecipeInput;
-import ic2.api.recipe.RecipeOutput;
+/* import ic2.api.recipe.IRecipeInput;
+import ic2.api.recipe.RecipeOutput; */
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;

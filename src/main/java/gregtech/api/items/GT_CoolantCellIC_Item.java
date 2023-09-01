@@ -1,10 +1,12 @@
 package gregtech.api.items;
 
 
+import cpw.mods.fml.common.Optional;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
 import net.minecraft.item.ItemStack;
 
+@Optional.Interface(iface = "ic2.api.reactor.IReactorComponent", modid = "IC2", striprefs = true)
 public class GT_CoolantCellIC_Item
         extends GT_CoolantCell_Item
         implements IReactorComponent {
