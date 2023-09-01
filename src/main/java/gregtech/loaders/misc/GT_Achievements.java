@@ -14,7 +14,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import ic2.core.Ic2Items;
+// import ic2.core.Ic2Items;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -81,10 +81,10 @@ public class GT_Achievements {
         registerAchievement("macerator", 0, -2, ItemList.Machine_Bronze_Macerator.get(1), "firststeam", false);
         registerAchievement("extract", 0, -4, ItemList.Machine_Bronze_Extractor.get(1), "alloysmelter", false);
 
-        registerAchievement("smallparts", 0, -5, ItemList.Circuit_Primitive.get(1), "alloysmelter", false);        
-        registerAchievement("gtbasiccircuit", 0, -8, Ic2Items.electronicCircuit.copy(), "smallparts", false);
+        registerAchievement("smallparts", 0, -5, ItemList.Circuit_Primitive.get(1), "alloysmelter", false);
+        registerAchievement("gtbasiccircuit", 0, -8, ItemList.Circuit_Basic.get(1), "smallparts", false);
         registerAchievement("bettercircuits", 0, -9, ItemList.Circuit_Good.get(1), "gtbasiccircuit", false);
-        registerAchievement("stepforward", -2, -9, Ic2Items.advancedCircuit.copy(), "bettercircuits", false);
+        registerAchievement("stepforward", -2, -9, ItemList.Circuit_Advanced.get(1), "bettercircuits", false);
         registerAchievement("gtmonosilicon", -5, -10, ItemList.Circuit_Silicon_Ingot.get(1), "stepforward", false);
         registerAchievement("gtlogicwafer", -7, -10, ItemList.Circuit_Wafer_ILC.get(1), "gtmonosilicon", false);
         registerAchievement("gtlogiccircuit", -9, -10, ItemList.Circuit_Basic.get(1), "gtlogicwafer", false);
@@ -94,7 +94,7 @@ public class GT_Achievements {
         registerAchievement("gtcrystalprocessor", -11, -12, ItemList.Circuit_Crystalprocessor.get(1), "gtquantumprocessor", false);
         registerAchievement("gtwetware", -9, -12, ItemList.Circuit_Neuroprocessor.get(1), "gtcrystalprocessor", false);
         registerAchievement("gtwetmain", -7, -12, ItemList.Circuit_Wetwaremainframe.get(1), "gtwetware", false);
-        
+
         registerAchievement("orbs", -10, -14, ItemList.Energy_LapotronicOrb.get(1), "energyflow", false);
         registerAchievement("thatspower", -8, -14, ItemList.Energy_LapotronicOrb2.get(1), "orbs", false);
         registerAchievement("datasaving", -2, -12, ItemList.Tool_DataOrb.get(1), "stepforward", false);
@@ -606,13 +606,14 @@ public class GT_Achievements {
                 case "gt.metaitem.03.32095":
                     issueAchievement(player, "gtwetmain");
                     break;
-            } 
+            }
         } else if (stack.getUnlocalizedName().equals("gt.Thoriumcell")) {
             issueAchievement(player, "newfuel");
-        }else if ((stack.getItem() == Ic2Items.quantumBodyarmor.getItem()) || (stack.getItem() == Ic2Items.quantumBoots.getItem()) ||
+        }/* else if ((stack.getItem() == Ic2Items.quantumBodyarmor.getItem()) || (stack.getItem() == Ic2Items.quantumBoots.getItem()) ||
+            // Not our problem anymore, why have an achievement for it?
                 (stack.getItem() == Ic2Items.quantumHelmet.getItem()) || (stack.getItem() == Ic2Items.quantumLeggings.getItem())) {
             issueAchievement(player, "buildQArmor");
-        } else if (stack.getUnlocalizedName().equals("ic2.itemPartCircuitAdv")) {
+        }  */else if (stack.getUnlocalizedName().equals("ic2.itemPartCircuitAdv")) {
             issueAchievement(player, "stepforward");
 		}
 		if(player.capabilities.isCreativeMode && stack.getUnlocalizedName().equals("gt.metaitem.01.32761")){//Debug Scanner pickup shows all assline recipes.

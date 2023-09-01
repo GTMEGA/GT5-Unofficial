@@ -85,7 +85,7 @@ import static gregtech.api.enums.GT_Values.*;
 
 @SuppressWarnings("ALL")
 @Mod(modid = "gregtech", name = "GregTech", version = "MC1710", useMetadata = false,
-        dependencies = " required-after:IC2;" +
+        dependencies = "after:IC2;" +
                 " required-after:structurelib;" +
                 " required-after:YAMCore;" +
                 " after:dreamcraft;" +

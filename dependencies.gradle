@@ -18,7 +18,7 @@ dependencies {
     implementation("codechicken:codechickenlib-mc1.7.10:1.1.4-gtmega:dev")
     implementation("codechicken:notenoughitems-mc1.7.10:2.1.5-gtmega:dev")
 
-    implementation("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
+    // implementation("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
 
     implementation("eu.usrv:YAMCore:1.7.10-0.5.79:deobf") {
         transitive = false

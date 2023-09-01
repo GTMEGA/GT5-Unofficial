@@ -11,6 +11,7 @@ import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.items.GT_CoolantCellIC_Item;
 import gregtech.api.items.GT_CoolantCell_Item;
+import gregtech.api.items.GT_FluidCell;
 import gregtech.api.items.GT_Tool_Item;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.objects.GT_Cover_Default;
@@ -309,6 +310,10 @@ public class GregTech_API {
     public static int
             mEUtoRF = 360,
             mRFtoEU = 20;
+
+    public static GT_FluidCell sCellItem = new GT_FluidCell();
+
+    public static ItemStack sCellStack = new ItemStack(sCellItem, 1, 0);
 
 
     /**
