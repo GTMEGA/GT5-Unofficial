@@ -11,8 +11,6 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
-import ic2.api.recipe.ILiquidHeatExchangerManager;
-import ic2.api.recipe.Recipes;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
 import net.minecraft.init.Blocks;
@@ -71,7 +69,7 @@ public class GT_MachineRecipeLoader implements Runnable {
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: Adding non-OreDict Machine Recipes.");
-        try {
+        /* try {
             GT_Utility.removeSimpleIC2MachineRecipe(GT_Values.NI, ic2.api.recipe.Recipes.metalformerExtruding.getRecipes(), ItemList.Cell_Empty.get(3L));
             GT_Utility.removeSimpleIC2MachineRecipe(ItemList.IC2_Energium_Dust.get(1L), ic2.api.recipe.Recipes.compressor.getRecipes(), GT_Values.NI);
             GT_Utility.removeSimpleIC2MachineRecipe(new ItemStack(Items.gunpowder), ic2.api.recipe.Recipes.extractor.getRecipes(), GT_Values.NI);
@@ -86,7 +84,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Utility.removeIC2BottleRecipe(
                 GT_ModHandler.getIC2Item("fuelRod", 1), GT_ModHandler.getIC2Item("MOXFuel", 1), ic2.api.recipe.Recipes.cannerBottle.getRecipes(),
                 GT_ModHandler.getIC2Item("reactorMOXSimple", 1, 1)
-                                        );
+                                        ); */
         GT_Values.RA.addFluidExtractionRecipe(new ItemStack(Items.wheat_seeds, 1, 32767), GT_Values.NI, Materials.SeedOil.getFluid(10), 10000, 32, 2);
         GT_Values.RA.addFluidExtractionRecipe(new ItemStack(Items.melon_seeds, 1, 32767), GT_Values.NI, Materials.SeedOil.getFluid(10), 10000, 32, 2);
         GT_Values.RA.addFluidExtractionRecipe(new ItemStack(Items.pumpkin_seeds, 1, 32767), GT_Values.NI, Materials.SeedOil.getFluid(10), 10000, 32, 2);
@@ -4615,7 +4613,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         this.run3();
 
-        GT_Utility.removeSimpleIC2MachineRecipe(
+        /* GT_Utility.removeSimpleIC2MachineRecipe(
                 new ItemStack(Blocks.cobblestone), GT_ModHandler.getMaceratorRecipeList(), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L));
         GT_Utility.removeSimpleIC2MachineRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lapis, 1L), GT_ModHandler.getMaceratorRecipeList(), ItemList.IC2_Plantball.get(1L));
@@ -4630,7 +4628,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Utility.removeSimpleIC2MachineRecipe(
                 GT_ModHandler.getModItem("ExtraTrees", "food", 8L, 24), GT_ModHandler.getCompressorRecipeList(),
                 GT_ModHandler.getModItem("IC2", "itemFuelPlantBall", 1L)
-                                               );
+                                               ); */
         {
             ItemStack alu = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Aluminium, 2);
             GT_ModHandler.addAlloySmelterRecipe(Materials.Magnesium.getDust(1), alu, Materials.Magnalium.getIngots(3), 100, 120, false);
@@ -4652,7 +4650,7 @@ public class GT_MachineRecipeLoader implements Runnable {
             }
         }
 
-        if (!GregTech_API.mIC2Classic) {
+        /* if (!GregTech_API.mIC2Classic) {
             try {
                 Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange =
                         ic2.api.recipe.Recipes.liquidCooldownManager.getHeatExchangeProperties();
@@ -4664,7 +4662,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                         Recipes.liquidCooldownManager.addFluid("ic2hotcoolant", "ic2coolant", 100);
                     }
                 }
-            } catch (Throwable e) {/*Do nothing*/}
+            } catch (Throwable e) { *//*Do nothing*//* }
 
             try {
                 Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange =
@@ -4677,11 +4675,11 @@ public class GT_MachineRecipeLoader implements Runnable {
                         Recipes.liquidHeatupManager.addFluid("ic2coolant", "ic2hotcoolant", 100);
                     }
                 }
-            } catch (Throwable e) {/*Do nothing*/}
-        }
-        GT_Utility.removeSimpleIC2MachineRecipe(ItemList.Crop_Drop_BobsYerUncleRanks.get(1L), GT_ModHandler.getExtractorRecipeList(), null);
+            } catch (Throwable e) { *//*Do nothing*//* }
+        } */
+        /* GT_Utility.removeSimpleIC2MachineRecipe(ItemList.Crop_Drop_BobsYerUncleRanks.get(1L), GT_ModHandler.getExtractorRecipeList(), null);
         GT_Utility.removeSimpleIC2MachineRecipe(ItemList.Crop_Drop_Ferru.get(1L), GT_ModHandler.getExtractorRecipeList(), null);
-        GT_Utility.removeSimpleIC2MachineRecipe(ItemList.Crop_Drop_Aurelia.get(1L), GT_ModHandler.getExtractorRecipeList(), null);
+        GT_Utility.removeSimpleIC2MachineRecipe(ItemList.Crop_Drop_Aurelia.get(1L), GT_ModHandler.getExtractorRecipeList(), null); */
 
         ItemStack tCrop;
         // Metals Line

@@ -5,6 +5,7 @@ import codechicken.nei.api.API;
 import cpw.mods.fml.common.Loader;
 import gregtech.common.tileentities.generators.GT_MetaTileEntity_LightningRod;
 import gregtech.common.tileentities.machines.multi.*;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -18,7 +19,6 @@ import static gregtech.api.util.GT_ModHandler.RecipeBits.NOT_REMOVABLE;
 import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
 import static gregtech.loaders.postload.GT_ProcessingArrayRecipeLoader.registerDefaultGregtechMaps;
 import static gregtech.loaders.preload.GT_Loader_MetaTileEntities.DISMANTLEABLE_RECIPE_MASK;
-import static ic2.core.Ic2Items.reinforcedStone;
 
 
 public final class MultiblockMachineLoader {
@@ -53,7 +53,7 @@ public final class MultiblockMachineLoader {
                 });
         addCraftingRecipe(
                 Machine_Multi_ImplosionCompressor.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{
-                        "OOO", "CMC", "WCW", 'M', Casing_SolidSteel, 'O', reinforcedStone, 'C', circuitLogic.get(LOGIC_HV), 'W', cableGt01.get(Gold)
+                        "OOO", "CMC", "WCW", 'M', Casing_SolidSteel, 'O', Blocks.bed, 'C', circuitLogic.get(LOGIC_HV), 'W', cableGt01.get(Gold)
                 });
         addCraftingRecipe(
                 Machine_Multi_Furnace.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{

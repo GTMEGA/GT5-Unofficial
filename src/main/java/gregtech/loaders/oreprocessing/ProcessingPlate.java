@@ -89,9 +89,9 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         GT_ModHandler.removeRecipeByOutputDelayed(aStack);
         GT_ModHandler.removeRecipeDelayed(aStack);
 
-        GT_Utility.removeSimpleIC2MachineRecipe(GT_Utility.copyAmount(9L, aStack), GT_ModHandler.getCompressorRecipeList(),
+        /* GT_Utility.removeSimpleIC2MachineRecipe(GT_Utility.copyAmount(9L, aStack), GT_ModHandler.getCompressorRecipeList(),
                                                 GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L)
-                                               );
+                                               ); */
 
         if (aMaterial.mFuelPower > 0) {
 

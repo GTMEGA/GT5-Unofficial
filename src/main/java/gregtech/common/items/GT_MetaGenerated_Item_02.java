@@ -1070,9 +1070,9 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new ItemStack(Items.stick, 1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L), null, 0, false);
         GT_ModHandler.addPulverisationRecipe(new ItemStack(Blocks.wool, 1, 32767), new ItemStack(Items.string, 2), new ItemStack(Items.string, 1), 50, false);
         try {
-            ic2.api.crops.CropCard tCrop;
+            /* ic2.api.crops.CropCard tCrop;
             GT_Utility.getField(tCrop = ic2.api.crops.Crops.instance.getCropList()[13], "mDrop").set(tCrop, ItemList.Crop_Drop_Ferru.get(1L));
-            GT_Utility.getField(tCrop = ic2.api.crops.Crops.instance.getCropList()[14], "mDrop").set(tCrop, ItemList.Crop_Drop_Aurelia.get(1L));
+            GT_Utility.getField(tCrop = ic2.api.crops.Crops.instance.getCropList()[14], "mDrop").set(tCrop, ItemList.Crop_Drop_Aurelia.get(1L)); */
         } catch (Throwable e) {
             if (GT_Values.D1) {
                 e.printStackTrace(GT_Log.err);

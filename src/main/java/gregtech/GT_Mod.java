@@ -547,7 +547,7 @@ public class GT_Mod implements IGT_Mod {
             }
         }
         GT_Log.out.println("GT_Mod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
-        GT_ModHandler.addScrapboxDrop(200.0F, GT_ModHandler.getIC2Item("scrap", 1L));
+        /* GT_ModHandler.addScrapboxDrop(200.0F, GT_ModHandler.getIC2Item("scrap", 1L)); */
 
         EntityRegistry.registerModEntity(GT_Entity_Arrow.class, "GT_Entity_Arrow", 1, GT_Values.GT, 160, 1, true);
         EntityRegistry.registerModEntity(GT_Entity_Arrow_Potion.class, "GT_Entity_Arrow_Potion", 2, GT_Values.GT, 160, 1, true);
@@ -886,12 +886,12 @@ public class GT_Mod implements IGT_Mod {
         if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "ic2forgehammer", true)) {
             GT_ModHandler.removeRecipeByOutput(ItemList.IC2_ForgeHammer.getWildcard(1L));
         }
-        GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("machine", 1L));
-        GT_ModHandler.addCraftingRecipe(
+        /* GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("machine", 1L)); */
+        /* GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("machine", 1L),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
                 new Object[]{"RRR", "RwR", "RRR", 'R', OrePrefixes.plate.get(Materials.Iron)}
-                                       );
+                                       ); */
         ItemStack ISdata0 = new ItemStack(Items.potionitem, 1, 0);
         ItemStack ILdata0 = ItemList.Bottle_Empty.get(1L);
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
@@ -920,11 +920,11 @@ public class GT_Mod implements IGT_Mod {
         }
 
 
-        Arrays.stream(new String[]{
+        /* Arrays.stream(new String[]{
                 "blastfurnace", "blockcutter", "inductionFurnace", "generator", "windMill", "waterMill", "solarPanel", "centrifuge", "electrolyzer",
                 "compressor", "electroFurnace", "extractor", "macerator", "recycler", "metalformer", "orewashingplant", "massFabricator", "replicator",
                 }).filter(tName -> GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + tName, true)).map(
-                tName -> GT_ModHandler.getIC2Item(tName, 1L)).forEach(GT_ModHandler::removeRecipeByOutputDelayed);
+                tName -> GT_ModHandler.getIC2Item(tName, 1L)).forEach(GT_ModHandler::removeRecipeByOutputDelayed); */
 
 
         if (gregtechproxy.mNerfedVanillaTools) {

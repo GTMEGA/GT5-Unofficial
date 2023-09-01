@@ -2998,7 +2998,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
     }
 
-    public GT_Recipe(ItemStack aInput1, int aInput2, ItemStack aOutput1, ItemStack aOutput2) {
+    /* public GT_Recipe(ItemStack aInput1, int aInput2, ItemStack aOutput1, ItemStack aOutput2) {
         this(
                 true, new ItemStack[]{
                         aInput1, GT_ModHandler.getIC2Item("industrialTnt", aInput2 > 0 ? Math.min(aInput2, 64) : 1,
@@ -3008,7 +3008,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         if (mInputs.length > 0 && mOutputs[0] != null) {
             GT_Recipe_Map.sImplosionRecipes.addRecipe(this);
         }
-    }
+    } */
 
 
     public GT_Recipe(int aEUt, int aDuration, ItemStack aInput1, ItemStack aOutput1) {

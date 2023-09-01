@@ -8,10 +8,6 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import ic2.api.item.ElectricItem;
-import ic2.api.item.IElectricItem;
-import ic2.api.item.IElectricItemManager;
-import ic2.api.item.ISpecialElectricItem;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -34,11 +30,7 @@ import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.GT_Values.V;
 
 
-@Optional.InterfaceList({
-        @Optional.Interface(iface = "ic2.api.item.ISpecialElectricItem", modid = "IC2"),
-        @Optional.Interface(iface = "ic2.api.item.IElectricItemManager", modid = "IC2")
-})
-public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpecialElectricItem, IElectricItemManager, IFluidContainerItem {
+public abstract class GT_MetaBase_Item extends GT_Generic_Item implements IFluidContainerItem {
 
     /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
     private final ConcurrentHashMap<Short, ArrayList<IItemBehaviour<GT_MetaBase_Item>>> mItemBehaviors =
@@ -48,7 +40,6 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
      * Creates the Item using these Parameters.
      *
      * @param aUnlocalized         The Unlocalized Name of this Item.
-     * @param aGeneratedPrefixList The OreDict Prefixes you want to have generated.
      */
     public GT_MetaBase_Item(String aUnlocalized) {
         super(aUnlocalized, "Generated Item", null, false);
@@ -76,7 +67,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
 
     @Override
     public boolean onItemUse(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
-        use(aStack, 0, aPlayer);
+        /* use(aStack, 0, aPlayer); */
         isItemStackUsable(aStack);
         ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
         try {
@@ -104,7 +95,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
 
     @Override
     public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
-        use(aStack, 0, aPlayer);
+        /* use(aStack, 0, aPlayer); */
         isItemStackUsable(aStack);
         ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
         try {
@@ -148,7 +139,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
 
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
-        use(aStack, 0, aPlayer);
+        /* use(aStack, 0, aPlayer); */
         isItemStackUsable(aStack);
         ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
         try {
@@ -176,7 +167,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
 
     @Override
     public boolean onLeftClickEntity(ItemStack aStack, EntityPlayer aPlayer, Entity aEntity) {
-        use(aStack, 0, aPlayer);
+        /* use(aStack, 0, aPlayer); */
         isItemStackUsable(aStack);
         ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
         try {
@@ -458,7 +449,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         return super.getProjectile(aProjectileType, aStack, aWorld, aEntity, aSpeed);
     }
 
-    @Optional.Method(modid = "IC2")
+    /* @Optional.Method(modid = "IC2")
     @Override
     public final boolean canProvideEnergy(ItemStack aStack) {
         Long[] tStats = getElectricStats(aStack);
@@ -466,21 +457,21 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
             return false;
         }
         return tStats[3] > 0 || (aStack.stackSize == 1 && (tStats[3] == -2 || tStats[3] == -3));
-    }
+    } */
 
-    @Optional.Method(modid = "IC2")
+    /* @Optional.Method(modid = "IC2")
     @Override
     public final Item getChargedItem(ItemStack itemStack) {
         return this;
-    }
+    } */
 
-    @Optional.Method(modid = "IC2")
+    /* @Optional.Method(modid = "IC2")
     @Override
     public final Item getEmptyItem(ItemStack itemStack) {
         return this;
-    }
+    } */
 
-    @Optional.Method(modid = "IC2")
+    /* @Optional.Method(modid = "IC2")
     @Override
     public final double getMaxCharge(ItemStack aStack) {
         Long[] tStats = getElectricStats(aStack);
@@ -488,9 +479,9 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
             return 0;
         }
         return Math.abs(tStats[0]);
-    }
+    } */
 
-    @Optional.Method(modid = "IC2")
+    /* @Optional.Method(modid = "IC2")
     @Override
     public final double getTransferLimit(ItemStack aStack) {
         Long[] tStats = getElectricStats(aStack);
@@ -498,9 +489,9 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
             return 0;
         }
         return Math.max(tStats[1], tStats[3]);
-    }
+    } */
 
-    @Optional.Method(modid = "IC2")
+    /* @Optional.Method(modid = "IC2")
     @Override
     public final double charge(ItemStack aStack, double aCharge, int aTier, boolean aIgnoreTransferLimit, boolean aSimulate) {
         Long[] tStats = getElectricStats(aStack);
@@ -518,9 +509,9 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
             setCharge(aStack, tNewCharge);
         }
         return tNewCharge - tChargeBefore;
-    }
+    } */
 
-    @Optional.Method(modid = "IC2")
+    /* @Optional.Method(modid = "IC2")
     @Override
     public final double discharge(ItemStack aStack, double aCharge, int aTier, boolean aIgnoreTransferLimit, boolean aBatteryAlike, boolean aSimulate) {
         Long[] tStats = getElectricStats(aStack);
@@ -545,21 +536,21 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
             setCharge(aStack, tNewCharge);
         }
         return tChargeBefore - tNewCharge;
-    }
+    } */
 
-    @Optional.Method(modid = "IC2")
+    /* @Optional.Method(modid = "IC2")
     @Override
     public final double getCharge(ItemStack aStack) {
         return getRealCharge(aStack);
-    }
+    } */
 
-    @Optional.Method(modid = "IC2")
+    /* @Optional.Method(modid = "IC2")
     @Override
     public final boolean canUse(ItemStack aStack, double aAmount) {
         return getRealCharge(aStack) >= aAmount;
-    }
+    } */
 
-    @Optional.Method(modid = "IC2")
+    /* @Optional.Method(modid = "IC2")
     @Override
     public final boolean use(ItemStack aStack, double aAmount, EntityLivingBase aPlayer) {
         chargeFromArmor(aStack, aPlayer);
@@ -575,9 +566,9 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         discharge(aStack, aAmount, Integer.MAX_VALUE, true, false, false);
         chargeFromArmor(aStack, aPlayer);
         return false;
-    }
+    } */
 
-    @Optional.Method(modid = "IC2")
+    /* @Optional.Method(modid = "IC2")
     @Override
     public final void chargeFromArmor(ItemStack aStack, EntityLivingBase aPlayer) {
         if (aPlayer == null || aPlayer.worldObj.isRemote) {
@@ -602,13 +593,13 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
                 }
             }
         }
-    }
+    } */
 
-    @Optional.Method(modid = "IC2")
+    /* @Optional.Method(modid = "IC2")
     @Override
     public final String getToolTip(ItemStack aStack) {
         return null;
-    } // This has its own ToolTip Handler, no need to let the IC2 Handler screw us up at this Point
+    } // This has its own ToolTip Handler, no need to let the IC2 Handler screw us up at this Point */
 
     public final boolean setCharge(ItemStack aStack, long aCharge) {
         Long[] tStats = getElectricStats(aStack);
@@ -773,10 +764,10 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         isItemStackUsable(aStack);
     }
 
-    @Optional.Method(modid = "IC2")
+    /* @Optional.Method(modid = "IC2")
     @Override
     public final IElectricItemManager getManager(ItemStack aStack) {
         return this;
-    } // We are our own Manager
+    } // We are our own Manager */
 
 }

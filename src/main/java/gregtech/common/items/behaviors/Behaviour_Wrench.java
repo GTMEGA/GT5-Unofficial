@@ -7,7 +7,6 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import ic2.api.tile.IWrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -56,7 +55,7 @@ public class Behaviour_Wrench extends Behaviour_None {
         byte aTargetSide = GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ);
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         try {
-            if (((aTileEntity instanceof IWrenchable))) {
+            /* if (((aTileEntity instanceof IWrenchable))) {
                 if (((IWrenchable) aTileEntity).wrenchCanSetFacing(aPlayer, aTargetSide)) {
                     if ((aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
                         ((IWrenchable) aTileEntity).setFacing(aTargetSide);
@@ -82,7 +81,7 @@ public class Behaviour_Wrench extends Behaviour_None {
                     return true;
                 }
                 return true;
-            }
+            } */
         } catch (Throwable ignored) {
         }
         if ((aBlock == Blocks.log) || (aBlock == Blocks.log2) || (aBlock == Blocks.hay_block)) {

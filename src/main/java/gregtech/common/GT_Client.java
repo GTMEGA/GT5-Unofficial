@@ -35,7 +35,6 @@ import gregtech.common.entities.explosives.GT_Entity_MiningExplosive;
 import gregtech.common.entities.explosives.GT_Entity_TunnelExplosive;
 import gregtech.common.net.MessageUpdateFluidDisplayItem;
 import gregtech.common.render.*;
-import ic2.api.tile.IWrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
@@ -508,7 +507,7 @@ label0:
         TileEntity aTileEntity = aEvent.player.worldObj.getTileEntity(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
 
         if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWrenchList)) {
-            if (aTileEntity instanceof ITurnable || ROTATABLE_VANILLA_BLOCKS.contains(aBlock) || aTileEntity instanceof IWrenchable) {
+            if (aTileEntity instanceof ITurnable || ROTATABLE_VANILLA_BLOCKS.contains(aBlock)/*  || aTileEntity instanceof IWrenchable */) {
                 drawGrid(aEvent, false, true, aEvent.player.isSneaking());
             }
             return;

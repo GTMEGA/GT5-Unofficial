@@ -15,7 +15,9 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLadder;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.config.ConfigCategory;
@@ -260,7 +262,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_MultiBlockBas
                         } else {
                             IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(dX, dY, dZ);
                             if ((!this.addMaintenanceToMachineList(tTileEntity, 210)) && (!this.addEnergyInputToMachineList(tTileEntity, 210))) {
-                                if (tBlock instanceof ic2.core.block.BlockIC2Door) {
+                                if (tBlock instanceof BlockLadder) {
                                     if ((tMeta & 8) == 0) {
                                         // let's not fiddle with bits anymore.
                                         if (Math.abs(dZ) < z) // on side parallel to z axis

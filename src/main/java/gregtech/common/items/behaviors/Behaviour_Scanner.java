@@ -38,9 +38,10 @@ public class Behaviour_Scanner extends Behaviour_None {
             float hitZ
                                  ) {
         NBTTagCompound tNBT = aStack.getTagCompound();
-        if (((aPlayer instanceof EntityPlayerMP)) && (aItem.canUse(aStack, 20000.0D))) {
+        if (((aPlayer instanceof EntityPlayerMP))/*  && (aItem.canUse(aStack, 20000.0D)) */) {
             ArrayList<String> tList = new ArrayList();
-            if (aItem.use(aStack, GT_Utility.getCoordinateScan(tList, aPlayer, aWorld, 1, aX, aY, aZ, aSide, hitX, hitY, hitZ), aPlayer)) {
+            GT_Utility.getCoordinateScan(tList, aPlayer, aWorld, 1, aX, aY, aZ, aSide, hitX, hitY, hitZ);
+            if (true /* aItem.use(aStack, 0, aPlayer) */) {
                 int tList_sS = tList.size();
                 tNBT.setInteger("dataLinesCount", tList_sS);
                 for (int i = 0; i < tList_sS; i++) {

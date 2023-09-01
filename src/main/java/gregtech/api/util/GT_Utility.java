@@ -31,8 +31,6 @@ import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.GT_Pollution;
 import gregtech.common.blocks.GT_Block_Ore_Abstract;
 /* import ic2.api.recipe.IRecipeInput;
-import ic2.api.recipe.RecipeInputItemStack;
-import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput; */
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;

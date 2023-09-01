@@ -766,11 +766,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                             GT_OreDictUnificator.set(OrePrefixes.ingot, Materials.BlueAlloy, new ItemStack(aEvent.Ore.getItem(), 1, 1));
                                             GT_OreDictUnificator.set(OrePrefixes.ingot, Materials.Brass, new ItemStack(aEvent.Ore.getItem(), 1, 2));
                                             if (!mDisableIC2Cables) {
-                                                GT_Values.RA.addWiremillRecipe(
+                                                /* GT_Values.RA.addWiremillRecipe(
                                                         GT_ModHandler.getIC2Item("copperCableItem", 3L), new ItemStack(aEvent.Ore.getItem(), 1, 8), 400, 1);
                                                 GT_Values.RA.addWiremillRecipe(GT_ModHandler.getIC2Item("ironCableItem", 6L),
                                                                                new ItemStack(aEvent.Ore.getItem(), 1, 9), 400, 2
-                                                                              );
+                                                                              ); */
                                             }
                                             GT_Values.RA.addCutterRecipe(new ItemStack(aEvent.Ore.getItem(), 1, 3), new ItemStack(aEvent.Ore.getItem(), 16, 4),
                                                                          null, 400, 8
@@ -965,7 +965,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
         ItemList.Bottle_Empty.set(new ItemStack(Items.glass_bottle, 1));
 
-        ItemList.Cell_Universal_Fluid.set(GT_ModHandler.getIC2Item("FluidCell", 1L));
+        /* ItemList.Cell_Universal_Fluid.set(GT_ModHandler.getIC2Item("FluidCell", 1L));
         ItemList.Cell_Empty.set(GT_ModHandler.getIC2Item("cell", 1L, GT_ModHandler.getIC2Item("cellEmpty", 1L, GT_ModHandler.getIC2Item("emptyCell", 1L))));
         ItemList.Cell_Water.set(GT_ModHandler.getIC2Item("waterCell", 1L, GT_ModHandler.getIC2Item("cellWater", 1L)));
         ItemList.Cell_Lava.set(GT_ModHandler.getIC2Item("lavaCell", 1L, GT_ModHandler.getIC2Item("cellLava", 1L)));
@@ -1025,7 +1025,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         ItemList.Circuit_Advanced.set(GT_ModHandler.getIC2Item("advancedCircuit", 1L));
 
         ItemList.Upgrade_Overclocker.set(GT_ModHandler.getIC2Item("overclockerUpgrade", 1L));
-        ItemList.Upgrade_Battery.set(GT_ModHandler.getIC2Item("energyStorageUpgrade", 1L));
+        ItemList.Upgrade_Battery.set(GT_ModHandler.getIC2Item("energyStorageUpgrade", 1L)); */
 
         ItemList.Dye_Bonemeal.set(new ItemStack(Items.dye, 1, 15));
         ItemList.Dye_SquidInk.set(new ItemStack(Items.dye, 1, 0));
@@ -2125,10 +2125,10 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             GT_Values.RA.addCrackingRecipe(i + 1, new FluidStack(uncrackedFluid, 1000), GT_ModHandler.getSteam(1000), new FluidStack(crackedFluids[i], 1000),
                                            40 + 20 * i, 240 + 120 * i
                                           );
-            GT_Values.RA.addChemicalRecipe(GT_ModHandler.getIC2Item("steamCell", 1L), GT_Utility.getIntegratedCircuit(i + 1),
+            /* GT_Values.RA.addChemicalRecipe(GT_ModHandler.getIC2Item("steamCell", 1L), GT_Utility.getIntegratedCircuit(i + 1),
                                            new FluidStack(uncrackedFluid, 1000), new FluidStack(crackedFluids[i], 800), Materials.Empty.getCells(1),
                                            160 + 80 * i, 30
-                                          );
+                                          ); */
             GT_Values.RA.addChemicalRecipe(aMaterial.getCells(1), GT_Utility.getIntegratedCircuit(i + 1), GT_ModHandler.getSteam(1000),
                                            new FluidStack(crackedFluids[i], 800), Materials.Empty.getCells(1), 160 + 80 * i, 30
                                           );

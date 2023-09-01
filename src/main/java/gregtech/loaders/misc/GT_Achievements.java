@@ -56,7 +56,7 @@ public class GT_Achievements {
         }
 
         registerAchievement("flintpick", 0, 0, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(2, 1, Materials.Flint, Materials.Wood, null), "", false);
-        registerAchievement("crops", -4, 0, GT_ModHandler.getIC2Item("crop", 1L), "flintpick", false);
+        /* registerAchievement("crops", -4, 0, GT_ModHandler.getIC2Item("crop", 1L), "flintpick", false); */
         registerAchievement("havestlead", -4, 2, ItemList.Crop_Drop_Plumbilia.get(1), "crops", false);
         registerAchievement("havestcopper", -2, 1, ItemList.Crop_Drop_Coppon.get(1), "crops", false);
         registerAchievement("havesttin", -2, -1, ItemList.Crop_Drop_Tine.get(1), "crops", false);

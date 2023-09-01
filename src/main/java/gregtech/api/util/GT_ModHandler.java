@@ -553,14 +553,14 @@ public class GT_ModHandler {
     /**
      * Gets an Item from IndustrialCraft
      */
-    public static ItemStack getIC2Item(String aItem, long aAmount) {
+    /* public static ItemStack getIC2Item(String aItem, long aAmount) {
         return getIC2Item(aItem, aAmount, null);
-    }
+    } */
 
     /**
      * Gets an Item from IndustrialCraft, and returns a Replacement Item if not possible
      */
-    public static ItemStack getIC2Item(String aItem, long aAmount, ItemStack aReplacement) {
+    /* public static ItemStack getIC2Item(String aItem, long aAmount, ItemStack aReplacement) {
         if (GT_Utility.isStringInvalid(aItem) || !GregTech_API.sPreloadStarted) {
             return null;
         }
@@ -573,10 +573,10 @@ public class GT_ModHandler {
                 if (tStack == null && D1) {
                     GT_Log.err.println(aItem + " is not found in the IC2 Items!");
                 }
-            } catch (Throwable e) {/*Do nothing*/}
+            } catch (Throwable e) { *//*Do nothing*//* }
         }
         return GT_Utility.copyAmount(aAmount, sIC2ItemMap.get(aItem), aReplacement);
-    }
+    } */
 
     /**
      * Gets an Item from the specified mod, but the Damage Value can be specified
@@ -2515,9 +2515,9 @@ public class GT_ModHandler {
             return 1;
         }
 
-        if (GT_Utility.areStacksEqual(aStack, getIC2Item("waterCell", 1, W))) {
+        /* if (GT_Utility.areStacksEqual(aStack, getIC2Item("waterCell", 1, W))) {
             return 1;
-        }
+        } */
 
         for (OrePrefixes cellType : OrePrefixes.CELL_TYPES) {
             if (cellType.contains(aStack)) {
@@ -2531,21 +2531,21 @@ public class GT_ModHandler {
     /**
      * Gets an Item from IndustrialCraft, but the Damage Value can be specified
      */
-    public static ItemStack getIC2Item(String aItem, long aAmount, int aMeta) {
+    /* public static ItemStack getIC2Item(String aItem, long aAmount, int aMeta) {
         return getIC2Item(aItem, aAmount, aMeta, null);
-    }
+    } */
 
     /**
      * Gets an Item from IndustrialCraft, but the Damage Value can be specified, and returns a Replacement Item with the same Damage if not possible
      */
-    public static ItemStack getIC2Item(String aItem, long aAmount, int aMeta, ItemStack aReplacement) {
+    /* public static ItemStack getIC2Item(String aItem, long aAmount, int aMeta, ItemStack aReplacement) {
         ItemStack rStack = getIC2Item(aItem, aAmount, aReplacement);
         if (rStack == null) {
             return null;
         }
         Items.feather.setDamage(rStack, aMeta);
         return rStack;
-    }
+    } */
 
     static {
         sNativeRecipeClasses.add(ShapedRecipes.class.getName());

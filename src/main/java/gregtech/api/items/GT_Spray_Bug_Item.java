@@ -57,14 +57,14 @@ public class GT_Spray_Bug_Item extends GT_Tool_Item {
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 
         try {
-            if (aTileEntity instanceof ic2.api.crops.ICropTile) {
+            /* if (aTileEntity instanceof ic2.api.crops.ICropTile) {
                 int tCropBefore = ((ic2.api.crops.ICropTile) aTileEntity).getWeedExStorage();
                 if (tCropBefore <= 100 && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
                     ((ic2.api.crops.ICropTile) aTileEntity).setWeedExStorage(tCropBefore + 100);
                     GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(102), 1.0F, -1, aX, aY, aZ);
                     return true;
                 }
-            }
+            } */
         } catch (Throwable e) {/*Do nothing*/}
 
         return false;

@@ -289,7 +289,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                                              new int[]{10_000, 5_000, 5_000, 2_500, 10_000, 10_000}, 2000, 2000
                                             );
 
-            ItemList.Uraniumcell_1.set(new GT_RadioactiveCellIC_Item("reactorUraniumSimple", "Fuel Rod (Uranium)", 1, 20000, 2F, 1, 1F,
+            /* ItemList.Uraniumcell_1.set(new GT_RadioactiveCellIC_Item("reactorUraniumSimple", "Fuel Rod (Uranium)", 1, 20000, 2F, 1, 1F,
                                                                      GT_ModHandler.getIC2Item("reactorDepletedUraniumSimple", 1), false
             ));
             ItemList.Uraniumcell_2.set(new GT_RadioactiveCellIC_Item("reactorUraniumDual", "Dual Fuel Rod (Uranium)", 2, 20000, 2F, 1, 1F,
@@ -306,7 +306,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             ));
             ItemList.Moxcell_4.set(new GT_RadioactiveCellIC_Item("reactorMOXQuad", "Quad Fuel Rod (Mox)", 4, 10000, 2F, 1, 1F,
                                                                  GT_ModHandler.getIC2Item("reactorDepletedMOXQuad", 1), true
-            ));
+            )); */
         }
 
         GT_Log.out.println("GT_Mod: Adding Blocks.");
@@ -423,8 +423,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Log.out.println("GT_Mod: Registering the Ore TileEntity.");
         if (!GregTech_API.mIC2Classic) {
             GT_Log.out.println("GT_Mod: Registering Fluids.");
-            Materials.ConstructionFoam.mFluid = GT_Utility.getFluidForFilledItem(GT_ModHandler.getIC2Item("CFCell", 1L), true).getFluid();
-            Materials.UUMatter.mFluid = GT_Utility.getFluidForFilledItem(GT_ModHandler.getIC2Item("uuMatterCell", 1L), true).getFluid();
+            /* Materials.ConstructionFoam.mFluid = GT_Utility.getFluidForFilledItem(GT_ModHandler.getIC2Item("CFCell", 1L), true).getFluid();
+            Materials.UUMatter.mFluid = GT_Utility.getFluidForFilledItem(GT_ModHandler.getIC2Item("uuMatterCell", 1L), true).getFluid(); */
         }
 
         GT_Mod.gregtechproxy.addFluid(
@@ -493,8 +493,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 "NitrogenDioxide", "Nitrogen Dioxide", Materials.NitrogenDioxide, 2, 295,
                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NitrogenDioxide, 1L), ItemList.Cell_Empty.get(1L), 1000
                                      );
-        GT_Mod.gregtechproxy.addFluid("Steam", "Steam", Materials.Water, 2, 375, GT_ModHandler.getIC2Item("steamCell", 1), Materials.Empty.getCells(1), 1000);
-        GT_Values.RA.addFluidCannerRecipe(Materials.Empty.getCells(1), GT_ModHandler.getIC2Item("steamCell", 1), GT_ModHandler.getSteam(1000), null);
+        // GT_Mod.gregtechproxy.addFluid("Steam", "Steam", Materials.Water, 2, 375, GT_ModHandler.getIC2Item("steamCell", 1), Materials.Empty.getCells(1), 1000);
+        // GT_Values.RA.addFluidCannerRecipe(Materials.Empty.getCells(1), GT_ModHandler.getIC2Item("steamCell", 1), GT_ModHandler.getSteam(1000), null);
         Materials.Ice.mGas = Materials.Water.mGas;
         Materials.Water.mGas.setTemperature(375).setGaseous(true);
 
@@ -1329,7 +1329,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         //FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(Materials.Naquadria.getMolten(1000L),
         // GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Naquadria, 1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L)));
 
-        GregTech_API.registerMachineBlock(GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("reinforcedGlass", 0)), 0);
+        // GregTech_API.registerMachineBlock(GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("reinforcedGlass", 0)), 0);
     }
 
 }

@@ -289,7 +289,6 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                                     mCoverBehaviors[i] = GregTech_API.getCoverBehaviorNew(mCoverSides[i]);
                                 }
                                 issueBlockUpdate();
-                                joinEnet();
                             }
 
                             if (xCoord != oX || yCoord != oY || zCoord != oZ) {
@@ -422,7 +421,6 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
             mMetaTileEntity.onRemoval();
             mMetaTileEntity.setBaseMetaTileEntity(null);
         }
-        leaveEnet();
         super.invalidate();
     }
 
@@ -638,14 +636,17 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
             return mMetaTileEntity.isGivingInformation();
         }
         return false;
-    }    @Override
+    }
+    @Override
     public byte getBackFacing() {
         return GT_Utility.getOppositeSide(getFrontFacing());
     }
 
     protected boolean canAccessData() {
         return hasValidMetaTileEntity() && !isDead;
-    }    @Override
+    }
+
+    @Override
     public byte getFrontFacing() {
         return 6;
     }
@@ -658,9 +659,10 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
             }
             return new String[]{};
         }
-    }    @Override
+    }
+
+    @Override
     public void setFrontFacing(byte aFacing) {
-        doEnetUpdate();
     }
 
     @Override
@@ -1227,7 +1229,6 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                         //logic handled internally
                         GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
                     }
-                    doEnetUpdate();
                     return true;
                 }
 
@@ -1243,7 +1244,6 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                         GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(103), 3.0F, -1, xCoord, yCoord, zCoord);
                         issueBlockUpdate();
                     }
-                    doEnetUpdate();
                     return true;
                 }
 
