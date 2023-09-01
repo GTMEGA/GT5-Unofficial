@@ -752,7 +752,7 @@ public class GT_Mod implements IGT_Mod {
     }
 
     public void initKeybinds(final FMLInitializationEvent aEvent) {
-        new GT_KeyHandler("key.meganet.toggle", "Toggle MEGAnet", GT_MEGAnet.MEGANetHotkeyHandler.INSTANCE::doMeganetThings);
+        new GT_KeyHandler("key.meganet.toggle", "Toggle MEGAnet", GT_MEGAnet.MEGANetHotkeyHandler.INSTANCE::togglePlayerMeganet);
     }
 
     @Mod.EventHandler
