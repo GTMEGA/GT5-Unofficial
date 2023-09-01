@@ -2,7 +2,6 @@ package gregtech.api.items;
 
 
 import gregtech.api.GregTech_API;
-import ic2.core.util.StackUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -70,13 +69,22 @@ public class GT_CoolantCell_Item extends GT_Generic_Item {
     }
 
     public int getControlTagOfStack(ItemStack stack) {
-        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
+        NBTTagCompound nbtData = getOrCreateNbtData(stack);
         return nbtData.getInteger("tag");
     }
 
     public void setControlTagOfStack(ItemStack stack, int tag) {
-        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
+        NBTTagCompound nbtData = getOrCreateNbtData(stack);
         nbtData.setInteger("tag", tag);
+    }
+
+    public NBTTagCompound getOrCreateNbtData(ItemStack stack) {
+        NBTTagCompound nbtData = stack.getTagCompound();
+        if (nbtData == null) {
+            nbtData = new NBTTagCompound();
+            stack.setTagCompound(nbtData);
+        }
+        return nbtData;
     }
 
     protected void setHeatForStack(ItemStack aStack, int aHeat) {

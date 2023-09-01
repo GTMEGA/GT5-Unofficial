@@ -30,10 +30,10 @@ import gregtech.api.threads.GT_Runnable_Sound;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.GT_Pollution;
 import gregtech.common.blocks.GT_Block_Ore_Abstract;
-import ic2.api.recipe.IRecipeInput;
+/* import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
-import ic2.api.recipe.RecipeOutput;
+import ic2.api.recipe.RecipeOutput; */
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -1736,7 +1736,7 @@ public class GT_Utility {
         return null;
     }
 
-    public static synchronized boolean removeIC2BottleRecipe(
+    /* public static synchronized boolean removeIC2BottleRecipe(
             ItemStack aContainer,
             ItemStack aInput,
             Map<ic2.api.recipe.ICannerBottleRecipeManager.Input, RecipeOutput> aRecipeList,
@@ -1764,13 +1764,13 @@ public class GT_Utility {
             }
         }
         return rReturn;
-    }
+    } */
 
     public static boolean areStacksEqual(ItemStack aStack1, ItemStack aStack2) {
         return areStacksEqual(aStack1, aStack2, false);
     }
 
-    public static synchronized boolean removeSimpleIC2MachineRecipe(ItemStack aInput, Map<IRecipeInput, RecipeOutput> aRecipeList, ItemStack aOutput) {
+    /* public static synchronized boolean removeSimpleIC2MachineRecipe(ItemStack aInput, Map<IRecipeInput, RecipeOutput> aRecipeList, ItemStack aOutput) {
         if ((isStackInvalid(aInput) && isStackInvalid(aOutput)) || aRecipeList == null) {
             return false;
         }
@@ -1793,9 +1793,9 @@ public class GT_Utility {
             }
         }
         return rReturn;
-    }
+    } */
 
-    public static synchronized void bulkRemoveSimpleIC2MachineRecipe(Map<ItemStack, ItemStack> toRemove, Map<IRecipeInput, RecipeOutput> aRecipeList) {
+    /* public static synchronized void bulkRemoveSimpleIC2MachineRecipe(Map<ItemStack, ItemStack> toRemove, Map<IRecipeInput, RecipeOutput> aRecipeList) {
         if (aRecipeList == null || aRecipeList.isEmpty()) {
             return;
         }
@@ -1815,9 +1815,9 @@ public class GT_Utility {
 
             return tList.stream().anyMatch(tOutput -> (aOutput == null || areStacksEqual(GT_OreDictUnificator.get(tOutput), aOutput)));
         }));
-    }
+    } */
 
-    public static boolean addSimpleIC2MachineRecipe(ItemStack aInput, Map<IRecipeInput, RecipeOutput> aRecipeList, NBTTagCompound aNBT, Object... aOutput) {
+    /* public static boolean addSimpleIC2MachineRecipe(ItemStack aInput, Map<IRecipeInput, RecipeOutput> aRecipeList, NBTTagCompound aNBT, Object... aOutput) {
         if (isStackInvalid(aInput) || aOutput.length == 0 || aRecipeList == null) {
             return false;
         }
@@ -1841,7 +1841,7 @@ public class GT_Utility {
             aRecipeList.put(new RecipeInputItemStack(copyOrNull(aInput), aInput.stackSize), new RecipeOutput(aNBT, tStack));
         }
         return true;
-    }
+    } */
 
     @Nullable
     public static ItemStack copyOrNull(@Nullable ItemStack stack) {
@@ -2857,31 +2857,6 @@ public class GT_Utility {
                 }
             }
             try {
-                if (tTileEntity instanceof ic2.api.reactor.IReactorChamber) {
-                    rEUAmount += 500;
-                    tTileEntity = (TileEntity) (((ic2.api.reactor.IReactorChamber) tTileEntity).getReactor());
-                }
-            } catch (Throwable e) {
-                if (D1) {
-                    e.printStackTrace(GT_Log.err);
-                }
-            }
-            try {
-                if (tTileEntity instanceof ic2.api.reactor.IReactor) {
-                    rEUAmount += 500;
-                    tList.add(trans("168", "Heat: ") + EnumChatFormatting.GREEN + formatNumbers(((ic2.api.reactor.IReactor) tTileEntity).getHeat()) +
-                              EnumChatFormatting.RESET + " / " + EnumChatFormatting.YELLOW +
-                              formatNumbers(((ic2.api.reactor.IReactor) tTileEntity).getMaxHeat()) + EnumChatFormatting.RESET);
-                    tList.add(trans("169", "HEM: ") + EnumChatFormatting.YELLOW + ((ic2.api.reactor.IReactor) tTileEntity).getHeatEffectModifier() +
-                              EnumChatFormatting.RESET
-                            /* + trans("170"," Base EU Output: ")/* + ((ic2.api.reactor.IReactor)tTileEntity).getOutput()*/);
-                }
-            } catch (Throwable e) {
-                if (D1) {
-                    e.printStackTrace(GT_Log.err);
-                }
-            }
-            try {
                 if (tTileEntity instanceof IAlignmentProvider) {
                     IAlignment tAlignment = ((IAlignmentProvider) tTileEntity).getAlignment();
                     if (tAlignment != null) {
@@ -3058,7 +3033,7 @@ public class GT_Utility {
                 }
             }
             try {
-                if (tTileEntity instanceof ic2.api.crops.ICropTile) {
+                /* if (tTileEntity instanceof ic2.api.crops.ICropTile) {
                     rEUAmount += 1000;
                     ic2.api.crops.ICropTile crop = (ic2.api.crops.ICropTile) tTileEntity;
                     if (crop.getScanLevel() < 4) {
@@ -3081,7 +3056,7 @@ public class GT_Utility {
                         tList.add(trans("198", "Attributes:") + tString.replaceFirst(",", E));
                         tList.add(trans("199", "Discovered by: ") + crop.getCrop().discoveredBy());
                     }
-                }
+                } */
             } catch (Throwable e) {
                 if (D1) {
                     e.printStackTrace(GT_Log.err);

@@ -5,7 +5,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.common.items.GT_VolumetricFlask;
-import ic2.core.util.DrawUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
@@ -62,10 +61,10 @@ public final class GT_FlaskRenderer implements IItemRenderer {
             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
             GL11.glBlendFunc(GL11.GL_ZERO, GL11.GL_ONE);
             if (type.equals(ItemRenderType.INVENTORY)) {
-                DrawUtil.renderIcon(iconWindow, 16.0D, 0.0D, 0.0F, 0.0F, -1.0F);
+                // DrawUtil.renderIcon(iconWindow, 16.0D, 0.0D, 0.0F, 0.0F, -1.0F);
             } else {
-                DrawUtil.renderIcon(iconWindow, 1.0D, -0.001D, 0.0F, 0.0F, 1.0F);
-                DrawUtil.renderIcon(iconWindow, 1.0D, -0.0615D, 0.0F, 0.0F, -1.0F);
+                /* DrawUtil.renderIcon(iconWindow, 1.0D, -0.001D, 0.0F, 0.0F, 1.0F);
+                DrawUtil.renderIcon(iconWindow, 1.0D, -0.0615D, 0.0F, 0.0F, -1.0F); */
             }
 
             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
@@ -73,10 +72,10 @@ public final class GT_FlaskRenderer implements IItemRenderer {
             GL11.glDepthFunc(GL11.GL_EQUAL);
             GL11.glColor3ub((byte) (fluidColor >> 16), (byte) (fluidColor >> 8), (byte) fluidColor);
             if (type.equals(ItemRenderType.INVENTORY)) {
-                DrawUtil.renderIcon(fluidicon, 16.0D, 0.0D, 0.0F, 0.0F, -1.0F);
+                // DrawUtil.renderIcon(fluidicon, 16.0D, 0.0D, 0.0F, 0.0F, -1.0F);
             } else {
-                DrawUtil.renderIcon(fluidicon, 1.0D, -0.001D, 0.0F, 0.0F, 1.0F);
-                DrawUtil.renderIcon(fluidicon, 1.0D, -0.0615D, 0.0F, 0.0F, -1.0F);
+                /* DrawUtil.renderIcon(fluidicon, 1.0D, -0.001D, 0.0F, 0.0F, 1.0F);
+                DrawUtil.renderIcon(fluidicon, 1.0D, -0.0615D, 0.0F, 0.0F, -1.0F); */
             }
 
             GL11.glColor3ub((byte) -1, (byte) -1, (byte) -1);
@@ -86,7 +85,7 @@ public final class GT_FlaskRenderer implements IItemRenderer {
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         if (type.equals(ItemRenderType.INVENTORY)) {
-            DrawUtil.renderIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+            // DrawUtil.renderIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
         } else {
             ItemRenderer.renderItemIn2D(
                     Tessellator.instance, icon.getMaxU(), icon.getMinV(), icon.getMinU(), icon.getMaxV(), icon.getIconWidth(), icon.getIconHeight(), 0.0625F);

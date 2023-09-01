@@ -26,7 +26,6 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GT_Cover_None;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
-import gregtech.api.util.interop.ic2.IC2Interop;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.GT_Cover_SolarPanel;
 import lombok.val;
@@ -464,15 +463,6 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
                 return true;
             }
         }
-
-        val ic2 = IC2Interop.INSTANCE.getIC2EnergyTile(tTileEntity);
-
-        if (ic2 != null) {
-            if (IC2Interop.INSTANCE.isValidIC2Tile((TileEntity) baseMetaTile, ic2, tDir)) {
-                return true;
-            }
-        }
-
         // RF Output Compat
         return GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver && ((IEnergyReceiver) tTileEntity).canConnectEnergy(tDir);
     }
@@ -481,26 +471,6 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     public boolean getGT6StyleConnection() {
         // Yes if GT6 Cables are enabled
         return GT_Mod.gregtechproxy.gt6Cable;
-    }
-
-    @Override
-    public boolean shouldJoinIc2Enet() {
-        if (!GT_Mod.gregtechproxy.ic2EnergySourceCompat) {
-            return false;
-        }
-
-        if (mConnections != 0) {
-            final IGregTechTileEntity baseMeta = getBaseMetaTileEntity();
-            for (byte aSide = 0; aSide < 6; aSide++) {
-                if (isConnectedAtSide(aSide)) {
-                    final TileEntity tTileEntity = baseMeta.getTileEntityAtSide(aSide);
-                    if (IC2Interop.INSTANCE.shouldJoinIC2Enet(tTileEntity)) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     @Override

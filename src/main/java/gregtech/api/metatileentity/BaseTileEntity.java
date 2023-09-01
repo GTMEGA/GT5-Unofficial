@@ -8,8 +8,6 @@ import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.net.GT_Packet_Block_Event;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
-import ic2.api.energy.event.EnergyTileLoadEvent;
-import ic2.api.energy.event.EnergyTileUnloadEvent;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -18,7 +16,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
@@ -53,11 +50,6 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
      * This Variable checks if this TileEntity is dead, because Minecraft is too stupid to have proper TileEntity unloading.
      */
     public boolean isDead = false;
-
-    /*
-     * IC2 Energy Compat
-     */
-    protected TileIC2EnergySink ic2EnergySink = null;
 
     protected boolean joinedIc2Enet = false;
 
@@ -463,7 +455,6 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public void invalidate() {
-        leaveEnet();
         clearNullMarkersFromTileEntityBuffer();
         super.invalidate();
     }
@@ -484,17 +475,9 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public void onChunkUnload() {
-        leaveEnet();
         clearNullMarkersFromTileEntityBuffer();
         super.onChunkUnload();
         isDead = true;
-    }
-
-    protected void leaveEnet() {
-        if (joinedIc2Enet && ic2EnergySink != null && isServerSide()) {
-            joinedIc2Enet = false;
-            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(ic2EnergySink));
-        }
     }
 
     public final void onAdjacentBlockChange(int aX, int aY, int aZ) {
@@ -547,37 +530,6 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     public String trans(String aKey, String aEnglish) {
         return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish, false);
-    }
-
-    public void doEnetUpdate() {
-        leaveEnet();
-        joinEnet();
-    }
-
-    protected void joinEnet() {
-        if (joinedIc2Enet || !shouldJoinIc2Enet()) {
-            return;
-        }
-
-        if (ic2EnergySink == null) {
-            createIc2Sink();
-        }
-
-        if (ic2EnergySink != null) {
-            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(ic2EnergySink));
-            joinedIc2Enet = true;
-        }
-    }
-
-    public boolean shouldJoinIc2Enet() {
-        final IMetaTileEntity meta = getMetaTileEntity();
-        return meta != null && meta.shouldJoinIc2Enet();
-    }
-
-    protected void createIc2Sink() {
-        if (ic2EnergySink == null && isServerSide() && shouldJoinIc2Enet()) {
-            ic2EnergySink = new TileIC2EnergySink((IGregTechTileEntity) this);
-        }
     }
 
     /**

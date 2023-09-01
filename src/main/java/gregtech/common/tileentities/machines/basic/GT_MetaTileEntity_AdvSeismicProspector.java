@@ -12,7 +12,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Ore_Abstract;
-import ic2.core.Ic2Items;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -99,8 +98,8 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
             ItemStack aStack = aPlayer.getCurrentEquippedItem();
 
             if (!ready && (
-                    GT_Utility.consumeItems(aPlayer, aStack, Item.getItemFromBlock(Blocks.tnt), 16) || GT_Utility.consumeItems(
-                            aPlayer, aStack, Ic2Items.industrialTnt.getItem(), 8) || GT_Utility.consumeItems(aPlayer, aStack, Materials.Glyceryl, 4) ||
+                    GT_Utility.consumeItems(aPlayer, aStack, Item.getItemFromBlock(Blocks.tnt), 16) || /* GT_Utility.consumeItems(
+                            aPlayer, aStack, Ic2Items.industrialTnt.getItem(), 8) || */ GT_Utility.consumeItems(aPlayer, aStack, Materials.Glyceryl, 4) ||
                     GT_Utility.consumeItems(aPlayer, aStack, ItemList.Block_Powderbarrel.getItem(), 2)
             )) {
 

@@ -36,7 +36,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_Client;
 import gregtech.common.GT_Pollution;
-import ic2.api.Direction;
+// import ic2.api.Direction;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.entity.Entity;
@@ -418,9 +418,6 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                                 oRedstone = mRedstone;
                                 issueBlockUpdate();
                             }
-                            if (mTickTimer == 10) {
-                                joinEnet();
-                            }
 
                             if (xCoord != oX || yCoord != oY || zCoord != oZ) {
                                 oX = xCoord;
@@ -708,7 +705,6 @@ mMetaTileEntity.getUpdateData()
     @Override
     public void invalidate() {
         tileEntityInvalid = false;
-        leaveEnet();
         if (canAccessData()) {
             if (GregTech_API.mAE2) {
                 invalidateAE();
@@ -1174,8 +1170,6 @@ mMetaTileEntity.getUpdateData()
         if (isValidFacing(aFacing)) {
             mFacing = aFacing;
             mMetaTileEntity.onFacingChange();
-
-            doEnetUpdate();
             cableUpdateDelay = 10;
 
             if (mMetaTileEntity.shouldTriggerBlockUpdate()) {
@@ -2059,7 +2053,6 @@ mMetaTileEntity.getUpdateData()
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(103), 3.0F, -1, xCoord, yCoord, zCoord);
                             issueBlockUpdate();
                         }
-                        doEnetUpdate();
                         cableUpdateDelay = 10;
                         return true;
                     }
@@ -2070,7 +2063,6 @@ mMetaTileEntity.getUpdateData()
                             //logic handled internally
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
                         }
-                        doEnetUpdate();
                         cableUpdateDelay = 10;
                         return true;
                     }
@@ -2714,7 +2706,7 @@ mMetaTileEntity.getUpdateData()
         return (int) Math.min(Integer.MAX_VALUE, oOutput);
     }
 
-    public int injectEnergy(Direction aDirection, int aAmount) {
+    /* public int injectEnergy(Direction aDirection, int aAmount) {
         return injectEnergyUnits((byte) aDirection.toSideValue(), aAmount, 1) > 0 ? 0 : aAmount;
     }
 
@@ -2728,7 +2720,7 @@ mMetaTileEntity.getUpdateData()
 
     public boolean emitsEnergyTo(TileEntity aReceiver, Direction aDirection) {
         return outputsEnergyTo((byte) aDirection.toSideValue());
-    }
+    } */
 
     @Override
     public byte getColorization() {

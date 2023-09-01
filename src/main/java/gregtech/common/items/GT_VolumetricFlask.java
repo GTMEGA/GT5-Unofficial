@@ -5,7 +5,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.items.GT_Generic_Item;
-import ic2.core.util.LiquidUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -26,7 +25,6 @@ import net.minecraftforge.fluids.*;
 import java.util.List;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
-import static ic2.core.util.LiquidUtil.*;
 
 
 public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContainerItem {
@@ -72,7 +70,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
                 return true;
             }
             ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[mop.sideHit];
-            FluidStack fluidStack = drainContainerStack(stack, player, 1000, true);
+            /* FluidStack fluidStack = drainContainerStack(stack, player, 1000, true);
             if (placeFluid(fluidStack, world, x, y, z) || (
                     player.canPlayerEdit(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, mop.sideHit, stack) && placeFluid(
                             fluidStack, world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)
@@ -81,7 +79,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
                     drainContainerStack(stack, player, 1000, false);
                 }
                 return true;
-            }
+            } */
         }
         return false;
     }
@@ -214,7 +212,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
         ForgeDirection dir = ForgeDirection.getOrientation(side);
         FluidStack fs = this.getFluid(stack);
         int capacity = getCapacity(stack);
-        if (fs != null && (!player.isSneaking() || fs.amount >= capacity)) {
+        /* if (fs != null && (!player.isSneaking() || fs.amount >= capacity)) {
             int amount = handler.fill(dir, fs, false);
             if (amount > 0) {
                 fs = LiquidUtil.drainContainerStack(stack, player, amount, false);
@@ -231,13 +229,13 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
                     handler.drain(dir, amount, true);
                 }
             }
-        }
+        } */
         return true;
     }
 
     private boolean collectFluidBlock(ItemStack stack, EntityPlayer player, World world, int x, int y, int z) {
         Block block = world.getBlock(x, y, z);
-        if (block instanceof IFluidBlock) {
+        /* if (block instanceof IFluidBlock) {
             IFluidBlock liquid = (IFluidBlock) block;
             if (liquid.canDrain(world, x, y, z)) {
                 FluidStack fluid = liquid.drain(world, x, y, z, false);
@@ -266,7 +264,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
                     return true;
                 }
             }
-        }
+        } */
         return false;
     }
 

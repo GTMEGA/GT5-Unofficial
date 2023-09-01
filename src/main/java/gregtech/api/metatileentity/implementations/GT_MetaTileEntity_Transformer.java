@@ -224,11 +224,6 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     }
 
     @Override
-    public boolean shouldJoinIc2Enet() {
-        return true;
-    }
-
-    @Override
     public void getWailaBody(ItemStack stack, List<String> currentTip, MovingObjectPosition pos, NBTTagCompound tag, int side) {
         boolean allowedToWork = tag.getBoolean("isAllowedToWork");
         currentTip.add(String.format("%s %d(%dA) -> %d(%dA)", (allowedToWork ? (GREEN + "Step Down") : (RED + "Step Up")) + RESET, tag.getLong("maxEUInput"),

@@ -219,11 +219,12 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehavior {
 
     private static final int TICK_RATE_LENGTH = Integer.SIZE - SPEED_LENGTH - 1;
 
+
+    private static final int TICK_RATE_MIN = 1;
+
     private static final int TICK_RATE_MAX = (-1 >>> (Integer.SIZE - TICK_RATE_LENGTH)) + TICK_RATE_MIN;
 
     private static final int TICK_RATE_BITMASK = (TICK_RATE_MAX - TICK_RATE_MIN) << SPEED_LENGTH;
-
-    private static final int TICK_RATE_MIN = 1;
 
     public final int mTransferRate;
 

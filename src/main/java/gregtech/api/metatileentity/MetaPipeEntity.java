@@ -506,11 +506,6 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     }
 
     @Override
-    public boolean shouldJoinIc2Enet() {
-        return false;
-    }
-
-    @Override
     public void onMachineBlockUpdate() {/*Do nothing*/}
 
     @Override

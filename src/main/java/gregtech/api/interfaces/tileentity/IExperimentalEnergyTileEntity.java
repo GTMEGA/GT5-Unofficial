@@ -4,7 +4,6 @@ package gregtech.api.interfaces.tileentity;
 import cofh.api.energy.IEnergyReceiver;
 import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_Utility;
-import ic2.api.energy.tile.IEnergySink;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -49,13 +48,6 @@ public interface IExperimentalEnergyTileEntity extends IColoredTileEntity, IHasW
                             }
                         }
                         rUsedSecondary += ((IExperimentalEnergyTileEntity) tTileEntity).injectEnergy(aEnergyType, j, aPrimary, aSecondary - rUsedSecondary);
-                    } else if (IC_ENERGY && aEnergyType == SubTag.ENERGY_ELECTRICITY && tTileEntity instanceof IEnergySink) {
-                        if (((IEnergySink) tTileEntity).acceptsEnergyFrom((TileEntity) aEmitter, ForgeDirection.getOrientation(j))) {
-                            while (aSecondary > rUsedSecondary && ((IEnergySink) tTileEntity).getDemandedEnergy() > 0 &&
-                                   ((IEnergySink) tTileEntity).injectEnergy(ForgeDirection.getOrientation(j), aPrimary, aPrimary) < aPrimary) {
-                                rUsedSecondary++;
-                            }
-                        }
                     } else if (RF_ENERGY && aEnergyType == SubTag.ENERGY_REDSTONE_FLUX && tTileEntity instanceof IEnergyReceiver &&
                                ((IEnergyReceiver) tTileEntity).canConnectEnergy(ForgeDirection.getOrientation(j))) {
                         rUsedSecondary += ((IEnergyReceiver) tTileEntity).receiveEnergy(ForgeDirection.getOrientation(j), (int) aSecondary, false);

@@ -4,7 +4,7 @@ package gregtech.common.items.behaviors;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_LanguageManager;
-import ic2.api.crops.ICropTile;
+// import ic2.api.crops.ICropTile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -41,7 +41,7 @@ public class Behaviour_Sense extends Behaviour_None {
             return false;
         }
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof ICropTile)) {
+        /* if ((tTileEntity instanceof ICropTile)) {
             for (int i = -2; i < 3; i++) {
                 for (int j = -2; j < 3; j++) {
                     for (int k = -2; k < 3; k++) {
@@ -53,7 +53,7 @@ public class Behaviour_Sense extends Behaviour_None {
                 }
             }
             return true;
-        }
+        } */
         return false;
     }
 

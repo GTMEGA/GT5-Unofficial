@@ -181,9 +181,9 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         if (!GregTech_API.mIC2Classic) {
             ItemList.neutroniumHeatCapacitor.set(GregTech_API.constructCoolantCellItem("neutroniumHeatCapacitor", "1G Neutronium Heat Capacitor", 1000000000));
 
-            ItemList.Depleted_Thorium_1.set(new GT_DepletetCell_Item("ThoriumcellDep", "Fuel Rod (Depleted Thorium)", 1));
-            ItemList.Depleted_Thorium_2.set(new GT_DepletetCell_Item("Double_ThoriumcellDep", "Dual Fuel Rod (Depleted Thorium)", 1));//TODO CHECK num
-            ItemList.Depleted_Thorium_4.set(new GT_DepletetCell_Item("Quad_ThoriumcellDep", "Quad Fuel Rod (Depleted Thorium)", 1));//TODO CHECK num
+            ItemList.Depleted_Thorium_1.set(new GT_DepletedCell_Item("ThoriumcellDep", "Fuel Rod (Depleted Thorium)", 1));
+            ItemList.Depleted_Thorium_2.set(new GT_DepletedCell_Item("Double_ThoriumcellDep", "Dual Fuel Rod (Depleted Thorium)", 1));//TODO CHECK num
+            ItemList.Depleted_Thorium_4.set(new GT_DepletedCell_Item("Quad_ThoriumcellDep", "Quad Fuel Rod (Depleted Thorium)", 1));//TODO CHECK num
             ItemList.ThoriumCell_1.set(new GT_RadioactiveCellIC_Item("Thoriumcell", "Fuel Rod (Thorium)", 1, 50000, 0.4F, 0, 0.25F,
                                                                      ItemList.Depleted_Thorium_1.get(1), false
             ));
@@ -207,9 +207,9 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 4L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L)
                                                     );
 
-            ItemList.Depleted_Naquadah_1.set(new GT_DepletetCell_Item("NaquadahcellDep", "Fuel Rod (Depleted Naquadah)", 1));
-            ItemList.Depleted_Naquadah_2.set(new GT_DepletetCell_Item("Double_NaquadahcellDep", "Dual Fuel Rod (Depleted Naquadah)", 1));
-            ItemList.Depleted_Naquadah_4.set(new GT_DepletetCell_Item("Quad_NaquadahcellDep", "Quad Fuel Rod (Depleted Naquadah)", 1));
+            ItemList.Depleted_Naquadah_1.set(new GT_DepletedCell_Item("NaquadahcellDep", "Fuel Rod (Depleted Naquadah)", 1));
+            ItemList.Depleted_Naquadah_2.set(new GT_DepletedCell_Item("Double_NaquadahcellDep", "Dual Fuel Rod (Depleted Naquadah)", 1));
+            ItemList.Depleted_Naquadah_4.set(new GT_DepletedCell_Item("Quad_NaquadahcellDep", "Quad Fuel Rod (Depleted Naquadah)", 1));
             ItemList.NaquadahCell_1.set(new GT_RadioactiveCellIC_Item("Naquadahcell", "Fuel Rod (Naquadah)", 1, 100000, 4F, 1, 1F,
                                                                       ItemList.Depleted_Naquadah_1.get(1), false
             ));
@@ -248,9 +248,9 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                                              new int[]{10_000, 5_000, 5_000, 2_500, 10_000, 10_000}, 2000, 2000
                                             );
 
-            ItemList.Depleted_MNq_1.set(new GT_DepletetCell_Item("MNqCellDep", "Fuel Rod (Depleted Nq*)", 1));
-            ItemList.Depleted_MNq_2.set(new GT_DepletetCell_Item("Double_MNqCellDep", "Dual Fuel Rod (Depleted Nq*)", 1));
-            ItemList.Depleted_MNq_4.set(new GT_DepletetCell_Item("Quad_MNqCellDep", "Quad Fuel Rod (Depleted Nq*)", 1));
+            ItemList.Depleted_MNq_1.set(new GT_DepletedCell_Item("MNqCellDep", "Fuel Rod (Depleted Nq*)", 1));
+            ItemList.Depleted_MNq_2.set(new GT_DepletedCell_Item("Double_MNqCellDep", "Dual Fuel Rod (Depleted Nq*)", 1));
+            ItemList.Depleted_MNq_4.set(new GT_DepletedCell_Item("Quad_MNqCellDep", "Quad Fuel Rod (Depleted Nq*)", 1));
             ItemList.MNqCell_1.set(new GT_RadioactiveCellIC_Item("MNqCell", "Fuel Rod (Nq* - MOX like behaviour)", 1, 100000, 4F, 1, 1F,
                                                                  ItemList.Depleted_MNq_1.get(1), true
             ));

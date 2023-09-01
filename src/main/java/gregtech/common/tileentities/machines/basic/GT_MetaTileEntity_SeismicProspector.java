@@ -13,7 +13,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_UndergroundOil;
 import gregtech.common.blocks.GT_Block_Ore_Abstract;
-import ic2.core.Ic2Items;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -70,8 +69,8 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
             ItemData stackData = GT_OreDictUnificator.getItemData(aStack);
             if (!ready && (aStack != null) && (
                     (aStack.getItem() == Item.getItemFromBlock(Blocks.tnt) && aStack.stackSize >= 2) ||
-                    (aStack.getItem() == Ic2Items.industrialTnt.getItem() && aStack.stackSize >= 1) ||
-                    (aStack.getItem() == Ic2Items.dynamite.getItem() && aStack.stackSize >= 4) ||
+                    /* (aStack.getItem() == Ic2Items.industrialTnt.getItem() && aStack.stackSize >= 1) ||
+                    (aStack.getItem() == Ic2Items.dynamite.getItem() && aStack.stackSize >= 4) || */
                     (stackData != null && stackData.mMaterial.mMaterial == Materials.Glyceryl && aStack.stackSize >= 1) || (
                             aStack.getItem() == ItemList.Block_Powderbarrel.getItem() && aStack.getItemDamage() == ItemList.Block_Powderbarrel.get(1)
                                                                                                                                               .getItemDamage() &&
@@ -81,11 +80,11 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
                 if ((!aPlayer.capabilities.isCreativeMode) && (aStack.stackSize != 111)) {
                     if (aStack.getItem() == Item.getItemFromBlock(Blocks.tnt)) {
                         aStack.stackSize -= 2;
-                    } else if (aStack.getItem() == Ic2Items.industrialTnt.getItem()) {
+                    } /* else if (aStack.getItem() == Ic2Items.industrialTnt.getItem()) {
                         aStack.stackSize -= 1;
                     } else if (aStack.getItem() == Ic2Items.dynamite.getItem()) {
                         aStack.stackSize -= 4;
-                    } else if (aStack.getItem() == ItemList.Block_Powderbarrel.getItem() && aStack.getItemDamage() == ItemList.Block_Powderbarrel.get(1)
+                    }  */else if (aStack.getItem() == ItemList.Block_Powderbarrel.getItem() && aStack.getItemDamage() == ItemList.Block_Powderbarrel.get(1)
                                                                                                                                                  .getItemDamage()) {
                         aStack.stackSize -= 8;
                     } else {

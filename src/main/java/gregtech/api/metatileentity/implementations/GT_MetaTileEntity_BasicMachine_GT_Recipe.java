@@ -18,7 +18,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import ic2.core.Ic2Items;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -187,7 +186,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             if (Loader.isModLoaded("bartworks")) {//todo remove via provider pattern on all enums?
                                 aRecipe[i] = "blockGlass" + VN[8];
                             } else {
-                                aRecipe[i] = Ic2Items.reinforcedGlass;
+                                aRecipe[i] = GT_ModHandler.getIC2Item("reinforcedGlass", 1L);
                             }
                             break;
                     }

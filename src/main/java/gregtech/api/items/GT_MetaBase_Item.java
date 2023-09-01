@@ -1,6 +1,7 @@
 package gregtech.api.items;
 
 
+import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.util.GT_LanguageManager;
@@ -33,6 +34,10 @@ import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.GT_Values.V;
 
 
+@Optional.InterfaceList({
+        @Optional.Interface(iface = "ic2.api.item.ISpecialElectricItem", modid = "IC2"),
+        @Optional.Interface(iface = "ic2.api.item.IElectricItemManager", modid = "IC2")
+})
 public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpecialElectricItem, IElectricItemManager, IFluidContainerItem {
 
     /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
@@ -218,55 +223,6 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         return 64;
     }
 
-    @Override
-    public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-        String tKey = getUnlocalizedName(aStack) + ".tooltip";
-        String[] tStrings = GT_LanguageManager.getTranslation(tKey).split("/n ");
-        for (String tString : tStrings) {
-            if (GT_Utility.isStringValid(tString) && !tKey.equals(tString)) {
-                aList.add(tString);
-            }
-        }
-
-        Long[] tStats = getElectricStats(aStack);
-        if (tStats != null) {
-            if (tStats[3] > 0) {
-                aList.add(EnumChatFormatting.AQUA +
-                          String.format(trans("009", "Contains %s EU   Tier: %s"), GT_Utility.formatNumbers(tStats[3]), "" + (tStats[2] >= 0 ? tStats[2] : 0)) +
-                          EnumChatFormatting.GRAY);
-            } else {
-                long tCharge = getRealCharge(aStack);
-                if (tStats[3] == -2 && tCharge <= 0) {
-                    aList.add(EnumChatFormatting.AQUA + trans("010", "Empty. You should recycle it properly.") + EnumChatFormatting.GRAY);
-                } else {
-                    aList.add(EnumChatFormatting.AQUA +
-                              String.format(trans("011", "%s / %s EU - Voltage: %s"), GT_Utility.formatNumbers(tCharge),
-                                            GT_Utility.formatNumbers(Math.abs(tStats[0])),
-                                            "" + V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)]
-                                           ) + EnumChatFormatting.GRAY);
-                }
-            }
-        }
-
-        tStats = getFluidContainerStats(aStack);
-        if (tStats != null && tStats[0] > 0) {
-            FluidStack tFluid = getFluidContent(aStack);
-            aList.add(EnumChatFormatting.BLUE + ((tFluid == null ? trans("012", "No Fluids Contained") : GT_Utility.getFluidName(tFluid, true))) +
-                      EnumChatFormatting.GRAY);
-            aList.add(EnumChatFormatting.BLUE + String.format(trans("013", "%sL / %sL"), "" + (tFluid == null ? 0 : tFluid.amount), "" + tStats[0]) +
-                      EnumChatFormatting.GRAY);
-        }
-
-        ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
-        if (tList != null) {
-            for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList) {
-                aList = tBehavior.getAdditionalToolTips(this, aList, aStack);
-            }
-        }
-
-        addAdditionalToolTips(aList, aStack, aPlayer);
-    }
-
     public abstract Long[] getElectricStats(ItemStack aStack);
 
     /*
@@ -371,6 +327,54 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
 
     public abstract Long[] getFluidContainerStats(ItemStack aStack);
 
+    @Override
+    public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+        String tKey = getUnlocalizedName(aStack) + ".tooltip";
+        String[] tStrings = GT_LanguageManager.getTranslation(tKey).split("/n ");
+        for (String tString : tStrings) {
+            if (GT_Utility.isStringValid(tString) && !tKey.equals(tString)) {
+                aList.add(tString);
+            }
+        }
+
+        Long[] tStats = getElectricStats(aStack);
+        if (tStats != null) {
+            if (tStats[3] > 0) {
+                aList.add(EnumChatFormatting.AQUA +
+                          String.format(trans("009", "Contains %s EU   Tier: %s"), GT_Utility.formatNumbers(tStats[3]), "" + (tStats[2] >= 0 ? tStats[2] : 0)) +
+                          EnumChatFormatting.GRAY);
+            } else {
+                long tCharge = getRealCharge(aStack);
+                if (tStats[3] == -2 && tCharge <= 0) {
+                    aList.add(EnumChatFormatting.AQUA + trans("010", "Empty. You should recycle it properly.") + EnumChatFormatting.GRAY);
+                } else {
+                    aList.add(EnumChatFormatting.AQUA + String.format(trans("011", "%s / %s EU - Voltage: %s"), GT_Utility.formatNumbers(tCharge),
+                                                                      GT_Utility.formatNumbers(Math.abs(tStats[0])),
+                                                                      "" + V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)]
+                                                                     ) + EnumChatFormatting.GRAY);
+                }
+            }
+        }
+
+        tStats = getFluidContainerStats(aStack);
+        if (tStats != null && tStats[0] > 0) {
+            FluidStack tFluid = getFluidContent(aStack);
+            aList.add(EnumChatFormatting.BLUE + ((tFluid == null ? trans("012", "No Fluids Contained") : GT_Utility.getFluidName(tFluid, true))) +
+                      EnumChatFormatting.GRAY);
+            aList.add(EnumChatFormatting.BLUE + String.format(trans("013", "%sL / %sL"), "" + (tFluid == null ? 0 : tFluid.amount), "" + tStats[0]) +
+                      EnumChatFormatting.GRAY);
+        }
+
+        ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
+        if (tList != null) {
+            for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList) {
+                aList = tBehavior.getAdditionalToolTips(this, aList, aStack);
+            }
+        }
+
+        addAdditionalToolTips(aList, aStack, aPlayer);
+    }
+
     public FluidStack getFluidContent(ItemStack aStack) {
         Long[] tStats = getFluidContainerStats(aStack);
         if (tStats == null || tStats[0] <= 0) {
@@ -380,6 +384,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         return tNBT == null ? null : FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("GT.FluidContent"));
     }
 
+    @Optional.Method(modid = "IC2")
     @Override
     public final int getTier(ItemStack aStack) {
         Long[] tStats = getElectricStats(aStack);
@@ -453,6 +458,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         return super.getProjectile(aProjectileType, aStack, aWorld, aEntity, aSpeed);
     }
 
+    @Optional.Method(modid = "IC2")
     @Override
     public final boolean canProvideEnergy(ItemStack aStack) {
         Long[] tStats = getElectricStats(aStack);
@@ -462,16 +468,19 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         return tStats[3] > 0 || (aStack.stackSize == 1 && (tStats[3] == -2 || tStats[3] == -3));
     }
 
+    @Optional.Method(modid = "IC2")
     @Override
     public final Item getChargedItem(ItemStack itemStack) {
         return this;
     }
 
+    @Optional.Method(modid = "IC2")
     @Override
     public final Item getEmptyItem(ItemStack itemStack) {
         return this;
     }
 
+    @Optional.Method(modid = "IC2")
     @Override
     public final double getMaxCharge(ItemStack aStack) {
         Long[] tStats = getElectricStats(aStack);
@@ -481,6 +490,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         return Math.abs(tStats[0]);
     }
 
+    @Optional.Method(modid = "IC2")
     @Override
     public final double getTransferLimit(ItemStack aStack) {
         Long[] tStats = getElectricStats(aStack);
@@ -490,6 +500,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         return Math.max(tStats[1], tStats[3]);
     }
 
+    @Optional.Method(modid = "IC2")
     @Override
     public final double charge(ItemStack aStack, double aCharge, int aTier, boolean aIgnoreTransferLimit, boolean aSimulate) {
         Long[] tStats = getElectricStats(aStack);
@@ -509,6 +520,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         return tNewCharge - tChargeBefore;
     }
 
+    @Optional.Method(modid = "IC2")
     @Override
     public final double discharge(ItemStack aStack, double aCharge, int aTier, boolean aIgnoreTransferLimit, boolean aBatteryAlike, boolean aSimulate) {
         Long[] tStats = getElectricStats(aStack);
@@ -535,16 +547,19 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         return tChargeBefore - tNewCharge;
     }
 
+    @Optional.Method(modid = "IC2")
     @Override
     public final double getCharge(ItemStack aStack) {
         return getRealCharge(aStack);
     }
 
+    @Optional.Method(modid = "IC2")
     @Override
     public final boolean canUse(ItemStack aStack, double aAmount) {
         return getRealCharge(aStack) >= aAmount;
     }
 
+    @Optional.Method(modid = "IC2")
     @Override
     public final boolean use(ItemStack aStack, double aAmount, EntityLivingBase aPlayer) {
         chargeFromArmor(aStack, aPlayer);
@@ -562,6 +577,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         return false;
     }
 
+    @Optional.Method(modid = "IC2")
     @Override
     public final void chargeFromArmor(ItemStack aStack, EntityLivingBase aPlayer) {
         if (aPlayer == null || aPlayer.worldObj.isRemote) {
@@ -588,6 +604,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         }
     }
 
+    @Optional.Method(modid = "IC2")
     @Override
     public final String getToolTip(ItemStack aStack) {
         return null;
@@ -756,6 +773,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
         isItemStackUsable(aStack);
     }
 
+    @Optional.Method(modid = "IC2")
     @Override
     public final IElectricItemManager getManager(ItemStack aStack) {
         return this;

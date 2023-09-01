@@ -553,11 +553,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
-    public boolean shouldJoinIc2Enet() {
-        return false;
-    }
-
-    @Override
     public void onMachineBlockUpdate() {/*Do nothing*/}
 
     @Override

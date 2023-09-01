@@ -1,9 +1,7 @@
 package gregtech.api.items;
 
 
-import gregtech.common.items.GT_DepletetCell_Item;
-import ic2.api.item.IBoxable;
-import ic2.core.util.StackUtil;
+import gregtech.common.items.GT_DepletedCell_Item;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,7 +10,7 @@ import net.minecraft.util.EnumChatFormatting;
 import java.util.List;
 
 
-public class GT_RadioactiveCell_Item extends GT_Generic_Item implements IBoxable {
+public class GT_RadioactiveCell_Item extends GT_Generic_Item {
 
     protected static int sumUp(int a) {
         int b = 0;
@@ -58,12 +56,21 @@ public class GT_RadioactiveCell_Item extends GT_Generic_Item implements IBoxable
     }
 
     public int getControlTagOfStack(ItemStack stack) {
-        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
+        NBTTagCompound nbtData = getOrCreateNbtData(stack);
         return nbtData.getInteger("tag");
     }
 
+    public NBTTagCompound getOrCreateNbtData(ItemStack stack) {
+        NBTTagCompound nbtData = stack.getTagCompound();
+        if (nbtData == null) {
+            nbtData = new NBTTagCompound();
+            stack.setTagCompound(nbtData);
+        }
+        return nbtData;
+    }
+
     public void setControlTagOfStack(ItemStack stack, int tag) {
-        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
+        NBTTagCompound nbtData = getOrCreateNbtData(stack);
         nbtData.setInteger("tag", tag);
     }
 
@@ -76,7 +83,7 @@ public class GT_RadioactiveCell_Item extends GT_Generic_Item implements IBoxable
     }
 
     public void setDamageForStack(ItemStack stack, int advDmg) {
-        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
+        NBTTagCompound nbtData = getOrCreateNbtData(stack);
         nbtData.setInteger("advDmg", advDmg);
         if (this.maxDmg > 0) {
             double p = (double) advDmg / (double) this.maxDmg;
@@ -90,7 +97,7 @@ public class GT_RadioactiveCell_Item extends GT_Generic_Item implements IBoxable
     }
 
     public int getDamageOfStack(ItemStack stack) {
-        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
+        NBTTagCompound nbtData = getOrCreateNbtData(stack);
         this.dura = nbtData.getInteger("advDmg");
         return this.dura;
     }
@@ -115,7 +122,7 @@ public class GT_RadioactiveCell_Item extends GT_Generic_Item implements IBoxable
                 color2 = EnumChatFormatting.DARK_GRAY;
                 break;
         }
-        EnumChatFormatting color1 = this instanceof GT_DepletetCell_Item ? color2 = EnumChatFormatting.DARK_GRAY : EnumChatFormatting.WHITE;
+        EnumChatFormatting color1 = this instanceof GT_DepletedCell_Item ? color2 = EnumChatFormatting.DARK_GRAY : EnumChatFormatting.WHITE;
         aList.add(color1 +
                   String.format(trans("001", "Durability: %s/%s"), "" + color2 + (this.maxDmg - getDurabilityOfStack(aStack)) + color1, "" + this.maxDmg));
     }
@@ -127,11 +134,6 @@ public class GT_RadioactiveCell_Item extends GT_Generic_Item implements IBoxable
             aStack.setTagCompound(tNBT);
         }
         return tNBT.getInteger("advDmg");
-    }
-
-    @Override
-    public boolean canBeStoredInToolbox(ItemStack itemstack) {
-        return true;
     }
 
     protected boolean outputPulseForStack(ItemStack aStack) {

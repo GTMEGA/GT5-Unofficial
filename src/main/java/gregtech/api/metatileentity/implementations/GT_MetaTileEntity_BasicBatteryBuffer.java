@@ -10,7 +10,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import ic2.api.item.IElectricItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -331,9 +330,6 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
                             }
                             tStored = tStored + tStep;
                         }
-                    } else if (aStack.getItem() instanceof IElectricItem) {
-                        tStored = tStored + (long) ic2.api.item.ElectricItem.manager.getCharge(aStack);
-                        tScale = tScale + (long) ((IElectricItem) aStack.getItem()).getMaxCharge(aStack);
                     }
                 }
             }
@@ -361,9 +357,6 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
                             capacity = capacity + stats[0];
                             //tStored = tStored + ((GT_MetaBase_Item) aStack.getItem()).getRealCharge(aStack);
                         }
-                    } else if (aStack.getItem() instanceof IElectricItem) {
-                        //tStored = tStored + (long) ic2.api.item.ElectricItem.manager.getCharge(aStack);
-                        capacity = capacity + (long) ((IElectricItem) aStack.getItem()).getMaxCharge(aStack);
                     }
                 }
             }
@@ -382,8 +375,6 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
                         if (stats != null) {
                             stored = stored + ((GT_MetaBase_Item) aStack.getItem()).getRealCharge(aStack);
                         }
-                    } else if (aStack.getItem() instanceof IElectricItem) {
-                        stored = stored + (long) ic2.api.item.ElectricItem.manager.getCharge(aStack);
                     }
                 }
             }

@@ -17,12 +17,12 @@ public class GT_CropLoader implements Runnable {
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: Register Crops to IC2.");
-        try {
-            /*Tags:
+        /* try {
+             *//*Tags:
              * Vines = Tendrilly
              * Edible = Food
              *
-             */
+             *//*
             ItemStack[] tI = {
                     ItemList.Crop_Drop_Indigo.get(4L), ItemList.Crop_Drop_MilkWart.get(4L), new ItemStack(Blocks.brown_mushroom, 4), new ItemStack(
                     Blocks.red_mushroom, 4)
@@ -243,7 +243,7 @@ public class GT_CropLoader implements Runnable {
         } catch (Throwable e) {
             GT_Log.err.println("GT_Mod: Failed to register Crops to IC2.");
             e.printStackTrace(GT_Log.err);
-        }
+        } */
     }
 
 }

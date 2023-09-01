@@ -9,7 +9,6 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import ic2.core.Ic2Items;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -1685,7 +1684,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                         "UUU", "NNN", "UUU", 'U', OrePrefixes.ingot.get(Materials.Uranium), 'N', OrePrefixes.ingot.get(Materials.Plutonium)
                 });
 
-        if (!GregTech_API.mIC2Classic) {
+        /* if (!GregTech_API.mIC2Classic) {
             GT_ModHandler.removeRecipeByOutputDelayed(Ic2Items.miningLaser.copy());
             GT_ModHandler.addCraftingRecipe(
                     Ic2Items.miningLaser.copy(), GT_ModHandler.RecipeBits.BUFFERED, new Object[]{
@@ -1711,7 +1710,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                             ItemList.Emitter_HV, 'C', OrePrefixes.circuit.get(Materials.Elite), 'S', OrePrefixes.screw.get(Materials.Titanium), 'B',
                             new ItemStack(Ic2Items.chargingEnergyCrystal.copy().getItem(), 1, GT_Values.W)
                     });
-        }
+        } */
         GT_ModHandler.removeRecipeDelayed(GT_ModHandler.getIC2Item("miningPipe", 8));
         GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("miningPipe", 1), GT_ModHandler.RecipeBits.BUFFERED,

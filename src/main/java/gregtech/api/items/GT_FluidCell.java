@@ -95,7 +95,7 @@ public class GT_FluidCell extends Item implements IFluidContainerItem {
     }
 
     /**
-     * @param container ItemStack which is the fluid container.
+     * @param stack ItemStack which is the fluid container.
      * @param resource  FluidStack attempting to fill the container.
      * @param doFill    If false, the fill will only be simulated.
      * @return Amount of fluid that was (or would have been, if simulated) filled into the
