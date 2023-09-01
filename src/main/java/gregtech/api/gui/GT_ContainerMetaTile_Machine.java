@@ -1,5 +1,6 @@
 package gregtech.api.gui;
 
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -9,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 
+
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
  * <p/>
@@ -16,31 +18,15 @@ import net.minecraft.inventory.ICrafting;
  */
 public class GT_ContainerMetaTile_Machine extends GT_Container {
 
-    public int mActive = 0,
-            mMaxProgressTime = 0,
-            mProgressTime = 0,
-            mEnergy = 0,
-            mSteam = 0,
-            mSteamStorage = 0,
-            mStorage = 0,
-            mOutput = 0,
-            mInput = 0,
-            mID = 0,
+    public int mActive = 0, mMaxProgressTime = 0, mProgressTime = 0, mEnergy = 0, mSteam = 0, mSteamStorage = 0, mStorage = 0, mOutput = 0, mInput = 0, mID = 0,
             mDisplayErrorCode = 0;
-    private int oActive = 0,
-            oMaxProgressTime = 0,
-            oProgressTime = 0,
-            oEnergy = 0,
-            oSteam = 0,
-            oSteamStorage = 0,
-            oStorage = 0,
-            oOutput = 0,
-            oInput = 0,
-            oID = 0,
-            oDisplayErrorCode = 0;
+
     protected int mTimer = 0;
 
     protected IMetaTileEntity mMetaTileEntity = null;
+
+    private int oActive = 0, oMaxProgressTime = 0, oProgressTime = 0, oEnergy = 0, oSteam = 0, oSteamStorage = 0, oStorage = 0, oOutput = 0, oInput = 0, oID =
+            0, oDisplayErrorCode = 0;
 
 
     public GT_ContainerMetaTile_Machine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
@@ -54,23 +40,21 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
         if (mTileEntity != null && mTileEntity.getMetaTileEntity() != null) {
             this.mMetaTileEntity = mTileEntity.getMetaTileEntity();
             addSlots(aInventoryPlayer);
-            if (doesBindPlayerInventory() && doesBindInventory)
+            if (doesBindPlayerInventory() && doesBindInventory) {
                 bindPlayerInventory(aInventoryPlayer);
+            }
             detectAndSendChanges();
         } else {
             aInventoryPlayer.player.openContainer = aInventoryPlayer.player.inventoryContainer;
         }
     }
 
-    public IMetaTileEntity getMetaTileEntity() {
-        return mMetaTileEntity;
-    }
-
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null)
+        if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) {
             return;
+        }
         mStorage = (int) Math.min(Integer.MAX_VALUE, mTileEntity.getEUCapacity());
         mEnergy = (int) Math.min(Integer.MAX_VALUE, mTileEntity.getStoredEU());
         mSteamStorage = (int) Math.min(Integer.MAX_VALUE, mTileEntity.getSteamCapacity());
@@ -203,7 +187,12 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
         return mTileEntity.isUseableByPlayer(player);
     }
 
+    public IMetaTileEntity getMetaTileEntity() {
+        return mMetaTileEntity;
+    }
+
     public String trans(String aKey, String aEnglish) {
         return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish, false);
     }
+
 }

@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -11,11 +12,12 @@ import net.minecraft.block.Block;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION3;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION3_GLOW;
 
+
 public class GT_MetaTileEntity_FusionComputer3 extends GT_MetaTileEntity_FusionComputer {
 
-    private static final ITexture textureOverlay = TextureFactory.of(
-            TextureFactory.builder().addIcon(OVERLAY_FUSION3).extFacing().build(),
-            TextureFactory.builder().addIcon(OVERLAY_FUSION3_GLOW).extFacing().glow().build());
+    private static final ITexture textureOverlay = TextureFactory.of(TextureFactory.builder().addIcon(OVERLAY_FUSION3).extFacing().build(),
+                                                                     TextureFactory.builder().addIcon(OVERLAY_FUSION3_GLOW).extFacing().glow().build()
+                                                                    );
 
     public GT_MetaTileEntity_FusionComputer3(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 6);
@@ -26,8 +28,18 @@ public class GT_MetaTileEntity_FusionComputer3 extends GT_MetaTileEntity_FusionC
     }
 
     @Override
-    public int tier() {
-        return 8;
+    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GT_MetaTileEntity_FusionComputer3(mName);
+    }
+
+    @Override
+    public ITexture getTextureOverlay() {
+        return textureOverlay;
+    }
+
+    @Override
+    public int tierOverclock() {
+        return 4;
     }
 
     @Override
@@ -36,8 +48,16 @@ public class GT_MetaTileEntity_FusionComputer3 extends GT_MetaTileEntity_FusionC
     }
 
     @Override
-    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_FusionComputer3(mName);
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType("Fusion Reactor").addInfo("A SUN DOWN ON EARTH").addInfo("Controller block for the Fusion Reactor Mk III").addInfo(
+                  "8192EU/t and 40M EU capacity per Energy Hatch").addInfo("If the recipe has a startup cost greater than the").addInfo(
+                  "number of energy hatches * cap, you can't do it").addSeparator().beginStructureBlock(15, 3, 15, false).addController("See diagram when " +
+                                                                                                                                        "placed")
+          .addCasingInfo("Fusion Machine Casing Mk II", 79).addStructureInfo("Cover the coils with casing").addOtherStructurePart(
+                  "Fusion Coil Block", "Center part of the ring").addEnergyHatch("1-16, Specified casings", 2).addInputHatch("2-16, Specified casings", 1)
+          .addOutputHatch("1-16, Specified casings", 3).addStructureInfo("ALL Hatches must be UV or better").toolTipFinisher("Gregtech");
+        return tt;
     }
 
     @Override
@@ -61,36 +81,8 @@ public class GT_MetaTileEntity_FusionComputer3 extends GT_MetaTileEntity_FusionC
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Fusion Reactor")
-                .addInfo("A SUN DOWN ON EARTH")
-                .addInfo("Controller block for the Fusion Reactor Mk III")
-                .addInfo("8192EU/t and 40M EU capacity per Energy Hatch")
-                .addInfo("If the recipe has a startup cost greater than the")
-                .addInfo("number of energy hatches * cap, you can't do it")
-                .addSeparator()
-                .beginStructureBlock(15, 3, 15, false)
-                .addController("See diagram when placed")
-                .addCasingInfo("Fusion Machine Casing Mk II", 79)
-                .addStructureInfo("Cover the coils with casing")
-                .addOtherStructurePart("Fusion Coil Block", "Center part of the ring")
-                .addEnergyHatch("1-16, Specified casings", 2)
-                .addInputHatch("2-16, Specified casings", 1)
-                .addOutputHatch("1-16, Specified casings", 3)
-                .addStructureInfo("ALL Hatches must be UV or better")
-                .toolTipFinisher("Gregtech");
-        return tt;
+    public int tier() {
+        return 8;
     }
 
-    @Override
-    public ITexture getTextureOverlay() {
-        return textureOverlay;
-    }
-
-    @Override
-    public int tierOverclock() {
-        return 4;
-    }
 }
-

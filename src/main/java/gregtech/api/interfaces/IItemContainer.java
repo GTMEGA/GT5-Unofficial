@@ -1,10 +1,13 @@
 package gregtech.api.interfaces;
 
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+
 public interface IItemContainer {
+
     Item getItem();
 
     Block getBlock();
@@ -40,4 +43,5 @@ public interface IItemContainer {
     ItemStack getWithName(long aAmount, String aDisplayName, Object... aReplacements);
 
     boolean hasBeenSet();
+
 }

@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
@@ -23,14 +24,11 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE_IDLE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE_IDLE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DUCTTAPE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MAINTENANCE;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+
 
 public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch {
+
     public boolean mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false, mSolderingTool = false, mCrowbar = false, mAuto;
 
     public GT_MetaTileEntity_Hatch_Maintenance(int aID, String aName, String aNameRegional, int aTier) {
@@ -72,25 +70,43 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        if (mAuto) return new ITexture[]{
-                aBaseTexture,
-                TextureFactory.of(OVERLAY_AUTOMAINTENANCE_IDLE),
-                TextureFactory.builder().addIcon(OVERLAY_AUTOMAINTENANCE_IDLE_GLOW).glow().build()};
+        if (mAuto) {
+            return new ITexture[]{
+                    aBaseTexture, TextureFactory.of(OVERLAY_AUTOMAINTENANCE_IDLE), TextureFactory.builder().addIcon(OVERLAY_AUTOMAINTENANCE_IDLE_GLOW)
+                                                                                                 .glow().build()
+            };
+        }
         return new ITexture[]{
-                aBaseTexture,
-                TextureFactory.of(OVERLAY_MAINTENANCE)};
+                aBaseTexture, TextureFactory.of(OVERLAY_MAINTENANCE)
+        };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        if (mAuto) return new ITexture[]{
-                aBaseTexture,
-                TextureFactory.of(OVERLAY_AUTOMAINTENANCE),
-                TextureFactory.builder().addIcon(OVERLAY_AUTOMAINTENANCE_GLOW).glow().build()};
+        if (mAuto) {
+            return new ITexture[]{
+                    aBaseTexture, TextureFactory.of(OVERLAY_AUTOMAINTENANCE), TextureFactory.builder().addIcon(OVERLAY_AUTOMAINTENANCE_GLOW).glow().build()
+            };
+        }
         return new ITexture[]{
-                aBaseTexture,
-                TextureFactory.of(OVERLAY_MAINTENANCE),
-                TextureFactory.of(OVERLAY_DUCTTAPE)};
+                aBaseTexture, TextureFactory.of(OVERLAY_MAINTENANCE), TextureFactory.of(OVERLAY_DUCTTAPE)
+        };
+    }
+
+    @Override
+    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        if (aTileEntity.getMetaTileID() == 111) {
+            return new GT_MetaTileEntity_Hatch_Maintenance(mName, mTier, mDescriptionArray, mTextures, true);
+        }
+        return new GT_MetaTileEntity_Hatch_Maintenance(mName, mTier, mDescriptionArray, mTextures, false);
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide() && mAuto && aTick % 100L == 0L) {
+            aBaseMetaTileEntity.setActive(!isRecipeInputEqual(false));
+        }
     }
 
     @Override
@@ -99,7 +115,13 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     }
 
     @Override
-    public boolean isSimpleMachine() {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+        if (aBaseMetaTileEntity.isClientSide()) {
+            return true;
+        }
+        if (aSide == aBaseMetaTileEntity.getFrontFacing()) {
+            aBaseMetaTileEntity.openGUI(aPlayer);
+        }
         return true;
     }
 
@@ -113,60 +135,11 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
         return true;
     }
 
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return mAuto && GT_Mod.gregtechproxy.mAMHInteraction;
-    }
-
-    @Override
-    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        if (aTileEntity.getMetaTileID() == 111)
-            return new GT_MetaTileEntity_Hatch_Maintenance(mName, mTier, mDescriptionArray, mTextures, true);
-        return new GT_MetaTileEntity_Hatch_Maintenance(mName, mTier, mDescriptionArray, mTextures, false);
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        if (aSide == aBaseMetaTileEntity.getFrontFacing()) aBaseMetaTileEntity.openGUI(aPlayer);
-        return true;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        if (mAuto) return new GT_Container_2by2(aPlayerInventory, aBaseMetaTileEntity);
-        return new GT_Container_MaintenanceHatch(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        if (mAuto) return new GT_GUIContainer_2by2(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-        return new GT_GUIContainer_MaintenanceHatch(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    public void updateSlots() {
-        for (int i = 0; i < mInventory.length; i++)
-            if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
-    }
-
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-        if(aBaseMetaTileEntity.isServerSide() && mAuto && aTick % 100L ==0L){
-            aBaseMetaTileEntity.setActive(!isRecipeInputEqual(false));
-        }
-    }
-
-    public boolean autoMaintainance(){
-        return isRecipeInputEqual(true);
-    }
-
     public boolean isRecipeInputEqual(boolean aDecreaseStacksizeBySuccess) {
-        ItemStack[] mInputs= {ItemList.Duct_Tape.get(4),
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 2),
-                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2)};
+        ItemStack[] mInputs = {
+                ItemList.Duct_Tape.get(4), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 2), GT_OreDictUnificator.get(
+                OrePrefixes.screw, Materials.Steel, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2)
+        };
 
         int amt;
 
@@ -175,7 +148,10 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
                 amt = tStack.stackSize;
                 boolean temp = true;
                 for (ItemStack aStack : mInventory) {
-                    if ((GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true))) {
+                    if ((
+                            GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(
+                                    GT_OreDictUnificator.get(false, aStack), tStack, true)
+                    )) {
                         amt -= aStack.stackSize;
                         if (amt < 1) {
                             temp = false;
@@ -183,7 +159,9 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
                         }
                     }
                 }
-                if (temp) return false;
+                if (temp) {
+                    return false;
+                }
             }
         }
 
@@ -192,7 +170,10 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
                 if (tStack != null) {
                     amt = tStack.stackSize;
                     for (ItemStack aStack : mInventory) {
-                        if ((GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true))) {
+                        if ((
+                                GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(
+                                        GT_OreDictUnificator.get(false, aStack), tStack, true)
+                        )) {
                             if (aStack.stackSize < amt) {
                                 amt -= aStack.stackSize;
                                 aStack.stackSize = 0;
@@ -216,19 +197,40 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
         return true;
     }
 
+    public void updateSlots() {
+        for (int i = 0; i < mInventory.length; i++) {
+            if (mInventory[i] != null && mInventory[i].stackSize <= 0) {
+                mInventory[i] = null;
+            }
+        }
+    }
+
+    public boolean autoMaintainance() {
+        return isRecipeInputEqual(true);
+    }
+
     public void onToolClick(ItemStack aStack, EntityLivingBase aPlayer) {
-        if (aStack == null || aPlayer == null) return;
-        if (GT_Utility.isStackInList(aStack, GregTech_API.sWrenchList) && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer))
+        if (aStack == null || aPlayer == null) {
+            return;
+        }
+        if (GT_Utility.isStackInList(aStack, GregTech_API.sWrenchList) && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
             mWrench = true;
-        if (GT_Utility.isStackInList(aStack, GregTech_API.sScrewdriverList) && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer))
+        }
+        if (GT_Utility.isStackInList(aStack, GregTech_API.sScrewdriverList) && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
             mScrewdriver = true;
-        if (GT_Utility.isStackInList(aStack, GregTech_API.sSoftHammerList) && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer))
+        }
+        if (GT_Utility.isStackInList(aStack, GregTech_API.sSoftHammerList) && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
             mSoftHammer = true;
-        if (GT_Utility.isStackInList(aStack, GregTech_API.sHardHammerList) && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer))
+        }
+        if (GT_Utility.isStackInList(aStack, GregTech_API.sHardHammerList) && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
             mHardHammer = true;
-        if (GT_Utility.isStackInList(aStack, GregTech_API.sCrowbarList) && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer))
+        }
+        if (GT_Utility.isStackInList(aStack, GregTech_API.sCrowbarList) && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
             mCrowbar = true;
-        if (GT_ModHandler.useSolderingIron(aStack, aPlayer)) mSolderingTool = true;
+        }
+        if (GT_ModHandler.useSolderingIron(aStack, aPlayer)) {
+            mSolderingTool = true;
+        }
         if (GT_OreDictUnificator.isItemStackInstanceOf(aStack, "craftingDuctTape")) {
             mWrench = mScrewdriver = mSoftHammer = mHardHammer = mCrowbar = mSolderingTool = true;
             getBaseMetaTileEntity().setActive(false);
@@ -252,4 +254,31 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return mAuto && GT_Mod.gregtechproxy.mAMHInteraction;
     }
+
+    @Override
+    public boolean isValidSlot(int aIndex) {
+        return mAuto && GT_Mod.gregtechproxy.mAMHInteraction;
+    }
+
+    @Override
+    public boolean isSimpleMachine() {
+        return true;
+    }
+
+    @Override
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        if (mAuto) {
+            return new GT_Container_2by2(aPlayerInventory, aBaseMetaTileEntity);
+        }
+        return new GT_Container_MaintenanceHatch(aPlayerInventory, aBaseMetaTileEntity);
+    }
+
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        if (mAuto) {
+            return new GT_GUIContainer_2by2(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
+        }
+        return new GT_GUIContainer_MaintenanceHatch(aPlayerInventory, aBaseMetaTileEntity);
+    }
+
 }

@@ -1,5 +1,6 @@
 package gregtech.common.gui;
 
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
@@ -9,11 +10,17 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 
+
 public class GT_Container_Boiler extends GT_ContainerMetaTile_Machine {
+
     public int mWaterAmount = 0;
+
     public int mSteamAmount = 0;
+
     public int mProcessingEnergy = 0;
+
     public int mTemperature = 2;
+
     public GT_Container_Boiler(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
     }
@@ -44,14 +51,23 @@ public class GT_Container_Boiler extends GT_ContainerMetaTile_Machine {
         }
 
         // GT_MetaTileEntity_Boiler.getCapacity() is used for both water and steam capacity.
-        int capacity = ((GT_MetaTileEntity_Boiler) this.mTileEntity.getMetaTileEntity()).getCapacity();
+        int capacity = this.mTileEntity.getMetaTileEntity().getCapacity();
 
         this.mTemperature = ((GT_MetaTileEntity_Boiler) this.mTileEntity.getMetaTileEntity()).mTemperature;
         this.mProcessingEnergy = ((GT_MetaTileEntity_Boiler) this.mTileEntity.getMetaTileEntity()).mProcessingEnergy;
-        this.mSteamAmount = (((GT_MetaTileEntity_Boiler) this.mTileEntity.getMetaTileEntity()).mSteam == null ? 0 : ((GT_MetaTileEntity_Boiler) this.mTileEntity.getMetaTileEntity()).mSteam.amount);
-        this.mWaterAmount = (((GT_MetaTileEntity_Boiler) this.mTileEntity.getMetaTileEntity()).mFluid == null ? 0 : ((GT_MetaTileEntity_Boiler) this.mTileEntity.getMetaTileEntity()).mFluid.amount);
+        this.mSteamAmount = (
+                ((GT_MetaTileEntity_Boiler) this.mTileEntity.getMetaTileEntity()).mSteam == null ? 0
+                                                                                                 :
+                ((GT_MetaTileEntity_Boiler) this.mTileEntity.getMetaTileEntity()).mSteam.amount
+        );
+        this.mWaterAmount = (
+                ((GT_MetaTileEntity_Boiler) this.mTileEntity.getMetaTileEntity()).mFluid == null ? 0
+                                                                                                 :
+                ((GT_MetaTileEntity_Boiler) this.mTileEntity.getMetaTileEntity()).mFluid.amount
+        );
 
-        this.mTemperature = Math.min(54, Math.max(0, this.mTemperature * 54 / (((GT_MetaTileEntity_Boiler) this.mTileEntity.getMetaTileEntity()).maxProgresstime() - 10)));
+        this.mTemperature = Math.min(
+                54, Math.max(0, this.mTemperature * 54 / (((GT_MetaTileEntity_Boiler) this.mTileEntity.getMetaTileEntity()).maxProgresstime() - 10)));
         this.mSteamAmount = Math.min(54, Math.max(0, this.mSteamAmount * 54 / (capacity - 100)));
         this.mWaterAmount = Math.min(54, Math.max(0, this.mWaterAmount * 54 / (capacity - 100)));
         this.mProcessingEnergy = Math.min(14, Math.max(this.mProcessingEnergy > 0 ? 1 : 0, this.mProcessingEnergy * 14 / 1000));
@@ -83,4 +99,5 @@ public class GT_Container_Boiler extends GT_ContainerMetaTile_Machine {
                 this.mWaterAmount = par2;
         }
     }
+
 }

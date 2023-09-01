@@ -1,5 +1,6 @@
 package gregtech.common.gui;
 
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
@@ -13,7 +14,9 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+
 public class GT_Container_Regulator extends GT_ContainerMetaTile_Machine {
+
     public int[] mTargetSlots = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     public GT_Container_Regulator(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
@@ -60,6 +63,16 @@ public class GT_Container_Regulator extends GT_ContainerMetaTile_Machine {
     }
 
     @Override
+    public int getSlotCount() {
+        return 10;
+    }
+
+    @Override
+    public int getShiftClickSlotCount() {
+        return 10;
+    }
+
+    @Override
     public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
         if (aSlotIndex < 10) {
             return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
@@ -70,7 +83,8 @@ public class GT_Container_Regulator extends GT_ContainerMetaTile_Machine {
                 return null;
             }
             if (aSlotIndex == 28) {
-                ((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).bOutput = (!((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).bOutput);
+                ((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).bOutput =
+                        (!((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).bOutput);
                 if (((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).bOutput) {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("116", "Emit Energy to Outputside"));
                 } else {
@@ -98,7 +112,9 @@ public class GT_Container_Regulator extends GT_ContainerMetaTile_Machine {
                 return null;
             }
             if ((aSlotIndex < 28)) {
-                ((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).mTargetSlots[(aSlotIndex - 19)] = Math.min(99, Math.max(0, ((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).mTargetSlots[(aSlotIndex - 19)] + (aMouseclick == 0 ? -1 : 1) * (aShifthold == 0 ? 1 : 16)));
+                ((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).mTargetSlots[(aSlotIndex - 19)] = Math.min(99, Math.max(
+                        0, ((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).mTargetSlots[(aSlotIndex - 19)] +
+                           (aMouseclick == 0 ? -1 : 1) * (aShifthold == 0 ? 1 : 16)));
                 return null;
             }
         }
@@ -157,13 +173,4 @@ public class GT_Container_Regulator extends GT_ContainerMetaTile_Machine {
         }
     }
 
-    @Override
-    public int getSlotCount() {
-        return 10;
-    }
-
-    @Override
-    public int getShiftClickSlotCount() {
-        return 10;
-    }
 }

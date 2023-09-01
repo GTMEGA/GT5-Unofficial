@@ -6,7 +6,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 
 /**
  * This serves as a method to allow access to NEI functionality safely, without requiring it to be present
- * */
+ */
 public abstract class NEIInteropBase {
 
     public void preDraw(final GuiContainer container) {

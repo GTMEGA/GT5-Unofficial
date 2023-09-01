@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
@@ -26,7 +27,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-@SuppressWarnings({"rawtypes","unchecked"})
+
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class GT_FluidDisplayItem extends GT_Generic_Item {
 
     private static final Map<Fluid, String> sFluidTooltips = new HashMap<>();
@@ -37,10 +39,31 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
     }
 
     @Override
+    public IIcon getIconFromDamage(int aMeta) {
+        return Stream.of(FluidRegistry.getFluid(aMeta), FluidRegistry.WATER).filter(Objects::nonNull).map(Fluid::getStillIcon).filter(Objects::nonNull)
+                     .findFirst().orElseThrow(IllegalStateException::new);
+    }
+
+    @Override
+    public String getUnlocalizedName(ItemStack aStack) {
+        if (aStack != null) {
+            return GT_Utility.getFluidName(FluidRegistry.getFluid(aStack.getItemDamage()), false);
+        }
+        return "";
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister aIconRegister) {
+    }
+
+    @Override
     protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
         if (FluidRegistry.getFluid(aStack.getItemDamage()) != null) {
             String tChemicalFormula = getChemicalFormula(new FluidStack(FluidRegistry.getFluid(aStack.getItemDamage()), 1));
-            if (!tChemicalFormula.isEmpty()) aList.add(EnumChatFormatting.GRAY + tChemicalFormula + EnumChatFormatting.GRAY);
+            if (!tChemicalFormula.isEmpty()) {
+                aList.add(EnumChatFormatting.GRAY + tChemicalFormula + EnumChatFormatting.GRAY);
+            }
         }
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (GT_Values.D1) {
@@ -54,24 +77,64 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
             if (tToolTipAmount > 0L) {
                 aList.add(EnumChatFormatting.BLUE + String.format(trans("016", "Amount: %s L"), "" + tToolTipAmount) + EnumChatFormatting.GRAY);
             }
-            aList.add(EnumChatFormatting.RED + String.format(trans("017", "Temperature: %s K"), "" + aNBT.getLong("mFluidDisplayHeat")) + EnumChatFormatting.GRAY);
-            aList.add(EnumChatFormatting.GREEN + String.format(trans("018", "State: %s"), aNBT.getBoolean("mFluidState") ? "Gas" : "Liquid") + EnumChatFormatting.GRAY);
+            aList.add(EnumChatFormatting.RED + String.format(trans("017", "Temperature: %s K"), "" + aNBT.getLong("mFluidDisplayHeat")) +
+                      EnumChatFormatting.GRAY);
+            aList.add(EnumChatFormatting.GREEN + String.format(trans("018", "State: %s"), aNBT.getBoolean("mFluidState") ? "Gas" : "Liquid") +
+                      EnumChatFormatting.GRAY);
         }
     }
 
-    @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aIconRegister) {
+    public String getChemicalFormula(FluidStack aRealFluid) {
+        return sFluidTooltips.computeIfAbsent(aRealFluid.getFluid(), fluid -> {
+            for (ItemStack tContainer : GT_Utility.getContainersFromFluid(aRealFluid)) {
+                if (isCell(tContainer)) {
+                    Materials tMaterial = getMaterialFromCell(tContainer);
+                    if (!tMaterial.equals(Materials._NULL)) {
+                        if (tMaterial.mChemicalFormula.equals("?")) {
+                            return "";
+                        } else {
+                            return tMaterial.mChemicalFormula;
+                        }
+                    } else {
+                        // For GT++ Fluid Display
+                        // GT++ didn't register a Material in GT, so I have too find the Chemical Formula in its cell's tooltip
+                        List tTooltip = tContainer.getTooltip(null, true);
+                        for (Object tInfo : tTooltip) {
+                            if (!((String) tInfo).contains(" ") && !((String) tInfo).contains(":") && tTooltip.indexOf(tInfo) != 0) {
+                                return (String) tInfo;
+                            }
+                        }
+                    }
+                }
+            }
+            return "";
+        });
+    }
+
+    public static boolean isCell(ItemStack tItemStack) {
+        for (int tOreDict : OreDictionary.getOreIDs(tItemStack)) {
+            String tOreDictName = OreDictionary.getOreName(tOreDict);
+            if (tOreDictName.startsWith("cell")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Materials getMaterialFromCell(ItemStack tItemStack) {
+        for (int tOreDict : OreDictionary.getOreIDs(tItemStack)) {
+            String tOreDictName = OreDictionary.getOreName(tOreDict);
+            if (tOreDictName.startsWith("cell")) {
+                return Materials.getRealMaterial(tOreDictName.replace("cell", "").replace("Molten", "").replace("Plasma", ""));
+            }
+        }
+        return Materials._NULL;
     }
 
     @Override
-    public IIcon getIconFromDamage(int aMeta) {
-        return Stream.of(FluidRegistry.getFluid(aMeta), FluidRegistry.WATER)
-                .filter(Objects::nonNull)
-                .map(Fluid::getStillIcon)
-                .filter(Objects::nonNull)
-                .findFirst()
-                .orElseThrow(IllegalStateException::new);
+    public int getSpriteNumber() {
+        return 0;
     }
 
     @Override
@@ -82,55 +145,11 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
     }
 
     @Override
-    public int getSpriteNumber() {
-        return 0;
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack aStack) {
-        if (aStack != null) {
-            return GT_Utility.getFluidName(FluidRegistry.getFluid(aStack.getItemDamage()), false);
-        }
-        return "";
-    }
-
-    @Override
     public String getItemStackDisplayName(ItemStack aStack) {
         if (aStack != null) {
             return GT_Utility.getFluidName(FluidRegistry.getFluid(aStack.getItemDamage()), true);
         }
         return "";
-    }
-
-    @SideOnly(Side.CLIENT)
-    public String getChemicalFormula(FluidStack aRealFluid) {
-        return sFluidTooltips.computeIfAbsent(aRealFluid.getFluid(),
-                fluid -> {
-                    for(ItemStack tContainer : GT_Utility.getContainersFromFluid(aRealFluid)) {
-                        if (isCell(tContainer)) {
-                            Materials tMaterial = getMaterialFromCell(tContainer);
-                            if (!tMaterial.equals(Materials._NULL)) {
-                                if (tMaterial.mChemicalFormula.equals("?")) {
-                                    return "";
-                                }
-                                else {
-                                    return tMaterial.mChemicalFormula;
-                                }
-                            }
-                            else {
-                                // For GT++ Fluid Display
-                                // GT++ didn't register a Material in GT, so I have too find the Chemical Formula in its cell's tooltip
-                                List tTooltip = tContainer.getTooltip(null, true);
-                                for (Object tInfo : tTooltip) {
-                                    if (!((String) tInfo).contains(" ") && !((String) tInfo).contains(":") && tTooltip.indexOf(tInfo) != 0) {
-                                        return (String) tInfo;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    return "";
-        });
     }
 
     @Override
@@ -147,25 +166,4 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
         }
     }
 
-    public static boolean isCell(ItemStack tItemStack) {
-        for (int tOreDict : OreDictionary.getOreIDs(tItemStack)) {
-            String tOreDictName = OreDictionary.getOreName(tOreDict);
-            if (tOreDictName.startsWith("cell")) return true;
-        }
-        return false;
-    }
-
-    public static Materials getMaterialFromCell(ItemStack tItemStack) {
-        for (int tOreDict : OreDictionary.getOreIDs(tItemStack)) {
-            String tOreDictName = OreDictionary.getOreName(tOreDict);
-            if (tOreDictName.startsWith("cell")) {
-                return Materials.getRealMaterial(
-                        tOreDictName.replace("cell", "")
-                                .replace("Molten", "")
-                                .replace("Plasma", "")
-                );
-            }
-        }
-        return Materials._NULL;
-    }
 }

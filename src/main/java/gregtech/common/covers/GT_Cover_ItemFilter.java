@@ -1,5 +1,6 @@
 package gregtech.common.covers;
 
+
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.enums.GT_Values;
@@ -31,7 +32,131 @@ import java.util.List;
 import static gregtech.api.util.GT_Utility.intToStack;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
+
 public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilter.ItemFilterData> {
+
+    public static class ItemFilterData implements ISerializableObject {
+
+        private boolean mWhitelist;
+
+        private ItemStack mFilter;
+
+        public ItemFilterData() {
+        }
+
+        public ItemFilterData(boolean mWhitelist, ItemStack mFilter) {
+            this.mWhitelist = mWhitelist;
+            this.mFilter = mFilter;
+        }
+
+        @Nonnull
+        @Override
+        public ISerializableObject copy() {
+            return new ItemFilterData(mWhitelist, mFilter);
+        }
+
+        @Nonnull
+        @Override
+        public NBTBase saveDataToNBT() {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setBoolean("mWhitelist", mWhitelist);
+            if (mFilter != null) {
+                tag.setTag("mFilter", mFilter.writeToNBT(new NBTTagCompound()));
+            }
+            return tag;
+        }
+
+        @Override
+        public void writeToByteBuf(ByteBuf aBuf) {
+            aBuf.writeBoolean(mWhitelist);
+            ByteBufUtils.writeItemStack(aBuf, mFilter);
+        }
+
+        @Override
+        public void loadDataFromNBT(NBTBase aNBT) {
+            NBTTagCompound tag = (NBTTagCompound) aNBT;
+            mWhitelist = tag.getBoolean("mWhitelist");
+            if (tag.hasKey("mFilter", Constants.NBT.TAG_COMPOUND)) {
+                mFilter = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("mFilter"));
+            } else {
+                mFilter = null;
+            }
+        }
+
+        @Nonnull
+        @Override
+        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
+            mWhitelist = aBuf.readBoolean();
+            mFilter = ISerializableObject.readItemStackFromGreggyByteBuf(aBuf);
+            return this;
+        }
+
+    }
+
+
+    private class GUI extends GT_GUICover {
+
+        private static final int startX = 10;
+
+        private static final int startY = 25;
+
+        private static final int spaceX = 18;
+
+        private static final int spaceY = 18;
+
+        private final byte side;
+
+        private final int coverID;
+
+        private final GT_GuiIconCheckButton btnMode;
+
+        private final ItemFilterData coverVariable;
+
+        private final GT_GuiFakeItemButton itemFilterButtons;
+
+        public GUI(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
+            super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
+            this.side = aSide;
+            this.coverID = aCoverID;
+            this.coverVariable = aCoverVariable;
+
+            btnMode = new GT_GuiIconCheckButton(
+                    this, 0, startX, startY, GT_GuiIcon.WHITELIST, GT_GuiIcon.BLACKLIST, trans("125", "Whitelist Mode"),
+                    trans("124", "Blacklist Mode")
+            );
+
+            itemFilterButtons = new GT_GuiFakeItemButton(this, startX, startY + spaceY * 2, GT_GuiIcon.SLOT_GRAY);
+        }
+
+        @Override
+        public void drawExtras(int mouseX, int mouseY, float parTicks) {
+            super.drawExtras(mouseX, mouseY, parTicks);
+            this.fontRendererObj.drawString(trans("303", "Filter: "), startX, 3 + startY + spaceY, 0xFF555555);
+            this.fontRendererObj.drawString(trans("302", "Check Mode"), startX + spaceX * 2, 3 + startY, 0xFF555555);
+        }
+
+        @Override
+        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
+            updateButtons();
+        }
+
+        @Override
+        public void buttonClicked(GuiButton btn) {
+            if (btn == btnMode) {
+                if (coverVariable.mWhitelist != btnMode.isChecked()) {
+                    coverVariable.mWhitelist = btnMode.isChecked();
+                    GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
+                }
+            }
+            updateButtons();
+        }
+
+        private void updateButtons() {
+            btnMode.setChecked(coverVariable.mWhitelist);
+            itemFilterButtons.setItem(coverVariable.mFilter);
+        }
+
+    }
 
     private final boolean mExport;
 
@@ -56,12 +181,17 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
     }
 
     @Override
-    protected ItemFilterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    protected ItemFilterData doCoverThingsImpl(
+            byte aSide,
+            byte aInputRedstone,
+            int aCoverID,
+            ItemFilterData aCoverVariable,
+            ICoverable aTileEntity,
+            long aTimer
+                                              ) {
         TileEntity tTileEntity = aTileEntity.getTileEntityAtSide(aSide);
-        Object fromEntity = mExport ? aTileEntity : tTileEntity,
-                toEntity = !mExport ? aTileEntity : tTileEntity;
-        byte fromSide = !mExport ? GT_Utility.getOppositeSide(aSide) : aSide,
-                toSide = mExport ? GT_Utility.getOppositeSide(aSide) : aSide;
+        Object fromEntity = mExport ? aTileEntity : tTileEntity, toEntity = !mExport ? aTileEntity : tTileEntity;
+        byte fromSide = !mExport ? GT_Utility.getOppositeSide(aSide) : aSide, toSide = mExport ? GT_Utility.getOppositeSide(aSide) : aSide;
 
         List<ItemStack> Filter = Collections.singletonList(aCoverVariable.mFilter);
 
@@ -71,7 +201,16 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    protected boolean onCoverRightClickImpl(
+            byte aSide,
+            int aCoverID,
+            ItemFilterData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            float aX,
+            float aY,
+            float aZ
+                                           ) {
         ItemStack tStack = aPlayer.inventory.getCurrentItem();
         if (tStack != null) {
             aCoverVariable.mFilter = tStack;
@@ -84,15 +223,33 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
     }
 
     @Override
-    protected ItemFilterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    protected ItemFilterData onCoverScrewdriverClickImpl(
+            byte aSide,
+            int aCoverID,
+            ItemFilterData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            float aX,
+            float aY,
+            float aZ
+                                                        ) {
         aCoverVariable.mWhitelist = !aCoverVariable.mWhitelist;
         GT_Utility.sendChatToPlayer(aPlayer, aCoverVariable.mWhitelist ? trans("125", "Whitelist Mode") : trans("124", "Blacklist Mode"));
         return aCoverVariable;
     }
 
+    /**
+     * GUI Stuff
+     */
+
     @Override
-    protected boolean letsRedstoneGoInImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
+    public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    protected Object getClientGUIImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
+        return new GT_Cover_ItemFilter.GUI(aSide, aCoverID, aCoverVariable, aTileEntity);
     }
 
     @Override
@@ -136,126 +293,13 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
     }
 
     @Override
-    protected int getTickRateImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
-        return 1;
-    }
-
-    /**
-     * GUI Stuff
-     */
-
-    @Override
-    public boolean hasCoverGUI() {
+    protected boolean letsRedstoneGoInImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected Object getClientGUIImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
-        return new GT_Cover_ItemFilter.GUI(aSide, aCoverID, aCoverVariable, aTileEntity);
+    protected int getTickRateImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
+        return 1;
     }
 
-    public static class ItemFilterData implements ISerializableObject {
-        private boolean mWhitelist;
-        private ItemStack mFilter;
-
-        public ItemFilterData() {
-        }
-
-        public ItemFilterData(boolean mWhitelist, ItemStack mFilter) {
-            this.mWhitelist = mWhitelist;
-            this.mFilter = mFilter;
-        }
-
-        @Nonnull
-        @Override
-        public ISerializableObject copy() {
-            return new ItemFilterData(mWhitelist, mFilter);
-        }
-
-        @Nonnull
-        @Override
-        public NBTBase saveDataToNBT() {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setBoolean("mWhitelist", mWhitelist);
-            if (mFilter != null)
-                tag.setTag("mFilter", mFilter.writeToNBT(new NBTTagCompound()));
-            return tag;
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeBoolean(mWhitelist);
-            ByteBufUtils.writeItemStack(aBuf, mFilter);
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            NBTTagCompound tag = (NBTTagCompound) aNBT;
-            mWhitelist = tag.getBoolean("mWhitelist");
-            if (tag.hasKey("mFilter", Constants.NBT.TAG_COMPOUND))
-                mFilter = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("mFilter"));
-            else
-                mFilter = null;
-        }
-
-        @Nonnull
-        @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
-            mWhitelist = aBuf.readBoolean();
-            mFilter = ISerializableObject.readItemStackFromGreggyByteBuf(aBuf);
-            return this;
-        }
-    }
-
-    private class GUI extends GT_GUICover {
-        private final byte side;
-        private final int coverID;
-        private final GT_GuiIconCheckButton btnMode;
-        private final ItemFilterData coverVariable;
-        private final GT_GuiFakeItemButton itemFilterButtons;
-
-        private static final int startX = 10;
-        private static final int startY = 25;
-        private static final int spaceX = 18;
-        private static final int spaceY = 18;
-
-        public GUI(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
-            super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
-            this.side = aSide;
-            this.coverID = aCoverID;
-            this.coverVariable = aCoverVariable;
-
-            btnMode = new GT_GuiIconCheckButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.WHITELIST, GT_GuiIcon.BLACKLIST, trans("125", "Whitelist Mode"), trans("124", "Blacklist Mode"));
-
-            itemFilterButtons = new GT_GuiFakeItemButton(this, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.SLOT_GRAY);
-        }
-
-        @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(trans("303", "Filter: "),    startX + spaceX*0, 3+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(trans("302", "Check Mode"),  startX + spaceX*2, 3+startY+spaceY*0, 0xFF555555);
-        }
-
-        @Override
-        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
-            updateButtons();
-        }
-
-        @Override
-        public void buttonClicked(GuiButton btn) {
-            if (btn == btnMode) {
-                if (coverVariable.mWhitelist != btnMode.isChecked()) {
-                    coverVariable.mWhitelist = btnMode.isChecked();
-                    GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
-                }
-            }
-            updateButtons();
-        }
-
-        private void updateButtons() {
-            btnMode.setChecked(coverVariable.mWhitelist);
-            itemFilterButtons.setItem(coverVariable.mFilter);
-        }
-    }
 }

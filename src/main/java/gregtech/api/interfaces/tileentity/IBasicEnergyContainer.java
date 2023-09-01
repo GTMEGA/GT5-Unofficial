@@ -1,9 +1,11 @@
 package gregtech.api.interfaces.tileentity;
 
+
 /**
  * Interface for internal Code, which is mainly used for independent Energy conversion.
  */
 public interface IBasicEnergyContainer extends IEnergyConnected {
+
     /**
      * Gets if that Amount of Energy is stored inside the Machine.
      * It is used for checking the contained Energy before consuming it.
@@ -97,4 +99,5 @@ public interface IBasicEnergyContainer extends IEnergyConnected {
      * And yes, you can't directly decrease the Steam of a Machine. That is done by decreaseStoredEnergyUnits
      */
     boolean increaseStoredSteam(long aEnergy, boolean aIgnoreTooMuchEnergy);
+
 }

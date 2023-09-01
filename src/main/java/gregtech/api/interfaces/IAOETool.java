@@ -1,5 +1,6 @@
 package gregtech.api.interfaces;
 
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +14,7 @@ import net.minecraftforge.event.world.BlockEvent;
 
 import java.util.function.BiFunction;
 
+
 public interface IAOETool {
 
     int getMaxAOESize();
@@ -25,7 +27,19 @@ public interface IAOETool {
 
     float getDigSpeed(float digSpeed, IToolStats stats, ItemStack stack);
 
-    float onBlockDestroyed(ItemStack stack, IToolStats stats, float damagePerBlock, float timeToTakeCenter, float digSpeed, World world, Block block, int x, int y, int z, EntityLivingBase player);
+    float onBlockDestroyed(
+            ItemStack stack,
+            IToolStats stats,
+            float damagePerBlock,
+            float timeToTakeCenter,
+            float digSpeed,
+            World world,
+            Block block,
+            int x,
+            int y,
+            int z,
+            EntityLivingBase player
+                          );
 
     default void setAOE(NBTTagCompound statNbt, int value) {
         statNbt.setInteger("AOE", value);
@@ -35,8 +49,23 @@ public interface IAOETool {
         return statNbt.getInteger("AOE");
     }
 
-    default float breakBlockAround(int side, int xStartPos, int yStartPos, int xLength, int yLenghth, IToolStats stats, ItemStack stack, World world, int x, int y, int z,
-                                   EntityPlayerMP player, float damgePerBlock, float timeToTakeCenter, float digSpeed) {
+    default float breakBlockAround(
+            int side,
+            int xStartPos,
+            int yStartPos,
+            int xLength,
+            int yLenghth,
+            IToolStats stats,
+            ItemStack stack,
+            World world,
+            int x,
+            int y,
+            int z,
+            EntityPlayerMP player,
+            float damgePerBlock,
+            float timeToTakeCenter,
+            float digSpeed
+                                  ) {
         int harvestLevel = stack.getItem().getHarvestLevel(stack, "");
 
         int DX;
@@ -176,30 +205,42 @@ public interface IAOETool {
                     }
                     Block block = world.getBlock(DX, DY, DZ);
                     float blockHardness = block.getBlockHardness(world, DX, DY, DZ);
-                    if (breakBlock(stack, stats, harvestLevel, blockHardness, timeToTakeCenter, digSpeed, world, DX, DY, DZ, player, block))
+                    if (breakBlock(stack, stats, harvestLevel, blockHardness, timeToTakeCenter, digSpeed, world, DX, DY, DZ, player, block)) {
                         tooldamage += blockHardness * damgePerBlock;
+                    }
                 }
             }
         }
         return tooldamage;
     }
 
-    default float getTimeToBreak(float digSpeed, float blockHardness) {
-        return digSpeed / (blockHardness * 30f);
-    }
-
-    default boolean breakBlock(ItemStack aStack, IToolStats stats, int harvestLevel, float blockHardness, float timeToTakeCenter, float digSpeed, World world, int x, int y, int z,
-                               EntityPlayerMP player, Block block) {
+    default boolean breakBlock(
+            ItemStack aStack,
+            IToolStats stats,
+            int harvestLevel,
+            float blockHardness,
+            float timeToTakeCenter,
+            float digSpeed,
+            World world,
+            int x,
+            int y,
+            int z,
+            EntityPlayerMP player,
+            Block block
+                              ) {
         // most of this code is stolen from TiC
-        if (world.isAirBlock(x, y, z))
+        if (world.isAirBlock(x, y, z)) {
             return false;
+        }
         int blockMeta = world.getBlockMetadata(x, y, z);
         int blockHarvestLevel = block.getHarvestLevel(blockMeta);
-        if (!canHarvest(harvestLevel, blockHarvestLevel, blockHardness, timeToTakeCenter, digSpeed, block, blockMeta, stats))
+        if (!canHarvest(harvestLevel, blockHarvestLevel, blockHardness, timeToTakeCenter, digSpeed, block, blockMeta, stats)) {
             return false;
+        }
         BlockEvent.BreakEvent event = ForgeHooks.onBlockBreakEvent(world, player.theItemInWorldManager.getGameType(), player, x, y, z);
-        if (event.isCanceled())
+        if (event.isCanceled()) {
             return false;
+        }
         block.onBlockHarvested(world, x, y, z, blockMeta, player);
         block.harvestBlock(world, player, x, y, z, blockMeta);
         block.onBlockDestroyedByPlayer(world, x, y, z, blockMeta);
@@ -213,9 +254,24 @@ public interface IAOETool {
 
     //a fast version of get digSpeed
     //and block stats dont matter for the get digSpeed mult or even matter for this function
-    static boolean canHarvest(int toolHarvestLevel, int blockHarvestLevel, float blockHardness, float timeToTakeCenter, float digSpeed, Block block, int meta, IToolStats stats) {
-        if (toolHarvestLevel < blockHarvestLevel || blockHardness < 0) return false;
-        return stats.isMinableBlock(block, (byte) meta) &&
-                (((IAOETool) stats).getTimeToBreak(digSpeed, blockHardness) * 12 > timeToTakeCenter);
+    static boolean canHarvest(
+            int toolHarvestLevel,
+            int blockHarvestLevel,
+            float blockHardness,
+            float timeToTakeCenter,
+            float digSpeed,
+            Block block,
+            int meta,
+            IToolStats stats
+                             ) {
+        if (toolHarvestLevel < blockHarvestLevel || blockHardness < 0) {
+            return false;
+        }
+        return stats.isMinableBlock(block, (byte) meta) && (((IAOETool) stats).getTimeToBreak(digSpeed, blockHardness) * 12 > timeToTakeCenter);
     }
+
+    default float getTimeToBreak(float digSpeed, float blockHardness) {
+        return digSpeed / (blockHardness * 30f);
+    }
+
 }

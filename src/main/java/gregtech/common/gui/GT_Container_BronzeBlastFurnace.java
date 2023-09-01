@@ -1,12 +1,15 @@
 package gregtech.common.gui;
 
+
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Output;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 
+
 public class GT_Container_BronzeBlastFurnace extends GT_ContainerMetaTile_Machine {
+
     public GT_Container_BronzeBlastFurnace(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
     }
@@ -28,4 +31,5 @@ public class GT_Container_BronzeBlastFurnace extends GT_ContainerMetaTile_Machin
     public int getShiftClickSlotCount() {
         return 2;
     }
+
 }

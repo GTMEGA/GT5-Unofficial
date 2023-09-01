@@ -1,8 +1,10 @@
 package gregtech.common.gui;
 
+
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
+
 
 public class GT_GUIContainer_RecipeFilter extends GT_GUIContainerMetaTile_Machine {
 

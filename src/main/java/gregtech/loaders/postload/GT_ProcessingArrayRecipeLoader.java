@@ -1,8 +1,10 @@
 package gregtech.loaders.postload;
 
+
 import gregtech.api.util.GT_ProcessingArray_Manager;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+
 
 public class GT_ProcessingArrayRecipeLoader {
 
@@ -137,8 +139,9 @@ public class GT_ProcessingArrayRecipeLoader {
     }
 
     private static final void registerMapBetweenRange(int aMin, int aMax, GT_Recipe_Map aMap) {
-        for (int i=aMin; i<=aMax;i++) {
+        for (int i = aMin; i <= aMax; i++) {
             GT_ProcessingArray_Manager.registerRecipeMapForMeta(i, aMap);
         }
     }
+
 }

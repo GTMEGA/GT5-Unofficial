@@ -1,5 +1,6 @@
 package gregtech.api.net;
 
+
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.GT_Mod;
 import gregtech.api.util.GT_ClientPreference;
@@ -9,8 +10,11 @@ import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.IBlockAccess;
 
+
 public class GT_Packet_ClientPreference extends GT_Packet_New {
+
     private GT_ClientPreference mPreference;
+
     private EntityPlayerMP mPlayer;
 
     public GT_Packet_ClientPreference() {
@@ -23,16 +27,17 @@ public class GT_Packet_ClientPreference extends GT_Packet_New {
     }
 
     @Override
-    public void setINetHandler(INetHandler aHandler) {
-        if (aHandler instanceof NetHandlerPlayServer) {
-            mPlayer = ((NetHandlerPlayServer) aHandler).playerEntity;
+    public void process(IBlockAccess aWorld) {
+        if (mPlayer != null) {
+            GT_Mod.gregtechproxy.setClientPreference(mPlayer.getUniqueID(), mPreference);
         }
     }
 
     @Override
-    public void process(IBlockAccess aWorld) {
-        if (mPlayer != null)
-            GT_Mod.gregtechproxy.setClientPreference(mPlayer.getUniqueID(), mPreference);
+    public void setINetHandler(INetHandler aHandler) {
+        if (aHandler instanceof NetHandlerPlayServer) {
+            mPlayer = ((NetHandlerPlayServer) aHandler).playerEntity;
+        }
     }
 
     @Override
@@ -46,4 +51,5 @@ public class GT_Packet_ClientPreference extends GT_Packet_New {
     public GT_Packet_New decode(ByteArrayDataInput aData) {
         return new GT_Packet_ClientPreference(new GT_ClientPreference(aData.readBoolean(), aData.readBoolean(), aData.readBoolean()));
     }
+
 }

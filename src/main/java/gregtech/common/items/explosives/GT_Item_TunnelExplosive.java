@@ -28,9 +28,7 @@ public class GT_Item_TunnelExplosive extends GT_Item_Explosive {
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer player, final List lore, final boolean b0) {
         final String[] lines = new String[]{
-                "Produces a powerful blast in the placed direction,",
-                "crating a small tunnel. Destroys most items.",
-                "Prime with a Remote Detonator",
+                "Produces a powerful blast in the placed direction,", "crating a small tunnel. Destroys most items.", "Prime with a Remote Detonator",
                 "Packs a pretty mean punch, so take", String.format("cover or you'll be mist in %d seconds!", GT_Values.MEFuse / 20)
         };
         lore.addAll(Arrays.asList(lines));

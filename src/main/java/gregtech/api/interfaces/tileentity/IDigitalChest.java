@@ -1,11 +1,14 @@
 package gregtech.api.interfaces.tileentity;
 
+
 import net.minecraft.item.ItemStack;
+
 
 /**
  * You are allowed to include this File in your Download, as i will not change it.
  */
 public interface IDigitalChest extends IHasWorldObjectAndCoords {
+
     /**
      * Is this even a TileEntity of a Digital Chest?
      * I need things like this Function for MetaTileEntities, you MUST check this!!!
@@ -28,4 +31,5 @@ public interface IDigitalChest extends IHasWorldObjectAndCoords {
      * Gets the maximum Item count for this QChest alike Storage. This applies to the Data-Storage, not for the up to 192 buffered Items!
      */
     int getMaxItemCount();
+
 }

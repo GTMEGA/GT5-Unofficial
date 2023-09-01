@@ -1,11 +1,14 @@
 package gregtech.common.tileentities.machines.multi;
 
+
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import net.minecraft.item.ItemStack;
 
-public abstract class GT_MetaTileEntity_AbstractMultiFurnace<T extends GT_MetaTileEntity_AbstractMultiFurnace<T>> extends GT_MetaTileEntity_EnhancedMultiBlockBase<T> {
+
+public abstract class GT_MetaTileEntity_AbstractMultiFurnace<T extends GT_MetaTileEntity_AbstractMultiFurnace<T>> extends
+                                                                                                                  GT_MetaTileEntity_EnhancedMultiBlockBase<T> {
 
     private HeatingCoilLevel mCoilLevel;
 
@@ -18,15 +21,8 @@ public abstract class GT_MetaTileEntity_AbstractMultiFurnace<T extends GT_MetaTi
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    protected boolean addBottomHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        return addMaintenanceToMachineList(aTileEntity, aBaseCasingIndex) ||
-                addInputToMachineList(aTileEntity, aBaseCasingIndex) ||
-                addOutputToMachineList(aTileEntity, aBaseCasingIndex) ||
-                addEnergyInputToMachineList(aTileEntity, aBaseCasingIndex);
+    public int getPollutionPerTick(ItemStack aStack) {
+        return 20;
     }
 
     @Override
@@ -35,8 +31,8 @@ public abstract class GT_MetaTileEntity_AbstractMultiFurnace<T extends GT_MetaTi
     }
 
     @Override
-    public int getPollutionPerTick(ItemStack aStack) {
-        return 20;
+    public boolean isCorrectMachinePart(ItemStack aStack) {
+        return true;
     }
 
     @Override
@@ -56,4 +52,10 @@ public abstract class GT_MetaTileEntity_AbstractMultiFurnace<T extends GT_MetaTi
     public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
         mCoilLevel = aCoilLevel;
     }
+
+    protected boolean addBottomHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        return addMaintenanceToMachineList(aTileEntity, aBaseCasingIndex) || addInputToMachineList(aTileEntity, aBaseCasingIndex) || addOutputToMachineList(
+                aTileEntity, aBaseCasingIndex) || addEnergyInputToMachineList(aTileEntity, aBaseCasingIndex);
+    }
+
 }

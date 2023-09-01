@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.storage;
 
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -10,14 +11,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+
 
 public class GT_MetaTileEntity_QuantumTank extends GT_MetaTileEntity_BasicTank {
+
     public GT_MetaTileEntity_QuantumTank(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 3,
-                "Stores " + GT_Utility.formatNumbers(commonSizeCompute(aTier)) + "L of fluid");
+        super(aID, aName, aNameRegional, aTier, 3, "Stores " + GT_Utility.formatNumbers(commonSizeCompute(aTier)) + "L of fluid");
     }
 
     private static int commonSizeCompute(int tier) {
@@ -51,7 +51,7 @@ public class GT_MetaTileEntity_QuantumTank extends GT_MetaTileEntity_BasicTank {
     }
 
     @Override
-    public boolean isSimpleMachine() {
+    public boolean doesEmptyContainers() {
         return true;
     }
 
@@ -61,12 +61,12 @@ public class GT_MetaTileEntity_QuantumTank extends GT_MetaTileEntity_BasicTank {
     }
 
     @Override
-    public boolean doesEmptyContainers() {
+    public boolean canTankBeFilled() {
         return true;
     }
 
     @Override
-    public boolean canTankBeFilled() {
+    public boolean isSimpleMachine() {
         return true;
     }
 
@@ -92,23 +92,12 @@ public class GT_MetaTileEntity_QuantumTank extends GT_MetaTileEntity_BasicTank {
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide != ForgeDirection.UP.ordinal()) return new ITexture[]{MACHINE_CASINGS[mTier][aColorIndex + 1]};
+        if (aSide != ForgeDirection.UP.ordinal()) {
+            return new ITexture[]{MACHINE_CASINGS[mTier][aColorIndex + 1]};
+        }
         return new ITexture[]{
-                MACHINE_CASINGS[mTier][aColorIndex + 1],
-                TextureFactory.of(OVERLAY_QTANK),
-                TextureFactory.builder().addIcon(OVERLAY_QTANK_GLOW).glow().build()
+                MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_QTANK), TextureFactory.builder().addIcon(OVERLAY_QTANK_GLOW).glow().build()
         };
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!aBaseMetaTileEntity.isClientSide()) aBaseMetaTileEntity.openGUI(aPlayer);
-        return true;
-    }
-
-    @Override
-    public final byte getUpdateData() {
-        return 0x00;
     }
 
     @Override
@@ -122,13 +111,35 @@ public class GT_MetaTileEntity_QuantumTank extends GT_MetaTileEntity_BasicTank {
     }
 
     @Override
-    public int getTankPressure() {
-        return 100;
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!aBaseMetaTileEntity.isClientSide()) {
+            aBaseMetaTileEntity.openGUI(aPlayer);
+        }
+        return true;
     }
 
     @Override
-    public int getCapacity() {
-        return commonSizeCompute(mTier);
+    public final byte getUpdateData() {
+        return 0x00;
+    }
+
+    @Override
+    public String[] getInfoData() {
+
+        if (mFluid == null) {
+            return new String[]{
+                    EnumChatFormatting.BLUE + "Quantum Tank" + EnumChatFormatting.RESET, "Stored Fluid:",
+                    EnumChatFormatting.GOLD + "No Fluid" + EnumChatFormatting.RESET, EnumChatFormatting.GREEN + Integer.toString(0) + " L" +
+                                                                                     EnumChatFormatting.RESET + " " + EnumChatFormatting.YELLOW +
+                                                                                     GT_Utility.formatNumbers(getCapacity()) + " L" + EnumChatFormatting.RESET
+            };
+        }
+        return new String[]{
+                EnumChatFormatting.BLUE + "Quantum Tank" + EnumChatFormatting.RESET, "Stored Fluid:",
+                EnumChatFormatting.GOLD + mFluid.getLocalizedName() + EnumChatFormatting.RESET, EnumChatFormatting.GREEN + GT_Utility.formatNumbers(
+                mFluid.amount) + " L" + EnumChatFormatting.RESET + " " + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(getCapacity()) + " L" +
+                                                                                                EnumChatFormatting.RESET
+        };
     }
 
     @Override
@@ -137,24 +148,13 @@ public class GT_MetaTileEntity_QuantumTank extends GT_MetaTileEntity_BasicTank {
     }
 
     @Override
-    public String[] getInfoData() {
+    public int getCapacity() {
+        return commonSizeCompute(mTier);
+    }
 
-        if (mFluid == null) {
-            return new String[]{
-                    EnumChatFormatting.BLUE + "Quantum Tank" + EnumChatFormatting.RESET,
-                    "Stored Fluid:",
-                    EnumChatFormatting.GOLD + "No Fluid" + EnumChatFormatting.RESET,
-                    EnumChatFormatting.GREEN + Integer.toString(0) + " L" + EnumChatFormatting.RESET + " " +
-                            EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(getCapacity()) + " L" + EnumChatFormatting.RESET
-            };
-        }
-        return new String[]{
-                EnumChatFormatting.BLUE + "Quantum Tank" + EnumChatFormatting.RESET,
-                "Stored Fluid:",
-                EnumChatFormatting.GOLD + mFluid.getLocalizedName() + EnumChatFormatting.RESET,
-                EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mFluid.amount) + " L" + EnumChatFormatting.RESET + " " +
-                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(getCapacity()) + " L" + EnumChatFormatting.RESET
-        };
+    @Override
+    public int getTankPressure() {
+        return 100;
     }
 
 }

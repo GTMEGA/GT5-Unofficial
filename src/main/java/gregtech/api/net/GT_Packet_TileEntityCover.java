@@ -1,5 +1,6 @@
 package gregtech.api.net;
 
+
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -9,15 +10,20 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
+
 /**
  * Client -> Server: Update cover data. use this only if you are using the legacy data storage
  */
 public class GT_Packet_TileEntityCover extends GT_Packet_New {
+
     protected int mX;
+
     protected short mY;
+
     protected int mZ;
 
     protected byte side;
+
     protected int coverID, coverData, dimID;
 
     public GT_Packet_TileEntityCover() {
@@ -36,6 +42,7 @@ public class GT_Packet_TileEntityCover extends GT_Packet_New {
 
         this.dimID = dimID;
     }
+
     public GT_Packet_TileEntityCover(byte coverSide, int coverID, int coverData, ICoverable tile) {
         super(false);
         this.mX = tile.getXCoord();
@@ -64,16 +71,12 @@ public class GT_Packet_TileEntityCover extends GT_Packet_New {
 
     @Override
     public GT_Packet_New decode(ByteArrayDataInput aData) {
-        return new GT_Packet_TileEntityCover(
-                aData.readInt(),
-                aData.readShort(),
-                aData.readInt(),
+        return new GT_Packet_TileEntityCover(aData.readInt(), aData.readShort(), aData.readInt(),
 
-                aData.readByte(),
-                aData.readInt(),
-                aData.readInt(),
+                                             aData.readByte(), aData.readInt(), aData.readInt(),
 
-                aData.readInt());
+                                             aData.readInt()
+        );
     }
 
     @Override
@@ -86,4 +89,5 @@ public class GT_Packet_TileEntityCover extends GT_Packet_New {
             }
         }
     }
+
 }

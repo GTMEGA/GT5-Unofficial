@@ -13,7 +13,12 @@ public class GT_TunnelExplosion extends GT_Explosion {
     private final ForgeDirection direction;
 
     public GT_TunnelExplosion(
-            final World world, final GT_Entity_TunnelExplosive entity, final double x, final double y, final double z, final float power,
+            final World world,
+            final GT_Entity_TunnelExplosive entity,
+            final double x,
+            final double y,
+            final double z,
+            final float power,
             final ForgeDirection side
                              ) {
         super(world, entity, x, y, z, power);

@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.HeatingCoilLevel;
@@ -10,14 +11,18 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
+
 public class GT_Item_Casings5 extends GT_Item_Casings_Abstract {
+
+    protected static final String mCoilHeatTooltip = GT_LanguageManager.addStringLocalization("gt.coilheattooltip", "Base Heating Capacity = ");
+
+    protected static final String mCoilUnitTooltip = GT_LanguageManager.addStringLocalization("gt.coilunittooltip", " Kelvin");
+
+    protected static final String mCoilTierTooltip = GT_LanguageManager.addStringLocalization("gt.coiltiertooltip", "Coil Tier = ");
+
     public GT_Item_Casings5(Block par1) {
         super(par1);
     }
-
-    protected static final String mCoilHeatTooltip = GT_LanguageManager.addStringLocalization("gt.coilheattooltip", "Base Heating Capacity = ");
-    protected static final String mCoilUnitTooltip = GT_LanguageManager.addStringLocalization("gt.coilunittooltip", " Kelvin");
-    protected static final String mCoilTierTooltip = GT_LanguageManager.addStringLocalization("gt.coiltiertooltip", "Coil Tier = ");
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -28,4 +33,5 @@ public class GT_Item_Casings5 extends GT_Item_Casings_Abstract {
         aList.add(mCoilHeatTooltip + coilLevel.getHeat() + mCoilUnitTooltip);
         aList.add(mCoilTierTooltip + coilLevel.getTierName());
     }
+
 }

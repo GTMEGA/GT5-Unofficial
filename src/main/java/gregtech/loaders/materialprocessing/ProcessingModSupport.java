@@ -1,5 +1,6 @@
 package gregtech.loaders.materialprocessing;
 
+
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -7,17 +8,29 @@ import gregtech.api.enums.OrePrefixes;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_DC;
 
+
 public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHandler {
+
     public static boolean aTGregSupport = Loader.isModLoaded("TGregworks") || Loader.isModLoaded(MOD_ID_DC);
+
     public static boolean aEnableUBCMats = Loader.isModLoaded("UndergroundBiomes") || aTGregSupport;
+
     public static boolean aEnableThaumcraftMats = Loader.isModLoaded("Thaumcraft") || aTGregSupport;
+
     public static boolean aEnableRotaryCraftMats = Loader.isModLoaded("RotaryCraft") || aTGregSupport;
+
     public static boolean aEnableThermalFoundationMats = Loader.isModLoaded("ThermalFoundation") || aTGregSupport;
+
     public static boolean aEnableEnderIOMats = Loader.isModLoaded("EnderIO") || aTGregSupport;
+
     public static boolean aEnableRailcraftMats = Loader.isModLoaded(GT_Values.MOD_ID_RC) || aTGregSupport;
+
     public static boolean aEnableGCMarsMats = Loader.isModLoaded("GalacticraftMars") || aTGregSupport;
+
     public static boolean aEnableTwilightMats = Loader.isModLoaded(GT_Values.MOD_ID_TF) || aTGregSupport;
+
     public static boolean aEnableMetallurgyMats = Loader.isModLoaded("Metallurgy") || aTGregSupport;
+
     public static boolean aEnableProjectRedMats = Loader.isModLoaded("ProjRed|Core") || aTGregSupport;
 
     public ProcessingModSupport() {
@@ -134,7 +147,7 @@ public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHa
         if (!aEnableRailcraftMats) {
             Materials.Firestone.mHasParentMod = false;
         }
-        if(!aEnableProjectRedMats){
+        if (!aEnableProjectRedMats) {
             Materials.Electrotine.mHasParentMod = false;
         }
 
@@ -159,4 +172,5 @@ public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHa
     public void onComponentIteration(Materials aMaterial) {
         //NOP
     }
+
 }

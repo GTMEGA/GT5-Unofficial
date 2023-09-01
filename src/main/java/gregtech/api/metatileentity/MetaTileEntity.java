@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity;
 
+
 import appeng.api.util.AECableType;
 import appeng.me.helpers.AENetworkProxy;
 import com.enderio.core.common.util.BlockCoord;
@@ -44,6 +45,7 @@ import java.util.Locale;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.V;
 
+
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
  * <p/>
@@ -56,23 +58,25 @@ import static gregtech.api.enums.GT_Values.V;
  */
 @SuppressWarnings("unused")
 public abstract class MetaTileEntity implements IMetaTileEntity {
+
     /**
      * Only assigned for the MetaTileEntity in the List! Also only used to get the localized Name for the ItemStack and for getInvName.
      */
     public final String mName;
+
     /**
      * The Inventory of the MetaTileEntity. Amount of Slots can be larger than 256. HAYO!
      */
     public final ItemStack[] mInventory;
+
     public boolean doTickProfilingInThisTick = true;
 
+    public long mSoundRequests = 0;
 
     /**
      * accessibility to this Field is no longer given, see below
      */
     private IGregTechTileEntity mBaseMetaTileEntity;
-
-    public long mSoundRequests=0;
 
     /**
      * This registers your Machine at the List.
@@ -87,8 +91,9 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
      * }
      */
     public MetaTileEntity(int aID, String aBasicName, String aRegionalName, int aInvSlotCount) {
-        if (GregTech_API.sPostloadStarted || !GregTech_API.sPreloadStarted)
+        if (GregTech_API.sPostloadStarted || !GregTech_API.sPreloadStarted) {
             throw new IllegalAccessError("This Constructor has to be called in the load Phase");
+        }
         mName = aBasicName.replace(" ", "_").toLowerCase(Locale.ENGLISH);
         if (GregTech_API.METATILEENTITIES[aID] == null) {
             GregTech_API.METATILEENTITIES[aID] = this;
@@ -165,10 +170,16 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     /**
      * This method will only be called on client side
+     *
      * @return whether the secondary description should be display. default is false
      */
     public boolean isDisplaySecondaryDescription() {
         return false;
+    }
+
+    @Override
+    public ItemStack getStackForm(long aAmount) {
+        return new ItemStack(GregTech_API.sBlockMachines, (int) aAmount, getBaseMetaTileEntity().getMetaTileID());
     }
 
     @Override
@@ -189,32 +200,22 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
-    public ItemStack getStackForm(long aAmount) {
-        return new ItemStack(GregTech_API.sBlockMachines, (int) aAmount, getBaseMetaTileEntity().getMetaTileID());
-    }
-
-    public String getLocalName() {
-        return GT_LanguageManager.getTranslation("gt.blockmachines." + mName + ".name");
-    }
-
-    @Override
-    public void onServerStart() {/*Do nothing*/}
-
-    @Override
-    public void onWorldSave(File aSaveDirectory) {/*Do nothing*/}
-
-    @Override
-    public void onWorldLoad(File aSaveDirectory) {/*Do nothing*/}
-
-    @Override
-    public void onConfigLoad(GT_Config aConfig) {/*Do nothing*/}
+    public void initDefaultModes(NBTTagCompound aNBT) {/*Do nothing*/}
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {/*Do nothing*/}
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {/*Do nothing*/}
+    public void onServerStart() {/*Do nothing*/}
+
+    @Override
+    public void onWorldLoad(File aSaveDirectory) {/*Do nothing*/}
+
+    @Override
+    public void onWorldSave(File aSaveDirectory) {/*Do nothing*/}
+
+    @Override
+    public void onConfigLoad(GT_Config aConfig) {/*Do nothing*/}
 
     @Override
     public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
@@ -235,7 +236,9 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if(!aPlayer.isSneaking()) return false;
+        if (!aPlayer.isSneaking()) {
+            return false;
+        }
         byte tSide = GT_Utility.getOppositeSide(aWrenchingSide);
         TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(aWrenchingSide);
         if ((tTileEntity instanceof IGregTechTileEntity) && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
@@ -247,7 +250,9 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if(!aPlayer.isSneaking()) return false;
+        if (!aPlayer.isSneaking()) {
+            return false;
+        }
         byte tSide = GT_Utility.getOppositeSide(aWrenchingSide);
         TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(aWrenchingSide);
         if ((tTileEntity instanceof IGregTechTileEntity) && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
@@ -259,7 +264,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     public void onExplosion() {
-        GT_Log.exp.println("Machine at "+this.getBaseMetaTileEntity().getXCoord()+" | "+this.getBaseMetaTileEntity().getYCoord()+" | "+this.getBaseMetaTileEntity().getZCoord()+" DIMID: "+ this.getBaseMetaTileEntity().getWorld().provider.dimensionId+ " exploded.");
+        GT_Log.exp.println("Machine at " + this.getBaseMetaTileEntity().getXCoord() + " | " + this.getBaseMetaTileEntity().getYCoord() + " | " +
+                           this.getBaseMetaTileEntity().getZCoord() + " DIMID: " + this.getBaseMetaTileEntity().getWorld().provider.dimensionId + " exploded.");
     }
 
     @Override
@@ -286,17 +292,54 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     public void onRemoval() {/*Do nothing*/}
 
     @Override
-    public void initDefaultModes(NBTTagCompound aNBT) {/*Do nothing*/}
+    public boolean isFacingValid(byte aFacing) {
+        return false;
+    }
 
-    /**
-     * When a GUI is opened
-     */
-    public void onOpenGUI() {/*Do nothing*/}
+    @Override
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return null;
+    }
 
-    /**
-     * When a GUI is closed
-     */
-    public void onCloseGUI() {/*Do nothing*/}
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return null;
+    }
+
+    @Override
+    public boolean isValidSlot(int aIndex) {
+        return true;
+    }
+
+    @Override
+    public boolean setStackToZeroInsteadOfNull(int aIndex) {
+        return false;
+    }
+
+    @Override
+    public boolean isLiquidInput(byte aSide) {
+        return true;
+    }
+
+    @Override
+    public boolean isLiquidOutput(byte aSide) {
+        return true;
+    }
+
+    @Override
+    public String getMetaName() {
+        return mName;
+    }
+
+    @Override
+    public boolean isAccessAllowed(EntityPlayer aPlayer) {
+        return false;
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+        return onRightclick(aBaseMetaTileEntity, aPlayer);
+    }
 
     /**
      * a Player rightclicks the Machine
@@ -304,11 +347,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
      */
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         return false;
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
-        return onRightclick(aBaseMetaTileEntity, aPlayer);
     }
 
     @Override
@@ -323,6 +361,9 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
+    public void receiveClientEvent(byte aEventID, byte aValue) {/*Do nothing*/}
+
+    @Override
     public void doSound(byte aIndex, double aX, double aY, double aZ) {/*Do nothing*/}
 
     @Override
@@ -333,28 +374,247 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     public final void sendSound(byte aIndex) {
-        if (!getBaseMetaTileEntity().hasMufflerUpgrade())
+        if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
             getBaseMetaTileEntity().sendBlockEvent(ClientEvents.DO_SOUND, aIndex);
+        }
     }
 
     @Override
     public final void sendLoopStart(byte aIndex) {
-        if (!getBaseMetaTileEntity().hasMufflerUpgrade())
+        if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
             getBaseMetaTileEntity().sendBlockEvent(ClientEvents.START_SOUND_LOOP, aIndex);
+        }
         mSoundRequests++;
     }
 
     @Override
     public final void sendLoopEnd(byte aIndex) {
-        if (!getBaseMetaTileEntity().hasMufflerUpgrade())
+        if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
             getBaseMetaTileEntity().sendBlockEvent(ClientEvents.STOP_SOUND_LOOP, aIndex);
+        }
     }
+
+    @Override
+    public void doExplosion(long aExplosionPower) {
+        float tStrength = aExplosionPower < V[0] ? 1.0F : aExplosionPower < V[1] ? 2.0F : aExplosionPower < V[2] ? 3.0F : aExplosionPower < V[3] ? 4.0F :
+                                                                                                                          aExplosionPower < V[4] ? 5.0F :
+                                                                                                                          aExplosionPower < V[4] * 2 ? 6.0F :
+                                                                                                                          aExplosionPower < V[5] ? 7.0F :
+                                                                                                                          aExplosionPower < V[6] ? 8.0F :
+                                                                                                                          aExplosionPower < V[7] ? 9.0F :
+                                                                                                                          aExplosionPower < V[8] ? 10.0F :
+                                                                                                                          aExplosionPower < V[8] * 2 ? 11.0F :
+                                                                                                                          aExplosionPower < V[9] ? 12.0F :
+                                                                                                                          aExplosionPower < V[10] ? 13.0F :
+                                                                                                                          aExplosionPower < V[11] ? 14.0F :
+                                                                                                                          aExplosionPower < V[12] ? 15.0F :
+                                                                                                                          aExplosionPower < V[12] * 2 ? 16.0F :
+                                                                                                                          aExplosionPower < V[13] ? 17.0F :
+                                                                                                                          aExplosionPower < V[14] ? 18.0F :
+                                                                                                                          aExplosionPower < V[15] ? 19.0F
+                                                                                                                                                  : 20.0F;
+        int tX = getBaseMetaTileEntity().getXCoord(), tY = getBaseMetaTileEntity().getYCoord(), tZ = getBaseMetaTileEntity().getZCoord();
+        World tWorld = getBaseMetaTileEntity().getWorld();
+        GT_Utility.sendSoundToPlayers(tWorld, GregTech_API.sSoundList.get(209), 1.0F, -1, tX, tY, tZ);
+        tWorld.setBlock(tX, tY, tZ, Blocks.air);
+        if (GregTech_API.sMachineExplosions) {
+            tWorld.createExplosion(null, tX + 0.5, tY + 0.5, tZ + 0.5, tStrength, true);
+        }
+    }
+
+    @Override
+    public boolean isSimpleMachine() {
+        return false;
+    }
+
+    @Override
+    public boolean doTickProfilingMessageDuringThisTick() {
+        return doTickProfilingInThisTick;
+    }
+
+    @Override
+    public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, int aLogLevel, ArrayList<String> aList) {
+        return aList;
+    }
+
+    @Override
+    public String getSpecialVoltageToolTip() {
+        return null;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister aBlockIconRegister) {/*Do nothing*/}
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean renderInInventory(Block aBlock, int aMeta, RenderBlocks aRenderer) {
+        return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
+        return false;
+    }
+
+    /**
+     * Gets the Output for the comparator on the given Side
+     */
+    @Override
+    public byte getComparatorValue(byte aSide) {
+        return 0;
+    }
+
+    @Override
+    public float getExplosionResistance(byte aSide) {
+        return 10.0F;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        return new String[]{};
+    }
+
+    @Override
+    public boolean isGivingInformation() {
+        return false;
+    }
+
+    @Override
+    public ItemStack[] getRealInventory() {
+        return mInventory;
+    }
+
+    @Override
+    public boolean connectsToItemPipe(byte aSide) {
+        return false;
+    }
+
+    @Override
+    public void onColorChangeServer(byte aColor) {
+        final IGregTechTileEntity meta = getBaseMetaTileEntity();
+        final int aX = meta.getXCoord(), aY = meta.getYCoord(), aZ = meta.getZCoord();
+        for (byte aSide = 0; aSide < 6; aSide++) {
+            // Flag surrounding pipes/cables to revaluate their connection with us if we got painted
+            final TileEntity tTileEntity = meta.getTileEntityAtSide(aSide);
+            if ((tTileEntity instanceof BaseMetaPipeEntity)) {
+                ((BaseMetaPipeEntity) tTileEntity).onNeighborBlockChange(aX, aY, aZ);
+            }
+        }
+    }
+
+    @Override
+    public void onColorChangeClient(byte aColor) {
+        // Do nothing apparently
+    }
+
+    @Override
+    public int getLightOpacity() {
+        return ((BaseMetaTileEntity) getBaseMetaTileEntity()).getLightValue() > 0 ? 0 : 255;
+    }
+
+    @Override
+    public boolean allowGeneralRedstoneOutput() {
+        return false;
+    }
+
+    @Override
+    public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB, List<AxisAlignedBB> outputAABB, Entity collider) {
+        AxisAlignedBB axisalignedbb1 = getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+        if (axisalignedbb1 != null && inputAABB.intersectsWith(axisalignedbb1)) {
+            outputAABB.add(axisalignedbb1);
+        }
+    }
+
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
+        return AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
+    }
+
+    @Override
+    public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider) {
+        //
+    }
+
+    @Override
+    public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
+        //
+    }
+
+    @Override
+    public boolean hasAlternativeModeText() {
+        return false;
+    }
+
+    @Override
+    public String getAlternativeModeText() {
+        return "";
+    }
+
+    @Override
+    public boolean shouldJoinIc2Enet() {
+        return false;
+    }
+
+    @Override
+    public void onMachineBlockUpdate() {/*Do nothing*/}
+
+    @Override
+    public void getWailaBody(ItemStack stack, List<String> currentTip, MovingObjectPosition pos, NBTTagCompound tag, int side) {
+        String facingStr = "Facing";
+        final int facing = mBaseMetaTileEntity.getFrontFacing();
+        currentTip.add(String.format("%s: %s", facingStr, ForgeDirection.getOrientation(facing).name()));
+    }
+
+    @Override
+    public void getWailaNBT(NBTTagCompound tag, World world, BlockCoord pos) {
+        IMetaTileEntity.super.getWailaNBT(tag, world, pos);
+    }    /**
+     * gets the contained Liquid
+     */
+    @Override
+    public FluidStack getFluid() {
+        return null;
+    }
+
+    public String getLocalName() {
+        return GT_LanguageManager.getTranslation("gt.blockmachines." + mName + ".name");
+    }    /**
+     * tries to fill this Tank
+     */
+    @Override
+    public int fill(FluidStack resource, boolean doFill) {
+        return 0;
+    }
+
+    /**
+     * When a GUI is opened
+     */
+    public void onOpenGUI() {/*Do nothing*/}    /**
+     * tries to empty this Tank
+     */
+    @Override
+    public FluidStack drain(int maxDrain, boolean doDrain) {
+        return null;
+    }
+
+    /**
+     * When a GUI is closed
+     */
+    public void onCloseGUI() {/*Do nothing*/}
 
     /**
      * @return true if this Device emits Energy at all
      */
     public boolean isElectric() {
         return true;
+    }    /**
+     * Liquid Capacity
+     */
+    @Override
+    public int getCapacity() {
+        return 0;
     }
 
     /**
@@ -368,13 +628,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
      * @return true if this Device emits Energy at all
      */
     public boolean isSteampowered() {
-        return false;
-    }
-
-    /**
-     * @return true if this Device emits Energy at all
-     */
-    public boolean isEnetOutput() {
         return false;
     }
 
@@ -440,26 +693,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
      */
     public boolean isTransformingLowEnergy() {
         return true;
-    }
-
-    @Override
-    public boolean isFacingValid(byte aFacing) {
-        return false;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return false;
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return true;
-    }
-
-    @Override
-    public boolean setStackToZeroInsteadOfNull(int aIndex) {
-        return false;
     }
 
     /**
@@ -554,69 +787,11 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         return false;
     }
 
-    @Override
-    public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, int aLogLevel, ArrayList<String> aList) {
-        return aList;
-    }
-
-    @Override
-    public boolean isLiquidInput(byte aSide) {
-        return true;
-    }
-
-    @Override
-    public boolean isLiquidOutput(byte aSide) {
-        return true;
-    }
-
-    /**
-     * gets the contained Liquid
-     */
-    @Override
-    public FluidStack getFluid() {
-        return null;
-    }
-
-    /**
-     * tries to fill this Tank
-     */
-    @Override
-    public int fill(FluidStack resource, boolean doFill) {
-        return 0;
-    }
-
-    /**
-     * tries to empty this Tank
-     */
-    @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
-        return null;
-    }
-
     /**
      * Tank pressure
      */
     public int getTankPressure() {
         return 0;
-    }
-
-    /**
-     * Liquid Capacity
-     */
-    @Override
-    public int getCapacity() {
-        return 0;
-    }
-
-    @Override
-    public void onMachineBlockUpdate() {/*Do nothing*/}
-
-    @Override
-    public void receiveClientEvent(byte aEventID, byte aValue) {/*Do nothing*/}
-
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
     }
 
     /**
@@ -665,60 +840,113 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     /**
      * When the Facing gets changed.
      */
-    public void onFacingChange() {/*Do nothing*/}
+    public void onFacingChange() {/*Do nothing*/}    @Override
+    public boolean canFill(ForgeDirection aSide, Fluid aFluid) {
+        return fill(aSide, new FluidStack(aFluid, 1), false) == 1;
+    }
 
     /**
      * if the IC2 Teleporter can drain from this.
      */
     public boolean isTeleporterCompatible() {
         return isEnetOutput() && getBaseMetaTileEntity().getOutputVoltage() >= 128 && getBaseMetaTileEntity().getUniversalEnergyCapacity() >= 500000;
+    }    @Override
+    public boolean canDrain(ForgeDirection aSide, Fluid aFluid) {
+        return drain(aSide, new FluidStack(aFluid, 1), false) != null;
     }
 
     /**
-     * Gets the Output for the comparator on the given Side
+     * @return true if this Device emits Energy at all
      */
-    @Override
-    public byte getComparatorValue(byte aSide) {
-        return 0;
+    public boolean isEnetOutput() {
+        return false;
+    }    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
+        if (getCapacity() <= 0 && !getBaseMetaTileEntity().hasSteamEngineUpgrade()) {
+            return new FluidTankInfo[]{};
+        }
+        return new FluidTankInfo[]{getInfo()};
     }
 
     @Override
     public boolean acceptsRotationalEnergy(byte aSide) {
         return false;
+    }    public int fill_default(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
+        return fill(aFluid, doFill);
     }
 
     @Override
     public boolean injectRotationalEnergy(byte aSide, long aSpeed, long aEnergy) {
         return false;
-    }
-
-    @Override
-    public String getSpecialVoltageToolTip() {
-        return null;
-    }
-
-    @Override
-    public boolean isGivingInformation() {
-        return false;
-    }
-
-    @Override
-    public String[] getInfoData() {
-        return new String[]{};
+    }    @Override
+    public int fill(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
+        if (getBaseMetaTileEntity().hasSteamEngineUpgrade() && GT_ModHandler.isSteam(aFluid) && aFluid.amount > 1) {
+            int tSteam = (int) Math.min(
+                    Integer.MAX_VALUE, Math.min(aFluid.amount / 2, getBaseMetaTileEntity().getSteamCapacity() - getBaseMetaTileEntity().getStoredSteam()));
+            if (tSteam > 0) {
+                if (doFill) {
+                    getBaseMetaTileEntity().increaseStoredSteam(tSteam, true);
+                }
+                return tSteam * 2;
+            }
+        } else {
+            return fill_default(aSide, aFluid, doFill);
+        }
+        return 0;
     }
 
     public boolean isDigitalChest() {
         return false;
+    }    @Override
+    public FluidStack drain(ForgeDirection aSide, FluidStack aFluid, boolean doDrain) {
+        if (getFluid() != null && aFluid != null && getFluid().isFluidEqual(aFluid)) {
+            return drain(aFluid.amount, doDrain);
+        }
+        return null;
     }
 
     public ItemStack[] getStoredItemData() {
         return null;
+    }    @Override
+    public FluidStack drain(ForgeDirection aSide, int maxDrain, boolean doDrain) {
+        return drain(maxDrain, doDrain);
     }
 
-    public void setItemCount(int aCount) {/*Do nothing*/}
+    public void setItemCount(int aCount) {/*Do nothing*/}    @Override
+    public int getFluidAmount() {
+        return 0;
+    }
 
     public int getMaxItemCount() {
         return 0;
+    }    @Override
+    public FluidTankInfo getInfo() {
+        return new FluidTankInfo(this);
+    }
+
+    @Override
+    public int[] getAccessibleSlotsFromSide(int aSide) {
+        ArrayList<Integer> tList = new ArrayList<Integer>();
+        IGregTechTileEntity tTileEntity = getBaseMetaTileEntity();
+        boolean tSkip = tTileEntity.getCoverBehaviorAtSideNew((byte) aSide).letsItemsIn(
+                (byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getComplexCoverDataAtSide((byte) aSide), -2, tTileEntity) ||
+                        tTileEntity.getCoverBehaviorAtSideNew((byte) aSide).letsItemsOut(
+                                (byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getComplexCoverDataAtSide((byte) aSide), -2, tTileEntity);
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (isValidSlot(i) && (
+                    tSkip || tTileEntity.getCoverBehaviorAtSideNew((byte) aSide).letsItemsOut(
+                            (byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getComplexCoverDataAtSide((byte) aSide), i, tTileEntity) ||
+                    tTileEntity.getCoverBehaviorAtSideNew((byte) aSide).letsItemsIn(
+                            (byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getComplexCoverDataAtSide((byte) aSide), i, tTileEntity)
+            )) {
+                tList.add(i);
+            }
+        }
+        int[] rArray = new int[tList.size()];
+        for (int i = 0; i < rArray.length; i++) {
+            rArray[i] = tList.get(i);
+        }
+        return rArray;
     }
 
     @Override
@@ -728,30 +956,10 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     public ItemStack getStackInSlot(int aIndex) {
-        if (aIndex >= 0 && aIndex < mInventory.length) return mInventory[aIndex];
+        if (aIndex >= 0 && aIndex < mInventory.length) {
+            return mInventory[aIndex];
+        }
         return null;
-    }
-
-    @Override
-    public void setInventorySlotContents(int aIndex, ItemStack aStack) {
-        if (aIndex >= 0 && aIndex < mInventory.length) mInventory[aIndex] = aStack;
-    }
-
-    @Override
-    public String getInventoryName() {
-        if (GregTech_API.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()] != null)
-            return GregTech_API.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getMetaName();
-        return "";
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int aIndex, ItemStack aStack) {
-        return getBaseMetaTileEntity().isValidSlot(aIndex);
     }
 
     @Override
@@ -759,99 +967,19 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         ItemStack tStack = getStackInSlot(aIndex), rStack = GT_Utility.copyOrNull(tStack);
         if (tStack != null) {
             if (tStack.stackSize <= aAmount) {
-                if (setStackToZeroInsteadOfNull(aIndex)) tStack.stackSize = 0;
-                else setInventorySlotContents(aIndex, null);
+                if (setStackToZeroInsteadOfNull(aIndex)) {
+                    tStack.stackSize = 0;
+                } else {
+                    setInventorySlotContents(aIndex, null);
+                }
             } else {
                 rStack = tStack.splitStack(aAmount);
-                if (tStack.stackSize == 0 && !setStackToZeroInsteadOfNull(aIndex))
+                if (tStack.stackSize == 0 && !setStackToZeroInsteadOfNull(aIndex)) {
                     setInventorySlotContents(aIndex, null);
+                }
             }
         }
         return rStack;
-    }
-
-    @Override
-    public int[] getAccessibleSlotsFromSide(int aSide) {
-        ArrayList<Integer> tList = new ArrayList<Integer>();
-        IGregTechTileEntity tTileEntity = getBaseMetaTileEntity();
-        boolean tSkip = tTileEntity.getCoverBehaviorAtSideNew((byte) aSide).letsItemsIn((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getComplexCoverDataAtSide((byte) aSide), -2, tTileEntity) || tTileEntity.getCoverBehaviorAtSideNew((byte) aSide).letsItemsOut((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getComplexCoverDataAtSide((byte) aSide), -2, tTileEntity);
-        for (int i = 0; i < getSizeInventory(); i++)
-            if (isValidSlot(i) && (tSkip || tTileEntity.getCoverBehaviorAtSideNew((byte) aSide).letsItemsOut((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getComplexCoverDataAtSide((byte) aSide), i, tTileEntity) || tTileEntity.getCoverBehaviorAtSideNew((byte) aSide).letsItemsIn((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getComplexCoverDataAtSide((byte) aSide), i, tTileEntity)))
-                tList.add(i);
-        int[] rArray = new int[tList.size()];
-        for (int i = 0; i < rArray.length; i++) rArray[i] = tList.get(i);
-        return rArray;
-    }
-
-    @Override
-    public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
-        return isValidSlot(aIndex) && aStack != null && aIndex < mInventory.length && (mInventory[aIndex] == null || GT_Utility.areStacksEqual(aStack, mInventory[aIndex])) && allowPutStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
-    }
-
-    @Override
-    public boolean canExtractItem(int aIndex, ItemStack aStack, int aSide) {
-        return isValidSlot(aIndex) && aStack != null && aIndex < mInventory.length && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
-    }
-
-    @Override
-    public boolean canFill(ForgeDirection aSide, Fluid aFluid) {
-        return fill(aSide, new FluidStack(aFluid, 1), false) == 1;
-    }
-
-    @Override
-    public boolean canDrain(ForgeDirection aSide, Fluid aFluid) {
-        return drain(aSide, new FluidStack(aFluid, 1), false) != null;
-    }
-
-    @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
-        if (getCapacity() <= 0 && !getBaseMetaTileEntity().hasSteamEngineUpgrade()) return new FluidTankInfo[]{};
-        return new FluidTankInfo[]{getInfo()};
-    }
-
-    public int fill_default(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
-        return fill(aFluid, doFill);
-    }
-
-    @Override
-    public int fill(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
-        if (getBaseMetaTileEntity().hasSteamEngineUpgrade() && GT_ModHandler.isSteam(aFluid) && aFluid.amount > 1) {
-            int tSteam = (int) Math.min(Integer.MAX_VALUE, Math.min(aFluid.amount / 2, getBaseMetaTileEntity().getSteamCapacity() - getBaseMetaTileEntity().getStoredSteam()));
-            if (tSteam > 0) {
-                if (doFill) getBaseMetaTileEntity().increaseStoredSteam(tSteam, true);
-                return tSteam * 2;
-            }
-        } else {
-            return fill_default(aSide, aFluid, doFill);
-        }
-        return 0;
-    }
-
-    @Override
-    public FluidStack drain(ForgeDirection aSide, FluidStack aFluid, boolean doDrain) {
-        if (getFluid() != null && aFluid != null && getFluid().isFluidEqual(aFluid))
-            return drain(aFluid.amount, doDrain);
-        return null;
-    }
-
-    @Override
-    public FluidStack drain(ForgeDirection aSide, int maxDrain, boolean doDrain) {
-        return drain(maxDrain, doDrain);
-    }
-
-    @Override
-    public int getFluidAmount() {
-        return 0;
-    }
-
-    @Override
-    public FluidTankInfo getInfo() {
-        return new FluidTankInfo(this);
-    }
-
-    @Override
-    public String getMetaName() {
-        return mName;
     }
 
     @Override
@@ -860,13 +988,28 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
+    public void setInventorySlotContents(int aIndex, ItemStack aStack) {
+        if (aIndex >= 0 && aIndex < mInventory.length) {
+            mInventory[aIndex] = aStack;
+        }
+    }
+
+    @Override
+    public String getInventoryName() {
+        if (GregTech_API.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()] != null) {
+            return GregTech_API.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getMetaName();
+        }
+        return "";
+    }
+
+    @Override
     public boolean hasCustomInventoryName() {
         return false;
     }
 
     @Override
-    public boolean doTickProfilingMessageDuringThisTick() {
-        return doTickProfilingInThisTick;
+    public int getInventoryStackLimit() {
+        return 64;
     }
 
     @Override
@@ -890,154 +1033,29 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
+    public boolean isItemValidForSlot(int aIndex, ItemStack aStack) {
+        return getBaseMetaTileEntity().isValidSlot(aIndex);
     }
 
     @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
+    public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
+        return isValidSlot(aIndex) && aStack != null && aIndex < mInventory.length && (
+                mInventory[aIndex] == null || GT_Utility.areStacksEqual(
+                        aStack, mInventory[aIndex])
+        ) && allowPutStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
     }
 
     @Override
-    public boolean connectsToItemPipe(byte aSide) {
-        return false;
+    public boolean canExtractItem(int aIndex, ItemStack aStack, int aSide) {
+        return isValidSlot(aIndex) && aStack != null && aIndex < mInventory.length && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
     }
 
-    @Override
-    public float getExplosionResistance(byte aSide) {
-        return 10.0F;
-    }
-
-    @Override
-    public ItemStack[] getRealInventory() {
-        return mInventory;
-    }
-
-    @Override
-    public void onColorChangeServer(byte aColor) {
-        final IGregTechTileEntity meta = getBaseMetaTileEntity();
-        final int aX = meta.getXCoord(), aY = meta.getYCoord(), aZ = meta.getZCoord();
-        for (byte aSide = 0; aSide < 6 ; aSide++ ) {
-            // Flag surrounding pipes/cables to revaluate their connection with us if we got painted
-            final TileEntity tTileEntity = meta.getTileEntityAtSide(aSide);
-            if ((tTileEntity instanceof BaseMetaPipeEntity)) {
-                ((BaseMetaPipeEntity) tTileEntity).onNeighborBlockChange(aX, aY, aZ);
-            }
-        }
-    }
-
-    @Override
-    public void onColorChangeClient(byte aColor) {
-        // Do nothing apparently
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean renderInInventory(Block aBlock, int aMeta, RenderBlocks aRenderer) {
-        return false;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
-        return false;
-    }
-
-    @Override
-    public void doExplosion(long aExplosionPower) {
-        float tStrength =
-            aExplosionPower < V[0] ? 1.0F :
-            aExplosionPower < V[1] ? 2.0F :
-            aExplosionPower < V[2] ? 3.0F :
-            aExplosionPower < V[3] ? 4.0F :
-            aExplosionPower < V[4] ? 5.0F :
-            aExplosionPower < V[4] * 2 ? 6.0F :
-            aExplosionPower < V[5] ? 7.0F :
-            aExplosionPower < V[6] ? 8.0F :
-            aExplosionPower < V[7] ? 9.0F :
-            aExplosionPower < V[8] ? 10.0F :
-            aExplosionPower < V[8] * 2 ? 11.0F :
-            aExplosionPower < V[9] ? 12.0F :
-            aExplosionPower < V[10] ? 13.0F :
-            aExplosionPower < V[11] ? 14.0F :
-            aExplosionPower < V[12] ? 15.0F :
-            aExplosionPower < V[12] * 2 ? 16.0F :
-            aExplosionPower < V[13] ? 17.0F :
-            aExplosionPower < V[14] ? 18.0F :
-            aExplosionPower < V[15] ? 19.0F : 20.0F;
-        int tX = getBaseMetaTileEntity().getXCoord(), tY = getBaseMetaTileEntity().getYCoord(), tZ = getBaseMetaTileEntity().getZCoord();
-        World tWorld = getBaseMetaTileEntity().getWorld();
-        GT_Utility.sendSoundToPlayers(tWorld, GregTech_API.sSoundList.get(209), 1.0F, -1, tX, tY, tZ);
-        tWorld.setBlock(tX, tY, tZ, Blocks.air);
-        if (GregTech_API.sMachineExplosions)
-            tWorld.createExplosion(null, tX + 0.5, tY + 0.5, tZ + 0.5, tStrength, true);
-    }
-
-    @Override
-    public int getLightOpacity() {
-        return ((BaseMetaTileEntity) getBaseMetaTileEntity()).getLightValue() > 0 ? 0 : 255;
-    }
-
-    @Override
-    public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB, List<AxisAlignedBB> outputAABB, Entity collider) {
-        AxisAlignedBB axisalignedbb1 = getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
-        if (axisalignedbb1 != null && inputAABB.intersectsWith(axisalignedbb1)) outputAABB.add(axisalignedbb1);
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        return AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
-    }
-
-    @Override
-    public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider) {
-        //
-    }
-
-    @Override
-    public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
-        //
-    }
-
-    @Override
-    public boolean allowGeneralRedstoneOutput(){
-    	return false;
-    }
-
-    public String trans(String aKey, String aEnglish){
-    	return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_"+aKey, aEnglish, false);
-    }
-
-    @Override
-    public boolean hasAlternativeModeText(){
-    	return false;
-    }
-
-    @Override
-    public String getAlternativeModeText() {
-        return "";
-    }
-
-    @Override
-    public boolean shouldJoinIc2Enet() {
-        return false;
+    public String trans(String aKey, String aEnglish) {
+        return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish, false);
     }
 
     public boolean shouldTriggerBlockUpdate() {
         return false;
-    }
-
-    @Override
-    public void getWailaBody(ItemStack stack, List<String> currentTip, MovingObjectPosition pos, NBTTagCompound tag, int side) {
-        String facingStr = "Facing";
-        final int facing = mBaseMetaTileEntity.getFrontFacing();
-        currentTip.add(String.format("%s: %s", facingStr, ForgeDirection.getOrientation(facing).name()));
-    }
-
-    @Override
-    public void getWailaNBT(NBTTagCompound tag, World world, BlockCoord pos) {
-        IMetaTileEntity.super.getWailaNBT(tag, world, pos);
     }
 
     @Optional.Method(modid = "appliedenergistics2")
@@ -1051,5 +1069,33 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     @Optional.Method(modid = "appliedenergistics2")
-    public void gridChanged() {}
+    public void gridChanged() {
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

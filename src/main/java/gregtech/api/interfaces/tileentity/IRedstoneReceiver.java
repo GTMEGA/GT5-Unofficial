@@ -1,9 +1,11 @@
 package gregtech.api.interfaces.tileentity;
 
+
 /**
  * This File has just internal Information about the Redstone State of a TileEntity
  */
 public interface IRedstoneReceiver extends IHasWorldObjectAndCoords {
+
     /**
      * gets the Redstone Level of the TileEntity to the given Input Side
      * <p/>
@@ -26,4 +28,5 @@ public interface IRedstoneReceiver extends IHasWorldObjectAndCoords {
      * gets if the TileEntity receives Redstone at this Side
      */
     boolean getRedstone(byte aSide);
+
 }

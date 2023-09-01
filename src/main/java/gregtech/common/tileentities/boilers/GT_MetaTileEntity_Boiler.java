@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.boilers;
 
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -23,15 +24,22 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+
 public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTank {
-    public int mTemperature = 20;
-    public int mProcessingEnergy = 0;
-    public int mLossTimer = 0;
-    public FluidStack mSteam = null;
-    public boolean mHadNoWater = false;
-    private int mExcessWater = 0;
 
     public static final byte SOUND_EVENT_LET_OFF_EXCESS_STEAM = 1;
+
+    public int mTemperature = 20;
+
+    public int mProcessingEnergy = 0;
+
+    public int mLossTimer = 0;
+
+    public FluidStack mSteam = null;
+
+    public boolean mHadNoWater = false;
+
+    private int mExcessWater = 0;
 
     public GT_MetaTileEntity_Boiler(int aID, String aName, String aNameRegional, int aTier, String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, 4, aDescription, aTextures);
@@ -48,7 +56,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     public GT_MetaTileEntity_Boiler(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 4, aDescription, aTextures);
     }
-    
+
     public GT_MetaTileEntity_Boiler(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 4, aDescription, aTextures);
     }
@@ -63,23 +71,29 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     @Override
-    public boolean isElectric() {
-        return false;
+    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCover) {
+        return GregTech_API.getCoverBehaviorNew(aCover.toStack()).isSimpleCover();
     }
 
     @Override
-    public boolean isPneumatic() {
-        return false;
-    }
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        pollute(aTick);
 
-    @Override
-    public boolean isSteampowered() {
-        return false;
-    }
+        if (isNotAllowedToWork(aBaseMetaTileEntity, aTick)) {
+            return;
+        }
 
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
+        calculateCooldown();
+        pushSteamToInventories(aBaseMetaTileEntity);
+
+        if (canNotCreateSteam(aBaseMetaTileEntity, aTick)) {
+            pollute(aTick);
+            return;
+        }
+
+        ventSteamIfTankIsFull();
+        updateFuelTimed(aBaseMetaTileEntity, aTick);
+        calculateHeatUp(aBaseMetaTileEntity, aTick);
     }
 
     @Override
@@ -90,21 +104,6 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     @Override
     public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return true;
-    }
-
-    @Override
-    public int getProgresstime() {
-        return this.mTemperature;
-    }
-
-    @Override
-    public int maxProgresstime() {
-        return 500;
     }
 
     @Override
@@ -127,125 +126,49 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     @Override
-    public boolean doesFillContainers() {
-        return true;
+    public void doSound(byte aIndex, double aX, double aY, double aZ) {
+        if (aIndex == GT_MetaTileEntity_Boiler.SOUND_EVENT_LET_OFF_EXCESS_STEAM) {
+            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(4), 2, 1.0F, aX, aY, aZ);
+
+            new WorldSpawnedEventBuilder.ParticleEventBuilder().setIdentifier("largesmoke").setWorld(getBaseMetaTileEntity().getWorld()).setMotion(0D, 0D, 0D)
+                                                               .<WorldSpawnedEventBuilder.ParticleEventBuilder>times(8, x -> x.setPosition(
+                                                                       aX - 0.5D + XSTR_INSTANCE.nextFloat(), aY, aZ - 0.5D + XSTR_INSTANCE.nextFloat()).run());
+        }
     }
 
     @Override
-    public boolean doesEmptyContainers() {
-        return true;
-    }
-
-    @Override
-    public boolean canTankBeFilled() {
-        return true;
-    }
-
-    @Override
-    public boolean canTankBeEmptied() {
-        return true;
-    }
-
-    @Override
-    public boolean displaysItemStack() {
+    public boolean isElectric() {
         return false;
     }
 
     @Override
-    public boolean displaysStackSize() {
+    public int getCapacity() {
+        return 16000;
+    }
+
+    @Override
+    public boolean isPneumatic() {
         return false;
     }
 
     @Override
-    public boolean isFluidInputAllowed(FluidStack aFluid) {
-        return GT_ModHandler.isWater(aFluid);
+    public boolean isSteampowered() {
+        return false;
     }
 
     @Override
-    public FluidStack getDrainableStack() {
-        return this.mSteam;
+    public int getTankPressure() {
+        return 100;
     }
 
     @Override
-    public FluidStack setDrainableStack(FluidStack aFluid) {
-        this.mSteam = aFluid;
-        return this.mSteam;
+    public int getProgresstime() {
+        return this.mTemperature;
     }
 
     @Override
-    public boolean isDrainableStackSeparate() {
-        return true;
-    }
-
-    @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCover) {
-        return GregTech_API.getCoverBehaviorNew(aCover.toStack()).isSimpleCover();
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setInteger("mLossTimer", this.mLossTimer);
-        aNBT.setInteger("mTemperature", this.mTemperature);
-        aNBT.setInteger("mProcessingEnergy", this.mProcessingEnergy);
-        aNBT.setInteger("mExcessWater", this.mExcessWater);
-        if (this.mSteam == null) {
-            return;
-        }
-        try {
-            aNBT.setTag("mSteam", this.mSteam.writeToNBT(new NBTTagCompound()));
-        } catch (Throwable ignored) {}
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        this.mLossTimer = aNBT.getInteger("mLossTimer");
-        this.mTemperature = aNBT.getInteger("mTemperature");
-        this.mProcessingEnergy = aNBT.getInteger("mProcessingEnergy");
-        this.mExcessWater = aNBT.getInteger("mExcessWater");
-        this.mSteam = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mSteam"));
-    }
-
-    /**
-     * Produce some steam. Assume water is present.
-     */
-    protected void produceSteam(int aAmount) {
-        mExcessWater -= aAmount;
-        if (mExcessWater < 0) {
-            int tWaterToConsume = -mExcessWater / GT_Values.STEAM_PER_WATER;
-            mFluid.amount -= tWaterToConsume;
-            mExcessWater += GT_Values.STEAM_PER_WATER * tWaterToConsume;
-        }
-        if (GT_ModHandler.isSteam(this.mSteam)) {
-            this.mSteam.amount += aAmount;
-        } else {
-            this.mSteam = GT_ModHandler.getSteam(aAmount);
-        }
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        pollute(aTick);
-
-        if (isNotAllowedToWork(aBaseMetaTileEntity, aTick))
-            return;
-
-        calculateCooldown();
-        pushSteamToInventories(aBaseMetaTileEntity);
-
-        if (canNotCreateSteam(aBaseMetaTileEntity, aTick)) {
-            pollute(aTick);
-            return;
-        }
-
-        ventSteamIfTankIsFull();
-        updateFuelTimed(aBaseMetaTileEntity, aTick);
-        calculateHeatUp(aBaseMetaTileEntity, aTick);
-    }
-
-    private boolean isNotAllowedToWork(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        return (!aBaseMetaTileEntity.isServerSide()) || (aTick <= 20L);
+    public int maxProgresstime() {
+        return 500;
     }
 
     private void pollute(long aTick) {
@@ -254,23 +177,27 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
         }
     }
 
-    private void calculateHeatUp(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if ((this.mTemperature < getMaxTemperature()) && (this.mProcessingEnergy > 0) && (aTick % getHeatUpRate() == 0L)) {
-            this.mProcessingEnergy -= getEnergyConsumption();
-            this.mTemperature += getHeatUpAmount();
+    private boolean isNotAllowedToWork(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        return (!aBaseMetaTileEntity.isServerSide()) || (aTick <= 20L);
+    }
+
+    private void calculateCooldown() {
+        if (this.mTemperature <= 20) {
+            this.mTemperature = 20;
+            this.mLossTimer = 0;
+        } else if (++this.mLossTimer > getCooldownInterval()) {
+            // only loss temperature if hot
+            this.mTemperature -= 1;
+            this.mLossTimer = 0;
         }
-        aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
     }
 
-    private void updateFuelTimed(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork()))
-            updateFuel(aBaseMetaTileEntity, aTick);
-    }
-
-    private void ventSteamIfTankIsFull() {
-        if ((this.mSteam != null) && (this.mSteam.amount > getCapacity())) {
-            sendSound(SOUND_EVENT_LET_OFF_EXCESS_STEAM);
-            this.mSteam.amount = getCapacity() * 3 / 4;
+    protected void pushSteamToInventories(IGregTechTileEntity aBaseMetaTileEntity) {
+        for (int i = 1; (this.mSteam != null) && (i < 6); i++) {
+            if (i == aBaseMetaTileEntity.getFrontFacing()) {
+                continue;
+            }
+            pushSteamToSide(aBaseMetaTileEntity, i);
         }
     }
 
@@ -296,40 +223,109 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
         return false;
     }
 
+    private void ventSteamIfTankIsFull() {
+        if ((this.mSteam != null) && (this.mSteam.amount > getCapacity())) {
+            sendSound(SOUND_EVENT_LET_OFF_EXCESS_STEAM);
+            this.mSteam.amount = getCapacity() * 3 / 4;
+        }
+    }
+
+    private void updateFuelTimed(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork())) {
+            updateFuel(aBaseMetaTileEntity, aTick);
+        }
+    }
+
+    private void calculateHeatUp(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if ((this.mTemperature < getMaxTemperature()) && (this.mProcessingEnergy > 0) && (aTick % getHeatUpRate() == 0L)) {
+            this.mProcessingEnergy -= getEnergyConsumption();
+            this.mTemperature += getHeatUpAmount();
+        }
+        aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
+    }
+
+    protected abstract int getPollution();
+
+    protected abstract int getCooldownInterval();
+
+    protected final void pushSteamToSide(IGregTechTileEntity aBaseMetaTileEntity, int aSide) {
+        IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide((byte) aSide);
+        if (tTileEntity == null) {
+            return;
+        }
+        FluidStack tDrained = aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(aSide), Math.max(1, this.mSteam.amount / 2), false);
+        if (tDrained == null) {
+            return;
+        }
+        int tFilledAmount = tTileEntity.fill(ForgeDirection.getOrientation(aSide).getOpposite(), tDrained, false);
+        if (tFilledAmount <= 0) {
+            return;
+        }
+        tTileEntity.fill(
+                ForgeDirection.getOrientation(aSide).getOpposite(), aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(aSide), tFilledAmount, true), true);
+    }
+
     protected void onDangerousWaterLack(IGregTechTileEntity tile, long ticks) {
         tile.doExplosion(2048L);
     }
 
-    protected final void pushSteamToSide(IGregTechTileEntity aBaseMetaTileEntity, int aSide) {
-        IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide((byte) aSide);
-        if (tTileEntity == null)
-            return;
-        FluidStack tDrained = aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(aSide), Math.max(1, this.mSteam.amount / 2), false);
-        if (tDrained == null)
-            return;
-        int tFilledAmount = tTileEntity.fill(ForgeDirection.getOrientation(aSide).getOpposite(), tDrained, false);
-        if (tFilledAmount <= 0)
-            return;
-        tTileEntity.fill(ForgeDirection.getOrientation(aSide).getOpposite(), aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(aSide), tFilledAmount, true), true);
-    }
-
-    protected void pushSteamToInventories(IGregTechTileEntity aBaseMetaTileEntity) {
-        for (int i = 1; (this.mSteam != null) && (i < 6); i++) {
-            if (i == aBaseMetaTileEntity.getFrontFacing())
-                continue;
-            pushSteamToSide(aBaseMetaTileEntity, i);
+    /**
+     * Produce some steam. Assume water is present.
+     */
+    protected void produceSteam(int aAmount) {
+        mExcessWater -= aAmount;
+        if (mExcessWater < 0) {
+            int tWaterToConsume = -mExcessWater / GT_Values.STEAM_PER_WATER;
+            mFluid.amount -= tWaterToConsume;
+            mExcessWater += GT_Values.STEAM_PER_WATER * tWaterToConsume;
+        }
+        if (GT_ModHandler.isSteam(this.mSteam)) {
+            this.mSteam.amount += aAmount;
+        } else {
+            this.mSteam = GT_ModHandler.getSteam(aAmount);
         }
     }
 
-    private void calculateCooldown() {
-        if (this.mTemperature <= 20) {
-            this.mTemperature = 20;
-            this.mLossTimer = 0;
-        } else if (++this.mLossTimer > getCooldownInterval()) {
-            // only loss temperature if hot
-            this.mTemperature -= 1;
-            this.mLossTimer = 0;
+    protected abstract int getProductionPerSecond();
+
+    protected abstract void updateFuel(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
+
+    protected abstract int getMaxTemperature();
+
+    protected int getHeatUpRate() {
+        return 12;
+    }
+
+    protected abstract int getEnergyConsumption();
+
+    protected int getHeatUpAmount() {
+        return 1;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("mLossTimer", this.mLossTimer);
+        aNBT.setInteger("mTemperature", this.mTemperature);
+        aNBT.setInteger("mProcessingEnergy", this.mProcessingEnergy);
+        aNBT.setInteger("mExcessWater", this.mExcessWater);
+        if (this.mSteam == null) {
+            return;
         }
+        try {
+            aNBT.setTag("mSteam", this.mSteam.writeToNBT(new NBTTagCompound()));
+        } catch (Throwable ignored) {
+        }
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        this.mLossTimer = aNBT.getInteger("mLossTimer");
+        this.mTemperature = aNBT.getInteger("mTemperature");
+        this.mProcessingEnergy = aNBT.getInteger("mProcessingEnergy");
+        this.mExcessWater = aNBT.getInteger("mExcessWater");
+        this.mSteam = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mSteam"));
     }
 
     @Override
@@ -344,55 +340,68 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     @Override
-    public void doSound(byte aIndex, double aX, double aY, double aZ) {
-        if (aIndex == GT_MetaTileEntity_Boiler.SOUND_EVENT_LET_OFF_EXCESS_STEAM) {
-            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(4), 2, 1.0F, aX, aY, aZ);
-
-            new WorldSpawnedEventBuilder.ParticleEventBuilder()
-                    .setIdentifier("largesmoke")
-                    .setWorld(getBaseMetaTileEntity().getWorld())
-                    .setMotion(0D, 0D, 0D)
-                    .<WorldSpawnedEventBuilder.ParticleEventBuilder>times(8, x -> x
-                            .setPosition(
-                                    aX - 0.5D + XSTR_INSTANCE.nextFloat(),
-                                    aY,
-                                    aZ - 0.5D + XSTR_INSTANCE.nextFloat()
-                            ).run()
-                    );
-        }
+    public boolean doesEmptyContainers() {
+        return true;
     }
 
     @Override
-    public int getTankPressure() {
-        return 100;
+    public boolean isFluidInputAllowed(FluidStack aFluid) {
+        return GT_ModHandler.isWater(aFluid);
+    }
+
+    @Override
+    public boolean doesFillContainers() {
+        return true;
+    }
+
+    @Override
+    public FluidStack setDrainableStack(FluidStack aFluid) {
+        this.mSteam = aFluid;
+        return this.mSteam;
+    }
+
+    @Override
+    public boolean isValidSlot(int aIndex) {
+        return true;
+    }
+
+    @Override
+    public boolean canTankBeFilled() {
+        return true;
+    }
+
+    @Override
+    public boolean isSimpleMachine() {
+        return false;
+    }
+
+    @Override
+    public boolean isDrainableStackSeparate() {
+        return true;
+    }
+
+    @Override
+    public boolean canTankBeEmptied() {
+        return true;
+    }
+
+    @Override
+    public boolean displaysItemStack() {
+        return false;
+    }
+
+    @Override
+    public boolean displaysStackSize() {
+        return false;
+    }
+
+    @Override
+    public FluidStack getDrainableStack() {
+        return this.mSteam;
     }
 
     protected boolean isOutputToFront() {
         return false;
     }
 
-    protected abstract int getPollution();
-
-    @Override
-    public int getCapacity() {
-        return 16000;
-    }
-
-    protected abstract int getProductionPerSecond();
-
-    protected abstract int getMaxTemperature();
-
-    protected abstract int getEnergyConsumption();
-
-    protected abstract int getCooldownInterval();
-
-    protected int getHeatUpRate() {
-        return 12;
-    }
-
-    protected int getHeatUpAmount() {
-        return 1;
-    }
-
-    protected abstract void updateFuel(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
 }

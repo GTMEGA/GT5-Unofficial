@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.automation;
 
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -18,23 +19,24 @@ import java.util.Collections;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_REGULATOR;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_REGULATOR_GLOW;
 
-public class GT_MetaTileEntity_Regulator
-        extends GT_MetaTileEntity_Buffer {
+
+public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer {
+
     public int[] mTargetSlots = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+
     private boolean charge = false, decharge = false;
 
     public GT_MetaTileEntity_Regulator(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 20, new String[]{
-                "Filters up to 9 different Items",
-                "Allows Item-specific output stack size",
-                "Allows Item-specific output slot",
-                "Does not consume energy to move Item"});
+                "Filters up to 9 different Items", "Allows Item-specific output stack size", "Allows Item-specific output slot",
+                "Does not consume energy to move Item"
+        });
     }
 
     public GT_MetaTileEntity_Regulator(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
-    
+
     public GT_MetaTileEntity_Regulator(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
@@ -46,24 +48,7 @@ public class GT_MetaTileEntity_Regulator
 
     @Override
     public ITexture getOverlayIcon() {
-        return TextureFactory.of(
-                TextureFactory.of(AUTOMATION_REGULATOR),
-                TextureFactory.builder().addIcon(AUTOMATION_REGULATOR_GLOW).glow().build());
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return aIndex < 9;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_Regulator(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_Regulator(aPlayerInventory, aBaseMetaTileEntity);
+        return TextureFactory.of(TextureFactory.of(AUTOMATION_REGULATOR), TextureFactory.builder().addIcon(AUTOMATION_REGULATOR_GLOW).glow().build());
     }
 
     @Override
@@ -95,46 +80,13 @@ public class GT_MetaTileEntity_Regulator
     }
 
     @Override
-     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        //Regulation per Screwdriver is overridden by GUI regulation.
-    }
-
-    @Override
-    public void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        for (int i = 0, tCosts; i < 9; i++) {
-            if (this.mInventory[(i + 9)] != null) {
-                tCosts = GT_Utility.moveOneItemStackIntoSlot(getBaseMetaTileEntity(), getBaseMetaTileEntity().getTileEntityAtSide(getBaseMetaTileEntity().getBackFacing()), getBaseMetaTileEntity().getBackFacing(), this.mTargetSlots[i], Collections.singletonList(this.mInventory[(i + 9)]), false, (byte) this.mInventory[(i + 9)].stackSize, (byte) this.mInventory[(i + 9)].stackSize, (byte) 64, (byte) 1) * 3;
-                if (tCosts > 0) {
-                    this.mSuccess = 50;
-                    break;
-                }
-            }
-        }
-    }
-
-    @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack)) && (GT_Utility.areStacksEqual(aStack, this.mInventory[(aIndex + 9)]));
     }
 
     @Override
-    public int rechargerSlotStartIndex() {
-        return 19;
-    }
-
-    @Override
-    public int dechargerSlotStartIndex() {
-        return 19;
-    }
-
-    @Override
-    public int rechargerSlotCount() {
-        return charge ? 1 : 0;
-    }
-
-    @Override
-    public int dechargerSlotCount() {
-        return decharge ? 1 : 0;
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        //Regulation per Screwdriver is overridden by GUI regulation.
     }
 
     @Override
@@ -145,4 +97,57 @@ public class GT_MetaTileEntity_Regulator
             decharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3;
         }
     }
+
+    @Override
+    public boolean isValidSlot(int aIndex) {
+        return aIndex < 9;
+    }
+
+    @Override
+    public void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+        for (int i = 0, tCosts; i < 9; i++) {
+            if (this.mInventory[(i + 9)] != null) {
+                tCosts = GT_Utility.moveOneItemStackIntoSlot(
+                        getBaseMetaTileEntity(), getBaseMetaTileEntity().getTileEntityAtSide(getBaseMetaTileEntity().getBackFacing()),
+                        getBaseMetaTileEntity().getBackFacing(), this.mTargetSlots[i], Collections.singletonList(this.mInventory[(i + 9)]), false,
+                        (byte) this.mInventory[(i + 9)].stackSize, (byte) this.mInventory[(i + 9)].stackSize, (byte) 64, (byte) 1
+                                                            ) * 3;
+                if (tCosts > 0) {
+                    this.mSuccess = 50;
+                    break;
+                }
+            }
+        }
+    }
+
+    @Override
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_Container_Regulator(aPlayerInventory, aBaseMetaTileEntity);
+    }
+
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_GUIContainer_Regulator(aPlayerInventory, aBaseMetaTileEntity);
+    }
+
+    @Override
+    public int rechargerSlotStartIndex() {
+        return 19;
+    }
+
+    @Override
+    public int rechargerSlotCount() {
+        return charge ? 1 : 0;
+    }
+
+    @Override
+    public int dechargerSlotStartIndex() {
+        return 19;
+    }
+
+    @Override
+    public int dechargerSlotCount() {
+        return decharge ? 1 : 0;
+    }
+
 }

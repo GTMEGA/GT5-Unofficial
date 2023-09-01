@@ -25,14 +25,6 @@ public interface IGuiScreen {
 
         IGuiElement setTooltipText(String... text);
 
-        default int getUpdateCooldown() {
-            return 0;
-        }
-
-        default void setUpdateCooldown(final int val) {
-
-        }
-
         default boolean inBounds(final int mouseX, final int mouseY, final int clickType) {
             return false;
         }
@@ -66,6 +58,14 @@ public interface IGuiScreen {
 
         default IGT_GuiHook getOnUpdateBehavior() {
             return null;
+        }
+
+        default int getUpdateCooldown() {
+            return 0;
+        }
+
+        default void setUpdateCooldown(final int val) {
+
         }
 
         default IGuiElement setOnUpdateBehavior(IGT_GuiHook hook) {

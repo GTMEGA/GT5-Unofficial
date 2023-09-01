@@ -1,9 +1,11 @@
 package gregtech.api.interfaces.tileentity;
 
+
 /**
  * For Machines which have Progress
  */
 public interface IMachineProgress extends IHasWorldObjectAndCoords {
+
     /**
      * returns the Progress this Machine has made. Warning, this can also be negative!
      */
@@ -69,20 +71,19 @@ public interface IMachineProgress extends IHasWorldObjectAndCoords {
 
     /**
      * Indicates if the object in question was forced to shut down (i.e. loss of power)
-     * */
+     */
     default boolean wasShutdown() {
         return false;
     }
 
     /*
-    * Whether a player was notified about a shutdown
-    * */
+     * Whether a player was notified about a shutdown
+     * */
     default boolean wasNotified() {
         return false;
     }
 
     default void setNotificationStatus(boolean newStatus) {
-        return;
     }
 
 }

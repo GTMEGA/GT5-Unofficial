@@ -1,7 +1,9 @@
 package gregtech.api.util;
 
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+
 
 public class GT_ToolHarvestHelper {
 
@@ -14,21 +16,9 @@ public class GT_ToolHarvestHelper {
         return !isStringEmpty(targetTool) && isArrayContains(targetTool, tTools);
     }
 
-    public static boolean isAppropriateMaterial(Block aBlock, Material... tMats) {
-        if (aBlock == null || tMats == null) {
-            return false;
-        }
-        return isArrayContains(aBlock.getMaterial(), tMats);
+    public static boolean isStringEmpty(String s) {
+        return s == null || s.length() == 0;
     }
-
-
-    public static boolean isSpecialBlock(Block aBlock, Block... tBlocks) {
-        if (aBlock == null || tBlocks == null) {
-            return false;
-        }
-        return isArrayContains(aBlock, tBlocks);
-    }
-
 
     public static <T> boolean isArrayContains(T obj, T[] list) {
 
@@ -44,8 +34,18 @@ public class GT_ToolHarvestHelper {
         return false;
     }
 
-    public static boolean isStringEmpty(String s) {
-        return s == null || s.length() == 0;
+    public static boolean isAppropriateMaterial(Block aBlock, Material... tMats) {
+        if (aBlock == null || tMats == null) {
+            return false;
+        }
+        return isArrayContains(aBlock.getMaterial(), tMats);
+    }
+
+    public static boolean isSpecialBlock(Block aBlock, Block... tBlocks) {
+        if (aBlock == null || tBlocks == null) {
+            return false;
+        }
+        return isArrayContains(aBlock, tBlocks);
     }
 
     public static boolean hasNull(Object... obj) {

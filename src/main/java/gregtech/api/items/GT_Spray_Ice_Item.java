@@ -1,5 +1,6 @@
 package gregtech.api.items;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -16,7 +17,9 @@ import java.util.Arrays;
 
 import static gregtech.api.enums.GT_Values.W;
 
+
 public class GT_Spray_Ice_Item extends GT_Tool_Item {
+
     public GT_Spray_Ice_Item(String aUnlocalized, String aEnglish, int aMaxDamage, int aEntityDamage) {
         super(aUnlocalized, aEnglish, "Very effective against Slimes", aMaxDamage, aEntityDamage, true);/*
         addToEffectiveList(EntitySlime.class.getName());
@@ -31,7 +34,8 @@ public class GT_Spray_Ice_Item extends GT_Tool_Item {
 		setEntityHitSound(GregTech_API.sSoundList.get(102));
 		setUsageAmounts(4, 16, 1);*/
 
-        for (Object tName : Arrays.asList(OrePrefixes.bucket.get(Materials.Water), OrePrefixes.cell.get(Materials.Water), OrePrefixes.capsule.get(Materials.Water))) {
+        for (Object tName : Arrays.asList(
+                OrePrefixes.bucket.get(Materials.Water), OrePrefixes.cell.get(Materials.Water), OrePrefixes.capsule.get(Materials.Water))) {
             GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Blocks.ice, 1, 0), new Object[]{new ItemStack(this, 1, W), tName});
         }
     }
@@ -55,7 +59,9 @@ public class GT_Spray_Ice_Item extends GT_Tool_Item {
         aY += ForgeDirection.getOrientation(aSide).offsetY;
         aZ += ForgeDirection.getOrientation(aSide).offsetZ;
         Block aBlock = aWorld.getBlock(aX, aY, aZ);
-        if (aBlock == null) return false;
+        if (aBlock == null) {
+            return false;
+        }
         byte aMeta = (byte) aWorld.getBlockMetadata(aX, aY, aZ);
 //    	TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 
@@ -78,4 +84,5 @@ public class GT_Spray_Ice_Item extends GT_Tool_Item {
         }
         return false;
     }
+
 }

@@ -1,5 +1,6 @@
 package gregtech.loaders.preload;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -14,7 +15,9 @@ import net.minecraft.item.ItemStack;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_DC;
 
+
 public class GT_Loader_OreDictionary implements Runnable {
+
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: Register OreDict Entries of Non-GT-Items.");
@@ -138,7 +141,8 @@ public class GT_Loader_OreDictionary implements Runnable {
         GT_OreDictUnificator.registerOre(OreDictNames.craftingWireCopper, GT_ModHandler.getIC2Item("insulatedCopperCableItem", 1L));
         GT_OreDictUnificator.registerOre(OreDictNames.craftingWireGold, GT_ModHandler.getIC2Item("insulatedGoldCableItem", 1L));
         GT_OreDictUnificator.registerOre(OreDictNames.craftingWireIron, GT_ModHandler.getIC2Item("insulatedIronCableItem", 1L));
-        GT_OreDictUnificator.registerOre(OreDictNames.craftingWireTin, GT_ModHandler.getIC2Item("insulatedTinCableItem", 1L, GT_ModHandler.getIC2Item("insulatedCopperCableItem", 1L)));
+        GT_OreDictUnificator.registerOre(
+                OreDictNames.craftingWireTin, GT_ModHandler.getIC2Item("insulatedTinCableItem", 1L, GT_ModHandler.getIC2Item("insulatedCopperCableItem", 1L)));
 
         GT_OreDictUnificator.registerOre(OreDictNames.craftingRedstoneTorch, new ItemStack(Blocks.redstone_torch, 1, 32767));
         GT_OreDictUnificator.registerOre(OreDictNames.craftingRedstoneTorch, new ItemStack(Blocks.unlit_redstone_torch, 1, 32767));
@@ -209,21 +213,24 @@ public class GT_Loader_OreDictionary implements Runnable {
         GT_OreDictUnificator.registerOre(OrePrefixes.circuit, Materials.Advanced, GT_ModHandler.getIC2Item("advancedCircuit", 1L));
 
         GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Copper, GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 0));
-        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Tin, GT_ModHandler.getModItem("IC2","itemCasing", 1L, 1));
-        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Bronze, GT_ModHandler.getModItem("IC2","itemCasing", 1L, 2));
-        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Gold, GT_ModHandler.getModItem("IC2","itemCasing", 1L, 3));
-        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Iron, GT_ModHandler.getModItem("IC2","itemCasing", 1L, 4));
-        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Steel, GT_ModHandler.getModItem("IC2","itemCasing", 1L, 5));
-        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Lead, GT_ModHandler.getModItem("IC2","itemCasing", 1L, 6));
+        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Tin, GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 1));
+        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Bronze, GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 2));
+        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Gold, GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 3));
+        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Iron, GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 4));
+        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Steel, GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 5));
+        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Lead, GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 6));
 
-        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Osmium, GT_ModHandler.getModItem(MOD_ID_DC,"item.OsmiumItemCasing", 1L, 0));
-        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Aluminium, GT_ModHandler.getModItem(MOD_ID_DC,"item.AluminiumItemCasing", 1L, 0));
-        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.StainlessSteel, GT_ModHandler.getModItem(MOD_ID_DC,"item.StainlessSteelItemCasing", 1L, 0));
-        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Tungsten, GT_ModHandler.getModItem(MOD_ID_DC,"item.TungstenItemCasing", 1L, 0));
-        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Neutronium, GT_ModHandler.getModItem(MOD_ID_DC,"item.NeutroniumItemCasing", 1L, 0));
-        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.TungstenSteel, GT_ModHandler.getModItem(MOD_ID_DC,"item.TungstenSteelItemCasing", 1L, 0));
-        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Iridium, GT_ModHandler.getModItem(MOD_ID_DC,"item.IridiumItemCasing", 1L, 0));
-        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Titanium, GT_ModHandler.getModItem(MOD_ID_DC,"item.TitaniumItemCasing", 1L, 0));
-        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Chrome, GT_ModHandler.getModItem(MOD_ID_DC,"item.ChromeItemCasing", 1L, 0));
-       }
+        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Osmium, GT_ModHandler.getModItem(MOD_ID_DC, "item.OsmiumItemCasing", 1L, 0));
+        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Aluminium, GT_ModHandler.getModItem(MOD_ID_DC, "item.AluminiumItemCasing", 1L, 0));
+        GT_OreDictUnificator.registerOre(
+                OrePrefixes.itemCasing, Materials.StainlessSteel, GT_ModHandler.getModItem(MOD_ID_DC, "item.StainlessSteelItemCasing", 1L, 0));
+        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Tungsten, GT_ModHandler.getModItem(MOD_ID_DC, "item.TungstenItemCasing", 1L, 0));
+        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Neutronium, GT_ModHandler.getModItem(MOD_ID_DC, "item.NeutroniumItemCasing", 1L, 0));
+        GT_OreDictUnificator.registerOre(
+                OrePrefixes.itemCasing, Materials.TungstenSteel, GT_ModHandler.getModItem(MOD_ID_DC, "item.TungstenSteelItemCasing", 1L, 0));
+        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Iridium, GT_ModHandler.getModItem(MOD_ID_DC, "item.IridiumItemCasing", 1L, 0));
+        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Titanium, GT_ModHandler.getModItem(MOD_ID_DC, "item.TitaniumItemCasing", 1L, 0));
+        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Chrome, GT_ModHandler.getModItem(MOD_ID_DC, "item.ChromeItemCasing", 1L, 0));
+    }
+
 }

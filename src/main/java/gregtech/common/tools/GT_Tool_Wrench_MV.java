@@ -1,11 +1,30 @@
 package gregtech.common.tools;
 
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import net.minecraft.item.ItemStack;
 
+
 public class GT_Tool_Wrench_MV extends GT_Tool_Wrench_LV {
+
+    @Override
+    public float getBaseDamage() {
+        return 1.5F;
+    }
+
+    @Override
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadWrench.mTextureIndex]
+                           : Textures.ItemIcons.POWER_UNIT_MV;
+    }
+
+    @Override
+    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+    }
+
     @Override
     public int getToolDamagePerBlockBreak() {
         return 200;
@@ -32,11 +51,6 @@ public class GT_Tool_Wrench_MV extends GT_Tool_Wrench_LV {
     }
 
     @Override
-    public float getBaseDamage() {
-        return 1.5F;
-    }
-
-    @Override
     public float getSpeedMultiplier() {
         return 3.0F;
     }
@@ -51,13 +65,4 @@ public class GT_Tool_Wrench_MV extends GT_Tool_Wrench_LV {
         return false;
     }
 
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadWrench.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_MV;
-    }
-
-    @Override
-    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
-    }
 }

@@ -1,5 +1,6 @@
 package gregtech.api.threads;
 
+
 import gregtech.GT_Mod;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -10,15 +11,17 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+
 public class GT_Runnable_Cable_Update extends GT_Runnable_MachineBlockUpdate {
-    protected GT_Runnable_Cable_Update(World aWorld, ChunkCoordinates aCoords) {
-        super(aWorld, aCoords);
-    }
 
     public static void setCableUpdateValues(World aWorld, ChunkCoordinates aCoords) {
         if (isEnabled) {
             EXECUTOR_SERVICE.submit(new GT_Runnable_Cable_Update(aWorld, aCoords));
         }
+    }
+
+    protected GT_Runnable_Cable_Update(World aWorld, ChunkCoordinates aCoords) {
+        super(aWorld, aCoords);
     }
 
     @Override
@@ -42,21 +45,22 @@ public class GT_Runnable_Cable_Update extends GT_Runnable_MachineBlockUpdate {
                 }
 
                 // See if the block itself needs an update
-                if (tTileEntity instanceof IMachineBlockUpdateable)
+                if (tTileEntity instanceof IMachineBlockUpdateable) {
                     ((IMachineBlockUpdateable) tTileEntity).onMachineBlockUpdate();
+                }
 
                 // Now see if we should add the nearby blocks to the queue:
                 // only add blocks the cable is connected to
-                if (tTileEntity instanceof BaseMetaPipeEntity &&
-                        ((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)
-                {
+                if (tTileEntity instanceof BaseMetaPipeEntity && ((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable) {
                     ChunkCoordinates tCoords;
-                    for (byte i = 0;i<6;i++) {
+                    for (byte i = 0; i < 6; i++) {
                         if (((GT_MetaPipeEntity_Cable) ((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity()).isConnectedAtSide(i)) {
                             ForgeDirection offset = ForgeDirection.getOrientation(i);
-                            if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX + offset.offsetX,
-                                    aCoords.posY + offset.offsetY, aCoords.posZ + offset.offsetZ)))
+                            if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX + offset.offsetX, aCoords.posY + offset.offsetY,
+                                                                           aCoords.posZ + offset.offsetZ
+                            ))) {
                                 tQueue.add(tCoords);
+                            }
                         }
                     }
                 }
@@ -66,4 +70,5 @@ public class GT_Runnable_Cable_Update extends GT_Runnable_MachineBlockUpdate {
                     "Well this update was broken... " + mCoords + ", mWorld={" + world.getProviderName() + " @dimId " + world.provider.dimensionId + "}", e);
         }
     }
+
 }

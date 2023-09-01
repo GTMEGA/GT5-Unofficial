@@ -21,8 +21,12 @@ public enum RSControlMode {
         INVALID_MODE_TYPE
     }
 
-
-    private final Predicate<Byte> predicate;
+    public static RSControlMode loadFromNBTData(NBTTagCompound compound) {
+        if (compound.hasKey("rsControl")) {
+            return getMode(compound.getInteger("rsControl"));
+        }
+        return INVALID_MODE;
+    }
 
     public static RSControlMode getMode(final int mode) {
         if (mode < 0 || mode >= INVALID_MODE.ordinal()) {
@@ -35,16 +39,18 @@ public enum RSControlMode {
         return (Byte b) -> true;
     }
 
+    private final Predicate<Byte> predicate;
+
     RSControlMode() {
         this(alwaysFalse(), RSModeType.INVALID_MODE_TYPE);
     }
 
-    private static Predicate<Byte> alwaysFalse() {
-        return (Byte b) -> false;
-    }
-
     RSControlMode(final Predicate<Byte> predicate, final RSModeType type) {
         this.predicate = predicate;
+    }
+
+    private static Predicate<Byte> alwaysFalse() {
+        return (Byte b) -> false;
     }
 
     RSControlMode(final Predicate<Byte> predicate) {
@@ -57,13 +63,6 @@ public enum RSControlMode {
 
     public void saveNBTData(NBTTagCompound compound) {
         compound.setInteger("rsControl", ordinal());
-    }
-
-    public static RSControlMode loadFromNBTData(NBTTagCompound compound) {
-        if (compound.hasKey("rsControl")) {
-            return getMode(compound.getInteger("rsControl"));
-        }
-        return INVALID_MODE;
     }
 
 }

@@ -1,9 +1,9 @@
 package gregtech.api.events;
 
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GT_Mod;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
 import gregtech.common.net.MessageSetIntegratedCircuit;
 import gregtech.loaders.misc.NetworkDispatcher;
@@ -12,8 +12,11 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.MouseEvent;
 
+
 public class IntegratedCircuitScroll {
+
     public static byte maxValue = 24;
+
     public static byte minValue = 0;
 
 
@@ -49,4 +52,5 @@ public class IntegratedCircuitScroll {
             }
         }
     }
+
 }

@@ -1,12 +1,12 @@
 package gregtech.api.net;
 
+
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.common.GT_Network;
 import io.netty.buffer.ByteBuf;
-import lombok.Getter;
-import lombok.Setter;
 import net.minecraft.network.INetHandler;
 import net.minecraft.world.IBlockAccess;
+
 
 /**
  * @deprecated Use {@link GT_Packet_New} instead
@@ -59,5 +59,7 @@ public abstract class GT_Packet {
     /**
      * This will be called just before {@link #process(IBlockAccess)} to inform the handler about the source and type of connection
      */
-    public void setINetHandler(INetHandler aHandler) {}
+    public void setINetHandler(INetHandler aHandler) {
+    }
+
 }

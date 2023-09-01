@@ -1,14 +1,16 @@
 package gregtech.common.entities;
 
+
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.world.World;
 
 import java.util.Random;
 
+
 public class GT_EntityFXPollution extends EntityFX {
 
     public GT_EntityFXPollution(World world, double x, double y, double z) {
-        super(world, x, y, z,0 ,0 ,0);
+        super(world, x, y, z, 0, 0, 0);
 
         this.particleRed = 0.25F;
         this.particleGreen = 0.2F;
@@ -26,7 +28,7 @@ public class GT_EntityFXPollution extends EntityFX {
         this.particleTextureIndexX = 0;
         this.particleTextureIndexY = 0;
 
-        this.particleMaxAge = (int)((double)20 / ((double)random.nextFloat() * 0.8D + 0.2D));
+        this.particleMaxAge = (int) ((double) 20 / ((double) random.nextFloat() * 0.8D + 0.2D));
 
         this.particleScale *= 0.75F;
         this.noClip = true;
@@ -56,4 +58,5 @@ public class GT_EntityFXPollution extends EntityFX {
             }
         }
     }
+
 }

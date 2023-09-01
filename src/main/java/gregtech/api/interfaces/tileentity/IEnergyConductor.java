@@ -1,6 +1,8 @@
 package gregtech.api.interfaces.tileentity;
 
+
 import gregtech.api.enums.Materials;
+
 
 /**
  * Informative Class for Cables. Not used for now.
@@ -8,6 +10,7 @@ import gregtech.api.enums.Materials;
  * Not all Data might be reliable. This is just for Information sake.
  */
 public interface IEnergyConductor extends IEnergyConnected {
+
     /**
      * @return if this is actually a Cable. (you must check this)
      */
@@ -37,4 +40,5 @@ public interface IEnergyConductor extends IEnergyConnected {
      * @return the Material the Cable Insulation consists of. (may return Materials._NULL)
      */
     Materials getInsulationMaterial();
+
 }

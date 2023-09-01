@@ -274,6 +274,18 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
     }
 
     /**
+     * @param aStack
+     * @param aWorld
+     * @param aPlayer
+     */
+    @Override
+    public void onCreated(final ItemStack aStack, final World aWorld, final EntityPlayer aPlayer) {
+        final NBTTagCompound compound = validateNBT(aStack);
+        final RemoteDetonationTargetList remoteDetonationTargetList = RemoteDetonationTargetList.readFromNBT(compound, aPlayer);
+        aStack.setTagCompound(remoteDetonationTargetList.writeToNBT(compound));
+    }
+
+    /**
      * @param aWorld  The world
      * @param aX      The X Position
      * @param aY      The X Position
@@ -305,18 +317,6 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
         if (remoteDetonationTargetList.isTriggered()) {
             aList.add(EnumChatFormatting.DARK_RED + "DETONATING!" + EnumChatFormatting.GRAY + " Stand Clear!");
         }
-        aStack.setTagCompound(remoteDetonationTargetList.writeToNBT(compound));
-    }
-
-    /**
-     * @param aStack
-     * @param aWorld
-     * @param aPlayer
-     */
-    @Override
-    public void onCreated(final ItemStack aStack, final World aWorld, final EntityPlayer aPlayer) {
-        final NBTTagCompound compound = validateNBT(aStack);
-        final RemoteDetonationTargetList remoteDetonationTargetList = RemoteDetonationTargetList.readFromNBT(compound, aPlayer);
         aStack.setTagCompound(remoteDetonationTargetList.writeToNBT(compound));
     }
 
@@ -380,8 +380,16 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
      */
     @Override
     public boolean onItemUseFirst(
-            final ItemStack stack, final EntityPlayer player, final World world, final int x, final int y, final int z, final int side, final float hitX,
-            final float hitY, final float hitZ
+            final ItemStack stack,
+            final EntityPlayer player,
+            final World world,
+            final int x,
+            final int y,
+            final int z,
+            final int side,
+            final float hitX,
+            final float hitY,
+            final float hitZ
                                  ) {
         return itemUse(stack, world, player, x, y, z);
     }
@@ -413,8 +421,12 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
     }
 
     public void trigger(
-            final @NonNull World aWorld, final @NonNull EntityPlayer player, final @NonNull RemoteDetonationTargetList remoteDetonationTargetList, final int x,
-            final int y, final int z
+            final @NonNull World aWorld,
+            final @NonNull EntityPlayer player,
+            final @NonNull RemoteDetonationTargetList remoteDetonationTargetList,
+            final int x,
+            final int y,
+            final int z
                        ) {
         if (remoteDetonationTargetList.validDimension(player)) {
             aWorld.playSoundEffect(x, y, z, GregTech_API.sSoundList.get(220), 8.0f, aWorld.rand.nextFloat() + 1.0f);
@@ -425,8 +437,12 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
     }
 
     public void removeTarget(
-            final @NonNull World aWorld, final @NonNull EntityPlayer player, final @NonNull RemoteDetonationTargetList remoteDetonationTargetList, final int x,
-            final int y, final int z
+            final @NonNull World aWorld,
+            final @NonNull EntityPlayer player,
+            final @NonNull RemoteDetonationTargetList remoteDetonationTargetList,
+            final int x,
+            final int y,
+            final int z
                             ) {
         final boolean contains, validDim;
         final Block target = aWorld.getBlock(x, y, z);
@@ -443,8 +459,12 @@ public class GT_RemoteDetonator extends GT_Generic_Item {
     }
 
     public void addTarget(
-            final @NonNull World aWorld, final @NonNull EntityPlayer player, final @NonNull RemoteDetonationTargetList remoteDetonationTargetList, final int x,
-            final int y, final int z
+            final @NonNull World aWorld,
+            final @NonNull EntityPlayer player,
+            final @NonNull RemoteDetonationTargetList remoteDetonationTargetList,
+            final int x,
+            final int y,
+            final int z
                          ) {
         final Block target = aWorld.getBlock(x, y, z);
         if (target instanceof GT_Block_Explosive) {

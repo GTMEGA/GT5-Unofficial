@@ -1,5 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -8,7 +9,9 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraftforge.fluids.FluidRegistry;
 
+
 public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistrator {
+
     public ProcessingCrop() {
         OrePrefixes.crop.add(this);
     }
@@ -54,4 +57,5 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                 break;
         }
     }
+
 }

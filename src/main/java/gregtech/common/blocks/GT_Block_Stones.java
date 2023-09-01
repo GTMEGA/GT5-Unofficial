@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
@@ -9,7 +10,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+
 public class GT_Block_Stones extends GT_Block_Stones_Abstract {
+
     public GT_Block_Stones() {
         super(GT_Item_Granites.class, "gt.blockstones");
         setResistance(60.0F);
@@ -29,10 +32,10 @@ public class GT_Block_Stones extends GT_Block_Stones_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Mossy Basalt Bricks");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Chiseled Basalt");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Smooth Basalt");
-        for(int i = 0;i<16;i++){
+        for (int i = 0; i < 16; i++) {
             GT_OreDictUnificator.registerOre(OrePrefixes.stone, i < 8 ? Materials.Marble : Materials.Basalt, new ItemStack(this, 1, i));
             GT_OreDictUnificator.registerOre(OrePrefixes.block, i < 8 ? Materials.Marble : Materials.Basalt, new ItemStack(this, 1, i));
-            GT_OreDictUnificator.registerOre((i < 8 ? Materials.Marble.mName.toLowerCase() : Materials.Basalt.mName.toLowerCase()), new ItemStack(this, 1, i));        	
+            GT_OreDictUnificator.registerOre((i < 8 ? Materials.Marble.mName.toLowerCase() : Materials.Basalt.mName.toLowerCase()), new ItemStack(this, 1, i));
         }
     }
 
@@ -53,4 +56,5 @@ public class GT_Block_Stones extends GT_Block_Stones_Abstract {
         }
         return gregtech.api.enums.Textures.BlockIcons.STONES[0].getIcon();
     }
+
 }

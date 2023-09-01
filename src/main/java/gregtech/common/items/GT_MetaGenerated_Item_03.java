@@ -1,24 +1,30 @@
 package gregtech.common.items;
 
+
 import cpw.mods.fml.common.eventhandler.Event;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TC_Aspects;
+import gregtech.api.enums.*;
 import gregtech.api.items.GT_MetaGenerated_Item_X32;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.covers.GT_Cover_SolarPanel;
-import lombok.*;
+import lombok.val;
 
-import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UEV;
-import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UHV;
-import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UIV;
+import static gregtech.api.enums.Textures.BlockIcons.*;
 import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 
-public class GT_MetaGenerated_Item_03
-        extends GT_MetaGenerated_Item_X32 {
+
+public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
+
+    // Cancel to prevent the creation of circuit items, will leave empty values in ItemList that *must* be filled by whatever cancles it.
+    public class RegisterCircuitEvent extends Event {
+
+        @Override
+        public boolean isCancelable() {
+            return true;
+        }
+
+    }
+
     public static GT_MetaGenerated_Item_03 INSTANCE;
 
     public GT_MetaGenerated_Item_03() {
@@ -49,7 +55,8 @@ public class GT_MetaGenerated_Item_03
         ItemList.Circuit_Silicon_Ingot2.set(addItem(tLastID = 31, "Glowstone doped Silicon Boule", "The first step in tricking a rock into thinking.", o));
         ItemList.Circuit_Silicon_Ingot3.set(addItem(tLastID = 32, "Naquadah doped Silicon Boule", "The first step in tricking a rock into thinking.", o));
         ItemList.Circuit_Silicon_Ingot4.set(addItem(tLastID = 150, "Europium doped Silicon Boule", "The first step in tricking a rock into thinking.", o));
-        ItemList.Circuit_Silicon_Ingot5.set(addItem(tLastID = 152, "Americium doped Silicon Boule", "Not to oversimplify, you gotta put lightning into the rock first.", o));
+        ItemList.Circuit_Silicon_Ingot5.set(
+                addItem(tLastID = 152, "Americium doped Silicon Boule", "Not to oversimplify, you gotta put lightning into the rock first.", o));
 
         ItemList.Circuit_Silicon_Wafer.set(addItem(tLastID = 33, "Raw Silicon Wafer", "Ready for lithography", o));
         ItemList.Circuit_Silicon_Wafer2.set(addItem(tLastID = 34, "Raw Silicon Wafer", "Ready for lithography", o));
@@ -126,55 +133,106 @@ public class GT_MetaGenerated_Item_03
             ItemList.Circuit_Chip_BioCPU.set(addItem(tLastID = 77, "Bio Processing Unit", "Bio CPU", o));
             ItemList.Circuit_Chip_NeuroCPU.set(addItem(tLastID = 72, "Neuro Processing Unit", "Neuro CPU", o));
             ItemList.Circuit_Chip_CrystalCPU.set(addItem(tLastID = 70, "Crystal Processing Unit", "Crystal CPU", o)); //Crystal chip elite part
-            ItemList.NandChip.set(addItem(tLastID = 75, "NAND Chip", "A very simple Circuit", OrePrefixes.circuit.get(Materials.Primitive), SubTag.NO_UNIFICATION));
+            ItemList.NandChip.set(
+                    addItem(tLastID = 75, "NAND Chip", "A very simple Circuit", OrePrefixes.circuit.get(Materials.Primitive), SubTag.NO_UNIFICATION));
 
-            ItemList.Circuit_Integrated_Good.set(addItem(tLastID = 79, "Good Integrated Circuit", "Good Circuit", OrePrefixes.circuit.get(Materials.Good), SubTag.NO_UNIFICATION));
+            ItemList.Circuit_Integrated_Good.set(
+                    addItem(tLastID = 79, "Good Integrated Circuit", "Good Circuit", OrePrefixes.circuit.get(Materials.Good), SubTag.NO_UNIFICATION));
 
-            ItemList.Circuit_Microprocessor.set(addItem(tLastID = 78, "Microprocessor", "A Basic Circuit", OrePrefixes.circuit.get(Materials.Basic), SubTag.NO_UNIFICATION));
-            ItemList.Circuit_Processor.set(addItem(tLastID = 80, "Integrated Processor", "A Good Circuit", OrePrefixes.circuit.get(Materials.Good), SubTag.NO_UNIFICATION));
-            ItemList.Circuit_Computer.set(addItem(tLastID = 81, "Processor Assembly", "Advanced Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Advanced), SubTag.NO_UNIFICATION}));
+            ItemList.Circuit_Microprocessor.set(
+                    addItem(tLastID = 78, "Microprocessor", "A Basic Circuit", OrePrefixes.circuit.get(Materials.Basic), SubTag.NO_UNIFICATION));
+            ItemList.Circuit_Processor.set(
+                    addItem(tLastID = 80, "Integrated Processor", "A Good Circuit", OrePrefixes.circuit.get(Materials.Good), SubTag.NO_UNIFICATION));
+            ItemList.Circuit_Computer.set(addItem(tLastID = 81, "Processor Assembly", "Advanced Circuit", OrePrefixes.circuit.get(Materials.Advanced),
+                                                  SubTag.NO_UNIFICATION
+                                                 ));
 
-            ItemList.Circuit_Nanoprocessor.set(addItem(tLastID = 82, "Nanoprocessor", "An Advanced Circuit", OrePrefixes.circuit.get(Materials.Advanced), SubTag.NO_UNIFICATION));
-            ItemList.Circuit_Nanocomputer.set(addItem(tLastID = 83, "Nanoprocessor Assembly", "An Extreme Circuit", OrePrefixes.circuit.get(Materials.Data), SubTag.NO_UNIFICATION));
-            ItemList.Circuit_Elitenanocomputer.set(addItem(tLastID = 84, "Elite Nanocomputer", "An Elite Circuit", OrePrefixes.circuit.get(Materials.Elite), SubTag.NO_UNIFICATION));
+            ItemList.Circuit_Nanoprocessor.set(
+                    addItem(tLastID = 82, "Nanoprocessor", "An Advanced Circuit", OrePrefixes.circuit.get(Materials.Advanced), SubTag.NO_UNIFICATION));
+            ItemList.Circuit_Nanocomputer.set(
+                    addItem(tLastID = 83, "Nanoprocessor Assembly", "An Extreme Circuit", OrePrefixes.circuit.get(Materials.Data), SubTag.NO_UNIFICATION));
+            ItemList.Circuit_Elitenanocomputer.set(
+                    addItem(tLastID = 84, "Elite Nanocomputer", "An Elite Circuit", OrePrefixes.circuit.get(Materials.Elite), SubTag.NO_UNIFICATION));
 
-            ItemList.Circuit_Quantumprocessor.set(addItem(tLastID = 85, "Quantumprocessor", "An Extreme Circuit", OrePrefixes.circuit.get(Materials.Data), SubTag.NO_UNIFICATION));
-            ItemList.Circuit_Quantumcomputer.set(addItem(tLastID = 86, "Quantumprocessor Assembly", "An Elite Circuit", OrePrefixes.circuit.get(Materials.Elite), SubTag.NO_UNIFICATION));
-            ItemList.Circuit_Masterquantumcomputer.set(addItem(tLastID = 87, "Master Quantumcomputer", "A Master Circuit", OrePrefixes.circuit.get(Materials.Master), SubTag.NO_UNIFICATION));
-            ItemList.Circuit_Quantummainframe.set(addItem(tLastID = 88, "Quantumprocessor Mainframe", "An Ultimate Circuit", OrePrefixes.circuit.get(Materials.Ultimate), SubTag.NO_UNIFICATION));
+            ItemList.Circuit_Quantumprocessor.set(
+                    addItem(tLastID = 85, "Quantumprocessor", "An Extreme Circuit", OrePrefixes.circuit.get(Materials.Data), SubTag.NO_UNIFICATION));
+            ItemList.Circuit_Quantumcomputer.set(
+                    addItem(tLastID = 86, "Quantumprocessor Assembly", "An Elite Circuit", OrePrefixes.circuit.get(Materials.Elite), SubTag.NO_UNIFICATION));
+            ItemList.Circuit_Masterquantumcomputer.set(
+                    addItem(tLastID = 87, "Master Quantumcomputer", "A Master Circuit", OrePrefixes.circuit.get(Materials.Master), SubTag.NO_UNIFICATION));
+            ItemList.Circuit_Quantummainframe.set(
+                    addItem(tLastID = 88, "Quantumprocessor Mainframe", "An Ultimate Circuit", OrePrefixes.circuit.get(Materials.Ultimate),
+                            SubTag.NO_UNIFICATION
+                           ));
 
-            ItemList.Circuit_Crystalprocessor.set(addItem(tLastID = 89, "Crystalprocessor", "An Elite Circuit", OrePrefixes.circuit.get(Materials.Elite), SubTag.NO_UNIFICATION));
-            ItemList.Circuit_Crystalcomputer.set(addItem(tLastID = 96, "Crystalprocessor Assembly", "A Master Circuit", OrePrefixes.circuit.get(Materials.Master), SubTag.NO_UNIFICATION));
-            ItemList.Circuit_Ultimatecrystalcomputer.set(addItem(tLastID = 90, "Ultimate Crystalcomputer", "An Ultimate Circuit", OrePrefixes.circuit.get(Materials.Ultimate), SubTag.NO_UNIFICATION));
-            ItemList.Circuit_Crystalmainframe.set(addItem(tLastID = 91, "Crystalprocessor Mainframe", "A Super Circuit", OrePrefixes.circuit.get(Materials.Superconductor), SubTag.NO_UNIFICATION));
+            ItemList.Circuit_Crystalprocessor.set(
+                    addItem(tLastID = 89, "Crystalprocessor", "An Elite Circuit", OrePrefixes.circuit.get(Materials.Elite), SubTag.NO_UNIFICATION));
+            ItemList.Circuit_Crystalcomputer.set(
+                    addItem(tLastID = 96, "Crystalprocessor Assembly", "A Master Circuit", OrePrefixes.circuit.get(Materials.Master), SubTag.NO_UNIFICATION));
+            ItemList.Circuit_Ultimatecrystalcomputer.set(
+                    addItem(tLastID = 90, "Ultimate Crystalcomputer", "An Ultimate Circuit", OrePrefixes.circuit.get(Materials.Ultimate),
+                            SubTag.NO_UNIFICATION
+                           ));
+            ItemList.Circuit_Crystalmainframe.set(
+                    addItem(tLastID = 91, "Crystalprocessor Mainframe", "A Super Circuit", OrePrefixes.circuit.get(Materials.Superconductor),
+                            SubTag.NO_UNIFICATION
+                           ));
 
-            ItemList.Circuit_Neuroprocessor.set(addItem(tLastID = 92, "Wetwareprocessor", "A Master Circuit", OrePrefixes.circuit.get(Materials.Master), SubTag.NO_UNIFICATION));
-            ItemList.Circuit_Wetwarecomputer.set(addItem(tLastID = 93, "Wetwareprocessor Assembly", "An Ultimate Circuit", OrePrefixes.circuit.get(Materials.Ultimate), SubTag.NO_UNIFICATION));
-            ItemList.Circuit_Wetwaresupercomputer.set(addItem(tLastID = 94, "Wetware Supercomputer", "A Super Circuit", OrePrefixes.circuit.get(Materials.Superconductor), SubTag.NO_UNIFICATION));
-            ItemList.Circuit_Wetwaremainframe.set(addItem(tLastID = 95, "Wetware Mainframe", "An Infinite Circuit", OrePrefixes.circuit.get(Materials.Infinite), SubTag.NO_UNIFICATION));
+            ItemList.Circuit_Neuroprocessor.set(
+                    addItem(tLastID = 92, "Wetwareprocessor", "A Master Circuit", OrePrefixes.circuit.get(Materials.Master), SubTag.NO_UNIFICATION));
+            ItemList.Circuit_Wetwarecomputer.set(
+                    addItem(tLastID = 93, "Wetwareprocessor Assembly", "An Ultimate Circuit", OrePrefixes.circuit.get(Materials.Ultimate),
+                            SubTag.NO_UNIFICATION
+                           ));
+            ItemList.Circuit_Wetwaresupercomputer.set(
+                    addItem(tLastID = 94, "Wetware Supercomputer", "A Super Circuit", OrePrefixes.circuit.get(Materials.Superconductor),
+                            SubTag.NO_UNIFICATION
+                           ));
+            ItemList.Circuit_Wetwaremainframe.set(
+                    addItem(tLastID = 95, "Wetware Mainframe", "An Infinite Circuit", OrePrefixes.circuit.get(Materials.Infinite), SubTag.NO_UNIFICATION));
             ItemList.Circuit_Ultimate.set(ItemList.Circuit_Ultimatecrystalcomputer.get(1L));//maybe should be removed
-            ItemList.Circuit_Biowarecomputer.set(addItem(tLastID = 98, "Biowareprocessor Assembly", "A Super Circuit", OrePrefixes.circuit.get(Materials.Superconductor), SubTag.NO_UNIFICATION));
-            ItemList.Circuit_Biowaresupercomputer.set(addItem(tLastID = 99, "Bioware Supercomputer", "An Infinite Circuit", OrePrefixes.circuit.get(Materials.Infinite), SubTag.NO_UNIFICATION));
+            ItemList.Circuit_Biowarecomputer.set(
+                    addItem(tLastID = 98, "Biowareprocessor Assembly", "A Super Circuit", OrePrefixes.circuit.get(Materials.Superconductor),
+                            SubTag.NO_UNIFICATION
+                           ));
+            ItemList.Circuit_Biowaresupercomputer.set(
+                    addItem(tLastID = 99, "Bioware Supercomputer", "An Infinite Circuit", OrePrefixes.circuit.get(Materials.Infinite), SubTag.NO_UNIFICATION));
 
-            ItemList.Circuit_Bioprocessor.set(addItem(tLastID = 97, "Bioprocessor", "An Ultimate Circuit", OrePrefixes.circuit.get(Materials.Ultimate), SubTag.NO_UNIFICATION));
+            ItemList.Circuit_Bioprocessor.set(
+                    addItem(tLastID = 97, "Bioprocessor", "An Ultimate Circuit", OrePrefixes.circuit.get(Materials.Ultimate), SubTag.NO_UNIFICATION));
 
-            ItemList.Circuit_Board_Coated_Basic.set(addItem(tLastID = 100, "Etched Crude Circuit Board", "[LV] A somewhat sturdy place to put some electronics", o));
+            ItemList.Circuit_Board_Coated_Basic.set(
+                    addItem(tLastID = 100, "Etched Crude Circuit Board", "[LV] A somewhat sturdy place to put some electronics", o));
             ItemList.Circuit_Board_Phenolic_Good.set(addItem(tLastID = 101, "Etched Basic Circuit Board", "[MV] A decent foundation for some electronics", o));
             ItemList.Circuit_Board_Epoxy_Advanced.set(addItem(tLastID = 102, "Etched Epoxy Circuit Board", "[EV] A sturdy foundation for most circuits!", o));
             ItemList.Circuit_Board_Fiberglass_Advanced.set(addItem(tLastID = 103, "More Advanced Circuit Board", "A more advanced Circuit Board", o));
             ItemList.Circuit_Board_Multifiberglass_Elite.set(addItem(tLastID = 104, "Elite Circuit Board", "A elite Circuit Board", o));
             ItemList.Circuit_Board_Wetware_Extreme.set(addItem(tLastID = 105, "Extreme Wetware Lifesupport Circuit Board", "The Board that keeps life", o));
-            ItemList.Circuit_Board_Plastic_Advanced.set(addItem(tLastID = 106, "Etched Polyethylene Circuit Board", "[HV] A cheap foundation for some electronics", o));
+            ItemList.Circuit_Board_Plastic_Advanced.set(
+                    addItem(tLastID = 106, "Etched Polyethylene Circuit Board", "[HV] A cheap foundation for some electronics", o));
             ItemList.Circuit_Board_Bio_Ultra.set(addItem(tLastID = 107, "Ultra Bio Mutated Circuit Board", "Bio genetic mutated Board", o));
-            ItemList.Circuit_Biomainframe.set(addItem(tLastID = 120, "Bio Mainframe", "A Bio Circuit", OrePrefixes.circuit.get(Materials.Bio), SubTag.NO_UNIFICATION));
+            ItemList.Circuit_Biomainframe.set(
+                    addItem(tLastID = 120, "Bio Mainframe", "A Bio Circuit", OrePrefixes.circuit.get(Materials.Bio), SubTag.NO_UNIFICATION));
         }
 
 
         ItemList.Tube_Wires.set(addItem(tLastID = 110, "Tube Wires", "For the Vacuum Tubes", o));
 
-        ItemList.Cover_SolarPanel_UHV.set(addItem(tLastID = 130, "Solar Panel (UHV)", "Ultimate High Voltage Solar Panel (Needs cleaning with right click)", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 128L), new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 128L)));
-        ItemList.Cover_SolarPanel_UEV.set(addItem(tLastID = 131, "Solar Panel (UEV)", "Ultimate Extreme Voltage Solar Panel (Needs cleaning with right click)", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 256L), new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 256L)));
-        ItemList.Cover_SolarPanel_UIV.set(addItem(tLastID = 132, "Solar Panel (UIV)", "Ultimate Insane Voltage Solar Panel (Needs cleaning with right click)", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 512L)));
+        ItemList.Cover_SolarPanel_UHV.set(addItem(tLastID = 130, "Solar Panel (UHV)", "Ultimate High Voltage Solar Panel (Needs cleaning with right click)",
+                                                  new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L),
+                                                  new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 128L),
+                                                  new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 128L)
+                                                 ));
+        ItemList.Cover_SolarPanel_UEV.set(addItem(tLastID = 131, "Solar Panel (UEV)", "Ultimate Extreme Voltage Solar Panel (Needs cleaning with right click)",
+                                                  new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L),
+                                                  new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 256L),
+                                                  new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 256L)
+                                                 ));
+        ItemList.Cover_SolarPanel_UIV.set(addItem(tLastID = 132, "Solar Panel (UIV)", "Ultimate Insane Voltage Solar Panel (Needs cleaning with right click)",
+                                                  new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
+                                                  new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 512L),
+                                                  new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 512L)
+                                                 ));
 
         GregTech_API.registerCover(ItemList.Cover_SolarPanel_UHV.get(1L), TextureFactory.of(SOLARPANEL_UHV), new GT_Cover_SolarPanel(2097152));
         GregTech_API.registerCover(ItemList.Cover_SolarPanel_UEV.get(1L), TextureFactory.of(SOLARPANEL_UEV), new GT_Cover_SolarPanel(8388608));
@@ -197,11 +255,4 @@ public class GT_MetaGenerated_Item_03
         return aDoShowAllItems;
     }
 
-    // Cancel to prevent the creation of circuit items, will leave empty values in ItemList that *must* be filled by whatever cancles it.
-    public class RegisterCircuitEvent extends Event {
-        @Override
-        public boolean isCancelable() {
-            return true;
-        }
-    }
 }

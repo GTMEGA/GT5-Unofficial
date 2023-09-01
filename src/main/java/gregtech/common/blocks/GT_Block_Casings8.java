@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
@@ -9,13 +10,14 @@ import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+
 public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
 
     //WATCH OUT FOR TEXTURE ID's
     public GT_Block_Casings8() {
         super(GT_Item_Casings8.class, "gt.blockcasings8", GT_Material_Casings.INSTANCE);
         for (int i = 0; i < 9; i = (i + 1)) {
-            Textures.BlockIcons.casingTexturePages[1][i+48] = TextureFactory.of(this, i);
+            Textures.BlockIcons.casingTexturePages[1][i + 48] = TextureFactory.of(this, i);
         }
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Chemically Inert Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "PTFE Pipe Casing");
@@ -42,25 +44,26 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int aSide, int aMeta) {
         switch (aMeta) {
-        case 0:
-            return Textures.BlockIcons.MACHINE_CASING_CHEMICALLY_INERT.getIcon();
-        case 1:
-            return Textures.BlockIcons.MACHINE_CASING_PIPE_POLYTETRAFLUOROETHYLENE.getIcon();
-        case 2:
-            return Textures.BlockIcons.MACHINE_CASING_MINING_NEUTRONIUM.getIcon();
-        case 3:
-            return Textures.BlockIcons.MACHINE_CASING_MINING_BLACKPLUTONIUM.getIcon();
-        case 4:
-            return Textures.BlockIcons.MACHINE_CASING_EXTREME_ENGINE_INTAKE.getIcon();//changed color in a terrible way
-        case 5:
-            return Textures.BlockIcons.MACHINE_CASING_ADVANCEDRADIATIONPROOF.getIcon();
-        case 6:
-            return Textures.BlockIcons.MACHINE_CASING_RHODIUM_PALLADIUM.getIcon();
-        case 7:
-            return Textures.BlockIcons.MACHINE_CASING_IRIDIUM.getIcon();
+            case 0:
+                return Textures.BlockIcons.MACHINE_CASING_CHEMICALLY_INERT.getIcon();
+            case 1:
+                return Textures.BlockIcons.MACHINE_CASING_PIPE_POLYTETRAFLUOROETHYLENE.getIcon();
+            case 2:
+                return Textures.BlockIcons.MACHINE_CASING_MINING_NEUTRONIUM.getIcon();
+            case 3:
+                return Textures.BlockIcons.MACHINE_CASING_MINING_BLACKPLUTONIUM.getIcon();
+            case 4:
+                return Textures.BlockIcons.MACHINE_CASING_EXTREME_ENGINE_INTAKE.getIcon();//changed color in a terrible way
+            case 5:
+                return Textures.BlockIcons.MACHINE_CASING_ADVANCEDRADIATIONPROOF.getIcon();
+            case 6:
+                return Textures.BlockIcons.MACHINE_CASING_RHODIUM_PALLADIUM.getIcon();
+            case 7:
+                return Textures.BlockIcons.MACHINE_CASING_IRIDIUM.getIcon();
             case 8:
                 return Textures.BlockIcons.MACHINE_CASING_MAGICAL.getIcon();
         }
         return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
     }
+
 }

@@ -32,8 +32,16 @@ public class TreeBorkTester extends GT_Generic_Item {
      */
     @Override
     public boolean onItemUseFirst(
-            final ItemStack stack, final EntityPlayer player, final World world, final int x, final int y, final int z, final int side, final float hitX,
-            final float hitY, final float hitZ
+            final ItemStack stack,
+            final EntityPlayer player,
+            final World world,
+            final int x,
+            final int y,
+            final int z,
+            final int side,
+            final float hitX,
+            final float hitY,
+            final float hitZ
                                  ) {
         if (!world.isRemote) {
             final GT_TreeBorker borker = new GT_TreeBorker(world, x, y, z, 3, 64, 16, 1024);

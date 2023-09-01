@@ -1,5 +1,6 @@
 package gregtech.common.render;
 
+
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
@@ -12,7 +13,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.LightingHelper;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,15 +24,23 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import static gregtech.api.util.LightingHelper.MAX_BRIGHTNESS;
 
+
 class GT_RenderedTexture implements ITexture, IColorModulationContainer {
+
     protected final IIconContainer mIconContainer;
+
     private final short[] mRGBa;
+
     private final boolean glow;
+
     private final boolean stdOrient;
+
     private final boolean useExtFacing;
 
     GT_RenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean allowAlpha, boolean glow, boolean stdOrient, boolean extFacing) {
-        if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_RenderedTexture");
+        if (aRGBa.length != 4) {
+            throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_RenderedTexture");
+        }
         mIconContainer = aIcon;
         mRGBa = aRGBa;
         this.glow = glow;
@@ -47,12 +55,17 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (aRenderer.useInventoryTint)
+            if (aRenderer.useInventoryTint) {
                 return; // TODO: Remove this once all addons have migrated to the new Texture API
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            }
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) {
+                return;
+            }
             aRenderer.enableAO = false;
             lighting.setLightnessOverride(1.0F);
-            if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+            if (enableAO) {
+                lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+            }
         }
         lighting.setupLightingXPos(aBlock, aX, aY, aZ).setupColor(ForgeDirection.EAST.ordinal(), mRGBa);
         ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
@@ -73,12 +86,17 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (aRenderer.useInventoryTint)
+            if (aRenderer.useInventoryTint) {
                 return; // TODO: Remove this once all addons have migrated to the new Texture API
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            }
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) {
+                return;
+            }
             aRenderer.enableAO = false;
             lighting.setLightnessOverride(1.0F);
-            if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+            if (enableAO) {
+                lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+            }
         }
         lighting.setupLightingXNeg(aBlock, aX, aY, aZ).setupColor(ForgeDirection.WEST.ordinal(), mRGBa);
         ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
@@ -99,12 +117,17 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (aRenderer.useInventoryTint)
+            if (aRenderer.useInventoryTint) {
                 return; // TODO: Remove this once all addons have migrated to the new Texture API
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            }
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) {
+                return;
+            }
             aRenderer.enableAO = false;
             lighting.setLightnessOverride(1.0F);
-            if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+            if (enableAO) {
+                lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+            }
         }
         lighting.setupLightingYPos(aBlock, aX, aY, aZ).setupColor(ForgeDirection.UP.ordinal(), mRGBa);
         ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
@@ -125,12 +148,17 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (aRenderer.useInventoryTint)
+            if (aRenderer.useInventoryTint) {
                 return; // TODO: Remove this once all addons have migrated to the new Texture API
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            }
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) {
+                return;
+            }
             aRenderer.enableAO = false;
             lighting.setLightnessOverride(1.0F);
-            if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+            if (enableAO) {
+                lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+            }
         }
         lighting.setupLightingYNeg(aBlock, aX, aY, aZ).setupColor(ForgeDirection.DOWN.ordinal(), mRGBa);
         ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
@@ -151,12 +179,17 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (aRenderer.useInventoryTint)
+            if (aRenderer.useInventoryTint) {
                 return; // TODO: Remove this once all addons have migrated to the new Texture API
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            }
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) {
+                return;
+            }
             aRenderer.enableAO = false;
             lighting.setLightnessOverride(1.0F);
-            if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+            if (enableAO) {
+                lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+            }
         }
         lighting.setupLightingZPos(aBlock, aX, aY, aZ).setupColor(ForgeDirection.SOUTH.ordinal(), mRGBa);
         ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
@@ -177,12 +210,17 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (aRenderer.useInventoryTint)
+            if (aRenderer.useInventoryTint) {
                 return; // TODO: Remove this once all addons have migrated to the new Texture API
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            }
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) {
+                return;
+            }
             aRenderer.enableAO = false;
             lighting.setLightnessOverride(1.0F);
-            if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+            if (enableAO) {
+                lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+            }
         }
         lighting.setupLightingZNeg(aBlock, aX, aY, aZ).setupColor(ForgeDirection.NORTH.ordinal(), mRGBa);
         ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
@@ -197,63 +235,8 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
     }
 
     @Override
-    public short[] getRGBA() {
-        return mRGBa;
-    }
-
-    @Override
     public boolean isValidTexture() {
         return mIconContainer != null;
-    }
-
-    /**
-     * Renders the given texture to the bottom face of the block. Args: block, x, y, z, texture
-     */
-    protected void renderFaceYNeg(RenderBlocks aRenderer, double x, double y, double z, IIcon icon, ExtendedFacing extendedFacing) {
-
-        switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
-            case COUNTER_CLOCKWISE:
-                aRenderer.uvRotateBottom = 2;
-                break;
-            case CLOCKWISE:
-                aRenderer.uvRotateBottom = 1;
-                break;
-            case UPSIDE_DOWN:
-                aRenderer.uvRotateBottom = 3;
-                break;
-            default:
-                aRenderer.uvRotateBottom = 0;
-                break;
-        }
-
-        Flip aFlip = extendedFacing.getFlip();
-        aRenderer.renderFaceYNeg(Blocks.air, x, y, z, useExtFacing && GT_Mod.gregtechproxy.mRenderFlippedMachinesFlipped ? new GT_IconFlipped(icon, aFlip.isHorizontallyFlipped() ^ !stdOrient, aFlip.isVerticallyFliped()) : new GT_IconFlipped(icon, !stdOrient, false));
-        aRenderer.uvRotateBottom = 0;
-    }
-
-    /**
-     * Renders the given texture to the top face of the block. Args: block, x, y, z, texture
-     */
-    protected void renderFaceYPos(RenderBlocks aRenderer, double x, double y, double z, IIcon icon, ExtendedFacing extendedFacing) {
-
-        switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
-            case COUNTER_CLOCKWISE:
-                aRenderer.uvRotateTop = 2;
-                break;
-            case CLOCKWISE:
-                aRenderer.uvRotateTop = 1;
-                break;
-            case UPSIDE_DOWN:
-                aRenderer.uvRotateTop = 3;
-                break;
-            default:
-                aRenderer.uvRotateTop = 0;
-                break;
-        }
-
-        Flip aFlip = extendedFacing.getFlip();
-        aRenderer.renderFaceYPos(Blocks.air, x, y, z, useExtFacing && GT_Mod.gregtechproxy.mRenderFlippedMachinesFlipped ? new GT_IconFlipped(icon, aFlip.isHorizontallyFlipped(), aFlip.isVerticallyFliped()) : icon);
-        aRenderer.uvRotateTop = 0;
     }
 
     /**
@@ -278,7 +261,12 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         }
 
         Flip aFlip = extendedFacing.getFlip();
-        aRenderer.renderFaceZNeg(Blocks.air, x, y, z, useExtFacing && GT_Mod.gregtechproxy.mRenderFlippedMachinesFlipped ? new GT_IconFlipped(icon, aFlip.isHorizontallyFlipped(), aFlip.isVerticallyFliped()) : icon);
+        aRenderer.renderFaceZNeg(
+                Blocks.air, x, y, z,
+                useExtFacing && GT_Mod.gregtechproxy.mRenderFlippedMachinesFlipped ? new GT_IconFlipped(icon, aFlip.isHorizontallyFlipped(),
+                                                                                                        aFlip.isVerticallyFliped()
+                ) : icon
+                                );
         aRenderer.uvRotateEast = 0;
         aRenderer.field_152631_f = false;
     }
@@ -304,8 +292,73 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         }
 
         Flip aFlip = extendedFacing.getFlip();
-        aRenderer.renderFaceZPos(Blocks.air, x, y, z, useExtFacing && GT_Mod.gregtechproxy.mRenderFlippedMachinesFlipped ? new GT_IconFlipped(icon, aFlip.isHorizontallyFlipped(), aFlip.isVerticallyFliped()) : icon);
+        aRenderer.renderFaceZPos(
+                Blocks.air, x, y, z,
+                useExtFacing && GT_Mod.gregtechproxy.mRenderFlippedMachinesFlipped ? new GT_IconFlipped(icon, aFlip.isHorizontallyFlipped(),
+                                                                                                        aFlip.isVerticallyFliped()
+                ) : icon
+                                );
         aRenderer.uvRotateWest = 0;
+    }
+
+    /**
+     * Renders the given texture to the bottom face of the block. Args: block, x, y, z, texture
+     */
+    protected void renderFaceYNeg(RenderBlocks aRenderer, double x, double y, double z, IIcon icon, ExtendedFacing extendedFacing) {
+
+        switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
+            case COUNTER_CLOCKWISE:
+                aRenderer.uvRotateBottom = 2;
+                break;
+            case CLOCKWISE:
+                aRenderer.uvRotateBottom = 1;
+                break;
+            case UPSIDE_DOWN:
+                aRenderer.uvRotateBottom = 3;
+                break;
+            default:
+                aRenderer.uvRotateBottom = 0;
+                break;
+        }
+
+        Flip aFlip = extendedFacing.getFlip();
+        aRenderer.renderFaceYNeg(
+                Blocks.air, x, y, z, useExtFacing && GT_Mod.gregtechproxy.mRenderFlippedMachinesFlipped ? new GT_IconFlipped(icon,
+                                                                                                                             aFlip.isHorizontallyFlipped() ^
+                                                                                                                             !stdOrient,
+                                                                                                                             aFlip.isVerticallyFliped()
+                ) : new GT_IconFlipped(icon, !stdOrient, false));
+        aRenderer.uvRotateBottom = 0;
+    }
+
+    /**
+     * Renders the given texture to the top face of the block. Args: block, x, y, z, texture
+     */
+    protected void renderFaceYPos(RenderBlocks aRenderer, double x, double y, double z, IIcon icon, ExtendedFacing extendedFacing) {
+
+        switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
+            case COUNTER_CLOCKWISE:
+                aRenderer.uvRotateTop = 2;
+                break;
+            case CLOCKWISE:
+                aRenderer.uvRotateTop = 1;
+                break;
+            case UPSIDE_DOWN:
+                aRenderer.uvRotateTop = 3;
+                break;
+            default:
+                aRenderer.uvRotateTop = 0;
+                break;
+        }
+
+        Flip aFlip = extendedFacing.getFlip();
+        aRenderer.renderFaceYPos(
+                Blocks.air, x, y, z,
+                useExtFacing && GT_Mod.gregtechproxy.mRenderFlippedMachinesFlipped ? new GT_IconFlipped(icon, aFlip.isHorizontallyFlipped(),
+                                                                                                        aFlip.isVerticallyFliped()
+                ) : icon
+                                );
+        aRenderer.uvRotateTop = 0;
     }
 
     /**
@@ -329,8 +382,39 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         }
 
         Flip aFlip = extendedFacing.getFlip();
-        aRenderer.renderFaceXNeg(Blocks.air, x, y, z, useExtFacing && GT_Mod.gregtechproxy.mRenderFlippedMachinesFlipped ? new GT_IconFlipped(icon, aFlip.isHorizontallyFlipped(), aFlip.isVerticallyFliped()) : icon);
+        aRenderer.renderFaceXNeg(
+                Blocks.air, x, y, z,
+                useExtFacing && GT_Mod.gregtechproxy.mRenderFlippedMachinesFlipped ? new GT_IconFlipped(icon, aFlip.isHorizontallyFlipped(),
+                                                                                                        aFlip.isVerticallyFliped()
+                ) : icon
+                                );
         aRenderer.uvRotateNorth = 0;
+    }
+
+    private ExtendedFacing getExtendedFacing(int x, int y, int z) {
+        if (stdOrient) {
+            return ExtendedFacing.DEFAULT;
+        }
+        EntityPlayer player = GT_Mod.gregtechproxy.getThePlayer();
+        if (player == null) {
+            return ExtendedFacing.DEFAULT;
+        }
+        World w = player.getEntityWorld();
+        if (w == null) {
+            return ExtendedFacing.DEFAULT;
+        }
+        TileEntity te = w.getTileEntity(x, y, z);
+        if (te instanceof IGregTechTileEntity) {
+            IMetaTileEntity meta = ((IGregTechTileEntity) te).getMetaTileEntity();
+            if (meta instanceof IAlignmentProvider) {
+                return ((IAlignmentProvider) meta).getAlignment().getExtendedFacing();
+            } else if (meta != null) {
+                return ExtendedFacing.of(ForgeDirection.getOrientation(meta.getBaseMetaTileEntity().getFrontFacing()));
+            }
+        } else if (te instanceof IAlignmentProvider) {
+            return ((IAlignmentProvider) te).getAlignment().getExtendedFacing();
+        }
+        return ExtendedFacing.DEFAULT;
     }
 
     /**
@@ -355,28 +439,19 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         }
 
         Flip aFlip = extendedFacing.getFlip();
-        aRenderer.renderFaceXPos(Blocks.air, x, y, z, useExtFacing && GT_Mod.gregtechproxy.mRenderFlippedMachinesFlipped ? new GT_IconFlipped(icon, aFlip.isHorizontallyFlipped(), aFlip.isVerticallyFliped()) : icon);
+        aRenderer.renderFaceXPos(
+                Blocks.air, x, y, z,
+                useExtFacing && GT_Mod.gregtechproxy.mRenderFlippedMachinesFlipped ? new GT_IconFlipped(icon, aFlip.isHorizontallyFlipped(),
+                                                                                                        aFlip.isVerticallyFliped()
+                ) : icon
+                                );
         aRenderer.uvRotateSouth = 0;
         aRenderer.field_152631_f = false;
     }
 
-    private ExtendedFacing getExtendedFacing(int x, int y, int z) {
-        if (stdOrient) return ExtendedFacing.DEFAULT;
-        EntityPlayer player = GT_Mod.gregtechproxy.getThePlayer();
-        if (player == null) return ExtendedFacing.DEFAULT;
-        World w = player.getEntityWorld();
-        if (w == null) return ExtendedFacing.DEFAULT;
-        TileEntity te = w.getTileEntity(x, y, z);
-        if (te instanceof IGregTechTileEntity) {
-            IMetaTileEntity meta = ((IGregTechTileEntity) te).getMetaTileEntity();
-            if (meta instanceof IAlignmentProvider) {
-                return ((IAlignmentProvider) meta).getAlignment().getExtendedFacing();
-            } else if (meta != null) {
-                return ExtendedFacing.of(ForgeDirection.getOrientation(meta.getBaseMetaTileEntity().getFrontFacing()));
-            }
-        } else if (te instanceof IAlignmentProvider) {
-            return ((IAlignmentProvider) te).getAlignment().getExtendedFacing();
-        }
-        return ExtendedFacing.DEFAULT;
+    @Override
+    public short[] getRGBA() {
+        return mRGBa;
     }
+
 }

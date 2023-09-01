@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.storage;
 
+
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -21,21 +22,28 @@ import net.minecraft.util.StatCollector;
 import java.util.HashMap;
 import java.util.Map;
 
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+
 
 @Optional.Interface(iface = "appeng.api.storage.IMEMonitor", modid = "appliedenergistics2", striprefs = true)
 public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEntity_TieredMachineBlock implements appeng.api.storage.IMEMonitor<appeng.api.storage.data.IAEItemStack> {
+
+    @Optional.Method(modid = "appliedenergistics2")
+    public static void registerAEIntegration() {
+        appeng.api.AEApi.instance().registries().externalStorage().addExternalStorageInterface(new AE2DigitalChestHandler());
+    }
+
     protected boolean mVoidOverflow = false;
+
     private Map<appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack>, Object> listeners = null;
+
     private int mItemCount = 0;
+
     private ItemStack mItemStack = null;
 
     public GT_MetaTileEntity_DigitalChestBase(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 3, new String[]{
-                "This Chest stores " + GT_Utility.formatNumbers(commonSizeCompute(aTier)) + " Blocks",
-                "Use a screwdriver to enable",
+                "This Chest stores " + GT_Utility.formatNumbers(commonSizeCompute(aTier)) + " Blocks", "Use a screwdriver to enable",
                 "voiding items on overflow"
         });
     }
@@ -76,23 +84,20 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Optional.Method(modid = "appliedenergistics2")
-    public static void registerAEIntegration() {
-        appeng.api.AEApi.instance().registries().externalStorage().addExternalStorageInterface(new AE2DigitalChestHandler());
-    }
-
-    @Optional.Method(modid = "appliedenergistics2")
     @Override
     public void addListener(appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack> imeMonitorHandlerReceiver, Object o) {
-        if (listeners == null)
+        if (listeners == null) {
             listeners = new HashMap<>();
+        }
         listeners.put(imeMonitorHandlerReceiver, o);
     }
 
     @Optional.Method(modid = "appliedenergistics2")
     @Override
     public void removeListener(appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack> imeMonitorHandlerReceiver) {
-        if (listeners == null)
+        if (listeners == null) {
             listeners = new HashMap<>();
+        }
         listeners.remove(imeMonitorHandlerReceiver);
     }
 
@@ -106,8 +111,9 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     @Override
     public boolean isPrioritized(appeng.api.storage.data.IAEItemStack iaeItemStack) {
         ItemStack s = getItemStack();
-        if (s == null || iaeItemStack == null)
+        if (s == null || iaeItemStack == null) {
             return false;
+        }
         return iaeItemStack.isSameType(s);
     }
 
@@ -115,8 +121,9 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     @Override
     public boolean canAccept(appeng.api.storage.data.IAEItemStack iaeItemStack) {
         ItemStack s = getItemStack();
-        if (s == null || iaeItemStack == null)
+        if (s == null || iaeItemStack == null) {
             return true;
+        }
         return iaeItemStack.isSameType(s);
     }
 
@@ -186,51 +193,52 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_QuantumChest(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_QuantumChest(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-    }
-
-    @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         return new ITexture[0][0][0];
     }
 
     @Override
     @Optional.Method(modid = "appliedenergistics2")
-    public appeng.api.storage.data.IAEItemStack injectItems(final appeng.api.storage.data.IAEItemStack input, final appeng.api.config.Actionable mode, final appeng.api.networking.security.BaseActionSource src) {
+    public appeng.api.storage.data.IAEItemStack injectItems(
+            final appeng.api.storage.data.IAEItemStack input,
+            final appeng.api.config.Actionable mode,
+            final appeng.api.networking.security.BaseActionSource src
+                                                           ) {
         final ItemStack inputStack = input.getItemStack();
-        if (inputStack == null)
+        if (inputStack == null) {
             return null;
-        if (mode != appeng.api.config.Actionable.SIMULATE)
+        }
+        if (mode != appeng.api.config.Actionable.SIMULATE) {
             getBaseMetaTileEntity().markDirty();
+        }
         ItemStack storedStack = getItemStack();
         if (storedStack != null) {
             if (GT_Utility.areStacksEqual(storedStack, inputStack)) {
                 if (input.getStackSize() + getItemCount() > getMaxItemCount()) {
                     if (mVoidOverflow) {
-                        if (mode != appeng.api.config.Actionable.SIMULATE)
+                        if (mode != appeng.api.config.Actionable.SIMULATE) {
                             setItemCount(getMaxItemCount());
+                        }
                         return null;
                     }
                     return createOverflowStack(input.getStackSize() + getItemCount(), mode);
                 }
-                if (mode != appeng.api.config.Actionable.SIMULATE)
+                if (mode != appeng.api.config.Actionable.SIMULATE) {
                     setItemCount(getItemCount() + (int) input.getStackSize());
+                }
                 return null;
             }
             return input;
         }
-        if (mode != appeng.api.config.Actionable.SIMULATE)
+        if (mode != appeng.api.config.Actionable.SIMULATE) {
             setItemStack(inputStack.copy());
-        if (input.getStackSize() > getMaxItemCount())
+        }
+        if (input.getStackSize() > getMaxItemCount()) {
             return createOverflowStack(input.getStackSize(), mode);
-        if (mode != appeng.api.config.Actionable.SIMULATE)
+        }
+        if (mode != appeng.api.config.Actionable.SIMULATE) {
             setItemCount((int) input.getStackSize());
+        }
         return null;
     }
 
@@ -238,26 +246,34 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     private appeng.api.storage.data.IAEItemStack createOverflowStack(long size, appeng.api.config.Actionable mode) {
         final appeng.api.storage.data.IAEItemStack overflow = appeng.util.item.AEItemStack.create(getItemStack());
         overflow.setStackSize(size - getMaxItemCount());
-        if (mode != appeng.api.config.Actionable.SIMULATE)
+        if (mode != appeng.api.config.Actionable.SIMULATE) {
             setItemCount(getMaxItemCount());
+        }
         return overflow;
     }
 
     @Override
     @Optional.Method(modid = "appliedenergistics2")
-    public appeng.api.storage.data.IAEItemStack extractItems(final appeng.api.storage.data.IAEItemStack request, final appeng.api.config.Actionable mode, final appeng.api.networking.security.BaseActionSource src) {
+    public appeng.api.storage.data.IAEItemStack extractItems(
+            final appeng.api.storage.data.IAEItemStack request,
+            final appeng.api.config.Actionable mode,
+            final appeng.api.networking.security.BaseActionSource src
+                                                            ) {
         if (request.isSameType(getItemStack())) {
-            if (mode != appeng.api.config.Actionable.SIMULATE)
+            if (mode != appeng.api.config.Actionable.SIMULATE) {
                 getBaseMetaTileEntity().markDirty();
+            }
             if (request.getStackSize() >= getItemCount()) {
                 appeng.util.item.AEItemStack result = appeng.util.item.AEItemStack.create(getItemStack());
                 result.setStackSize(getItemCount());
-                if (mode != appeng.api.config.Actionable.SIMULATE)
+                if (mode != appeng.api.config.Actionable.SIMULATE) {
                     setItemCount(0);
+                }
                 return result;
             } else {
-                if (mode != appeng.api.config.Actionable.SIMULATE)
+                if (mode != appeng.api.config.Actionable.SIMULATE) {
                     setItemCount(getItemCount() - (int) request.getStackSize());
+                }
                 return request.copy();
             }
         }
@@ -273,7 +289,8 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     @Override
     public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mVoidOverflow = !mVoidOverflow;
-        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal(mVoidOverflow ? "GT5U.machines.voidoveflow.enabled" : "GT5U.machines.voidoveflow.disabled"));
+        GT_Utility.sendChatToPlayer(
+                aPlayer, StatCollector.translateToLocal(mVoidOverflow ? "GT5U.machines.voidoveflow.enabled" : "GT5U.machines.voidoveflow.disabled"));
     }
 
     @Override
@@ -321,21 +338,32 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
                 mInventory[2] = null;
             }
 
-            if (GregTech_API.mAE2)
+            if (GregTech_API.mAE2) {
                 notifyListeners(count - savedCount, stack);
-            if (count != savedCount)
+            }
+            if (count != savedCount) {
                 getBaseMetaTileEntity().markDirty();
+            }
         }
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!aBaseMetaTileEntity.isClientSide()) aBaseMetaTileEntity.openGUI(aPlayer);
+    public boolean isFacingValid(byte aFacing) {
         return true;
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_Container_QuantumChest(aPlayerInventory, aBaseMetaTileEntity);
+    }
+
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_GUIContainer_QuantumChest(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
+    }
+
+    @Override
+    public boolean isValidSlot(int aIndex) {
         return true;
     }
 
@@ -345,12 +373,39 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    public boolean isValidSlot(int aIndex) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!aBaseMetaTileEntity.isClientSide()) {
+            aBaseMetaTileEntity.openGUI(aPlayer);
+        }
         return true;
     }
 
     @Override
     public boolean isSimpleMachine() {
+        return true;
+    }
+
+    @Override
+    public String[] getInfoData() {
+
+        if (getItemStack() == null) {
+            return new String[]{
+                    EnumChatFormatting.BLUE + chestName() + EnumChatFormatting.RESET, "Stored Items:",
+                    EnumChatFormatting.GOLD + "No Items" + EnumChatFormatting.RESET,
+                    EnumChatFormatting.GREEN + "0" + EnumChatFormatting.RESET + " " + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(getMaxItemCount()) +
+                    EnumChatFormatting.RESET
+            };
+        }
+        return new String[]{
+                EnumChatFormatting.BLUE + chestName() + EnumChatFormatting.RESET, "Stored Items:",
+                EnumChatFormatting.GOLD + getItemStack().getDisplayName() + EnumChatFormatting.RESET, EnumChatFormatting.GREEN + GT_Utility.formatNumbers(
+                getItemCount()) + EnumChatFormatting.RESET + " " + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(getMaxItemCount()) +
+                                                                                                      EnumChatFormatting.RESET
+        };
+    }
+
+    @Override
+    public boolean isGivingInformation() {
         return true;
     }
 
@@ -362,32 +417,6 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     @Override
     public int maxProgresstime() {
         return getMaxItemCount();
-    }
-
-    @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
-    public String[] getInfoData() {
-
-        if (getItemStack() == null) {
-            return new String[]{
-                    EnumChatFormatting.BLUE + chestName() + EnumChatFormatting.RESET,
-                    "Stored Items:",
-                    EnumChatFormatting.GOLD + "No Items" + EnumChatFormatting.RESET,
-                    EnumChatFormatting.GREEN + "0" + EnumChatFormatting.RESET + " " +
-                            EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(getMaxItemCount()) + EnumChatFormatting.RESET
-            };
-        }
-        return new String[]{
-                EnumChatFormatting.BLUE + chestName() + EnumChatFormatting.RESET,
-                "Stored Items:",
-                EnumChatFormatting.GOLD + getItemStack().getDisplayName() + EnumChatFormatting.RESET,
-                EnumChatFormatting.GREEN + GT_Utility.formatNumbers(getItemCount()) + EnumChatFormatting.RESET + " " +
-                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(getMaxItemCount()) + EnumChatFormatting.RESET
-        };
     }
 
     @Override
@@ -403,31 +432,62 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
             listeners = new HashMap<>();
             return;
         }
-        if (count == 0 || stack == null)
+        if (count == 0 || stack == null) {
             return;
+        }
         appeng.util.item.ItemList change = new appeng.util.item.ItemList();
         appeng.util.item.AEItemStack s = appeng.util.item.AEItemStack.create(stack);
         s.setStackSize(count);
         change.add(s);
         listeners.forEach((l, o) -> {
-            if (l.isValid(o))
+            if (l.isValid(o)) {
                 l.postChange(this, change, null);
-            else
+            } else {
                 removeListener(l);
+            }
         });
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        aNBT.setInteger("mItemCount", getItemCount());
+        if (getItemStack() != null) {
+            aNBT.setTag("mItemStack", getItemStack().writeToNBT(new NBTTagCompound()));
+        }
+        aNBT.setBoolean("mVoidOverflow", mVoidOverflow);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        if (aNBT.hasKey("mItemCount")) {
+            setItemCount(aNBT.getInteger("mItemCount"));
+        }
+        if (aNBT.hasKey("mItemStack")) {
+            setItemStack(ItemStack.loadItemStackFromNBT((NBTTagCompound) aNBT.getTag("mItemStack")));
+        }
+        mVoidOverflow = aNBT.getBoolean("mVoidOverflow");
+
+    }
+
+    @Override
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        if (GregTech_API.mAE2 && GT_Values.disableDigitalChestsExternalAccess && hasActiveMEConnection()) {
+            return false;
+        }
+        return aIndex == 1;
     }
 
     @Optional.Method(modid = "appliedenergistics2")
     private boolean hasActiveMEConnection() {
-        if (listeners == null || listeners.isEmpty())
+        if (listeners == null || listeners.isEmpty()) {
             return false;
-        for (Map.Entry<appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack>, Object> e : listeners.entrySet())
-        {
-            if ((e.getKey() instanceof appeng.api.parts.IPart))
-            {
+        }
+        for (Map.Entry<appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack>, Object> e : listeners.entrySet()) {
+            if ((e.getKey() instanceof appeng.api.parts.IPart)) {
                 appeng.api.networking.IGridNode n = ((appeng.api.parts.IPart) e.getKey()).getGridNode();
-                if (n != null && n.isActive())
+                if (n != null && n.isActive()) {
                     return true;
+                }
             }
         }
         // if there are no active storage buses - clear the listeners
@@ -436,44 +496,21 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("mItemCount", getItemCount());
-        if (getItemStack() != null)
-            aNBT.setTag("mItemStack", getItemStack().writeToNBT(new NBTTagCompound()));
-        aNBT.setBoolean("mVoidOverflow", mVoidOverflow);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        if (aNBT.hasKey("mItemCount"))
-            setItemCount(aNBT.getInteger("mItemCount"));
-        if (aNBT.hasKey("mItemStack"))
-            setItemStack(ItemStack.loadItemStackFromNBT((NBTTagCompound) aNBT.getTag("mItemStack")));
-        mVoidOverflow = aNBT.getBoolean("mVoidOverflow");
-
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        if (GregTech_API.mAE2 && GT_Values.disableDigitalChestsExternalAccess && hasActiveMEConnection())
-            return false;
-        return aIndex == 1;
-    }
-
-    @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        if (GregTech_API.mAE2 && GT_Values.disableDigitalChestsExternalAccess && hasActiveMEConnection())
+        if (GregTech_API.mAE2 && GT_Values.disableDigitalChestsExternalAccess && hasActiveMEConnection()) {
             return false;
+        }
         return aIndex == 0 && (mInventory[0] == null || GT_Utility.areStacksEqual(mInventory[0], aStack));
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide != aFacing) return new ITexture[]{MACHINE_CASINGS[mTier][aColorIndex + 1]};
+        if (aSide != aFacing) {
+            return new ITexture[]{MACHINE_CASINGS[mTier][aColorIndex + 1]};
+        }
         return new ITexture[]{
-                MACHINE_CASINGS[mTier][aColorIndex + 1],
-                TextureFactory.of(OVERLAY_SCHEST),
-                TextureFactory.builder().addIcon(OVERLAY_SCHEST_GLOW).glow().build()
+                MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_SCHEST), TextureFactory.builder().addIcon(OVERLAY_SCHEST_GLOW).glow().build()
         };
     }
+
 }

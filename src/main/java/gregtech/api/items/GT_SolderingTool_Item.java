@@ -1,5 +1,6 @@
 package gregtech.api.items;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.util.GT_LanguageManager;
@@ -12,7 +13,9 @@ import java.util.List;
 
 import static gregtech.api.enums.GT_Values.W;
 
+
 public class GT_SolderingTool_Item extends GT_Tool_Item {
+
     public GT_SolderingTool_Item(String aUnlocalized, String aEnglish, int aMaxDamage, int aEntityDamage, int aDischargedGTID) {
         super(aUnlocalized, aEnglish, "To repair and construct Circuitry", aMaxDamage, aEntityDamage, true, -1, aDischargedGTID);
         GT_OreDictUnificator.registerOre(ToolDictNames.craftingToolSolderingIron, new ItemStack(this, 1, W));
@@ -37,4 +40,5 @@ public class GT_SolderingTool_Item extends GT_Tool_Item {
         }
         return false;
     }
+
 }

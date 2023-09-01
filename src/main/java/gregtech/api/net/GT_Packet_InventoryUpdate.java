@@ -1,5 +1,6 @@
 package gregtech.api.net;
 
+
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.interfaces.IPacketReceivableItem;
 import gregtech.api.util.ISerializableObject;
@@ -15,6 +16,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.IBlockAccess;
 
 import java.util.UUID;
+
 
 @Setter
 @Getter
@@ -34,7 +36,7 @@ public class GT_Packet_InventoryUpdate extends GT_Packet_New {
         super(true);
     }
 
-    public GT_Packet_InventoryUpdate(final EntityPlayer player, final Item item, final boolean bauble,  final int aSlot, final ISerializableObject data) {
+    public GT_Packet_InventoryUpdate(final EntityPlayer player, final Item item, final boolean bauble, final int aSlot, final ISerializableObject data) {
         super(false);
         this.player = player;
         this.item = item;
@@ -83,7 +85,10 @@ public class GT_Packet_InventoryUpdate extends GT_Packet_New {
         val item = Item.getItemById(aData.readInt());
         val bauble = aData.readBoolean();
         val slot = aData.readInt();
-        return new GT_Packet_InventoryUpdate(MinecraftServer.getServer().getEntityWorld().func_152378_a(id), item, bauble, slot, item instanceof IPacketReceivableItem ? ((IPacketReceivableItem) item).readFromBytes(aData) : null);
+        return new GT_Packet_InventoryUpdate(
+                MinecraftServer.getServer().getEntityWorld().func_152378_a(id), item, bauble, slot,
+                item instanceof IPacketReceivableItem ? ((IPacketReceivableItem) item).readFromBytes(aData) : null
+        );
     }
 
 }

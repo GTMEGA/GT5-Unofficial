@@ -1,14 +1,18 @@
 package gregtech.api.objects;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
 import java.util.*;
 
+
 public class GT_HashSet<E extends GT_ItemStack> extends AbstractSet<E> {
+
     private static final Object OBJECT = new Object();
-    private transient HashMap<GT_ItemStack, Object> map;
+
+    private final transient HashMap<GT_ItemStack, Object> map;
 
     public GT_HashSet() {
         map = new HashMap<GT_ItemStack, Object>();
@@ -60,11 +64,6 @@ public class GT_HashSet<E extends GT_ItemStack> extends AbstractSet<E> {
         return map.containsKey(o);
     }
 
-    public boolean add(ItemStack aStack) {
-        if (GT_Utility.isStackInvalid(aStack)) return false;
-        return map.put(new GT_ItemStack(aStack), OBJECT) == null;
-    }
-
     @Override
     public boolean add(E e) {
         return map.put(e, OBJECT) == null;
@@ -79,4 +78,12 @@ public class GT_HashSet<E extends GT_ItemStack> extends AbstractSet<E> {
     public void clear() {
         map.clear();
     }
+
+    public boolean add(ItemStack aStack) {
+        if (GT_Utility.isStackInvalid(aStack)) {
+            return false;
+        }
+        return map.put(new GT_ItemStack(aStack), OBJECT) == null;
+    }
+
 }

@@ -1,12 +1,15 @@
 package gregtech.common.blocks;
 
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
+
 public class GT_Item_Casings2 extends GT_Item_Casings_Abstract {
+
     public GT_Item_Casings2(Block par1) {
         super(par1);
     }
@@ -19,4 +22,5 @@ public class GT_Item_Casings2 extends GT_Item_Casings_Abstract {
                 aList.add(this.mBlastProofTooltip);
         }
     }
+
 }

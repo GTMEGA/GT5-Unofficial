@@ -1,5 +1,6 @@
 package gregtech.common.bees;
 
+
 import forestry.api.apiculture.EnumBeeChromosome;
 import forestry.api.apiculture.IAlleleBeeSpeciesCustom;
 import forestry.api.genetics.AlleleManager;
@@ -10,16 +11,20 @@ import net.minecraft.item.ItemStack;
 
 import java.awt.*;
 
+
 public class GT_AlleleBeeSpecies extends AlleleBeeSpecies {
-    public GT_AlleleBeeSpecies(String uid,
-                               boolean dominant,
-                               String unlocalizedName,
-                               String authority,
-                               String unlocalizedDescription,
-                               IClassification branch,
-                               String binomial,
-                               Color primaryColor,
-                               Color secondaryColor) {
+
+    public GT_AlleleBeeSpecies(
+            String uid,
+            boolean dominant,
+            String unlocalizedName,
+            String authority,
+            String unlocalizedDescription,
+            IClassification branch,
+            String binomial,
+            Color primaryColor,
+            Color secondaryColor
+                              ) {
         super(uid, unlocalizedName, authority, unlocalizedDescription, dominant, branch, binomial, primaryColor.getRGB(), secondaryColor.getRGB());
         AlleleManager.alleleRegistry.registerAllele(this, EnumBeeChromosome.SPECIES);
     }
@@ -27,18 +32,18 @@ public class GT_AlleleBeeSpecies extends AlleleBeeSpecies {
     @Override
     public IAlleleBeeSpeciesCustom addProduct(ItemStack product, Float chance) {
         if (product == null || product.getItem() == null) {
-            product=new ItemStack(Items.boat);
+            product = new ItemStack(Items.boat);
         }
         if (chance <= 0.0f || chance > 1.0f) {
             chance = 0.1f;
         }
-        return super.addProduct(product,chance);
+        return super.addProduct(product, chance);
     }
 
     @Override
     public IAlleleBeeSpeciesCustom addSpecialty(ItemStack specialty, Float chance) {
         if (specialty == null || specialty.getItem() == null) {
-            specialty=new ItemStack(Items.boat);
+            specialty = new ItemStack(Items.boat);
         }
         if (chance <= 0.0f || chance > 1.0f) {
             chance = 0.1f;

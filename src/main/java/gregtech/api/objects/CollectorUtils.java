@@ -1,5 +1,6 @@
 package gregtech.api.objects;
 
+
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
@@ -8,7 +9,13 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+
 public class CollectorUtils {
+
+    public static <K, V, E extends Map.Entry<K, V>, M extends Map<K, V>> Collector<E, ?, M> entriesToMap(Supplier<M> mapSupplier) {
+        return Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, CollectorUtils.throwingMerger(), mapSupplier);
+    }
+
     /**
      * Returns a merge function, suitable for use in
      * {@link Map#merge(Object, Object, BiFunction) Map.merge()} or
@@ -20,10 +27,9 @@ public class CollectorUtils {
      * @return a merge function which always throw {@code IllegalStateException}
      */
     public static <T> BinaryOperator<T> throwingMerger() {
-        return (u,v) -> { throw new IllegalStateException(String.format("Duplicate key %s", u)); };
+        return (u, v) -> {
+            throw new IllegalStateException(String.format("Duplicate key %s", u));
+        };
     }
 
-    public static <K, V, E extends Map.Entry<K, V>, M extends Map<K, V>> Collector<E, ?, M> entriesToMap(Supplier<M> mapSupplier) {
-        return Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, CollectorUtils.throwingMerger(), mapSupplier);
-    }
 }

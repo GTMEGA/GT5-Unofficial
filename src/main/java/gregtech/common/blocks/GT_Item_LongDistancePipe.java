@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
@@ -9,8 +10,11 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
+
 public class GT_Item_LongDistancePipe extends ItemBlock {
+
     protected final String mNoMobsToolTip = GT_LanguageManager.addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
+
     protected final String mNoTileEntityToolTip = GT_LanguageManager.addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
 
     public GT_Item_LongDistancePipe(Block par1) {
@@ -19,15 +23,10 @@ public class GT_Item_LongDistancePipe extends ItemBlock {
         setHasSubtypes(true);
         setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
     }
-    
+
     @Override
     public int getMetadata(int aMeta) {
         return aMeta;
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack aStack) {
-        return this.field_150939_a.getUnlocalizedName() + "." + getDamage(aStack);
     }
 
     @Override
@@ -36,4 +35,10 @@ public class GT_Item_LongDistancePipe extends ItemBlock {
         aList.add(this.mNoMobsToolTip);
         aList.add(this.mNoTileEntityToolTip);
     }
+
+    @Override
+    public String getUnlocalizedName(ItemStack aStack) {
+        return this.field_150939_a.getUnlocalizedName() + "." + getDamage(aStack);
+    }
+
 }

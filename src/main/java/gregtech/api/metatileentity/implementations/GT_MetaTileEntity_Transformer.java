@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyStorage;
 import com.enderio.core.common.util.BlockCoord;
@@ -24,6 +25,7 @@ import java.util.List;
 
 import static gregtech.api.enums.GT_Values.V;
 import static net.minecraft.util.EnumChatFormatting.*;
+
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -66,33 +68,78 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return mTextures[Math.min(2, aSide) + (aSide == aFacing ? 3 : 0) + (aBaseMetaTileEntity.isAllowedToWork() ? 0 : 6)][aColorIndex + 1];
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Transformer(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
+    public void saveNBTData(NBTTagCompound aNBT) {
+        //
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
+    public void loadNBTData(NBTTagCompound aNBT) {
+        //
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
-        return true;
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return false;
     }
 
     @Override
-    public boolean isEnetInput() {
-        return true;
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return false;
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        return mTextures[Math.min(2, aSide) + (aSide == aFacing ? 3 : 0) + (aBaseMetaTileEntity.isAllowedToWork() ? 0 : 6)][aColorIndex + 1];
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aBaseMetaTileEntity.isServerSide() && GregTech_API.mInputRF) {
+            aBaseMetaTileEntity.setActive(aBaseMetaTileEntity.isAllowedToWork());
+            for (byte i = 0; i < 6 && aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity(); i++) {
+                if (aBaseMetaTileEntity.inputEnergyFrom(i)) {
+                    TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(i);
+                    if (tTileEntity instanceof IEnergyProvider && ((IEnergyProvider) tTileEntity).extractEnergy(
+                            ForgeDirection.getOrientation(GT_Utility.getOppositeSide(i)), 1, true) == 1) {
+                        long tEU = ((IEnergyProvider) tTileEntity).extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(i)),
+                                                                                 GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU), false
+                                                                                );
+                        tEU = tEU * GregTech_API.mRFtoEU / 100;
+                        aBaseMetaTileEntity.injectEnergyUnits((byte) 6, Math.min(tEU, maxEUInput()), 1);
+                    } else if (tTileEntity instanceof IEnergyStorage && ((IEnergyStorage) tTileEntity).extractEnergy(1, true) == 1) {
+                        long tEU = ((IEnergyStorage) tTileEntity).extractEnergy(GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU), false);
+                        tEU = tEU * GregTech_API.mRFtoEU / 100;
+                        aBaseMetaTileEntity.injectEnergyUnits((byte) 6, Math.min(tEU, maxEUInput()), 1);
+                    } else if (GregTech_API.meIOLoaded && tTileEntity instanceof IPowerContainer && ((IPowerContainer) tTileEntity).getEnergyStored() > 0) {
+                        int storedRF = ((IPowerContainer) tTileEntity).getEnergyStored();
+                        int extractRF = GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU);
+                        long tEU = 0;
+                        if (tTileEntity instanceof TileCapBank) {
+                            ICapBankNetwork network = ((TileCapBank) tTileEntity).getNetwork();
+                            if (network != null && network.getEnergyStoredL() > 0) {
+                                tEU = Math.min((Math.min(Math.min(network.getEnergyStoredL(), storedRF - extractRF), network.getMaxOutput())) *
+                                               (long) GregTech_API.mRFtoEU / 100L, maxEUInput());
+                                network.addEnergy(GT_Utility.safeInt(-(tEU * 100 / GregTech_API.mRFtoEU)));
+                            }
+                        } else {
+                            if (storedRF > extractRF) {
+                                ((IPowerContainer) tTileEntity).setEnergyStored(storedRF - extractRF);
+                                tEU = maxEUInput();
+                            } else {
+                                ((IPowerContainer) tTileEntity).setEnergyStored(0);
+                                tEU = storedRF * (long) GregTech_API.mRFtoEU / 100L;
+                            }
+                        }
+                        aBaseMetaTileEntity.injectEnergyUnits((byte) 6, Math.min(tEU, maxEUInput()), 1);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -101,23 +148,8 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
-        return getBaseMetaTileEntity().isAllowedToWork() ? aSide == getBaseMetaTileEntity().getFrontFacing() : aSide != getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public boolean isOutputFacing(byte aSide) {
-        return !isInputFacing(aSide);
-    }
-
-    @Override
-    public boolean isTeleporterCompatible() {
-        return false;
-    }
-
-    @Override
-    public long getMinimumStoredEU() {
-        return V[mTier + 1];
+    public boolean isEnetInput() {
+        return true;
     }
 
     @Override
@@ -146,62 +178,37 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide() && GregTech_API.mInputRF) {
-            aBaseMetaTileEntity.setActive(aBaseMetaTileEntity.isAllowedToWork());
-            for (byte i = 0; i < 6 && aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity(); i++)
-                if (aBaseMetaTileEntity.inputEnergyFrom(i)) {
-                    TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(i);
-                    if (tTileEntity instanceof IEnergyProvider && ((IEnergyProvider) tTileEntity).extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(i)), 1, true) == 1) {
-                        long tEU = (long) ((IEnergyProvider) tTileEntity).extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(i)), GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU), false);
-                        tEU = tEU * GregTech_API.mRFtoEU / 100;
-                        aBaseMetaTileEntity.injectEnergyUnits((byte) 6, Math.min(tEU, maxEUInput()), 1);
-                    } else if (tTileEntity instanceof IEnergyStorage && ((IEnergyStorage) tTileEntity).extractEnergy(1, true) == 1) {
-                        long tEU = (long) ((IEnergyStorage) tTileEntity).extractEnergy(GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU), false);
-                        tEU = tEU * GregTech_API.mRFtoEU / 100;
-                        aBaseMetaTileEntity.injectEnergyUnits((byte) 6, Math.min(tEU, maxEUInput()), 1);
-                    } else if (GregTech_API.meIOLoaded && tTileEntity instanceof IPowerContainer && ((IPowerContainer) tTileEntity).getEnergyStored() > 0) {
-                        int storedRF = ((IPowerContainer) tTileEntity).getEnergyStored();
-                        int extractRF = GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU);
-                        long tEU = 0;
-                        if (tTileEntity instanceof TileCapBank) {
-                            ICapBankNetwork network = ((TileCapBank) tTileEntity).getNetwork();
-                            if (network != null && network.getEnergyStoredL() > 0) {
-                                tEU = Math.min((Math.min(Math.min(network.getEnergyStoredL(), storedRF - extractRF), network.getMaxOutput())) * (long) GregTech_API.mRFtoEU / 100L, maxEUInput());
-                                network.addEnergy(GT_Utility.safeInt(-(tEU * 100 / GregTech_API.mRFtoEU)));
-                            }
-                        } else {
-                            if (storedRF > extractRF) {
-                                ((IPowerContainer) tTileEntity).setEnergyStored(storedRF - extractRF);
-                                tEU = maxEUInput();
-                            } else {
-                                ((IPowerContainer) tTileEntity).setEnergyStored(0);
-                                tEU = storedRF * (long) GregTech_API.mRFtoEU / 100L;
-                            }
-                        }
-                        aBaseMetaTileEntity.injectEnergyUnits((byte) 6, Math.min(tEU, maxEUInput()), 1);
-                    }
-                }
-        }
+    public boolean isOutputFacing(byte aSide) {
+        return !isInputFacing(aSide);
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        //
+    public boolean isInputFacing(byte aSide) {
+        return getBaseMetaTileEntity().isAllowedToWork() == (aSide == getBaseMetaTileEntity().getFrontFacing());
     }
 
     @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        //
+    public boolean isFacingValid(byte aFacing) {
+        return true;
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return false;
+    public boolean isAccessAllowed(EntityPlayer aPlayer) {
+        return true;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public long getMinimumStoredEU() {
+        return V[mTier + 1];
+    }
+
+    @Override
+    public boolean isSimpleMachine() {
+        return true;
+    }
+
+    @Override
+    public boolean isTeleporterCompatible() {
         return false;
     }
 
@@ -212,16 +219,8 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
 
     @Override
     public String getAlternativeModeText() {
-        return
-                (getBaseMetaTileEntity().isAllowedToWork() ? trans("145", "Step Down, In: ") : trans("146", "Step Up, In: ")) +
-                        maxEUInput() +
-                        trans("148", "V ") +
-                        maxAmperesIn() +
-                        trans("147", "A, Out: ") +
-                        maxEUOutput() +
-                        trans("148", "V ") +
-                        maxAmperesOut() +
-                        trans("149", "A");
+        return (getBaseMetaTileEntity().isAllowedToWork() ? trans("145", "Step Down, In: ") : trans("146", "Step Up, In: ")) + maxEUInput() + trans(
+                "148", "V ") + maxAmperesIn() + trans("147", "A, Out: ") + maxEUOutput() + trans("148", "V ") + maxAmperesOut() + trans("149", "A");
     }
 
     @Override
@@ -232,16 +231,9 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     @Override
     public void getWailaBody(ItemStack stack, List<String> currentTip, MovingObjectPosition pos, NBTTagCompound tag, int side) {
         boolean allowedToWork = tag.getBoolean("isAllowedToWork");
-        currentTip.add(
-                String.format(
-                        "%s %d(%dA) -> %d(%dA)",
-                        (allowedToWork ? (GREEN + "Step Down") : (RED + "Step Up")) + RESET,
-                        tag.getLong("maxEUInput"),
-                        tag.getLong("maxAmperesIn"),
-                        tag.getLong("maxEUOutput"),
-                        tag.getLong("maxAmperesOut")
-                )
-        );
+        currentTip.add(String.format("%s %d(%dA) -> %d(%dA)", (allowedToWork ? (GREEN + "Step Down") : (RED + "Step Up")) + RESET, tag.getLong("maxEUInput"),
+                                     tag.getLong("maxAmperesIn"), tag.getLong("maxEUOutput"), tag.getLong("maxAmperesOut")
+                                    ));
         final int facing = getBaseMetaTileEntity().getFrontFacing();
 
         if ((side == facing && allowedToWork) || (side != facing && !allowedToWork)) {
@@ -259,4 +251,5 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
         tag.setLong("maxEUOutput", maxEUOutput());
         tag.setLong("maxAmperesOut", maxAmperesOut());
     }
+
 }

@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.steam;
 
+
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -8,7 +9,9 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Template_Steel;
 import net.minecraft.entity.player.InventoryPlayer;
 
+
 public class GT_MetaTileEntity_Sifter_Steel extends GT_MetaTileEntity_Template_Steel {
+
     public GT_MetaTileEntity_Sifter_Steel(int aID, String aName, String aNameRegional, String aDescription) {
         super(aID, aName, aNameRegional, aDescription, 1, 9, false);
     }
@@ -23,7 +26,7 @@ public class GT_MetaTileEntity_Sifter_Steel extends GT_MetaTileEntity_Template_S
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Sifter_Steel(mName,mDescriptionArray,mTextures);
+        return new GT_MetaTileEntity_Sifter_Steel(mName, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -32,12 +35,13 @@ public class GT_MetaTileEntity_Sifter_Steel extends GT_MetaTileEntity_Template_S
     }
 
     @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeList() {
+        return GT_Recipe.GT_Recipe_Map.sSifterRecipes;
+    }
+
+    @Override
     protected String getOverlay() {
         return "sifter";
     }
 
-    @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeList() {
-        return GT_Recipe.GT_Recipe_Map.sSifterRecipes;
-    }
 }

@@ -1,5 +1,6 @@
 package gregtech.common.items.behaviors;
 
+
 import codechicken.lib.math.MathHelper;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -17,13 +18,21 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
+
 public class Behaviour_Lighter extends Behaviour_None {
+
     private final ItemStack mEmptyLighter;
+
     private final ItemStack mUsedLighter;
+
     private final ItemStack mFullLighter;
+
     private final long mFuelAmount;
+
     private final String mTooltip = GT_LanguageManager.addStringLocalization("gt.behaviour.lighter.tooltip", "Can light things on Fire");
+
     private final String mTooltipUses = GT_LanguageManager.addStringLocalization("gt.behaviour.lighter.uses", "Remaining Uses:");
+
     private final String mTooltipUnstackable = GT_LanguageManager.addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
 
     public Behaviour_Lighter(ItemStack aEmptyLighter, ItemStack aUsedLighter, ItemStack aFullLighter, long aFuelAmount) {
@@ -43,7 +52,10 @@ public class Behaviour_Lighter extends Behaviour_None {
             prepare(aStack);
             long tFuelAmount = GT_Utility.ItemNBT.getLighterFuel(aStack);
             if (GT_Utility.areStacksEqual(aStack, this.mUsedLighter, true)) {
-                GT_Utility.sendSoundToPlayers(aPlayer.worldObj, (String) GregTech_API.sSoundList.get(6), 1.0F, 1.0F, MathHelper.floor_double(aEntity.posX), MathHelper.floor_double(aEntity.posY), MathHelper.floor_double(aEntity.posZ));
+                GT_Utility.sendSoundToPlayers(
+                        aPlayer.worldObj, GregTech_API.sSoundList.get(6), 1.0F, 1.0F, MathHelper.floor_double(aEntity.posX),
+                        MathHelper.floor_double(aEntity.posY), MathHelper.floor_double(aEntity.posZ)
+                                             );
                 ((EntityCreeper) aEntity).func_146079_cb();
                 if (!aPlayer.capabilities.isCreativeMode) {
                     tFuelAmount -= 1L;
@@ -59,12 +71,36 @@ public class Behaviour_Lighter extends Behaviour_None {
     }
 
     @Override
-    public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+    public boolean onItemUse(
+            GT_MetaBase_Item aItem,
+            ItemStack aStack,
+            EntityPlayer aPlayer,
+            World aWorld,
+            int aX,
+            int aY,
+            int aZ,
+            int aSide,
+            float hitX,
+            float hitY,
+            float hitZ
+                            ) {
         return false;
     }
 
     @Override
-    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+    public boolean onItemUseFirst(
+            GT_MetaBase_Item aItem,
+            ItemStack aStack,
+            EntityPlayer aPlayer,
+            World aWorld,
+            int aX,
+            int aY,
+            int aZ,
+            int aSide,
+            float hitX,
+            float hitY,
+            float hitZ
+                                 ) {
         if ((aWorld.isRemote) || (aStack.stackSize != 1)) {
             return false;
         }
@@ -80,7 +116,7 @@ public class Behaviour_Lighter extends Behaviour_None {
         prepare(aStack);
         long tFuelAmount = GT_Utility.ItemNBT.getLighterFuel(aStack);
         if (GT_Utility.areStacksEqual(aStack, this.mUsedLighter, true)) {
-            GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(6), 1.0F, 1.0F, aX, aY, aZ);
+            GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(6), 1.0F, 1.0F, aX, aY, aZ);
             aWorld.setBlock(aX, aY, aZ, Blocks.fire);
             if (!aPlayer.capabilities.isCreativeMode) {
                 tFuelAmount -= 1L;
@@ -92,6 +128,16 @@ public class Behaviour_Lighter extends Behaviour_None {
             useUp(aStack);
         }
         return rOutput;
+    }
+
+    @Override
+    public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
+        aList.add(this.mTooltip);
+        NBTTagCompound tNBT = aStack.getTagCompound();
+        long tFuelAmount = tNBT == null ? 0L : GT_Utility.areStacksEqual(aStack, this.mFullLighter, true) ? this.mFuelAmount : tNBT.getLong("GT.LighterFuel");
+        aList.add(this.mTooltipUses + " " + tFuelAmount);
+        aList.add(this.mTooltipUnstackable);
+        return aList;
     }
 
     private void prepare(ItemStack aStack) {
@@ -111,13 +157,4 @@ public class Behaviour_Lighter extends Behaviour_None {
         }
     }
 
-    @Override
-    public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
-        aList.add(this.mTooltip);
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        long tFuelAmount = tNBT == null ? 0L : GT_Utility.areStacksEqual(aStack, this.mFullLighter, true) ? this.mFuelAmount : tNBT.getLong("GT.LighterFuel");
-        aList.add(this.mTooltipUses + " " + tFuelAmount);
-        aList.add(this.mTooltipUnstackable);
-        return aList;
-    }
 }

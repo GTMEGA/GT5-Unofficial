@@ -1,5 +1,6 @@
 package gregtech.common.bees;
 
+
 import forestry.api.apiculture.EnumBeeChromosome;
 import forestry.api.arboriculture.EnumTreeChromosome;
 import forestry.api.genetics.*;
@@ -17,9 +18,26 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+
 public class GT_AlleleHelper extends AlleleHelper {
 
     private static final String modId = Constants.ID;
+
+    @SuppressWarnings("unchecked")
+    public static void initialisation() {
+        GT_AlleleHelper helper = new GT_AlleleHelper();
+
+        try {
+            helper.alleleMaps = (Map<Class<?>, Map<?, ? extends IAllele>>) FieldUtils.readField(FieldUtils.getField(AlleleHelper.class, "alleleMaps", true),
+                                                                                                AlleleHelper.instance, true
+                                                                                               );
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        AlleleHelper.instance = helper;
+        //AlleleHelper.instance.init();
+    }
 
     private Map<Class<?>, Map<?, ? extends IAllele>> alleleMaps = new HashMap<>();
 
@@ -31,33 +49,18 @@ public class GT_AlleleHelper extends AlleleHelper {
         }
 
         if (PluginManager.Module.APICULTURE.isEnabled() || PluginManager.Module.ARBORICULTURE.isEnabled()) {
-            createAlleles(EnumAllele.Territory.class,
-                    EnumBeeChromosome.TERRITORY,
-                    EnumTreeChromosome.TERRITORY
-            );
+            createAlleles(EnumAllele.Territory.class, EnumBeeChromosome.TERRITORY, EnumTreeChromosome.TERRITORY);
 
             AlleleManager.alleleRegistry.registerDeprecatedAlleleReplacement("forestry.territoryDefault", get(EnumAllele.Territory.AVERAGE));
         }
 
         if (PluginManager.Module.APICULTURE.isEnabled() || PluginManager.Module.LEPIDOPTEROLOGY.isEnabled()) {
-            createAlleles(EnumAllele.Speed.class,
-                    EnumBeeChromosome.SPEED,
-                    EnumButterflyChromosome.SPEED
-            );
-            createAlleles(EnumAllele.Lifespan.class,
-                    EnumBeeChromosome.LIFESPAN,
-                    EnumButterflyChromosome.LIFESPAN
-            );
-            createAlleles(EnumAllele.Tolerance.class,
-                    EnumBeeChromosome.TEMPERATURE_TOLERANCE,
-                    EnumBeeChromosome.HUMIDITY_TOLERANCE,
-                    EnumButterflyChromosome.TEMPERATURE_TOLERANCE,
-                    EnumButterflyChromosome.HUMIDITY_TOLERANCE
-            );
-            createAlleles(EnumAllele.Flowers.class,
-                    EnumBeeChromosome.FLOWER_PROVIDER,
-                    EnumButterflyChromosome.FLOWER_PROVIDER
-            );
+            createAlleles(EnumAllele.Speed.class, EnumBeeChromosome.SPEED, EnumButterflyChromosome.SPEED);
+            createAlleles(EnumAllele.Lifespan.class, EnumBeeChromosome.LIFESPAN, EnumButterflyChromosome.LIFESPAN);
+            createAlleles(EnumAllele.Tolerance.class, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumBeeChromosome.HUMIDITY_TOLERANCE,
+                          EnumButterflyChromosome.TEMPERATURE_TOLERANCE, EnumButterflyChromosome.HUMIDITY_TOLERANCE
+                         );
+            createAlleles(EnumAllele.Flowers.class, EnumBeeChromosome.FLOWER_PROVIDER, EnumButterflyChromosome.FLOWER_PROVIDER);
 
             AlleleManager.alleleRegistry.registerDeprecatedAlleleReplacement("forestry.speedNorm", get(EnumAllele.Speed.NORMAL));
         }
@@ -91,11 +94,9 @@ public class GT_AlleleHelper extends AlleleHelper {
         Map<Integer, IAlleleInteger> integers = new HashMap<>();
         for (int i = 1; i <= 10; i++) {
             IAlleleInteger alleleInteger = new AlleleInteger(modId, "i", i + "d", i, true);
-            AlleleManager.alleleRegistry.registerAllele(alleleInteger,
-                    EnumTreeChromosome.GIRTH,
-                    EnumButterflyChromosome.METABOLISM,
-                    EnumButterflyChromosome.FERTILITY
-            );
+            AlleleManager.alleleRegistry.registerAllele(alleleInteger, EnumTreeChromosome.GIRTH, EnumButterflyChromosome.METABOLISM,
+                                                        EnumButterflyChromosome.FERTILITY
+                                                       );
             integers.put(i, alleleInteger);
         }
         alleleMaps.put(Integer.class, integers);
@@ -104,34 +105,12 @@ public class GT_AlleleHelper extends AlleleHelper {
         booleans.put(true, new AlleleBoolean(modId, "bool", true, false));
         booleans.put(false, new AlleleBoolean(modId, "bool", false, false));
         for (IAlleleBoolean alleleBoolean : booleans.values()) {
-            AlleleManager.alleleRegistry.registerAllele(alleleBoolean,
-                    EnumBeeChromosome.NOCTURNAL,
-                    EnumBeeChromosome.TOLERANT_FLYER,
-                    EnumBeeChromosome.CAVE_DWELLING,
-                    EnumButterflyChromosome.NOCTURNAL,
-                    EnumButterflyChromosome.TOLERANT_FLYER,
-                    EnumButterflyChromosome.FIRE_RESIST
-            );
+            AlleleManager.alleleRegistry.registerAllele(alleleBoolean, EnumBeeChromosome.NOCTURNAL, EnumBeeChromosome.TOLERANT_FLYER,
+                                                        EnumBeeChromosome.CAVE_DWELLING, EnumButterflyChromosome.NOCTURNAL,
+                                                        EnumButterflyChromosome.TOLERANT_FLYER, EnumButterflyChromosome.FIRE_RESIST
+                                                       );
         }
         alleleMaps.put(Boolean.class, booleans);
-    }
-    @SuppressWarnings("unchecked")
-    public static void initialisation(){
-        GT_AlleleHelper helper = new GT_AlleleHelper();
-
-        try {
-            helper.alleleMaps = (Map<Class<?>, Map<?, ? extends IAllele>>)
-                    FieldUtils.readField(
-                        FieldUtils.getField(AlleleHelper.class,"alleleMaps",true),
-                        AlleleHelper.instance,
-                        true
-                    );
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        AlleleHelper.instance = helper;
-        //AlleleHelper.instance.init();
     }
 
     @Override
@@ -143,7 +122,7 @@ public class GT_AlleleHelper extends AlleleHelper {
         }
 
         if (!chromosomeType.getAlleleClass().isInstance(allele)) {
-            GT_Mod.GT_FML_LOGGER.info("chromosomeType is not an instance of allele!"+allele.getName());
+            GT_Mod.GT_FML_LOGGER.info("chromosomeType is not an instance of allele!" + allele.getName());
             return;
         }
 
@@ -171,6 +150,16 @@ public class GT_AlleleHelper extends AlleleHelper {
         set(alleles, chromosomeType, get(value));
     }
 
+    private <K extends Enum<K> & IAlleleValue<V>, V> void createAlleles(Class<K> enumClass, IChromosomeType... types) {
+        String category = enumClass.getSimpleName().toLowerCase(Locale.ENGLISH);
+        EnumMap<K, IAllele> map = new EnumMap<>(enumClass);
+        for (K enumValue : enumClass.getEnumConstants()) {
+            IAllele allele = createAllele(category, enumValue, types);
+            map.put(enumValue, allele);
+        }
+        alleleMaps.put(enumClass, map);
+    }
+
     private IAllele get(Object value) {
         Class<?> valueClass = value.getClass();
         Map<?, ? extends IAllele> map = alleleMaps.get(valueClass);
@@ -180,6 +169,7 @@ public class GT_AlleleHelper extends AlleleHelper {
         IAllele allele = map.get(value);
         if (allele == null) {
             allele = new IAllele() {
+
                 @Override
                 public String getUID() {
                     return "NOT_FOUND";
@@ -204,15 +194,6 @@ public class GT_AlleleHelper extends AlleleHelper {
         return allele;
     }
 
-    private <K extends Enum<K> & IAlleleValue<V>, V> void createAlleles(Class<K> enumClass, IChromosomeType... types) {
-        String category = enumClass.getSimpleName().toLowerCase(Locale.ENGLISH);
-        EnumMap<K, IAllele> map = new EnumMap<>(enumClass);
-        for (K enumValue : enumClass.getEnumConstants()) {
-            IAllele allele = createAllele(category, enumValue, types);
-            map.put(enumValue, allele);
-        }
-        alleleMaps.put(enumClass, map);
-    }
     private static <K extends IAlleleValue<V>, V> IAllele createAllele(String category, K enumValue, IChromosomeType... types) {
         V value = enumValue.getValue();
         boolean isDominant = enumValue.isDominant();
@@ -237,4 +218,5 @@ public class GT_AlleleHelper extends AlleleHelper {
         }
         throw new RuntimeException("could not create allele for category: " + category + " and value " + valueClass);
     }
+
 }

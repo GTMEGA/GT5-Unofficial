@@ -294,7 +294,8 @@ public abstract class GT_Explosion extends Explosion {
                 item.setPosition(entity.posX, entity.posY + 0.5f, entity.posZ);
                 item.delayBeforeCanPickup = 5;
             });
-        } else  */if (entity != null) {
+        } else  */
+        if (entity != null) {
             harvested.forEach(stack -> spawnItem(stack, entity));
         } else {
             harvested.forEach(this::spawnItem);

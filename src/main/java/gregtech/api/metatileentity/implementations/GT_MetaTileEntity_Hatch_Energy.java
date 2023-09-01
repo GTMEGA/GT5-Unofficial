@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -9,7 +10,9 @@ import net.minecraft.item.ItemStack;
 
 import static gregtech.api.enums.GT_Values.V;
 
+
 public class GT_MetaTileEntity_Hatch_Energy extends GT_MetaTileEntity_Hatch {
+
     public GT_MetaTileEntity_Hatch_Energy(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, new String[]{"Energy Injector for Multiblocks", "Accepts up to 2 Amps"});
     }
@@ -33,8 +36,28 @@ public class GT_MetaTileEntity_Hatch_Energy extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean isSimpleMachine() {
+    public boolean isEnetInput() {
         return true;
+    }
+
+    @Override
+    public long maxEUStore() {
+        return 512L + V[mTier] * 8L;
+    }
+
+    @Override
+    public long maxEUInput() {
+        return V[mTier];
+    }
+
+    @Override
+    public long maxAmperesIn() {
+        return 2;
+    }
+
+    @Override
+    public boolean isInputFacing(byte aSide) {
+        return aSide == getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -48,38 +71,8 @@ public class GT_MetaTileEntity_Hatch_Energy extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean isEnetInput() {
-        return true;
-    }
-
-    @Override
-    public boolean isInputFacing(byte aSide) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return false;
-    }
-
-    @Override
     public long getMinimumStoredEU() {
         return 512;
-    }
-
-    @Override
-    public long maxEUInput() {
-        return V[mTier];
-    }
-
-    @Override
-    public long maxEUStore() {
-        return 512L + V[mTier] * 8L;
-    }
-
-    @Override
-    public long maxAmperesIn() {
-        return 2;
     }
 
     @Override
@@ -96,4 +89,15 @@ public class GT_MetaTileEntity_Hatch_Energy extends GT_MetaTileEntity_Hatch {
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return false;
     }
+
+    @Override
+    public boolean isValidSlot(int aIndex) {
+        return false;
+    }
+
+    @Override
+    public boolean isSimpleMachine() {
+        return true;
+    }
+
 }

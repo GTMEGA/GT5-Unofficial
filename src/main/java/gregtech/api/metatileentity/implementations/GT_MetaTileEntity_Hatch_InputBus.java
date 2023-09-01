@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+
 import gregtech.GT_Mod;
 import gregtech.api.gui.*;
 import gregtech.api.interfaces.ITexture;
@@ -20,10 +21,15 @@ import net.minecraft.util.StatCollector;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 
+
 public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
+
     public GT_Recipe_Map mRecipeMap = null;
+
     public boolean disableSort;
+
     public boolean disableFilter = false;
+
     public boolean disableLimited = true;
 
     public GT_MetaTileEntity_Hatch_InputBus(int id, String name, String nameRegional, int tier) {
@@ -31,10 +37,9 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
     }
 
     public GT_MetaTileEntity_Hatch_InputBus(int id, String name, String nameRegional, int tier, int slots) {
-        super(id, name, nameRegional, tier, slots, ArrayExt.of(
-                "Item Input for Multiblocks",
-                "Shift + right click with screwdriver to turn Sort mode on/off",
-                "Capacity: " + slots + " stack" + (slots >= 2 ? "s" : "")));
+        super(id, name, nameRegional, tier, slots, ArrayExt.of("Item Input for Multiblocks", "Shift + right click with screwdriver to turn Sort mode on/off",
+                                                               "Capacity: " + slots + " stack" + (slots >= 2 ? "s" : "")
+                                                              ));
     }
 
     @Deprecated
@@ -62,7 +67,90 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean isSimpleMachine() {
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("disableSort", disableSort);
+        aNBT.setBoolean("disableFilter", disableFilter);
+        aNBT.setBoolean("disableLimited", disableLimited);
+        if (mRecipeMap != null) {
+            aNBT.setString("recipeMap", mRecipeMap.mUniqueIdentifier);
+        }
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        disableSort = aNBT.getBoolean("disableSort");
+        disableFilter = aNBT.getBoolean("disableFilter");
+        if (aNBT.hasKey("disableLimited")) {
+            disableLimited = aNBT.getBoolean("disableLimited");
+        }
+        mRecipeMap = GT_Recipe_Map.sIndexedMappings.getOrDefault(aNBT.getString("recipeMap"), null);
+    }
+
+    @Override
+    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GT_MetaTileEntity_Hatch_InputBus(mName, mTier, mDescriptionArray, mTextures);
+    }
+
+    public void updateSlots() {
+        for (int i = 0; i < mInventory.length; i++) {
+            if (mInventory[i] != null && mInventory[i].stackSize <= 0) {
+                mInventory[i] = null;
+            }
+        }
+        fillStacksIntoFirstSlots();
+    }
+
+    @Override
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (!getBaseMetaTileEntity().getCoverBehaviorAtSideNew(aSide).isGUIClickable(
+                aSide, getBaseMetaTileEntity().getCoverIDAtSide(aSide), getBaseMetaTileEntity().getComplexCoverDataAtSide(aSide), getBaseMetaTileEntity())) {
+            return;
+        }
+        if (aPlayer.isSneaking()) {
+            if (disableSort) {
+                disableSort = false;
+            } else {
+                if (disableLimited) {
+                    disableLimited = false;
+                } else {
+                    disableSort = true;
+                    disableLimited = true;
+                }
+            }
+            GT_Utility.sendChatToPlayer(
+                    aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableSort." + disableSort) + "   " +
+                             StatCollector.translateToLocal("GT5U.hatch.disableLimited." + disableLimited));
+        } else {
+            disableFilter = !disableFilter;
+            GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
+        }
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.hasInventoryBeenModified()) {
+            fillStacksIntoFirstSlots();
+        }
+    }
+
+    @Override
+    public void initDefaultModes(NBTTagCompound aNBT) {
+        if (!getBaseMetaTileEntity().getWorld().isRemote) {
+            GT_ClientPreference tPreference = GT_Mod.gregtechproxy.getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
+            if (tPreference != null) {
+                disableFilter = !tPreference.isInputBusInitialFilterEnabled();
+            }
+        }
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (aBaseMetaTileEntity.isClientSide()) {
+            return true;
+        }
+        aBaseMetaTileEntity.openGUI(aPlayer);
         return true;
     }
 
@@ -77,19 +165,50 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
+    public String trans(String aKey, String aEnglish) {
+        return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish, false);
+    }
+
+    protected void fillStacksIntoFirstSlots() {
+        if (disableSort) {
+            for (int i = 0; i < mInventory.length; i++) {
+                for (int j = i + 1; j < mInventory.length; j++) {
+                    if (mInventory[j] != null && mInventory[j].stackSize <= 0 && (
+                            mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j])
+                    )) {
+                        GT_Utility.moveStackFromSlotAToSlotB(getBaseMetaTileEntity(), getBaseMetaTileEntity(), j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < mInventory.length; i++) {
+                for (int j = i + 1; j < mInventory.length; j++) {
+                    if (mInventory[j] != null && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j]))) {
+                        GT_Utility.moveStackFromSlotAToSlotB(getBaseMetaTileEntity(), getBaseMetaTileEntity(), j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return aSide == getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return aSide == getBaseMetaTileEntity().getFrontFacing() && (mRecipeMap == null || disableFilter || mRecipeMap.containsInput(aStack)) &&
+               (disableLimited || limitedAllowPutStack(aIndex, aStack));
+    }
+
+    @Override
     public boolean isValidSlot(int aIndex) {
         return true;
     }
 
     @Override
-    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_InputBus(mName, mTier, mDescriptionArray, mTextures);
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        aBaseMetaTileEntity.openGUI(aPlayer);
+    public boolean isSimpleMachine() {
         return true;
     }
 
@@ -104,15 +223,6 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
                 return new GT_Container_3by3(aPlayerInventory, aBaseMetaTileEntity);
             default:
                 return new GT_Container_4by4(aPlayerInventory, aBaseMetaTileEntity);
-        }
-    }
-
-    @Override
-    public void initDefaultModes(NBTTagCompound aNBT) {
-        if (!getBaseMetaTileEntity().getWorld().isRemote) {
-            GT_ClientPreference tPreference = GT_Mod.gregtechproxy.getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
-            if (tPreference != null)
-                disableFilter = !tPreference.isInputBusInitialFilterEnabled();
         }
     }
 
@@ -132,97 +242,13 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
         }
     }
 
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.hasInventoryBeenModified()) {
-            fillStacksIntoFirstSlots();
-        }
-    }
-
-    public void updateSlots() {
-        for (int i = 0; i < mInventory.length; i++)
-            if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
-        fillStacksIntoFirstSlots();
-    }
-
-    protected void fillStacksIntoFirstSlots() {
-        if (disableSort) {
-            for (int i = 0; i < mInventory.length; i++)
-                for (int j = i + 1; j < mInventory.length; j++)
-                    if (mInventory[j] != null && mInventory[j].stackSize <= 0 && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j])))
-                        GT_Utility.moveStackFromSlotAToSlotB(getBaseMetaTileEntity(), getBaseMetaTileEntity(), j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
-        } else {
-            for (int i = 0; i < mInventory.length; i++)
-                for (int j = i + 1; j < mInventory.length; j++)
-                    if (mInventory[j] != null && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j])))
-                        GT_Utility.moveStackFromSlotAToSlotB(getBaseMetaTileEntity(), getBaseMetaTileEntity(), j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
-        }
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setBoolean("disableSort", disableSort);
-        aNBT.setBoolean("disableFilter", disableFilter);
-        aNBT.setBoolean("disableLimited", disableLimited);
-        if (mRecipeMap != null)
-            aNBT.setString("recipeMap", mRecipeMap.mUniqueIdentifier);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        disableSort = aNBT.getBoolean("disableSort");
-        disableFilter = aNBT.getBoolean("disableFilter");
-        if(aNBT.hasKey("disableLimited"))
-            disableLimited = aNBT.getBoolean("disableLimited");
-        mRecipeMap = GT_Recipe_Map.sIndexedMappings.getOrDefault(aNBT.getString("recipeMap"), null);
-    }
-
-    @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity().getCoverBehaviorAtSideNew(aSide).isGUIClickable(aSide, getBaseMetaTileEntity().getCoverIDAtSide(aSide), getBaseMetaTileEntity().getComplexCoverDataAtSide(aSide), getBaseMetaTileEntity()))
-            return;
-        if (aPlayer.isSneaking()) {
-            if(disableSort) {
-                disableSort = false;
-            } else {
-                if(disableLimited) {
-                    disableLimited = false;
-                } else {
-                    disableSort = true;
-                    disableLimited = true;
-                }
-            }
-            GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableSort." + disableSort) + "   " +
-                    StatCollector.translateToLocal("GT5U.hatch.disableLimited." + disableLimited));
-        } else {
-            disableFilter = !disableFilter;
-            GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
-        }
-    }
-
-    @Override
-    public String trans(String aKey, String aEnglish) {
-        return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish, false);
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing()
-                && (mRecipeMap == null || disableFilter || mRecipeMap.containsInput(aStack))
-                && (disableLimited || limitedAllowPutStack(aIndex, aStack));
-    }
-
     protected boolean limitedAllowPutStack(int aIndex, ItemStack aStack) {
-        for (int i = 0; i < getSizeInventory(); i++)
-            if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get_nocopy(aStack), mInventory[i]))
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get_nocopy(aStack), mInventory[i])) {
                 return i == aIndex;
+            }
+        }
         return mInventory[aIndex] == null;
     }
+
 }

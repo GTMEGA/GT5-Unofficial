@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
@@ -25,38 +26,28 @@ import java.util.List;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
+
 public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_BasicMachine {
 
     boolean ready = false;
 
     public GT_MetaTileEntity_SeismicProspector(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1,
-                "(DEPRECATED, DO NOT USE! SWAP TO ADVANCED VERSION USING SHAPELESS RECIPE!)", 1, 1,
-                "Default.png", "",
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_ROCK_BREAKER_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_ROCK_BREAKER_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_ROCK_BREAKER_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_GLOW).glow().build()));
+        super(aID, aName, aNameRegional, aTier, 1, "(DEPRECATED, DO NOT USE! SWAP TO ADVANCED VERSION USING SHAPELESS RECIPE!)", 1, 1, "Default.png", "",
+              TextureFactory.of(TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE), TextureFactory.builder().addIcon(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE_GLOW)
+                                                                                                   .glow().build()),
+              TextureFactory.of(TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER), TextureFactory.builder().addIcon(OVERLAY_SIDE_ROCK_BREAKER_GLOW).glow().build()),
+              TextureFactory.of(TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER_ACTIVE), TextureFactory.builder().addIcon(OVERLAY_TOP_ROCK_BREAKER_ACTIVE_GLOW)
+                                                                                                  .glow().build()),
+              TextureFactory.of(TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER), TextureFactory.builder().addIcon(OVERLAY_TOP_ROCK_BREAKER_GLOW).glow().build()),
+              TextureFactory.of(TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE), TextureFactory.builder().addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW)
+                                                                                                    .glow().build()),
+              TextureFactory.of(TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER), TextureFactory.builder().addIcon(OVERLAY_FRONT_ROCK_BREAKER_GLOW).glow()
+                                                                                             .build()),
+              TextureFactory.of(TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE), TextureFactory.builder().addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE_GLOW)
+                                                                                                     .glow().build()),
+              TextureFactory.of(TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER), TextureFactory.builder().addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_GLOW).glow()
+                                                                                              .build())
+             );
     }
 
     public GT_MetaTileEntity_SeismicProspector(String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
@@ -76,25 +67,29 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isServerSide()) {
             ItemStack aStack = aPlayer.getCurrentEquippedItem();
-            ItemData stackData= GT_OreDictUnificator.getItemData(aStack);
+            ItemData stackData = GT_OreDictUnificator.getItemData(aStack);
             if (!ready && (aStack != null) && (
-            		(aStack.getItem() == Item.getItemFromBlock(Blocks.tnt) && aStack.stackSize >= 2 ) ||
-            		(aStack.getItem() == Ic2Items.industrialTnt.getItem()  && aStack.stackSize >= 1 ) ||
-            		(aStack.getItem() == Ic2Items.dynamite.getItem()  	   && aStack.stackSize >= 4 ) ||
-            		(stackData!=null && stackData.mMaterial.mMaterial == Materials.Glyceryl  && aStack.stackSize >= 1 ) ||
-                    (aStack.getItem() == ItemList.Block_Powderbarrel.getItem() && aStack.getItemDamage()==ItemList.Block_Powderbarrel.get(1).getItemDamage() && aStack.stackSize >= 8 )
-            		) ) {
+                    (aStack.getItem() == Item.getItemFromBlock(Blocks.tnt) && aStack.stackSize >= 2) ||
+                    (aStack.getItem() == Ic2Items.industrialTnt.getItem() && aStack.stackSize >= 1) ||
+                    (aStack.getItem() == Ic2Items.dynamite.getItem() && aStack.stackSize >= 4) ||
+                    (stackData != null && stackData.mMaterial.mMaterial == Materials.Glyceryl && aStack.stackSize >= 1) || (
+                            aStack.getItem() == ItemList.Block_Powderbarrel.getItem() && aStack.getItemDamage() == ItemList.Block_Powderbarrel.get(1)
+                                                                                                                                              .getItemDamage() &&
+                            aStack.stackSize >= 8
+                    )
+            )) {
                 if ((!aPlayer.capabilities.isCreativeMode) && (aStack.stackSize != 111)) {
-                	if(aStack.getItem() == Item.getItemFromBlock(Blocks.tnt)){
-                    aStack.stackSize -= 2;
-                	}else if(aStack.getItem() == Ic2Items.industrialTnt.getItem()){
-                    aStack.stackSize -= 1;
-                    }else if(aStack.getItem() == Ic2Items.dynamite.getItem()){
-                    aStack.stackSize -= 4;
-                    }else if(aStack.getItem() == ItemList.Block_Powderbarrel.getItem() && aStack.getItemDamage()==ItemList.Block_Powderbarrel.get(1).getItemDamage()){
-                    aStack.stackSize -=8;
-                    }else{
-                    aStack.stackSize -= 1;
+                    if (aStack.getItem() == Item.getItemFromBlock(Blocks.tnt)) {
+                        aStack.stackSize -= 2;
+                    } else if (aStack.getItem() == Ic2Items.industrialTnt.getItem()) {
+                        aStack.stackSize -= 1;
+                    } else if (aStack.getItem() == Ic2Items.dynamite.getItem()) {
+                        aStack.stackSize -= 4;
+                    } else if (aStack.getItem() == ItemList.Block_Powderbarrel.getItem() && aStack.getItemDamage() == ItemList.Block_Powderbarrel.get(1)
+                                                                                                                                                 .getItemDamage()) {
+                        aStack.stackSize -= 8;
+                    } else {
+                        aStack.stackSize -= 1;
                     }
                 }
                 this.ready = true;
@@ -105,13 +100,13 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
                 List<String> tStringList = new ArrayList<String>();
 
                 //range by tier
-                int min=-range();
-                int max=range();
-                int step=step();
+                int min = -range();
+                int max = range();
+                int step = step();
 
                 for (int i = this.getBaseMetaTileEntity().getYCoord(); i > 0; i--) {
-                    for (int f = min; f <= max; f+=step) {
-                        for (int g = min; g <= max; g+=step) {
+                    for (int f = min; f <= max; f += step) {
+                        for (int g = min; g <= max; g += step) {
                             Block tBlock = this.getBaseMetaTileEntity().getBlockOffset(f, -i, g);
                             if (tBlock instanceof GT_Block_Ore_Abstract) {
                                 Materials tMaterial = ((GT_Block_Ore_Abstract) tBlock).getOreType();
@@ -121,7 +116,10 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
                                     }
                                 }
                             } else {
-                                int tMetaID = getBaseMetaTileEntity().getWorld().getBlockMetadata(getBaseMetaTileEntity().getXCoord() + f, getBaseMetaTileEntity().getYCoord() + (-i), getBaseMetaTileEntity().getZCoord() + g);
+                                int tMetaID = getBaseMetaTileEntity().getWorld().getBlockMetadata(
+                                        getBaseMetaTileEntity().getXCoord() + f, getBaseMetaTileEntity().getYCoord() + (-i),
+                                        getBaseMetaTileEntity().getZCoord() + g
+                                                                                                 );
                                 ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                                 if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
                                     if (!tStringList.contains(tAssotiation.mMaterial.mMaterial.mDefaultLocalName)) {
@@ -132,7 +130,9 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
                         }
                     }
                 }
-                if(tStringList.size()<1){tStringList.add("No Ores found.");}
+                if (tStringList.size() < 1) {
+                    tStringList.add("No Ores found.");
+                }
                 FluidStack tFluid = GT_UndergroundOil.undergroundOilReadInformation(getBaseMetaTileEntity());
                 String[] tStringArray = new String[tStringList.size()];
                 {
@@ -140,7 +140,10 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
                         tStringArray[i] = tStringList.get(i);
                     }
                 }
-                GT_Utility.ItemNBT.setProspectionData(aPlayer.getCurrentEquippedItem(), this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord(), this.getBaseMetaTileEntity().getWorld().provider.dimensionId, tFluid, tStringArray);
+                GT_Utility.ItemNBT.setProspectionData(
+                        aPlayer.getCurrentEquippedItem(), this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(),
+                        this.getBaseMetaTileEntity().getZCoord(), this.getBaseMetaTileEntity().getWorld().provider.dimensionId, tFluid, tStringArray
+                                                     );
             }
         }
 
@@ -149,19 +152,26 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
 
     private int range() {
         switch (mTier) {
-            case 1: return 16;
-            case 2: return 32;
-            case 3: return 48;
+            case 1:
+                return 16;
+            case 2:
+                return 32;
+            case 3:
+                return 48;
         }
         return 0;
     }
 
-    private int step(){
-        switch (mTier){
-            case 1: return 1;
-            case 2: return 3;
-            case 3: return 4;
+    private int step() {
+        switch (mTier) {
+            case 1:
+                return 1;
+            case 2:
+                return 3;
+            case 3:
+                return 4;
         }
         return 1;
     }
+
 }

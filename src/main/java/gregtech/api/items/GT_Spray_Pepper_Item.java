@@ -1,5 +1,6 @@
 package gregtech.api.items;
 
+
 import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,7 +9,9 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
+
 public class GT_Spray_Pepper_Item extends GT_Tool_Item {
+
     public GT_Spray_Pepper_Item(String aUnlocalized, String aEnglish, int aMaxDamage, int aEntityDamage) {
         super(aUnlocalized, aEnglish, "To defend yourself against Bears", aMaxDamage, aEntityDamage, true);/*
         setCraftingSound(GregTech_API.sSoundList.get(102));
@@ -42,10 +45,13 @@ public class GT_Spray_Pepper_Item extends GT_Tool_Item {
             return false;
         }
         Block aBlock = aWorld.getBlock(aX, aY, aZ);
-        if (aBlock == null) return false;
+        if (aBlock == null) {
+            return false;
+        }
 //    	byte aMeta = (byte)aWorld.getBlockMetadata(aX, aY, aZ);
 //    	TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 
         return false;
     }
+
 }

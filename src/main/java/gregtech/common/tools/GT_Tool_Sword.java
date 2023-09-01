@@ -1,5 +1,6 @@
 package gregtech.common.tools;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -11,7 +12,43 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
 
+
 public class GT_Tool_Sword extends GT_Tool {
+
+    @Override
+    public float getBaseDamage() {
+        return 4.0F;
+    }
+
+    @Override
+    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+        return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "sword") || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock, Material.leaves,
+                                                                                                                                Material.gourd, Material.vine,
+                                                                                                                                Material.web, Material.cloth,
+                                                                                                                                Material.carpet,
+                                                                                                                                Material.plants,
+                                                                                                                                Material.cactus, Material.cake,
+                                                                                                                                Material.tnt, Material.sponge
+                                                                                                                               );
+    }
+
+    @Override
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadSword.mTextureIndex]
+                            : Textures.ItemIcons.HANDLE_SWORD;
+    }
+
+    @Override
+    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
+        return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+    }
+
+    @Override
+    public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
+        super.onToolCrafted(aStack, aPlayer);
+        aPlayer.triggerAchievement(AchievementList.buildSword);
+    }
+
     @Override
     public int getToolDamagePerBlockBreak() {
         return 200;
@@ -38,11 +75,6 @@ public class GT_Tool_Sword extends GT_Tool {
     }
 
     @Override
-    public float getBaseDamage() {
-        return 4.0F;
-    }
-
-    @Override
     public float getSpeedMultiplier() {
         return 1.0F;
     }
@@ -50,6 +82,11 @@ public class GT_Tool_Sword extends GT_Tool {
     @Override
     public float getMaxDurabilityMultiplier() {
         return 1.0F;
+    }
+
+    @Override
+    public String getMiningSound() {
+        return null;
     }
 
     @Override
@@ -64,12 +101,7 @@ public class GT_Tool_Sword extends GT_Tool {
 
     @Override
     public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(0);
-    }
-
-    @Override
-    public String getMiningSound() {
-        return null;
+        return GregTech_API.sSoundList.get(0);
     }
 
     @Override
@@ -88,41 +120,8 @@ public class GT_Tool_Sword extends GT_Tool {
     }
 
     @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
-        return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "sword")
-                || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock,
-                Material.leaves,
-                Material.gourd,
-                Material.vine,
-                Material.web,
-                Material.cloth,
-                Material.carpet,
-                Material.plants,
-                Material.cactus,
-                Material.cake,
-                Material.tnt,
-                Material.sponge
-        );
-    }
-
-    @Override
     public ItemStack getBrokenItem(ItemStack aStack) {
         return null;
     }
 
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadSword.mTextureIndex] : Textures.ItemIcons.HANDLE_SWORD;
-    }
-
-    @Override
-    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
-    }
-
-    @Override
-    public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
-        super.onToolCrafted(aStack, aPlayer);
-        aPlayer.triggerAchievement(AchievementList.buildSword);
-    }
 }

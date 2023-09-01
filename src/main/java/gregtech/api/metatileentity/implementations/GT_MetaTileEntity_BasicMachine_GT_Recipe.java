@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -27,10 +28,8 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.Locale;
 import java.util.Random;
 
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.GT_Values.VN;
-import static gregtech.api.enums.GT_Values.W;
-import static gregtech.api.enums.GT_Values.ticksBetweenSounds;
+import static gregtech.api.enums.GT_Values.*;
+
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -39,43 +38,100 @@ import static gregtech.api.enums.GT_Values.ticksBetweenSounds;
  * Extend this class to make a simple Machine
  */
 public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_BasicMachine {
+
+    public enum X {
+        PUMP,
+        WIRE,
+        WIRE4,
+        HULL,
+        PIPE,
+        GLASS,
+        PLATE,
+        MOTOR,
+        ROTOR,
+        SENSOR,
+        PISTON,
+        CIRCUIT,
+        EMITTER,
+        CONVEYOR,
+        ROBOT_ARM,
+        COIL_HEATING,
+        COIL_ELECTRIC,
+        STICK_MAGNETIC,
+        STICK_DISTILLATION,
+        BETTER_CIRCUIT,
+        FIELD_GENERATOR,
+        COIL_HEATING_DOUBLE,
+        STICK_ELECTROMAGNETIC
+    }
+
     private final GT_Recipe.GT_Recipe_Map mRecipes;
+
     private final int mTankCapacity, mSpecialEffect;
+
     private final String mSound;
+
     private final boolean mSharedTank, mRequiresFluidForFiltering;
+
     private final byte mGUIParameterA, mGUIParameterB;
 
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(
-            int aID, String aName, String aNameRegional, int aTier, String aDescription, GT_Recipe.GT_Recipe_Map aRecipes,
-            int aInputSlots, int aOutputSlots, int aTankCapacity, int aGUIParameterA, int aGUIParameterB, String aGUIName, String aSound, boolean aSharedTank,
-            boolean aRequiresFluidForFiltering, int aSpecialEffect, String aOverlays, Object[] aRecipe
-    ) {
+            int aID,
+            String aName,
+            String aNameRegional,
+            int aTier,
+            String aDescription,
+            GT_Recipe.GT_Recipe_Map aRecipes,
+            int aInputSlots,
+            int aOutputSlots,
+            int aTankCapacity,
+            int aGUIParameterA,
+            int aGUIParameterB,
+            String aGUIName,
+            String aSound,
+            boolean aSharedTank,
+            boolean aRequiresFluidForFiltering,
+            int aSpecialEffect,
+            String aOverlays,
+            Object[] aRecipe
+                                                   ) {
         super(aID, aName, aNameRegional, aTier, aRecipes.mAmperage, aDescription, aInputSlots, aOutputSlots, aGUIName, aRecipes.mNEIName,
-                TextureFactory.of(
-                        TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE")),
-                        TextureFactory.builder().addIcon((new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE_GLOW"))).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE")),
-                        TextureFactory.builder().addIcon((new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_GLOW"))).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_ACTIVE")),
-                        TextureFactory.builder().addIcon((new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_ACTIVE_GLOW"))).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT")),
-                        TextureFactory.builder().addIcon((new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_GLOW"))).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_ACTIVE")),
-                        TextureFactory.builder().addIcon((new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_ACTIVE_GLOW"))).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP")),
-                        TextureFactory.builder().addIcon((new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_GLOW"))).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_ACTIVE")),
-                        TextureFactory.builder().addIcon((new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_ACTIVE_GLOW"))).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM")),
-                        TextureFactory.builder().addIcon((new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_GLOW"))).glow().build())
-                );
+              TextureFactory.of(TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE")),
+                                TextureFactory.builder().addIcon(
+                                        (new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE_GLOW"))).glow().build()
+                               ),
+              TextureFactory.of(TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE")),
+                                TextureFactory.builder().addIcon(
+                                        (new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_GLOW"))).glow().build()
+                               ),
+              TextureFactory.of(TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_ACTIVE")),
+                                TextureFactory.builder().addIcon(
+                                                      (new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_ACTIVE_GLOW"))).glow()
+                                              .build()
+                               ),
+              TextureFactory.of(TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT")),
+                                TextureFactory.builder().addIcon(
+                                        (new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_GLOW"))).glow().build()
+                               ),
+              TextureFactory.of(TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_ACTIVE")),
+                                TextureFactory.builder().addIcon(
+                                        (new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_ACTIVE_GLOW"))).glow().build()
+                               ),
+              TextureFactory.of(TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP")),
+                                TextureFactory.builder().addIcon(
+                                        (new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_GLOW"))).glow().build()
+                               ),
+              TextureFactory.of(TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_ACTIVE")),
+                                TextureFactory.builder().addIcon(
+                                                      (new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_ACTIVE_GLOW"
+                                                      ))).glow()
+                                              .build()
+                               ),
+              TextureFactory.of(TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM")),
+                                TextureFactory.builder().addIcon(
+                                        (new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_GLOW"))).glow().build()
+                               )
+             );
         this.mSharedTank = aSharedTank;
         this.mTankCapacity = aTankCapacity;
         this.mSpecialEffect = aSpecialEffect;
@@ -124,12 +180,12 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 7:
                         case 8:
                             if (Loader.isModLoaded("bartworks")) {//todo remove via provider pattern on all enums?
-                                aRecipe[i] = "blockGlass"+VN[aTier];
+                                aRecipe[i] = "blockGlass" + VN[aTier];
                                 break;
                             }
                         default:
                             if (Loader.isModLoaded("bartworks")) {//todo remove via provider pattern on all enums?
-                                aRecipe[i] = "blockGlass"+VN[8];
+                                aRecipe[i] = "blockGlass" + VN[8];
                             } else {
                                 aRecipe[i] = Ic2Items.reinforcedGlass;
                             }
@@ -740,26 +796,37 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                     continue;
                 }
 
-                if (aRecipe[i] instanceof GT_MetaTileEntity_BasicMachine_GT_Recipe.X)
+                if (aRecipe[i] instanceof GT_MetaTileEntity_BasicMachine_GT_Recipe.X) {
                     throw new IllegalArgumentException("MISSING TIER MAPPING FOR: " + aRecipe[i] + " AT TIER " + mTier);
+                }
             }
 
-            if (
-                !GT_ModHandler.addCraftingRecipe(
-                    getStackForm(1), 
-                    GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, aRecipe
-                )
-            ) {
+            if (!GT_ModHandler.addCraftingRecipe(getStackForm(1), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.BUFFERED |
+                                                                  GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, aRecipe)) {
                 throw new IllegalArgumentException("INVALID CRAFTING RECIPE FOR: " + getStackForm(1).getDisplayName());
             }
         }
     }
 
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(
-        String aName, int aTier, String aDescription, GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, int aAmperage, 
-        int aGUIParameterA, int aGUIParameterB, ITexture[][][] aTextures, String aGUIName, String aNEIName, String aSound, boolean aSharedTank, 
-        boolean aRequiresFluidForFiltering, int aSpecialEffect
-    ) {
+            String aName,
+            int aTier,
+            String aDescription,
+            GT_Recipe.GT_Recipe_Map aRecipes,
+            int aInputSlots,
+            int aOutputSlots,
+            int aTankCapacity,
+            int aAmperage,
+            int aGUIParameterA,
+            int aGUIParameterB,
+            ITexture[][][] aTextures,
+            String aGUIName,
+            String aNEIName,
+            String aSound,
+            boolean aSharedTank,
+            boolean aRequiresFluidForFiltering,
+            int aSpecialEffect
+                                                   ) {
         super(aName, aTier, aAmperage, aDescription, aTextures, aInputSlots, aOutputSlots, aGUIName, aNEIName);
         this.mSharedTank = aSharedTank;
         this.mTankCapacity = aTankCapacity;
@@ -772,10 +839,24 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     }
 
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(
-        String aName, int aTier, String[] aDescription, GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, int aAmperage, 
-        int aGUIParameterA, int aGUIParameterB, ITexture[][][] aTextures, String aGUIName, String aNEIName, String aSound, boolean aSharedTank, 
-        boolean aRequiresFluidForFiltering, int aSpecialEffect
-    ) {
+            String aName,
+            int aTier,
+            String[] aDescription,
+            GT_Recipe.GT_Recipe_Map aRecipes,
+            int aInputSlots,
+            int aOutputSlots,
+            int aTankCapacity,
+            int aAmperage,
+            int aGUIParameterA,
+            int aGUIParameterB,
+            ITexture[][][] aTextures,
+            String aGUIName,
+            String aNEIName,
+            String aSound,
+            boolean aSharedTank,
+            boolean aRequiresFluidForFiltering,
+            int aSpecialEffect
+                                                   ) {
         super(aName, aTier, aAmperage, aDescription, aTextures, aInputSlots, aOutputSlots, aGUIName, aNEIName);
         this.mSharedTank = aSharedTank;
         this.mTankCapacity = aTankCapacity;
@@ -789,10 +870,10 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-            this.mName, this.mTier, this.mDescriptionArray, this.mRecipes, this.mInputSlotCount, this.mOutputItems == null ? 0 : this.mOutputItems.length, 
-            this.mTankCapacity, this.mAmperage, this.mGUIParameterA, this.mGUIParameterB, this.mTextures, this.mGUIName, this.mNEIName, this.mSound, 
-            this.mSharedTank, this.mRequiresFluidForFiltering, this.mSpecialEffect
+        return new GT_MetaTileEntity_BasicMachine_GT_Recipe(this.mName, this.mTier, this.mDescriptionArray, this.mRecipes, this.mInputSlotCount,
+                                                            this.mOutputItems == null ? 0 : this.mOutputItems.length, this.mTankCapacity, this.mAmperage,
+                                                            this.mGUIParameterA, this.mGUIParameterB, this.mTextures, this.mGUIName, this.mNEIName, this.mSound,
+                                                            this.mSharedTank, this.mRequiresFluidForFiltering, this.mSpecialEffect
         );
     }
 
@@ -803,58 +884,69 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_BasicMachine(
-            aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), this.mGUIName, 
-            GT_Utility.isStringValid(this.mNEIName) ? this.mNEIName : this.getRecipeList() != null ? this.getRecipeList().mUnlocalizedName : "", 
-            this.mGUIParameterA, this.mGUIParameterB
+        return new GT_GUIContainer_BasicMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), this.mGUIName,
+                                                GT_Utility.isStringValid(this.mNEIName) ? this.mNEIName
+                                                                                        : this.getRecipeList() != null ? this.getRecipeList().mUnlocalizedName
+                                                                                                                       : "", this.mGUIParameterA,
+                                                this.mGUIParameterB
         );
     }
 
     @Override
+    protected boolean displaysOutputFluid() {
+        return !this.mSharedTank;
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeList() {
+        return this.mRecipes;
+    }
+
+    @Override
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        if (!super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)) return false;
+        if (!super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)) {
+            return false;
+        }
         switch (this.mInputSlotCount) {
             case 0:
                 return false;
             case 1:
-                if (this.getFillableStack() == null)
+                if (this.getFillableStack() == null) {
                     return !this.mRequiresFluidForFiltering && this.getRecipeList().containsInput(aStack);
-                else
-                    return this.getRecipeList().findRecipe(
-                            this.getBaseMetaTileEntity(), this.mLastRecipe, true, true, V[this.mTier], new FluidStack[]{this.getFillableStack()},
-                            this.getSpecialSlot(), new ItemStack[]{aStack}
-                        ) != null;
+                } else {
+                    return this.getRecipeList().findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, true, true, V[this.mTier],
+                                                           new FluidStack[]{this.getFillableStack()}, this.getSpecialSlot(), new ItemStack[]{aStack}
+                                                          ) != null;
+                }
             case 2:
-                
+
                 return (
-                    !this.mRequiresFluidForFiltering || this.getFillableStack() != null) && 
-                    (
-                        (
-                            (this.getInputAt(0) != null && this.getInputAt(1) != null) || 
-                                (
-                                    this.getInputAt(0) == null && this.getInputAt(1) == null ? 
-                                        this.getRecipeList().containsInput(aStack) : 
-                                        (
-                                            this.getRecipeList().containsInput(aStack) && 
-                                            this.getRecipeList().findRecipe(
-                                                this.getBaseMetaTileEntity(), this.mLastRecipe, true, true, V[this.mTier],
-                                                new FluidStack[]{this.getFillableStack()}, 
-                                                this.getSpecialSlot(), aIndex == this.getInputSlot() ? 
-                                                    new ItemStack[]{aStack, this.getInputAt(1)} : 
-                                                    new ItemStack[]{this.getInputAt(0), aStack}
-                                            ) != null
-                                        )
-                                )
-                        )
-                    );
-            default:{
+                               !this.mRequiresFluidForFiltering || this.getFillableStack() != null
+                       ) && (
+                               (
+                                       (this.getInputAt(0) != null && this.getInputAt(1) != null) || (
+                                               this.getInputAt(0) == null && this.getInputAt(1) == null ? this.getRecipeList().containsInput(aStack) : (
+                                                       this.getRecipeList().containsInput(aStack) && this.getRecipeList().findRecipe(
+                                                               this.getBaseMetaTileEntity(), this.mLastRecipe, true, true, V[this.mTier],
+                                                               new FluidStack[]{this.getFillableStack()}, this.getSpecialSlot(),
+                                                               aIndex == this.getInputSlot() ? new ItemStack[]{aStack, this.getInputAt(1)}
+                                                                                             : new ItemStack[]{this.getInputAt(0), aStack}
+                                                                                                                                    ) != null
+                                               )
+                                       )
+                               )
+                       );
+            default: {
                 int tID = this.getBaseMetaTileEntity().getMetaTileID();
-                if (tID >= 211 && tID <= 218 || tID >= 1180 && tID <= 1187 || tID >= 10780 && tID <= 10786) { //assembler lv-iv; circuit asseblers lv - uv; assemblers luv-uev
-                    if (GT_Utility.isStackValid(aStack))
+                if (tID >= 211 && tID <= 218 || tID >= 1180 && tID <= 1187 ||
+                    tID >= 10780 && tID <= 10786) { //assembler lv-iv; circuit asseblers lv - uv; assemblers luv-uev
+                    if (GT_Utility.isStackValid(aStack)) {
                         for (int oreID : OreDictionary.getOreIDs(aStack)) {
-                            if (OreDictionary.getOreName(oreID).contains("circuit"))
+                            if (OreDictionary.getOreName(oreID).contains("circuit")) {
                                 return true;
+                            }
                         }
+                    }
                 }
                 return this.getRecipeList().containsInput(aStack);
             }
@@ -862,6 +954,18 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
         }
     }
 
+    @Override
+    public void startProcess() {
+        BaseMetaTileEntity myMetaTileEntity = ((BaseMetaTileEntity) this.getBaseMetaTileEntity());
+        // Added to throttle sounds. To reduce lag, this is on the server side so BlockUpdate packets aren't sent.
+        if (myMetaTileEntity.mTickTimer > (myMetaTileEntity.mLastSoundTick + ticksBetweenSounds)) {
+            if (GT_Utility.isStringValid(this.mSound)) {
+                this.sendLoopStart((byte) 1);
+            }
+            // Does not have overflow protection, but they are longs.
+            myMetaTileEntity.mLastSoundTick = myMetaTileEntity.mTickTimer;
+        }
+    }
 
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -871,49 +975,19 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                 case 0:
                     break;
                 case 1:
-                    if (aBaseMetaTileEntity.getFrontFacing() != 1 && aBaseMetaTileEntity.getCoverIDAtSide((byte) 1) == 0 && !aBaseMetaTileEntity.getOpacityAtSide((byte) 1)) {
+                    if (aBaseMetaTileEntity.getFrontFacing() != 1 && aBaseMetaTileEntity.getCoverIDAtSide((byte) 1) == 0 &&
+                        !aBaseMetaTileEntity.getOpacityAtSide((byte) 1)) {
 
                         Random tRandom = aBaseMetaTileEntity.getWorld().rand;
-                        new WorldSpawnedEventBuilder.ParticleEventBuilder()
-                                .setMotion(0.0D, 0.0D, 0.0D)
-                                .setIdentifier("smoke")
-                                .setPosition(
-                                        aBaseMetaTileEntity.getXCoord() + 0.8F - tRandom.nextFloat() * 0.6F,
-                                        aBaseMetaTileEntity.getYCoord() + 0.9F + tRandom.nextFloat() * 0.2F,
-                                        aBaseMetaTileEntity.getZCoord() + 0.8F - tRandom.nextFloat() * 0.6F
-                                )
-                                .setWorld(aBaseMetaTileEntity.getWorld())
-                                .run();
+                        new WorldSpawnedEventBuilder.ParticleEventBuilder().setMotion(0.0D, 0.0D, 0.0D).setIdentifier("smoke").setPosition(
+                                aBaseMetaTileEntity.getXCoord() + 0.8F - tRandom.nextFloat() * 0.6F,
+                                aBaseMetaTileEntity.getYCoord() + 0.9F + tRandom.nextFloat() * 0.2F,
+                                aBaseMetaTileEntity.getZCoord() + 0.8F - tRandom.nextFloat() * 0.6F
+                                                                                                                                          ).setWorld(
+                                aBaseMetaTileEntity.getWorld()).run();
                     }
                     break;
             }
-        }
-    }
-
-    @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeList() {
-        return this.mRecipes;
-    }
-
-    @Override
-    public int getCapacity() {
-        return this.mTankCapacity;
-    }
-
-    @Override
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        super.startSoundLoop(aIndex, aX, aY, aZ);
-        if (aIndex == 1 && GT_Utility.isStringValid(this.mSound)) GT_Utility.doSoundAtClient(this.mSound, 100, 1.0F, aX, aY, aZ);
-    }
-
-    @Override
-    public void startProcess() {
-        BaseMetaTileEntity myMetaTileEntity = ((BaseMetaTileEntity) this.getBaseMetaTileEntity());
-        // Added to throttle sounds. To reduce lag, this is on the server side so BlockUpdate packets aren't sent.
-        if (myMetaTileEntity.mTickTimer > (myMetaTileEntity.mLastSoundTick+ticksBetweenSounds)) {
-            if (GT_Utility.isStringValid(this.mSound)) this.sendLoopStart((byte) 1);
-            // Does not have overflow protection, but they are longs.
-            myMetaTileEntity.mLastSoundTick = myMetaTileEntity.mTickTimer;
         }
     }
 
@@ -928,9 +1002,16 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     }
 
     @Override
-    protected boolean displaysOutputFluid() {
-        return !this.mSharedTank;
+    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
+        super.startSoundLoop(aIndex, aX, aY, aZ);
+        if (aIndex == 1 && GT_Utility.isStringValid(this.mSound)) {
+            GT_Utility.doSoundAtClient(this.mSound, 100, 1.0F, aX, aY, aZ);
+        }
     }
 
-    public enum X {PUMP, WIRE, WIRE4, HULL, PIPE, GLASS, PLATE, MOTOR, ROTOR, SENSOR, PISTON, CIRCUIT, EMITTER, CONVEYOR, ROBOT_ARM, COIL_HEATING, COIL_ELECTRIC, STICK_MAGNETIC, STICK_DISTILLATION, BETTER_CIRCUIT, FIELD_GENERATOR, COIL_HEATING_DOUBLE, STICK_ELECTROMAGNETIC}
+    @Override
+    public int getCapacity() {
+        return this.mTankCapacity;
+    }
+
 }

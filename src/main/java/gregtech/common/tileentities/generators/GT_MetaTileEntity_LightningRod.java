@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.generators;
 
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
@@ -16,7 +17,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+
 public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMachineBlock {
+
     public GT_MetaTileEntity_LightningRod(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Generates EU From Lightning Bolts");
     }
@@ -24,27 +27,9 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
     public GT_MetaTileEntity_LightningRod(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
-    
+
     public GT_MetaTileEntity_LightningRod(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
-
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide != ForgeDirection.UP.ordinal()) {
-            return new ITexture[]{
-                    BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-                    BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier]};
-        }
-        if (!aActive) return new ITexture[]{
-                BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-                TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS)
-        };
-        return new ITexture[]{
-                BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-                TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW),
-                TextureFactory.builder().addIcon(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).glow().build()
-        };
     }
 
     @Override
@@ -55,6 +40,42 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_LightningRod(this.mName, this.mTier, this.mInventory.length, this.mDescriptionArray, this.mTextures);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+    }
+
+    @Override
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return false;
+    }
+
+    @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return false;
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        if (aSide != ForgeDirection.UP.ordinal()) {
+            return new ITexture[]{
+                    BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier]
+            };
+        }
+        if (!aActive) {
+            return new ITexture[]{
+                    BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS)
+            };
+        }
+        return new ITexture[]{
+                BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW),
+                TextureFactory.builder().addIcon(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).glow().build()
+        };
     }
 
     @Override
@@ -86,7 +107,9 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
                         }
                     }
                 }
-                if (!aWorld.isThundering() && ((aY + aRodValue) < 128)) aRodValue = 0;
+                if (!aWorld.isThundering() && ((aY + aRodValue) < 128)) {
+                    aRodValue = 0;
+                }
                 if (XSTR_INSTANCE.nextInt(4 * aWorld.getHeight()) < (aRodValue * (aY + aRodValue))) {
                     aBaseMetaTileEntity.increaseStoredEnergyUnits(maxEUStore() - aBaseMetaTileEntity.getStoredEU(), false);
                     aWorld.addWeatherEffect(new EntityLightningBolt(aWorld, aX, aY + aRodValue, aZ));
@@ -96,33 +119,13 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return false;
+    public boolean isFacingValid(byte aFacing) {
+        return aFacing == 1;
     }
 
     @Override
     public boolean isSimpleMachine() {
         return false;
-    }
-
-    @Override
-    public boolean isFacingValid(byte aFacing) {
-        return aFacing==1;
-    }
-
-    @Override
-    public boolean isOutputFacing(byte aSide) {
-        return true;
-    }
-
-    @Override
-    public boolean isEnetOutput() {
-        return true;
     }
 
     @Override
@@ -146,10 +149,13 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
+    public boolean isOutputFacing(byte aSide) {
+        return true;
     }
 
     @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
+    public boolean isEnetOutput() {
+        return true;
     }
+
 }

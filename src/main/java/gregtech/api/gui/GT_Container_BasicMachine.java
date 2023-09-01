@@ -1,5 +1,6 @@
 package gregtech.api.gui;
 
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -11,9 +12,9 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.OTHER_SLOT_COUNT;
+
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -22,10 +23,7 @@ import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Basi
  */
 public class GT_Container_BasicMachine extends GT_Container_BasicTank {
 
-    public boolean
-            mFluidTransfer = false,
-            mItemTransfer = false,
-            mStuttering = false;
+    public boolean mFluidTransfer = false, mItemTransfer = false, mStuttering = false;
 
     public GT_Container_BasicMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -183,16 +181,30 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
     }
 
     @Override
+    public int getSlotCount() {
+        return getShiftClickSlotCount() + ((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mOutputItems.length + 2;
+    }
+
+    @Override
+    public int getShiftClickSlotCount() {
+        return ((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mInputSlotCount;
+    }
+
+    @Override
     public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
         GT_MetaTileEntity_BasicMachine machine = (GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity();
-        if (machine == null) return null;
+        if (machine == null) {
+            return null;
+        }
         ItemStack tResultStack;
         switch (aSlotIndex) {
             case 0:
                 machine.mFluidTransfer = !machine.mFluidTransfer;
                 return null;
             case 1:
-                if (mTileEntity.getMetaTileEntity() == null) return null;
+                if (mTileEntity.getMetaTileEntity() == null) {
+                    return null;
+                }
                 machine.mItemTransfer = !machine.mItemTransfer;
                 return null;
             default:
@@ -205,8 +217,9 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
                     GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
                     IFluidAccess tFillableAccess = IFluidAccess.from(tTank, true);
                     ItemStack tToken = handleFluidSlotClick(tFillableAccess, aPlayer, aMouseclick == 0, true, true);
-                    if (mTileEntity.isServerSide() && tToken != null)
+                    if (mTileEntity.isServerSide() && tToken != null) {
                         mTileEntity.markInventoryBeenModified();
+                    }
                     return tToken;
                 } else {
                     return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
@@ -217,7 +230,9 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) return;
+        if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) {
+            return;
+        }
 
         mFluidTransfer = ((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mFluidTransfer;
         mItemTransfer = ((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mItemTransfer;
@@ -229,11 +244,6 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
             var1.sendProgressBarUpdate(this, 103, mItemTransfer ? 1 : 0);
             var1.sendProgressBarUpdate(this, 104, mStuttering ? 1 : 0);
         }
-    }
-
-    @Override
-    public void addCraftingToCrafters(ICrafting par1ICrafting) {
-        super.addCraftingToCrafters(par1ICrafting);
     }
 
     @Override
@@ -264,12 +274,8 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
     }
 
     @Override
-    public int getSlotCount() {
-        return getShiftClickSlotCount() + ((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mOutputItems.length + 2;
+    public void addCraftingToCrafters(ICrafting par1ICrafting) {
+        super.addCraftingToCrafters(par1ICrafting);
     }
 
-    @Override
-    public int getShiftClickSlotCount() {
-        return ((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mInputSlotCount;
-    }
 }

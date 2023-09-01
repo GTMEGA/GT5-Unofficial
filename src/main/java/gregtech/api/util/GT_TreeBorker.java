@@ -21,32 +21,32 @@ public class GT_TreeBorker {
 
     /**
      * World
-     * */
+     */
     private final /* @NonNull */ World world;
 
     /**
      * Initial position the borker starts from
-     * */
+     */
     private final int initialX, initialY, initialZ;
 
     /**
      * How far from a given plant block it will scan, negative means unlimited
-     * */
+     */
     private final int scanRadius;
 
     /**
      * Maximum radius of borking, negative means unlimited
-     * */
+     */
     private final int maxDistance;
 
     /**
      * Maximum spread from a given block, negative means unlimited
-     * */
+     */
     private final int maxSpread;
 
     /**
      * Maximum total blocks it will process, negative means unlimited
-     * */
+     */
     private final int maxScannable;
 
     private final Queue<int[]> positions = new ArrayDeque<>();
@@ -105,10 +105,6 @@ public class GT_TreeBorker {
 
     public int getMetadata(final int x, final int y, final int z) {
         return world.getBlockMetadata(x, y, z);
-    }
-
-    public double magnitude(final int x, final int y, final int z) {
-        return Math.sqrt(x * x + y * y + z * z);
     }
 
     public boolean isValidBlock(final @NonNull Block block, final int metadata, final int x, final int y, final int z) {
@@ -184,12 +180,16 @@ public class GT_TreeBorker {
         return outsideMaxRange(coords) || outsideSearchRange(coords, x, y, z);
     }
 
+    private boolean outsideMaxRange(final int[] coords) {
+        return maxDistance > 0 && magnitude(coords[0] - initialX, coords[1] - initialY, coords[2] - initialZ) > maxDistance;
+    }
+
     private boolean outsideSearchRange(final int[] coords, final int x, final int y, final int z) {
         return maxSpread > 0 && magnitude(coords[0] - x, coords[1] - y, coords[2] - z) > maxSpread;
     }
 
-    private boolean outsideMaxRange(final int[] coords) {
-        return maxDistance > 0 && magnitude(coords[0] - initialX, coords[1] - initialY, coords[2] - initialZ) > maxDistance;
+    public double magnitude(final int x, final int y, final int z) {
+        return Math.sqrt(x * x + y * y + z * z);
     }
 
 }

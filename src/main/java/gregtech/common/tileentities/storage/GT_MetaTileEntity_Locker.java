@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.storage;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -12,12 +13,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import static gregtech.api.enums.Textures.BlockIcons.LOCKERS;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_IN;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_LOCKER;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+
 
 public class GT_MetaTileEntity_Locker extends GT_MetaTileEntity_TieredMachineBlock {
+
     public byte mType = 0;
 
     public GT_MetaTileEntity_Locker(int aID, String aName, String aNameRegional, int aTier) {
@@ -30,14 +30,6 @@ public class GT_MetaTileEntity_Locker extends GT_MetaTileEntity_TieredMachineBlo
 
     public GT_MetaTileEntity_Locker(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 4, aDescription, aTextures);
-    }
-
-    @Override
-    public String[] getDescription() {
-        String[] desc = new String[mDescriptionArray.length + 1];
-        System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-        desc[mDescriptionArray.length] = "Click with Screwdriver to change Style";
-        return desc;
     }
 
     @Override
@@ -55,81 +47,16 @@ public class GT_MetaTileEntity_Locker extends GT_MetaTileEntity_TieredMachineBlo
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            return new ITexture[]{this.mTextures[2][(aColorIndex + 1)][0], this.mTextures[2][(aColorIndex + 1)][1], LOCKERS[Math.abs(this.mType % LOCKERS.length)]};
-        }
-        return this.mTextures[0][(aColorIndex + 1)];
+    public String[] getDescription() {
+        String[] desc = new String[mDescriptionArray.length + 1];
+        System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
+        desc[mDescriptionArray.length] = "Click with Screwdriver to change Style";
+        return desc;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Locker(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return true;
-    }
-
-    @Override
-    public boolean isFacingValid(byte aFacing) {
-        return aFacing > 1;
-    }
-
-    @Override
-    public boolean isEnetInput() {
-        return true;
-    }
-
-    @Override
-    public boolean isInputFacing(byte aSide) {
-        return aSide == getBaseMetaTileEntity().getBackFacing();
-    }
-
-    @Override
-    public boolean isTeleporterCompatible() {
-        return false;
-    }
-
-    @Override
-    public long maxEUStore() {
-        return gregtech.api.enums.GT_Values.V[this.mTier] * maxAmperesIn();
-    }
-
-    @Override
-    public long maxEUInput() {
-        return gregtech.api.enums.GT_Values.V[this.mTier];
-    }
-
-    @Override
-    public long maxAmperesIn() {
-        return this.mInventory.length * 2L;
-    }
-
-    @Override
-    public int rechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
-    public int rechargerSlotCount() {
-        return getBaseMetaTileEntity().isAllowedToWork() ? this.mInventory.length : 0;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override
@@ -140,6 +67,67 @@ public class GT_MetaTileEntity_Locker extends GT_MetaTileEntity_TieredMachineBlo
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         this.mType = aNBT.getByte("mType");
+    }
+
+    @Override
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return false;
+    }
+
+    @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return false;
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        if (aSide == aFacing) {
+            return new ITexture[]{
+                    this.mTextures[2][(aColorIndex + 1)][0], this.mTextures[2][(aColorIndex + 1)][1], LOCKERS[Math.abs(this.mType % LOCKERS.length)]
+            };
+        }
+        return this.mTextures[0][(aColorIndex + 1)];
+    }
+
+    @Override
+    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
+        return aSide != getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+            this.mType = ((byte) (this.mType + 1));
+        }
+    }
+
+    @Override
+    public boolean isFacingValid(byte aFacing) {
+        return aFacing > 1;
+    }
+
+    @Override
+    public boolean isValidSlot(int aIndex) {
+        return true;
+    }
+
+    @Override
+    public boolean isAccessAllowed(EntityPlayer aPlayer) {
+        return true;
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+        if ((aBaseMetaTileEntity.isServerSide()) && (aSide == aBaseMetaTileEntity.getFrontFacing())) {
+            for (int i = 0; i < 4; i++) {
+                ItemStack tSwapStack = this.mInventory[i];
+                this.mInventory[i] = aPlayer.inventory.armorInventory[i];
+                aPlayer.inventory.armorInventory[i] = tSwapStack;
+            }
+            aPlayer.inventoryContainer.detectAndSendChanges();
+            sendSound((byte) 16);
+        }
+        return true;
     }
 
     @Override
@@ -160,38 +148,53 @@ public class GT_MetaTileEntity_Locker extends GT_MetaTileEntity_TieredMachineBlo
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
-            this.mType = ((byte) (this.mType + 1));
-        }
+    public boolean isSimpleMachine() {
+        return false;
     }
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
-        return aSide != getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
-        if ((aBaseMetaTileEntity.isServerSide()) && (aSide == aBaseMetaTileEntity.getFrontFacing())) {
-            for (int i = 0; i < 4; i++) {
-                ItemStack tSwapStack = this.mInventory[i];
-                this.mInventory[i] = aPlayer.inventory.armorInventory[i];
-                aPlayer.inventory.armorInventory[i] = tSwapStack;
-            }
-            aPlayer.inventoryContainer.detectAndSendChanges();
-            sendSound((byte) 16);
-        }
+    public boolean isElectric() {
         return true;
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return false;
+    public boolean isEnetInput() {
+        return true;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public long maxEUStore() {
+        return gregtech.api.enums.GT_Values.V[this.mTier] * maxAmperesIn();
+    }
+
+    @Override
+    public long maxEUInput() {
+        return gregtech.api.enums.GT_Values.V[this.mTier];
+    }
+
+    @Override
+    public long maxAmperesIn() {
+        return this.mInventory.length * 2L;
+    }
+
+    @Override
+    public boolean isInputFacing(byte aSide) {
+        return aSide == getBaseMetaTileEntity().getBackFacing();
+    }
+
+    @Override
+    public int rechargerSlotStartIndex() {
+        return 0;
+    }
+
+    @Override
+    public int rechargerSlotCount() {
+        return getBaseMetaTileEntity().isAllowedToWork() ? this.mInventory.length : 0;
+    }
+
+    @Override
+    public boolean isTeleporterCompatible() {
         return false;
     }
+
 }

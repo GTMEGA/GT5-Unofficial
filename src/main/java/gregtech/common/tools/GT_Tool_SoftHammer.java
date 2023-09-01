@@ -1,5 +1,6 @@
 package gregtech.common.tools;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -13,7 +14,35 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
+
 public class GT_Tool_SoftHammer extends GT_Tool {
+
+    @Override
+    public float getBaseDamage() {
+        return 3.0F;
+    }
+
+    @Override
+    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+        return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "softhammer");
+    }
+
+    @Override
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadMallet.mTextureIndex]
+                           : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.handleMallet.mTextureIndex];
+    }
+
+    @Override
+    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+    }
+
+    @Override
+    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+        aItem.addItemBehavior(aID, new Behaviour_SoftHammer(100));
+    }
+
     @Override
     public int getToolDamagePerBlockBreak() {
         return 50;
@@ -40,11 +69,6 @@ public class GT_Tool_SoftHammer extends GT_Tool {
     }
 
     @Override
-    public float getBaseDamage() {
-        return 3.0F;
-    }
-
-    @Override
     public int getHurtResistanceTime(int aOriginalHurtResistance, Entity aEntity) {
         return aOriginalHurtResistance * 2;
     }
@@ -60,23 +84,23 @@ public class GT_Tool_SoftHammer extends GT_Tool {
     }
 
     @Override
+    public String getMiningSound() {
+        return GregTech_API.sSoundList.get(101);
+    }
+
+    @Override
     public String getCraftingSound() {
-        return (String) GregTech_API.sSoundList.get(101);
+        return GregTech_API.sSoundList.get(101);
     }
 
     @Override
     public String getEntityHitSound() {
-        return (String) GregTech_API.sSoundList.get(101);
+        return GregTech_API.sSoundList.get(101);
     }
 
     @Override
     public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(0);
-    }
-
-    @Override
-    public String getMiningSound() {
-        return (String) GregTech_API.sSoundList.get(101);
+        return GregTech_API.sSoundList.get(0);
     }
 
     @Override
@@ -90,18 +114,13 @@ public class GT_Tool_SoftHammer extends GT_Tool {
     }
 
     @Override
-    public boolean isMiningTool() {
-        return false;
-    }
-
-    @Override
     public boolean isWeapon() {
         return true;
     }
 
     @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
-        return GT_ToolHarvestHelper.isAppropriateTool(aBlock , aMetaData ,"softhammer");
+    public boolean isMiningTool() {
+        return false;
     }
 
     @Override
@@ -110,22 +129,10 @@ public class GT_Tool_SoftHammer extends GT_Tool {
     }
 
     @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadMallet.mTextureIndex] : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.handleMallet.mTextureIndex];
-    }
-
-    @Override
-    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
-    }
-
-    @Override
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
-        aItem.addItemBehavior(aID, new Behaviour_SoftHammer(100));
-    }
-
-    @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " was hammered to death by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
+        return new ChatComponentText(
+                EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " was hammered to death by " + EnumChatFormatting.GREEN +
+                aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
     }
+
 }

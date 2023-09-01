@@ -1,5 +1,6 @@
 package gregtech.loaders.postload;
 
+
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.ticking.IGridTickable;
 import appeng.api.networking.ticking.TickRateModulation;
@@ -16,25 +17,65 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.lang.reflect.Field;
 
+
 public class PartP2PGTPower extends PartP2PIC2Power implements IGridTickable {
+
     public PartP2PGTPower(ItemStack is) {
         super(is);
+    }
+
+    public final TileEntity getTileEntity(int aX, int aY, int aZ) {
+        return getWorld().getTileEntity(aX, aY, aZ);
     }
 
     public final World getWorld() {
         return getTile().getWorldObj();
     }
 
-    public final int getXCoord() {
-        return getTile().xCoord;
+    @Override
+    public TickingRequest getTickingRequest(IGridNode iGridNode) {
+        return new TickingRequest(1, 20, false, false);
     }
 
-    public final short getYCoord() {
-        return (short) getTile().yCoord;
+    @Override
+    public TickRateModulation tickingRequest(IGridNode iGridNode, int i) {
+        return outputEnergy() ? TickRateModulation.FASTER : TickRateModulation.SLOWER;
     }
 
-    public final int getZCoord() {
-        return getTile().zCoord;
+    public boolean outputEnergy() {
+        if (getOfferedEnergy() == 0) {
+            return false;
+        }
+        TileEntity t = getTileEntityAtSide((byte) getSide().ordinal());
+        if (t instanceof IEnergyConnected) {
+            long voltage = 8L << (getSourceTier() * 2);
+            if (voltage > getOfferedEnergy()) {
+                voltage = (long) getOfferedEnergy();
+            }
+            if (((IEnergyConnected) t).injectEnergyUnits(GT_Utility.getOppositeSide(getSide().ordinal()), voltage, 1) > 0) {
+                drawEnergy(voltage);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public final TileEntity getTileEntityAtSide(byte aSide) {
+        int tX = getOffsetX(aSide, 1), tY = getOffsetY(aSide, 1), tZ = getOffsetZ(aSide, 1);
+        return getWorld().getTileEntity(tX, tY, tZ);
+    }
+
+    @Override
+    public ForgeDirection getSide() {
+        try {
+            Field fSide = AEBasePart.class.getDeclaredField("side");
+            fSide.setAccessible(true);
+            return (ForgeDirection) fSide.get(this);
+        } catch (Exception e) {
+            GT_Log.out.println("A fatal error occured at the P2P tunnel for GT electricity");
+            e.printStackTrace(GT_Log.out);
+            throw new RuntimeException(e);
+        }
     }
 
     public final int getOffsetX(byte aSide, int aMultiplier) {
@@ -49,53 +90,16 @@ public class PartP2PGTPower extends PartP2PIC2Power implements IGridTickable {
         return getZCoord() + ForgeDirection.getOrientation(aSide).offsetZ * aMultiplier;
     }
 
-    public final TileEntity getTileEntity(int aX, int aY, int aZ) {
-        return getWorld().getTileEntity(aX, aY, aZ);
+    public final int getXCoord() {
+        return getTile().xCoord;
     }
 
-    public final TileEntity getTileEntityAtSide(byte aSide) {
-        int tX = getOffsetX(aSide, 1), tY = getOffsetY(aSide, 1), tZ = getOffsetZ(aSide, 1);
-        return getWorld().getTileEntity(tX, tY, tZ);
+    public final short getYCoord() {
+        return (short) getTile().yCoord;
     }
 
-    public boolean outputEnergy() {
-        if (getOfferedEnergy() == 0) {
-            return false;
-        }
-        TileEntity t = getTileEntityAtSide((byte) getSide().ordinal());
-        if (t instanceof IEnergyConnected) {
-            long voltage = 8 << (getSourceTier() * 2);
-            if (voltage > getOfferedEnergy()) {
-                voltage = (long) getOfferedEnergy();
-            }
-            if (((IEnergyConnected) t).injectEnergyUnits(GT_Utility.getOppositeSide(getSide().ordinal()), voltage, 1) > 0) {
-                drawEnergy(voltage);
-                return true;
-            }
-        }
-        return false;
+    public final int getZCoord() {
+        return getTile().zCoord;
     }
 
-    @Override
-    public TickingRequest getTickingRequest(IGridNode iGridNode) {
-        return new TickingRequest(1, 20, false, false);
-    }
-
-    @Override
-    public TickRateModulation tickingRequest(IGridNode iGridNode, int i) {
-        return outputEnergy() ? TickRateModulation.FASTER : TickRateModulation.SLOWER;
-    }
-
-    @Override
-    public ForgeDirection getSide(){
-    	try {
-    		Field fSide = AEBasePart.class.getDeclaredField("side");
-			fSide.setAccessible(true);
-    		return (ForgeDirection) fSide.get(this);
-    	} catch (Exception e) {
-    		GT_Log.out.println("A fatal error occured at the P2P tunnel for GT electricity");
-            e.printStackTrace(GT_Log.out);
-    		throw new RuntimeException(e);
-    	}
-    }
 }

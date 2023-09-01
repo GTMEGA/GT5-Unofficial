@@ -1,11 +1,13 @@
 package gregtech.api.render;
 
+
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.ITextureBuilder;
 import gregtech.common.render.GT_TextureBuilder;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.util.ForgeDirection;
+
 
 /**
  * <p>This class contains a collection of static factory methods to access the New Texture API.</p>
@@ -23,9 +25,6 @@ import net.minecraftforge.common.util.ForgeDirection;
  */
 @SuppressWarnings("unused")
 public final class TextureFactory {
-    private TextureFactory() {
-        throw new AssertionError("Non-instantiable class");
-    }
 
     /**
      * Multi-layered {@link ITexture} factory
@@ -35,6 +34,15 @@ public final class TextureFactory {
      */
     public static ITexture of(final ITexture... textures) {
         return builder().addLayer(textures).build();
+    }
+
+    /**
+     * {@link ITextureBuilder} factory
+     *
+     * @return An instance of the {@link ITextureBuilder} implementation
+     */
+    public static ITextureBuilder builder() {
+        return new GT_TextureBuilder();
     }
 
     /**
@@ -49,9 +57,15 @@ public final class TextureFactory {
      * @param rgba   The {@code short[]} RGBA tint for all sides.
      * @return The instance of an {@link ITexture} implementation
      */
-    public static ITexture of(final IIconContainer bottom, final IIconContainer top, final IIconContainer north,
-                              final IIconContainer south, final IIconContainer west, final IIconContainer east,
-                              final short[] rgba) {
+    public static ITexture of(
+            final IIconContainer bottom,
+            final IIconContainer top,
+            final IIconContainer north,
+            final IIconContainer south,
+            final IIconContainer west,
+            final IIconContainer east,
+            final short[] rgba
+                             ) {
         return builder().addIcon(bottom, top, north, south, west, east).setRGBA(rgba).setAllowAlpha(true).build();
     }
 
@@ -64,8 +78,9 @@ public final class TextureFactory {
      * @param rgba   The {@code short[]} RGBA tint for all sides.
      * @return The instance of an {@link ITexture} implementation
      */
-    public static ITexture of(final IIconContainer bottom, final IIconContainer top, final IIconContainer sides,
-                              final short[] rgba) {
+    public static ITexture of(
+            final IIconContainer bottom, final IIconContainer top, final IIconContainer sides, final short[] rgba
+                             ) {
         return builder().addIcon(bottom, top, sides, sides, sides, sides).setRGBA(rgba).setAllowAlpha(true).build();
     }
 
@@ -107,20 +122,16 @@ public final class TextureFactory {
         return builder().setFromBlock(block, meta).setFromSide(side).build();
     }
 
-    public static ITexture of(final Block block, final int meta) {
-        return builder().setFromBlock(block, meta).build();
-    }
-
     public static ITexture of(final Block block) {
         return of(block, 0);
     }
 
-    /**
-     * {@link ITextureBuilder} factory
-     *
-     * @return An instance of the {@link ITextureBuilder} implementation
-     */
-    public static ITextureBuilder builder() {
-        return new GT_TextureBuilder();
+    public static ITexture of(final Block block, final int meta) {
+        return builder().setFromBlock(block, meta).build();
     }
+
+    private TextureFactory() {
+        throw new AssertionError("Non-instantiable class");
+    }
+
 }

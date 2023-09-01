@@ -1,13 +1,16 @@
 package gregtech.api.interfaces;
 
+
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.ArrayList;
+
 
 /**
  * You are allowed to include this File in your Download, as i will not change it.
  */
 public interface IDebugableBlock {
+
     /**
      * Returns a Debug Message, for a generic DebugItem
      * Blocks have to implement this interface NOT TileEntities!
@@ -24,4 +27,5 @@ public interface IDebugableBlock {
      * @return a String-Array containing the DebugInfo, every Index is a separate line (0 = first Line)
      */
     ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel);
+
 }

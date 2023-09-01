@@ -2,9 +2,7 @@ package gregtech.common.items;
 
 
 import gregtech.api.GregTech_API;
-import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Potentiometer;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;

@@ -71,11 +71,6 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_Buffer {
     }
 
     @Override
-    public boolean isValidSlot(int aIndex) {
-        return aIndex < 9;
-    }
-
-    @Override
     public ITexture getOverlayIcon() {
         return TextureFactory.of(TextureFactory.of(AUTOMATION_RECIPEFILTER), TextureFactory.builder().addIcon(AUTOMATION_RECIPEFILTER_GLOW).glow().build());
     }
@@ -114,6 +109,11 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_Buffer {
         final ItemStack circuit = getCircuitItem();
         final boolean valid = validStack(aStack) && validCircuit(aStack, circuit);
         return valid != invertFilter;
+    }
+
+    @Override
+    public boolean isValidSlot(int aIndex) {
+        return aIndex < 9;
     }
 
     private ItemStack getCircuitItem() {

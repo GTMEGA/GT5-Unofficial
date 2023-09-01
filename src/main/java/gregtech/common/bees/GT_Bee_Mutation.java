@@ -1,5 +1,6 @@
 package gregtech.common.bees;
 
+
 import forestry.api.apiculture.*;
 import forestry.api.core.IClimateProvider;
 import forestry.api.genetics.IAllele;
@@ -26,11 +27,6 @@ public class GT_Bee_Mutation extends BeeMutation {
     }
 
     @Override
-    public float getBaseChance() {
-        return super.getBaseChance() / split;
-    }
-
-    @Override
     public float getChance(IBeeHousing housing, IAlleleBeeSpecies allele0, IAlleleBeeSpecies allele1, IBeeGenome genome0, IBeeGenome genome1) {
         World world = housing != null ? housing.getWorld() : null;
         ChunkCoordinates housingCoordinates = housing != null ? housing.getCoordinates() : null;
@@ -54,27 +50,46 @@ public class GT_Bee_Mutation extends BeeMutation {
     }
 
     @SuppressWarnings("unchecked")
-    private float getBasicChance(World world, int x, int y, int z, IAllele allele0, IAllele allele1, IGenome genome0, IGenome genome1, IClimateProvider climate) {
+    private float getBasicChance(
+            World world,
+            int x,
+            int y,
+            int z,
+            IAllele allele0,
+            IAllele allele1,
+            IGenome genome0,
+            IGenome genome1,
+            IClimateProvider climate
+                                ) {
         float mutationChance = this.getBaseChance();
         List<IMutationCondition> mutationConditions = null;
         Field f = FieldUtils.getDeclaredField(Mutation.class, "mutationConditions", true);
-        if (f == null)
+        if (f == null) {
             f = FieldUtils.getField(Mutation.class, "mutationConditions", true);
-        if (f == null)
+        }
+        if (f == null) {
             return mutationChance;
+        }
         try {
             mutationConditions = f.get(this) instanceof List ? (List<IMutationCondition>) f.get(this) : null;
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
 
-        if (mutationConditions != null)
+        if (mutationConditions != null) {
             for (IMutationCondition mutationCondition : mutationConditions) {
                 mutationChance *= mutationCondition.getChance(world, x, y, z, allele0, allele1, genome0, genome1, climate);
                 if (mutationChance == 0) {
                     return 0;
                 }
             }
+        }
         return mutationChance;
     }
+
+    @Override
+    public float getBaseChance() {
+        return super.getBaseChance() / split;
+    }
+
 }

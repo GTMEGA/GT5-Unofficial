@@ -1,5 +1,6 @@
 package gregtech.api.graphs;
 
+
 import gregtech.api.graphs.consumers.ConsumerNode;
 import gregtech.api.graphs.paths.NodePath;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -14,6 +15,20 @@ import static gregtech.api.util.GT_Utility.getOppositeSide;
 
 // generates the node map
 abstract public class GenerateNodeMap {
+
+    private static class Pair {
+
+        public byte mSide;
+
+        public TileEntity mTileEntity;
+
+        public Pair(TileEntity aTileEntity, byte aSide) {
+            this.mTileEntity = aTileEntity;
+            this.mSide = aSide;
+        }
+
+    }
+
     // clearing the node map to make sure it is gone on reset
     public static void clearNodeMap(Node aNode, int aReturnNodeValue) {
         if (aNode.mTileEntity instanceof BaseMetaPipeEntity) {
@@ -32,9 +47,12 @@ abstract public class GenerateNodeMap {
                 aNode.mNodePaths[i] = null;
             }
             Node tNextNode = aNode.mNeighbourNodes[i];
-            if (tNextNode == null) continue;
-            if (tNextNode.mNodeValue != aReturnNodeValue)
+            if (tNextNode == null) {
+                continue;
+            }
+            if (tNextNode.mNodeValue != aReturnNodeValue) {
                 clearNodeMap(tNextNode, aNode.mNodeValue);
+            }
             aNode.mNeighbourNodes[i] = null;
         }
     }
@@ -43,26 +61,30 @@ abstract public class GenerateNodeMap {
     private static int getNumberOfConnections(MetaPipeEntity aPipe) {
         int tCons = 0;
         for (int i = 0; i < 6; i++) {
-            if (aPipe.isConnectedAtSide(i)) tCons++;
+            if (aPipe.isConnectedAtSide(i)) {
+                tCons++;
+            }
         }
         return tCons;
     }
 
     // gets the next node
-    protected void generateNextNode(BaseMetaPipeEntity aPipe, Node aPipeNode, byte aInvalidSide, int aNextNodeValue,
-                                    ArrayList<ConsumerNode> tConsumers, HashSet<Node> tNodeMap) {
+    protected void generateNextNode(
+            BaseMetaPipeEntity aPipe, Node aPipeNode, byte aInvalidSide, int aNextNodeValue, ArrayList<ConsumerNode> tConsumers, HashSet<Node> tNodeMap
+                                   ) {
         MetaPipeEntity tMetaPipe = (MetaPipeEntity) aPipe.getMetaTileEntity();
         for (byte i = 0; i < 6; i++) {
             if (i == aInvalidSide) {
                 continue;
             }
             TileEntity tNextTileEntity = aPipe.getTileEntityAtSide(i);
-            if (tNextTileEntity == null || (tMetaPipe != null && !tMetaPipe.isConnectedAtSide(i))) continue;
+            if (tNextTileEntity == null || (tMetaPipe != null && !tMetaPipe.isConnectedAtSide(i))) {
+                continue;
+            }
             ArrayList<MetaPipeEntity> tNewPipes = new ArrayList<>();
             Pair nextTileEntity = getNextValidTileEntity(tNextTileEntity, tNewPipes, i, tNodeMap);
             if (nextTileEntity != null) {
-                Node tNextNode = generateNode(nextTileEntity.mTileEntity, aPipeNode, aNextNodeValue + 1, tNewPipes,
-                                              nextTileEntity.mSide, tConsumers, tNodeMap);
+                Node tNextNode = generateNode(nextTileEntity.mTileEntity, aPipeNode, aNextNodeValue + 1, tNewPipes, nextTileEntity.mSide, tConsumers, tNodeMap);
                 if (tNextNode != null) {
                     aNextNodeValue = tNextNode.mHighestNodeValue;
                     aPipeNode.mHighestNodeValue = tNextNode.mHighestNodeValue;
@@ -77,9 +99,18 @@ abstract public class GenerateNodeMap {
     }
 
     // on a valid tile entity create a new node
-    protected Node generateNode(TileEntity aTileEntity, Node aPreviousNode, int aNextNodeValue, ArrayList<MetaPipeEntity> aPipes,
-                                int aSide, ArrayList<ConsumerNode> aConsumers, HashSet<Node> aNodeMap) {
-        if (aTileEntity.isInvalid()) return null;
+    protected Node generateNode(
+            TileEntity aTileEntity,
+            Node aPreviousNode,
+            int aNextNodeValue,
+            ArrayList<MetaPipeEntity> aPipes,
+            int aSide,
+            ArrayList<ConsumerNode> aConsumers,
+            HashSet<Node> aNodeMap
+                               ) {
+        if (aTileEntity.isInvalid()) {
+            return null;
+        }
         byte tSideOp = getOppositeSide(aSide);
         byte tInvalidSide = aPreviousNode == null ? -1 : tSideOp;
         Node tThisNode = null;
@@ -90,7 +121,9 @@ abstract public class GenerateNodeMap {
             Node tPipeNode;
             if (tConnections == 1) {
                 tPipeNode = getEmptyNode(aNextNodeValue, tSideOp, aTileEntity, aConsumers);
-                if (tPipeNode == null) return null;
+                if (tPipeNode == null) {
+                    return null;
+                }
             } else {
                 tPipeNode = getPipeNode(aNextNodeValue, tSideOp, aTileEntity, aConsumers);
             }
@@ -107,8 +140,9 @@ abstract public class GenerateNodeMap {
                 aPreviousNode.returnValues.mReturnPath = tPipeNode.mNodePaths[tInvalidSide];
                 aPreviousNode.returnValues.returnLock = lock;
             }
-            if (tConnections > 1)
+            if (tConnections > 1) {
                 generateNextNode(tPipe, tPipeNode, tInvalidSide, aNextNodeValue, aConsumers, aNodeMap);
+            }
         } else if (addConsumer(aTileEntity, tSideOp, aNextNodeValue, aConsumers)) {
             ConsumerNode tConsumeNode = aConsumers.get(aConsumers.size() - 1);
             tConsumeNode.mNeighbourNodes[tSideOp] = aPreviousNode;
@@ -129,16 +163,21 @@ abstract public class GenerateNodeMap {
             MetaPipeEntity tMetaPipe = (MetaPipeEntity) tPipe.getMetaTileEntity();
             Node tNode = tPipe.getNode();
             if (tNode != null) {
-                if (aNodeMap.contains(tNode))
+                if (aNodeMap.contains(tNode)) {
                     return null;
+                }
             }
             int tConnections = getNumberOfConnections(tMetaPipe);
             if (tConnections == 2) {
                 byte tSideOp = getOppositeSide(aSide);
                 for (byte i = 0; i < 6; i++) {
-                    if (i == tSideOp || !(tMetaPipe.isConnectedAtSide(i))) continue;
+                    if (i == tSideOp || !(tMetaPipe.isConnectedAtSide(i))) {
+                        continue;
+                    }
                     TileEntity tNewTileEntity = tPipe.getTileEntityAtSide(i);
-                    if (tNewTileEntity == null) continue;
+                    if (tNewTileEntity == null) {
+                        continue;
+                    }
                     if (isPipe(tNewTileEntity)) {
                         aPipes.add(tMetaPipe);
                         return getNextValidTileEntity(tNewTileEntity, aPipes, i, aNodeMap);
@@ -176,13 +215,4 @@ abstract public class GenerateNodeMap {
         return new Node(aNodeValue, aTileEntity, aConsumers);
     }
 
-    private static class Pair {
-        public byte mSide;
-        public TileEntity mTileEntity;
-
-        public Pair(TileEntity aTileEntity, byte aSide) {
-            this.mTileEntity = aTileEntity;
-            this.mSide = aSide;
-        }
-    }
 }

@@ -1,10 +1,13 @@
 package gregtech.api.graphs;
 
+
 import net.minecraft.tileentity.TileEntity;
 
 import java.util.ArrayList;
 
+
 public class Lock {
+
     protected ArrayList<TileEntity> tiles = new ArrayList<>();
 
     public void addTileEntity(TileEntity tileEntity) {
@@ -12,6 +15,16 @@ public class Lock {
         if (i == -1) {
             tiles.add(tileEntity);
         }
+    }
+
+    //i want to check for the exact object not equals
+    protected int contains(TileEntity tileEntity) {
+        for (int i = 0; i < tiles.size(); i++) {
+            if (tiles.get(i) == tileEntity) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public void removeTileEntity(TileEntity tileEntity) {
@@ -25,13 +38,4 @@ public class Lock {
         return !tiles.isEmpty();
     }
 
-    //i want to check for the exact object not equals
-    protected int contains(TileEntity tileEntity) {
-        for (int i = 0; i < tiles.size(); i++) {
-            if (tiles.get(i) == tileEntity) {
-                return i;
-            }
-        }
-        return -1;
-    }
 }

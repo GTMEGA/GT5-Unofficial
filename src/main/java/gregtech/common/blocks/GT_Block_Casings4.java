@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
@@ -13,22 +14,38 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
+
 public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
+
     /**
      * This mapping is used to look up which texture should be used to render the connected texture for fusion casings.
-     *
+     * <p>
      * This mapping is computed from that giant if ladder from #getIcon in commit da3421547afadc49938b5b6a7f9a9679afa1d570
      * The exact meaning of these numbers are like black magic. Read the original getIcon implementation to understand why
      * it is 0, 1, etc, if that if ladder is even intelligible.
      */
     private static final int[][] mapping = new int[][]{
-            {7, 7, 7, 7, 0, 7, 0, 7, 1, 7, 1, 7, 8, 7, 8, 7, 0, 7, 0, 7, 0, 7, 0, 7, 9, 7, 9, 7, 3, 7, 3, 7, 1, 7, 1, 7, 11, 7, 11, 7, 1, 7, 1, 7, 2, 7, 2, 7, 10, 7, 10, 7, 5, 7, 5, 7, 4, 7, 4, 7, 6, 7, 6, 7},
-            {7, 7, 7, 7, 0, 0, 7, 7, 1, 1, 7, 7, 8, 8, 7, 7, 0, 0, 7, 7, 0, 0, 7, 7, 9, 9, 7, 7, 3, 3, 7, 7, 1, 1, 7, 7, 11, 11, 7, 7, 1, 1, 7, 7, 2, 2, 7, 7, 10, 10, 7, 7, 5, 5, 7, 7, 4, 4, 7, 7, 6, 6, 7, 7},
-            {7, 1, 1, 1, 0, 9, 10, 4, 7, 1, 1, 1, 0, 9, 10, 4, 0, 8, 11, 2, 0, 3, 5, 6, 0, 8, 11, 2, 0, 3, 5, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-            {7, 1, 1, 1, 0, 8, 11, 2, 7, 7, 7, 7, 7, 7, 7, 7, 0, 9, 10, 4, 0, 3, 5, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1, 0, 8, 11, 2, 7, 7, 7, 7, 7, 7, 7, 7, 0, 9, 10, 4, 0, 3, 5, 6, 7, 7, 7, 7, 7, 7, 7, 7},
-            {7, 1, 1, 1, 7, 1, 1, 1, 0, 8, 11, 2, 0, 8, 11, 2, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 9, 10, 4, 0, 9, 10, 4, 0, 3, 5, 6, 0, 3, 5, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-            {7, 1, 1, 1, 7, 7, 7, 7, 0, 9, 10, 4, 7, 7, 7, 7, 7, 1, 1, 1, 7, 7, 7, 7, 0, 9, 10, 4, 7, 7, 7, 7, 0, 8, 11, 2, 7, 7, 7, 7, 0, 3, 5, 6, 7, 7, 7, 7, 0, 8, 11, 2, 7, 7, 7, 7, 0, 3, 5, 6, 7, 7, 7, 7},
-    };
+            {
+                    7, 7, 7, 7, 0, 7, 0, 7, 1, 7, 1, 7, 8, 7, 8, 7, 0, 7, 0, 7, 0, 7, 0, 7, 9, 7, 9, 7, 3, 7, 3, 7, 1, 7, 1, 7, 11, 7, 11, 7, 1, 7, 1, 7, 2, 7,
+                    2, 7, 10, 7, 10, 7, 5, 7, 5, 7, 4, 7, 4, 7, 6, 7, 6, 7
+            }, {
+                    7, 7, 7, 7, 0, 0, 7, 7, 1, 1, 7, 7, 8, 8, 7, 7, 0, 0, 7, 7, 0, 0, 7, 7, 9, 9, 7, 7, 3, 3, 7, 7, 1, 1, 7, 7, 11, 11, 7, 7, 1, 1, 7, 7, 2, 2,
+                    7, 7, 10, 10, 7, 7, 5, 5, 7, 7, 4, 4, 7, 7, 6, 6, 7, 7
+            }, {
+                    7, 1, 1, 1, 0, 9, 10, 4, 7, 1, 1, 1, 0, 9, 10, 4, 0, 8, 11, 2, 0, 3, 5, 6, 0, 8, 11, 2, 0, 3, 5, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+                    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7
+            }, {
+                    7, 1, 1, 1, 0, 8, 11, 2, 7, 7, 7, 7, 7, 7, 7, 7, 0, 9, 10, 4, 0, 3, 5, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1, 0, 8, 11, 2, 7, 7, 7, 7, 7, 7,
+                    7, 7, 0, 9, 10, 4, 0, 3, 5, 6, 7, 7, 7, 7, 7, 7, 7, 7
+            }, {
+                    7, 1, 1, 1, 7, 1, 1, 1, 0, 8, 11, 2, 0, 8, 11, 2, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 9, 10, 4, 0, 9, 10, 4, 0, 3, 5, 6, 0,
+                    3, 5, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7
+            }, {
+                    7, 1, 1, 1, 7, 7, 7, 7, 0, 9, 10, 4, 7, 7, 7, 7, 7, 1, 1, 1, 7, 7, 7, 7, 0, 9, 10, 4, 7, 7, 7, 7, 0, 8, 11, 2, 7, 7, 7, 7, 0, 3, 5, 6, 7, 7,
+                    7, 7, 0, 8, 11, 2, 7, 7, 7, 7, 0, 3, 5, 6, 7, 7, 7, 7
+            },
+            };
+
     public static boolean mConnectedMachineTextures = true;
 
     public GT_Block_Casings4() {
@@ -70,6 +87,90 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide) {
+        int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
+        if (tMeta != 6 && tMeta != 8 && tMeta != 9 && tMeta != 10 && tMeta != 11 && tMeta != 12 || !mConnectedMachineTextures) {
+            return getIcon(aSide, tMeta);
+        }
+        if (tMeta > 8 && tMeta < 13) {
+            int tInvertLeftRightMod = aSide % 2 * 2 - 1;
+            switch (aSide / 2) {
+                case 0:
+                    for (int i = -1; i < 2; i++) {
+                        for (int j = -1; j < 2; j++) {
+                            if (i == 0 && j == 0) {
+                                continue;
+                            }
+                            int tState;
+                            if ((tState = isTurbineControllerWithSide(aWorld, xCoord + j, yCoord, zCoord + i, aSide)) != 0) {
+                                return getTurbineCasing(tMeta, 4 - i * 3 - j, tState == 1);
+                            }
+                        }
+                    }
+                    break;
+                case 1:
+                    for (int i = -1; i < 2; i++) {
+                        for (int j = -1; j < 2; j++) {
+                            if (i == 0 && j == 0) {
+                                continue;
+                            }
+                            int tState;
+                            if ((tState = isTurbineControllerWithSide(aWorld, xCoord + j, yCoord + i, zCoord, aSide)) != 0) {
+                                return getTurbineCasing(tMeta, 4 + i * 3 - j * tInvertLeftRightMod, tState == 1);
+                            }
+                        }
+                    }
+                    break;
+                case 2:
+                    for (int i = -1; i < 2; i++) {
+                        for (int j = -1; j < 2; j++) {
+                            if (i == 0 && j == 0) {
+                                continue;
+                            }
+                            int tState;
+                            if ((tState = isTurbineControllerWithSide(aWorld, xCoord, yCoord + i, zCoord + j, aSide)) != 0) {
+                                return getTurbineCasing(tMeta, 4 + i * 3 + j * tInvertLeftRightMod, tState == 1);
+                            }
+                        }
+                    }
+                    break;
+            }
+            switch (tMeta) {
+                case 10:
+                    return Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();
+                case 11:
+                    return Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
+                case 12:
+                    return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+                default:
+                    return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+            }
+        }
+        int tStartIndex = tMeta == 6 ? 1 : 13;
+        int tIndexIntoMapping = 0;
+        if (isSameBlock(aWorld, xCoord, yCoord - 1, zCoord, tMeta)) {
+            tIndexIntoMapping |= 1;
+        }
+        if (isSameBlock(aWorld, xCoord, yCoord + 1, zCoord, tMeta)) {
+            tIndexIntoMapping |= 1 << 1;
+        }
+        if (isSameBlock(aWorld, xCoord + 1, yCoord, zCoord, tMeta)) {
+            tIndexIntoMapping |= 1 << 2;
+        }
+        if (isSameBlock(aWorld, xCoord, yCoord, zCoord + 1, tMeta)) {
+            tIndexIntoMapping |= 1 << 3;
+        }
+        if (isSameBlock(aWorld, xCoord - 1, yCoord, zCoord, tMeta)) {
+            tIndexIntoMapping |= 1 << 4;
+        }
+        if (isSameBlock(aWorld, xCoord, yCoord, zCoord - 1, tMeta)) {
+            tIndexIntoMapping |= 1 << 5;
+        }
+        return Textures.BlockIcons.CONNECTED_HULLS[tStartIndex + mapping[aSide][tIndexIntoMapping]].getIcon();
+    }
+
+    @Override
     public IIcon getIcon(int aSide, int aMeta) {
         switch (aMeta) {
             case 0:
@@ -107,6 +208,18 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
         return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
     }
 
+    private static int isTurbineControllerWithSide(IBlockAccess aWorld, int aX, int aY, int aZ, int aSide) {
+        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (!(tTileEntity instanceof IGregTechTileEntity)) {
+            return 0;
+        }
+        IGregTechTileEntity tTile = (IGregTechTileEntity) tTileEntity;
+        if (tTile.getMetaTileEntity() instanceof GT_MetaTileEntity_LargeTurbine && tTile.getFrontFacing() == aSide) {
+            return tTile.isActive() ? 1 : 2;
+        }
+        return 0;
+    }
+
     public IIcon getTurbineCasing(int meta, int iconIndex, boolean active) {
         switch (meta) {
             case 10:
@@ -120,85 +233,8 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
         }
     }
 
-    private static int isTurbineControllerWithSide(IBlockAccess aWorld, int aX, int aY, int aZ, int aSide) {
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (!(tTileEntity instanceof IGregTechTileEntity)) return 0;
-        IGregTechTileEntity tTile = (IGregTechTileEntity) tTileEntity;
-        if (tTile.getMetaTileEntity() instanceof GT_MetaTileEntity_LargeTurbine && tTile.getFrontFacing() == aSide)
-            return tTile.isActive() ? 1 : 2;
-        return 0;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide) {
-        int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
-        if (tMeta != 6 && tMeta != 8 && tMeta != 9 && tMeta != 10 && tMeta != 11 && tMeta != 12 || !mConnectedMachineTextures) {
-            return getIcon(aSide, tMeta);
-        }
-        if (tMeta > 8 && tMeta < 13) {
-            int tInvertLeftRightMod = aSide % 2 * 2 - 1;
-            switch (aSide / 2) {
-                case 0:
-                    for (int i = -1; i < 2; i++) {
-                        for (int j = -1; j < 2; j++) {
-                            if (i == 0 && j == 0)
-                                continue;
-                            int tState;
-                            if ((tState = isTurbineControllerWithSide(aWorld, xCoord + j, yCoord, zCoord + i, aSide)) != 0) {
-                                return getTurbineCasing(tMeta, 4 - i * 3 - j, tState == 1);
-                            }
-                        }
-                    }
-                    break;
-                case 1:
-                    for (int i = -1; i < 2; i++) {
-                        for (int j = -1; j < 2; j++) {
-                            if (i == 0 && j == 0)
-                                continue;
-                            int tState;
-                            if ((tState = isTurbineControllerWithSide(aWorld, xCoord + j, yCoord + i, zCoord, aSide)) != 0) {
-                                return getTurbineCasing(tMeta, 4 + i * 3 - j * tInvertLeftRightMod, tState == 1);
-                            }
-                        }
-                    }
-                    break;
-                case 2:
-                    for (int i = -1; i < 2; i++) {
-                        for (int j = -1; j < 2; j++) {
-                            if (i == 0 && j == 0)
-                                continue;
-                            int tState;
-                            if ((tState = isTurbineControllerWithSide(aWorld, xCoord, yCoord + i, zCoord + j, aSide)) != 0) {
-                                return getTurbineCasing(tMeta, 4 + i * 3 + j * tInvertLeftRightMod, tState == 1);
-                            }
-                        }
-                    }
-                    break;
-            }
-            switch (tMeta) {
-                case 10:
-                    return Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();
-                case 11:
-                    return Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
-                case 12:
-                    return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
-                default:
-                    return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
-            }
-        }
-        int tStartIndex = tMeta == 6 ? 1 : 13;
-        int tIndexIntoMapping = 0;
-        if (isSameBlock(aWorld, xCoord, yCoord - 1, zCoord, tMeta)) tIndexIntoMapping |= 1;
-        if (isSameBlock(aWorld, xCoord, yCoord + 1, zCoord, tMeta)) tIndexIntoMapping |= 1 << 1;
-        if (isSameBlock(aWorld, xCoord + 1, yCoord, zCoord, tMeta)) tIndexIntoMapping |= 1 << 2;
-        if (isSameBlock(aWorld, xCoord, yCoord, zCoord + 1, tMeta)) tIndexIntoMapping |= 1 << 3;
-        if (isSameBlock(aWorld, xCoord - 1, yCoord, zCoord, tMeta)) tIndexIntoMapping |= 1 << 4;
-        if (isSameBlock(aWorld, xCoord, yCoord, zCoord - 1, tMeta)) tIndexIntoMapping |= 1 << 5;
-        return Textures.BlockIcons.CONNECTED_HULLS[tStartIndex + mapping[aSide][tIndexIntoMapping]].getIcon();
-    }
-
     private boolean isSameBlock(IBlockAccess aWorld, int aX, int aY, int aZ, int aMeta) {
         return aWorld.getBlock(aX, aY, aZ) == this && aWorld.getBlockMetadata(aX, aY, aZ) == aMeta;
     }
+
 }

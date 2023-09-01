@@ -1,8 +1,12 @@
 package gregtech.api.util;
 
+
 public class GT_ClientPreference {
+
     private final boolean mSingleBlockInitialFilter;
+
     private final boolean mSingleBlockInitialMultiStack;
+
     private final boolean mInputBusInitialFilter;
 
     public GT_ClientPreference(boolean mSingleBlockInitialFilter, boolean mSingleBlockInitialMultiStack, boolean mInputBusInitialFilter) {
@@ -28,4 +32,5 @@ public class GT_ClientPreference {
     public boolean isInputBusInitialFilterEnabled() {
         return mInputBusInitialFilter;
     }
+
 }

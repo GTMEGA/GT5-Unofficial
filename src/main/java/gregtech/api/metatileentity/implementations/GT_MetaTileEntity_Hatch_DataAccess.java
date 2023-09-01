@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+
 import gregtech.api.gui.GT_Container_2by2;
 import gregtech.api.gui.GT_Container_4by4;
 import gregtech.api.gui.GT_GUIContainer_2by2;
@@ -14,13 +15,15 @@ import net.minecraft.item.ItemStack;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DATA_ACCESS;
 
+
 public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch {
-    private int timeout=4;
+
+    private int timeout = 4;
 
     public GT_MetaTileEntity_Hatch_DataAccess(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 16, new String[]{
-        		"Data Access for Multiblocks",
-        		"Adds " + (aTier == 4 ? 4 : 16) + " extra slots for Data Sticks"});
+                "Data Access for Multiblocks", "Adds " + (aTier == 4 ? 4 : 16) + " extra slots for Data Sticks"
+        });
     }
 
     public GT_MetaTileEntity_Hatch_DataAccess(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -42,18 +45,18 @@ public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch 
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
+    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GT_MetaTileEntity_Hatch_DataAccess(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
-        return true;
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return mTier >= 8 && !aBaseMetaTileEntity.isActive();
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return mTier >= 8 && !aBaseMetaTileEntity.isActive();
     }
 
     @Override
@@ -62,14 +65,7 @@ public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch 
     }
 
     @Override
-    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_DataAccess(mName, mTier, mDescriptionArray, mTextures);
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        aBaseMetaTileEntity.openGUI(aPlayer);
+    public boolean isSimpleMachine() {
         return true;
     }
 
@@ -94,20 +90,6 @@ public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch 
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return mTier>=8 && !aBaseMetaTileEntity.isActive();
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return mTier>=8 && !aBaseMetaTileEntity.isActive();
-    }
-    @Override
-    public int getInventoryStackLimit() {
-        return 1;
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isActive()) {
             timeout--;
@@ -118,8 +100,33 @@ public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch 
 
     }
 
-    public void setActive(boolean mActive){
-        getBaseMetaTileEntity().setActive(mActive);
-        timeout=mActive?4:0;
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (aBaseMetaTileEntity.isClientSide()) {
+            return true;
+        }
+        aBaseMetaTileEntity.openGUI(aPlayer);
+        return true;
     }
+
+    @Override
+    public boolean isFacingValid(byte aFacing) {
+        return true;
+    }
+
+    @Override
+    public boolean isAccessAllowed(EntityPlayer aPlayer) {
+        return true;
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+        return 1;
+    }
+
+    public void setActive(boolean mActive) {
+        getBaseMetaTileEntity().setActive(mActive);
+        timeout = mActive ? 4 : 0;
+    }
+
 }

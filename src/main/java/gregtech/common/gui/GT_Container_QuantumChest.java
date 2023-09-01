@@ -1,5 +1,6 @@
 package gregtech.common.gui;
 
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
@@ -10,6 +11,7 @@ import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
+
 
 public class GT_Container_QuantumChest extends GT_ContainerMetaTile_Machine {
 
@@ -27,10 +29,22 @@ public class GT_Container_QuantumChest extends GT_ContainerMetaTile_Machine {
     }
 
     @Override
+    public int getSlotCount() {
+        return 2;
+    }
+
+    @Override
+    public int getShiftClickSlotCount() {
+        return 1;
+    }
+
+    @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
 
-        if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) return;
+        if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) {
+            return;
+        }
         if (mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalChestBase) {
             mContent = ((GT_MetaTileEntity_DigitalChestBase) mTileEntity.getMetaTileEntity()).getItemCount();
         } else {
@@ -58,13 +72,4 @@ public class GT_Container_QuantumChest extends GT_ContainerMetaTile_Machine {
         }
     }
 
-    @Override
-    public int getSlotCount() {
-        return 2;
-    }
-
-    @Override
-    public int getShiftClickSlotCount() {
-        return 1;
-    }
 }

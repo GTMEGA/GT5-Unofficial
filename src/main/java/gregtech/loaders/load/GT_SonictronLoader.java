@@ -1,12 +1,15 @@
 package gregtech.loaders.load;
 
+
 import gregtech.GT_Mod;
 import gregtech.api.util.GT_Log;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+
 public class GT_SonictronLoader implements Runnable {
+
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: Loading Sonictron Sounds");
@@ -152,4 +155,5 @@ public class GT_SonictronLoader implements Runnable {
         GT_Mod.gregtechproxy.mSoundNames.add("ambient.weather.thunder");
         GT_Mod.gregtechproxy.mSoundCounts.add(1);
     }
+
 }

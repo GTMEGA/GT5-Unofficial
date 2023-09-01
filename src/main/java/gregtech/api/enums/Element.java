@@ -1,8 +1,10 @@
 package gregtech.api.enums;
 
+
 import gregtech.api.util.GT_Utility;
 
 import java.util.ArrayList;
+
 
 /**
  * This is some kind of Periodic Table, which I use to determine Properties of the Materials.
@@ -135,9 +137,9 @@ public enum Element {
     Tn(125, 198, 0, -1, null, "Tritanium", false),
 
     SpFe(26, 42, 0, -1, null, "Meteoric Iron", false),
-    De(22, 27, 0, -1, null, "Desh", false), 
+    De(22, 27, 0, -1, null, "Desh", false),
     Oh(76, 125, 0, -1, null, "Oriharukon", false),
-       
+
     Ma(0, 0, 100, -1, null, "Magic", false),
     Nq(130, 200, 0, -1, null, "Naquadah", false),
     Nt(0, 1000, 0, -1, null, "Neutronium", false),
@@ -266,9 +268,9 @@ public enum Element {
     $Ts(-117, -177, 0, -1, null, "Anti-Tenness", false),
     $Og(-118, -176, 0, -1, null, "Anti-Oganesson", false),
     $Tn(-125, -198, 0, -1, null, "Anti-Tritanium", false),
-    
+
     $SpFe(-26, -42, 0, -1, null, "Anti-Meteoric Iron", true),
-    $De(-22, -27, 0, -1, null, "Anti-Desh", true), 
+    $De(-22, -27, 0, -1, null, "Anti-Desh", true),
     $Oh(-76, -125, 0, -1, null, "Anti-Oriharukon", true),
 
     $Ma(0, 0, -100, -1, null, "Anti-Magic", false),
@@ -276,8 +278,19 @@ public enum Element {
     $Nt(0, -10000, 0, -1, null, "Anti-Neutronium", false);
 
     public static volatile int VERSION = 509;
+
+    public static Element get(String aMaterialName) {
+        Object tObject = GT_Utility.getFieldContent(Element.class, aMaterialName, false, false);
+        if (tObject instanceof Element) {
+            return (Element) tObject;
+        }
+        return _NULL;
+    }
+
     public final long mProtons, mNeutrons, mAdditionalMass, mHalfLifeSeconds;
+
     public final String mName, mDecayTo;
+
     public final boolean mIsIsotope;
 
     /**
@@ -287,7 +300,8 @@ public enum Element {
 
     /**
      * @param aProtons         Amount of Protons. Antiprotons if negative.
-     * @param aNeutrons        Amount of Neutrons. Antineutrons if negative. (I could have made mistakes with the Neutron amount calculation, please tell me if I did something wrong)
+     * @param aNeutrons        Amount of Neutrons. Antineutrons if negative. (I could have made mistakes with the Neutron amount calculation, please tell me
+     *                         if I did something wrong)
      * @param aHalfLifeSeconds Amount of Half Life this Material has in Seconds. -1 for stable Materials.
      * @param aDecayTo         String representing the Elements it decays to. Separated by an '&' Character.
      * @param aName            Name of the Element
@@ -300,13 +314,6 @@ public enum Element {
         mDecayTo = aDecayTo;
         mName = aName;
         mIsIsotope = aIsIsotope;
-    }
-
-    public static Element get(String aMaterialName) {
-        Object tObject = GT_Utility.getFieldContent(Element.class, aMaterialName, false, false);
-        if (tObject instanceof Element)
-            return (Element) tObject;
-        return _NULL;
     }
 
     public long getProtons() {

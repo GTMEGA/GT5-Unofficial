@@ -1,13 +1,17 @@
 package gregtech.api.graphs.paths;
 
+
 import gregtech.api.graphs.Lock;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 
+
 //to contain all info about the path between nodes
 public class NodePath {
-    protected MetaPipeEntity[] mPipes;
+
     public Lock lock;
+
+    protected MetaPipeEntity[] mPipes;
 
     public NodePath(MetaPipeEntity[] aCables) {
         this.mPipes = aCables;
@@ -38,4 +42,5 @@ public class NodePath {
             }
         }
     }
+
 }

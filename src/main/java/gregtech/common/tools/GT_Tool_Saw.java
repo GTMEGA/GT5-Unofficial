@@ -1,5 +1,6 @@
 package gregtech.common.tools;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -20,7 +21,41 @@ import net.minecraftforge.event.world.BlockEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class GT_Tool_Saw extends GT_Tool {
+
+    @Override
+    public float getBaseDamage() {
+        return 1.75F;
+    }
+
+    @Override
+    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+        return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "axe", "saw") || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock, Material.leaves,
+                                                                                                                                     Material.vine,
+                                                                                                                                     Material.wood,
+                                                                                                                                     Material.cactus,
+                                                                                                                                     Material.ice,
+                                                                                                                                     Material.packedIce
+                                                                                                                                    );
+
+    }
+
+    @Override
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadSaw.mTextureIndex]
+                           : Textures.ItemIcons.HANDLE_SAW;
+    }
+
+    @Override
+    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+    }
+
+    @Override
+    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+    }
+
     @Override
     public int getToolDamagePerBlockBreak() {
         return 50;
@@ -47,11 +82,6 @@ public class GT_Tool_Saw extends GT_Tool {
     }
 
     @Override
-    public float getBaseDamage() {
-        return 1.75F;
-    }
-
-    @Override
     public float getSpeedMultiplier() {
         return 1.0F;
     }
@@ -59,6 +89,11 @@ public class GT_Tool_Saw extends GT_Tool {
     @Override
     public float getMaxDurabilityMultiplier() {
         return 1.0F;
+    }
+
+    @Override
+    public String getMiningSound() {
+        return null;
     }
 
     @Override
@@ -73,16 +108,23 @@ public class GT_Tool_Saw extends GT_Tool {
 
     @Override
     public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(0);
+        return GregTech_API.sSoundList.get(0);
     }
 
     @Override
-    public String getMiningSound() {
-        return null;
-    }
-
-    @Override
-    public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+    public int convertBlockDrops(
+            List<ItemStack> aDrops,
+            ItemStack aStack,
+            EntityPlayer aPlayer,
+            Block aBlock,
+            int aX,
+            int aY,
+            int aZ,
+            byte aMetaData,
+            int aFortune,
+            boolean aSilkTouch,
+            BlockEvent.HarvestDropsEvent aEvent
+                                ) {
         if ((aBlock.getMaterial() == Material.leaves) && ((aBlock instanceof IShearable))) {
             aPlayer.worldObj.setBlock(aX, aY, aZ, aBlock, aMetaData, 0);
             if (((IShearable) aBlock).isShearable(aStack, aPlayer.worldObj, aX, aY, aZ)) {
@@ -102,40 +144,15 @@ public class GT_Tool_Saw extends GT_Tool {
     }
 
     @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
-        return GT_ToolHarvestHelper.isAppropriateTool(aBlock , aMetaData ,"axe" ,"saw")
-                || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock,
-                Material.leaves,
-                Material.vine,
-                Material.wood,
-                Material.cactus,
-                Material.ice,
-                Material.packedIce
-        );
-
-    }
-
-    @Override
     public ItemStack getBrokenItem(ItemStack aStack) {
         return null;
     }
 
     @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadSaw.mTextureIndex] : Textures.ItemIcons.HANDLE_SAW;
-    }
-
-    @Override
-    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
-    }
-
-    @Override
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
-    }
-
-    @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " was getting cut down by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
+        return new ChatComponentText(
+                EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " was getting cut down by " + EnumChatFormatting.GREEN +
+                aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
     }
+
 }

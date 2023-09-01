@@ -24,22 +24,6 @@ public class GT_Container_DevFluidSource extends GT_Container_Dev<GT_MetaTileEnt
     }
 
     /**
-     * @return
-     */
-    @Override
-    public int getDWSWidthBump() {
-        return 82;
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public int baseWidth() {
-        return 256;
-    }
-
-    /**
      * To add the Slots to your GUI
      *
      * @param aPlayerInventory
@@ -79,6 +63,22 @@ public class GT_Container_DevFluidSource extends GT_Container_Dev<GT_MetaTileEnt
     @Override
     protected int getGuiWidth() {
         return applyDWSBump(baseWidth());
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public int baseWidth() {
+        return 256;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public int getDWSWidthBump() {
+        return 82;
     }
 
     /**

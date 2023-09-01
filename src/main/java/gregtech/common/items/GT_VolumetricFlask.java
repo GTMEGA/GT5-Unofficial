@@ -1,5 +1,5 @@
-
 package gregtech.common.items;
+
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -30,8 +30,11 @@ import static ic2.core.util.LiquidUtil.*;
 
 
 public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContainerItem {
+
     private final int maxCapacity;
+
     private final String unlocalFlaskName;
+
     @SideOnly(Side.CLIENT)
     public IIcon iconWindow;
 
@@ -44,19 +47,13 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (!world.isRemote && isEmpty(stack) && getMovingObjectPositionFromPlayer(world, player, true) == null)
-            player.openGui(GT_Values.GT, 1010, world, 0, 0, 0);
-        return super.onItemRightClick(stack, world, player);
-    }
-
-    @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float xOffset, float yOffset, float zOffset) {
         if (player instanceof FakePlayer) {
             return false;
         }
-        if (world.isRemote)
+        if (world.isRemote) {
             return false;
+        }
         if (interactWithTank(stack, player, world, x, y, z, side)) {
             return true;
         }
@@ -76,30 +73,40 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
             }
             ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[mop.sideHit];
             FluidStack fluidStack = drainContainerStack(stack, player, 1000, true);
-            if (placeFluid(fluidStack, world, x, y, z) || (player.canPlayerEdit(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, mop.sideHit, stack) && placeFluid(fluidStack, world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ))) {
-                if (!player.capabilities.isCreativeMode)
+            if (placeFluid(fluidStack, world, x, y, z) || (
+                    player.canPlayerEdit(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, mop.sideHit, stack) && placeFluid(
+                            fluidStack, world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)
+            )) {
+                if (!player.capabilities.isCreativeMode) {
                     drainContainerStack(stack, player, 1000, false);
+                }
                 return true;
             }
         }
         return false;
     }
 
+    @Override
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if (!world.isRemote && isEmpty(stack) && getMovingObjectPositionFromPlayer(world, player, true) == null) {
+            player.openGui(GT_Values.GT, 1010, world, 0, 0, 0);
+        }
+        return super.onItemRightClick(stack, world, player);
+    }
+
     public boolean isEmpty(ItemStack stack) {
         return getFluid(stack) == null;
     }
 
-    public int getFreeSpace(ItemStack stack) {
-        int capacity = getCapacity(stack);
-        if (capacity > 0) {
-            FluidStack fluidStack = getFluid(stack);
-            return fluidStack == null ? capacity : capacity - fluidStack.amount;
+    @Override
+    public FluidStack getFluid(ItemStack stack) {
+        if (stack.hasTagCompound()) {
+            NBTTagCompound nbt = stack.getTagCompound();
+            if (nbt.hasKey("Fluid", 10)) {
+                return FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("Fluid"));
+            }
         }
-        return 0;
-    }
-
-    public int getMaxCapacity() {
-        return this.maxCapacity;
+        return null;
     }
 
     @Override
@@ -107,60 +114,18 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
         int capacity = 1000;
         if (stack.hasTagCompound()) {
             NBTTagCompound nbt = stack.getTagCompound();
-            if (nbt.hasKey("Capacity", 3))
+            if (nbt.hasKey("Capacity", 3)) {
                 capacity = nbt.getInteger("Capacity");
+            }
         }
         return Math.min(getMaxCapacity(), capacity);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aIconRegister) {
-        super.registerIcons(aIconRegister);
-        iconWindow = aIconRegister.registerIcon(RES_PATH_ITEM + "gt."+unlocalFlaskName+".window");
-    }
-
-    public void setCapacity(ItemStack stack, int capacity) {
-        capacity = Math.min(capacity, getMaxCapacity());
-        NBTTagCompound nbt = stack.getTagCompound();
-        if (nbt == null) {
-            stack.setTagCompound(nbt = new NBTTagCompound());
-        }
-        nbt.setInteger("Capacity", capacity);
-    }
-
-    @Override
-    public FluidStack getFluid(ItemStack stack) {
-        if (stack.hasTagCompound()) {
-            NBTTagCompound nbt = stack.getTagCompound();
-            if (nbt.hasKey("Fluid", 10))
-                return FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("Fluid"));
-        }
-        return null;
-    }
-
-    public void setFluid(ItemStack stack, FluidStack fluidStack) {
-        boolean removeFluid = (fluidStack == null) || (fluidStack.amount <= 0);
-        NBTTagCompound nbt = stack.getTagCompound();
-        if (nbt == null) {
-            if (removeFluid)
-                return;
-            stack.setTagCompound(nbt = new NBTTagCompound());
-        }
-        if (removeFluid) {
-            nbt.removeTag("Fluid");
-            if (nbt.hasNoTags()) {
-                stack.setTagCompound(null);
-            }
-        } else {
-            nbt.setTag("Fluid", fluidStack.writeToNBT(new NBTTagCompound()));
-        }
-    }
-
-    @Override
     public int fill(ItemStack stack, FluidStack resource, boolean doFill) {
-        if (stack.stackSize != 1)
+        if (stack.stackSize != 1) {
             return 0;
+        }
         if ((resource == null) || (resource.amount <= 0)) {
             return 0;
         }
@@ -180,11 +145,13 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
 
     @Override
     public FluidStack drain(ItemStack stack, int maxDrain, boolean doDrain) {
-        if (stack.stackSize != 1)
+        if (stack.stackSize != 1) {
             return null;
+        }
         FluidStack fluidStack = getFluid(stack);
-        if (fluidStack == null)
+        if (fluidStack == null) {
             return null;
+        }
         maxDrain = Math.min(fluidStack.amount, maxDrain);
         if (doDrain) {
             fluidStack.amount -= maxDrain;
@@ -193,17 +160,23 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
         return new FluidStack(fluidStack, maxDrain);
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean b) {
-        super.addInformation(stack, player, info, b);
-        FluidStack fs = getFluid(stack);
-        if (fs != null) {
-            info.add(String.format("< %s, %d mB >", FluidRegistry.getFluidName(fs), fs.amount));
-        } else {
-            info.add(String.format("< Empty, %d mB >", getCapacity(stack)));
+    public void setFluid(ItemStack stack, FluidStack fluidStack) {
+        boolean removeFluid = (fluidStack == null) || (fluidStack.amount <= 0);
+        NBTTagCompound nbt = stack.getTagCompound();
+        if (nbt == null) {
+            if (removeFluid) {
+                return;
+            }
+            stack.setTagCompound(nbt = new NBTTagCompound());
         }
-        info.add("Rightclick on air to set volume (only while empty)");
+        if (removeFluid) {
+            nbt.removeTag("Fluid");
+            if (nbt.hasNoTags()) {
+                stack.setTagCompound(null);
+            }
+        } else {
+            nbt.setTag("Fluid", fluidStack.writeToNBT(new NBTTagCompound()));
+        }
     }
 
     @Override
@@ -218,6 +191,15 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
                 itemList.add(stack);
             }
         }
+    }
+
+    public void setCapacity(ItemStack stack, int capacity) {
+        capacity = Math.min(capacity, getMaxCapacity());
+        NBTTagCompound nbt = stack.getTagCompound();
+        if (nbt == null) {
+            stack.setTagCompound(nbt = new NBTTagCompound());
+        }
+        nbt.setInteger("Capacity", capacity);
     }
 
     private boolean interactWithTank(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side) {
@@ -287,4 +269,38 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
         }
         return false;
     }
+
+    public int getMaxCapacity() {
+        return this.maxCapacity;
+    }
+
+    public int getFreeSpace(ItemStack stack) {
+        int capacity = getCapacity(stack);
+        if (capacity > 0) {
+            FluidStack fluidStack = getFluid(stack);
+            return fluidStack == null ? capacity : capacity - fluidStack.amount;
+        }
+        return 0;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean b) {
+        super.addInformation(stack, player, info, b);
+        FluidStack fs = getFluid(stack);
+        if (fs != null) {
+            info.add(String.format("< %s, %d mB >", FluidRegistry.getFluidName(fs), fs.amount));
+        } else {
+            info.add(String.format("< Empty, %d mB >", getCapacity(stack)));
+        }
+        info.add("Rightclick on air to set volume (only while empty)");
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister aIconRegister) {
+        super.registerIcons(aIconRegister);
+        iconWindow = aIconRegister.registerIcon(RES_PATH_ITEM + "gt." + unlocalFlaskName + ".window");
+    }
+
 }

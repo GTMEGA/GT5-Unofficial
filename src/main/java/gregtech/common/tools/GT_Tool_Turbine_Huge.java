@@ -1,18 +1,11 @@
 package gregtech.common.tools;
 
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 
-public class GT_Tool_Turbine_Huge extends GT_Tool_Turbine {
-    @Override
-    public float getSpeedMultiplier() {
-        return 4.0F;
-    }
 
-    @Override
-    public float getMaxDurabilityMultiplier() {
-        return 4.0F;
-    }
+public class GT_Tool_Turbine_Huge extends GT_Tool_Turbine {
 
     @Override
     public float getBaseDamage() {
@@ -23,4 +16,15 @@ public class GT_Tool_Turbine_Huge extends GT_Tool_Turbine {
     public IIconContainer getTurbineIcon() {
         return Textures.ItemIcons.TURBINE_HUGE;
     }
+
+    @Override
+    public float getSpeedMultiplier() {
+        return 4.0F;
+    }
+
+    @Override
+    public float getMaxDurabilityMultiplier() {
+        return 4.0F;
+    }
+
 }

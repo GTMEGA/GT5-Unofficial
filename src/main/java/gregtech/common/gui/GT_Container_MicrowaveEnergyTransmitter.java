@@ -1,5 +1,6 @@
 package gregtech.common.gui;
 
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
@@ -12,12 +13,19 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+
 public class GT_Container_MicrowaveEnergyTransmitter extends GT_ContainerMetaTile_Machine {
+
     public int mEgg = 0;
+
     public int mTargetD = 0;
+
     public int mTargetZ = 0;
+
     public int mTargetY = 0;
+
     public int mTargetX = 0;
+
     public GT_Container_MicrowaveEnergyTransmitter(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
     }
@@ -165,4 +173,5 @@ public class GT_Container_MicrowaveEnergyTransmitter extends GT_ContainerMetaTil
                 this.mEgg = par2;
         }
     }
+
 }

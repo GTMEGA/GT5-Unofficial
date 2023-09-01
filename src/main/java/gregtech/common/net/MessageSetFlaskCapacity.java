@@ -1,5 +1,6 @@
 package gregtech.common.net;
 
+
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.net.GT_Packet_New;
 import gregtech.common.items.GT_VolumetricFlask;
@@ -11,7 +12,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
+
 public final class MessageSetFlaskCapacity extends GT_Packet_New {
+
     private int capacity, dimID, playerID;
 
     public MessageSetFlaskCapacity() {
@@ -51,9 +54,11 @@ public final class MessageSetFlaskCapacity extends GT_Packet_New {
             ItemStack stack = ((EntityPlayer) w.getEntityByID(playerID)).getHeldItem();
             if ((stack != null) && (stack.stackSize > 0)) {
                 Item item = stack.getItem();
-                if ((item instanceof GT_VolumetricFlask))
+                if ((item instanceof GT_VolumetricFlask)) {
                     ((GT_VolumetricFlask) item).setCapacity(stack, capacity);
+                }
             }
         }
     }
+
 }

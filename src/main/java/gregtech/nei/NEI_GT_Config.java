@@ -1,5 +1,6 @@
 package gregtech.nei;
 
+
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
@@ -15,33 +16,24 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+
 public class NEI_GT_Config implements IConfigureNEI {
+
     /**
      * This map determines the order in which NEI handlers will be registered and displayed in tabs.
      *
      * <p>Handlers will be displayed in ascending order of integer value. Any recipe map that is not
      * present in this map will be assigned a value of 0. Negative values are fine.
      */
-    private static final ImmutableMap<GT_Recipe.GT_Recipe_Map, Integer> RECIPE_MAP_ORDERING =
-            ImmutableMap.<GT_Recipe.GT_Recipe_Map, Integer>builder()
-                    .put(GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes, 1)
-                    .put(GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes, 2)
-                    .build();
+    private static final ImmutableMap<GT_Recipe.GT_Recipe_Map, Integer> RECIPE_MAP_ORDERING = ImmutableMap.<GT_Recipe.GT_Recipe_Map, Integer>builder().put(
+            GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes, 1).put(GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes, 2).build();
 
-    private static final Comparator<RecipeMapHandler> RECIPE_MAP_HANDLER_COMPARATOR =
-            Comparator.comparingInt(
-                    handler -> RECIPE_MAP_ORDERING.getOrDefault(handler.getRecipeMap(), 0));
+    private static final Comparator<RecipeMapHandler> RECIPE_MAP_HANDLER_COMPARATOR = Comparator.comparingInt(
+            handler -> RECIPE_MAP_ORDERING.getOrDefault(handler.getRecipeMap(), 0));
 
     public static boolean sIsAdded = true;
-    public static GT_NEI_AssLineHandler ALH;
 
-    private static void addHandler(TemplateRecipeHandler handler) {
-        FMLInterModComms.sendRuntimeMessage(
-                GT_Values.GT, "NEIPlugins", "register-crafting-handler",
-                "gregtech@" + handler.getRecipeName() + "@" + handler.getOverlayIdentifier());
-        GuiCraftingRecipe.craftinghandlers.add(handler);
-        GuiUsageRecipe.usagehandlers.add(handler);
-    }
+    public static GT_NEI_AssLineHandler ALH;
 
     @Override
     public void loadConfig() {
@@ -66,6 +58,14 @@ public class NEI_GT_Config implements IConfigureNEI {
         sIsAdded = true;
     }
 
+    private static void addHandler(TemplateRecipeHandler handler) {
+        FMLInterModComms.sendRuntimeMessage(GT_Values.GT, "NEIPlugins", "register-crafting-handler",
+                                            "gregtech@" + handler.getRecipeName() + "@" + handler.getOverlayIdentifier()
+                                           );
+        GuiCraftingRecipe.craftinghandlers.add(handler);
+        GuiUsageRecipe.usagehandlers.add(handler);
+    }
+
     @Override
     public String getName() {
         return "GregTech NEI Plugin";
@@ -75,4 +75,5 @@ public class NEI_GT_Config implements IConfigureNEI {
     public String getVersion() {
         return "(5.03a)";
     }
+
 }

@@ -1,5 +1,6 @@
 package gregtech.common.render;
 
+
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
@@ -15,7 +16,9 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
 
+
 public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
+
     public GT_MetaGenerated_Tool_Renderer() {
         for (GT_MetaGenerated_Tool tItem : GT_MetaGenerated_Tool.sInstances.values()) {
             if (tItem != null) {
@@ -29,7 +32,8 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
         if ((GT_Utility.isStackInvalid(aStack)) || (aStack.getItemDamage() < 0)) {
             return false;
         }
-        return (aType == IItemRenderer.ItemRenderType.EQUIPPED_FIRST_PERSON) || (aType == IItemRenderer.ItemRenderType.INVENTORY) || (aType == IItemRenderer.ItemRenderType.EQUIPPED) || (aType == IItemRenderer.ItemRenderType.ENTITY);
+        return (aType == IItemRenderer.ItemRenderType.EQUIPPED_FIRST_PERSON) || (aType == IItemRenderer.ItemRenderType.INVENTORY) ||
+               (aType == IItemRenderer.ItemRenderType.EQUIPPED) || (aType == IItemRenderer.ItemRenderType.ENTITY);
     }
 
     @Override
@@ -72,7 +76,10 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                     if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                         GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     } else {
-                        ItemRenderer.renderItemIn2D(Tessellator.instance, tIcon.getMaxU(), tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(), tIcon.getIconHeight(), 0.0625F);
+                        ItemRenderer.renderItemIn2D(
+                                Tessellator.instance, tIcon.getMaxU(), tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(),
+                                tIcon.getIconHeight(), 0.0625F
+                                                   );
                     }
                     GL11.glColor3f(1.0F, 1.0F, 1.0F);
                 }
@@ -82,7 +89,10 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                     if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                         GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     } else {
-                        ItemRenderer.renderItemIn2D(Tessellator.instance, tOverlay.getMaxU(), tOverlay.getMinV(), tOverlay.getMinU(), tOverlay.getMaxV(), tOverlay.getIconWidth(), tOverlay.getIconHeight(), 0.0625F);
+                        ItemRenderer.renderItemIn2D(
+                                Tessellator.instance, tOverlay.getMaxU(), tOverlay.getMinV(), tOverlay.getMinU(), tOverlay.getMaxV(), tOverlay.getIconWidth(),
+                                tOverlay.getIconHeight(), 0.0625F
+                                                   );
                     }
                 }
             }
@@ -98,7 +108,10 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                     if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                         GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     } else {
-                        ItemRenderer.renderItemIn2D(Tessellator.instance, tIcon.getMaxU(), tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(), tIcon.getIconHeight(), 0.0625F);
+                        ItemRenderer.renderItemIn2D(
+                                Tessellator.instance, tIcon.getMaxU(), tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(),
+                                tIcon.getIconHeight(), 0.0625F
+                                                   );
                     }
                     GL11.glColor3f(1.0F, 1.0F, 1.0F);
                 }
@@ -108,7 +121,10 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                     if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                         GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     } else {
-                        ItemRenderer.renderItemIn2D(Tessellator.instance, tOverlay.getMaxU(), tOverlay.getMinV(), tOverlay.getMinU(), tOverlay.getMaxV(), tOverlay.getIconWidth(), tOverlay.getIconHeight(), 0.0625F);
+                        ItemRenderer.renderItemIn2D(
+                                Tessellator.instance, tOverlay.getMaxU(), tOverlay.getMinV(), tOverlay.getMinU(), tOverlay.getMaxV(), tOverlay.getIconWidth(),
+                                tOverlay.getIconHeight(), 0.0625F
+                                                   );
                     }
                 }
             }
@@ -122,7 +138,10 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                     } else if (tDamage >= tMaxDamage) {
                         aIcon = gregtech.api.enums.Textures.ItemIcons.DURABILITY_BAR[0];
                     } else {
-                        aIcon = gregtech.api.enums.Textures.ItemIcons.DURABILITY_BAR[((int) java.lang.Math.max(0L, java.lang.Math.min(7L, (tMaxDamage - tDamage) * 8L / tMaxDamage)))];
+                        aIcon = gregtech.api.enums.Textures.ItemIcons.DURABILITY_BAR[(
+                                (int) java.lang.Math.max(
+                                        0L, java.lang.Math.min(7L, (tMaxDamage - tDamage) * 8L / tMaxDamage))
+                        )];
                     }
                     if (aIcon != null) {
                         IIcon tIcon = aIcon.getIcon();
@@ -133,7 +152,10 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                             if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                                 GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                             } else {
-                                ItemRenderer.renderItemIn2D(Tessellator.instance, tIcon.getMaxU(), tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(), tIcon.getIconHeight(), 0.0625F);
+                                ItemRenderer.renderItemIn2D(
+                                        Tessellator.instance, tIcon.getMaxU(), tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(),
+                                        tIcon.getIconHeight(), 0.0625F
+                                                           );
                             }
                         }
                         if (tOverlay != null) {
@@ -142,7 +164,10 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                             if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                                 GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                             } else {
-                                ItemRenderer.renderItemIn2D(Tessellator.instance, tOverlay.getMaxU(), tOverlay.getMinV(), tOverlay.getMinU(), tOverlay.getMaxV(), tOverlay.getIconWidth(), tOverlay.getIconHeight(), 0.0625F);
+                                ItemRenderer.renderItemIn2D(
+                                        Tessellator.instance, tOverlay.getMaxU(), tOverlay.getMinV(), tOverlay.getMinU(), tOverlay.getMaxV(),
+                                        tOverlay.getIconWidth(), tOverlay.getIconHeight(), 0.0625F
+                                                           );
                             }
                         }
                     }
@@ -154,7 +179,10 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                     } else if (tCharge >= tStats[0]) {
                         aIcon = gregtech.api.enums.Textures.ItemIcons.ENERGY_BAR[8];
                     } else {
-                        aIcon = gregtech.api.enums.Textures.ItemIcons.ENERGY_BAR[(7 - (int) java.lang.Math.max(0L, java.lang.Math.min(6L, (tStats[0] - tCharge) * 7L / tStats[0])))];
+                        aIcon = gregtech.api.enums.Textures.ItemIcons.ENERGY_BAR[(
+                                7 - (int) java.lang.Math.max(
+                                        0L, java.lang.Math.min(6L, (tStats[0] - tCharge) * 7L / tStats[0]))
+                        )];
                     }
                 } else {
                     aIcon = null;
@@ -168,7 +196,10 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                         if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                             GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                         } else {
-                            ItemRenderer.renderItemIn2D(Tessellator.instance, tIcon.getMaxU(), tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(), tIcon.getIconHeight(), 0.0625F);
+                            ItemRenderer.renderItemIn2D(
+                                    Tessellator.instance, tIcon.getMaxU(), tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(),
+                                    tIcon.getIconHeight(), 0.0625F
+                                                       );
                         }
                     }
                     if (tOverlay != null) {
@@ -177,7 +208,10 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                         if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                             GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                         } else {
-                            ItemRenderer.renderItemIn2D(Tessellator.instance, tOverlay.getMaxU(), tOverlay.getMinV(), tOverlay.getMinU(), tOverlay.getMaxV(), tOverlay.getIconWidth(), tOverlay.getIconHeight(), 0.0625F);
+                            ItemRenderer.renderItemIn2D(
+                                    Tessellator.instance, tOverlay.getMaxU(), tOverlay.getMinV(), tOverlay.getMinU(), tOverlay.getMaxV(),
+                                    tOverlay.getIconWidth(), tOverlay.getIconHeight(), 0.0625F
+                                                       );
                         }
                     }
                 }
@@ -185,4 +219,5 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
         }
         GL11.glDisable(3042);
     }
+
 }

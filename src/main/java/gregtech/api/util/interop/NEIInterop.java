@@ -17,6 +17,20 @@ public final class NEIInterop extends NEIInteropBase {
 
     /**
      * @param container
+     */
+    @Override
+    @Optional.Method(modid = GT_Values.MOD_ID_NEI)
+    public void preDraw(final GuiContainer container) {
+        final GuiContainerManager manager = GuiContainerManager.getManager(container);
+        // Mixin fuckery
+        //noinspection ConstantValue
+        if (manager != null) {
+            manager.preDraw();
+        }
+    }
+
+    /**
+     * @param container
      * @param mouseX
      * @param mouseY
      */
@@ -27,20 +41,6 @@ public final class NEIInterop extends NEIInteropBase {
         //noinspection ConstantValue
         if (manager != null) {
             manager.renderObjects(mouseX, mouseY);
-        }
-    }
-
-    /**
-     * @param container
-     */
-    @Override
-    @Optional.Method(modid = GT_Values.MOD_ID_NEI)
-    public void preDraw(final GuiContainer container) {
-        final GuiContainerManager manager = GuiContainerManager.getManager(container);
-        // Mixin fuckery
-        //noinspection ConstantValue
-        if (manager != null) {
-            manager.preDraw();
         }
     }
 

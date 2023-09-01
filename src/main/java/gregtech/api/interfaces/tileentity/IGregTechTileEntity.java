@@ -1,5 +1,6 @@
 package gregtech.api.interfaces.tileentity;
 
+
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import net.minecraft.entity.Entity;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
 /**
  * A simple compound Interface for all my TileEntities.
  * <p/>
@@ -21,7 +23,17 @@ import java.util.UUID;
  * <p/>
  * It can cause Problems to include this Interface!
  */
-public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTileEntity, ICoverable, IFluidHandler, ITurnable, IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdateable {
+public interface IGregTechTileEntity extends ITexturedTileEntity,
+                                             IGearEnergyTileEntity,
+                                             ICoverable,
+                                             IFluidHandler,
+                                             ITurnable,
+                                             IGregTechDeviceInformation,
+                                             IUpgradableMachine,
+                                             IDigitalChest,
+                                             IDescribable,
+                                             IMachineBlockUpdateable {
+
     /**
      * gets the Error displayed on the GUI
      */
@@ -41,20 +53,6 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
      * Internal Usage only!
      */
     int setMetaTileID(short aID);
-
-    /**
-     * @return the MetaTileEntity which is belonging to this, or null if it doesnt has one.
-     */
-    IMetaTileEntity getMetaTileEntity();
-
-    /**
-     * Sets the MetaTileEntity.
-     * Even though this uses the Universal Interface, certain BaseMetaTileEntities only accept one kind of MetaTileEntity
-     * so only use this if you are sure its the correct one or you will get a Class cast Error.
-     *
-     * @param aMetaTileEntity
-     */
-    void setMetaTileEntity(IMetaTileEntity aMetaTileEntity);
 
     /**
      * Causes a general Texture update.
@@ -140,25 +138,42 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
      * Checks validity of meta tile and delegates to it
      */
     @Override
-    default void onMachineBlockUpdate(){
-        if(!isDead() && getMetaTileEntity() != null && getMetaTileEntity().getBaseMetaTileEntity() == this){
+    default void onMachineBlockUpdate() {
+        if (!isDead() && getMetaTileEntity() != null && getMetaTileEntity().getBaseMetaTileEntity() == this) {
             getMetaTileEntity().onMachineBlockUpdate();
         }
     }
+
+    /**
+     * @return the MetaTileEntity which is belonging to this, or null if it doesnt has one.
+     */
+    IMetaTileEntity getMetaTileEntity();
+
+    /**
+     * Sets the MetaTileEntity.
+     * Even though this uses the Universal Interface, certain BaseMetaTileEntities only accept one kind of MetaTileEntity
+     * so only use this if you are sure its the correct one or you will get a Class cast Error.
+     *
+     * @param aMetaTileEntity
+     */
+    void setMetaTileEntity(IMetaTileEntity aMetaTileEntity);
 
     /**
      * Checks validity of meta tile and delegates to it
      */
     @Override
     default boolean isMachineBlockUpdateRecursive() {
-        return !isDead() && getMetaTileEntity() != null &&
-                getMetaTileEntity().getBaseMetaTileEntity() == this &&
-                getMetaTileEntity().isMachineBlockUpdateRecursive();
+        return !isDead() && getMetaTileEntity() != null && getMetaTileEntity().getBaseMetaTileEntity() == this &&
+               getMetaTileEntity().isMachineBlockUpdateRecursive();
     }
 
-    default void setShutdownStatus(boolean newStatus) {return;}
+    default void setShutdownStatus(boolean newStatus) {
+    }
 
-    default void setNotificationStatus(boolean newStatus) {return;}
+    default void setNotificationStatus(boolean newStatus) {
+    }
 
-    default void resetShutdownInformation() {return;}
+    default void resetShutdownInformation() {
+    }
+
 }

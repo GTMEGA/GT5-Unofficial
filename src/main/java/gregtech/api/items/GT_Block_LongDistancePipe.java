@@ -1,5 +1,6 @@
 package gregtech.api.items;
 
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -25,42 +26,24 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Random;
 
+
 public class GT_Block_LongDistancePipe extends GT_Generic_Block {
+
     public IIconContainer[] mIcons;
+
     public GT_Block_LongDistancePipe() {
         super(GT_Item_LongDistancePipe.class, "gt.block.longdistancepipe", new GT_Material_Machines());
         setStepSound(soundTypeMetal);
         setCreativeTab(GregTech_API.TAB_GREGTECH);
         GregTech_API.registerMachineBlock(this, -1);
-        
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName()+".0.name", "Long Distance Fluid Pipeline Pipe");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName()+".1.name", "Long Distance Item Pipeline Pipe");
+
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Long Distance Fluid Pipeline Pipe");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Long Distance Item Pipeline Pipe");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + 32767 + ".name", "Any Sub Block of this");
-        
+
         ItemList.Long_Distance_Pipeline_Fluid_Pipe.set(new ItemStack(this, 1, 0));
         ItemList.Long_Distance_Pipeline_Item_Pipe.set(new ItemStack(this, 1, 1));
         mIcons = new IIconContainer[]{Textures.BlockIcons.LONG_DISTANCE_PIPE_FLUID, Textures.BlockIcons.LONG_DISTANCE_PIPE_ITEM};
-    }
-    @Override
-    public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
-        super.onBlockAdded(aWorld, aX, aY, aZ);
-        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
-            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
-        }
-    }
-    @Override
-    public void breakBlock(World aWorld, int aX, int aY, int aZ, Block par5, int par6) {
-        GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
-        super.breakBlock(aWorld, aX, aY, aZ, par5, par6);
-    }
-    @Override
-    public String getHarvestTool(int aMeta) {
-        return "wrench";
-    }
-
-    @Override
-    public int getHarvestLevel(int aMeta) {
-        return 2;
     }
 
     @Override
@@ -69,34 +52,22 @@ public class GT_Block_LongDistancePipe extends GT_Generic_Block {
     }
 
     @Override
-    public float getExplosionResistance(Entity aTNT) {
-        return Blocks.iron_block.getExplosionResistance(aTNT);
-    }
-
-
-    @Override
-    public String getUnlocalizedName() {
-        return this.mUnlocalizedName;
-    }
-
-    @Override
-    public String getLocalizedName() {
-        return StatCollector.translateToLocal(this.mUnlocalizedName + ".name");
-    }
-    
-    @Override
     public IIcon getIcon(int aSide, int aMeta) {
         return mIcons[aMeta % mIcons.length].getIcon();
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
+    public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
+        super.onBlockAdded(aWorld, aX, aY, aZ);
+        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
+            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        }
     }
 
     @Override
-    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
-        return false;
+    public void breakBlock(World aWorld, int aX, int aY, int aZ, Block par5, int par6) {
+        GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        super.breakBlock(aWorld, aX, aY, aZ, par5, par6);
     }
 
     @Override
@@ -115,6 +86,21 @@ public class GT_Block_LongDistancePipe extends GT_Generic_Block {
     }
 
     @Override
+    public float getExplosionResistance(Entity aTNT) {
+        return Blocks.iron_block.getExplosionResistance(aTNT);
+    }
+
+    @Override
+    public String getLocalizedName() {
+        return StatCollector.translateToLocal(this.mUnlocalizedName + ".name");
+    }
+
+    @Override
+    public String getUnlocalizedName() {
+        return this.mUnlocalizedName;
+    }
+
+    @Override
     public int getDamageValue(World par1World, int par2, int par3, int par4) {
         return par1World.getBlockMetadata(par2, par3, par4);
     }
@@ -124,7 +110,30 @@ public class GT_Block_LongDistancePipe extends GT_Generic_Block {
     public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
         for (int i = 0; i < 3; i++) {
             ItemStack aStack = new ItemStack(aItem, 1, i);
-            if (!aStack.getDisplayName().contains(".name")) aList.add(aStack);
+            if (!aStack.getDisplayName().contains(".name")) {
+                aList.add(aStack);
+            }
         }
     }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister p_149651_1_) {
+    }
+
+    @Override
+    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
+        return false;
+    }
+
+    @Override
+    public String getHarvestTool(int aMeta) {
+        return "wrench";
+    }
+
+    @Override
+    public int getHarvestLevel(int aMeta) {
+        return 2;
+    }
+
 }

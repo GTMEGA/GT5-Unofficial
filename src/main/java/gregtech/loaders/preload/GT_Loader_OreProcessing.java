@@ -1,10 +1,12 @@
 package gregtech.loaders.preload;
 
+
 import gregtech.api.util.GT_Log;
 import gregtech.loaders.oreprocessing.*;
 
-public class GT_Loader_OreProcessing
-        implements Runnable {
+
+public class GT_Loader_OreProcessing implements Runnable {
+
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: Register Ore processing.");
@@ -60,4 +62,5 @@ public class GT_Loader_OreProcessing
         new ProcessingWax();
         new ProcessingWire();
     }
+
 }

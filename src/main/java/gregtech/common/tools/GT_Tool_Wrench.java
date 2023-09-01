@@ -1,5 +1,6 @@
 package gregtech.common.tools;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -17,19 +18,40 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
-import net.minecraft.world.World;
 
 import java.util.Arrays;
 import java.util.List;
 
+
 public class GT_Tool_Wrench extends GT_Tool {
+
     public static final List<String> mEffectiveList = Arrays.asList(EntityIronGolem.class.getName(), "EntityTowerGuardian");
 
     @Override
-    public float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer) {
-        String tName = aEntity.getClass().getName();
-        tName = tName.substring(tName.lastIndexOf('.') + 1);
-        return (mEffectiveList.contains(tName)) || (tName.contains("Golem")) ? aOriginalDamage * 2.0F : aOriginalDamage;
+    public float getBaseDamage() {
+        return 3.0F;
+    }
+
+    @Override
+    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+        return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "wrench") || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock, Material.piston) ||
+               GT_ToolHarvestHelper.isSpecialBlock(aBlock, Blocks.hopper, Blocks.dispenser, Blocks.dropper);
+
+    }
+
+    @Override
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? Textures.ItemIcons.WRENCH : null;
+    }
+
+    @Override
+    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : null;
+    }
+
+    @Override
+    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+        aItem.addItemBehavior(aID, new Behaviour_Wrench(100));
     }
 
     @Override
@@ -58,11 +80,6 @@ public class GT_Tool_Wrench extends GT_Tool {
     }
 
     @Override
-    public float getBaseDamage() {
-        return 3.0F;
-    }
-
-    @Override
     public int getHurtResistanceTime(int aOriginalHurtResistance, Entity aEntity) {
         return aOriginalHurtResistance * 2;
     }
@@ -78,8 +95,13 @@ public class GT_Tool_Wrench extends GT_Tool {
     }
 
     @Override
+    public String getMiningSound() {
+        return GregTech_API.sSoundList.get(100);
+    }
+
+    @Override
     public String getCraftingSound() {
-        return (String) GregTech_API.sSoundList.get(100);
+        return GregTech_API.sSoundList.get(100);
     }
 
     @Override
@@ -89,12 +111,7 @@ public class GT_Tool_Wrench extends GT_Tool {
 
     @Override
     public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(0);
-    }
-
-    @Override
-    public String getMiningSound() {
-        return (String) GregTech_API.sSoundList.get(100);
+        return GregTech_API.sSoundList.get(0);
     }
 
     @Override
@@ -111,14 +128,6 @@ public class GT_Tool_Wrench extends GT_Tool {
     public boolean isWrench() {
         return true;
     }
-    
-    @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
-        return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "wrench")
-                || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock, Material.piston)
-                || GT_ToolHarvestHelper.isSpecialBlock(aBlock,Blocks.hopper, Blocks.dispenser, Blocks.dropper);
-
-    }
 
     @Override
     public ItemStack getBrokenItem(ItemStack aStack) {
@@ -126,23 +135,17 @@ public class GT_Tool_Wrench extends GT_Tool {
     }
 
     @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.WRENCH : null;
-    }
-
-    @Override
-    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : null;
-    }
-
-    @Override
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
-        aItem.addItemBehavior(aID, new Behaviour_Wrench(100));
+    public float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer) {
+        String tName = aEntity.getClass().getName();
+        tName = tName.substring(tName.lastIndexOf('.') + 1);
+        return (mEffectiveList.contains(tName)) || (tName.contains("Golem")) ? aOriginalDamage * 2.0F : aOriginalDamage;
     }
 
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE + " threw a Monkey Wrench into the Plans of " + EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE);
+        return new ChatComponentText(
+                EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE + " threw a Monkey Wrench into the Plans of " +
+                EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE);
     }
-}
 
+}

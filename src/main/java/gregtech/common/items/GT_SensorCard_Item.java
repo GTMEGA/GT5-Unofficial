@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -20,7 +21,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+
 public class GT_SensorCard_Item extends GT_Generic_Item implements IRemoteSensor, IPanelDataSource {
+
     private static final UUID CARD_TYPE = new UUID(0L, 41L);
 
     private int strCount;
@@ -36,9 +39,9 @@ public class GT_SensorCard_Item extends GT_Generic_Item implements IRemoteSensor
         if (aStack != null) {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT == null) {
-            	aList.add(trans("014", "Missing Coodinates!"));
+                aList.add(trans("014", "Missing Coodinates!"));
             } else {
-            	aList.add(trans("015", "Device at:"));
+                aList.add(trans("015", "Device at:"));
                 aList.add(String.format("x: %d, y: %d, z: %d", tNBT.getInteger("x"), tNBT.getInteger("y"), tNBT.getInteger("z")));
             }
         }
@@ -59,7 +62,7 @@ public class GT_SensorCard_Item extends GT_Generic_Item implements IRemoteSensor
             for (int i = 0; i < tInfoData.length; i++) {
                 aCard.setString("mString" + i, tInfoData[i]);
             }
-            aCard.setInt("mString",strCount=tInfoData.length);
+            aCard.setInt("mString", strCount = tInfoData.length);
             return CardState.OK;
         }
         return CardState.NO_TARGET;
@@ -68,7 +71,7 @@ public class GT_SensorCard_Item extends GT_Generic_Item implements IRemoteSensor
     @Override
     public List<PanelString> getStringData(int aSettings, ICardWrapper aCard, boolean aLabels) {
         List<PanelString> rList = new LinkedList<>();
-        for (int i = 0; i < (strCount=aCard.getInt("mString")); i++) {
+        for (int i = 0; i < (strCount = aCard.getInt("mString")); i++) {
             if ((aSettings & 1 << i) != 0) {
                 PanelString line = new PanelString();
                 line.textLeft = GT_LanguageManager.getTranslation(aCard.getString("mString" + i), "\\\\");
@@ -96,4 +99,5 @@ public class GT_SensorCard_Item extends GT_Generic_Item implements IRemoteSensor
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item var1, CreativeTabs aTab, List aList) {
     }
+
 }

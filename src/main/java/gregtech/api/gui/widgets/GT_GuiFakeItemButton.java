@@ -1,5 +1,6 @@
 package gregtech.api.gui.widgets;
 
+
 import gregtech.api.interfaces.IGuiScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -7,13 +8,26 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
+
 public class GT_GuiFakeItemButton implements IGT_GuiButton {
 
     private final GT_GuiIcon bgIcon;
+
     private ItemStack item;
-    private IGuiScreen gui;
-    private int x0, y0, xPosition, yPosition;
-    private int width, height;
+
+    private final IGuiScreen gui;
+
+    private final int x0;
+
+    private final int y0;
+
+    private int xPosition;
+
+    private int yPosition;
+
+    private final int width;
+
+    private final int height;
 
     private GT_GuiTooltip tooltip = null;
 
@@ -28,13 +42,13 @@ public class GT_GuiFakeItemButton implements IGT_GuiButton {
         gui.addElement(this);
     }
 
+    public ItemStack getItem() {
+        return item;
+    }
+
     public GT_GuiFakeItemButton setItem(ItemStack i) {
         item = i;
         return this;
-    }
-
-    public ItemStack getItem(){
-        return item;
     }
 
     @Override
@@ -50,12 +64,13 @@ public class GT_GuiFakeItemButton implements IGT_GuiButton {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        if (bgIcon != null){
-            GT_GuiIcon.render(bgIcon, xPosition-1, yPosition-1, 18, 18,0,true);
+        if (bgIcon != null) {
+            GT_GuiIcon.render(bgIcon, xPosition - 1, yPosition - 1, 18, 18, 0, true);
         }
 
-        if (item != null)
+        if (item != null) {
             gui.getItemRenderer().renderItemAndEffectIntoGUI(gui.getFontRenderer(), Minecraft.getMinecraft().getTextureManager(), item, xPosition, yPosition);
+        }
 
         GL11.glPopAttrib();
     }
@@ -85,4 +100,5 @@ public class GT_GuiFakeItemButton implements IGT_GuiButton {
     public Rectangle getBounds() {
         return new Rectangle(x0, y0, width, height);
     }
+
 }

@@ -1,5 +1,6 @@
 package gregtech.loaders.preload.metatileentity;
 
+
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 
@@ -10,12 +11,15 @@ import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.loaders.preload.GT_Loader_MetaTileEntities.DISMANTLEABLE_RECIPE_MASK;
 
+
 public final class HatchLoader {
+
     private static boolean LOADED = false;
 
     public static void load() {
-        if (LOADED)
+        if (LOADED) {
             throw new RuntimeException("Already loaded!");
+        }
         Hatch_Dynamo_ULV.set(new GT_MetaTileEntity_Hatch_Dynamo(30, "hatch.dynamo.tier.00", "ULV Energy Output Hatch", 0).getStackForm(1L));
         Hatch_Dynamo_LV.set(new GT_MetaTileEntity_Hatch_Dynamo(31, "hatch.dynamo.tier.01", "LV Energy Output Hatch", 1).getStackForm(1L));
         Hatch_Dynamo_MV.set(new GT_MetaTileEntity_Hatch_Dynamo(32, "hatch.dynamo.tier.02", "MV Energy Output Hatch", 2).getStackForm(1L));
@@ -27,9 +31,21 @@ public final class HatchLoader {
         Hatch_Dynamo_UV.set(new GT_MetaTileEntity_Hatch_Dynamo(38, "hatch.dynamo.tier.08", "UV Energy Output Hatch", 8).getStackForm(1L));
         Hatch_Dynamo_MAX.set(new GT_MetaTileEntity_Hatch_Dynamo(39, "hatch.dynamo.tier.09", "UHV Energy Output Hatch", 9).getStackForm(1L));
 
-        addCraftingRecipe(Hatch_Dynamo_ULV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"XOL", "SMP", "XOL", 'M', Hull_ULV, 'S', spring.get(Tin), 'X', circuitPower.get(PWR_LV), 'O', ULV_Coil, 'L', cell.get(Lubricant), 'P', rotor.get(Tin)});
-        addCraftingRecipe(Hatch_Dynamo_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"XOL", "SMP", "XOL", 'M', Hull_LV, 'S', spring.get(Tin), 'X', circuitPower.get(PWR_LV), 'O', LV_Coil, 'L', cell.get(Lubricant), 'P', Electric_Pump_LV});
-        addCraftingRecipe(Hatch_Dynamo_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"XOL", "SMP", "XOL", 'M', Hull_MV, 'S', spring.get(Copper), 'X', circuitPower.get(PWR_MV), 'O', MV_Coil, 'L', cell.get(Lubricant), 'P', Electric_Pump_MV});
+        addCraftingRecipe(
+                Hatch_Dynamo_ULV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{
+                        "XOL", "SMP", "XOL", 'M', Hull_ULV, 'S', spring.get(Tin), 'X', circuitPower.get(PWR_LV), 'O', ULV_Coil, 'L', cell.get(Lubricant), 'P',
+                        rotor.get(Tin)
+                });
+        addCraftingRecipe(
+                Hatch_Dynamo_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{
+                        "XOL", "SMP", "XOL", 'M', Hull_LV, 'S', spring.get(Tin), 'X', circuitPower.get(PWR_LV), 'O', LV_Coil, 'L', cell.get(Lubricant), 'P',
+                        Electric_Pump_LV
+                });
+        addCraftingRecipe(
+                Hatch_Dynamo_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{
+                        "XOL", "SMP", "XOL", 'M', Hull_MV, 'S', spring.get(Copper), 'X', circuitPower.get(PWR_MV), 'O', MV_Coil, 'L', cell.get(Lubricant), 'P',
+                        Electric_Pump_MV
+                });
 
         Hatch_Energy_ULV.set(new GT_MetaTileEntity_Hatch_Energy(40, "hatch.energy.tier.00", "ULV Energy Input Hatch", 0).getStackForm(1L));
         Hatch_Energy_LV.set(new GT_MetaTileEntity_Hatch_Energy(41, "hatch.energy.tier.01", "LV Energy Input Hatch", 1).getStackForm(1L));
@@ -42,9 +58,21 @@ public final class HatchLoader {
         Hatch_Energy_UV.set(new GT_MetaTileEntity_Hatch_Energy(48, "hatch.energy.tier.08", "UV Energy Input Hatch", 8).getStackForm(1L));
         Hatch_Energy_MAX.set(new GT_MetaTileEntity_Hatch_Energy(49, "hatch.energy.tier.09", "UHV Energy Input Hatch", 9).getStackForm(1L));
 
-        addCraftingRecipe(Hatch_Energy_ULV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"COL", "XMP", "COL", 'M', Hull_ULV, 'C', cableGt01.get(RedAlloy), 'X', circuitPower.get(PWR_LV), 'O', ULV_Coil, 'L', cell.get(Lubricant), 'P', rotor.get(Tin)});
-        addCraftingRecipe(Hatch_Energy_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"COL", "XMP", "COL", 'M', Hull_LV, 'C', cableGt01.get(Tin), 'X', circuitPower.get(PWR_LV), 'O', LV_Coil, 'L', cell.get(Lubricant), 'P', Electric_Pump_LV});
-        addCraftingRecipe(Hatch_Energy_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"XOL", "CMP", "XOL", 'M', Hull_MV, 'C', cableGt01.get(Copper), 'X', circuitPower.get(PWR_MV), 'O', MV_Coil, 'L', cell.get(Lubricant), 'P', Electric_Pump_MV});
+        addCraftingRecipe(
+                Hatch_Energy_ULV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{
+                        "COL", "XMP", "COL", 'M', Hull_ULV, 'C', cableGt01.get(RedAlloy), 'X', circuitPower.get(PWR_LV), 'O', ULV_Coil, 'L',
+                        cell.get(Lubricant), 'P', rotor.get(Tin)
+                });
+        addCraftingRecipe(
+                Hatch_Energy_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{
+                        "COL", "XMP", "COL", 'M', Hull_LV, 'C', cableGt01.get(Tin), 'X', circuitPower.get(PWR_LV), 'O', LV_Coil, 'L', cell.get(Lubricant), 'P',
+                        Electric_Pump_LV
+                });
+        addCraftingRecipe(
+                Hatch_Energy_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{
+                        "XOL", "CMP", "XOL", 'M', Hull_MV, 'C', cableGt01.get(Copper), 'X', circuitPower.get(PWR_MV), 'O', MV_Coil, 'L', cell.get(Lubricant),
+                        'P', Electric_Pump_MV
+                });
 
         Hatch_Input_ULV.set(new GT_MetaTileEntity_Hatch_Input(50, "hatch.input.tier.00", "ULV Fluid Input Hatch", 0).getStackForm(1L));
         Hatch_Input_LV.set(new GT_MetaTileEntity_Hatch_Input(51, "hatch.input.tier.01", "LV Fluid Input Hatch", 1).getStackForm(1L));
@@ -95,21 +123,45 @@ public final class HatchLoader {
         Hatch_Maintenance.set(new GT_MetaTileEntity_Hatch_Maintenance(90, "hatch.maintenance", "Manual Maintenance Hatch", 1).getStackForm(1L));
 
         addCraftingRecipe(Hatch_Maintenance.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"dwx", "hMc", "fsr", 'M', Hull_LV});
-        addCraftingRecipe(Hatch_Maintenance.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"dwx", "hMC", "fsr", 'M', Hull_LV, 'C', getModItem("Railcraft", "tool.crowbar", 1L, 0)});
-        addCraftingRecipe(Hatch_Maintenance.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"dwx", "hMC", "fsr", 'M', Hull_LV, 'C', getModItem("Railcraft", "tool.crowbar.reinforced", 1L, 0)});
-        addCraftingRecipe(Hatch_Maintenance.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"dwx", "hMC", "fsr", 'M', Hull_LV, 'C', getModItem("Railcraft", "tool.crowbar.magic", 1L, 0)});
-        addCraftingRecipe(Hatch_Maintenance.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"dwx", "hMC", "fsr", 'M', Hull_LV, 'C', getModItem("Railcraft", "tool.crowbar.void", 1L, 0)});
+        addCraftingRecipe(
+                Hatch_Maintenance.get(1L), DISMANTLEABLE_RECIPE_MASK,
+                new Object[]{"dwx", "hMC", "fsr", 'M', Hull_LV, 'C', getModItem("Railcraft", "tool.crowbar", 1L, 0)}
+                         );
+        addCraftingRecipe(
+                Hatch_Maintenance.get(1L), DISMANTLEABLE_RECIPE_MASK,
+                new Object[]{"dwx", "hMC", "fsr", 'M', Hull_LV, 'C', getModItem("Railcraft", "tool.crowbar.reinforced", 1L, 0)}
+                         );
+        addCraftingRecipe(
+                Hatch_Maintenance.get(1L), DISMANTLEABLE_RECIPE_MASK,
+                new Object[]{"dwx", "hMC", "fsr", 'M', Hull_LV, 'C', getModItem("Railcraft", "tool.crowbar.magic", 1L, 0)}
+                         );
+        addCraftingRecipe(
+                Hatch_Maintenance.get(1L), DISMANTLEABLE_RECIPE_MASK,
+                new Object[]{"dwx", "hMC", "fsr", 'M', Hull_LV, 'C', getModItem("Railcraft", "tool.crowbar.void", 1L, 0)}
+                         );
 
         Hatch_AutoMaintenance.set(new GT_MetaTileEntity_Hatch_Maintenance(111, "hatch.maintenance.auto", "Auto Maintenance Hatch", 6, true).getStackForm(1L));
         Hatch_DataAccess_EV.set(new GT_MetaTileEntity_Hatch_DataAccess(145, "hatch.dataaccess", "Data Access Hatch", 4).getStackForm(1L));
         Hatch_DataAccess_LuV.set(new GT_MetaTileEntity_Hatch_DataAccess(146, "hatch.dataaccess.adv", "Advanced Data Access Hatch", 6).getStackForm(1L));
         Hatch_DataAccess_UV.set(new GT_MetaTileEntity_Hatch_DataAccess(147, "hatch.dataaccess.auto", "Automatable Data Access Hatch", 8).getStackForm(1L));
 
-        addCraftingRecipe(Hatch_DataAccess_EV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"COC", "OMO", "COC", 'M', Hull_EV, 'O', Tool_DataStick, 'C', circuitLogic.get(LOGIC_EV)});
-        addCraftingRecipe(Hatch_DataAccess_LuV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"COC", "OMO", "COC", 'M', Hull_LuV, 'O', Tool_DataOrb, 'C', circuitLogic.get(LOGIC_LUV)});
-        addCraftingRecipe(Hatch_DataAccess_UV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CRC", "OMO", "CRC", 'M', Hull_UV, 'O', Tool_DataOrb, 'C', circuitLogic.get(LOGIC_UV), 'R', Robot_Arm_UV});
+        addCraftingRecipe(
+                Hatch_DataAccess_EV.get(1L), DISMANTLEABLE_RECIPE_MASK,
+                new Object[]{"COC", "OMO", "COC", 'M', Hull_EV, 'O', Tool_DataStick, 'C', circuitLogic.get(LOGIC_EV)}
+                         );
+        addCraftingRecipe(
+                Hatch_DataAccess_LuV.get(1L), DISMANTLEABLE_RECIPE_MASK,
+                new Object[]{"COC", "OMO", "COC", 'M', Hull_LuV, 'O', Tool_DataOrb, 'C', circuitLogic.get(LOGIC_LUV)}
+                         );
+        addCraftingRecipe(
+                Hatch_DataAccess_UV.get(1L), DISMANTLEABLE_RECIPE_MASK,
+                new Object[]{"CRC", "OMO", "CRC", 'M', Hull_UV, 'O', Tool_DataOrb, 'C', circuitLogic.get(LOGIC_UV), 'R', Robot_Arm_UV}
+                         );
 
-        addCraftingRecipe(Hatch_AutoMaintenance.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CHC", "AMA", "CHC", 'M', Hull_LuV, 'H', Hatch_Maintenance, 'A', Robot_Arm_LuV, 'C', circuitLogic.get(LOGIC_LUV)});
+        addCraftingRecipe(
+                Hatch_AutoMaintenance.get(1L), DISMANTLEABLE_RECIPE_MASK,
+                new Object[]{"CHC", "AMA", "CHC", 'M', Hull_LuV, 'H', Hatch_Maintenance, 'A', Robot_Arm_LuV, 'C', circuitLogic.get(LOGIC_LUV)}
+                         );
 
         Hatch_Muffler_LV.set(new GT_MetaTileEntity_Hatch_Muffler(91, "hatch.muffler.tier.01", "LV Muffler Hatch", 1).getStackForm(1L));
         Hatch_Muffler_MV.set(new GT_MetaTileEntity_Hatch_Muffler(92, "hatch.muffler.tier.02", "MV Muffler Hatch", 2).getStackForm(1L));
@@ -121,9 +173,16 @@ public final class HatchLoader {
         Hatch_Muffler_UV.set(new GT_MetaTileEntity_Hatch_Muffler(98, "hatch.muffler.tier.08", "UV Muffler Hatch", 8).getStackForm(1L));
         Hatch_Muffler_MAX.set(new GT_MetaTileEntity_Hatch_Muffler(99, "hatch.muffler.tier.09", "UHV Muffler Hatch", 9).getStackForm(1L));
 
-        addCraftingRecipe(Hatch_Muffler_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"MX ", "PR ", 'M', Hull_LV, 'P', pipeMedium.get(Brass), 'R', rotor.get(Brass), 'X', Electric_Motor_LV});
-        addCraftingRecipe(Hatch_Muffler_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"MX ", "PR ", 'M', Hull_MV, 'P', pipeMedium.get(Steel), 'R', rotor.get(Steel), 'X', Electric_Motor_MV});
+        addCraftingRecipe(
+                Hatch_Muffler_LV.get(1L), DISMANTLEABLE_RECIPE_MASK,
+                new Object[]{"MX ", "PR ", 'M', Hull_LV, 'P', pipeMedium.get(Brass), 'R', rotor.get(Brass), 'X', Electric_Motor_LV}
+                         );
+        addCraftingRecipe(
+                Hatch_Muffler_MV.get(1L), DISMANTLEABLE_RECIPE_MASK,
+                new Object[]{"MX ", "PR ", 'M', Hull_MV, 'P', pipeMedium.get(Steel), 'R', rotor.get(Steel), 'X', Electric_Motor_MV}
+                         );
 
         LOADED = true;
     }
+
 }

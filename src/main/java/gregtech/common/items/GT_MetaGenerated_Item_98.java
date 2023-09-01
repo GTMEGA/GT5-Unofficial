@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
@@ -21,18 +22,13 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
-/** This class holds cells for non-GT fluids. */
+
+/**
+ * This class holds cells for non-GT fluids.
+ */
 public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
-    public static GT_MetaGenerated_Item_98 INSTANCE;
 
     /**
      * Registered fluids.
@@ -92,8 +88,12 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         ;
 
         private final int mId;
-        /** This is the Forge internal fluid name. */
+
+        /**
+         * This is the Forge internal fluid name.
+         */
         private final String mfluidName;
+
         private final CellType mType;
 
         @Nullable
@@ -119,7 +119,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
 
         /**
          * Get a copy of this stack with stack size 1.
-         *
+         * <p>
          * Might return null if not yet initialized, or the fluid referenced does not exist.
          */
         @Nullable
@@ -129,9 +129,9 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
 
         /**
          * Get a copy of this cell WITHOUT copy.
-         *
+         * <p>
          * Might return null if not yet initialized, or the fluid referenced does not exist.
-         *
+         * <p>
          * Use with caution.
          */
         @Nullable
@@ -141,7 +141,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
 
         /**
          * Get a copy of this cell with specified stack size.
-         *
+         * <p>
          * Might return null if not yet initialized, or the fluid referenced does not exist.
          */
         @Nullable
@@ -154,7 +154,10 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         }
     }
 
-    /** Cell type specifies the cell capacity, appearance, and item name format. */
+
+    /**
+     * Cell type specifies the cell capacity, appearance, and item name format.
+     */
     private enum CellType {
         REGULAR(1_000, OrePrefixes.cell),
         SMALL(144, OrePrefixes.cell),
@@ -162,6 +165,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         PLASMA(1_000, OrePrefixes.cellPlasma);
 
         private final int capacity;
+
         private final OrePrefixes prefix;
 
         CellType(int capacity, OrePrefixes prefix) {
@@ -170,10 +174,16 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         }
     }
 
-    /** Struct class holding data that we need to properly handle a registered fluid cell item. */
+
+    /**
+     * Struct class holding data that we need to properly handle a registered fluid cell item.
+     */
     private static class RegisteredFluidData {
+
         private final Fluid fluid;
+
         private final short[] rgba;
+
         private final IIconContainer iconContainer;
 
         private RegisteredFluidData(Fluid fluid, short[] rgba, IIconContainer iconContainer) {
@@ -181,33 +191,19 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
             this.rgba = rgba;
             this.iconContainer = iconContainer;
         }
+
     }
 
-    /**
-     * Map of ID to registered fluid data.
-     *
-     * <p>Only contains IDs that were successfully registered.
-     */
-    private final Map<Integer, RegisteredFluidData> registeredFluidDataMap;
-    private final EnumMap<CellType, IIconContainer> iconContainerMap;
-
-    private GT_MetaGenerated_Item_98() {
-        // For some reason, fluid cells will be rendered only if the metadata ID is less than the
-        // offset. So we will specify maximum offset here.
-        // See: GT_MetaGenerated_Item_Renderer.java
-        super("metaitem.98", (short) 32766, (short) 0);
-
-        registeredFluidDataMap = new HashMap<>();
-        iconContainerMap = new EnumMap<>(CellType.class);
-    }
+    public static GT_MetaGenerated_Item_98 INSTANCE;
 
     /**
      * Loading needs to happen after the fluids we need have been registered, which means during post-load.
      * However, cell icons seem to be deleted some time between load and post-load, so we must pre-cache them.
      */
     public static synchronized void preInit() {
-        if (INSTANCE == null)
+        if (INSTANCE == null) {
             INSTANCE = new GT_MetaGenerated_Item_98();
+        }
 
         // We'll just steal the icons from Water. They are all the same anyway (except _NULL is broken for cells).
         for (CellType cellType : CellType.values()) {
@@ -247,14 +243,14 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
             ItemStack itemStack = new ItemStack(this, 1, id);
             FluidStack fluidStack = new FluidStack(fluid, cellType.capacity);
 
-            FluidContainerRegistry.registerFluidContainer(
-                    new FluidContainerRegistry.FluidContainerData(fluidStack, itemStack, emptyCell));
+            FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(fluidStack, itemStack, emptyCell));
 
             tCell.setStack(itemStack);
 
             GT_LanguageManager.addStringLocalization(
                     getUnlocalizedName(itemStack) + ".name",
-                    cellType.prefix.mLocalizedMaterialPre + fluid.getLocalizedName(fluidStack) + cellType.prefix.mLocalizedMaterialPost);
+                    cellType.prefix.mLocalizedMaterialPre + fluid.getLocalizedName(fluidStack) + cellType.prefix.mLocalizedMaterialPost
+                                                    );
 
             int color = fluid.getColor();
             short[] rgba = new short[4];
@@ -283,6 +279,25 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         GT_OreDictUnificator.add(OrePrefixes.cellMolten, Materials.Water, FluidCell.STEAM.getNoCopy());
     }
 
+    /**
+     * Map of ID to registered fluid data.
+     *
+     * <p>Only contains IDs that were successfully registered.
+     */
+    private final Map<Integer, RegisteredFluidData> registeredFluidDataMap;
+
+    private final EnumMap<CellType, IIconContainer> iconContainerMap;
+
+    private GT_MetaGenerated_Item_98() {
+        // For some reason, fluid cells will be rendered only if the metadata ID is less than the
+        // offset. So we will specify maximum offset here.
+        // See: GT_MetaGenerated_Item_Renderer.java
+        super("metaitem.98", (short) 32766, (short) 0);
+
+        registeredFluidDataMap = new HashMap<>();
+        iconContainerMap = new EnumMap<>(CellType.class);
+    }
+
     @Override
     public short[] getRGBa(ItemStack aStack) {
         RegisteredFluidData fluidData = registeredFluidDataMap.get(aStack.getItemDamage());
@@ -291,29 +306,6 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         }
 
         return fluidData.rgba;
-    }
-
-    @Override
-    public ItemStack getContainerItem(ItemStack aStack) {
-        return ItemList.Cell_Empty.get(1L);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
-        Arrays.stream(FluidCell.values())
-                .map(FluidCell::get)
-                .filter(Objects::nonNull)
-                .forEach(aList::add);
-    }
-
-    @Override
-    public final IIcon getIconFromDamage(int aMetaData) {
-        IIconContainer iconContainer = getIconContainer(aMetaData);
-        if (iconContainer != null) {
-            return iconContainer.getIcon();
-        }
-        return null;
     }
 
     @Override
@@ -326,7 +318,28 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
+        Arrays.stream(FluidCell.values()).map(FluidCell::get).filter(Objects::nonNull).forEach(aList::add);
+    }
+
+    @Override
+    public final IIcon getIconFromDamage(int aMetaData) {
+        IIconContainer iconContainer = getIconContainer(aMetaData);
+        if (iconContainer != null) {
+            return iconContainer.getIcon();
+        }
+        return null;
+    }
+
+    @Override
+    public ItemStack getContainerItem(ItemStack aStack) {
+        return ItemList.Cell_Empty.get(1L);
+    }
+
+    @Override
     public int getItemStackLimit(ItemStack aStack) {
         return 64;
     }
+
 }

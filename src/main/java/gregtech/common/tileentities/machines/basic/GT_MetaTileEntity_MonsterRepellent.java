@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -13,18 +14,19 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.Arrays;
 
 import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+
 
 public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_TieredMachineBlock {
 
     public int mRange = 16;
 
     public GT_MetaTileEntity_MonsterRepellent(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Repels nasty Creatures. Range: " + (4 + (12 * aTier)) + " unpowered / " + (16 + (48 * aTier)) + " powered. Costs " + (1L << (aTier * 2))+ " EU/t" );
+        super(
+                aID, aName, aNameRegional, aTier, 0,
+                "Repels nasty Creatures. Range: " + (4 + (12 * aTier)) + " unpowered / " + (16 + (48 * aTier)) + " powered. Costs " + (1L << (aTier * 2)) +
+                " EU/t"
+             );
     }
 
     public GT_MetaTileEntity_MonsterRepellent(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
@@ -41,26 +43,61 @@ public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_Tiered
     }
 
     @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+    }
+
+    @Override
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return false;
+    }
+
+    @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return false;
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide != ForgeDirection.UP.ordinal()) return new ITexture[]{MACHINE_CASINGS[mTier][aColorIndex + 1]};
-        if (aActive) return new ITexture[]{
-                MACHINE_CASINGS[mTier][aColorIndex + 1],
-                TextureFactory.of(OVERLAY_TELEPORTER_ACTIVE),
-                TextureFactory.builder().addIcon(OVERLAY_TELEPORTER_ACTIVE_GLOW).glow().build()};
+        if (aSide != ForgeDirection.UP.ordinal()) {
+            return new ITexture[]{MACHINE_CASINGS[mTier][aColorIndex + 1]};
+        }
+        if (aActive) {
+            return new ITexture[]{
+                    MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_TELEPORTER_ACTIVE), TextureFactory.builder().addIcon(
+                    OVERLAY_TELEPORTER_ACTIVE_GLOW).glow().build()
+            };
+        }
         return new ITexture[]{
-                MACHINE_CASINGS[mTier][aColorIndex + 1],
-                TextureFactory.of(OVERLAY_TELEPORTER),
-                TextureFactory.builder().addIcon(OVERLAY_TELEPORTER_GLOW).glow().build()};
+                MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_TELEPORTER), TextureFactory.builder().addIcon(OVERLAY_TELEPORTER_GLOW)
+                                                                                                              .glow().build()
+        };
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        int[] tCoords = {
+                aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(),
+                aBaseMetaTileEntity.getWorld().provider.dimensionId
+        };
+        GT_SpawnEventHandler.mobReps.add(tCoords);
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity.isServerSide()) {
-            int[] tCoords = {aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), aBaseMetaTileEntity.getWorld().provider.dimensionId};
+            int[] tCoords = {
+                    aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(),
+                    aBaseMetaTileEntity.getWorld().provider.dimensionId
+            };
             if ((aTimer % 600 == 0) && !GT_SpawnEventHandler.mobReps.contains(tCoords)) {
                 GT_SpawnEventHandler.mobReps.add(tCoords);
             }
-            if (aBaseMetaTileEntity.isUniversalEnergyStored(getMinimumStoredEU()) && aBaseMetaTileEntity.decreaseStoredEnergyUnits(1L << (this.mTier * 2), false)) {
+            if (aBaseMetaTileEntity.isUniversalEnergyStored(getMinimumStoredEU()) && aBaseMetaTileEntity.decreaseStoredEnergyUnits(
+                    1L << (this.mTier * 2), false)) {
                 mRange = 16 + (48 * mTier);
             } else {
                 mRange = 4 + (12 * mTier);
@@ -69,20 +106,12 @@ public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_Tiered
     }
 
     @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        int[] tCoords = {aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), aBaseMetaTileEntity.getWorld().provider.dimensionId};
-        GT_SpawnEventHandler.mobReps.add(tCoords);
-    }
-
-    @Override
     public void onRemoval() {
-        int[] tCoords = {this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord(), this.getBaseMetaTileEntity().getWorld().provider.dimensionId};
+        int[] tCoords = {
+                this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord(),
+                this.getBaseMetaTileEntity().getWorld().provider.dimensionId
+        };
         GT_SpawnEventHandler.mobReps.removeIf(coords -> Arrays.equals(coords, tCoords));
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
     }
 
     @Override
@@ -91,23 +120,13 @@ public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_Tiered
     }
 
     @Override
-    public boolean isEnetInput() {
-        return true;
-    }
-
-    @Override
-    public boolean isInputFacing(byte aSide) {
-        return true;
-    }
-
-    @Override
-    public boolean isTeleporterCompatible() {
+    public boolean isSimpleMachine() {
         return false;
     }
 
     @Override
-    public long getMinimumStoredEU() {
-        return 512L;
+    public boolean isEnetInput() {
+        return true;
     }
 
     @Override
@@ -126,12 +145,17 @@ public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_Tiered
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return false;
+    public boolean isInputFacing(byte aSide) {
+        return true;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public long getMinimumStoredEU() {
+        return 512L;
+    }
+
+    @Override
+    public boolean isTeleporterCompatible() {
         return false;
     }
 
@@ -140,11 +164,4 @@ public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_Tiered
         return null;
     }
 
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-    }
 }

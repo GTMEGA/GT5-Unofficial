@@ -1,9 +1,12 @@
 package gregtech.common.redstonecircuits;
 
+
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
 import gregtech.api.util.GT_CircuitryBehavior;
 
+
 public class GT_Circuit_Timer extends GT_CircuitryBehavior {
+
     public GT_Circuit_Timer(int aIndex) {
         super(aIndex);
     }
@@ -57,7 +60,8 @@ public class GT_Circuit_Timer extends GT_CircuitryBehavior {
                     aRedstoneCircuitBlock.setRedstone((byte) 15, aRedstoneCircuitBlock.getOutputFacing());
                     aCircuitData[4] = 0;
                 } else {
-                    aRedstoneCircuitBlock.setRedstone((byte) ((aCircuitData[4] - aCircuitData[0]) % aCircuitData[2] == 0 ? 15 : 0), aRedstoneCircuitBlock.getOutputFacing());
+                    aRedstoneCircuitBlock.setRedstone(
+                            (byte) ((aCircuitData[4] - aCircuitData[0]) % aCircuitData[2] == 0 ? 15 : 0), aRedstoneCircuitBlock.getOutputFacing());
                 }
             } else {
                 aRedstoneCircuitBlock.setRedstone((byte) 15, aRedstoneCircuitBlock.getOutputFacing());
@@ -66,6 +70,11 @@ public class GT_Circuit_Timer extends GT_CircuitryBehavior {
         } else {
             aRedstoneCircuitBlock.setRedstone((byte) 0, aRedstoneCircuitBlock.getOutputFacing());
         }
+    }
+
+    @Override
+    public boolean displayItemStack(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock, int aIndex) {
+        return false;
     }
 
     @Override
@@ -96,15 +105,11 @@ public class GT_Circuit_Timer extends GT_CircuitryBehavior {
     }
 
     @Override
-    public boolean displayItemStack(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock, int aIndex) {
-        return false;
-    }
-
-    @Override
     public String getDataDisplay(int[] aCircuitData, int aCircuitDataIndex) {
         if (aCircuitDataIndex == 3) {
             return "";
         }
         return null;
     }
+
 }

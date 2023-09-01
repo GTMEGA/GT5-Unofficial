@@ -1,5 +1,6 @@
 package gregtech.common.tools;
 
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
@@ -24,14 +25,50 @@ import net.minecraftforge.event.world.BlockEvent;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class GT_Tool_HardHammer extends GT_Tool {
+
     public static final List<String> mEffectiveList = Arrays.asList(EntityIronGolem.class.getName(), "EntityTowerGuardian");
 
     @Override
-    public float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer) {
-        String tName = aEntity.getClass().getName();
-        tName = tName.substring(tName.lastIndexOf('.') + 1);
-        return (mEffectiveList.contains(tName)) || (tName.contains("Golem")) ? aOriginalDamage * 2.0F : aOriginalDamage;
+    public float getBaseDamage() {
+        return 3.0F;
+    }
+
+    @Override
+    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+        return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "hammer", "pickaxe") || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock,
+                                                                                                                                            Material.rock,
+                                                                                                                                            Material.glass,
+                                                                                                                                            Material.ice,
+                                                                                                                                            Material.packedIce
+                                                                                                                                           ) ||
+               GT_Recipe.GT_Recipe_Map.sHammerRecipes.containsInput(new ItemStack(aBlock, 1, aMetaData));
+    }
+
+    @Override
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadHammer.mTextureIndex]
+                           : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.stick.mTextureIndex];
+    }
+
+    @Override
+    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+    }
+
+    @Override
+    public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
+        super.onToolCrafted(aStack, aPlayer);
+        try {
+            GT_Mod.achievements.issueAchievement(aPlayer, "tools");
+        } catch (Exception ignored) {
+        }
+    }
+
+    @Override
+    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+        aItem.addItemBehavior(aID, new Behaviour_Prospecting(1, 1000));
     }
 
     @Override
@@ -60,11 +97,6 @@ public class GT_Tool_HardHammer extends GT_Tool {
     }
 
     @Override
-    public float getBaseDamage() {
-        return 3.0F;
-    }
-
-    @Override
     public int getHurtResistanceTime(int aOriginalHurtResistance, Entity aEntity) {
         return aOriginalHurtResistance * 2;
     }
@@ -80,8 +112,13 @@ public class GT_Tool_HardHammer extends GT_Tool {
     }
 
     @Override
+    public String getMiningSound() {
+        return null;
+    }
+
+    @Override
     public String getCraftingSound() {
-        return (String) GregTech_API.sSoundList.get(1);
+        return GregTech_API.sSoundList.get(1);
     }
 
     @Override
@@ -91,12 +128,7 @@ public class GT_Tool_HardHammer extends GT_Tool {
 
     @Override
     public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(2);
-    }
-
-    @Override
-    public String getMiningSound() {
-        return null;
+        return GregTech_API.sSoundList.get(2);
     }
 
     @Override
@@ -115,23 +147,24 @@ public class GT_Tool_HardHammer extends GT_Tool {
     }
 
     @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
-        return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "hammer", "pickaxe")
-                || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock,
-                Material.rock,
-                Material.glass,
-                Material.ice,
-                Material.packedIce)
-                || GT_Recipe.GT_Recipe_Map.sHammerRecipes.containsInput(new ItemStack(aBlock, 1, aMetaData));
-    }
-
-    @Override
-    public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+    public int convertBlockDrops(
+            List<ItemStack> aDrops,
+            ItemStack aStack,
+            EntityPlayer aPlayer,
+            Block aBlock,
+            int aX,
+            int aY,
+            int aZ,
+            byte aMetaData,
+            int aFortune,
+            boolean aSilkTouch,
+            BlockEvent.HarvestDropsEvent aEvent
+                                ) {
         int rConversions = 0;
         GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sHammerRecipes.findRecipe(null, true, 2147483647L, null, new ItemStack(aBlock, 1, aMetaData));
         if ((tRecipe == null) || (aBlock.hasTileEntity(aMetaData))) {
             for (ItemStack tDrop : aDrops) {
-                tRecipe = GT_Recipe.GT_Recipe_Map.sHammerRecipes.findRecipe(null, true, 2147483647L, null, GT_Utility.copyAmount(1L, new Object[]{tDrop}));
+                tRecipe = GT_Recipe.GT_Recipe_Map.sHammerRecipes.findRecipe(null, true, 2147483647L, null, GT_Utility.copyAmount(1L, tDrop));
                 if (tRecipe != null) {
                     ItemStack tHammeringOutput = tRecipe.getOutput(0);
                     if (tHammeringOutput != null) {
@@ -156,36 +189,22 @@ public class GT_Tool_HardHammer extends GT_Tool {
     }
 
     @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadHammer.mTextureIndex] : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.stick.mTextureIndex];
-    }
-
-    @Override
-    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
-    }
-
-    @Override
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
-        aItem.addItemBehavior(aID, new Behaviour_Prospecting(1, 1000));
-    }
-
-    @Override
-    public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " was squashed by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
-    }
-
-    @Override
-    public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
-        super.onToolCrafted(aStack, aPlayer);
-        try {
-            GT_Mod.instance.achievements.issueAchievement(aPlayer, "tools");
-        } catch (Exception ignored) {
-        }
+    public float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer) {
+        String tName = aEntity.getClass().getName();
+        tName = tName.substring(tName.lastIndexOf('.') + 1);
+        return (mEffectiveList.contains(tName)) || (tName.contains("Golem")) ? aOriginalDamage * 2.0F : aOriginalDamage;
     }
 
     @Override
     public boolean onItemUse(ItemStack stack, World world, int x, int y, int z, int sidehit, EntityPlayer playerEntity, float hitX, float hitY, float hitZ) {
-        return placeSideBlock(stack,world,x,y,z,sidehit,playerEntity,hitX,hitY,hitZ);
+        return placeSideBlock(stack, world, x, y, z, sidehit, playerEntity, hitX, hitY, hitZ);
     }
+
+    @Override
+    public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
+        return new ChatComponentText(
+                EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " was squashed by " + EnumChatFormatting.GREEN +
+                aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
+    }
+
 }

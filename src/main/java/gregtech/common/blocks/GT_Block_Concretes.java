@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IBlockOnWalkOver;
@@ -11,7 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-public class GT_Block_Concretes extends GT_Block_Stones_Abstract implements IBlockOnWalkOver{
+
+public class GT_Block_Concretes extends GT_Block_Stones_Abstract implements IBlockOnWalkOver {
+
     public GT_Block_Concretes() {
         super(GT_Item_Concretes.class, "gt.blockconcretes");
         setResistance(20.0F);
@@ -71,8 +74,10 @@ public class GT_Block_Concretes extends GT_Block_Stones_Abstract implements IBlo
     @Override
     public void onWalkOver(EntityLivingBase aEntity, World aWorld, int aX, int aY, int aZ) {
         if ((aEntity.motionX != 0 || aEntity.motionZ != 0) && !aEntity.isInWater() && !aEntity.isWet() && !aEntity.isSneaking()) {
-            double tSpeed = (aWorld.getBlock(aX, aY-1, aZ).slipperiness >= 0.8 ? 1.5 : 1.2);
-            aEntity.motionX *= tSpeed; aEntity.motionZ *= tSpeed;
+            double tSpeed = (aWorld.getBlock(aX, aY - 1, aZ).slipperiness >= 0.8 ? 1.5 : 1.2);
+            aEntity.motionX *= tSpeed;
+            aEntity.motionZ *= tSpeed;
         }
     }
+
 }

@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+
 import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.interfaces.IFoodStat;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -9,13 +10,21 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 
+
 public class GT_FoodStat implements IFoodStat {
+
     private final int mFoodLevel;
+
     private final int[] mPotionEffects;
+
     private final float mSaturation;
+
     private final EnumAction mAction;
+
     private final ItemStack mEmptyContainer;
+
     private final boolean mAlwaysEdible, mInvisibleParticles, mIsRotten;
+
     private boolean mExplosive = false, mMilk = false;
 
     /**
@@ -31,7 +40,16 @@ public class GT_FoodStat implements IFoodStat {
      *                            Level of the Effect. [0, 1, 2] are for [I, II, III]
      *                            The likelihood that this Potion Effect takes place upon being eaten [1 - 100]
      */
-    public GT_FoodStat(int aFoodLevel, float aSaturation, EnumAction aAction, ItemStack aEmptyContainer, boolean aAlwaysEdible, boolean aInvisibleParticles, boolean aIsRotten, int... aPotionEffects) {
+    public GT_FoodStat(
+            int aFoodLevel,
+            float aSaturation,
+            EnumAction aAction,
+            ItemStack aEmptyContainer,
+            boolean aAlwaysEdible,
+            boolean aInvisibleParticles,
+            boolean aIsRotten,
+            int... aPotionEffects
+                      ) {
         mFoodLevel = aFoodLevel;
         mSaturation = aSaturation;
         mAction = aAction == null ? EnumAction.eat : aAction;
@@ -63,19 +81,30 @@ public class GT_FoodStat implements IFoodStat {
     }
 
     @Override
+    public boolean alwaysEdible(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer) {
+        return mAlwaysEdible;
+    }
+
+    @Override
+    public boolean isRotten(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer) {
+        return mIsRotten;
+    }
+
+    @Override
+    public EnumAction getFoodAction(GT_MetaBase_Item aItem, ItemStack aStack) {
+        return mAction;
+    }
+
+    @Override
     public void onEaten(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer) {
         aStack.stackSize--;
         ItemStack tStack = GT_OreDictUnificator.get(GT_Utility.copyOrNull(mEmptyContainer));
-        if (tStack != null && !aPlayer.inventory.addItemStackToInventory(tStack))
+        if (tStack != null && !aPlayer.inventory.addItemStackToInventory(tStack)) {
             aPlayer.dropPlayerItemWithRandomChoice(tStack, true);
+        }
 
-        new WorldSpawnedEventBuilder.SoundAtEntityEventBuilder()
-                .setIdentifier("random.burp")
-                .setVolume(0.5F)
-                .setPitch(aPlayer.worldObj.rand.nextFloat() * 0.1F + 0.9F)
-                .setEntity(aPlayer)
-                .setWorld(aPlayer.worldObj)
-                .run();
+        new WorldSpawnedEventBuilder.SoundAtEntityEventBuilder().setIdentifier("random.burp").setVolume(0.5F).setPitch(
+                aPlayer.worldObj.rand.nextFloat() * 0.1F + 0.9F).setEntity(aPlayer).setWorld(aPlayer.worldObj).run();
 
         if (!aPlayer.worldObj.isRemote) {
             if (mMilk) {
@@ -87,31 +116,11 @@ public class GT_FoodStat implements IFoodStat {
                 }
             }
             if (mExplosive) {
-                new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder()
-                        .setSmoking(true)
-                        .setFlaming(true)
-                        .setStrength(4f)
-                        .setPosition(aPlayer.posX, aPlayer.posY, aPlayer.posZ)
-                        .setEntity(aPlayer)
-                        .setWorld(aPlayer.worldObj)
-                        .run();
+                new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder().setSmoking(true).setFlaming(true).setStrength(4f).setPosition(
+                        aPlayer.posX, aPlayer.posY, aPlayer.posZ).setEntity(aPlayer).setWorld(aPlayer.worldObj).run();
                 aPlayer.attackEntityFrom(GT_DamageSources.getExplodingDamage(), Float.MAX_VALUE);
             }
         }
     }
 
-    @Override
-    public EnumAction getFoodAction(GT_MetaBase_Item aItem, ItemStack aStack) {
-        return mAction;
-    }
-
-    @Override
-    public boolean alwaysEdible(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer) {
-        return mAlwaysEdible;
-    }
-
-    @Override
-    public boolean isRotten(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer) {
-        return mIsRotten;
-    }
 }

@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
@@ -12,7 +13,9 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+
 public class GT_Block_Granites extends GT_Block_Stones_Abstract {
+
     public GT_Block_Granites() {
         super(GT_Item_Granites.class, "gt.blockgranites");
         setResistance(60.0F);
@@ -72,4 +75,5 @@ public class GT_Block_Granites extends GT_Block_Stones_Abstract {
     public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
         return !(entity instanceof EntityWither);
     }
+
 }

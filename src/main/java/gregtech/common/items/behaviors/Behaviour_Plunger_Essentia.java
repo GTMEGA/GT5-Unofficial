@@ -1,5 +1,6 @@
 package gregtech.common.items.behaviors;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -14,8 +15,11 @@ import thaumcraft.api.aspects.IEssentiaTransport;
 
 import java.util.List;
 
+
 public class Behaviour_Plunger_Essentia extends Behaviour_None {
+
     private final int mCosts;
+
     private final String mTooltip = GT_LanguageManager.addStringLocalization("gt.behaviour.plunger.essentia", "Clears Essentia from Containers and Tubes");
 
     public Behaviour_Plunger_Essentia(int aCosts) {
@@ -23,16 +27,32 @@ public class Behaviour_Plunger_Essentia extends Behaviour_None {
     }
 
     @Override
-    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+    public boolean onItemUseFirst(
+            GT_MetaBase_Item aItem,
+            ItemStack aStack,
+            EntityPlayer aPlayer,
+            World aWorld,
+            int aX,
+            int aY,
+            int aZ,
+            int aSide,
+            float hitX,
+            float hitY,
+            float hitZ
+                                 ) {
         if (aWorld.isRemote) {
             return false;
         }
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (((aTileEntity instanceof IEssentiaTransport)) && (
-                (aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
-            GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(101), 1.0F, -1.0F, aX, aY, aZ);
+                (aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))
+        )) {
+            GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(101), 1.0F, -1.0F, aX, aY, aZ);
             for (ForgeDirection tDirection : ForgeDirection.VALID_DIRECTIONS) {
-                ((IEssentiaTransport) aTileEntity).takeEssentia(((IEssentiaTransport) aTileEntity).getEssentiaType(tDirection), ((IEssentiaTransport) aTileEntity).getEssentiaAmount(tDirection), tDirection);
+                ((IEssentiaTransport) aTileEntity).takeEssentia(
+                        ((IEssentiaTransport) aTileEntity).getEssentiaType(tDirection), ((IEssentiaTransport) aTileEntity).getEssentiaAmount(tDirection),
+                        tDirection
+                                                               );
             }
             return true;
         }
@@ -44,4 +64,5 @@ public class Behaviour_Plunger_Essentia extends Behaviour_None {
         aList.add(this.mTooltip);
         return aList;
     }
+
 }

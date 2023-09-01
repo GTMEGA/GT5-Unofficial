@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import gregtech.api.GregTech_API;
@@ -16,13 +17,11 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+
 
 public class GT_MetaTileEntity_VacuumFreezer extends GT_MetaTileEntity_CubicMultiBlockBase<GT_MetaTileEntity_VacuumFreezer> {
+
     public GT_MetaTileEntity_VacuumFreezer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -37,39 +36,19 @@ public class GT_MetaTileEntity_VacuumFreezer extends GT_MetaTileEntity_CubicMult
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Vacuum Freezer")
-                .addInfo("Controller Block for the Vacuum Freezer")
-                .addInfo("Cools hot ingots and cells")
-                .addSeparator()
-                .beginStructureBlock(3, 3, 3, true)
-                .addController("Front center")
-                .addCasingInfo("Frost Proof Machine Casing", 16)
-                .addEnergyHatch("Any casing", 1)
-                .addMaintenanceHatch("Any casing", 1)
-                .addInputHatch("Any casing", 1)
-                .addOutputHatch("Any casing", 1)
-                .addInputBus("Any casing", 1)
-                .addOutputBus("Any casing", 1)
-                .toolTipFinisher("Gregtech");
-        return tt;
-    }
-
-    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         ITexture[] rTexture;
         if (aSide == aFacing) {
             if (aActive) {
                 rTexture = new ITexture[]{
-                        casingTexturePages[0][17],
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE).extFacing().build(),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW).extFacing().glow().build()};
+                        casingTexturePages[0][17], TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE).extFacing().build(),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW).extFacing().glow().build()
+                };
             } else {
                 rTexture = new ITexture[]{
-                        casingTexturePages[0][17],
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER).extFacing().build(),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER_GLOW).extFacing().glow().build()};
+                        casingTexturePages[0][17], TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER).extFacing().build(),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER_GLOW).extFacing().glow().build()
+                };
             }
         } else {
             rTexture = new ITexture[]{casingTexturePages[0][17]};
@@ -83,13 +62,13 @@ public class GT_MetaTileEntity_VacuumFreezer extends GT_MetaTileEntity_CubicMult
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe.GT_Recipe_Map.sVacuumRecipes;
+    public int getPollutionPerTick(ItemStack aStack) {
+        return 0;
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
+    public int getMaxEfficiency(ItemStack aStack) {
+        return 10000;
     }
 
     @Override
@@ -107,8 +86,9 @@ public class GT_MetaTileEntity_VacuumFreezer extends GT_MetaTileEntity_CubicMult
 
                 calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
                 //In case recipe is too OP for that machine
-                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) {
                     return false;
+                }
                 if (this.mEUt > 0) {
                     this.mEUt = (-this.mEUt);
                 }
@@ -123,28 +103,8 @@ public class GT_MetaTileEntity_VacuumFreezer extends GT_MetaTileEntity_CubicMult
     }
 
     @Override
-    protected IStructureElement<GT_MetaTileEntity_CubicMultiBlockBase<?>> getCasingElement() {
-        return StructureUtility.ofBlock(GregTech_API.sBlockCasings2, 1);
-    }
-
-    @Override
-    protected int getHatchTextureIndex() {
-        return 17;
-    }
-
-    @Override
-    protected int getRequiredCasingCount() {
-        return 16;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getPollutionPerTick(ItemStack aStack) {
-        return 0;
+    public boolean isCorrectMachinePart(ItemStack aStack) {
+        return true;
     }
 
     @Override
@@ -156,4 +116,35 @@ public class GT_MetaTileEntity_VacuumFreezer extends GT_MetaTileEntity_CubicMult
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sVacuumRecipes;
+    }
+
+    @Override
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType("Vacuum Freezer").addInfo("Controller Block for the Vacuum Freezer").addInfo("Cools hot ingots and cells").addSeparator()
+          .beginStructureBlock(3, 3, 3, true).addController("Front center").addCasingInfo("Frost Proof Machine Casing", 16).addEnergyHatch("Any casing", 1)
+          .addMaintenanceHatch("Any casing", 1).addInputHatch("Any casing", 1).addOutputHatch("Any casing", 1).addInputBus("Any casing", 1).addOutputBus(
+                  "Any casing", 1).toolTipFinisher("Gregtech");
+        return tt;
+    }
+
+    @Override
+    protected int getRequiredCasingCount() {
+        return 16;
+    }
+
+    @Override
+    protected IStructureElement<GT_MetaTileEntity_CubicMultiBlockBase<?>> getCasingElement() {
+        return StructureUtility.ofBlock(GregTech_API.sBlockCasings2, 1);
+    }
+
+    @Override
+    protected int getHatchTextureIndex() {
+        return 17;
+    }
+
 }

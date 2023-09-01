@@ -1,5 +1,6 @@
 package gregtech.common.items.behaviors;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -23,9 +24,13 @@ import net.minecraftforge.fluids.IFluidBlock;
 import java.util.List;
 import java.util.Random;
 
+
 public class Behaviour_Prospecting extends Behaviour_None {
+
     private final int mVanillaCosts;
+
     private final int mEUCosts;
+
     private final String mTooltip = GT_LanguageManager.addStringLocalization("gt.behaviour.prospecting", "Usable for Prospecting");
 
     public Behaviour_Prospecting(int aVanillaCosts, int aEUCosts) {
@@ -35,17 +40,7 @@ public class Behaviour_Prospecting extends Behaviour_None {
 
     @Override
     public boolean onItemUseFirst(
-            GT_MetaBase_Item aItem,
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            int aSide,
-            float hitX,
-            float hitY,
-            float hitZ
+            GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ
                                  ) {
         if (aWorld.isRemote) {
             return false;
@@ -117,8 +112,8 @@ public class Behaviour_Prospecting extends Behaviour_None {
                         tMetaID = aWorld.getBlockMetadata(tX, tY, tZ);
                         tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                         if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
-                            GT_Utility.sendChatToPlayer(
-                                    aPlayer, trans("106", "Found traces of ") + tAssotiation.mMaterial.mMaterial.mDefaultLocalName + trans("101", " Ore."));
+                            GT_Utility.sendChatToPlayer(aPlayer, trans("106", "Found traces of ") + tAssotiation.mMaterial.mMaterial.mDefaultLocalName +
+                                                                 trans("101", " Ore."));
                             return true;
                         }
                     }
@@ -135,4 +130,5 @@ public class Behaviour_Prospecting extends Behaviour_None {
         aList.add(this.mTooltip);
         return aList;
     }
+
 }

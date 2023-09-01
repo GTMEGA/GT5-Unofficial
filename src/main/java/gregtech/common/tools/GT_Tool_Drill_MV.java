@@ -1,12 +1,25 @@
 package gregtech.common.tools;
 
+
 import gregtech.GT_Mod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import net.minecraft.item.ItemStack;
 
-public class GT_Tool_Drill_MV
-        extends GT_Tool_Drill_LV {
+
+public class GT_Tool_Drill_MV extends GT_Tool_Drill_LV {
+
+    @Override
+    public float getBaseDamage() {
+        return 2.5F;
+    }
+
+    @Override
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? gregtech.api.items.GT_MetaGenerated_Tool.getPrimaryMaterial(
+                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadDrill.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_MV;
+    }
+
     @Override
     public int getToolDamagePerBlockBreak() {
         return GT_Mod.gregtechproxy.mHardRock ? 70 : 120;
@@ -33,11 +46,6 @@ public class GT_Tool_Drill_MV
     }
 
     @Override
-    public float getBaseDamage() {
-        return 2.5F;
-    }
-
-    @Override
     public float getSpeedMultiplier() {
         return 6.0F;
     }
@@ -52,8 +60,4 @@ public class GT_Tool_Drill_MV
         return 5;
     }
 
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? gregtech.api.items.GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadDrill.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_MV;
-    }
 }

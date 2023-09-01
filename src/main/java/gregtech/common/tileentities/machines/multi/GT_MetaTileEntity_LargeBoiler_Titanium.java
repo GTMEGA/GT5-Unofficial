@@ -1,11 +1,14 @@
 package gregtech.common.tileentities.machines.multi;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 
+
 public class GT_MetaTileEntity_LargeBoiler_Titanium extends GT_MetaTileEntity_LargeBoiler {
+
     public GT_MetaTileEntity_LargeBoiler_Titanium(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -18,16 +21,6 @@ public class GT_MetaTileEntity_LargeBoiler_Titanium extends GT_MetaTileEntity_La
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_LargeBoiler_Titanium(this.mName);
     }
-    
-    @Override
-    public String getCasingMaterial(){
-    	return "Titanium";
-    }
-
-	@Override
-	public String getCasingBlockType() {
-		return "Machine Casings";
-	}
 
     @Override
     public Block getCasingBlock() {
@@ -37,11 +30,6 @@ public class GT_MetaTileEntity_LargeBoiler_Titanium extends GT_MetaTileEntity_La
     @Override
     public byte getCasingMeta() {
         return 2;
-    }
-
-    @Override
-    public byte getCasingTextureIndex() {
-        return 50;
     }
 
     @Override
@@ -70,8 +58,23 @@ public class GT_MetaTileEntity_LargeBoiler_Titanium extends GT_MetaTileEntity_La
     }
 
     @Override
+    public byte getCasingTextureIndex() {
+        return 50;
+    }
+
+    @Override
+    public String getCasingMaterial() {
+        return "Titanium";
+    }
+
+    @Override
     public int getEUt() {
         return 800;
+    }
+
+    @Override
+    int runtimeBoost(int mTime) {
+        return mTime * 130 / 100;
     }
 
     @Override
@@ -80,7 +83,8 @@ public class GT_MetaTileEntity_LargeBoiler_Titanium extends GT_MetaTileEntity_La
     }
 
     @Override
-    int runtimeBoost(int mTime) {
-        return mTime * 130 / 100;
+    public String getCasingBlockType() {
+        return "Machine Casings";
     }
+
 }

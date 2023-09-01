@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -13,13 +14,15 @@ import net.minecraftforge.fluids.FluidStack;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 
+
 public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_Hatch {
+
     public GT_Recipe_Map mRecipeMap = null;
 
     public GT_MetaTileEntity_Hatch_Input(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 3, new String[]{
-                "Fluid Input for Multiblocks",
-                "Capacity: " + GT_Utility.formatNumbers(8000*(1<<aTier)) + "L"});
+                "Fluid Input for Multiblocks", "Capacity: " + GT_Utility.formatNumbers(8000L * (1L << aTier)) + "L"
+        });
     }
 
     public GT_MetaTileEntity_Hatch_Input(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -41,43 +44,17 @@ public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
-    public boolean isFacingValid(byte aFacing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
-    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_Input(mName, mTier, mDescriptionArray, mTextures);
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        if (mRecipeMap != null)
+        if (mRecipeMap != null) {
             aNBT.setString("recipeMap", mRecipeMap.mUniqueIdentifier);
+        }
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mRecipeMap = GT_Recipe_Map.sIndexedMappings.getOrDefault(aNBT.getString("recipeMap"), null);
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        aBaseMetaTileEntity.openGUI(aPlayer);
-        return true;
     }
 
     @Override
@@ -111,14 +88,44 @@ public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_Hatch {
         return false;
     }
 
-    public void updateSlots() {
-        if (mInventory[getInputSlot()] != null && mInventory[getInputSlot()].stackSize <= 0)
-            mInventory[getInputSlot()] = null;
+    @Override
+    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GT_MetaTileEntity_Hatch_Input(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
-    public boolean isFluidInputAllowed(FluidStack aFluid) {
-        return mRecipeMap == null || mRecipeMap.containsInput(aFluid);
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (aBaseMetaTileEntity.isClientSide()) {
+            return true;
+        }
+        aBaseMetaTileEntity.openGUI(aPlayer);
+        return true;
+    }
+
+    @Override
+    public boolean isFacingValid(byte aFacing) {
+        return true;
+    }
+
+    @Override
+    public boolean isAccessAllowed(EntityPlayer aPlayer) {
+        return true;
+    }
+
+    @Override
+    public int getTankPressure() {
+        return -100;
+    }
+
+    @Override
+    public int getCapacity() {
+        return 8000 * (1 << mTier);
+    }
+
+    public void updateSlots() {
+        if (mInventory[getInputSlot()] != null && mInventory[getInputSlot()].stackSize <= 0) {
+            mInventory[getInputSlot()] = null;
+        }
     }
 
     @Override
@@ -128,16 +135,19 @@ public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_Hatch {
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aSide == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0 && (mRecipeMap == null || mRecipeMap.containsInput(aStack) || mRecipeMap.containsInput(GT_Utility.getFluidForFilledItem(aStack, true)));
+        return aSide == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0 && (
+                mRecipeMap == null || mRecipeMap.containsInput(aStack) || mRecipeMap.containsInput(GT_Utility.getFluidForFilledItem(aStack, true))
+        );
     }
 
     @Override
-    public int getCapacity() {
-        return 8000*(1<<mTier);
+    public boolean isFluidInputAllowed(FluidStack aFluid) {
+        return mRecipeMap == null || mRecipeMap.containsInput(aFluid);
     }
 
     @Override
-    public int getTankPressure() {
-        return -100;
+    public boolean isSimpleMachine() {
+        return true;
     }
+
 }

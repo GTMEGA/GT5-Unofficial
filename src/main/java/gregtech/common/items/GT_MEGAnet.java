@@ -213,6 +213,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
 
     }
 
+
     public static final int TIMER = 10, BASE_RANGE = 12, MAX_RANGE = 16;
 
     private static final boolean FILTER_WORKS = false;
@@ -362,6 +363,16 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
     }
 
     /**
+     * @param aStack  Stack
+     * @param aWorld  World
+     * @param aPlayer Player crafting it
+     */
+    @Override
+    public void onCreated(final ItemStack aStack, final World aWorld, final EntityPlayer aPlayer) {
+        setNBT(aStack);
+    }
+
+    /**
      * @param aWorld  The world
      * @param aX      The X Position
      * @param aY      The X Position
@@ -400,16 +411,6 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
         }
         aList.add(String.format("Magnetized" + EnumChatFormatting.GOLD + " %d " + EnumChatFormatting.GRAY + "items!", getPickedUp(aStack)));
         aList.add(EnumChatFormatting.DARK_BLUE + "" + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + "The MEGAnet!");
-    }
-
-    /**
-     * @param aStack  Stack
-     * @param aWorld  World
-     * @param aPlayer Player crafting it
-     */
-    @Override
-    public void onCreated(final ItemStack aStack, final World aWorld, final EntityPlayer aPlayer) {
-        setNBT(aStack);
     }
 
     public void adjustTimer(final ItemStack stack) {

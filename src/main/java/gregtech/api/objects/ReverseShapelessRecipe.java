@@ -1,5 +1,6 @@
 package gregtech.api.objects;
 
+
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Disassembler;
@@ -12,26 +13,21 @@ import java.util.Queue;
 
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes;
 
+
 public class ReverseShapelessRecipe {
-    private static Queue<ReverseShapelessRecipe> reverseRecipes = new LinkedList<>();
-    private ItemStack aResult;
-    private Object[] aRecipe;
+
+    private static final Queue<ReverseShapelessRecipe> reverseRecipes = new LinkedList<>();
 
     public static Queue<ReverseShapelessRecipe> getReverseRecipes() {
         return reverseRecipes;
     }
 
-    public ReverseShapelessRecipe(ItemStack output, Object[] aRecipe) {
-        this.aResult = output;
-        this.aRecipe = aRecipe;
-        reverseRecipes.add(this);
-    }
-
     public static void runReverseRecipes() {
         for (ReverseShapelessRecipe x : reverseRecipes) {
             Optional<GT_Recipe> recipeOptional = GT_Utility.reverseShapelessRecipe(x.aResult, x.aRecipe);
-            if (!recipeOptional.isPresent())
+            if (!recipeOptional.isPresent()) {
                 continue;
+            }
             GT_Recipe recipe = recipeOptional.get();
             ItemStack[] replacement = new ItemStack[recipe.mOutputs.length];
             GT_MetaTileEntity_Disassembler.handleRecipeTransformation(recipe.mOutputs, replacement, Collections.singleton(recipe.mOutputs));
@@ -40,4 +36,15 @@ public class ReverseShapelessRecipe {
             sDisassemblerRecipes.add(recipe);
         }
     }
+
+    private final ItemStack aResult;
+
+    private final Object[] aRecipe;
+
+    public ReverseShapelessRecipe(ItemStack output, Object[] aRecipe) {
+        this.aResult = output;
+        this.aRecipe = aRecipe;
+        reverseRecipes.add(this);
+    }
+
 }

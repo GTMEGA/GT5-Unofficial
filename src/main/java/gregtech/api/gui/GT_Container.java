@@ -126,12 +126,20 @@ public class GT_Container extends Container {
         return 18;
     }
 
+    protected int getGuiWidth() {
+        return 176 + (GregTech_API.mDWS ? 162 : 0);
+    }
+
     protected int getHotBarOffset() {
         return 4;
     }
 
     protected int getYSlotOffset() {
         return getGuiHeight() - (getHotBarOffset() + getNumRows() * getYSlotSpacing()) + yBump();
+    }
+
+    protected int xBump() {
+        return 1;
     }
 
     @Override
@@ -150,14 +158,6 @@ public class GT_Container extends Container {
 
     protected int yBump() {
         return -6;
-    }
-
-    protected int getGuiWidth() {
-        return 176 + (GregTech_API.mDWS ? 162 : 0);
-    }
-
-    protected int xBump() {
-        return 1;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package gregtech.common.covers;
 
+
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
@@ -23,21 +24,23 @@ import net.minecraftforge.fluids.Fluid;
 
 import javax.annotation.Nonnull;
 
+
 public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_ControlsWork.InternalData> {
 
     public static class InternalData implements INewCoverData {
 
         private static final String STATE_FIELD = "state", SAFE_FIELD = "safe";
 
+        public static InternalData getSafeDisabled() {
+            return new InternalData((byte) 2, true);
+        }
+
         private byte state;
+
         private boolean safe;
 
         public InternalData() {
             this((byte) 0, false);
-        }
-
-        public InternalData(int aLegacyData) {
-            setFromInt(aLegacyData);
         }
 
         public InternalData(byte state, boolean safe) {
@@ -45,8 +48,8 @@ public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_Control
             setSafe(safe);
         }
 
-        public static InternalData getSafeDisabled() {
-            return new InternalData((byte) 2, true);
+        public InternalData(int aLegacyData) {
+            setFromInt(aLegacyData);
         }
 
         public void setFromInt(int aLegacyData) {
@@ -75,21 +78,13 @@ public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_Control
             }
         }
 
+        public byte getState() {
+            return state;
+        }
+
         public boolean toggleSafe() {
             safe = !safe;
             return safe;
-        }
-
-        public boolean isRSHigh() {
-            return getState() == 0;
-        }
-
-        public boolean isDisabled() {
-            return getState() == 2;
-        }
-
-        public byte getState() {
-            return state;
         }
 
         public void setState(byte state) {
@@ -104,12 +99,12 @@ public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_Control
             setState((byte) state);
         }
 
-        public boolean isSafe() {
-            return safe;
+        public boolean isRSHigh() {
+            return getState() == 0;
         }
 
-        public void setSafe(boolean safe) {
-            this.safe = safe;
+        public boolean isDisabled() {
+            return getState() == 2;
         }
 
         @Nonnull
@@ -125,6 +120,14 @@ public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_Control
             result.setByte(InternalData.STATE_FIELD, getState());
             result.setBoolean(InternalData.SAFE_FIELD, isSafe());
             return result;
+        }
+
+        public boolean isSafe() {
+            return safe;
+        }
+
+        public void setSafe(boolean safe) {
+            this.safe = safe;
         }
 
         @Override
@@ -159,17 +162,25 @@ public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_Control
             setSafe(aBuf.readBoolean());
             return this;
         }
+
     }
 
+
     private class GUI extends GT_GUICover {
-        private final byte side;
-        private final int coverID;
-        private final InternalData coverVariable;
 
         private static final int startX = 10;
+
         private static final int startY = 25;
+
         private static final int spaceX = 18;
+
         private static final int spaceY = 18;
+
+        private final byte side;
+
+        private final int coverID;
+
+        private final InternalData coverVariable;
 
         public GUI(byte aSide, int aCoverID, InternalData aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
@@ -177,20 +188,21 @@ public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_Control
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
 
-            new GT_GuiIconButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.REDSTONE_ON);
-            new GT_GuiIconButton(this, 1, startX + spaceX * 0, startY + spaceY * 1, GT_GuiIcon.REDSTONE_OFF);
-            new GT_GuiIconButton(this, 2, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.CROSS);
+            new GT_GuiIconButton(this, 0, startX, startY, GT_GuiIcon.REDSTONE_ON);
+            new GT_GuiIconButton(this, 1, startX, startY + spaceY, GT_GuiIcon.REDSTONE_OFF);
+            new GT_GuiIconButton(this, 2, startX, startY + spaceY * 2, GT_GuiIcon.CROSS);
 
-            new GT_GuiIconCheckButton(this, 3, startX + spaceX * 0, startY + spaceY * 3, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS).setChecked(aCoverVariable.isSafe());
+            new GT_GuiIconCheckButton(this, 3, startX, startY + spaceY * 3, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS).setChecked(
+                    aCoverVariable.isSafe());
         }
 
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(trans("243", "Enable with Redstone"), 3 + startX + spaceX * 1, 4 + startY + spaceY * 0, 0xFF555555);
-            this.fontRendererObj.drawString(trans("244", "Disable with Redstone"), 3 + startX + spaceX * 1, 4 + startY + spaceY * 1, 0xFF555555);
-            this.fontRendererObj.drawString(trans("245", "Disable machine"), 3 + startX + spaceX * 1, 4 + startY + spaceY * 2, 0xFF555555);
-            this.fontRendererObj.drawString(trans("507", "Safe Mode"), 3 + startX + spaceX * 1, 4 + startY + spaceY * 3, 0xFF555555);
+            this.fontRendererObj.drawString(trans("243", "Enable with Redstone"), 3 + startX + spaceX, 4 + startY, 0xFF555555);
+            this.fontRendererObj.drawString(trans("244", "Disable with Redstone"), 3 + startX + spaceX, 4 + startY + spaceY, 0xFF555555);
+            this.fontRendererObj.drawString(trans("245", "Disable machine"), 3 + startX + spaceX, 4 + startY + spaceY * 2, 0xFF555555);
+            this.fontRendererObj.drawString(trans("507", "Safe Mode"), 3 + startX + spaceX, 4 + startY + spaceY * 3, 0xFF555555);
         }
 
         @Override
@@ -213,18 +225,6 @@ public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_Control
             updateButtons();
         }
 
-        private void updateButtons() {
-            GuiButton b;
-            for (Object o : buttonList) {
-                b = (GuiButton) o;
-                b.enabled = getClickable(b.id);
-            }
-        }
-
-        private boolean getClickable(int id) {
-            return (id != coverVariable.state || id == 3);
-        }
-
         private void adjustCoverVariable() {
             boolean safeMode = ((GT_GuiIconCheckButton) buttonList.get(3)).isChecked();
             if (safeMode && !coverVariable.isSafe()) {
@@ -238,6 +238,18 @@ public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_Control
                 base.enableWorking();
             }
             setLastPlayer(mc.thePlayer);
+        }
+
+        private void updateButtons() {
+            GuiButton b;
+            for (Object o : buttonList) {
+                b = (GuiButton) o;
+                b.enabled = getClickable(b.id);
+            }
+        }
+
+        private boolean getClickable(int id) {
+            return (id != coverVariable.state || id == 3);
         }
 
     }
@@ -289,7 +301,10 @@ public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_Control
                     if (!machine.wasNotified()) {
                         String machineName = "gt.blockmachines." + aTileEntity.getInventoryName() + ".name";
                         machineName = GT_LanguageManager.getTranslation(machineName);
-                        GT_Utility.sendChatToPlayer(getLastPlayer(), machineName + " at " + String.format("(%d, %d, %d)", aTileEntity.getXCoord(), aTileEntity.getYCoord(), aTileEntity.getZCoord()) + " shut down.");
+                        GT_Utility.sendChatToPlayer(
+                                getLastPlayer(), machineName + " at " + String.format("(%d, %d, %d)", aTileEntity.getXCoord(), aTileEntity.getYCoord(),
+                                                                                      aTileEntity.getZCoord()
+                                                                                     ) + " shut down.");
                         if (aTileEntity instanceof GT_MetaTileEntity_MultiBlockBase) {
                             GT_MetaTileEntity_MultiBlockBase base = (GT_MetaTileEntity_MultiBlockBase) aTileEntity;
                             base.getBaseMetaTileEntity().setNotificationStatus(true);
@@ -310,7 +325,16 @@ public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_Control
     }
 
     @Override
-    protected InternalData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, InternalData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    protected InternalData onCoverScrewdriverClickImpl(
+            byte aSide,
+            int aCoverID,
+            InternalData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            float aX,
+            float aY,
+            float aZ
+                                                      ) {
         setLastPlayer(aPlayer);
         if (!aPlayer.isSneaking()) {
             aCoverVariable.screwDriverClick();
@@ -329,7 +353,8 @@ public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_Control
                 }
                 case 2: {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("005", "Disabled"));
-                } default: {
+                }
+                default: {
                     break;
                 }
             }
@@ -345,7 +370,8 @@ public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_Control
                 }
                 case 2: {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("507", "Disabled (Safe)"));
-                } default: {
+                }
+                default: {
                     break;
                 }
             }
@@ -355,6 +381,11 @@ public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_Control
             base.enableWorking();
         }
         return aCoverVariable;
+    }
+
+    @Override
+    public boolean hasCoverGUI() {
+        return true;
     }
 
     @Override
@@ -403,12 +434,8 @@ public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_Control
     }
 
     @Override
-    public boolean hasCoverGUI() {
-        return true;
-    }
-
-    @Override
     protected int getTickRateImpl(byte aSide, int aCoverID, InternalData aCoverVariable, ICoverable aTileEntity) {
         return 1;
     }
+
 }

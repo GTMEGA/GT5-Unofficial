@@ -1,5 +1,6 @@
 package gregtech.api.net;
 
+
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -12,13 +13,19 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
+
 public class GT_Packet_WirelessRedstoneCover extends GT_Packet_TileEntityCover {
+
     private static final int PRIVATE_MASK = 0xFFFE0000;
+
     private static final int PUBLIC_MASK = 0x0000FFFF;
+
     private static final int CHECKBOX_MASK = 0x00010000;
 
     private EntityPlayerMP mPlayer;
+
     private int mPublicChannel;
+
     private int mCheckBoxValue;
 
     public GT_Packet_WirelessRedstoneCover() {
@@ -61,18 +68,14 @@ public class GT_Packet_WirelessRedstoneCover extends GT_Packet_TileEntityCover {
 
     @Override
     public GT_Packet_New decode(ByteArrayDataInput aData) {
-        return new GT_Packet_WirelessRedstoneCover(
-                aData.readInt(),
-                aData.readShort(),
-                aData.readInt(),
+        return new GT_Packet_WirelessRedstoneCover(aData.readInt(), aData.readShort(), aData.readInt(),
 
-                aData.readByte(),
-                aData.readInt(),
+                                                   aData.readByte(), aData.readInt(),
 
-                aData.readInt(),
+                                                   aData.readInt(),
 
-                aData.readInt(),
-                aData.readInt());
+                                                   aData.readInt(), aData.readInt()
+        );
     }
 
     @Override
@@ -87,4 +90,5 @@ public class GT_Packet_WirelessRedstoneCover extends GT_Packet_TileEntityCover {
             }
         }
     }
+
 }

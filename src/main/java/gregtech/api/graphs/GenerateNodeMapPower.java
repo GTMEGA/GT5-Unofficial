@@ -1,13 +1,9 @@
 package gregtech.api.graphs;
 
+
 import cofh.api.energy.IEnergyReceiver;
 import gregtech.api.GregTech_API;
-import gregtech.api.graphs.consumers.ConsumerNode;
-import gregtech.api.graphs.consumers.EmptyPowerConsumer;
-import gregtech.api.graphs.consumers.NodeEnergyConnected;
-import gregtech.api.graphs.consumers.NodeEnergyReceiver;
-import gregtech.api.graphs.consumers.NodeEnergySink;
-import gregtech.api.graphs.consumers.NodeGTBaseMetaTile;
+import gregtech.api.graphs.consumers.*;
 import gregtech.api.graphs.paths.NodePath;
 import gregtech.api.graphs.paths.PowerNodePath;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
@@ -22,8 +18,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+
 // node map generator for power distribution
 public class GenerateNodeMapPower extends GenerateNodeMap {
+
     public GenerateNodeMapPower(BaseMetaPipeEntity aTileEntity) {
         generateNode(aTileEntity, null, 1, null, -1, new ArrayList<>(), new HashSet<>());
     }
@@ -58,8 +56,9 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
             int dZ = aTileEntity.zCoord + ForgeDirection.getOrientation(aSide).offsetZ;
             boolean crossesChuncks = dX >> 4 != aTileEntity.xCoord >> 4 || dZ >> 4 != aTileEntity.zCoord >> 4;
             TileEntity tNextTo = null;
-            if (!crossesChuncks || !aTileEntity.getWorldObj().blockExists(dX, dY, dZ))
+            if (!crossesChuncks || !aTileEntity.getWorldObj().blockExists(dX, dY, dZ)) {
                 tNextTo = aTileEntity.getWorldObj().getTileEntity(dX, dY, dZ);
+            }
 
             if (((IEnergySink) aTileEntity).acceptsEnergyFrom(tNextTo, ForgeDirection.getOrientation(aSide))) {
                 ConsumerNode tConsumerNode = new NodeEnergySink(aNodeValue, (IEnergySink) aTileEntity, aSide, aConsumers);
@@ -91,4 +90,5 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
     protected Node getPipeNode(int aNodeValue, byte aSide, TileEntity aTileEntity, ArrayList<ConsumerNode> aConsumers) {
         return new PowerNode(aNodeValue, aTileEntity, aConsumers);
     }
+
 }

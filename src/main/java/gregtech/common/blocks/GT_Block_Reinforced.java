@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -34,6 +35,7 @@ import java.util.List;
 import java.util.Random;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+
 
 public class GT_Block_Reinforced extends GT_Generic_Block {
 
@@ -71,59 +73,17 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         ItemList.Block_NeutroniumPlate.set(new ItemStack(this.setHardness(750.0f).setResistance(2500.0f), 1, 11));
         ItemList.Block_BedrockiumCompressed.set(new ItemStack(this.setHardness(1500.0f).setResistance(5000.0f), 1, 12));
         GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Items.coal, 1, 1), new Object[]{ItemList.Block_BrittleCharcoal.get(1)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Block_Powderbarrel.get(1L),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"WSW","GGG","WGW", 'W', OrePrefixes.plate.get(Materials.Wood), 'G', new ItemStack(Items.gunpowder,1),'S',new ItemStack(Items.string,1)});
-        
+        GT_ModHandler.addCraftingRecipe(
+                ItemList.Block_Powderbarrel.get(1L), GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{
+                        "WSW", "GGG", "WGW", 'W', OrePrefixes.plate.get(Materials.Wood), 'G', new ItemStack(Items.gunpowder, 1), 'S',
+                        new ItemStack(Items.string, 1)
+                });
+
     }
 
     @Override
-    public String getHarvestTool(int aMeta) {
-        if (aMeta == 5 || aMeta == 4 || aMeta == 6 || aMeta == 7) return "axe";
-        if (aMeta == 2) return "wrench";
-        return "pickaxe";
-    }
-
-    @Override
-    public int getHarvestLevel(int aMeta) {
-        if (aMeta == 4||aMeta == 5 || aMeta == 6 || aMeta == 7) return 1;
-        if (aMeta == 2) return 2;
-        if (aMeta == 9||aMeta == 3 || aMeta == 1) return 5;
-        if (aMeta == 10||aMeta == 11) return 7;
-        return 4;
-    }
-
-    @Override
-    public IIcon getIcon(int aSide, int aMeta) {
-        if ((aMeta >= 0) && (aMeta < 16)) {
-            switch (aMeta) {
-                case 0:
-                    return Textures.BlockIcons.BLOCK_BRONZEPREIN.getIcon();
-                case 1:
-                    return Textures.BlockIcons.BLOCK_IRREIN.getIcon();
-                case 2:
-                    return Textures.BlockIcons.BLOCK_PLASCRETE.getIcon();
-                case 3:
-                    return Textures.BlockIcons.BLOCK_TSREIN.getIcon();
-                case 4:
-                    return Blocks.coal_block.getIcon(0, 0);
-                case 5:
-                	return Textures.BlockIcons.COVER_WOOD_PLATE.getIcon();
-                case 6:
-                	return Blocks.coal_block.getIcon(0, 0);
-                case 7:
-                	return Blocks.coal_block.getIcon(0, 0);
-                case 8:
-                    return Textures.BlockIcons.BLOCK_STEELPREIN.getIcon();
-                case 9:
-                    return Textures.BlockIcons.BLOCK_TITANIUMPREIN.getIcon();
-                case 10:
-                    return Textures.BlockIcons.BLOCK_NAQUADAHPREIN.getIcon();
-                case 11:
-                    return Textures.BlockIcons.BLOCK_NEUTRONIUMPREIN.getIcon();
-                case 12:
-                    return Textures.BlockIcons.BLOCK_DEEP_DARK_RAW.getIcon();
-            }
-        }
-        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+    public boolean renderAsNormalBlock() {
+        return true;
     }
 
     @Override
@@ -147,7 +107,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         if (tMeta == 3) {
             return 250.0F;
         }
-        if (tMeta == 4||tMeta == 5 || tMeta == 6 || tMeta == 7) {
+        if (tMeta == 4 || tMeta == 5 || tMeta == 6 || tMeta == 7) {
             return 0.5F;
         }
         if (tMeta == 8) {
@@ -163,6 +123,155 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
             return 750.0F;
         }
         return Blocks.iron_block.getBlockHardness(aWorld, aX, aY, aZ);
+    }
+
+    @Override
+    public IIcon getIcon(int aSide, int aMeta) {
+        if ((aMeta >= 0) && (aMeta < 16)) {
+            switch (aMeta) {
+                case 0:
+                    return Textures.BlockIcons.BLOCK_BRONZEPREIN.getIcon();
+                case 1:
+                    return Textures.BlockIcons.BLOCK_IRREIN.getIcon();
+                case 2:
+                    return Textures.BlockIcons.BLOCK_PLASCRETE.getIcon();
+                case 3:
+                    return Textures.BlockIcons.BLOCK_TSREIN.getIcon();
+                case 4:
+                    return Blocks.coal_block.getIcon(0, 0);
+                case 5:
+                    return Textures.BlockIcons.COVER_WOOD_PLATE.getIcon();
+                case 6:
+                    return Blocks.coal_block.getIcon(0, 0);
+                case 7:
+                    return Blocks.coal_block.getIcon(0, 0);
+                case 8:
+                    return Textures.BlockIcons.BLOCK_STEELPREIN.getIcon();
+                case 9:
+                    return Textures.BlockIcons.BLOCK_TITANIUMPREIN.getIcon();
+                case 10:
+                    return Textures.BlockIcons.BLOCK_NAQUADAHPREIN.getIcon();
+                case 11:
+                    return Textures.BlockIcons.BLOCK_NEUTRONIUMPREIN.getIcon();
+                case 12:
+                    return Textures.BlockIcons.BLOCK_DEEP_DARK_RAW.getIcon();
+            }
+        }
+        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return true;
+    }
+
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
+        if (world.isBlockIndirectlyGettingPowered(x, y, z) && world.getBlockMetadata(x, y, z) == 5) {
+            removedByPlayer(world, null, x, y, z);
+        }
+    }
+
+    @Override
+    public void onBlockAdded(World world, int x, int y, int z) {
+        super.onBlockAdded(world, x, y, z);
+        if (world.isBlockIndirectlyGettingPowered(x, y, z) && world.getBlockMetadata(x, y, z) == 5) {
+            removedByPlayer(world, null, x, y, z);
+        }
+    }
+
+    @Override
+    public int quantityDropped(Random par1Random) {
+        return 1;
+    }
+
+    @Override
+    public Item getItemDropped(int par1, Random par2Random, int par3) {
+        return Item.getItemFromBlock(this);
+    }
+
+    @Override
+    public void dropBlockAsItemWithChance(World aWorld, int aX, int aY, int aZ, int par5, float chance, int par7) {
+        if (par5 == 4) {
+            this.dropBlockAsItem(aWorld, aX, aY, aZ, new ItemStack(Items.coal, XSTR_INSTANCE.nextInt(2) + 1, 1));
+        } else {
+            super.dropBlockAsItemWithChance(aWorld, aX, aY, aZ, par5, chance, par7);
+        }
+    }
+
+    @Override
+    public int damageDropped(int par1) {
+        return par1;
+    }
+
+    @Override
+    public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer player, int side, float xOffset, float yOffset, float zOffset) {
+        if ((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem().getItem() == Items.flint_and_steel) && par1World.getBlockMetadata(
+                x, y, z) == 5) {
+            removedByPlayer(par1World, player, x, y, z);
+
+            return true;
+        }
+        return super.onBlockActivated(par1World, x, y, z, player, side, xOffset, yOffset, zOffset);
+    }
+
+    @Override
+    public String getLocalizedName() {
+        return StatCollector.translateToLocal(this.mUnlocalizedName + ".name");
+    }
+
+    @Override
+    public String getUnlocalizedName() {
+        return this.mUnlocalizedName;
+    }
+
+    @Override
+    public int getDamageValue(World par1World, int par2, int par3, int par4) {
+        return par1World.getBlockMetadata(par2, par3, par4);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+        for (int i = 0; i < 16; i++) {
+            ItemStack aStack = new ItemStack(aItem, 1, i);
+            if (!aStack.getDisplayName().contains(".name")) {
+                aList.add(aStack);
+            }
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister aIconRegister) {
+    }
+
+    @Override
+    public boolean isNormalCube(IBlockAccess aWorld, int aX, int aY, int aZ) {
+        return true;
+    }
+
+    @Override
+    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+        if (!world.isRemote && world.getBlockMetadata(x, y, z) == 5) {
+            EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, x + 0.5F, y + 0.5F, z + 0.5F, player);
+            world.spawnEntityInWorld(entitytntprimed);
+            new WorldSpawnedEventBuilder.SoundAtEntityEventBuilder().setPitch(1f).setVolume(1f).setIdentifier("game.tnt.primed").setEntity(entitytntprimed)
+                                                                    .setWorld(world).run();
+            world.setBlockToAir(x, y, z);
+            return false;
+        }
+        return super.removedByPlayer(world, player, x, y, z);
+    }
+
+    @Override
+    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
+        return false;
+    }
+
+    @Override
+    public boolean canBeReplacedByLeaves(IBlockAccess aWorld, int aX, int aY, int aZ) {
+        return false;
     }
 
     @Override
@@ -206,143 +315,46 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     }
 
     @Override
-    public String getUnlocalizedName() {
-        return this.mUnlocalizedName;
-    }
-
-    @Override
-    public String getLocalizedName() {
-        return StatCollector.translateToLocal(this.mUnlocalizedName + ".name");
-    }
-
-    @Override
-    public boolean canBeReplacedByLeaves(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return false;
-    }
-
-    @Override
-    public boolean isNormalCube(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return true;
-    }
-
-    @Override
-    public boolean renderAsNormalBlock() {
-        return true;
-    }
-
-    @Override
-    public boolean isOpaqueCube() {
-        return true;
-    }
-
-    @Override
-    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
-        return false;
-    }
-
-    @Override
-    public int damageDropped(int par1) {
-        return par1;
-    }
-
-    @Override
-    public int getDamageValue(World par1World, int par2, int par3, int par4) {
-        return par1World.getBlockMetadata(par2, par3, par4);
-    }
-
-    @Override
-    public int quantityDropped(Random par1Random) {
-        return 1;
-    }
-
-    @Override
-    public Item getItemDropped(int par1, Random par2Random, int par3) {
-        return Item.getItemFromBlock(this);
-    }
-
-    @Override
-    public void dropBlockAsItemWithChance(World aWorld, int aX, int aY, int aZ, int par5, float chance, int par7) {
-        if (par5 == 4) {
-            this.dropBlockAsItem(aWorld, aX, aY, aZ, new ItemStack(Items.coal, XSTR_INSTANCE.nextInt(2) + 1, 1));
-        } else {
-            super.dropBlockAsItemWithChance(aWorld, aX, aY, aZ, par5, chance, par7);
-        }
-    }
-    
-    @Override
-    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z)
-    {
-      if(!world.isRemote && world.getBlockMetadata(x, y, z)==5){
-    	EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, x + 0.5F, y + 0.5F, z + 0.5F, player);
-        world.spawnEntityInWorld(entitytntprimed);
-        new WorldSpawnedEventBuilder.SoundAtEntityEventBuilder()
-                .setPitch(1f)
-                .setVolume(1f)
-                .setIdentifier("game.tnt.primed")
-                .setEntity(entitytntprimed)
-                .setWorld(world)
-                .run();
-      world.setBlockToAir(x, y, z);
-      return false;
-      }
-      return super.removedByPlayer(world, player, x, y, z);
-    }
-    
-    @Override
-    public void onBlockAdded(World world, int x, int y, int z)
-    {
-      super.onBlockAdded(world, x, y, z);
-      if (world.isBlockIndirectlyGettingPowered(x, y, z)&&world.getBlockMetadata(x, y, z)==5) {
-        removedByPlayer(world, null, x, y, z);
-      }
-    }
-    
-    @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor)
-    {
-      if (world.isBlockIndirectlyGettingPowered(x, y, z)&&world.getBlockMetadata(x, y, z)==5) {
-        removedByPlayer(world, null, x, y, z);
-      }
-    }
-    
-    @Override
     public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
-      if (!world.isRemote && world.getBlockMetadata(x, y, z)==5){
-    	EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, x + 0.5F, y + 0.5F, z + 0.5F, explosion.getExplosivePlacedBy());
-    	entitytntprimed.fuse = (world.rand.nextInt(entitytntprimed.fuse / 4) + entitytntprimed.fuse / 8);
-    	world.spawnEntityInWorld(entitytntprimed);
-      }
-      super.onBlockExploded(world, x, y, z, explosion);
-    }
-    
-    @Override
-    public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer player, int side, float xOffset, float yOffset, float zOffset)
-    {
-      if ((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem().getItem() == Items.flint_and_steel)&&par1World.getBlockMetadata(x, y, z)==5)
-      {
-        removedByPlayer(par1World, player, x, y, z);
-        
-        return true;
-      }
-      return super.onBlockActivated(par1World, x, y, z, player, side, xOffset, yOffset, zOffset);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister aIconRegister) {
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
-        for (int i = 0; i < 16; i++) {
-            ItemStack aStack = new ItemStack(aItem, 1, i);
-            if (!aStack.getDisplayName().contains(".name")) aList.add(aStack);
+        if (!world.isRemote && world.getBlockMetadata(x, y, z) == 5) {
+            EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, x + 0.5F, y + 0.5F, z + 0.5F, explosion.getExplosivePlacedBy());
+            entitytntprimed.fuse = (world.rand.nextInt(entitytntprimed.fuse / 4) + entitytntprimed.fuse / 8);
+            world.spawnEntityInWorld(entitytntprimed);
         }
+        super.onBlockExploded(world, x, y, z, explosion);
     }
-    
+
     @Override
     public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
         return !(entity instanceof EntityWither);
     }
+
+    @Override
+    public String getHarvestTool(int aMeta) {
+        if (aMeta == 5 || aMeta == 4 || aMeta == 6 || aMeta == 7) {
+            return "axe";
+        }
+        if (aMeta == 2) {
+            return "wrench";
+        }
+        return "pickaxe";
+    }
+
+    @Override
+    public int getHarvestLevel(int aMeta) {
+        if (aMeta == 4 || aMeta == 5 || aMeta == 6 || aMeta == 7) {
+            return 1;
+        }
+        if (aMeta == 2) {
+            return 2;
+        }
+        if (aMeta == 9 || aMeta == 3 || aMeta == 1) {
+            return 5;
+        }
+        if (aMeta == 10 || aMeta == 11) {
+            return 7;
+        }
+        return 4;
+    }
+
 }

@@ -1,5 +1,6 @@
 package gregtech.common.render;
 
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -11,17 +12,28 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 @SuppressWarnings("unused")
 public class GT_TextureBuilder implements ITextureBuilder {
+
     private final List<IIconContainer> iconContainerList;
+
     private final List<ITexture> textureLayers;
+
     private Block fromBlock;
+
     private int fromMeta;
+
     private ForgeDirection fromSide;
+
     private short[] rgba;
+
     private boolean allowAlpha;
+
     private boolean stdOrient;
+
     private boolean extFacing;
+
     private boolean glow;
 
     public GT_TextureBuilder() {
@@ -31,6 +43,28 @@ public class GT_TextureBuilder implements ITextureBuilder {
         allowAlpha = true;
         stdOrient = false;
         glow = false;
+    }
+
+    @Override
+    public ITexture build() {
+        if (fromBlock != null) {
+            return new GT_CopiedBlockTexture(fromBlock, fromSide.ordinal(), fromMeta, rgba, allowAlpha);
+        }
+        if (!textureLayers.isEmpty()) {
+            return new GT_MultiTexture(textureLayers.toArray(new ITexture[0]));
+        }
+        switch (iconContainerList.size()) {
+            case 1:
+                return new GT_RenderedTexture(iconContainerList.get(0), rgba, allowAlpha, glow, stdOrient, extFacing);
+            case 6:
+                return new GT_SidedTexture(iconContainerList.get(ForgeDirection.DOWN.ordinal()), iconContainerList.get(ForgeDirection.UP.ordinal()),
+                                           iconContainerList.get(ForgeDirection.NORTH.ordinal()), iconContainerList.get(ForgeDirection.SOUTH.ordinal()),
+                                           iconContainerList.get(ForgeDirection.WEST.ordinal()), iconContainerList.get(ForgeDirection.EAST.ordinal()), rgba,
+                                           allowAlpha
+                );
+            default:
+                throw new IllegalStateException("Invalid sideIconContainer count");
+        }
     }
 
     @Override
@@ -89,24 +123,4 @@ public class GT_TextureBuilder implements ITextureBuilder {
         return this;
     }
 
-    @Override
-    public ITexture build() {
-        if (fromBlock != null) return new GT_CopiedBlockTexture(fromBlock, fromSide.ordinal(), fromMeta, rgba, allowAlpha);
-        if (!textureLayers.isEmpty()) return new GT_MultiTexture(textureLayers.toArray(new ITexture[0]));
-        switch (iconContainerList.size()) {
-            case 1:
-                return new GT_RenderedTexture(iconContainerList.get(0), rgba, allowAlpha, glow, stdOrient, extFacing);
-            case 6:
-                return new GT_SidedTexture(
-                        iconContainerList.get(ForgeDirection.DOWN.ordinal()),
-                        iconContainerList.get(ForgeDirection.UP.ordinal()),
-                        iconContainerList.get(ForgeDirection.NORTH.ordinal()),
-                        iconContainerList.get(ForgeDirection.SOUTH.ordinal()),
-                        iconContainerList.get(ForgeDirection.WEST.ordinal()),
-                        iconContainerList.get(ForgeDirection.EAST.ordinal()),
-                        rgba, allowAlpha);
-            default:
-                throw new IllegalStateException("Invalid sideIconContainer count");
-        }
-    }
 }

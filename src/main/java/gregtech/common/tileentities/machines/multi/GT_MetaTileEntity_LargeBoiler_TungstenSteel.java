@@ -1,11 +1,14 @@
 package gregtech.common.tileentities.machines.multi;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 
+
 public class GT_MetaTileEntity_LargeBoiler_TungstenSteel extends GT_MetaTileEntity_LargeBoiler {
+
     public GT_MetaTileEntity_LargeBoiler_TungstenSteel(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -18,16 +21,6 @@ public class GT_MetaTileEntity_LargeBoiler_TungstenSteel extends GT_MetaTileEnti
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_LargeBoiler_TungstenSteel(this.mName);
     }
-    
-    @Override
-    public String getCasingMaterial(){
-    	return "TungstenSteel";
-    }
-
-    @Override
-    public String getCasingBlockType() {
-        return "Machine Casings";
-    }
 
     @Override
     public Block getCasingBlock() {
@@ -37,11 +30,6 @@ public class GT_MetaTileEntity_LargeBoiler_TungstenSteel extends GT_MetaTileEnti
     @Override
     public byte getCasingMeta() {
         return 0;
-    }
-
-    @Override
-    public byte getCasingTextureIndex() {
-        return 48;
     }
 
     @Override
@@ -70,8 +58,23 @@ public class GT_MetaTileEntity_LargeBoiler_TungstenSteel extends GT_MetaTileEnti
     }
 
     @Override
+    public byte getCasingTextureIndex() {
+        return 48;
+    }
+
+    @Override
+    public String getCasingMaterial() {
+        return "TungstenSteel";
+    }
+
+    @Override
     public int getEUt() {
         return 1000;
+    }
+
+    @Override
+    int runtimeBoost(int mTime) {
+        return mTime * 120 / 100;
     }
 
     @Override
@@ -80,8 +83,8 @@ public class GT_MetaTileEntity_LargeBoiler_TungstenSteel extends GT_MetaTileEnti
     }
 
     @Override
-    int runtimeBoost(int mTime) {
-        return mTime * 120 / 100;
+    public String getCasingBlockType() {
+        return "Machine Casings";
     }
 
 }

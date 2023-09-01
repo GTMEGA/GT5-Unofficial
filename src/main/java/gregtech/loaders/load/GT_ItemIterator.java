@@ -1,14 +1,9 @@
 package gregtech.loaders.load;
 
+
 import buildcraft.api.tools.IToolWrench;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OreDictNames;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.ToolDictNames;
+import gregtech.api.enums.*;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -23,38 +18,73 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+
 public class GT_ItemIterator implements Runnable {
+
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: Scanning for certain kinds of compatible Machineblocks.");
         ItemStack tStack2;
         ItemStack tStack;
-        if (null != (tStack = GT_ModHandler.getRecipeOutput(tStack2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1L), tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2, tStack2))) {
+        if (null != (
+                tStack = GT_ModHandler.getRecipeOutput(
+                        tStack2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1L), tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2,
+                        tStack2
+                                                      )
+        )) {
             GT_ModHandler.addPulverisationRecipe(tStack, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 8L), null, 0, false);
             GT_ModHandler.addSmeltingRecipe(tStack, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 8L));
         }
-        if (null != (tStack = GT_ModHandler.getRecipeOutput(tStack2 = GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1L), tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2, tStack2))) {
+        if (null != (
+                tStack = GT_ModHandler.getRecipeOutput(
+                        tStack2 = GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1L), tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2,
+                        tStack2
+                                                      )
+        )) {
             GT_OreDictUnificator.registerOre(OreDictNames.craftingRawMachineTier00, tStack);
             GT_ModHandler.addPulverisationRecipe(tStack, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 8L), null, 0, false);
             GT_ModHandler.addSmeltingRecipe(tStack, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 8L));
         }
         ItemStack tStack3;
-        if (null != (tStack = GT_ModHandler.getRecipeOutput(tStack2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L), tStack3 = new ItemStack(Blocks.glass, 1, 0), tStack2, tStack3, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L), tStack3, tStack2, tStack3, tStack2))) {
-            GT_ModHandler.addPulverisationRecipe(tStack, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 4L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L), 0, false);
+        if (null != (
+                tStack = GT_ModHandler.getRecipeOutput(
+                        tStack2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L), tStack3 = new ItemStack(Blocks.glass, 1, 0), tStack2,
+                        tStack3, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L), tStack3, tStack2, tStack3, tStack2
+                                                      )
+        )) {
+            GT_ModHandler.addPulverisationRecipe(
+                    tStack, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 4L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L), 0,
+                    false
+                                                );
         }
-        if (null != (tStack = GT_ModHandler.getRecipeOutput(tStack2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L), tStack3 = new ItemStack(Blocks.glass, 1, 0), tStack2, tStack3, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L), tStack3, tStack2, tStack3, tStack2))) {
-            GT_ModHandler.addPulverisationRecipe(tStack, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 4L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L), 0, false);
+        if (null != (
+                tStack = GT_ModHandler.getRecipeOutput(
+                        tStack2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L), tStack3 = new ItemStack(Blocks.glass, 1, 0), tStack2,
+                        tStack3, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L), tStack3, tStack2, tStack3, tStack2
+                                                      )
+        )) {
+            GT_ModHandler.addPulverisationRecipe(
+                    tStack, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 4L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L), 0,
+                    false
+                                                );
         }
         GT_Log.out.println("GT_Mod: Registering various Tools to be usable on GregTech Machines");
         GregTech_API.registerScrewdriver(GT_ModHandler.getRecipeOutput(null, new ItemStack(Items.iron_ingot, 1), null, new ItemStack(Items.stick, 1)));
         GregTech_API.registerScrewdriver(GT_ModHandler.getRecipeOutput(new ItemStack(Items.iron_ingot, 1), null, null, null, new ItemStack(Items.stick, 1)));
 
         GT_Log.out.println("GT_Mod: Adding Food Recipes to the Automatic Canning Machine. (also during the following Item Iteration)");
-        GT_Values.RA.addCannerRecipe(new ItemStack(Items.rotten_flesh, 2, 32767), ItemList.IC2_Food_Can_Empty.get(1L), ItemList.IC2_Food_Can_Spoiled.get(1L), null, 200, 1);
-        GT_Values.RA.addCannerRecipe(new ItemStack(Items.spider_eye, 2, 32767), ItemList.IC2_Food_Can_Empty.get(1L), ItemList.IC2_Food_Can_Spoiled.get(1L), null, 100, 1);
-        GT_Values.RA.addCannerRecipe(ItemList.Food_Poisonous_Potato.get(2L), ItemList.IC2_Food_Can_Empty.get(1L), ItemList.IC2_Food_Can_Spoiled.get(1L), null, 100, 1);
-        GT_Values.RA.addCannerRecipe(new ItemStack(Items.cake, 1, 32767), ItemList.IC2_Food_Can_Empty.get(12L), ItemList.IC2_Food_Can_Filled.get(12L), null, 600, 1);
-        GT_Values.RA.addCannerRecipe(new ItemStack(Items.mushroom_stew, 1, 32767), ItemList.IC2_Food_Can_Empty.get(6L), ItemList.IC2_Food_Can_Filled.get(6L), new ItemStack(Items.bowl, 1), 300, 1);
+        GT_Values.RA.addCannerRecipe(
+                new ItemStack(Items.rotten_flesh, 2, 32767), ItemList.IC2_Food_Can_Empty.get(1L), ItemList.IC2_Food_Can_Spoiled.get(1L), null, 200, 1);
+        GT_Values.RA.addCannerRecipe(
+                new ItemStack(Items.spider_eye, 2, 32767), ItemList.IC2_Food_Can_Empty.get(1L), ItemList.IC2_Food_Can_Spoiled.get(1L), null, 100, 1);
+        GT_Values.RA.addCannerRecipe(
+                ItemList.Food_Poisonous_Potato.get(2L), ItemList.IC2_Food_Can_Empty.get(1L), ItemList.IC2_Food_Can_Spoiled.get(1L), null, 100, 1);
+        GT_Values.RA.addCannerRecipe(
+                new ItemStack(Items.cake, 1, 32767), ItemList.IC2_Food_Can_Empty.get(12L), ItemList.IC2_Food_Can_Filled.get(12L), null, 600, 1);
+        GT_Values.RA.addCannerRecipe(
+                new ItemStack(Items.mushroom_stew, 1, 32767), ItemList.IC2_Food_Can_Empty.get(6L), ItemList.IC2_Food_Can_Filled.get(6L),
+                new ItemStack(Items.bowl, 1), 300, 1
+                                    );
 
         GT_Log.out.println("GT_Mod: Scanning ItemList.");
 
@@ -93,15 +123,23 @@ public class GT_ItemIterator implements Runnable {
                                 gregtech.common.tools.GT_Tool_Scoop.sBeeHiveMaterial = tBlock.getMaterial();
                             }
                             if (OrePrefixes.stone.mDefaultStackSize < tItem.getItemStackLimit(new ItemStack(tItem, 1, 0))) {
-                                if ((tBlock.isReplaceableOreGen(GT_Values.DW, 0, 0, 0, Blocks.stone)) || (tBlock.isReplaceableOreGen(GT_Values.DW, 0, 0, 0, Blocks.netherrack)) || (tBlock.isReplaceableOreGen(GT_Values.DW, 0, 0, 0, Blocks.end_stone))) {
+                                if ((tBlock.isReplaceableOreGen(GT_Values.DW, 0, 0, 0, Blocks.stone)) || (
+                                        tBlock.isReplaceableOreGen(
+                                                GT_Values.DW, 0, 0, 0, Blocks.netherrack)
+                                ) || (tBlock.isReplaceableOreGen(GT_Values.DW, 0, 0, 0, Blocks.end_stone))) {
                                     tItem.setMaxStackSize(OrePrefixes.stone.mDefaultStackSize);
                                 }
                             }
                         }
-                        if (((tItem instanceof ItemFood)) && (tItem != ItemList.IC2_Food_Can_Filled.getItem()) && (tItem != ItemList.IC2_Food_Can_Spoiled.getItem())) {
+                        if (((tItem instanceof ItemFood)) && (tItem != ItemList.IC2_Food_Can_Filled.getItem()) &&
+                            (tItem != ItemList.IC2_Food_Can_Spoiled.getItem())) {
                             int tFoodValue = ((ItemFood) tItem).func_150905_g(new ItemStack(tItem, 1, 0));
                             if (tFoodValue > 0) {
-                                GT_Values.RA.addCannerRecipe(new ItemStack(tItem, 1, 32767), ItemList.IC2_Food_Can_Empty.get(tFoodValue), ItemList.IC2_Food_Can_Filled.get(tFoodValue), GT_Utility.getContainerItem(new ItemStack(tItem, 1, 0), true), tFoodValue * 100, 1);
+                                GT_Values.RA.addCannerRecipe(
+                                        new ItemStack(tItem, 1, 32767), ItemList.IC2_Food_Can_Empty.get(tFoodValue),
+                                        ItemList.IC2_Food_Can_Filled.get(tFoodValue), GT_Utility.getContainerItem(new ItemStack(tItem, 1, 0), true),
+                                        tFoodValue * 100, 1
+                                                            );
                             }
                         }
                         if ((tItem instanceof IFluidContainerItem)) {
@@ -185,7 +223,9 @@ public class GT_ItemIterator implements Runnable {
                             GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 5));
                             GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 6));
                         }
-                        if (/**(tName.equals("tile.sedimentaryStone")) ||**/((tName.equals("tile.igneousStone")) || (tName.equals("tile.igneousStoneBrick")) || (tName.equals("tile.igneousCobblestone")))) {
+                        if (/**(tName.equals("tile.sedimentaryStone")) ||**/(
+                                (tName.equals("tile.igneousStone")) || (tName.equals("tile.igneousStoneBrick")) || (tName.equals("tile.igneousCobblestone"))
+                        )) {
                             GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(tItem, 1, 0));
                             GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.GraniteBlack, new ItemStack(tItem, 1, 1));
                             GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Rhyolite, new ItemStack(tItem, 1, 2));
@@ -204,7 +244,9 @@ public class GT_ItemIterator implements Runnable {
                             GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Komatiite, new ItemStack(tItem, 1, 14));
                             GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Dacite, new ItemStack(tItem, 1, 15));
                         }
-                        if ((tName.equals("tile.metamorphicStone")) || (tName.equals("tile.metamorphicStoneBrick")) || (tName.equals("tile.metamorphicCobblestone"))) {
+                        if ((tName.equals("tile.metamorphicStone")) || (tName.equals("tile.metamorphicStoneBrick")) || (
+                                tName.equals("tile.metamorphicCobblestone")
+                        )) {
                             GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Gneiss, new ItemStack(tItem, 1, 0));
                             GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Eclogite, new ItemStack(tItem, 1, 1));
                             GT_OreDictUnificator.registerOre(OrePrefixes.stone, Materials.Marble, new ItemStack(tItem, 1, 2));
@@ -251,4 +293,5 @@ public class GT_ItemIterator implements Runnable {
             }
         } catch (Throwable e) {/**/}
     }
+
 }

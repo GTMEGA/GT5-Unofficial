@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines;
 
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -8,7 +9,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull_NonElectric;
 import gregtech.api.render.TextureFactory;
 
+
 public class GT_MetaTileEntity_BasicHull_Bronze extends GT_MetaTileEntity_BasicHull_NonElectric {
+
     public GT_MetaTileEntity_BasicHull_Bronze(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
         super(aID, aName, aNameRegional, aTier, aDescription);
     }
@@ -36,4 +39,5 @@ public class GT_MetaTileEntity_BasicHull_Bronze extends GT_MetaTileEntity_BasicH
         }
         return rTextures;
     }
+
 }

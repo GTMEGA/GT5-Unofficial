@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -9,7 +10,9 @@ import net.minecraft.item.ItemStack;
 
 import static gregtech.api.enums.GT_Values.V;
 
+
 public class GT_MetaTileEntity_Hatch_Dynamo extends GT_MetaTileEntity_Hatch {
+
     public GT_MetaTileEntity_Hatch_Dynamo(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, new String[]{"Generating electric Energy from Multiblocks", "Puts out up to 1 Amp"});
     }
@@ -33,8 +36,23 @@ public class GT_MetaTileEntity_Hatch_Dynamo extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean isSimpleMachine() {
+    public boolean isEnetOutput() {
         return true;
+    }
+
+    @Override
+    public long maxEUStore() {
+        return 512L + V[mTier + 1] * 2L;
+    }
+
+    @Override
+    public long maxEUOutput() {
+        return V[mTier];
+    }
+
+    @Override
+    public boolean isOutputFacing(byte aSide) {
+        return aSide == getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -48,33 +66,8 @@ public class GT_MetaTileEntity_Hatch_Dynamo extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean isEnetOutput() {
-        return true;
-    }
-
-    @Override
-    public boolean isOutputFacing(byte aSide) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return false;
-    }
-
-    @Override
     public long getMinimumStoredEU() {
         return 512;
-    }
-
-    @Override
-    public long maxEUOutput() {
-        return V[mTier];
-    }
-
-    @Override
-    public long maxEUStore() {
-        return 512L + V[mTier + 1] * 2L;
     }
 
     @Override
@@ -91,4 +84,15 @@ public class GT_MetaTileEntity_Hatch_Dynamo extends GT_MetaTileEntity_Hatch {
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return false;
     }
+
+    @Override
+    public boolean isValidSlot(int aIndex) {
+        return false;
+    }
+
+    @Override
+    public boolean isSimpleMachine() {
+        return true;
+    }
+
 }

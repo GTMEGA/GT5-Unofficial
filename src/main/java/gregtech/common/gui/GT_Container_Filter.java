@@ -1,5 +1,6 @@
 package gregtech.common.gui;
 
+
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -10,7 +11,9 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+
 public class GT_Container_Filter extends GT_ContainerMetaTile_Machine {
+
     public GT_Container_Filter(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
     }
@@ -45,6 +48,16 @@ public class GT_Container_Filter extends GT_ContainerMetaTile_Machine {
     }
 
     @Override
+    public int getSlotCount() {
+        return 9;
+    }
+
+    @Override
+    public int getShiftClickSlotCount() {
+        return 9;
+    }
+
+    @Override
     public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
         if (aSlotIndex < 9) {
             return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
@@ -61,56 +74,63 @@ public class GT_Container_Filter extends GT_ContainerMetaTile_Machine {
                     if (aMouseclick == 0) {
                         tSlot.putStack(null);
                     } else if (tStack != null) {
-                    	tStack = GT_Utility.copyAmountAndMetaData(tStack.stackSize, 32767, tStack);
-                    	if(GT_Utility.isStackInvalid(tStack)){tStack=null;}
+                        tStack = GT_Utility.copyAmountAndMetaData(tStack.stackSize, 32767, tStack);
+                        if (GT_Utility.isStackInvalid(tStack)) {
+                            tStack = null;
+                        }
                     }
                 } else {
-                    tSlot.putStack(GT_Utility.copyAmount(1L, new Object[]{tStack}));
+                    tSlot.putStack(GT_Utility.copyAmount(1L, tStack));
                 }
                 return null;
             }
             if (aSlotIndex == 18) {
-                ((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bOutput = (!((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bOutput);
+                ((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bOutput =
+                        (!((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bOutput);
                 if (((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bOutput) {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("116","Emit Energy to Outputside"));
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("116", "Emit Energy to Outputside"));
                 } else {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("117","Don't emit Energy"));
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("117", "Don't emit Energy"));
                 }
                 return null;
             }
             if (aSlotIndex == 19) {
-                ((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull = (!((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull);
+                ((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull =
+                        (!((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull);
                 if (((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull) {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("122","Emit Redstone if slots contain something"));
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("122", "Emit Redstone if slots contain something"));
                 } else {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("123","Don't emit Redstone"));
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("123", "Don't emit Redstone"));
                 }
                 return null;
             }
             if (aSlotIndex == 20) {
-                ((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bInvert = (!((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bInvert);
+                ((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bInvert =
+                        (!((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bInvert);
                 if (((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bInvert) {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("120","Invert Redstone"));
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("120", "Invert Redstone"));
                 } else {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("121","Don't invert Redstone"));
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("121", "Don't invert Redstone"));
                 }
                 return null;
             }
             if (aSlotIndex == 21) {
-                ((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bInvertFilter = (!((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bInvertFilter);
+                ((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bInvertFilter =
+                        (!((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bInvertFilter);
                 if (((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bInvertFilter) {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("124","Invert Filter"));
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("124", "Invert Filter"));
                 } else {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("125","Don't invert Filter"));
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("125", "Don't invert Filter"));
                 }
                 return null;
             }
             if (aSlotIndex == 22) {
-                ((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bIgnoreNBT = (!((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bIgnoreNBT);
+                ((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bIgnoreNBT =
+                        (!((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bIgnoreNBT);
                 if (((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bIgnoreNBT) {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("126","Ignore NBT"));
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("126", "Ignore NBT"));
                 } else {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("127","NBT has to match"));
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("127", "NBT has to match"));
                 }
                 return null;
             }
@@ -118,13 +138,4 @@ public class GT_Container_Filter extends GT_ContainerMetaTile_Machine {
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
     }
 
-    @Override
-    public int getSlotCount() {
-        return 9;
-    }
-
-    @Override
-    public int getShiftClickSlotCount() {
-        return 9;
-    }
 }

@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class GT_FluidCell extends Item implements IFluidContainerItem {
 
-    public final IIcon textures[] = new IIcon[2];
+    public final IIcon[] textures = new IIcon[2];
 
     public GT_FluidCell() {
         setUnlocalizedName("gt.fluidcell");
@@ -67,15 +67,6 @@ public class GT_FluidCell extends Item implements IFluidContainerItem {
         textures[1] = register.registerIcon("gregtech:fluidcell_overlay");
     }
 
-    /**
-     * @param container ItemStack which is the fluid container.
-     * @return FluidStack representing the fluid in the container, null if the container is empty.
-     */
-    @Override
-    public FluidStack getFluid(final ItemStack container) {
-        return FluidStack.loadFluidStackFromNBT(getOrCreateNBT(container).getCompoundTag("Fluid"));
-    }
-
     public NBTTagCompound getOrCreateNBT(final ItemStack stack) {
         if (!stack.hasTagCompound()) {
             val result = new NBTTagCompound();
@@ -83,6 +74,15 @@ public class GT_FluidCell extends Item implements IFluidContainerItem {
             return result;
         }
         return stack.getTagCompound();
+    }
+
+    /**
+     * @param container ItemStack which is the fluid container.
+     * @return FluidStack representing the fluid in the container, null if the container is empty.
+     */
+    @Override
+    public FluidStack getFluid(final ItemStack container) {
+        return FluidStack.loadFluidStackFromNBT(getOrCreateNBT(container).getCompoundTag("Fluid"));
     }
 
     /**

@@ -32,7 +32,6 @@ import net.minecraft.world.IBlockAccess;
 import javax.annotation.Nonnull;
 
 import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 
@@ -426,6 +425,16 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     }
 
     @Override
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_Container_DevEnergySource(aPlayerInventory, aBaseMetaTileEntity);
+    }
+
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_GUIContainer_DevEnergySource(aPlayerInventory, aBaseMetaTileEntity);
+    }
+
+    @Override
     public boolean renderInWorld(final IBlockAccess aWorld, final int aX, final int aY, final int aZ, final Block aBlock, final RenderBlocks aRenderer) {
         val te = getBaseMetaTileEntity();
         byte facing = te.getFrontFacing();
@@ -434,16 +443,6 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
             GT_Renderer_Block.renderFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tex, true, side);
         }
         return true;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_DevEnergySource(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_DevEnergySource(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     public boolean canRun() {

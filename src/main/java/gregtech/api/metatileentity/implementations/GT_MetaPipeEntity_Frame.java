@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -18,10 +19,13 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import static gregtech.api.enums.GT_Values.RA;
 
+
 public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
-    private static final String localizedDescFormat = GT_LanguageManager.addStringLocalization(
-            "gt.blockmachines.gt_frame.desc.format",
-            "Just something you can put covers on.");
+
+    private static final String localizedDescFormat = GT_LanguageManager.addStringLocalization("gt.blockmachines.gt_frame.desc.format",
+                                                                                               "Just something you can put covers on."
+                                                                                              );
+
     public final Materials mMaterial;
 
     public GT_MetaPipeEntity_Frame(int aID, String aName, String aNameRegional, Materials aMaterial) {
@@ -29,8 +33,12 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
         mMaterial = aMaterial;
 
         GT_OreDictUnificator.registerOre(OrePrefixes.frameGt, aMaterial, getStackForm(1));
-        GT_ModHandler.addCraftingRecipe(getStackForm(2), RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"SSS", "SwS", "SSS", 'S', OrePrefixes.stick.get(mMaterial)});
-        RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 4), ItemList.Circuit_Integrated.getWithDamage(0, 4), getStackForm(1), 64, 8);
+        GT_ModHandler.addCraftingRecipe(
+                getStackForm(2), RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
+                new Object[]{"SSS", "SwS", "SSS", 'S', OrePrefixes.stick.get(mMaterial)}
+                                       );
+        RA.addAssemblerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 4), ItemList.Circuit_Integrated.getWithDamage(0, 4), getStackForm(1), 64, 8);
     }
 
     public GT_MetaPipeEntity_Frame(String aName, Materials aMaterial) {
@@ -49,8 +57,19 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections, byte aColorIndex, boolean aConnected, boolean aRedstone) {
-        return new ITexture[]{TextureFactory.of(mMaterial.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex], Dyes.getModulation(aColorIndex, mMaterial.mRGBa))};
+    public final void saveNBTData(NBTTagCompound aNBT) {/*Do nothing*/}
+
+    @Override
+    public final void loadNBTData(NBTTagCompound aNBT) {/*Do nothing*/}
+
+    @Override
+    public final boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return false;
+    }
+
+    @Override
+    public final boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return false;
     }
 
     @Override
@@ -59,7 +78,27 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
     }
 
     @Override
-    public final boolean isSimpleMachine() {
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aConnections,
+            byte aColorIndex,
+            boolean aConnected,
+            boolean aRedstone
+                                ) {
+        return new ITexture[]{
+                TextureFactory.of(
+                        mMaterial.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex], Dyes.getModulation(aColorIndex, mMaterial.mRGBa))
+        };
+    }
+
+    @Override
+    public final float getThickNess() {
+        return 1.0F;
+    }
+
+    @Override
+    public final boolean renderInside(byte aSide) {
         return true;
     }
 
@@ -74,33 +113,14 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
     }
 
     @Override
-    public final boolean renderInside(byte aSide) {
+    public final boolean isSimpleMachine() {
         return true;
     }
 
     @Override
-    public final float getThickNess() {
-        return 1.0F;
+    public int connect(byte aSide) {
+        return 0;
     }
-
-    @Override
-    public final void saveNBTData(NBTTagCompound aNBT) {/*Do nothing*/}
-
-    @Override
-    public final void loadNBTData(NBTTagCompound aNBT) {/*Do nothing*/}
-
-    @Override
-    public final boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public final boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public int connect(byte aSide) {return 0;}
 
     @Override
     public void disconnect(byte aSide) {/* Do nothing*/}
@@ -109,4 +129,5 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
     public boolean isMachineBlockUpdateRecursive() {
         return true;
     }
+
 }

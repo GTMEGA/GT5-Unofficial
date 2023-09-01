@@ -1,5 +1,6 @@
 package gregtech.common.covers;
 
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
@@ -16,10 +17,148 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+
 public class GT_Cover_LiquidMeter extends GT_CoverBehavior {
+
+    private class GUI extends GT_GUICover {
+
+        private static final int startX = 10;
+
+        private static final int startY = 25;
+
+        private static final int spaceX = 18;
+
+        private static final int spaceY = 18;
+
+        private final byte side;
+
+        private final int coverID;
+
+        private int coverVariable;
+
+        public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+            super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
+            this.side = aSide;
+            this.coverID = aCoverID;
+            this.coverVariable = aCoverVariable;
+            new GT_GuiIconCheckButton(this, 0, startX, startY, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF);
+        }
+
+        @Override
+        public void drawExtras(int mouseX, int mouseY, float parTicks) {
+            super.drawExtras(mouseX, mouseY, parTicks);
+            String s2;
+            if (coverVariable == 0) {
+                s2 = trans("INVERTED", "Inverted");
+            } else {
+                s2 = trans("NORMAL", "Normal");
+            }
+
+            this.fontRendererObj.drawString(s2, startX + spaceX, 4 + startY, 0xFF555555);
+        }
+
+        @Override
+        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
+            updateButtons();
+        }
+
+        @Override
+        public void buttonClicked(GuiButton btn) {
+            boolean state = false;
+            if (btn.id == 0) {
+                state = ((GT_GuiIconCheckButton) btn).isChecked();
+            }
+
+            coverVariable = getNewCoverVariable(btn.id, state);
+            GT_Values.NW.sendToServer(new GT_Packet_TileEntityCover(side, coverID, coverVariable, tile));
+            updateButtons();
+        }
+
+        private int getNewCoverVariable(int id, boolean buttonState) {
+            if (id == 0) {
+                if (buttonState) {
+                    return coverVariable | 0x1;
+                } else {
+                    return coverVariable & ~0x1;
+                }
+            }
+            return coverVariable;
+        }
+
+        private void updateButtons() {
+            GuiButton b;
+            for (Object o : buttonList) {
+                b = (GuiButton) o;
+                if (b.id == 0) {
+                    ((GT_GuiIconCheckButton) b).setChecked(coverVariable == 0);
+                }
+            }
+        }
+
+    }
+
     @Override
-    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        return false;
+    public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+        return 5;
+    }
+
+    @Override
+    public boolean manipulatesSidedRedstoneOutput(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    public boolean letsItemsOut(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    public boolean letsItemsIn(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    public boolean letsFluidOut(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    public boolean letsFluidIn(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    public boolean letsEnergyOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    public boolean letsEnergyIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity) {
+        return new GUI(aSide, aCoverID, coverData, aTileEntity);
+    }
+
+    @Override
+    public int onCoverScrewdriverclick(
+            byte aSide,
+            int aCoverID,
+            int aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            float aX,
+            float aY,
+            float aZ
+                                      ) {
+        if (aCoverVariable == 0) {
+            GT_Utility.sendChatToPlayer(aPlayer, trans("055", "Normal"));
+        } else {
+            GT_Utility.sendChatToPlayer(aPlayer, trans("054", "Inverted"));
+        }
+        return aCoverVariable == 0 ? 1 : 0;
     }
 
     @Override
@@ -39,67 +178,27 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehavior {
                     }
                 }
             }
-            if(tUsed==0L)//nothing
-                aTileEntity.setOutputRedstoneSignal(aSide, (byte)(aCoverVariable == 0 ? 15 : 0));
-            else if(tUsed >= tMax)//full
-                aTileEntity.setOutputRedstoneSignal(aSide, (byte)(aCoverVariable == 0 ? 0 : 15));
-            else//1-14 range
-                aTileEntity.setOutputRedstoneSignal(aSide, (byte)(aCoverVariable == 0 ? 14-((14*tUsed)/tMax) : 1+((14*tUsed)/tMax)) );
+            if (tUsed == 0L)//nothing
+            {
+                aTileEntity.setOutputRedstoneSignal(aSide, (byte) (aCoverVariable == 0 ? 15 : 0));
+            } else if (tUsed >= tMax)//full
+            {
+                aTileEntity.setOutputRedstoneSignal(aSide, (byte) (aCoverVariable == 0 ? 0 : 15));
+            } else//1-14 range
+            {
+                aTileEntity.setOutputRedstoneSignal(aSide, (byte) (aCoverVariable == 0 ? 14 - ((14 * tUsed) / tMax) : 1 + ((14 * tUsed) / tMax)));
+            }
         } else {
-            aTileEntity.setOutputRedstoneSignal(aSide, (byte)0);
+            aTileEntity.setOutputRedstoneSignal(aSide, (byte) 0);
         }
         return aCoverVariable;
     }
 
     @Override
-    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aCoverVariable == 0) {
-            GT_Utility.sendChatToPlayer(aPlayer, trans("055", "Normal"));
-        } else {
-            GT_Utility.sendChatToPlayer(aPlayer, trans("054", "Inverted"));
-        }
-        return aCoverVariable == 0 ? 1 : 0;
+    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        return false;
     }
 
-    @Override
-    public boolean letsEnergyIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean letsEnergyOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean letsFluidIn(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean letsFluidOut(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean letsItemsIn(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean letsItemsOut(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean manipulatesSidedRedstoneOutput(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return 5;
-    }
     /**
      * GUI Stuff
      */
@@ -109,74 +208,4 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehavior {
         return true;
     }
 
-    @Override
-    public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity)  {
-        return new GUI(aSide, aCoverID, coverData, aTileEntity);
-    }
-
-    private class GUI extends GT_GUICover {
-        private final byte side;
-        private final int coverID;
-        private int coverVariable;
-
-        private static final int startX = 10;
-        private static final int startY = 25;
-        private static final int spaceX = 18;
-        private static final int spaceY = 18;
-
-        public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-            super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
-            this.side = aSide;
-            this.coverID = aCoverID;
-            this.coverVariable = aCoverVariable;
-            new GT_GuiIconCheckButton(this, 0, startX + spaceX*0, startY+spaceY*0, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF);
-        }
-
-        @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            String s2;
-            if (coverVariable == 0)
-                s2 = trans("INVERTED","Inverted");
-            else
-                s2 = trans("NORMAL","Normal");
-
-            this.fontRendererObj.drawString(s2,  startX + spaceX*1, 4+startY+spaceY*0, 0xFF555555);
-        }
-
-        @Override
-        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
-            updateButtons();
-        }
-
-        @Override
-        public void buttonClicked(GuiButton btn){
-            boolean state = false;
-            if (btn.id == 0)
-                state = ((GT_GuiIconCheckButton) btn).isChecked();
-
-            coverVariable = getNewCoverVariable(btn.id, state);
-            GT_Values.NW.sendToServer(new GT_Packet_TileEntityCover(side, coverID, coverVariable, tile));
-            updateButtons();
-        }
-
-        private void updateButtons(){
-            GuiButton b;
-            for (Object o : buttonList) {
-                b = (GuiButton) o;
-                if(b.id == 0)
-                    ((GT_GuiIconCheckButton) b).setChecked(coverVariable == 0);
-            }
-        }
-
-        private int getNewCoverVariable(int id, boolean buttonState) {
-            if (id == 0) {
-                if (buttonState)
-                    return coverVariable | 0x1;
-                else
-                    return coverVariable & ~0x1;
-            }
-            return coverVariable;
-        }
-    }
 }

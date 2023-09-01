@@ -1,5 +1,6 @@
 package gregtech.common.tools;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -15,7 +16,41 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
+
 public class GT_Tool_Hoe extends GT_Tool {
+
+    @Override
+    public float getBaseDamage() {
+        return 1.75F;
+    }
+
+    @Override
+    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+        return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "hoe") || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock, Material.gourd);
+    }
+
+    @Override
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadHoe.mTextureIndex]
+                           : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.stick.mTextureIndex];
+    }
+
+    @Override
+    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+    }
+
+    @Override
+    public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
+        super.onToolCrafted(aStack, aPlayer);
+        aPlayer.triggerAchievement(AchievementList.buildHoe);
+    }
+
+    @Override
+    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+        aItem.addItemBehavior(aID, new Behaviour_Hoe(100));
+    }
+
     @Override
     public int getToolDamagePerBlockBreak() {
         return 50;
@@ -42,11 +77,6 @@ public class GT_Tool_Hoe extends GT_Tool {
     }
 
     @Override
-    public float getBaseDamage() {
-        return 1.75F;
-    }
-
-    @Override
     public float getSpeedMultiplier() {
         return 1.0F;
     }
@@ -54,6 +84,11 @@ public class GT_Tool_Hoe extends GT_Tool {
     @Override
     public float getMaxDurabilityMultiplier() {
         return 1.0F;
+    }
+
+    @Override
+    public String getMiningSound() {
+        return null;
     }
 
     @Override
@@ -68,12 +103,7 @@ public class GT_Tool_Hoe extends GT_Tool {
 
     @Override
     public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(0);
-    }
-
-    @Override
-    public String getMiningSound() {
-        return null;
+        return GregTech_API.sSoundList.get(0);
     }
 
     @Override
@@ -87,39 +117,14 @@ public class GT_Tool_Hoe extends GT_Tool {
     }
 
     @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
-        return GT_ToolHarvestHelper.isAppropriateTool(aBlock , aMetaData ,"hoe")
-                || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock ,Material.gourd);
-    }
-
-    @Override
     public ItemStack getBrokenItem(ItemStack aStack) {
         return null;
     }
 
     @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadHoe.mTextureIndex] : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.stick.mTextureIndex];
-    }
-
-    @Override
-    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
-    }
-
-    @Override
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
-        aItem.addItemBehavior(aID, new Behaviour_Hoe(100));
-    }
-
-    @Override
-    public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
-        super.onToolCrafted(aStack, aPlayer);
-        aPlayer.triggerAchievement(AchievementList.buildHoe);
-    }
-
-    @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " has been called a stupid Hoe by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
+        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " has been called a stupid Hoe by " +
+                                     EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
     }
+
 }

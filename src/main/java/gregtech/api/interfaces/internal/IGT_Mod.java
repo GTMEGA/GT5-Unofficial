@@ -1,8 +1,10 @@
 package gregtech.api.interfaces.internal;
 
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
 
 /**
  * Interface used by the Mods Main Class to reference to internals.
@@ -10,6 +12,7 @@ import net.minecraft.world.World;
  * Don't even think about including this File in your Mod.
  */
 public interface IGT_Mod {
+
     /**
      * This means that Server specific Basefiles are definitely existing! Not if the World is actually server side or not!
      */
@@ -43,4 +46,5 @@ public interface IGT_Mod {
      * Plays the Sonictron Sound for the ItemStack on the Client Side
      */
     void doSonictronSound(ItemStack aStack, World aWorld, double aX, double aY, double aZ);
+
 }

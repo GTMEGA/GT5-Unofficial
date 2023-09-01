@@ -1,5 +1,6 @@
 package gregtech.common.items.behaviors;
 
+
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -15,11 +16,26 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
+
 public class Behaviour_SensorKit extends Behaviour_None {
-    private final String mTooltip = GT_LanguageManager.addStringLocalization("gt.behaviour.sensorkit.tooltip", "Used to display Information using the Mod Nuclear Control");
+
+    private final String mTooltip = GT_LanguageManager.addStringLocalization(
+            "gt.behaviour.sensorkit.tooltip", "Used to display Information using the Mod Nuclear Control");
 
     @Override
-    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+    public boolean onItemUseFirst(
+            GT_MetaBase_Item aItem,
+            ItemStack aStack,
+            EntityPlayer aPlayer,
+            World aWorld,
+            int aX,
+            int aY,
+            int aZ,
+            int aSide,
+            float hitX,
+            float hitY,
+            float hitZ
+                                 ) {
         if ((aPlayer instanceof EntityPlayerMP)) {
             TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
             if (((tTileEntity instanceof IInventory)) && (!((IInventory) tTileEntity).isUseableByPlayer(aPlayer))) {
@@ -46,4 +62,5 @@ public class Behaviour_SensorKit extends Behaviour_None {
         aList.add(this.mTooltip);
         return aList;
     }
+
 }

@@ -1,8 +1,10 @@
 package gregtech.api.gui;
 
+
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
+
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -10,6 +12,7 @@ import net.minecraft.inventory.Slot;
  * The Container I use for all my Basic Machines
  */
 public class GT_Container_MultiMachine extends GT_ContainerMetaTile_Machine {
+
     public GT_Container_MultiMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
     }
@@ -32,4 +35,5 @@ public class GT_Container_MultiMachine extends GT_ContainerMetaTile_Machine {
     public int getShiftClickSlotCount() {
         return 1;
     }
+
 }

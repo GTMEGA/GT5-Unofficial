@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -9,10 +10,13 @@ import net.minecraft.util.EnumChatFormatting;
 
 import java.util.List;
 
+
 public class GT_Item_Casings1 extends GT_Item_Casings_Abstract {
+
     public GT_Item_Casings1(Block par1) {
         super(par1);
     }
+
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
@@ -23,4 +27,5 @@ public class GT_Item_Casings1 extends GT_Item_Casings_Abstract {
             aList.add(EnumChatFormatting.ITALIC + this.mCoilOverheated2Tooltip);
         }
     }
+
 }

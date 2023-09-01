@@ -1,5 +1,6 @@
 package gregtech.api.interfaces.metatileentity;
 
+
 import com.enderio.core.common.util.BlockCoord;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -29,12 +30,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Warning, this Interface has just been made to be able to add multiple kinds of MetaTileEntities (Cables, Pipes, Transformers, but not the regular Blocks)
  * <p/>
  * Don't implement this yourself and expect it to work. Extend @MetaTileEntity itself.
  */
 public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHandler, IGearEnergyTileEntity, IMachineBlockUpdateable {
+
     /**
      * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
      * <p/>
@@ -207,7 +210,8 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack);
 
     /**
-     * @return if aIndex is a valid Slot. false for things like HoloSlots. Is used for determining if an Item is dropped upon Block destruction and for Inventory Access Management
+     * @return if aIndex is a valid Slot. false for things like HoloSlots. Is used for determining if an Item is dropped upon Block destruction and for
+     * Inventory Access Management
      */
     boolean isValidSlot(int aIndex);
 
@@ -336,7 +340,8 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @param aSide       is the Side of the Block
      * @param aFacing     is the direction the Block is facing (or a Bitmask of all Connections in case of Pipes)
      * @param aColorIndex The Minecraft Color the Block is having
-     * @param aActive     if the Machine is currently active (use this instead of calling mBaseMetaTileEntity.mActive!!!). Note: In case of Pipes this means if this Side is connected to something or not.
+     * @param aActive     if the Machine is currently active (use this instead of calling mBaseMetaTileEntity.mActive!!!). Note: In case of Pipes this means
+     *                    if this Side is connected to something or not.
      * @param aRedstone   if the Machine is currently outputting a RedstoneSignal (use this instead of calling mBaseMetaTileEntity.mRedstone!!!)
      */
     ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone);

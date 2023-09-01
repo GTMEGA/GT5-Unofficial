@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.steam;
 
+
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -8,7 +9,9 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Template_Bronze;
 import net.minecraft.entity.player.InventoryPlayer;
 
+
 public class GT_MetaTileEntity_Mixer_Bronze extends GT_MetaTileEntity_Template_Bronze {
+
     public GT_MetaTileEntity_Mixer_Bronze(int aID, String aName, String aNameRegional, String aDescription) {
         super(aID, aName, aNameRegional, aDescription, 6, 1, false);
     }
@@ -23,12 +26,17 @@ public class GT_MetaTileEntity_Mixer_Bronze extends GT_MetaTileEntity_Template_B
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Mixer_Bronze(mName,mDescriptionArray,mTextures);
+        return new GT_MetaTileEntity_Mixer_Bronze(mName, mDescriptionArray, mTextures);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_GUIContainer_BasicMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "Mixer.png", getRecipeList().mUnlocalizedName);
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeList() {
+        return GT_Recipe.GT_Recipe_Map.sMixerRecipes;
     }
 
     @Override
@@ -41,8 +49,4 @@ public class GT_MetaTileEntity_Mixer_Bronze extends GT_MetaTileEntity_Template_B
         return "mixer";
     }
 
-    @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeList() {
-        return GT_Recipe.GT_Recipe_Map.sMixerRecipes;
-    }
 }

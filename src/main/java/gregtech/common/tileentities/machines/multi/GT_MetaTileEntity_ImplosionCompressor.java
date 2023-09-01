@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
@@ -20,12 +21,11 @@ import java.util.ArrayList;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+
 
 public class GT_MetaTileEntity_ImplosionCompressor extends GT_MetaTileEntity_CubicMultiBlockBase<GT_MetaTileEntity_ImplosionCompressor> {
+
     public GT_MetaTileEntity_ImplosionCompressor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -40,42 +40,18 @@ public class GT_MetaTileEntity_ImplosionCompressor extends GT_MetaTileEntity_Cub
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Implosion Compressor")
-                .addInfo("Explosions are fun")
-                .addInfo("Controller block for the Implosion Compressor")
-                .addPollutionAmount(20 * getPollutionPerTick(null))
-                .addSeparator()
-                .beginStructureBlock(3, 3, 3, true)
-                .addController("Front center")
-                .addCasingInfo("Solid Steel Machine Casing", 16)
-                .addStructureInfo("Casings can be replaced with Explosion Warning Signs")
-                .addEnergyHatch("Any casing", 1)
-                .addMaintenanceHatch("Any casing", 1)
-                .addMufflerHatch("Any casing", 1)
-                .addInputBus("Any casing", 1)
-                .addOutputBus("Any casing", 1)
-                .toolTipFinisher("Gregtech");
-        return tt;
-    }
-
-    @Override
-    public boolean addToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        return super.addToMachineList(aTileEntity, aBaseCasingIndex) || addMufflerToMachineList(aTileEntity, aBaseCasingIndex);
-    }
-
-    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive) return new ITexture[]{
-                    BlockIcons.casingTexturePages[0][16],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW).extFacing().glow().build()};
+            if (aActive) {
+                return new ITexture[]{
+                        BlockIcons.casingTexturePages[0][16], TextureFactory.builder().addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE).extFacing().build(),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW).extFacing().glow().build()
+                };
+            }
             return new ITexture[]{
-                    BlockIcons.casingTexturePages[0][16],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW).extFacing().glow().build()};
+                    BlockIcons.casingTexturePages[0][16], TextureFactory.builder().addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW).extFacing().glow().build()
+            };
         }
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[0][16]};
     }
@@ -86,26 +62,28 @@ public class GT_MetaTileEntity_ImplosionCompressor extends GT_MetaTileEntity_Cub
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe.GT_Recipe_Map.sImplosionRecipes;
+    public int getPollutionPerTick(ItemStack aStack) {
+        return 500;
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
+    public int getMaxEfficiency(ItemStack aStack) {
+        return 10000;
     }
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
         ArrayList<ItemStack> tInputList = getStoredInputs();
-        int tInputList_sS=tInputList.size();
+        int tInputList_sS = tInputList.size();
         for (int i = 0; i < tInputList_sS - 1; i++) {
             for (int j = i + 1; j < tInputList_sS; j++) {
                 if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
                     if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-                        tInputList.remove(j--); tInputList_sS=tInputList.size();
+                        tInputList.remove(j--);
+                        tInputList_sS = tInputList.size();
                     } else {
-                        tInputList.remove(i--); tInputList_sS=tInputList.size();
+                        tInputList.remove(i--);
+                        tInputList_sS = tInputList.size();
                         break;
                     }
                 }
@@ -120,8 +98,9 @@ public class GT_MetaTileEntity_ImplosionCompressor extends GT_MetaTileEntity_Cub
                 //OC THAT EXPLOSIVE SHIT!!!
                 calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, getMaxInputVoltage());
                 //In case recipe is too OP for that machine
-                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) {
                     return false;
+                }
                 if (this.mEUt > 0) {
                     this.mEUt = (-this.mEUt);
                 }
@@ -135,11 +114,52 @@ public class GT_MetaTileEntity_ImplosionCompressor extends GT_MetaTileEntity_Cub
     }
 
     @Override
+    public boolean isCorrectMachinePart(ItemStack aStack) {
+        return true;
+    }
+
+    @Override
+    public int getDamageToComponent(ItemStack aStack) {
+        return 0;
+    }
+
+    @Override
+    public boolean explodesOnComponentBreak(ItemStack aStack) {
+        return false;
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sImplosionRecipes;
+    }
+
+    @Override
+    public boolean addToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        return super.addToMachineList(aTileEntity, aBaseCasingIndex) || addMufflerToMachineList(aTileEntity, aBaseCasingIndex);
+    }
+
+    @Override
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
         super.startSoundLoop(aIndex, aX, aY, aZ);
         if (aIndex == 20) {
             GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(5), 10, 1.0F, aX, aY, aZ);
         }
+    }
+
+    @Override
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType("Implosion Compressor").addInfo("Explosions are fun").addInfo("Controller block for the Implosion Compressor").addPollutionAmount(
+                  20 * getPollutionPerTick(null)).addSeparator().beginStructureBlock(3, 3, 3, true).addController("Front center").addCasingInfo(
+                  "Solid Steel Machine Casing", 16).addStructureInfo("Casings can be replaced with Explosion Warning Signs").addEnergyHatch("Any casing", 1)
+          .addMaintenanceHatch("Any casing", 1).addMufflerHatch("Any casing", 1).addInputBus("Any casing", 1).addOutputBus("Any casing", 1).toolTipFinisher(
+                  "Gregtech");
+        return tt;
+    }
+
+    @Override
+    protected int getRequiredCasingCount() {
+        return 16;
     }
 
     @Override
@@ -152,28 +172,4 @@ public class GT_MetaTileEntity_ImplosionCompressor extends GT_MetaTileEntity_Cub
         return 16;
     }
 
-    @Override
-    protected int getRequiredCasingCount() {
-        return 16;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getPollutionPerTick(ItemStack aStack) {
-        return 500;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
 }

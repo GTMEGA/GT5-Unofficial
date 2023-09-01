@@ -1,9 +1,12 @@
 package gregtech.common.redstonecircuits;
 
+
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
 import gregtech.api.util.GT_CircuitryBehavior;
 
+
 public class GT_Circuit_CombinationLock extends GT_CircuitryBehavior {
+
     public GT_Circuit_CombinationLock(int aIndex) {
         super(aIndex);
     }
@@ -82,6 +85,11 @@ public class GT_Circuit_CombinationLock extends GT_CircuitryBehavior {
     }
 
     @Override
+    public boolean displayItemStack(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock, int aIndex) {
+        return false;
+    }
+
+    @Override
     public String getName() {
         return "Combination Lock";
     }
@@ -97,12 +105,8 @@ public class GT_Circuit_CombinationLock extends GT_CircuitryBehavior {
     }
 
     @Override
-    public boolean displayItemStack(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock, int aIndex) {
-        return false;
-    }
-
-    @Override
     public String getDataDisplay(int[] aCircuitData, int aCircuitDataIndex) {
         return null;
     }
+
 }

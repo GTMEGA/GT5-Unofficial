@@ -1,5 +1,6 @@
 package gregtech.api.net;
 
+
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
@@ -10,10 +11,15 @@ import net.minecraft.world.IBlockAccess;
 import java.io.DataOutput;
 import java.io.IOException;
 
+
 public class GT_Packet_Sound extends GT_Packet_New {
+
     private int mX, mZ;
+
     private short mY;
+
     private String mSoundName;
+
     private float mSoundStrength, mSoundPitch;
 
     public GT_Packet_Sound() {

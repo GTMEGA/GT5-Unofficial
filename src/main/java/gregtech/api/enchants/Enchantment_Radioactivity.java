@@ -1,5 +1,6 @@
 package gregtech.api.enchants;
 
+
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Config;
@@ -10,7 +11,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
+
 public class Enchantment_Radioactivity extends EnchantmentDamage {
+
     public static Enchantment_Radioactivity INSTANCE;
 
     public Enchantment_Radioactivity() {
@@ -40,12 +43,12 @@ public class Enchantment_Radioactivity extends EnchantmentDamage {
     }
 
     @Override
-    public boolean canApply(ItemStack par1ItemStack) {
-        return false;
+    public String getName() {
+        return "enchantment.damage.radioactivity";
     }
 
     @Override
-    public boolean isAllowedOnBooks() {
+    public boolean canApply(ItemStack par1ItemStack) {
         return false;
     }
 
@@ -55,7 +58,8 @@ public class Enchantment_Radioactivity extends EnchantmentDamage {
     }
 
     @Override
-    public String getName() {
-        return "enchantment.damage.radioactivity";
+    public boolean isAllowedOnBooks() {
+        return false;
     }
+
 }

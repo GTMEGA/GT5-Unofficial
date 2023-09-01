@@ -1,17 +1,17 @@
 package gregtech.loaders.postload;
 
-import gregtech.GT_Mod;
-import gregtech.api.enums.ItemList;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+
 public class GT_ScrapboxDropLoader implements Runnable {
+
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: (re-)adding Scrapbox Drops.");
@@ -24,7 +24,7 @@ public class GT_ScrapboxDropLoader implements Runnable {
 //        GT_ModHandler.addScrapboxDrop(2.0F, new ItemStack(Items.sign));
 //        GT_ModHandler.addScrapboxDrop(9.5F, new ItemStack(Items.stick));
         GT_ModHandler.addScrapboxDrop(5.0F, new ItemStack(Blocks.dirt));
-       GT_ModHandler.addScrapboxDrop(3.0F, new ItemStack(Blocks.grass));
+        GT_ModHandler.addScrapboxDrop(3.0F, new ItemStack(Blocks.grass));
         GT_ModHandler.addScrapboxDrop(3.0F, new ItemStack(Blocks.gravel));
 //        GT_ModHandler.addScrapboxDrop(0.5F, new ItemStack(Blocks.pumpkin));
         GT_ModHandler.addScrapboxDrop(1.0F, new ItemStack(Blocks.soul_sand));
@@ -95,10 +95,11 @@ public class GT_ScrapboxDropLoader implements Runnable {
 //        GT_ModHandler.addScrapboxDrop(0.5F, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.GarnetYellow, 1L));
 //        GT_ModHandler.addScrapboxDrop(0.05F, GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Olivine, 1L));
 //        GT_ModHandler.addScrapboxDrop(0.05F, GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Ruby, 1L));
-          GT_ModHandler.addScrapboxDrop(0.05F, GT_OreDictUnificator.get(OrePrefixes.gem, Materials.FoolsRuby, 1L));
+        GT_ModHandler.addScrapboxDrop(0.05F, GT_OreDictUnificator.get(OrePrefixes.gem, Materials.FoolsRuby, 1L));
 //        GT_ModHandler.addScrapboxDrop(0.05F, GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Sapphire, 1L));
 //        GT_ModHandler.addScrapboxDrop(0.05F, GT_OreDictUnificator.get(OrePrefixes.gem, Materials.GreenSapphire, 1L));
 //        GT_ModHandler.addScrapboxDrop(0.05F, GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1L));
 //        GT_ModHandler.addScrapboxDrop(0.05F, GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Diamond, 1L));
     }
+
 }

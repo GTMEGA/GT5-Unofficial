@@ -1,12 +1,95 @@
 package gregtech.api.damagesources;
 
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 
 import javax.annotation.Nullable;
 
+
 public class GT_DamageSources {
+
+    public static class DamageSourceHotItem extends DamageSourceHeat {
+
+        @Nullable
+        private final ItemStack stack;
+
+        public DamageSourceHotItem(@Nullable ItemStack cause) {
+            this.stack = cause;
+        }
+
+        @Nullable
+        public ItemStack getDamagingStack() {
+            return stack;
+        }
+
+    }
+
+
+    public static class DamageSourceExploding extends DamageSource {
+
+        public DamageSourceExploding() {
+            super("exploded");
+            setDamageAllowedInCreativeMode();
+            setDamageBypassesArmor();
+            setDamageIsAbsolute();
+        }
+
+        @Override
+        public IChatComponent func_151519_b(EntityLivingBase aTarget) {
+            return new ChatComponentText(EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " exploded");
+        }
+
+    }
+
+
+    private static class DamageSourceCombat extends EntityDamageSource {
+
+        private final IChatComponent mDeathMessage;
+
+        public DamageSourceCombat(String aType, EntityLivingBase aPlayer, IChatComponent aDeathMessage) {
+            super(aType, aPlayer);
+            mDeathMessage = aDeathMessage;
+        }
+
+        @Override
+        public IChatComponent func_151519_b(EntityLivingBase aTarget) {
+            return mDeathMessage == null ? super.func_151519_b(aTarget) : mDeathMessage;
+        }
+
+    }
+
+
+    private static class DamageSourceFrost extends DamageSource {
+
+        public DamageSourceFrost() {
+            super("frost");
+            setDifficultyScaled();
+        }
+
+        @Override
+        public IChatComponent func_151519_b(EntityLivingBase aTarget) {
+            return new ChatComponentText(EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " got frozen");
+        }
+
+    }
+
+
+    private static class DamageSourceHeat extends DamageSource {
+
+        public DamageSourceHeat() {
+            super("steam");
+            setDifficultyScaled();
+        }
+
+        @Override
+        public IChatComponent func_151519_b(EntityLivingBase aTarget) {
+            return new ChatComponentText(EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " was boiled alive");
+        }
+
+    }
+
     public static DamageSource getElectricDamage() {
         return ic2.api.info.Info.DMG_ELECTRIC;
     }
@@ -35,69 +118,4 @@ public class GT_DamageSources {
         return new DamageSourceFrost();
     }
 
-    private static class DamageSourceCombat extends EntityDamageSource {
-        private final IChatComponent mDeathMessage;
-
-        public DamageSourceCombat(String aType, EntityLivingBase aPlayer, IChatComponent aDeathMessage) {
-            super(aType, aPlayer);
-            mDeathMessage = aDeathMessage;
-        }
-
-        @Override
-        public IChatComponent func_151519_b(EntityLivingBase aTarget) {
-            return mDeathMessage == null ? super.func_151519_b(aTarget) : mDeathMessage;
-        }
-    }
-
-    private static class DamageSourceFrost extends DamageSource {
-        public DamageSourceFrost() {
-            super("frost");
-            setDifficultyScaled();
-        }
-
-        @Override
-        public IChatComponent func_151519_b(EntityLivingBase aTarget) {
-            return new ChatComponentText(EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " got frozen");
-        }
-    }
-
-    private static class DamageSourceHeat extends DamageSource {
-        public DamageSourceHeat() {
-            super("steam");
-            setDifficultyScaled();
-        }
-
-        @Override
-        public IChatComponent func_151519_b(EntityLivingBase aTarget) {
-            return new ChatComponentText(EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " was boiled alive");
-        }
-    }
-
-    public static class DamageSourceHotItem extends DamageSourceHeat {
-        @Nullable
-        private final ItemStack stack;
-
-        public DamageSourceHotItem(@Nullable ItemStack cause) {
-            this.stack = cause;
-        }
-
-        @Nullable
-        public ItemStack getDamagingStack() {
-            return stack;
-        }
-    }
-
-    public static class DamageSourceExploding extends DamageSource {
-        public DamageSourceExploding() {
-            super("exploded");
-            setDamageAllowedInCreativeMode();
-            setDamageBypassesArmor();
-            setDamageIsAbsolute();
-        }
-
-        @Override
-        public IChatComponent func_151519_b(EntityLivingBase aTarget) {
-            return new ChatComponentText(EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " exploded");
-        }
-    }
 }

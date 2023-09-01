@@ -1,5 +1,6 @@
 package gregtech.api.interfaces.tileentity;
 
+
 /**
  * You are allowed to include this File in your Download, as i will not change it.
  * Simple Interface for Machines, which need my Machine Blocks for MultiBlockStructures.
@@ -7,6 +8,7 @@ package gregtech.api.interfaces.tileentity;
  * Every Machine implementing this Interface will conduct Machine updates.
  */
 public interface IMachineBlockUpdateable {
+
     /**
      * The Machine Update, which is called when the Machine needs an Update of its Parts.
      * I suggest to wait 1-5 seconds before actually checking the Machine Parts.
@@ -17,7 +19,8 @@ public interface IMachineBlockUpdateable {
     /**
      * Should recurse?
      */
-    default boolean isMachineBlockUpdateRecursive(){
+    default boolean isMachineBlockUpdateRecursive() {
         return true;
     }
+
 }

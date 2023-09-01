@@ -48,7 +48,14 @@ public class GT_Block_Potentiometer extends GT_Generic_Block {
      */
     @Override
     public boolean onBlockActivated(
-            final World world, final int x, final int y, final int z, final EntityPlayer player, final int side, final float hitX, final float hitY,
+            final World world,
+            final int x,
+            final int y,
+            final int z,
+            final EntityPlayer player,
+            final int side,
+            final float hitX,
+            final float hitY,
             final float hitZ
                                    ) {
         if (!world.isRemote) {
@@ -62,22 +69,6 @@ public class GT_Block_Potentiometer extends GT_Generic_Block {
             world.setBlockMetadataWithNotify(x, y, z, metadata, 3);
         }
         return true;
-    }
-
-    public int getColorModifier(final int metadata) {
-        int i = 0x00FFFF;
-        i |= (8 * (metadata + 1) + 127) << 16;
-        return i;
-    }
-
-    public short[] getColorModifierList(final int metadata) {
-        final short[] rgb = new short[4];
-        final int rgbInt = getColorModifier(metadata);
-        rgb[0] = (short) ((rgbInt & 0xFF0000) >> 16);
-        rgb[1] = (short) ((rgbInt & 0xFF00) >> 8);
-        rgb[2] = (short) (rgbInt & 0xFF);
-        rgb[3] = (short) 0xFF;
-        return rgb;
     }
 
     /**
@@ -96,6 +87,14 @@ public class GT_Block_Potentiometer extends GT_Generic_Block {
     }
 
     /**
+     * Can this block provide power. Only wire currently seems to have this change based on its state.
+     */
+    @Override
+    public boolean canProvidePower() {
+        return true;
+    }
+
+    /**
      * Called to determine whether to allow the a block to handle its own indirect power rather than using the default rules.
      *
      * @param world The world
@@ -108,16 +107,6 @@ public class GT_Block_Potentiometer extends GT_Generic_Block {
     @Override
     public boolean shouldCheckWeakPower(final IBlockAccess world, final int x, final int y, final int z, final int side) {
         return false;
-    }
-
-
-
-    /**
-     * Can this block provide power. Only wire currently seems to have this change based on its state.
-     */
-    @Override
-    public boolean canProvidePower() {
-        return true;
     }
 
     public ITexture[][] getPotentiometerTextures(final IBlockAccess world, final int x, final int y, final int z) {
@@ -133,7 +122,26 @@ public class GT_Block_Potentiometer extends GT_Generic_Block {
     }
 
     public ITexture[] getPotentiometerTexture(final int aMeta) {
-        return new ITexture[]{TextureFactory.of(Textures.BlockIcons.BLOCK_POTENTIOMETER_BACKGROUND), TextureFactory.of(Textures.BlockIcons.BLOCK_POTENTIOMETER_FOREGROUND, getColorModifierList(aMeta))};
+        return new ITexture[]{
+                TextureFactory.of(Textures.BlockIcons.BLOCK_POTENTIOMETER_BACKGROUND), TextureFactory.of(
+                Textures.BlockIcons.BLOCK_POTENTIOMETER_FOREGROUND, getColorModifierList(aMeta))
+        };
+    }
+
+    public short[] getColorModifierList(final int metadata) {
+        final short[] rgb = new short[4];
+        final int rgbInt = getColorModifier(metadata);
+        rgb[0] = (short) ((rgbInt & 0xFF0000) >> 16);
+        rgb[1] = (short) ((rgbInt & 0xFF00) >> 8);
+        rgb[2] = (short) (rgbInt & 0xFF);
+        rgb[3] = (short) 0xFF;
+        return rgb;
+    }
+
+    public int getColorModifier(final int metadata) {
+        int i = 0x00FFFF;
+        i |= (8 * (metadata + 1) + 127) << 16;
+        return i;
     }
 
     public ITexture[] getInventoryTexture(final int aMeta) {

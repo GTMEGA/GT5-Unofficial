@@ -17,6 +17,11 @@ import net.minecraftforge.common.DimensionManager;
 
 public class GT_Packet_TileEntityGUI extends GT_Packet_New {
 
+    public static GT_Packet_TileEntityGUI createFromMachine(final IAdvancedGUIEntity entity, final ISerializableObject data, final int dimension) {
+        IGregTechTileEntity gtEntity = entity.getBaseMetaTileEntity();
+        return new GT_Packet_TileEntityGUI(gtEntity.getMetaTileID(), dimension, gtEntity.getXCoord(), gtEntity.getYCoord(), gtEntity.getZCoord(), data);
+    }
+
     protected int mID;
 
     protected int dimID;
@@ -28,12 +33,6 @@ public class GT_Packet_TileEntityGUI extends GT_Packet_New {
     protected int mZ;
 
     protected ISerializableObject data;
-
-    public static GT_Packet_TileEntityGUI createFromMachine(final IAdvancedGUIEntity entity, final ISerializableObject data, final int dimension) {
-        IGregTechTileEntity gtEntity = entity.getBaseMetaTileEntity();
-        return new GT_Packet_TileEntityGUI(gtEntity.getMetaTileID(), dimension, gtEntity.getXCoord(), gtEntity.getYCoord(), gtEntity.getZCoord(),
-                                           data);
-    }
 
     public GT_Packet_TileEntityGUI() {
         super(true);
@@ -91,7 +90,8 @@ public class GT_Packet_TileEntityGUI extends GT_Packet_New {
         int mID = aData.readInt();
         IAdvancedGUIEntity gui = getGUI(mID);
         return new GT_Packet_TileEntityGUI(mID, aData.readInt(), aData.readInt(), aData.readShort(), aData.readInt(),
-                                           gui != null ? gui.decodePacket(aData) : null);
+                                           gui != null ? gui.decodePacket(aData) : null
+        );
     }
 
     public static IAdvancedGUIEntity getGUI(final int mID) {

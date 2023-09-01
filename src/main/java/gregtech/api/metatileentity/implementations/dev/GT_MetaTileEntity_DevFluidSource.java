@@ -212,11 +212,6 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
         }
     }
 
-    @Override
-    public boolean receiveRSClientUpdates() {
-        return true;
-    }
-
     /**
      * Decodes the packet, machine type specific
      *
@@ -283,6 +278,11 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
         internalData.setRsActive(getRedstoneMode().checkPredicate(getMaxRSValue()));
         te.getWorld().scheduleBlockUpdate(te.getXCoord(), te.getYCoord(), te.getZCoord(), te.getBlockOffset(0, 0, 0), 3);
         getBaseMetaTileEntity().issueClientUpdate();
+    }
+
+    @Override
+    public boolean receiveRSClientUpdates() {
+        return true;
     }
 
     /**
@@ -615,6 +615,11 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
         markDirty();
     }
 
+    public void setFluidName(final String fluidName) {
+        this.fluidName = fluidName;
+        markDirty();
+    }
+
     protected void setPerTick(final boolean perTick) {
         internalData.setPerTick(perTick);
         markDirty();
@@ -637,11 +642,6 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
 
     protected void setActive(final boolean active) {
         internalData.setActive(active);
-        markDirty();
-    }
-
-    public void setFluidName(final String fluidName) {
-        this.fluidName = fluidName;
         markDirty();
     }
 

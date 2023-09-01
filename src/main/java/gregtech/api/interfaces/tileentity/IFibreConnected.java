@@ -1,9 +1,11 @@
 package gregtech.api.interfaces.tileentity;
 
+
 /**
  * This File has just internal Information about the Fibre Redstone State of a TileEntity
  */
 public interface IFibreConnected extends IColoredTileEntity, IHasWorldObjectAndCoords {
+
     /**
      * If this Blocks accepts Fibre from this Side
      */
@@ -28,4 +30,5 @@ public interface IFibreConnected extends IColoredTileEntity, IHasWorldObjectAndC
      * Gets the Signal this Blocks receives from this Fibre Color
      */
     byte getFibreInput(byte aSide, byte aColor);
+
 }

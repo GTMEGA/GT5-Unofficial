@@ -1,5 +1,6 @@
 package gregtech.api.interfaces.tileentity;
 
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -9,6 +10,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.fluids.IFluidHandler;
 
+
 /**
  * This is a bunch of Functions my TileEntities provide, to make life much easier, and to get rid of internal TileEntity stuff.
  * <p/>
@@ -17,6 +19,7 @@ import net.minecraftforge.fluids.IFluidHandler;
  * Note: It doesn't have to be a TileEntity in certain cases! And only certain cases, such as the Recipe checking of the findRecipe Function.
  */
 public interface IHasWorldObjectAndCoords {
+
     World getWorld();
 
     int getXCoord();
@@ -166,4 +169,5 @@ public interface IHasWorldObjectAndCoords {
      * Opens the GUI with the ID = 0 of this TileEntity
      */
     boolean openGUI(EntityPlayer aPlayer);
+
 }

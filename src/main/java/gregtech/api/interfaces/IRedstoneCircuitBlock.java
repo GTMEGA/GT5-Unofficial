@@ -1,14 +1,17 @@
 package gregtech.api.interfaces;
 
+
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_CoverBehavior;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 
+
 /**
  * Implemented by the MetaTileEntity of the Redstone Circuit Block
  */
 public interface IRedstoneCircuitBlock {
+
     /**
      * The Output Direction the Circuit Block is Facing
      */
@@ -63,4 +66,5 @@ public interface IRedstoneCircuitBlock {
      * returns worldObj.rand.nextInt(aRange)
      */
     int getRandom(int aRange);
+
 }

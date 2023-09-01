@@ -1,5 +1,6 @@
 package gregtech.common;
 
+
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import cpw.mods.fml.common.network.FMLEmbeddedChannel;
@@ -28,11 +29,10 @@ import java.util.*;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 
+
 @ChannelHandler.Sharable
 @SuppressWarnings("deprecation")
 public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet> implements IGT_NetworkHandler {
-    private final EnumMap<Side, FMLEmbeddedChannel> mChannel;
-
 
     @Getter
     public enum PacketEnum {
@@ -50,18 +50,8 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
         TILE_ENTITY_GUI(new GT_Packet_TileEntityGUI()),
         INVENTORY_UPDATE(new GT_Packet_InventoryUpdate());
 
-        private final GT_Packet_New packet;
-
         @Getter
         private static final Map<Class<? extends GT_Packet>, PacketEnum> packetMap = new HashMap<>();
-
-        static {
-            Arrays.stream(values()).forEach(packetEnum -> packetMap.put(packetEnum.getPacket().getClass(), packetEnum));
-        }
-
-        PacketEnum(final @NonNull GT_Packet_New packet) {
-            this.packet = packet;
-        }
 
         public static @NonNull GT_Packet processData(final @NonNull ByteArrayDataInput aData) {
             return values()[aData.readByte()].packet.decode(aData);
@@ -71,7 +61,31 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
             return (byte) packetMap.get(packetClass).ordinal();
         }
 
+        static {
+            Arrays.stream(values()).forEach(packetEnum -> packetMap.put(packetEnum.getPacket().getClass(), packetEnum));
+        }
+
+        private final GT_Packet_New packet;
+
+        PacketEnum(final @NonNull GT_Packet_New packet) {
+            this.packet = packet;
+        }
+
     }
+
+
+    @ChannelHandler.Sharable
+    static final class HandlerShared extends SimpleChannelInboundHandler<GT_Packet> {
+
+        @Override
+        protected void channelRead0(ChannelHandlerContext ctx, GT_Packet aPacket) {
+            EntityPlayer aPlayer = GT_Values.GT.getThePlayer();
+            aPacket.process(aPlayer == null ? null : GT_Values.GT.getThePlayer().worldObj);
+        }
+
+    }
+
+    private final EnumMap<Side, FMLEmbeddedChannel> mChannel;
 
     public GT_Network() {
         this.mChannel = NetworkRegistry.INSTANCE.newChannel("GregTech", this, new HandlerShared());
@@ -92,9 +106,7 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
         GT_Packet tPacket = PacketEnum.processData(aData);
         tPacket.setINetHandler(aPacket.handler());
         aOutput.add(tPacket);
-    }
-
-    @Override
+    }    @Override
     public void sendToPlayer(GT_Packet aPacket, EntityPlayerMP aPlayer) {
         if (aPacket == null) {
             GT_FML_LOGGER.info("packet null");
@@ -138,13 +150,6 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
         }
     }
 
-    @ChannelHandler.Sharable
-    static final class HandlerShared
-            extends SimpleChannelInboundHandler<GT_Packet> {
-        @Override
-        protected void channelRead0(ChannelHandlerContext ctx, GT_Packet aPacket) {
-            EntityPlayer aPlayer = GT_Values.GT.getThePlayer();
-            aPacket.process(aPlayer == null ? null : GT_Values.GT.getThePlayer().worldObj);
-        }
-    }
+
+
 }

@@ -1,5 +1,6 @@
 package gregtech.api.interfaces;
 
+
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
@@ -13,12 +14,14 @@ import net.minecraftforge.event.world.BlockEvent;
 
 import java.util.List;
 
+
 /**
  * The Stats for GT Tools. Not including any Material Modifiers.
  * <p/>
  * And this is supposed to not have any ItemStack Parameters as these are generic Stats.
  */
 public interface IToolStats {
+
     /**
      * Called when aPlayer crafts this Tool
      */
@@ -50,7 +53,8 @@ public interface IToolStats {
     int getToolDamagePerEntityAttack();
 
     /**
-     * @return Basic Quality of the Tool, 0 is normal. If increased, it will increase the general quality of all Tools of this Type. Decreasing is also possible.
+     * @return Basic Quality of the Tool, 0 is normal. If increased, it will increase the general quality of all Tools of this Type. Decreasing is also
+     * possible.
      */
     int getBaseQuality();
 
@@ -127,7 +131,8 @@ public interface IToolStats {
 
     /**
      * aBlock.getHarvestTool(aMetaData) can return the following Values for example.
-     * "axe", "pickaxe", "sword", "shovel", "hoe", "grafter", "saw", "wrench", "crowbar", "file", "hammer", "plow", "plunger", "scoop", "screwdriver", "sense", "scythe", "softhammer", "cutter", "plasmatorch"
+     * "axe", "pickaxe", "sword", "shovel", "hoe", "grafter", "saw", "wrench", "crowbar", "file", "hammer", "plow", "plunger", "scoop", "screwdriver",
+     * "sense", "scythe", "softhammer", "cutter", "plasmatorch"
      *
      * @return If this is a minable Block. Tool Quality checks (like Diamond Tier or something) are separate from this check.
      */
@@ -138,7 +143,19 @@ public interface IToolStats {
      *
      * @return the Amount of modified Items.
      */
-    int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent);
+    int convertBlockDrops(
+            List<ItemStack> aDrops,
+            ItemStack aStack,
+            EntityPlayer aPlayer,
+            Block aBlock,
+            int aX,
+            int aY,
+            int aZ,
+            byte aMetaData,
+            int aFortune,
+            boolean aSilkTouch,
+            BlockEvent.HarvestDropsEvent aEvent
+                         );
 
     /**
      * @return Returns a broken Version of the Item.
@@ -165,4 +182,5 @@ public interface IToolStats {
     boolean onItemUse(ItemStack stack, World world, int x, int y, int z, int sidehit, EntityPlayer playerEntity, float hitX, float hitY, float hitZ);
 
     void toolTip(List aList, ItemStack aStack, EntityPlayer aPlayer, IToolStats stats);
+
 }

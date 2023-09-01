@@ -1,10 +1,13 @@
 package gregtech.common;
 
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+
 public class GT_Server extends GT_Proxy {
+
     @Override
     public boolean isServerSide() {
         return true;
@@ -21,7 +24,8 @@ public class GT_Server extends GT_Proxy {
     }
 
     @Override
-    public void doSonictronSound(ItemStack aStack, World aWorld, double aX, double aY, double aZ) {
+    public EntityPlayer getThePlayer() {
+        return null;
     }
 
     @Override
@@ -30,7 +34,7 @@ public class GT_Server extends GT_Proxy {
     }
 
     @Override
-    public EntityPlayer getThePlayer() {
-        return null;
+    public void doSonictronSound(ItemStack aStack, World aWorld, double aX, double aY, double aZ) {
     }
+
 }

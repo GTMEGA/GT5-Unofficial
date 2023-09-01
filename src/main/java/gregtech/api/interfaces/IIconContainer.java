@@ -1,9 +1,12 @@
 package gregtech.api.interfaces;
 
+
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
+
 public interface IIconContainer {
+
     /**
      * @return A regular Icon.
      */
@@ -18,4 +21,5 @@ public interface IIconContainer {
      * @return the Default Texture File for this Icon.
      */
     ResourceLocation getTextureFile();
+
 }

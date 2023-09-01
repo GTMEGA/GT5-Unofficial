@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+
 import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -27,32 +28,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @Getter
 public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
-    public static enum OreSize {
+
+    public enum OreSize {
         Normal,
         Small
     }
 
-    private static final boolean hideUnusedOresInNEI = Loader.isModLoaded("NotEnoughItems") &&
-                                                       GT_Mod.gregtechproxy.mHideUnusedOres;
-    private final Materials oreType;
-    private final ITexture[] textures;
-
     protected static final Map<Materials, GT_Block_Ore_Abstract> oreMap = new HashMap<>();
+
     protected static final Map<Materials, GT_Block_Ore_Abstract> smallOreMap = new HashMap<>();
+
+    private static final boolean hideUnusedOresInNEI = Loader.isModLoaded("NotEnoughItems") && GT_Mod.gregtechproxy.mHideUnusedOres;
+
     private static final ITexture stone = TextureFactory.of(Blocks.stone);
-
-    protected GT_Block_Ore_Abstract(Materials oreType, String unlocalizedName) {
-        super(GT_Item_Ores.class,
-              unlocalizedName,
-              Material.rock);
-
-        this.setStepSound(soundTypeStone);
-        this.setCreativeTab(GregTech_API.TAB_GREGTECH_ORES);
-        this.oreType = oreType;
-        this.textures = new ITexture[] { stone, getOreTexture(this.oreType) };
-    }
 
     public static void registerOres() {
         for (int i = 1; i < GregTech_API.sGeneratedMaterials.length; i++) {
@@ -73,44 +64,13 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
 
     protected static void registerLocalization(Materials material, String oreNameUnlocalized, OreSize size) {
         String oreNameLocalized;
-        if (GT_LanguageManager.i18nPlaceholder)
+        if (GT_LanguageManager.i18nPlaceholder) {
             oreNameLocalized = String.format(getLocalizedNameFormat(material, size), material.mLocalizedName);
-        else
+        } else {
             oreNameLocalized = getLocalizedName(material, size);
+        }
 
         GT_LanguageManager.addStringLocalization(oreNameUnlocalized, oreNameLocalized);
-    }
-
-    public static GT_Block_Ore_Abstract getOre(Materials material, OreSize size) {
-        return size == OreSize.Normal ? oreMap.get(material) : smallOreMap.get(material);
-    }
-
-    public static boolean setOreBlock(World world, int x, int y, int z, Materials material, boolean air, OreSize size) {
-        if (!air) {
-            y = Math.min(world.getActualHeight(), Math.max(y, 1));
-        }
-
-        Block tBlock = world.getBlock(x, y, z);
-        GT_Block_Ore_Abstract ore = getOre(material, size);
-
-        if ((tBlock != Blocks.air) || air) {
-            if (!GT_Utility.isBlockReplaceableForOreGeneration(world,
-                                                               x,
-                                                               y,
-                                                               z,
-                                                               tBlock,
-                                                               Blocks.stone,
-                                                               Blocks.netherrack,
-                                                               Blocks.end_stone,
-                                                               GregTech_API.sBlockGranites,
-                                                               GregTech_API.sBlockStones)) {
-                return false;
-            }
-            //GT_FML_LOGGER.info(tOreBlock);
-            world.setBlock(x, y, z, ore, 0, 0);
-            return true;
-        }
-        return false;
     }
 
     protected static String getLocalizedNameFormat(Materials aMaterial, OreSize size) {
@@ -156,7 +116,50 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
         return aMaterial.getDefaultLocalizedNameForItem(getLocalizedNameFormat(aMaterial, size));
     }
 
+    public static boolean setOreBlock(World world, int x, int y, int z, Materials material, boolean air, OreSize size) {
+        if (!air) {
+            y = Math.min(world.getActualHeight(), Math.max(y, 1));
+        }
+
+        Block tBlock = world.getBlock(x, y, z);
+        GT_Block_Ore_Abstract ore = getOre(material, size);
+
+        if ((tBlock != Blocks.air) || air) {
+            if (!GT_Utility.isBlockReplaceableForOreGeneration(world, x, y, z, tBlock, Blocks.stone, Blocks.netherrack, Blocks.end_stone,
+                                                               GregTech_API.sBlockGranites, GregTech_API.sBlockStones
+                                                              )) {
+                return false;
+            }
+            //GT_FML_LOGGER.info(tOreBlock);
+            world.setBlock(x, y, z, ore, 0, 0);
+            return true;
+        }
+        return false;
+    }
+
+    public static GT_Block_Ore_Abstract getOre(Materials material, OreSize size) {
+        return size == OreSize.Normal ? oreMap.get(material) : smallOreMap.get(material);
+    }
+
+    private final Materials oreType;
+
+    private final ITexture[] textures;
+
+    protected GT_Block_Ore_Abstract(Materials oreType, String unlocalizedName) {
+        super(GT_Item_Ores.class, unlocalizedName, Material.rock);
+
+        this.setStepSound(soundTypeStone);
+        this.setCreativeTab(GregTech_API.TAB_GREGTECH_ORES);
+        this.oreType = oreType;
+        this.textures = new ITexture[]{stone, getOreTexture(this.oreType)};
+    }
+
     protected abstract ITexture getOreTexture(Materials oreType);
+
+    @Override
+    public boolean isBlockNormalCube() {
+        return true;
+    }
 
     @Override
     public int getRenderType() {
@@ -167,16 +170,13 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
     }
 
     @Override
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        val drops = new ArrayList<ItemStack>();
-        val fortuneFactor = fortune + 1;
-        val numStacks = Math.max(1, fortuneFactor / 64);
-        var stackAmount = fortuneFactor;
-        for (int i = 0; i <= numStacks && stackAmount > 0; i++, stackAmount = fortuneFactor - i * 64){
-            val drop = GT_OreDictUnificator.get(OrePrefixes.oreChunk, this.oreType, Math.min(64L, stackAmount));
-            drops.add(drop);
-        }
-        return drops;
+    public float getBlockHardness(World world, int x, int y, int z) {
+        return 1.0F;
+    }
+
+    @Override
+    public IIcon getIcon(int side, int meta) {
+        return Blocks.stone.getIcon(0, 0);
     }
 
     @Override
@@ -185,23 +185,21 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
     }
 
     @Override
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+        val drops = new ArrayList<ItemStack>();
+        val fortuneFactor = fortune + 1;
+        val numStacks = Math.max(1, fortuneFactor / 64);
+        var stackAmount = fortuneFactor;
+        for (int i = 0; i <= numStacks && stackAmount > 0; i++, stackAmount = fortuneFactor - i * 64) {
+            val drop = GT_OreDictUnificator.get(OrePrefixes.oreChunk, this.oreType, Math.min(64L, stackAmount));
+            drops.add(drop);
+        }
+        return drops;
+    }
+
+    @Override
     public boolean canBeReplacedByLeaves(IBlockAccess world, int x, int y, int z) {
         return false;
-    }
-
-    @Override
-    public boolean isBlockNormalCube() {
-        return true;
-    }
-
-    @Override
-    public float getBlockHardness(World world, int x, int y, int z) {
-        return 1.0F;
-    }
-
-    @Override
-    public int getHarvestLevel(int metadata) {
-        return 0;
     }
 
     @Override
@@ -210,7 +208,8 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
     }
 
     @Override
-    public IIcon getIcon(int side, int meta) {
-        return Blocks.stone.getIcon(0, 0);
+    public int getHarvestLevel(int metadata) {
+        return 0;
     }
+
 }

@@ -1,8 +1,11 @@
 package gregtech.api.util.extensions;
 
+
 import java.util.function.IntFunction;
 
+
 public class ArrayExt {
+
     public static int[] of(int... objects) {
         return objects;
     }
@@ -42,7 +45,9 @@ public class ArrayExt {
         }
 
         T[] newArr = arrayFactory.apply(count);
-        if (count == 0) return newArr;
+        if (count == 0) {
+            return newArr;
+        }
 
         int j = 0;
         for (int i = 0; i < array.length; i++) {
@@ -77,4 +82,5 @@ public class ArrayExt {
             return newArray;
         }
     }
+
 }

@@ -1,9 +1,13 @@
 package gregtech.common;
 
+
 import java.util.Random;
 
+
 public class GT_IteratorRandom extends Random {
+
     private static final long serialVersionUID = 1L;
+
     public int mIterationStep = 2147483647;
 
     @Override
@@ -13,4 +17,5 @@ public class GT_IteratorRandom extends Random {
         }
         return --this.mIterationStep;
     }
+
 }

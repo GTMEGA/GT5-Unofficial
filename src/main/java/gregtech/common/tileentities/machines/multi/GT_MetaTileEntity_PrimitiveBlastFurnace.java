@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -23,18 +24,24 @@ import org.lwjgl.input.Keyboard;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+
 public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEntity {
+
     public static final int INPUT_SLOTS = 3, OUTPUT_SLOTS = 3;
 
     public int mMaxProgresstime = 0;
+
     public volatile int mUpdate = 5;
+
     public int mProgresstime = 0;
+
     public boolean mMachine = false;
 
     public ItemStack[] mOutputItems = new ItemStack[OUTPUT_SLOTS];
 
     @Deprecated
     public ItemStack mOutputItem1;
+
     @Deprecated
     public ItemStack mOutputItem2;
 
@@ -47,77 +54,11 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     }
 
     @Override
-    public boolean isSteampowered() {
-        return false;
+    public byte getTileEntityBaseType() {
+        return 0;
     }
 
     @Override
-    public boolean isElectric() {
-        return false;
-    }
-
-    @Override
-    public boolean isPneumatic() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnetInput() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnetOutput() {
-        return false;
-    }
-
-    @Override
-    public boolean isInputFacing(byte aSide) {
-        return false;
-    }
-
-    @Override
-    public boolean isOutputFacing(byte aSide) {
-        return false;
-    }
-
-    @Override
-    public boolean isTeleporterCompatible() {
-        return false;
-    }
-
-    @Override
-    public boolean isFacingValid(byte aFacing) {
-        return aFacing > 1;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
-    public int getProgresstime() {
-        return this.mProgresstime;
-    }
-
-    @Override
-    public int maxProgresstime() {
-        return this.mMaxProgresstime;
-    }
-
-    @Override
-    public int increaseProgress(int aProgress) {
-        this.mProgresstime += aProgress;
-        return this.mMaxProgresstime - this.mProgresstime;
-    }
-
-    @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
-        return (GregTech_API.getCoverBehaviorNew(aCoverID.toStack()).isSimpleCover()) && (super.allowCoverOnSide(aSide, aCoverID));
-    }
-
-	@Override
     public abstract MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity);
 
     @Override
@@ -147,70 +88,35 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        }
-        aBaseMetaTileEntity.openGUI(aPlayer);
-        return true;
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return aIndex > INPUT_SLOTS;
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_PrimitiveBlastFurnace(aPlayerInventory, aBaseMetaTileEntity);
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return !GT_Utility.areStacksEqual(aStack, this.mInventory[0]);
     }
-
-	@Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_PrimitiveBlastFurnace(aPlayerInventory, aBaseMetaTileEntity, getName(), GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.mNEIName);
-	}
-
-    private boolean checkMachine() {
-        int xDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ;
-        for (int i = -1; i < 2; i++) {
-            for (int j = -1; j < 3; j++) {
-                for (int k = -1; k < 2; k++) {
-                    if ((xDir + i != 0) || (j != 0) || (zDir + k != 0)) {
-                        if ((i != 0) || (j == -1) || (k != 0)) {
-                            if (!isCorrectCasingBlock(getBaseMetaTileEntity().getBlockOffset(xDir + i, j, zDir + k))
-                                    || !isCorrectCasingMetaID(getBaseMetaTileEntity().getMetaIDOffset(xDir + i, j, zDir + k))) {
-                                return false;
-                            }
-                        } else if ((!GT_Utility.arrayContains(getBaseMetaTileEntity().getBlockOffset(xDir + i, j, zDir + k), Blocks.lava, Blocks.flowing_lava, null))
-                                && (!getBaseMetaTileEntity().getAirOffset(xDir + i, j, zDir + k))) {
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    protected abstract boolean isCorrectCasingBlock(Block block);
-
-    protected abstract boolean isCorrectCasingMetaID(int metaID);
 
     @Override
-    public void onMachineBlockUpdate() {
-        this.mUpdate = 5;
+    public boolean isDisplaySecondaryDescription() {
+        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+    }
+
+    @Override
+    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
+        return (GregTech_API.getCoverBehaviorNew(aCoverID.toStack()).isSimpleCover()) && (super.allowCoverOnSide(aSide, aCoverID));
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
 
-            new WorldSpawnedEventBuilder.ParticleEventBuilder()
-                    .setMotion(0D,0.3D,0D)
-                    .setIdentifier("largesmoke")
-                    .setPosition(
-                            aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1) + XSTR_INSTANCE.nextFloat(),
-                            aBaseMetaTileEntity.getOffsetY(aBaseMetaTileEntity.getBackFacing(), 1),
-                            aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1) + XSTR_INSTANCE.nextFloat()
-                    )
-                    .setWorld(getBaseMetaTileEntity().getWorld())
-                    .run();
+            new WorldSpawnedEventBuilder.ParticleEventBuilder().setMotion(0D, 0.3D, 0D).setIdentifier("largesmoke").setPosition(
+                    aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1) + XSTR_INSTANCE.nextFloat(),
+                    aBaseMetaTileEntity.getOffsetY(aBaseMetaTileEntity.getBackFacing(), 1),
+                    aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1) + XSTR_INSTANCE.nextFloat()
+                                                                                                                               ).setWorld(
+                    getBaseMetaTileEntity().getWorld()).run();
         }
         if (aBaseMetaTileEntity.isServerSide()) {
             if (this.mUpdate-- == 0) {
@@ -223,8 +129,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                         this.mOutputItems = null;
                         this.mProgresstime = 0;
                         this.mMaxProgresstime = 0;
-                        GT_Mod.achievements.issueAchievement(
-                                aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "steel");
+                        GT_Mod.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "steel");
                     }
                 } else if (aBaseMetaTileEntity.isAllowedToWork()) {
                     checkRecipe();
@@ -232,46 +137,176 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
             }
             if (this.mMaxProgresstime > 0 && (aTimer % 20L == 0L)) {
                 GT_Pollution.addPollution(this.getBaseMetaTileEntity().getWorld(),
-                        new ChunkPosition(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(),
-                                this.getBaseMetaTileEntity().getZCoord()),
-                        200);
+                                          new ChunkPosition(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(),
+                                                            this.getBaseMetaTileEntity().getZCoord()
+                                          ), 200
+                                         );
             }
 
             aBaseMetaTileEntity.setActive((this.mMaxProgresstime > 0) && (this.mMachine));
             if (aBaseMetaTileEntity.isActive()) {
-                if (aBaseMetaTileEntity.getAir(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                        aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1))) {
+                if (aBaseMetaTileEntity.getAir(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1), aBaseMetaTileEntity.getYCoord(),
+                                               aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1)
+                                              )) {
                     aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                            aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1),
-                            Blocks.lava, 1, 2);
+                                                            aBaseMetaTileEntity.getYCoord(),
+                                                            aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1), Blocks.lava, 1, 2
+                                                           );
                     this.mUpdate = 1;
                 }
-                if (aBaseMetaTileEntity.getAir(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                        aBaseMetaTileEntity.getYCoord() + 1, aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1))) {
+                if (aBaseMetaTileEntity.getAir(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1), aBaseMetaTileEntity.getYCoord() + 1,
+                                               aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1)
+                                              )) {
                     aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                            aBaseMetaTileEntity.getYCoord() + 1, aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1),
-                            Blocks.lava, 1, 2);
+                                                            aBaseMetaTileEntity.getYCoord() + 1,
+                                                            aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1), Blocks.lava, 1, 2
+                                                           );
                     this.mUpdate = 1;
                 }
             } else {
-                if (aBaseMetaTileEntity.getBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                        aBaseMetaTileEntity.getYCoord(),
-                        aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1)) == Blocks.lava) {
+                if (aBaseMetaTileEntity.getBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1), aBaseMetaTileEntity.getYCoord(),
+                                                 aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1)
+                                                ) == Blocks.lava) {
                     aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                            aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1),
-                            Blocks.air, 0, 2);
+                                                            aBaseMetaTileEntity.getYCoord(),
+                                                            aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1), Blocks.air, 0, 2
+                                                           );
                     this.mUpdate = 1;
                 }
-                if (aBaseMetaTileEntity.getBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                        aBaseMetaTileEntity.getYCoord() + 1,
-                        aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1)) == Blocks.lava) {
+                if (aBaseMetaTileEntity.getBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1), aBaseMetaTileEntity.getYCoord() + 1,
+                                                 aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1)
+                                                ) == Blocks.lava) {
                     aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                            aBaseMetaTileEntity.getYCoord() + 1, aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1),
-                            Blocks.air, 0, 2);
+                                                            aBaseMetaTileEntity.getYCoord() + 1,
+                                                            aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1), Blocks.air, 0, 2
+                                                           );
                     this.mUpdate = 1;
                 }
             }
         }
+    }
+
+    @Override
+    public boolean isFacingValid(byte aFacing) {
+        return aFacing > 1;
+    }
+
+    @Override
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_Container_PrimitiveBlastFurnace(aPlayerInventory, aBaseMetaTileEntity);
+    }
+
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_GUIContainer_PrimitiveBlastFurnace(
+                aPlayerInventory, aBaseMetaTileEntity, getName(), GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.mNEIName);
+    }
+
+    @Override
+    public boolean isAccessAllowed(EntityPlayer aPlayer) {
+        return true;
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (aBaseMetaTileEntity.isClientSide()) {
+            return true;
+        }
+        aBaseMetaTileEntity.openGUI(aPlayer);
+        return true;
+    }
+
+    @Override
+    public boolean isGivingInformation() {
+        return false;
+    }
+
+    @Override
+    public void onMachineBlockUpdate() {
+        this.mUpdate = 5;
+    }
+
+    @Override
+    public boolean isElectric() {
+        return false;
+    }
+
+    @Override
+    public boolean isPneumatic() {
+        return false;
+    }
+
+    @Override
+    public boolean isSteampowered() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnetInput() {
+        return false;
+    }
+
+    @Override
+    public boolean isOutputFacing(byte aSide) {
+        return false;
+    }
+
+    @Override
+    public boolean isInputFacing(byte aSide) {
+        return false;
+    }
+
+    @Override
+    public int getProgresstime() {
+        return this.mProgresstime;
+    }
+
+    @Override
+    public int maxProgresstime() {
+        return this.mMaxProgresstime;
+    }
+
+    @Override
+    public int increaseProgress(int aProgress) {
+        this.mProgresstime += aProgress;
+        return this.mMaxProgresstime - this.mProgresstime;
+    }
+
+    @Override
+    public boolean isTeleporterCompatible() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnetOutput() {
+        return false;
+    }
+
+    public abstract String getName();
+
+    private boolean checkMachine() {
+        int xDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX;
+        int zDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ;
+        for (int i = -1; i < 2; i++) {
+            for (int j = -1; j < 3; j++) {
+                for (int k = -1; k < 2; k++) {
+                    if ((xDir + i != 0) || (j != 0) || (zDir + k != 0)) {
+                        if ((i != 0) || (j == -1) || (k != 0)) {
+                            if (!isCorrectCasingBlock(getBaseMetaTileEntity().getBlockOffset(xDir + i, j, zDir + k)) || !isCorrectCasingMetaID(
+                                    getBaseMetaTileEntity().getMetaIDOffset(xDir + i, j, zDir + k))) {
+                                return false;
+                            }
+                        } else if ((
+                                           !GT_Utility.arrayContains(
+                                                   getBaseMetaTileEntity().getBlockOffset(xDir + i, j, zDir + k), Blocks.lava, Blocks.flowing_lava, null)
+                                   ) && (!getBaseMetaTileEntity().getAirOffset(xDir + i, j, zDir + k))) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     private void addOutputProducts() {
@@ -285,17 +320,10 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                 this.mInventory[absi] = GT_Utility.copyOrNull(this.mOutputItems[i]);
             } else if (GT_Utility.areStacksEqual(this.mInventory[absi], this.mOutputItems[i])) {
                 this.mInventory[absi].stackSize = Math.min(this.mInventory[absi].getMaxStackSize(),
-                        this.mInventory[absi].stackSize + this.mOutputItems[i].stackSize);
+                                                           this.mInventory[absi].stackSize + this.mOutputItems[i].stackSize
+                                                          );
             }
         }
-    }
-
-    private boolean spaceForOutput(ItemStack outputStack, int relativeOutputSlot) {
-        int absoluteSlot = relativeOutputSlot + INPUT_SLOTS;
-        if (this.mInventory[absoluteSlot] == null || outputStack == null) {
-            return true;
-        }
-        return ((this.mInventory[absoluteSlot].stackSize + outputStack.stackSize <= this.mInventory[absoluteSlot].getMaxStackSize()) && (GT_Utility.areStacksEqual(this.mInventory[absoluteSlot], outputStack)));
     }
 
     private boolean checkRecipe() {
@@ -331,30 +359,19 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         return true;
     }
 
-    @Override
-    public boolean isGivingInformation() {
-        return false;
+    protected abstract boolean isCorrectCasingBlock(Block block);
+
+    protected abstract boolean isCorrectCasingMetaID(int metaID);
+
+    private boolean spaceForOutput(ItemStack outputStack, int relativeOutputSlot) {
+        int absoluteSlot = relativeOutputSlot + INPUT_SLOTS;
+        if (this.mInventory[absoluteSlot] == null || outputStack == null) {
+            return true;
+        }
+        return (
+                (this.mInventory[absoluteSlot].stackSize + outputStack.stackSize <= this.mInventory[absoluteSlot].getMaxStackSize()) &&
+                (GT_Utility.areStacksEqual(this.mInventory[absoluteSlot], outputStack))
+        );
     }
 
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aIndex > INPUT_SLOTS;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return !GT_Utility.areStacksEqual(aStack, this.mInventory[0]);
-    }
-
-    @Override
-    public byte getTileEntityBaseType() {
-        return 0;
-    }
-
-    public abstract String getName();
-
-    @Override
-    public boolean isDisplaySecondaryDescription() {
-        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-    }
 }

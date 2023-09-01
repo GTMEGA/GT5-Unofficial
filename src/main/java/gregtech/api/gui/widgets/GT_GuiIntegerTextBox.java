@@ -35,16 +35,6 @@ public class GT_GuiIntegerTextBox extends GuiTextField implements IGuiScreen.IGu
         gui.addElement(this);
     }
 
-    /**
-     * @param hook
-     * @return
-     */
-    @Override
-    public IGuiScreen.IGuiElement setOnClickHook(final IGT_GuiHook hook) {
-        this.onClickHook = hook;
-        return IGuiScreen.IGuiElement.super.setOnClickHook(hook);
-    }
-
     @Override
     public void onInit() {
         xPosition = x0 + gui.getGuiLeft();
@@ -136,6 +126,16 @@ public class GT_GuiIntegerTextBox extends GuiTextField implements IGuiScreen.IGu
     @Override
     public IGT_GuiHook getOnClickHook() {
         return onClickHook;
+    }
+
+    /**
+     * @param hook
+     * @return
+     */
+    @Override
+    public IGuiScreen.IGuiElement setOnClickHook(final IGT_GuiHook hook) {
+        this.onClickHook = hook;
+        return IGuiScreen.IGuiElement.super.setOnClickHook(hook);
     }
 
     @Override

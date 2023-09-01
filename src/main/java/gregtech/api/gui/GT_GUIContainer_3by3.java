@@ -1,9 +1,11 @@
 package gregtech.api.gui;
 
+
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+
 
 public class GT_GUIContainer_3by3 extends GT_GUIContainerMetaTile_Machine {
 
@@ -31,4 +33,5 @@ public class GT_GUIContainer_3by3 extends GT_GUIContainerMetaTile_Machine {
         int y = (height - ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
     }
+
 }

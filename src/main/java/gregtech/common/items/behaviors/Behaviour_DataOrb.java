@@ -1,5 +1,6 @@
 package gregtech.common.items.behaviors;
 
+
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
@@ -8,7 +9,9 @@ import net.minecraft.nbt.NBTTagList;
 
 import java.util.List;
 
+
 public class Behaviour_DataOrb extends Behaviour_None {
+
     public static void copyInventory(ItemStack[] aInventory, ItemStack[] aNewContent, int aIndexlength) {
         for (int i = 0; i < aIndexlength; i++) {
             if (aNewContent[i] == null) {
@@ -17,22 +20,6 @@ public class Behaviour_DataOrb extends Behaviour_None {
                 aInventory[i] = GT_Utility.copyOrNull(aNewContent[i]);
             }
         }
-    }
-
-    public static String getDataName(ItemStack aStack) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            return "";
-        }
-        return tNBT.getString("mDataName");
-    }
-
-    public static String getDataTitle(ItemStack aStack) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            return "";
-        }
-        return tNBT.getString("mDataTitle");
     }
 
     public static NBTTagCompound setDataName(ItemStack aStack, String aDataName) {
@@ -100,4 +87,21 @@ public class Behaviour_DataOrb extends Behaviour_None {
         }
         return aList;
     }
+
+    public static String getDataTitle(ItemStack aStack) {
+        NBTTagCompound tNBT = aStack.getTagCompound();
+        if (tNBT == null) {
+            return "";
+        }
+        return tNBT.getString("mDataTitle");
+    }
+
+    public static String getDataName(ItemStack aStack) {
+        NBTTagCompound tNBT = aStack.getTagCompound();
+        if (tNBT == null) {
+            return "";
+        }
+        return tNBT.getString("mDataName");
+    }
+
 }

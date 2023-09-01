@@ -1,5 +1,6 @@
 package gregtech.loaders;
 
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
@@ -7,15 +8,25 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
 
+
 public class ExtraIcons {
+
     public static IIcon steelLargeCellInner;
+
     public static IIcon aluminiumLargeCellInner;
+
     public static IIcon stainlesssteelLargeCellInner;
+
     public static IIcon tungstensteelLargeCellInner;
+
     public static IIcon titaniumLargeCellInner;
+
     public static IIcon chromiumLargeCellInner;
+
     public static IIcon iridiumLargeCellInner;
+
     public static IIcon osmiumLargeCellInner;
+
     public static IIcon neutroniumLargeCellInner;
 
     @SubscribeEvent
@@ -33,4 +44,5 @@ public class ExtraIcons {
             neutroniumLargeCellInner = reg.registerIcon(RES_PATH_ITEM + "large_fluid_cell_custom/neutronium_inner");
         }
     }
+
 }

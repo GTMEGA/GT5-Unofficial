@@ -1,8 +1,10 @@
 package gregtech.common.items;
 
+
 import gregtech.api.items.GT_RadioactiveCellIC_Item;
 import ic2.api.reactor.IReactor;
 import net.minecraft.item.ItemStack;
+
 
 public class GT_DepletetCell_Item extends GT_RadioactiveCellIC_Item {
 
@@ -15,7 +17,16 @@ public class GT_DepletetCell_Item extends GT_RadioactiveCellIC_Item {
     }
 
     @Override
-    public boolean acceptUraniumPulse(IReactor paramIReactor, ItemStack paramItemStack1, ItemStack paramItemStack2, int paramInt1, int paramInt2, int paramInt3, int paramInt4, boolean paramBoolean) {
+    public boolean acceptUraniumPulse(
+            IReactor paramIReactor,
+            ItemStack paramItemStack1,
+            ItemStack paramItemStack2,
+            int paramInt1,
+            int paramInt2,
+            int paramInt3,
+            int paramInt4,
+            boolean paramBoolean
+                                     ) {
         return false;
     }
 
@@ -43,4 +54,5 @@ public class GT_DepletetCell_Item extends GT_RadioactiveCellIC_Item {
     public float influenceExplosion(IReactor paramIReactor, ItemStack paramItemStack) {
         return 0.0F;
     }
+
 }

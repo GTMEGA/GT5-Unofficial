@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.steam;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.interfaces.ITexture;
@@ -13,7 +14,9 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
+
 public class GT_MetaTileEntity_Extractor_Bronze extends GT_MetaTileEntity_BasicMachine_Bronze {
+
     public GT_MetaTileEntity_Extractor_Bronze(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, "Extracting your first Rubber", 1, 1, false);
     }
@@ -28,17 +31,19 @@ public class GT_MetaTileEntity_Extractor_Bronze extends GT_MetaTileEntity_BasicM
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_BasicMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "BronzeExtractor.png", GT_Recipe.GT_Recipe_Map.sExtractorRecipes.mUnlocalizedName);
+        return new GT_GUIContainer_BasicMachine(
+                aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "BronzeExtractor.png", GT_Recipe.GT_Recipe_Map.sExtractorRecipes.mUnlocalizedName);
     }
 
     @Override
-    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Extractor_Bronze(this.mName, this.mDescriptionArray, this.mTextures);
+    public void startProcess() {
+        sendLoopStart((byte) 1);
     }
 
     @Override
     public int checkRecipe() {
-        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sExtractorRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[1], null, getAllInputs());
+        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sExtractorRecipes.findRecipe(
+                getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[1], null, getAllInputs());
         if ((tRecipe != null) && (canOutput(tRecipe.mOutputs)) && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
             this.mOutputItems[0] = tRecipe.getOutput(0);
             this.mEUt = tRecipe.mEUt;
@@ -46,6 +51,11 @@ public class GT_MetaTileEntity_Extractor_Bronze extends GT_MetaTileEntity_BasicM
             return 2;
         }
         return 0;
+    }
+
+    @Override
+    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GT_MetaTileEntity_Extractor_Bronze(this.mName, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
@@ -57,71 +67,67 @@ public class GT_MetaTileEntity_Extractor_Bronze extends GT_MetaTileEntity_BasicM
     }
 
     @Override
-    public void startProcess() {
-        sendLoopStart((byte) 1);
-    }
-
-    @Override
     public ITexture[] getSideFacingActive(byte aColor) {
         return new ITexture[]{
-                super.getSideFacingActive(aColor)[0],
-                TextureFactory.of(OVERLAY_SIDE_STEAM_EXTRACTOR_ACTIVE),
-                TextureFactory.builder().addIcon(OVERLAY_SIDE_STEAM_EXTRACTOR_ACTIVE_GLOW).glow().build()};
+                super.getSideFacingActive(aColor)[0], TextureFactory.of(OVERLAY_SIDE_STEAM_EXTRACTOR_ACTIVE), TextureFactory.builder().addIcon(
+                OVERLAY_SIDE_STEAM_EXTRACTOR_ACTIVE_GLOW).glow().build()
+        };
     }
 
     @Override
     public ITexture[] getSideFacingInactive(byte aColor) {
         return new ITexture[]{
-                super.getSideFacingInactive(aColor)[0],
-                TextureFactory.of(OVERLAY_SIDE_STEAM_EXTRACTOR),
-                TextureFactory.builder().addIcon(OVERLAY_SIDE_STEAM_EXTRACTOR_GLOW).glow().build()};
+                super.getSideFacingInactive(aColor)[0], TextureFactory.of(OVERLAY_SIDE_STEAM_EXTRACTOR), TextureFactory.builder().addIcon(
+                OVERLAY_SIDE_STEAM_EXTRACTOR_GLOW).glow().build()
+        };
     }
 
     @Override
     public ITexture[] getFrontFacingActive(byte aColor) {
         return new ITexture[]{
-                super.getFrontFacingActive(aColor)[0],
-                TextureFactory.of(OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE),
-                TextureFactory.builder().addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE_GLOW).glow().build()};
+                super.getFrontFacingActive(aColor)[0], TextureFactory.of(OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE), TextureFactory.builder().addIcon(
+                OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE_GLOW).glow().build()
+        };
     }
 
     @Override
     public ITexture[] getFrontFacingInactive(byte aColor) {
         return new ITexture[]{
-                super.getFrontFacingInactive(aColor)[0],
-                TextureFactory.of(OVERLAY_FRONT_STEAM_EXTRACTOR),
-                TextureFactory.builder().addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW).glow().build()};
+                super.getFrontFacingInactive(aColor)[0], TextureFactory.of(OVERLAY_FRONT_STEAM_EXTRACTOR), TextureFactory.builder().addIcon(
+                OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW).glow().build()
+        };
     }
 
     @Override
     public ITexture[] getTopFacingActive(byte aColor) {
         return new ITexture[]{
-                super.getTopFacingActive(aColor)[0],
-                TextureFactory.of(OVERLAY_TOP_STEAM_EXTRACTOR_ACTIVE),
-                TextureFactory.builder().addIcon(OVERLAY_TOP_STEAM_EXTRACTOR_ACTIVE_GLOW).glow().build()};
+                super.getTopFacingActive(aColor)[0], TextureFactory.of(OVERLAY_TOP_STEAM_EXTRACTOR_ACTIVE), TextureFactory.builder().addIcon(
+                OVERLAY_TOP_STEAM_EXTRACTOR_ACTIVE_GLOW).glow().build()
+        };
     }
 
     @Override
     public ITexture[] getTopFacingInactive(byte aColor) {
         return new ITexture[]{
-                super.getTopFacingInactive(aColor)[0],
-                TextureFactory.of(OVERLAY_TOP_STEAM_EXTRACTOR),
-                TextureFactory.builder().addIcon(OVERLAY_TOP_STEAM_EXTRACTOR_GLOW).glow().build()};
+                super.getTopFacingInactive(aColor)[0], TextureFactory.of(OVERLAY_TOP_STEAM_EXTRACTOR), TextureFactory.builder().addIcon(
+                OVERLAY_TOP_STEAM_EXTRACTOR_GLOW).glow().build()
+        };
     }
 
     @Override
     public ITexture[] getBottomFacingActive(byte aColor) {
         return new ITexture[]{
-                super.getBottomFacingActive(aColor)[0],
-                TextureFactory.of(OVERLAY_BOTTOM_STEAM_EXTRACTOR_ACTIVE),
-                TextureFactory.builder().addIcon(OVERLAY_BOTTOM_STEAM_EXTRACTOR_ACTIVE_GLOW).glow().build()};
+                super.getBottomFacingActive(aColor)[0], TextureFactory.of(OVERLAY_BOTTOM_STEAM_EXTRACTOR_ACTIVE), TextureFactory.builder().addIcon(
+                OVERLAY_BOTTOM_STEAM_EXTRACTOR_ACTIVE_GLOW).glow().build()
+        };
     }
 
     @Override
     public ITexture[] getBottomFacingInactive(byte aColor) {
         return new ITexture[]{
-                super.getBottomFacingInactive(aColor)[0],
-                TextureFactory.of(OVERLAY_BOTTOM_STEAM_EXTRACTOR),
-                TextureFactory.builder().addIcon(OVERLAY_BOTTOM_STEAM_EXTRACTOR_GLOW).glow().build()};
+                super.getBottomFacingInactive(aColor)[0], TextureFactory.of(OVERLAY_BOTTOM_STEAM_EXTRACTOR), TextureFactory.builder().addIcon(
+                OVERLAY_BOTTOM_STEAM_EXTRACTOR_GLOW).glow().build()
+        };
     }
+
 }

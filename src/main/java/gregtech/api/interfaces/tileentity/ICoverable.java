@@ -1,47 +1,51 @@
 package gregtech.api.interfaces.tileentity;
 
+
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 
+
 public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer {
+
     boolean canPlaceCoverIDAtSide(byte aSide, int aID);
 
     boolean canPlaceCoverItemAtSide(byte aSide, ItemStack aCover);
 
     boolean dropCover(byte aSide, byte aDroppedSide, boolean aForced);
 
+    default void setCoverDataAtSide(byte aSide, ISerializableObject aData) {
+        if (aData instanceof ISerializableObject.LegacyCoverData) {
+            setCoverDataAtSide(aSide, ((ISerializableObject.LegacyCoverData) aData).get());
+        }
+    }
+
     @Deprecated
     void setCoverDataAtSide(byte aSide, int aData);
-
-    default void setCoverDataAtSide(byte aSide, ISerializableObject aData) {
-        if (aData instanceof ISerializableObject.LegacyCoverData)
-            setCoverDataAtSide(aSide, ((ISerializableObject.LegacyCoverData) aData).get());
-    }
 
     void setCoverIDAtSide(byte aSide, int aID);
 
     void setCoverItemAtSide(byte aSide, ItemStack aCover);
 
-    @Deprecated
-    int getCoverDataAtSide(byte aSide);
-
     default ISerializableObject getComplexCoverDataAtSide(byte aSide) {
         return new ISerializableObject.LegacyCoverData(getCoverDataAtSide(aSide));
     }
+
+    @Deprecated
+    int getCoverDataAtSide(byte aSide);
 
     int getCoverIDAtSide(byte aSide);
 
     ItemStack getCoverItemAtSide(byte aSide);
 
-    @Deprecated
-    GT_CoverBehavior getCoverBehaviorAtSide(byte aSide);
-
     default GT_CoverBehaviorBase<?> getCoverBehaviorAtSideNew(byte aSide) {
         return getCoverBehaviorAtSide(aSide);
     }
+
+    @Deprecated
+    GT_CoverBehavior getCoverBehaviorAtSide(byte aSide);
 
     /**
      * For use by the regular MetaTileEntities. Returns the Cover Manipulated input Redstone.
@@ -63,15 +67,18 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
 
     /**
      * Receiving a packet with cover data.
-     */
-    void receiveCoverData(byte coverSide, int coverID, int coverData);
-
-    /**
-     * Receiving a packet with cover data.
+     *
      * @param aPlayer the player who made the change
      */
     default void receiveCoverData(byte aCoverSide, int aCoverID, ISerializableObject aCoverData, EntityPlayerMP aPlayer) {
-        if (aCoverData instanceof ISerializableObject.LegacyCoverData)
+        if (aCoverData instanceof ISerializableObject.LegacyCoverData) {
             receiveCoverData(aCoverSide, aCoverID, ((ISerializableObject.LegacyCoverData) aCoverData).get());
+        }
     }
+
+    /**
+     * Receiving a packet with cover data.
+     */
+    void receiveCoverData(byte coverSide, int coverID, int coverData);
+
 }

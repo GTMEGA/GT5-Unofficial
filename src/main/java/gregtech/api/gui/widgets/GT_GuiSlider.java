@@ -34,16 +34,6 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     private final IGuiScreen gui;
 
-    @Getter
-    private int x;
-
-    @Getter
-    private int y;
-
-    private int guiX = 0;
-
-    private int guiY = 0;
-
     private final int width;
 
     private final int height;
@@ -52,6 +42,16 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     @Getter
     private final int id;
+
+    @Getter
+    private final int x;
+
+    @Getter
+    private final int y;
+
+    private int guiX = 0;
+
+    private int guiY = 0;
 
     private double min;
 
@@ -145,24 +145,6 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
     }
 
     /**
-     * @return
-     */
-    @Override
-    public IGT_GuiHook getOnClickHook() {
-        return hook;
-    }
-
-    /**
-     * @param hook
-     * @return
-     */
-    @Override
-    public IGuiScreen.IGuiElement setOnClickHook(final IGT_GuiHook hook) {
-        this.hook = hook;
-        return this;
-    }
-
-    /**
      *
      */
     @Override
@@ -224,6 +206,24 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         final boolean inside = mouseX > getX() - width / 20 && mouseX < getX() + width + width / 20 && mouseY > getY() && mouseY < getY() + height;
         this.inside = inside;
         return inside;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public IGT_GuiHook getOnClickHook() {
+        return hook;
+    }
+
+    /**
+     * @param hook
+     * @return
+     */
+    @Override
+    public IGuiScreen.IGuiElement setOnClickHook(final IGT_GuiHook hook) {
+        this.hook = hook;
+        return this;
     }
 
     public void onMouseDragged(final int mouseX, final int mouseY) {
@@ -351,20 +351,6 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         }
     }
 
-    private String getCompressedString(final double amt) {
-        final String fmt = String.format("%%.%df%%s", 1);
-        final String[] negPrefix = {"", "m", "μ", "p", "f", "a", "z", "y", "q"};
-        final String[] posPrefix = {"", "k", "M", "b", "t", "q", "Q", "s", "S", "o", "n", "d"};
-        final int pow = getLogTen(amt);
-        final String suffix;
-        if (pow < 0) {
-            suffix = negPrefix[-pow / 3];
-        } else {
-            suffix = posPrefix[pow / 3];
-        }
-        return String.format(fmt, amt * Math.pow(10, -((double)((pow / 3) * 3))), suffix);
-    }
-
     protected void drawSlide(final int mouseX, final int mouseY, final float parTicks) {
         final double barWidth = 0.2;
         final int positionLeft = (int) (guiX + width * (current - barWidth / 2));
@@ -431,6 +417,20 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     protected boolean mouseInBar(final int mouseX, final int mouseY, final int clickState) {
         return mouseX > getX() - width / 20 && mouseX < getX() + width + width / 20 && mouseY > getY() - height / 20 && mouseY < getY() + height + height / 20;
+    }
+
+    private String getCompressedString(final double amt) {
+        final String fmt = String.format("%%.%df%%s", 1);
+        final String[] negPrefix = {"", "m", "μ", "p", "f", "a", "z", "y", "q"};
+        final String[] posPrefix = {"", "k", "M", "b", "t", "q", "Q", "s", "S", "o", "n", "d"};
+        final int pow = getLogTen(amt);
+        final String suffix;
+        if (pow < 0) {
+            suffix = negPrefix[-pow / 3];
+        } else {
+            suffix = posPrefix[pow / 3];
+        }
+        return String.format(fmt, amt * Math.pow(10, -((double) ((pow / 3) * 3))), suffix);
     }
 
 }

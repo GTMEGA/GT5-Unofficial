@@ -6,10 +6,10 @@ import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
 import net.minecraft.item.ItemStack;
 
+
 @Optional.Interface(iface = "ic2.api.reactor.IReactorComponent", modid = "IC2", striprefs = true)
-public class GT_CoolantCellIC_Item
-        extends GT_CoolantCell_Item
-        implements IReactorComponent {
+public class GT_CoolantCellIC_Item extends GT_CoolantCell_Item implements IReactorComponent {
+
     public GT_CoolantCellIC_Item(String aUnlocalized, String aEnglish, int aMaxStore) {
         super(aUnlocalized, aEnglish, aMaxStore);
     }
@@ -19,16 +19,22 @@ public class GT_CoolantCellIC_Item
     }
 
     @Override
-    public boolean acceptUraniumPulse(IReactor aReactor, ItemStack aStack, ItemStack pulsingStack, int youX, int youY, int pulseX, int pulseY, boolean aHeatRun) {
+    public boolean acceptUraniumPulse(
+            IReactor aReactor,
+            ItemStack aStack,
+            ItemStack pulsingStack,
+            int youX,
+            int youY,
+            int pulseX,
+            int pulseY,
+            boolean aHeatRun
+                                     ) {
         return false;
     }
 
     @Override
     public boolean canStoreHeat(IReactor aReactor, ItemStack aStack, int x, int y) {
-        if (aReactor.isFluidCooled() && (getControlTagOfStack(aStack)) != 0) {
-            return false;
-        }
-        return true;
+        return !aReactor.isFluidCooled() || (getControlTagOfStack(aStack)) == 0;
     }
 
     @Override
@@ -42,11 +48,6 @@ public class GT_CoolantCellIC_Item
     }
 
     @Override
-    public float influenceExplosion(IReactor aReactor, ItemStack aStack) {
-        return 1.0F + this.heatStorage / 30000.0F;
-    }
-
-    @Override
     public int alterHeat(IReactor aReactor, ItemStack aStack, int x, int y, int aHeat) {
         int tHeat = getHeatOfStack(aStack);
         if ((tHeat == 0) && (getControlTagOfStack(aStack) != 0)) {
@@ -54,7 +55,7 @@ public class GT_CoolantCellIC_Item
         }
         tHeat += aHeat;
         if (tHeat > this.heatStorage) {
-            aReactor.setItemAt(x, y, (ItemStack) null);
+            aReactor.setItemAt(x, y, null);
             aHeat = this.heatStorage - tHeat + 1;
         } else {
             if (tHeat < 0) {
@@ -70,4 +71,10 @@ public class GT_CoolantCellIC_Item
         }
         return aHeat;
     }
+
+    @Override
+    public float influenceExplosion(IReactor aReactor, ItemStack aStack) {
+        return 1.0F + this.heatStorage / 30000.0F;
+    }
+
 }

@@ -1,5 +1,6 @@
 package gregtech.common.gui;
 
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_Container_BasicTank;
@@ -13,16 +14,18 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.nio.ByteBuffer;
 
+
 public class GT_Container_OutputHatch extends GT_Container_BasicTank {
 
     private ByteBuffer buffer;
+
     private String fluidName = "";
+
     private byte mMode;
 
     public GT_Container_OutputHatch(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
@@ -49,8 +52,7 @@ public class GT_Container_OutputHatch extends GT_Container_BasicTank {
                 GT_Utility.sendChatToPlayer(aPlayer, trans("300", "Fluid Lock Cleared."));
                 tHatch.mMode = 0;
                 fluidName = "";
-            }
-            else {
+            } else {
                 tHatch.setLockedFluidName(tReadyLockFluid.getFluid().getName());
                 GT_Utility.sendChatToPlayer(aPlayer, String.format(trans("151.4", "Sucessfully locked Fluid to %s"), tReadyLockFluid.getLocalizedName()));
                 tHatch.mMode = 9;
@@ -61,25 +63,16 @@ public class GT_Container_OutputHatch extends GT_Container_BasicTank {
     }
 
     @Override
-    public void addCraftingToCrafters(ICrafting clientHandle) {
-        buffer.putInt(0, fluidName.length());
-        buffer.put(Integer.BYTES, mMode);
-        for (int i = 0; i < fluidName.length(); i++) {
-            buffer.putChar(Integer.BYTES + Character.BYTES * i + 1, fluidName.charAt(i));
-        }
-        sendStateUpdate(clientHandle);
-        super.addCraftingToCrafters(clientHandle);
-    }
-
-    @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
         if (buffer == null) {
             buffer = ByteBuffer.allocate(256);
         }
-        if(mTileEntity.isServerSide()) {
+        if (mTileEntity.isServerSide()) {
             GT_MetaTileEntity_Hatch_Output tile = (GT_MetaTileEntity_Hatch_Output) mTileEntity.getMetaTileEntity();
-            if (tile == null) return;
+            if (tile == null) {
+                return;
+            }
             fluidName = tile.getLockedFluidName() == null ? "" : tile.getLockedFluidName();
             mMode = tile.getMode();
             buffer.putInt(0, fluidName.length());
@@ -93,19 +86,30 @@ public class GT_Container_OutputHatch extends GT_Container_BasicTank {
         }
     }
 
-    private void sendStateUpdate(ICrafting clientHandle) {
-        final int bytes = Character.BYTES * fluidName.length() + Integer.BYTES + 1;
-        for (int i = 0; i < bytes; i++) {
-            clientHandle.sendProgressBarUpdate(this, i + 110, buffer.get(i));
-        }
-    }
-
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int index, int value) {
         super.updateProgressBar(index, value);
         index = index - 110;
-        if(index >= 0 && index < buffer.capacity()) {
+        if (index >= 0 && index < buffer.capacity()) {
             buffer.put(index, (byte) value);
+        }
+    }
+
+    @Override
+    public void addCraftingToCrafters(ICrafting clientHandle) {
+        buffer.putInt(0, fluidName.length());
+        buffer.put(Integer.BYTES, mMode);
+        for (int i = 0; i < fluidName.length(); i++) {
+            buffer.putChar(Integer.BYTES + Character.BYTES * i + 1, fluidName.charAt(i));
+        }
+        sendStateUpdate(clientHandle);
+        super.addCraftingToCrafters(clientHandle);
+    }
+
+    private void sendStateUpdate(ICrafting clientHandle) {
+        final int bytes = Character.BYTES * fluidName.length() + Integer.BYTES + 1;
+        for (int i = 0; i < bytes; i++) {
+            clientHandle.sendProgressBarUpdate(this, i + 110, buffer.get(i));
         }
     }
 
@@ -117,7 +121,10 @@ public class GT_Container_OutputHatch extends GT_Container_BasicTank {
         }
         byte mode = buffer.get(Integer.BYTES);
         FluidStack tFluid = FluidRegistry.getFluidStack(sb.toString(), 1);
-        if (tFluid == null || mode < 8) return "Empty";
+        if (tFluid == null || mode < 8) {
+            return "Empty";
+        }
         return tFluid.getLocalizedName().replace("fluid.", "");
     }
+
 }

@@ -1,9 +1,10 @@
 package gregtech.loaders.preload.metatileentity;
 
+
 import gregtech.GT_Mod;
 import gregtech.api.enums.Materials;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
-import lombok.*;
+import lombok.val;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Materials.*;
@@ -15,27 +16,33 @@ import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
 import static gregtech.api.util.GT_ModHandler.getIC2Item;
 import static gregtech.api.util.GT_OreDictUnificator.registerOre;
 
+
 public final class CableLoader {
+
     private static final String aTextWire1 = "wire.";
+
     private static final String aTextCable1 = "cable.";
+
     private static final String aTextWire2 = " Wire";
+
     private static final String aTextCable2 = " Cable";
 
     private static boolean LOADED = false;
 
     public static void load() {
-        if (LOADED)
+        if (LOADED) {
             throw new RuntimeException("Already loaded!");
+        }
         val extraLoss = !GT_Mod.gregtechproxy.mHardcoreCables;
 
         makeWires(RedAlloy, 2000, 0L, 1L, 1L, V[0], true, false);
 
-        makeWires(Cobalt, 1200, extraLoss ? 2L : 2L, extraLoss ? 4L : 4L, 2L, V[1], true, false);
-        makeWires(Lead, 1220, extraLoss ? 2L : 2L, extraLoss ? 4L : 4L, 2L, V[1], true, false);
-        makeWires(Tin, 1240, extraLoss ? 1L : 1L, extraLoss ? 2L : 2L, 1L, V[1], true, false);
+        makeWires(Cobalt, 1200, 2L, 4L, 2L, V[1], true, false);
+        makeWires(Lead, 1220, 2L, 4L, 2L, V[1], true, false);
+        makeWires(Tin, 1240, 1L, 2L, 1L, V[1], true, false);
 
-        makeWires(Zinc, 1260, extraLoss ? 1L : 1L, extraLoss ? 2L : 2L, 1L, V[1], true, false);
-        makeWires(SolderingAlloy, 1280, extraLoss ? 1L : 1L, extraLoss ? 2L : 2L, 1L, V[1], true, false);
+        makeWires(Zinc, 1260, 1L, 2L, 1L, V[1], true, false);
+        makeWires(SolderingAlloy, 1280, 1L, 2L, 1L, V[1], true, false);
 
         makeWires(Iron, 1300, extraLoss ? 3L : 4L, extraLoss ? 6L : 8L, 2L, V[2], true, false);
         makeWires(Nickel, 1320, extraLoss ? 3L : 5L, extraLoss ? 6L : 10L, 3L, V[2], true, false);
@@ -100,21 +107,91 @@ public final class CableLoader {
         LOADED = true;
     }
 
-    private static void makeWires(Materials aMaterial, int aStartID, long aLossInsulated, long aLoss, long aAmperage, long aVoltage, boolean aInsulatable, boolean aAutoInsulated) {
+    private static void makeWires(
+            Materials aMaterial,
+            int aStartID,
+            long aLossInsulated,
+            long aLoss,
+            long aAmperage,
+            long aVoltage,
+            boolean aInsulatable,
+            boolean aAutoInsulated
+                                 ) {
         val name = i18nPlaceholder ? "%material" : aMaterial.mDefaultLocalName;
-        registerOre(wireGt01, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 0, aTextWire1 + aMaterial.mName.toLowerCase() + ".01", "1x " + name + aTextWire2, 0.125F, aMaterial, aLoss, 1L * aAmperage, aVoltage, false, !aAutoInsulated).getStackForm(1L));
-        registerOre(wireGt02, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 1, aTextWire1 + aMaterial.mName.toLowerCase() + ".02", "2x " + name + aTextWire2, 0.25F, aMaterial, aLoss, 2L * aAmperage, aVoltage, false, !aAutoInsulated).getStackForm(1L));
-        registerOre(wireGt04, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 2, aTextWire1 + aMaterial.mName.toLowerCase() + ".04", "4x " + name + aTextWire2, 0.375F, aMaterial, aLoss, 4L * aAmperage, aVoltage, false, !aAutoInsulated).getStackForm(1L));
-        registerOre(wireGt08, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 3, aTextWire1 + aMaterial.mName.toLowerCase() + ".08", "8x " + name + aTextWire2, 0.5F, aMaterial, aLoss, 8L * aAmperage, aVoltage, false, !aAutoInsulated).getStackForm(1L));
-        registerOre(wireGt12, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 4, aTextWire1 + aMaterial.mName.toLowerCase() + ".12", "12x " + name + aTextWire2, 0.625F, aMaterial, aLoss, 12L * aAmperage, aVoltage, false, !aAutoInsulated).getStackForm(1L));
-        registerOre(wireGt16, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 5, aTextWire1 + aMaterial.mName.toLowerCase() + ".16", "16x " + name + aTextWire2, 0.75F, aMaterial, aLoss, 16L * aAmperage, aVoltage, false, !aAutoInsulated).getStackForm(1L));
+        registerOre(
+                wireGt01, aMaterial,
+                new GT_MetaPipeEntity_Cable(aStartID, aTextWire1 + aMaterial.mName.toLowerCase() + ".01", "1x " + name + aTextWire2, 0.125F, aMaterial,
+                                            aLoss, aAmperage, aVoltage, false, !aAutoInsulated
+                ).getStackForm(1L)
+                   );
+        registerOre(
+                wireGt02, aMaterial,
+                new GT_MetaPipeEntity_Cable(aStartID + 1, aTextWire1 + aMaterial.mName.toLowerCase() + ".02", "2x " + name + aTextWire2, 0.25F, aMaterial,
+                                            aLoss, 2L * aAmperage, aVoltage, false, !aAutoInsulated
+                ).getStackForm(1L)
+                   );
+        registerOre(
+                wireGt04, aMaterial,
+                new GT_MetaPipeEntity_Cable(aStartID + 2, aTextWire1 + aMaterial.mName.toLowerCase() + ".04", "4x " + name + aTextWire2, 0.375F, aMaterial,
+                                            aLoss, 4L * aAmperage, aVoltage, false, !aAutoInsulated
+                ).getStackForm(1L)
+                   );
+        registerOre(
+                wireGt08, aMaterial,
+                new GT_MetaPipeEntity_Cable(aStartID + 3, aTextWire1 + aMaterial.mName.toLowerCase() + ".08", "8x " + name + aTextWire2, 0.5F, aMaterial, aLoss,
+                                            8L * aAmperage, aVoltage, false, !aAutoInsulated
+                ).getStackForm(1L)
+                   );
+        registerOre(
+                wireGt12, aMaterial,
+                new GT_MetaPipeEntity_Cable(aStartID + 4, aTextWire1 + aMaterial.mName.toLowerCase() + ".12", "12x " + name + aTextWire2, 0.625F, aMaterial,
+                                            aLoss, 12L * aAmperage, aVoltage, false, !aAutoInsulated
+                ).getStackForm(1L)
+                   );
+        registerOre(
+                wireGt16, aMaterial,
+                new GT_MetaPipeEntity_Cable(aStartID + 5, aTextWire1 + aMaterial.mName.toLowerCase() + ".16", "16x " + name + aTextWire2, 0.75F, aMaterial,
+                                            aLoss, 16L * aAmperage, aVoltage, false, !aAutoInsulated
+                ).getStackForm(1L)
+                   );
         if (aInsulatable) {
-            registerOre(cableGt01, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 6, aTextCable1 + aMaterial.mName.toLowerCase() + ".01", "1x " + name + aTextCable2, 0.25F, aMaterial, aLossInsulated, 1L * aAmperage, aVoltage, true, false).getStackForm(1L));
-            registerOre(cableGt02, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 7, aTextCable1 + aMaterial.mName.toLowerCase() + ".02", "2x " + name + aTextCable2, 0.375F, aMaterial, aLossInsulated, 2L * aAmperage, aVoltage, true, false).getStackForm(1L));
-            registerOre(cableGt04, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 8, aTextCable1 + aMaterial.mName.toLowerCase() + ".04", "4x " + name + aTextCable2, 0.5F, aMaterial, aLossInsulated, 4L * aAmperage, aVoltage, true, false).getStackForm(1L));
-            registerOre(cableGt08, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 9, aTextCable1 + aMaterial.mName.toLowerCase() + ".08", "8x " + name + aTextCable2, 0.625F, aMaterial, aLossInsulated, 8L * aAmperage, aVoltage, true, false).getStackForm(1L));
-            registerOre(cableGt12, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 10, aTextCable1 + aMaterial.mName.toLowerCase() + ".12", "12x " + name + aTextCable2, 0.75F, aMaterial, aLossInsulated, 12L * aAmperage, aVoltage, true, false).getStackForm(1L));
-            registerOre(cableGt16, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 11, aTextCable1 + aMaterial.mName.toLowerCase() + ".16", "16x " + name + aTextCable2, 0.875F, aMaterial, aLossInsulated, 16L * aAmperage, aVoltage, true, false).getStackForm(1L));
+            registerOre(
+                    cableGt01, aMaterial,
+                    new GT_MetaPipeEntity_Cable(aStartID + 6, aTextCable1 + aMaterial.mName.toLowerCase() + ".01", "1x " + name + aTextCable2, 0.25F, aMaterial,
+                                                aLossInsulated, aAmperage, aVoltage, true, false
+                    ).getStackForm(1L)
+                       );
+            registerOre(
+                    cableGt02, aMaterial,
+                    new GT_MetaPipeEntity_Cable(aStartID + 7, aTextCable1 + aMaterial.mName.toLowerCase() + ".02", "2x " + name + aTextCable2, 0.375F,
+                                                aMaterial, aLossInsulated, 2L * aAmperage, aVoltage, true, false
+                    ).getStackForm(1L)
+                       );
+            registerOre(
+                    cableGt04, aMaterial,
+                    new GT_MetaPipeEntity_Cable(aStartID + 8, aTextCable1 + aMaterial.mName.toLowerCase() + ".04", "4x " + name + aTextCable2, 0.5F, aMaterial,
+                                                aLossInsulated, 4L * aAmperage, aVoltage, true, false
+                    ).getStackForm(1L)
+                       );
+            registerOre(
+                    cableGt08, aMaterial,
+                    new GT_MetaPipeEntity_Cable(aStartID + 9, aTextCable1 + aMaterial.mName.toLowerCase() + ".08", "8x " + name + aTextCable2, 0.625F,
+                                                aMaterial, aLossInsulated, 8L * aAmperage, aVoltage, true, false
+                    ).getStackForm(1L)
+                       );
+            registerOre(
+                    cableGt12, aMaterial,
+                    new GT_MetaPipeEntity_Cable(aStartID + 10, aTextCable1 + aMaterial.mName.toLowerCase() + ".12", "12x " + name + aTextCable2, 0.75F,
+                                                aMaterial, aLossInsulated, 12L * aAmperage, aVoltage, true, false
+                    ).getStackForm(1L)
+                       );
+            registerOre(
+                    cableGt16, aMaterial,
+                    new GT_MetaPipeEntity_Cable(aStartID + 11, aTextCable1 + aMaterial.mName.toLowerCase() + ".16", "16x " + name + aTextCable2, 0.875F,
+                                                aMaterial, aLossInsulated, 16L * aAmperage, aVoltage, true, false
+                    ).getStackForm(1L)
+                       );
         }
     }
+
 }

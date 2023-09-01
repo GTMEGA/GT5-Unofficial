@@ -1,5 +1,6 @@
 package gregtech.api.enums;
 
+
 public enum ToolDictNames {
     craftingToolSaw,
     craftingToolHoe,
@@ -31,8 +32,10 @@ public enum ToolDictNames {
     craftingToolSolderingMetal;
 
     public static boolean contains(String aName) {
-        if (!aName.startsWith("craftingTool")) return false;
-        for (ToolDictNames tool: ToolDictNames.values()) {
+        if (!aName.startsWith("craftingTool")) {
+            return false;
+        }
+        for (ToolDictNames tool : ToolDictNames.values()) {
             if (tool.toString().equals(aName)) {
                 return true;
             }

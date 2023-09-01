@@ -1,5 +1,6 @@
 package gregtech.api.items;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
@@ -9,7 +10,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+
 public class GT_Spray_Bug_Item extends GT_Tool_Item {
+
     public GT_Spray_Bug_Item(String aUnlocalized, String aEnglish, int aMaxDamage, int aEntityDamage) {
         super(aUnlocalized, aEnglish, "A very 'buggy' Spray", aMaxDamage, aEntityDamage, true);/*
         addToEffectiveList(EntityCaveSpider.class.getName());
@@ -47,7 +50,9 @@ public class GT_Spray_Bug_Item extends GT_Tool_Item {
             return false;
         }
         Block aBlock = aWorld.getBlock(aX, aY, aZ);
-        if (aBlock == null) return false;
+        if (aBlock == null) {
+            return false;
+        }
 //    	byte aMeta = (byte)aWorld.getBlockMetadata(aX, aY, aZ);
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 
@@ -64,4 +69,5 @@ public class GT_Spray_Bug_Item extends GT_Tool_Item {
 
         return false;
     }
+
 }

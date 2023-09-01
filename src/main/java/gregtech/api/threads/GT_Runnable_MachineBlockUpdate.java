@@ -1,5 +1,6 @@
 package gregtech.api.threads;
 
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
@@ -17,31 +18,26 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
+
 public class GT_Runnable_MachineBlockUpdate implements Runnable {
-    // used by runner thread
-    protected final ChunkCoordinates mCoords;
-    protected final World world;
-    protected final Set<ChunkCoordinates> visited = new HashSet<>(80);
-    protected final Queue<ChunkCoordinates> tQueue = new LinkedList<>();
-    
+
     // Threading
     private static final ThreadFactory THREAD_FACTORY = r -> {
         Thread thread = new Thread(r);
         thread.setName("GT_MachineBlockUpdate");
         return thread;
     };
+
     protected static ExecutorService EXECUTOR_SERVICE;
 
-    // This class should never be initiated outside of this class!
-    protected GT_Runnable_MachineBlockUpdate(World aWorld, ChunkCoordinates aCoords) {
-        this.world = aWorld;
-        this.mCoords = aCoords;
-        visited.add(aCoords);
-        tQueue.add(aCoords);
-    }
+    protected static boolean isEnabled = true;
 
     public static boolean isEnabled() {
         return isEnabled;
+    }
+
+    public static void setEnabled(boolean isEnabled) {
+        GT_Runnable_MachineBlockUpdate.isEnabled = isEnabled;
     }
 
     public static void setEnabled() {
@@ -51,12 +47,6 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
     public static void setDisabled() {
         GT_Runnable_MachineBlockUpdate.isEnabled = false;
     }
-
-    public static void setEnabled(boolean isEnabled) {
-        GT_Runnable_MachineBlockUpdate.isEnabled = isEnabled;
-    }
-
-    protected static boolean isEnabled = true;
 
     public static void setMachineUpdateValues(World aWorld, ChunkCoordinates aCoords) {
         if (isEnabled) {
@@ -86,13 +76,30 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
             EXECUTOR_SERVICE.shutdownNow();
             // Preserve interrupt status
             Thread.currentThread().interrupt();
-        }catch (Exception e){
+        } catch (Exception e) {
             GT_Mod.GT_FML_LOGGER.error("Well this didn't terminated well...", e);
             // (Re-)Cancel in case
             EXECUTOR_SERVICE.shutdownNow();
-        }finally {
+        } finally {
             GT_Mod.GT_FML_LOGGER.info("Leaving... GT_Runnable_MachineBlockUpdate.shutdownExecutorService");
         }
+    }
+
+    // used by runner thread
+    protected final ChunkCoordinates mCoords;
+
+    protected final World world;
+
+    protected final Set<ChunkCoordinates> visited = new HashSet<>(80);
+
+    protected final Queue<ChunkCoordinates> tQueue = new LinkedList<>();
+
+    // This class should never be initiated outside of this class!
+    protected GT_Runnable_MachineBlockUpdate(World aWorld, ChunkCoordinates aCoords) {
+        this.world = aWorld;
+        this.mCoords = aCoords;
+        visited.add(aCoords);
+        tQueue.add(aCoords);
     }
 
     @Override
@@ -102,42 +109,55 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
                 final ChunkCoordinates aCoords = tQueue.poll();
                 final TileEntity tTileEntity;
                 final boolean isMachineBlock;
-                
+
                 // This might load a chunk... which might load a TileEntity... which might get added to `loadedTileEntityList`... which might be in the process
                 // of being iterated over during `UpdateEntities()`... which might cause a ConcurrentModificationException.  So, lock that shit.
                 GT_Proxy.TICK_LOCK.lock();
                 try {
                     tTileEntity = world.getTileEntity(aCoords.posX, aCoords.posY, aCoords.posZ);
-                    isMachineBlock = GregTech_API.isMachineBlock(world.getBlock(aCoords.posX, aCoords.posY, aCoords.posZ), world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ));
+                    isMachineBlock = GregTech_API.isMachineBlock(
+                            world.getBlock(aCoords.posX, aCoords.posY, aCoords.posZ), world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ));
                 } finally {
                     GT_Proxy.TICK_LOCK.unlock();
                 }
-                
+
                 // See if the block itself needs an update
-                if (tTileEntity instanceof IMachineBlockUpdateable)
+                if (tTileEntity instanceof IMachineBlockUpdateable) {
                     ((IMachineBlockUpdateable) tTileEntity).onMachineBlockUpdate();
+                }
 
                 // Now see if we should add the nearby blocks to the queue:
                 // 1) If we've visited less than 5 blocks, then yes
                 // 2) If the tile says we should recursively updated (pipes don't, machine blocks do)
                 // 3) If the block at the coordinates is marked as a machine block
-                if (visited.size() < 5 
-                    || (tTileEntity instanceof IMachineBlockUpdateable && ((IMachineBlockUpdateable) tTileEntity).isMachineBlockUpdateRecursive()) 
-                    || isMachineBlock) 
-                {
+                if (visited.size() < 5 ||
+                    (tTileEntity instanceof IMachineBlockUpdateable && ((IMachineBlockUpdateable) tTileEntity).isMachineBlockUpdateRecursive()) ||
+                    isMachineBlock) {
                     ChunkCoordinates tCoords;
-                    
-                    if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX + 1, aCoords.posY, aCoords.posZ))) tQueue.add(tCoords);
-                    if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX - 1, aCoords.posY, aCoords.posZ))) tQueue.add(tCoords);
-                    if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY + 1, aCoords.posZ))) tQueue.add(tCoords);
-                    if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY - 1, aCoords.posZ))) tQueue.add(tCoords);
-                    if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY, aCoords.posZ + 1))) tQueue.add(tCoords);
-                    if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY, aCoords.posZ - 1))) tQueue.add(tCoords);
+
+                    if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX + 1, aCoords.posY, aCoords.posZ))) {
+                        tQueue.add(tCoords);
+                    }
+                    if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX - 1, aCoords.posY, aCoords.posZ))) {
+                        tQueue.add(tCoords);
+                    }
+                    if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY + 1, aCoords.posZ))) {
+                        tQueue.add(tCoords);
+                    }
+                    if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY - 1, aCoords.posZ))) {
+                        tQueue.add(tCoords);
+                    }
+                    if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY, aCoords.posZ + 1))) {
+                        tQueue.add(tCoords);
+                    }
+                    if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY, aCoords.posZ - 1))) {
+                        tQueue.add(tCoords);
+                    }
                 }
             }
         } catch (Exception e) {
             GT_Mod.GT_FML_LOGGER.error(
-                "Well this update was broken... " + mCoords + ", mWorld={" + world.getProviderName() + " @dimId " + world.provider.dimensionId + "}", e);
+                    "Well this update was broken... " + mCoords + ", mWorld={" + world.getProviderName() + " @dimId " + world.provider.dimensionId + "}", e);
         }
     }
 

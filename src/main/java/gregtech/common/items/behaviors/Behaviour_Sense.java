@@ -1,5 +1,6 @@
 package gregtech.common.items.behaviors;
 
+
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_LanguageManager;
@@ -11,8 +12,11 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
+
 public class Behaviour_Sense extends Behaviour_None {
+
     private final int mCosts;
+
     private final String mTooltip = GT_LanguageManager.addStringLocalization("gt.behaviour.sense", "Rightclick to harvest Crop Sticks");
 
     public Behaviour_Sense(int aCosts) {
@@ -20,7 +24,19 @@ public class Behaviour_Sense extends Behaviour_None {
     }
 
     @Override
-    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+    public boolean onItemUseFirst(
+            GT_MetaBase_Item aItem,
+            ItemStack aStack,
+            EntityPlayer aPlayer,
+            World aWorld,
+            int aX,
+            int aY,
+            int aZ,
+            int aSide,
+            float hitX,
+            float hitY,
+            float hitZ
+                                 ) {
         if (aWorld.isRemote) {
             return false;
         }
@@ -29,8 +45,9 @@ public class Behaviour_Sense extends Behaviour_None {
             for (int i = -2; i < 3; i++) {
                 for (int j = -2; j < 3; j++) {
                     for (int k = -2; k < 3; k++) {
-                        if ((aStack.stackSize > 0) && (((tTileEntity = aWorld.getTileEntity(aX + i, aY + j, aZ + k)) instanceof ICropTile)) && (((ICropTile) tTileEntity).harvest(true)) && (!aPlayer.capabilities.isCreativeMode)) {
-                            ((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts/20);
+                        if ((aStack.stackSize > 0) && (((tTileEntity = aWorld.getTileEntity(aX + i, aY + j, aZ + k)) instanceof ICropTile)) &&
+                            (((ICropTile) tTileEntity).harvest(true)) && (!aPlayer.capabilities.isCreativeMode)) {
+                            ((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts / 20);
                         }
                     }
                 }
@@ -45,4 +62,5 @@ public class Behaviour_Sense extends Behaviour_None {
         aList.add(this.mTooltip);
         return aList;
     }
+
 }

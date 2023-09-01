@@ -1,5 +1,6 @@
 package gregtech.common.tools;
 
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import net.minecraft.entity.Entity;
@@ -9,7 +10,9 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
+
 public class GT_Tool_Knife extends GT_Tool_Sword {
+
     @Override
     public int getToolDamagePerBlockBreak() {
         return 100;
@@ -36,11 +39,6 @@ public class GT_Tool_Knife extends GT_Tool_Sword {
     }
 
     @Override
-    public int getHurtResistanceTime(int aOriginalHurtResistance, Entity aEntity) {
-        return aOriginalHurtResistance * 3;
-    }
-
-    @Override
     public float getSpeedMultiplier() {
         return 0.5F;
     }
@@ -56,7 +54,16 @@ public class GT_Tool_Knife extends GT_Tool_Sword {
     }
 
     @Override
-    public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText("<" + EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + "> " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE + " what are you doing?, " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE + "?!? STAHP!!!");
+    public int getHurtResistanceTime(int aOriginalHurtResistance, Entity aEntity) {
+        return aOriginalHurtResistance * 3;
     }
+
+    @Override
+    public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
+        return new ChatComponentText(
+                "<" + EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + "> " + EnumChatFormatting.GREEN +
+                aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE + " what are you doing?, " + EnumChatFormatting.GREEN +
+                aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE + "?!? STAHP!!!");
+    }
+
 }

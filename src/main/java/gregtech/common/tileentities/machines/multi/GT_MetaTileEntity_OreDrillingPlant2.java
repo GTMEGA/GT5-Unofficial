@@ -1,30 +1,33 @@
 package gregtech.common.tileentities.machines.multi;
 
+
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 
+
 public class GT_MetaTileEntity_OreDrillingPlant2 extends GT_MetaTileEntity_OreDrillingPlantBase {
+
     public GT_MetaTileEntity_OreDrillingPlant2(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        mTier=2;
+        mTier = 2;
     }
 
     public GT_MetaTileEntity_OreDrillingPlant2(String aName) {
         super(aName);
-        mTier=2;
-    }
-
-    @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        return createTooltip("II");
+        mTier = 2;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_OreDrillingPlant2(mName);
+    }
+
+    @Override
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        return createTooltip("II");
     }
 
     @Override
@@ -43,17 +46,18 @@ public class GT_MetaTileEntity_OreDrillingPlant2 extends GT_MetaTileEntity_OreDr
     }
 
     @Override
-    protected int getRadiusInChunks() {
-        return 4;
+    protected int getMinTier() {
+        return 3;
     }
 
     @Override
-    protected int getMinTier() {
-        return 3;
+    protected int getRadiusInChunks() {
+        return 4;
     }
 
     @Override
     protected int getBaseProgressTime() {
         return 800;
     }
+
 }

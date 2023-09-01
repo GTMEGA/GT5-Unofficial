@@ -1,5 +1,6 @@
 package gregtech.common.gui;
 
+
 import gregtech.api.gui.widgets.GT_GuiButtonNumber;
 import gregtech.common.net.MessageSetIntegratedCircuit;
 import gregtech.loaders.misc.NetworkDispatcher;
@@ -7,13 +8,15 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.ResourceLocation;
 
+
 public class GT_GUIContainer_IntegratedCircuit extends GuiContainer {
 
     private static final ResourceLocation BACKGROUND = new ResourceLocation("gregtech:textures/gui/Botworks_Circuitprogrammer.png");
-    //the gui seems to be a few pixels to much to the left
-    private static int guiOffset = 24;
 
-    private GT_Container_IntegratedCircuit container;
+    //the gui seems to be a few pixels to much to the left
+    private static final int guiOffset = 24;
+
+    private final GT_Container_IntegratedCircuit container;
 
     public GT_GUIContainer_IntegratedCircuit(GT_Container_IntegratedCircuit container) {
         super(container);
@@ -47,4 +50,5 @@ public class GT_GUIContainer_IntegratedCircuit extends GuiContainer {
             mc.thePlayer.closeScreen();
         }
     }
+
 }

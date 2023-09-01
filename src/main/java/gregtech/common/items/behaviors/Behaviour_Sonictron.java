@@ -1,5 +1,6 @@
 package gregtech.common.items.behaviors;
 
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -11,59 +12,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 
+
 public class Behaviour_Sonictron extends Behaviour_None {
+
     public static final IItemBehaviour<GT_MetaBase_Item> INSTANCE = new Behaviour_Sonictron();
-
-    public static int getCurrentIndex(ItemStack aStack) {
-        NBTTagCompound tNBTTagCompound = aStack.getTagCompound();
-        if (tNBTTagCompound == null) {
-            tNBTTagCompound = new NBTTagCompound();
-        }
-        return tNBTTagCompound.getInteger("mCurrentIndex");
-    }
-
-    public static int getTickTimer(ItemStack aStack) {
-        NBTTagCompound tNBTTagCompound = aStack.getTagCompound();
-        if (tNBTTagCompound == null) {
-            tNBTTagCompound = new NBTTagCompound();
-        }
-        return tNBTTagCompound.getInteger("mTickTimer");
-    }
-
-    public static NBTTagCompound setCurrentIndex(ItemStack aStack, int aIndex) {
-        NBTTagCompound tNBTTagCompound = aStack.getTagCompound();
-        if (tNBTTagCompound == null) {
-            tNBTTagCompound = new NBTTagCompound();
-        }
-        tNBTTagCompound.setInteger("mCurrentIndex", aIndex);
-        return tNBTTagCompound;
-    }
-
-    public static NBTTagCompound setTickTimer(ItemStack aStack, int aTime) {
-        NBTTagCompound tNBTTagCompound = aStack.getTagCompound();
-        if (tNBTTagCompound == null) {
-            tNBTTagCompound = new NBTTagCompound();
-        }
-        tNBTTagCompound.setInteger("mTickTimer", aTime);
-        return tNBTTagCompound;
-    }
-
-    public static ItemStack[] getNBTInventory(ItemStack aStack) {
-        ItemStack[] tInventory = new ItemStack[64];
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            return tInventory;
-        }
-        NBTTagList tNBT_ItemList = tNBT.getTagList("Inventory", 10);
-        for (int i = 0; i < tNBT_ItemList.tagCount(); i++) {
-            NBTTagCompound tag = tNBT_ItemList.getCompoundTagAt(i);
-            byte slot = tag.getByte("Slot");
-            if ((slot >= 0) && (slot < tInventory.length)) {
-                tInventory[slot] = GT_Utility.loadItem(tag);
-            }
-        }
-        return tInventory;
-    }
 
     public static NBTTagCompound setNBTInventory(ItemStack aStack, ItemStack[] aInventory) {
         NBTTagCompound tNBT = aStack.getTagCompound();
@@ -96,9 +48,30 @@ public class Behaviour_Sonictron extends Behaviour_None {
     }
 
     @Override
-    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+    public boolean onItemUseFirst(
+            GT_MetaBase_Item aItem,
+            ItemStack aStack,
+            EntityPlayer aPlayer,
+            World aWorld,
+            int aX,
+            int aY,
+            int aZ,
+            int aSide,
+            float hitX,
+            float hitY,
+            float hitZ
+                                 ) {
         setCurrentIndex(aStack, -1);
         return false;
+    }
+
+    public static NBTTagCompound setCurrentIndex(ItemStack aStack, int aIndex) {
+        NBTTagCompound tNBTTagCompound = aStack.getTagCompound();
+        if (tNBTTagCompound == null) {
+            tNBTTagCompound = new NBTTagCompound();
+        }
+        tNBTTagCompound.setInteger("mCurrentIndex", aIndex);
+        return tNBTTagCompound;
     }
 
     @Override
@@ -122,4 +95,47 @@ public class Behaviour_Sonictron extends Behaviour_None {
         setTickTimer(aStack, tTickTimer);
         setCurrentIndex(aStack, tCurrentIndex);
     }
+
+    public static int getTickTimer(ItemStack aStack) {
+        NBTTagCompound tNBTTagCompound = aStack.getTagCompound();
+        if (tNBTTagCompound == null) {
+            tNBTTagCompound = new NBTTagCompound();
+        }
+        return tNBTTagCompound.getInteger("mTickTimer");
+    }
+
+    public static int getCurrentIndex(ItemStack aStack) {
+        NBTTagCompound tNBTTagCompound = aStack.getTagCompound();
+        if (tNBTTagCompound == null) {
+            tNBTTagCompound = new NBTTagCompound();
+        }
+        return tNBTTagCompound.getInteger("mCurrentIndex");
+    }
+
+    public static ItemStack[] getNBTInventory(ItemStack aStack) {
+        ItemStack[] tInventory = new ItemStack[64];
+        NBTTagCompound tNBT = aStack.getTagCompound();
+        if (tNBT == null) {
+            return tInventory;
+        }
+        NBTTagList tNBT_ItemList = tNBT.getTagList("Inventory", 10);
+        for (int i = 0; i < tNBT_ItemList.tagCount(); i++) {
+            NBTTagCompound tag = tNBT_ItemList.getCompoundTagAt(i);
+            byte slot = tag.getByte("Slot");
+            if ((slot >= 0) && (slot < tInventory.length)) {
+                tInventory[slot] = GT_Utility.loadItem(tag);
+            }
+        }
+        return tInventory;
+    }
+
+    public static NBTTagCompound setTickTimer(ItemStack aStack, int aTime) {
+        NBTTagCompound tNBTTagCompound = aStack.getTagCompound();
+        if (tNBTTagCompound == null) {
+            tNBTTagCompound = new NBTTagCompound();
+        }
+        tNBTTagCompound.setInteger("mTickTimer", aTime);
+        return tNBTTagCompound;
+    }
+
 }

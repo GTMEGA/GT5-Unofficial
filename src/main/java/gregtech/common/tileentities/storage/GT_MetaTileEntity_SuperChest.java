@@ -1,12 +1,16 @@
 package gregtech.common.tileentities.storage;
 
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.item.ItemStack;
 
+
 public class GT_MetaTileEntity_SuperChest extends GT_MetaTileEntity_DigitalChestBase {
+
     public int mItemCount = 0;
+
     public ItemStack mItemStack = null;
 
     public GT_MetaTileEntity_SuperChest(int aID, String aName, String aNameRegional, int aTier) {
@@ -31,4 +35,5 @@ public class GT_MetaTileEntity_SuperChest extends GT_MetaTileEntity_DigitalChest
     protected String chestName() {
         return "Super Chest";
     }
+
 }

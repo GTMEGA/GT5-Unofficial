@@ -1,11 +1,14 @@
 package gregtech.common.tileentities.machines.multi;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 
+
 public class GT_MetaTileEntity_LargeBoiler_Steel extends GT_MetaTileEntity_LargeBoiler {
+
     public GT_MetaTileEntity_LargeBoiler_Steel(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -18,16 +21,6 @@ public class GT_MetaTileEntity_LargeBoiler_Steel extends GT_MetaTileEntity_Large
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_LargeBoiler_Steel(this.mName);
     }
-    
-    @Override
-    public String getCasingMaterial(){
-    	return "Steel";
-    }
-
-    @Override
-    public String getCasingBlockType() {
-        return "Machine Casings";
-    }
 
     @Override
     public Block getCasingBlock() {
@@ -37,11 +30,6 @@ public class GT_MetaTileEntity_LargeBoiler_Steel extends GT_MetaTileEntity_Large
     @Override
     public byte getCasingMeta() {
         return 0;
-    }
-
-    @Override
-    public byte getCasingTextureIndex() {
-        return 16;
     }
 
     @Override
@@ -70,8 +58,23 @@ public class GT_MetaTileEntity_LargeBoiler_Steel extends GT_MetaTileEntity_Large
     }
 
     @Override
+    public byte getCasingTextureIndex() {
+        return 16;
+    }
+
+    @Override
+    public String getCasingMaterial() {
+        return "Steel";
+    }
+
+    @Override
     public int getEUt() {
         return 600;
+    }
+
+    @Override
+    int runtimeBoost(int mTime) {
+        return mTime * 150 / 100;
     }
 
     @Override
@@ -80,7 +83,8 @@ public class GT_MetaTileEntity_LargeBoiler_Steel extends GT_MetaTileEntity_Large
     }
 
     @Override
-    int runtimeBoost(int mTime) {
-        return mTime * 150 / 100;
+    public String getCasingBlockType() {
+        return "Machine Casings";
     }
+
 }

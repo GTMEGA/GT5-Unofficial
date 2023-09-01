@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
@@ -20,16 +21,20 @@ import java.util.Arrays;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MUFFLER;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+
 @SuppressWarnings("unused") // Unused API is expected within scope
 public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
-    private static final String localizedDescFormat = GT_LanguageManager.addStringLocalization(
-            "gt.blockmachines.hatch.muffler.desc.format",
-            "Do not obstruct the output.%n" +
-                    "Reduces Pollution to %d%%%n");
+
+    private static final String localizedDescFormat = GT_LanguageManager.addStringLocalization("gt.blockmachines.hatch.muffler.desc.format",
+                                                                                               "Do not obstruct the output.%n" + "Reduces Pollution to %d%%%n"
+                                                                                              );
+
     private final int pollutionReduction = calculatePollutionReduction(100);
+
     private final int pollutionRecover = 100 - pollutionReduction;
-    private final String[] description = String.format(localizedDescFormat, pollutionReduction, pollutionRecover)
-            .split("\\R");
+
+    private final String[] description = String.format(localizedDescFormat, pollutionReduction, pollutionRecover).split("\\R");
+
     private final boolean[] facings = new boolean[ForgeDirection.VALID_DIRECTIONS.length];
 
     public GT_MetaTileEntity_Hatch_Muffler(int aID, String aName, String aNameRegional, int aTier) {
@@ -43,6 +48,15 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     public GT_MetaTileEntity_Hatch_Muffler(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         setInValidFacings(ForgeDirection.DOWN);
+    }
+
+    /**
+     * @param aFacings the {@link ForgeDirection} invalid facings
+     * @apiNote API Code, BartWorks/TecTech based EBF relies on this. It's marked here, not anywhere else.
+     */
+    public void setInValidFacings(ForgeDirection... aFacings) {
+        Arrays.fill(facings, true);
+        Arrays.stream(aFacings).forEach(face -> facings[face.ordinal()] = false);
     }
 
     @Override
@@ -61,8 +75,13 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return false;
+    }
+
+    @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return false;
     }
 
     @Override
@@ -71,13 +90,8 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return false;
+    public boolean isSimpleMachine() {
+        return true;
     }
 
     @Override
@@ -113,9 +127,13 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
             ran3 = XSTR_INSTANCE.nextFloat();
             chk2 = ran2 * 100 < calculatePollutionReduction(100);
             chk3 = ran3 * 100 < calculatePollutionReduction(100);
-            if (!(chk1 || chk2 || chk3)) return;
+            if (!(chk1 || chk2 || chk3)) {
+                return;
+            }
         } else {
-            if (!chk1) return;
+            if (!chk1) {
+                return;
+            }
             ran2 = ran3 = 0.0F;
             chk2 = chk3 = false;
         }
@@ -139,22 +157,17 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
             zSpd = aDir.offsetZ * (0.1F + 0.2F * XSTR_INSTANCE.nextFloat());
         }
 
-        WorldSpawnedEventBuilder.ParticleEventBuilder events = new WorldSpawnedEventBuilder.ParticleEventBuilder()
-                .setIdentifier(name)
-                .setWorld(aWorld)
-                .setMotion(xSpd, ySpd, zSpd);
+        WorldSpawnedEventBuilder.ParticleEventBuilder events = new WorldSpawnedEventBuilder.ParticleEventBuilder().setIdentifier(name).setWorld(aWorld)
+                                                                                                                  .setMotion(xSpd, ySpd, zSpd);
 
         if (chk1) {
-            events.setPosition(xPos + ran1 * 0.5F, yPos + XSTR_INSTANCE.nextFloat() * 0.5F, zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
-                  .run();
+            events.setPosition(xPos + ran1 * 0.5F, yPos + XSTR_INSTANCE.nextFloat() * 0.5F, zPos + XSTR_INSTANCE.nextFloat() * 0.5F).run();
         }
         if (chk2) {
-            events.setPosition(xPos + ran2 * 0.5F, yPos + XSTR_INSTANCE.nextFloat() * 0.5F, zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
-                  .run();
+            events.setPosition(xPos + ran2 * 0.5F, yPos + XSTR_INSTANCE.nextFloat() * 0.5F, zPos + XSTR_INSTANCE.nextFloat() * 0.5F).run();
         }
         if (chk3) {
-            events.setPosition(xPos + ran3 * 0.5F, yPos + XSTR_INSTANCE.nextFloat() * 0.5F, zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
-                  .run();
+            events.setPosition(xPos + ran3 * 0.5F, yPos + XSTR_INSTANCE.nextFloat() * 0.5F, zPos + XSTR_INSTANCE.nextFloat() * 0.5F).run();
         }
     }
 
@@ -187,12 +200,4 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
         return false;
     }
 
-    /**
-     * @param aFacings the {@link ForgeDirection} invalid facings
-     * @apiNote API Code, BartWorks/TecTech based EBF relies on this. It's marked here, not anywhere else.
-     */
-    public void setInValidFacings(ForgeDirection... aFacings) {
-        Arrays.fill(facings, true);
-        Arrays.stream(aFacings).forEach(face -> facings[face.ordinal()] = false);
-    }
 }

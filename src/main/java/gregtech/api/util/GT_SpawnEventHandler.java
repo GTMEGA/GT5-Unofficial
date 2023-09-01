@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -11,6 +12,7 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
 
 public class GT_SpawnEventHandler {
 
@@ -42,4 +44,5 @@ public class GT_SpawnEventHandler {
             }
         }
     }
+
 }

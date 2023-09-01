@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.*;
 import gregtech.api.interfaces.ITexture;
@@ -18,6 +19,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import static gregtech.api.enums.GT_Values.V;
 
+
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
  * <p/>
@@ -25,10 +27,15 @@ import static gregtech.api.enums.GT_Values.V;
  * Extend this class to make a simple Machine
  */
 public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_TieredMachineBlock implements IBatteryContainer {
+
     public boolean mCharge = false, mDecharge = false;
+
     public int mBatteryCount = 0, mChargeableCount = 0;
+
     private long count = 0;
+
     private long mStored = 0;
+
     private long mMax = 0;
 
     public GT_MetaTileEntity_BasicBatteryBuffer(int aID, String aName, String aNameRegional, int aTier, String aDescription, int aSlotCount) {
@@ -45,10 +52,10 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
 
     @Override
     public String[] getDescription() {
-    	String[] desc = new String[mDescriptionArray.length + 1];
-    	System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-    	desc[mDescriptionArray.length] = mInventory.length + " Slots";
-    	return desc;
+        String[] desc = new String[mDescriptionArray.length + 1];
+        System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
+        desc[mDescriptionArray.length] = mInventory.length + " Slots";
+        return desc;
     }
 
     @Override
@@ -56,14 +63,14 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
         ITexture[][][] rTextures = new ITexture[2][17][];
         for (byte i = -1; i < 16; i++) {
             rTextures[0][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1]};
-            rTextures[1][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], mInventory.length==16 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier] : mInventory.length > 4 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] : Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier]};
+            rTextures[1][i + 1] = new ITexture[]{
+                    Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], mInventory.length == 16 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier]
+                                                                                               : mInventory.length > 4
+                                                                                                 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier]
+                                                                                                 : Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier]
+            };
         }
         return rTextures;
-    }
-
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return mTextures[aSide == aFacing ? 1 : 0][aColorIndex + 1];
     }
 
     @Override
@@ -72,27 +79,70 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
     }
 
     @Override
-    public boolean isSimpleMachine() {
+    public void saveNBTData(NBTTagCompound aNBT) {
+        //
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        //
+    }
+
+    @Override
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        if (GT_ModHandler.isElectricItem(aStack) && aStack.getUnlocalizedName().startsWith("gt.metaitem.01.")) {
+            String name = aStack.getUnlocalizedName();
+            if (name.equals("gt.metaitem.01.32510") || name.equals("gt.metaitem.01.32511") || name.equals("gt.metaitem.01.32520") || name.equals(
+                    "gt.metaitem.01.32521") || name.equals("gt.metaitem.01.32530") || name.equals("gt.metaitem.01.32531")) {
+                return ic2.api.item.ElectricItem.manager.getCharge(aStack) == 0;
+            }
+        }
         return false;
     }
 
     @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        if (!GT_Utility.isStackValid(aStack)) {
+            return false;
+        }
+        return mInventory[aIndex] == null && GT_ModHandler.isElectricItem(aStack, this.mTier);
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        return mTextures[aSide == aFacing ? 1 : 0][aColorIndex + 1];
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aBaseMetaTileEntity.isServerSide()) {
+            mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3;
+            mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3;
+            mBatteryCount = 0;
+            mChargeableCount = 0;
+            for (ItemStack tStack : mInventory) {
+                if (GT_ModHandler.isElectricItem(tStack, mTier)) {
+                    if (GT_ModHandler.isChargerItem(tStack)) {
+                        mBatteryCount++;
+                    }
+                    mChargeableCount++;
+                }
+            }
+        }
+        count++;
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (aBaseMetaTileEntity.isClientSide()) {
+            return true;
+        }
+        aBaseMetaTileEntity.openGUI(aPlayer);
+        return true;
+    }
+
+    @Override
     public boolean isElectric() {
-        return true;
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return true;
-    }
-
-    @Override
-    public boolean isFacingValid(byte aFacing) {
-        return true;
-    }
-
-    @Override
-    public boolean isEnetInput() {
         return true;
     }
 
@@ -102,23 +152,8 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
-        return aSide != getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public boolean isOutputFacing(byte aSide) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public boolean isTeleporterCompatible() {
-        return false;
-    }
-
-    @Override
-    public long getMinimumStoredEU() {
-        return V[mTier] * 16L * mInventory.length;
+    public boolean isEnetInput() {
+        return true;
     }
 
     @Override
@@ -137,22 +172,47 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
     }
 
     @Override
-    public long maxAmperesIn() {
-        return mChargeableCount * 2L;
-    }
-
-    @Override
     public long maxAmperesOut() {
         return mBatteryCount;
     }
 
     @Override
-    public int rechargerSlotStartIndex() {
-        return 0;
+    public long maxAmperesIn() {
+        return mChargeableCount * 2L;
     }
 
     @Override
-    public int dechargerSlotStartIndex() {
+    public boolean isOutputFacing(byte aSide) {
+        return aSide == getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
+    public boolean isInputFacing(byte aSide) {
+        return aSide != getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
+    public boolean isFacingValid(byte aFacing) {
+        return true;
+    }
+
+    @Override
+    public boolean isAccessAllowed(EntityPlayer aPlayer) {
+        return true;
+    }
+
+    @Override
+    public boolean isValidSlot(int aIndex) {
+        return true;
+    }
+
+    @Override
+    public long getMinimumStoredEU() {
+        return V[mTier] * 16L * mInventory.length;
+    }
+
+    @Override
+    public int rechargerSlotStartIndex() {
         return 0;
     }
 
@@ -162,8 +222,18 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
     }
 
     @Override
+    public int dechargerSlotStartIndex() {
+        return 0;
+    }
+
+    @Override
     public int dechargerSlotCount() {
         return mDecharge ? mInventory.length : 0;
+    }
+
+    @Override
+    public boolean isSimpleMachine() {
+        return false;
     }
 
     @Override
@@ -177,25 +247,35 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
+    public boolean isTeleporterCompatible() {
+        return false;
+    }
+
+    @Override
+    public boolean isGivingInformation() {
         return true;
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        //
+    public String[] getInfoData() {
+        if (mMax == 0 || (count > 20)) {
+            long[] tmp = getStoredEnergy();
+            mStored = tmp[0];
+            mMax = tmp[1];
+            count = 0;
+        }
+
+        return new String[]{
+                EnumChatFormatting.BLUE + getLocalName() + EnumChatFormatting.RESET, "Stored Items:", EnumChatFormatting.GREEN + GT_Utility.formatNumbers(
+                mStored) + EnumChatFormatting.RESET + " EU / " + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(mMax) + EnumChatFormatting.RESET + " EU",
+                "Average input:", GT_Utility.formatNumbers(getBaseMetaTileEntity().getAverageElectricInput()) + " EU/t", "Average output:",
+                GT_Utility.formatNumbers(getBaseMetaTileEntity().getAverageElectricOutput()) + " EU/t"
+        };
     }
 
     @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        //
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        aBaseMetaTileEntity.openGUI(aPlayer);
-        return true;
+    public int getInventoryStackLimit() {
+        return 1;
     }
 
     @Override
@@ -228,58 +308,9 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
         return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
     }
 
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3;
-            mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3;
-            mBatteryCount = 0;
-            mChargeableCount = 0;
-            for (ItemStack tStack : mInventory)
-                if (GT_ModHandler.isElectricItem(tStack, mTier)) {
-                    if (GT_ModHandler.isChargerItem(tStack)) mBatteryCount++;
-                    mChargeableCount++;
-                }
-        }
-        count++;
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        if (GT_ModHandler.isElectricItem(aStack) && aStack.getUnlocalizedName().startsWith("gt.metaitem.01.")) {
-            String name = aStack.getUnlocalizedName();
-            if (name.equals("gt.metaitem.01.32510") ||
-                    name.equals("gt.metaitem.01.32511") ||
-                    name.equals("gt.metaitem.01.32520") ||
-                    name.equals("gt.metaitem.01.32521") ||
-                    name.equals("gt.metaitem.01.32530") ||
-                    name.equals("gt.metaitem.01.32531")) {
-            	if(ic2.api.item.ElectricItem.manager.getCharge(aStack)==0){
-                return true;}
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        if (!GT_Utility.isStackValid(aStack)) {
-            return false;
-        }
-        if (mInventory[aIndex]==null && GT_ModHandler.isElectricItem(aStack, this.mTier)) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 1;
-    }
-
     public long[] getStoredEnergy() {
-    	boolean scaleOverflow =false;
-    	boolean storedOverflow = false;
+        boolean scaleOverflow = false;
+        boolean storedOverflow = false;
         long tScale = getBaseMetaTileEntity().getEUCapacity();
         long tStored = getBaseMetaTileEntity().getStoredEU();
         long tStep = 0;
@@ -290,10 +321,14 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
                     if (aStack.getItem() instanceof GT_MetaBase_Item) {
                         Long[] stats = ((GT_MetaBase_Item) aStack.getItem()).getElectricStats(aStack);
                         if (stats != null) {
-                        	if(stats[0]>Long.MAX_VALUE/2){scaleOverflow=true;}
+                            if (stats[0] > Long.MAX_VALUE / 2) {
+                                scaleOverflow = true;
+                            }
                             tScale = tScale + stats[0];
                             tStep = ((GT_MetaBase_Item) aStack.getItem()).getRealCharge(aStack);
-                            if(tStep > Long.MAX_VALUE/2){storedOverflow=true;}
+                            if (tStep > Long.MAX_VALUE / 2) {
+                                storedOverflow = true;
+                            }
                             tStored = tStored + tStep;
                         }
                     } else if (aStack.getItem() instanceof IElectricItem) {
@@ -304,29 +339,13 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
             }
 
         }
-        if(scaleOverflow){tScale=Long.MAX_VALUE;}
-        if(storedOverflow){tStored=Long.MAX_VALUE;}
-        return new long[]{tStored, tScale};
-    }
-
-    @Override
-    public String[] getInfoData() {
-        if (mMax == 0 || (count > 20)) {
-            long[] tmp = getStoredEnergy();
-            mStored = tmp[0];
-            mMax = tmp[1];
-            count = 0;
+        if (scaleOverflow) {
+            tScale = Long.MAX_VALUE;
         }
-
-        return new String[]{
-                EnumChatFormatting.BLUE+getLocalName()+EnumChatFormatting.RESET,
-                "Stored Items:",
-                EnumChatFormatting.GREEN+GT_Utility.formatNumbers(mStored) +EnumChatFormatting.RESET+ " EU / "+
-                EnumChatFormatting.YELLOW+GT_Utility.formatNumbers(mMax) +EnumChatFormatting.RESET+ " EU",
-                "Average input:",
-                GT_Utility.formatNumbers(getBaseMetaTileEntity().getAverageElectricInput())+" EU/t",
-                "Average output:",
-                GT_Utility.formatNumbers(getBaseMetaTileEntity().getAverageElectricOutput())+" EU/t"};
+        if (storedOverflow) {
+            tStored = Long.MAX_VALUE;
+        }
+        return new long[]{tStored, tScale};
     }
 
     @Override
@@ -372,8 +391,4 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
         return stored;
     }
 
-    @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
 }

@@ -1,12 +1,15 @@
 package gregtech.common.tools;
 
+
 import gregtech.GT_Mod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+
 public class GT_Tool_Drill_HV extends GT_Tool_Drill_LV {
+
     @Override
     public int getToolDamagePerBlockBreak() {
         return GT_Mod.gregtechproxy.mHardRock ? 250 : 400;
@@ -48,22 +51,24 @@ public class GT_Tool_Drill_HV extends GT_Tool_Drill_LV {
     }
 
     @Override
-    public int getMaxAOESize() {
-        return 6;
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? gregtech.api.items.GT_MetaGenerated_Tool.getPrimaryMaterial(
+                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadDrill.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_HV;
     }
 
     @Override
     public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
         super.onToolCrafted(aStack, aPlayer);
         try {
-            GT_Mod.instance.achievements.issueAchievement(aPlayer, "highpowerdrill");
-            GT_Mod.instance.achievements.issueAchievement(aPlayer, "buildDDrill");
+            GT_Mod.achievements.issueAchievement(aPlayer, "highpowerdrill");
+            GT_Mod.achievements.issueAchievement(aPlayer, "buildDDrill");
         } catch (Exception ignored) {
         }
     }
 
     @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? gregtech.api.items.GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadDrill.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_HV;
+    public int getMaxAOESize() {
+        return 6;
     }
+
 }

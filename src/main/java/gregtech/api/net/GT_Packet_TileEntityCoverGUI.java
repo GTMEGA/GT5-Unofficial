@@ -1,5 +1,6 @@
 package gregtech.api.net;
 
+
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -15,16 +16,22 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+
 /**
  * Server -> Client: Show GUI
  */
 public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
+
     protected int mX;
+
     protected short mY;
+
     protected int mZ;
 
     protected byte side;
+
     protected int coverID, dimID, playerID;
+
     protected ISerializableObject coverData;
 
     public GT_Packet_TileEntityCoverGUI() {
@@ -118,17 +125,13 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
     @Override
     public GT_Packet_New decode(ByteArrayDataInput aData) {
         int coverID;
-        return new GT_Packet_TileEntityCoverGUI(
-                aData.readInt(),
-                aData.readShort(),
-                aData.readInt(),
+        return new GT_Packet_TileEntityCoverGUI(aData.readInt(), aData.readShort(), aData.readInt(),
 
-                aData.readByte(),
-                coverID = aData.readInt(),
-                GregTech_API.getCoverBehaviorNew(coverID).createDataObject().readFromPacket(aData, null),
+                                                aData.readByte(), coverID = aData.readInt(), GregTech_API.getCoverBehaviorNew(coverID).createDataObject()
+                                                                                                         .readFromPacket(aData, null),
 
-                aData.readInt(),
-                aData.readInt());
+                                                aData.readInt(), aData.readInt()
+        );
     }
 
     @Override
@@ -143,4 +146,5 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
             }
         }
     }
+
 }

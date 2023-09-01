@@ -1,11 +1,13 @@
 package gregtech.common.gui;
 
+
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Output;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PrimitiveBlastFurnace;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
+
 
 public class GT_Container_PrimitiveBlastFurnace extends GT_ContainerMetaTile_Machine {
 
@@ -25,12 +27,12 @@ public class GT_Container_PrimitiveBlastFurnace extends GT_ContainerMetaTile_Mac
 
     @Override
     public int getSlotCount() {
-        return GT_MetaTileEntity_PrimitiveBlastFurnace.INPUT_SLOTS
-                + GT_MetaTileEntity_PrimitiveBlastFurnace.OUTPUT_SLOTS;
+        return GT_MetaTileEntity_PrimitiveBlastFurnace.INPUT_SLOTS + GT_MetaTileEntity_PrimitiveBlastFurnace.OUTPUT_SLOTS;
     }
 
     @Override
     public int getShiftClickSlotCount() {
         return GT_MetaTileEntity_PrimitiveBlastFurnace.INPUT_SLOTS;
     }
+
 }

@@ -1,9 +1,11 @@
 package gregtech.api.util;
 
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
+
 
 /**
  * Redstone Circuit Control Code
@@ -21,33 +23,14 @@ import gregtech.api.interfaces.IRedstoneCircuitBlock;
  * All Functions run usually in a seperate try/catch Block, so that failed Logic won't crash the TileEntity.
  */
 public abstract class GT_CircuitryBehavior {
-    /**
-     * @param aIndex 0 - 1023 are my own Indices, so use other Numbers!
-     */
-    public GT_CircuitryBehavior(int aIndex) {
-        GregTech_API.sCircuitryBehaviors.put(aIndex, this);
-    }
-
-    /**
-     * returns if there is Redstone applied to any of the valid Inputs (OR)
-     */
-    public static final boolean getAnyRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
-        for (byte i = 0; i < 6; i++) {
-            if (i != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(i).letsRedstoneGoIn(i, aRedstoneCircuitBlock.getCoverID(i), aRedstoneCircuitBlock.getCoverVariable(i), aRedstoneCircuitBlock.getOwnTileEntity())) {
-                if (aRedstoneCircuitBlock.getInputRedstone(i) > 0) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     /**
      * returns if there is Redstone applied to all the valid Inputs (AND)
      */
     public static final boolean getAllRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         for (byte i = 0; i < 6; i++) {
-            if (i != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(i).letsRedstoneGoIn(i, aRedstoneCircuitBlock.getCoverID(i), aRedstoneCircuitBlock.getCoverVariable(i), aRedstoneCircuitBlock.getOwnTileEntity())) {
+            if (i != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(i).letsRedstoneGoIn(
+                    i, aRedstoneCircuitBlock.getCoverID(i), aRedstoneCircuitBlock.getCoverVariable(i), aRedstoneCircuitBlock.getOwnTileEntity())) {
                 if (aRedstoneCircuitBlock.getInputRedstone(i) == 0) {
                     return false;
                 }
@@ -62,7 +45,8 @@ public abstract class GT_CircuitryBehavior {
     public static final boolean getOneRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         int tRedstoneAmount = 0;
         for (byte i = 0; i < 6; i++) {
-            if (i != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(i).letsRedstoneGoIn(i, aRedstoneCircuitBlock.getCoverID(i), aRedstoneCircuitBlock.getCoverVariable(i), aRedstoneCircuitBlock.getOwnTileEntity())) {
+            if (i != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(i).letsRedstoneGoIn(
+                    i, aRedstoneCircuitBlock.getCoverID(i), aRedstoneCircuitBlock.getCoverVariable(i), aRedstoneCircuitBlock.getOwnTileEntity())) {
                 if (aRedstoneCircuitBlock.getInputRedstone(i) > 0) {
                     tRedstoneAmount++;
                 }
@@ -77,11 +61,46 @@ public abstract class GT_CircuitryBehavior {
     public static final byte getStrongestRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         byte tRedstoneAmount = 0;
         for (byte i = 0; i < 6; i++) {
-            if (i != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(i).letsRedstoneGoIn(i, aRedstoneCircuitBlock.getCoverID(i), aRedstoneCircuitBlock.getCoverVariable(i), aRedstoneCircuitBlock.getOwnTileEntity())) {
+            if (i != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(i).letsRedstoneGoIn(
+                    i, aRedstoneCircuitBlock.getCoverID(i), aRedstoneCircuitBlock.getCoverVariable(i), aRedstoneCircuitBlock.getOwnTileEntity())) {
                 tRedstoneAmount = (byte) Math.max(tRedstoneAmount, aRedstoneCircuitBlock.getInputRedstone(i));
             }
         }
         return tRedstoneAmount;
+    }
+
+    /**
+     * returns the weakest incoming non-zero RS-Power
+     */
+    public static final byte getWeakestNonZeroRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
+        if (!getAnyRedstone(aRedstoneCircuitBlock)) {
+            return 0;
+        }
+        byte tRedstoneAmount = 15;
+        for (byte i = 0; i < 6; i++) {
+            if (i != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(i).letsRedstoneGoIn(
+                    i, aRedstoneCircuitBlock.getCoverID(i), aRedstoneCircuitBlock.getCoverVariable(i), aRedstoneCircuitBlock.getOwnTileEntity())) {
+                if (aRedstoneCircuitBlock.getInputRedstone(i) > 0) {
+                    tRedstoneAmount = (byte) Math.min(tRedstoneAmount, aRedstoneCircuitBlock.getInputRedstone(i));
+                }
+            }
+        }
+        return tRedstoneAmount;
+    }
+
+    /**
+     * returns if there is Redstone applied to any of the valid Inputs (OR)
+     */
+    public static final boolean getAnyRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
+        for (byte i = 0; i < 6; i++) {
+            if (i != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(i).letsRedstoneGoIn(
+                    i, aRedstoneCircuitBlock.getCoverID(i), aRedstoneCircuitBlock.getCoverVariable(i), aRedstoneCircuitBlock.getOwnTileEntity())) {
+                if (aRedstoneCircuitBlock.getInputRedstone(i) > 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /*****************
@@ -89,32 +108,27 @@ public abstract class GT_CircuitryBehavior {
      *****************/
 
     /**
-     * returns the weakest incoming non-zero RS-Power
+     * returns the weakest incoming RS-Power
      */
-    public static final byte getWeakestNonZeroRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
-        if (!getAnyRedstone(aRedstoneCircuitBlock)) return 0;
+    public static final byte getWeakestRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
+        if (!getAnyRedstone(aRedstoneCircuitBlock)) {
+            return 0;
+        }
         byte tRedstoneAmount = 15;
         for (byte i = 0; i < 6; i++) {
-            if (i != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(i).letsRedstoneGoIn(i, aRedstoneCircuitBlock.getCoverID(i), aRedstoneCircuitBlock.getCoverVariable(i), aRedstoneCircuitBlock.getOwnTileEntity())) {
-                if (aRedstoneCircuitBlock.getInputRedstone(i) > 0)
-                    tRedstoneAmount = (byte) Math.min(tRedstoneAmount, aRedstoneCircuitBlock.getInputRedstone(i));
+            if (i != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(i).letsRedstoneGoIn(
+                    i, aRedstoneCircuitBlock.getCoverID(i), aRedstoneCircuitBlock.getCoverVariable(i), aRedstoneCircuitBlock.getOwnTileEntity())) {
+                tRedstoneAmount = (byte) Math.min(tRedstoneAmount, aRedstoneCircuitBlock.getInputRedstone(i));
             }
         }
         return tRedstoneAmount;
     }
 
     /**
-     * returns the weakest incoming RS-Power
+     * @param aIndex 0 - 1023 are my own Indices, so use other Numbers!
      */
-    public static final byte getWeakestRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
-        if (!getAnyRedstone(aRedstoneCircuitBlock)) return 0;
-        byte tRedstoneAmount = 15;
-        for (byte i = 0; i < 6; i++) {
-            if (i != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(i).letsRedstoneGoIn(i, aRedstoneCircuitBlock.getCoverID(i), aRedstoneCircuitBlock.getCoverVariable(i), aRedstoneCircuitBlock.getOwnTileEntity())) {
-                tRedstoneAmount = (byte) Math.min(tRedstoneAmount, aRedstoneCircuitBlock.getInputRedstone(i));
-            }
-        }
-        return tRedstoneAmount;
+    public GT_CircuitryBehavior(int aIndex) {
+        GregTech_API.sCircuitryBehaviors.put(aIndex, this);
     }
 
     /**
@@ -178,4 +192,5 @@ public abstract class GT_CircuitryBehavior {
     public String getDataDisplay(int[] aCircuitData, int aCircuitDataIndex) {
         return null;
     }
+
 }

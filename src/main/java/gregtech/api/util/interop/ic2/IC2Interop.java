@@ -49,7 +49,7 @@ public class IC2Interop extends IC2InteropBase {
     public TileEntity getIC2EnergyTile(final TileEntity tile) {
         TileEntity ic2Energy;
         if (tile instanceof IReactorChamber) {
-            ic2Energy = (TileEntity) ((IReactorChamber)tile).getReactor();
+            ic2Energy = (TileEntity) ((IReactorChamber) tile).getReactor();
         } else {
             if (tile instanceof IEnergyTile || EnergyNet.instance == null) {
                 ic2Energy = tile;
@@ -85,7 +85,7 @@ public class IC2Interop extends IC2InteropBase {
     @Optional.Method(modid = "IC2")
     @Override
     public boolean isEmitter(final TileEntity tile) {
-       return tile instanceof IEnergyEmitter;
+        return tile instanceof IEnergyEmitter;
     }
 
     /**
@@ -150,7 +150,8 @@ public class IC2Interop extends IC2InteropBase {
         GT_FML_LOGGER.info("Congratulations, you have been waiting long enough (" + stopwatch.stop() + "). Have a Cake.");
         GT_Log.out.println("GT_Mod: List of Lists of Tool Recipes: " + GT_ModHandler.sSingleNonBlockDamagableRecipeList_list.toString());
         GT_Log.out.println("GT_Mod: Vanilla Recipe List -> Outputs null or stackSize <=0: " + GT_ModHandler.sVanillaRecipeList_warntOutput.toString());
-        GT_Log.out.println("GT_Mod: Single Non Block Damagable Recipe List -> Outputs null or stackSize <=0: " + GT_ModHandler.sSingleNonBlockDamagableRecipeList_warntOutput.toString());
+        GT_Log.out.println("GT_Mod: Single Non Block Damagable Recipe List -> Outputs null or stackSize <=0: " +
+                           GT_ModHandler.sSingleNonBlockDamagableRecipeList_warntOutput.toString());
 
         Set<Materials> replaceVanillaItemsSet = gregtechproxy.mUseGreatlyShrukenReplacementList ? Arrays.stream(Materials.values()).filter(
                 GT_RecipeRegistrator::hasVanillaRecipes).collect(Collectors.toSet()) : new HashSet<>(Arrays.asList(Materials.values()));
@@ -160,15 +161,14 @@ public class IC2Interop extends IC2InteropBase {
         GT_FML_LOGGER.info("Replacing Vanilla Materials in recipes, please wait.");
 
         ProgressManager.ProgressBar progressBar = ProgressManager.push("Register materials", replaceVanillaItemsSet.size());
-        if (GT_Values.cls_enabled){
+        if (GT_Values.cls_enabled) {
             try {
                 GT_CLS_Compat.doActualRegistrationCLS(progressBar, replaceVanillaItemsSet);
                 GT_CLS_Compat.pushToDisplayProgress();
             } catch (InvocationTargetException | IllegalAccessException e) {
                 GT_FML_LOGGER.catching(e);
             }
-        }
-        else {
+        } else {
             replaceVanillaItemsSet.forEach(m -> {
                 progressBar.step(m.mDefaultLocalName);
                 GT_Mod.doActualRegistration(m);
@@ -182,10 +182,8 @@ public class IC2Interop extends IC2InteropBase {
         stopwatch.start();
         // remove gemIridium exploit
         ItemStack iridiumOre = GT_ModHandler.getIC2Item("iridiumOre", 1);
-        aCompressorRecipeList.entrySet().stream()
-                             .filter(e -> e.getKey().getInputs().size() == 1 && e.getKey().getInputs().get(0).isItemEqual(iridiumOre))
-                             .findAny()
-                             .ifPresent(e -> aCompressorRecipeList.remove(e.getKey()));
+        aCompressorRecipeList.entrySet().stream().filter(e -> e.getKey().getInputs().size() == 1 && e.getKey().getInputs().get(0).isItemEqual(iridiumOre))
+                             .findAny().ifPresent(e -> aCompressorRecipeList.remove(e.getKey()));
         //Add default IC2 recipe to GT
         GT_ModHandler.addIC2RecipesToGT(aMaceratorRecipeList, GT_Recipe.GT_Recipe_Map.sMaceratorRecipes, true, true, true);
         GT_ModHandler.addIC2RecipesToGT(aCompressorRecipeList, GT_Recipe.GT_Recipe_Map.sCompressorRecipes, true, true, true);

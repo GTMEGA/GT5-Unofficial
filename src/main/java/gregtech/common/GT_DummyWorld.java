@@ -1,5 +1,6 @@
 package gregtech.common;
 
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -18,17 +19,30 @@ import net.minecraft.world.storage.WorldInfo;
 
 import java.io.File;
 
-public class GT_DummyWorld extends World {
-    public GT_IteratorRandom mRandom = new GT_IteratorRandom();
-    public ItemStack mLastSetBlock = null;
 
-    public GT_DummyWorld(ISaveHandler par1iSaveHandler, String par2Str, WorldProvider par3WorldProvider, WorldSettings par4WorldSettings, Profiler par5Profiler) {
-        super(par1iSaveHandler, par2Str, par4WorldSettings, par3WorldProvider, par5Profiler);
-        this.rand = this.mRandom;
-    }
+public class GT_DummyWorld extends World {
+
+    public GT_IteratorRandom mRandom = new GT_IteratorRandom();
+
+    public ItemStack mLastSetBlock = null;
 
     public GT_DummyWorld() {
         this(new ISaveHandler() {
+
+                 @Override
+                 public WorldInfo loadWorldInfo() {
+                     return null;
+                 }
+
+                 @Override
+                 public void checkSessionLock() {
+                 }
+
+                 @Override
+                 public IChunkLoader getChunkLoader(WorldProvider var1) {
+                     return null;
+                 }
+
                  @Override
                  public void saveWorldInfoWithPlayer(WorldInfo var1, NBTTagCompound var2) {
                  }
@@ -38,12 +52,16 @@ public class GT_DummyWorld extends World {
                  }
 
                  @Override
-                 public WorldInfo loadWorldInfo() {
+                 public IPlayerFileData getSaveHandler() {
                      return null;
                  }
 
                  @Override
-                 public IPlayerFileData getSaveHandler() {
+                 public void flush() {
+                 }
+
+                 @Override
+                 public File getWorldDirectory() {
                      return null;
                  }
 
@@ -53,51 +71,24 @@ public class GT_DummyWorld extends World {
                  }
 
                  @Override
-                 public IChunkLoader getChunkLoader(WorldProvider var1) {
-                     return null;
-                 }
-
-                 @Override
-                 public void flush() {
-                 }
-
-                 @Override
-                 public void checkSessionLock() {
-                 }
-
-                 @Override
                  public String getWorldDirectoryName() {
-                     return null;
-                 }
-
-                 @Override
-                 public File getWorldDirectory() {
                      return null;
                  }
              }, "DUMMY_DIMENSION", null,
 
-                new WorldSettings(new WorldInfo(new NBTTagCompound())), new Profiler());
+             new WorldSettings(new WorldInfo(new NBTTagCompound())), new Profiler()
+            );
     }
 
-    @Override
-    protected IChunkProvider createChunkProvider() {
-        return null;
-    }
-
-    @Override
-    public Entity getEntityByID(int aEntityID) {
-        return null;
-    }
-
-    @Override
-    public boolean setBlock(int aX, int aY, int aZ, Block aBlock, int aMeta, int aFlags) {
-        this.mLastSetBlock = new ItemStack(aBlock, 1, aMeta);
-        return true;
-    }
-
-    @Override
-    public float getSunBrightnessFactor(float p_72967_1_) {
-        return 1.0F;
+    public GT_DummyWorld(
+            ISaveHandler par1iSaveHandler,
+            String par2Str,
+            WorldProvider par3WorldProvider,
+            WorldSettings par4WorldSettings,
+            Profiler par5Profiler
+                        ) {
+        super(par1iSaveHandler, par2Str, par4WorldSettings, par3WorldProvider, par5Profiler);
+        this.rand = this.mRandom;
     }
 
     @Override
@@ -109,8 +100,8 @@ public class GT_DummyWorld extends World {
     }
 
     @Override
-    public int getFullBlockLightValue(int aX, int aY, int aZ) {
-        return 10;
+    protected IChunkProvider createChunkProvider() {
+        return null;
     }
 
     @Override
@@ -119,6 +110,12 @@ public class GT_DummyWorld extends World {
             return aY == 64 ? Blocks.grass : Blocks.air;
         }
         return Blocks.air;
+    }
+
+    @Override
+    public boolean setBlock(int aX, int aY, int aZ, Block aBlock, int aMeta, int aFlags) {
+        this.mLastSetBlock = new ItemStack(aBlock, 1, aMeta);
+        return true;
     }
 
     @Override
@@ -135,7 +132,23 @@ public class GT_DummyWorld extends World {
     }
 
     @Override
+    public int getFullBlockLightValue(int aX, int aY, int aZ) {
+        return 10;
+    }
+
+    @Override
+    public float getSunBrightnessFactor(float p_72967_1_) {
+        return 1.0F;
+    }
+
+    @Override
     protected int func_152379_p() {
         return 0;
     }
+
+    @Override
+    public Entity getEntityByID(int aEntityID) {
+        return null;
+    }
+
 }

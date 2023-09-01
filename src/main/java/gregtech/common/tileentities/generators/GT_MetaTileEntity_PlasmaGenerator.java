@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.generators;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.interfaces.ITexture;
@@ -9,10 +10,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenera
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+
 
 public class GT_MetaTileEntity_PlasmaGenerator extends GT_MetaTileEntity_BasicGenerator {
 
@@ -21,6 +20,11 @@ public class GT_MetaTileEntity_PlasmaGenerator extends GT_MetaTileEntity_BasicGe
     public GT_MetaTileEntity_PlasmaGenerator(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "Plasma into energy");
         onConfigLoad();
+    }
+
+    public void onConfigLoad() {
+        this.mEfficiency = GregTech_API.sMachineFile.get(
+                ConfigCategories.machineconfig, "PlasmaGenerator.efficiency.tier." + this.mTier, Math.max(10, 10 + Math.min(90, this.mTier * 10)));
     }
 
     public GT_MetaTileEntity_PlasmaGenerator(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -36,9 +40,8 @@ public class GT_MetaTileEntity_PlasmaGenerator extends GT_MetaTileEntity_BasicGe
     @Override
     public ITexture[] getFront(byte aColor) {
         return new ITexture[]{
-                super.getFront(aColor)[0],
-                TextureFactory.of(MACHINE_CASING_FUSION_GLASS),
-                OVERLAYS_ENERGY_OUT[mTier]};
+                super.getFront(aColor)[0], TextureFactory.of(MACHINE_CASING_FUSION_GLASS), OVERLAYS_ENERGY_OUT[mTier]
+        };
     }
 
     @Override
@@ -64,52 +67,41 @@ public class GT_MetaTileEntity_PlasmaGenerator extends GT_MetaTileEntity_BasicGe
     @Override
     public ITexture[] getFrontActive(byte aColor) {
         return new ITexture[]{
-                super.getFrontActive(aColor)[0],
-                TextureFactory.of(MACHINE_CASING_FUSION_GLASS_YELLOW),
-                TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).glow().build(),
-                OVERLAYS_ENERGY_OUT[mTier]};
+                super.getFrontActive(aColor)[0], TextureFactory.of(MACHINE_CASING_FUSION_GLASS_YELLOW), TextureFactory.builder().addIcon(
+                MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).glow().build(), OVERLAYS_ENERGY_OUT[mTier]
+        };
     }
 
     @Override
     public ITexture[] getBackActive(byte aColor) {
         return new ITexture[]{
-                super.getBackActive(aColor)[0],
-                TextureFactory.of(MACHINE_CASING_FUSION_GLASS_YELLOW),
-                TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).glow().build()};
+                super.getBackActive(aColor)[0], TextureFactory.of(MACHINE_CASING_FUSION_GLASS_YELLOW), TextureFactory.builder().addIcon(
+                MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).glow().build()
+        };
     }
 
     @Override
     public ITexture[] getBottomActive(byte aColor) {
         return new ITexture[]{
-                super.getBottomActive(aColor)[0],
-                TextureFactory.of(MACHINE_CASING_FUSION_GLASS_YELLOW),
-                TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).glow().build()};
+                super.getBottomActive(aColor)[0], TextureFactory.of(MACHINE_CASING_FUSION_GLASS_YELLOW), TextureFactory.builder().addIcon(
+                MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).glow().build()
+        };
     }
 
     @Override
     public ITexture[] getTopActive(byte aColor) {
         return new ITexture[]{
-                super.getTopActive(aColor)[0],
-                TextureFactory.of(MACHINE_CASING_FUSION_GLASS_YELLOW),
-                TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).glow().build()};
+                super.getTopActive(aColor)[0], TextureFactory.of(MACHINE_CASING_FUSION_GLASS_YELLOW), TextureFactory.builder().addIcon(
+                MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).glow().build()
+        };
     }
 
     @Override
     public ITexture[] getSidesActive(byte aColor) {
         return new ITexture[]{
-                super.getSidesActive(aColor)[0],
-                TextureFactory.of(MACHINE_CASING_FUSION_GLASS_YELLOW),
-                TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).glow().build()};
-    }
-
-    @Override
-    public boolean isOutputFacing(byte aSide) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public GT_Recipe.GT_Recipe_Map getRecipes() {
-        return GT_Recipe.GT_Recipe_Map.sPlasmaFuels;
+                super.getSidesActive(aColor)[0], TextureFactory.of(MACHINE_CASING_FUSION_GLASS_YELLOW), TextureFactory.builder().addIcon(
+                MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).glow().build()
+        };
     }
 
     @Override
@@ -118,8 +110,23 @@ public class GT_MetaTileEntity_PlasmaGenerator extends GT_MetaTileEntity_BasicGe
     }
 
     @Override
+    public boolean isOutputFacing(byte aSide) {
+        return aSide == getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
     public int getCapacity() {
         return 16000;
+    }
+
+    @Override
+    public int getPollution() {
+        return 0;
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipes() {
+        return GT_Recipe.GT_Recipe_Map.sPlasmaFuels;
     }
 
     @Override
@@ -127,12 +134,4 @@ public class GT_MetaTileEntity_PlasmaGenerator extends GT_MetaTileEntity_BasicGe
         return new GT_MetaTileEntity_PlasmaGenerator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
-    public void onConfigLoad() {
-        this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "PlasmaGenerator.efficiency.tier." + this.mTier, Math.max(10, 10 + Math.min(90, this.mTier * 10)));
-    }
-
-    @Override
-	public int getPollution() {
-		return 0;
-	}
 }

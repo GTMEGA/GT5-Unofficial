@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -15,38 +16,32 @@ import net.minecraftforge.fluids.FluidStack;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
+
 public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMachine {
+
     public static int sUUAperUUM = 1;
+
     public static int sUUASpeedBonus = 4;
+
     public static int sDurationMultiplier = 3215;
+
     public static boolean sRequiresUUA = false;
 
     public GT_MetaTileEntity_Massfabricator(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 1, "UUM = Matter * Fabrication Squared", 1, 1, "Massfabricator.png", "",
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_SIDE_MASSFAB_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_MASSFAB_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_SIDE_MASSFAB),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_MASSFAB_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_FRONT_MASSFAB_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MASSFAB_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_FRONT_MASSFAB),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MASSFAB_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_TOP_MASSFAB_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_MASSFAB_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_TOP_MASSFAB),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_MASSFAB_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_BOTTOM_MASSFAB_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_MASSFAB_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_BOTTOM_MASSFAB),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_MASSFAB_GLOW).glow().build()));
+              TextureFactory.of(TextureFactory.of(OVERLAY_SIDE_MASSFAB_ACTIVE), TextureFactory.builder().addIcon(OVERLAY_SIDE_MASSFAB_ACTIVE_GLOW).glow()
+                                                                                              .build()),
+              TextureFactory.of(TextureFactory.of(OVERLAY_SIDE_MASSFAB), TextureFactory.builder().addIcon(OVERLAY_SIDE_MASSFAB_GLOW).glow().build()),
+              TextureFactory.of(TextureFactory.of(OVERLAY_FRONT_MASSFAB_ACTIVE), TextureFactory.builder().addIcon(OVERLAY_FRONT_MASSFAB_ACTIVE_GLOW).glow()
+                                                                                               .build()),
+              TextureFactory.of(TextureFactory.of(OVERLAY_FRONT_MASSFAB), TextureFactory.builder().addIcon(OVERLAY_FRONT_MASSFAB_GLOW).glow().build()),
+              TextureFactory.of(TextureFactory.of(OVERLAY_TOP_MASSFAB_ACTIVE), TextureFactory.builder().addIcon(OVERLAY_TOP_MASSFAB_ACTIVE_GLOW).glow()
+                                                                                             .build()),
+              TextureFactory.of(TextureFactory.of(OVERLAY_TOP_MASSFAB), TextureFactory.builder().addIcon(OVERLAY_TOP_MASSFAB_GLOW).glow().build()),
+              TextureFactory.of(TextureFactory.of(OVERLAY_BOTTOM_MASSFAB_ACTIVE), TextureFactory.builder().addIcon(OVERLAY_BOTTOM_MASSFAB_ACTIVE_GLOW).glow()
+                                                                                                .build()),
+              TextureFactory.of(TextureFactory.of(OVERLAY_BOTTOM_MASSFAB), TextureFactory.builder().addIcon(OVERLAY_BOTTOM_MASSFAB_GLOW).glow().build())
+             );
     }
 
     public GT_MetaTileEntity_Massfabricator(String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
@@ -73,13 +68,28 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
     }
 
     @Override
-    public long maxAmperesIn() {
-        return 10;
+    public int getCapacity() {
+        return Math.max(sUUAperUUM, 1000);
+    }
+
+    @Override
+    public boolean isFluidInputAllowed(FluidStack aFluid) {
+        return aFluid.isFluidEqual(Materials.UUAmplifier.getFluid(1L));
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeList() {
+        return GT_Recipe.GT_Recipe_Map.sMassFabFakeRecipes;
     }
 
     @Override
     public long maxEUStore() {
         return V[mTier] * 512L;
+    }
+
+    @Override
+    public long maxAmperesIn() {
+        return 10;
     }
 
     @Override
@@ -89,8 +99,9 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
             this.mOutputFluid = Materials.UUMatter.getFluid(1L);
             calculateOverclockedNessMassFabricator();
             //In case recipe is too OP for that machine
-            if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+            if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) {
                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+            }
             if (((tFluid = getFillableStack()) != null) && (tFluid.amount >= sUUAperUUM) && (tFluid.isFluidEqual(Materials.UUAmplifier.getFluid(1L)))) {
                 tFluid.amount -= sUUAperUUM;
                 this.mMaxProgresstime /= sUUASpeedBonus;
@@ -99,11 +110,6 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
             return (sRequiresUUA) || (ItemList.Circuit_Integrated.isStackEqual(getInputAt(0), true, true)) ? 1 : 2;
         }
         return 0;
-    }
-
-    @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeList() {
-        return GT_Recipe.GT_Recipe_Map.sMassFabFakeRecipes;
     }
 
     private void calculateOverclockedNessMassFabricator() {
@@ -129,29 +135,23 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
             while (tempEUt <= V[mTier - 1]) {
                 tempEUt <<= 2;//this actually controls overclocking
                 mMaxProgresstime >>= 1;//this is effect of overclocking
-                if (mMaxProgresstime == 0)
+                if (mMaxProgresstime == 0) {
                     xEUt = (long) (xEUt / 1.1D);//U know, if the time is less than 1 tick make the machine use less power
+                }
             }
             if (xEUt > Integer.MAX_VALUE - 1) {
                 mEUt = Integer.MAX_VALUE - 1;
                 mMaxProgresstime = Integer.MAX_VALUE - 1;
             } else {
                 mEUt = (int) xEUt;
-                if (mEUt == 0)
+                if (mEUt == 0) {
                     mEUt = 1;
-                if (mMaxProgresstime == 0)
+                }
+                if (mMaxProgresstime == 0) {
                     mMaxProgresstime = 1;//set time to 1 tick
+                }
             }
         }
     }
 
-    @Override
-    public boolean isFluidInputAllowed(FluidStack aFluid) {
-        return aFluid.isFluidEqual(Materials.UUAmplifier.getFluid(1L));
-    }
-
-    @Override
-    public int getCapacity() {
-        return Math.max(sUUAperUUM, 1000);
-    }
 }

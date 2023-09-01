@@ -17,21 +17,82 @@ import org.lwjgl.opengl.GL11;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 
+
 @SideOnly(Side.CLIENT)
 public final class GT_GUIContainerVolumetricFlask extends GuiContainer {
+
+    public class GuiIntegerBox extends GuiTextField {
+
+        private final int maxValue;
+
+        public GuiIntegerBox(FontRenderer fontRenderer, int x, int y, int width, int height) {
+            this(fontRenderer, x, y, width, height, Integer.MAX_VALUE);
+        }
+
+        public GuiIntegerBox(FontRenderer fontRenderer, int x, int y, int width, int height, int maxValue) {
+            super(fontRenderer, x, y, width, height);
+            this.maxValue = maxValue;
+        }
+
+
+        @Override
+        public void writeText(String selectedText) {
+            String original = getText();
+            super.writeText(selectedText);
+
+            try {
+                int i = Integer.parseInt(getText());
+                if (i > maxValue) {
+                    setText(String.valueOf(maxValue));
+                } else if (i < 0) {
+                    setText("0");
+                }
+            } catch (NumberFormatException e) {
+                setText(original);
+            }
+        }
+
+
+        @Override
+        public void setText(String s) {
+            try {
+                int i = Integer.parseInt(s);
+                if (i > maxValue) {
+                    s = String.valueOf(maxValue);
+                } else if (i < 0) {
+                    s = "0";
+                }
+            } catch (NumberFormatException e) {
+                s = String.valueOf(maxValue);
+            }
+            super.setText(s);
+        }
+
+    }
+
     private static final ResourceLocation BACKGROUND = new ResourceLocation("gregtech:textures/gui/VolumetricFlask.png");
 
     private GuiIntegerBox amount;
+
     private GuiButton apply;
+
     private GuiButton plus1;
+
     private GuiButton plus10;
+
     private GuiButton plus100;
+
     private GuiButton plus1000;
+
     private GuiButton minus1;
+
     private GuiButton minus10;
+
     private GuiButton minus100;
+
     private GuiButton minus1000;
-    private GT_ContainerVolumetricFlask container;
+
+    private final GT_ContainerVolumetricFlask container;
 
     public GT_GUIContainerVolumetricFlask(GT_ContainerVolumetricFlask container) {
         super(container);
@@ -54,7 +115,8 @@ public final class GT_GUIContainerVolumetricFlask extends GuiContainer {
 
         buttonList.add(apply = new GuiButton(0, guiLeft + 128, guiTop + 51, 38, 20, "Accept"));
 
-        amount = new GuiIntegerBox(fontRendererObj, guiLeft + 62, guiTop + 57, 59, fontRendererObj.FONT_HEIGHT, ((GT_VolumetricFlask) container.flask.getItem()).getMaxCapacity());
+        amount = new GuiIntegerBox(
+                fontRendererObj, guiLeft + 62, guiTop + 57, 59, fontRendererObj.FONT_HEIGHT, ((GT_VolumetricFlask) container.flask.getItem()).getMaxCapacity());
         amount.setEnableBackgroundDrawing(false);
         amount.setMaxStringLength(16);
         amount.setTextColor(16777215);
@@ -65,9 +127,8 @@ public final class GT_GUIContainerVolumetricFlask extends GuiContainer {
         amount.setText(String.valueOf(((GT_VolumetricFlask) container.flask.getItem()).getCapacity(container.flask)));
     }
 
-
     @Override
-    protected final void drawGuiContainerBackgroundLayer(float f, int x, int y) {
+    protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         mc.getTextureManager().bindTexture(BACKGROUND);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
@@ -82,13 +143,14 @@ public final class GT_GUIContainerVolumetricFlask extends GuiContainer {
         amount.drawTextBox();
     }
 
-
     @Override
     protected void keyTyped(char character, int key) {
         if (!checkHotbarKeys(key)) {
-            if (key == 28)
+            if (key == 28) {
                 actionPerformed(apply);
-            if (((key == 211) || (key == 205) || (key == 203) || (key == 14) || (character == '-') || (Character.isDigit(character))) && (amount.textboxKeyTyped(character, key))) {
+            }
+            if (((key == 211) || (key == 205) || (key == 203) || (key == 14) || (character == '-') || (Character.isDigit(character))) &&
+                (amount.textboxKeyTyped(character, key))) {
                 try {
                     String out = amount.getText();
                     boolean fixed = false;
@@ -167,7 +229,6 @@ public final class GT_GUIContainerVolumetricFlask extends GuiContainer {
         }
     }
 
-
     protected int getQty(GuiButton btn) {
         try {
             DecimalFormat df = new DecimalFormat("+#;-#");
@@ -176,53 +237,6 @@ public final class GT_GUIContainerVolumetricFlask extends GuiContainer {
         }
 
         return 0;
-    }
-
-    public class GuiIntegerBox extends GuiTextField {
-        private final int maxValue;
-
-        public GuiIntegerBox(FontRenderer fontRenderer, int x, int y, int width, int height) {
-            this(fontRenderer, x, y, width, height, Integer.MAX_VALUE);
-        }
-
-        public GuiIntegerBox(FontRenderer fontRenderer, int x, int y, int width, int height, int maxValue) {
-            super(fontRenderer, x, y, width, height);
-            this.maxValue = maxValue;
-        }
-
-
-        @Override
-        public void writeText(String selectedText) {
-            String original = getText();
-            super.writeText(selectedText);
-
-            try {
-                int i = Integer.parseInt(getText());
-                if (i > maxValue) {
-                    setText(String.valueOf(maxValue));
-                } else if (i < 0) {
-                    setText("0");
-                }
-            } catch (NumberFormatException e) {
-                setText(original);
-            }
-        }
-
-
-        @Override
-        public void setText(String s) {
-            try {
-                int i = Integer.parseInt(s);
-                if (i > maxValue) {
-                    s = String.valueOf(maxValue);
-                } else if (i < 0) {
-                    s = "0";
-                }
-            } catch (NumberFormatException e) {
-                s = String.valueOf(maxValue);
-            }
-            super.setText(s);
-        }
     }
 
 }

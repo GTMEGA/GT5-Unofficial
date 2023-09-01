@@ -1,5 +1,6 @@
 package gregtech.common.items.behaviors;
 
+
 import gregtech.api.enums.SubTag;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
@@ -12,7 +13,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
+
 public class Behaviour_Arrow_Potion extends Behaviour_Arrow {
+
     private final int[] mPotions;
 
     public Behaviour_Arrow_Potion(float aSpeed, float aPrecision, int... aPotions) {
@@ -30,7 +33,8 @@ public class Behaviour_Arrow_Potion extends Behaviour_Arrow {
         if ((aEntity instanceof EntityLivingBase)) {
             for (int i = 3; i < this.mPotions.length; i += 4) {
                 if (aEntity.worldObj.rand.nextInt(100) < this.mPotions[i]) {
-                    ((EntityLivingBase) aEntity).addPotionEffect(new PotionEffect(this.mPotions[(i - 3)], this.mPotions[(i - 2)], this.mPotions[(i - 1)], false));
+                    ((EntityLivingBase) aEntity).addPotionEffect(
+                            new PotionEffect(this.mPotions[(i - 3)], this.mPotions[(i - 2)], this.mPotions[(i - 1)], false));
                 }
             }
         }
@@ -58,4 +62,5 @@ public class Behaviour_Arrow_Potion extends Behaviour_Arrow {
         rArrow.setPotions(this.mPotions);
         return rArrow;
     }
+
 }

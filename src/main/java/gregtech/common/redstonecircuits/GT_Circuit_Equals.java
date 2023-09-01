@@ -1,9 +1,12 @@
 package gregtech.common.redstonecircuits;
 
+
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
 import gregtech.api.util.GT_CircuitryBehavior;
 
+
 public class GT_Circuit_Equals extends GT_CircuitryBehavior {
+
     public GT_Circuit_Equals(int aIndex) {
         super(aIndex);
     }
@@ -32,7 +35,15 @@ public class GT_Circuit_Equals extends GT_CircuitryBehavior {
 
     @Override
     public void onTick(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock) {
-        aRedstoneCircuitBlock.setRedstone(((byte) (((aCircuitData[1] != 0) == (getStrongestRedstone(aRedstoneCircuitBlock) == aCircuitData[0])) ? 0 : 15)), aRedstoneCircuitBlock.getOutputFacing());
+        aRedstoneCircuitBlock.setRedstone(
+                ((byte) (((aCircuitData[1] != 0) == (getStrongestRedstone(aRedstoneCircuitBlock) == aCircuitData[0])) ? 0 : 15)),
+                aRedstoneCircuitBlock.getOutputFacing()
+                                         );
+    }
+
+    @Override
+    public boolean displayItemStack(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock, int aIndex) {
+        return false;
     }
 
     @Override
@@ -57,15 +68,11 @@ public class GT_Circuit_Equals extends GT_CircuitryBehavior {
     }
 
     @Override
-    public boolean displayItemStack(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock, int aIndex) {
-        return false;
-    }
-
-    @Override
     public String getDataDisplay(int[] aCircuitData, int aCircuitDataIndex) {
         if (aCircuitDataIndex > 0) {
             return "";
         }
         return null;
     }
+
 }

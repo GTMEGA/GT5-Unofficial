@@ -1,5 +1,6 @@
 package gregtech.common.net;
 
+
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.interfaces.IHasFluidDisplayItem;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -10,7 +11,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 
+
 public class MessageUpdateFluidDisplayItem extends GT_Packet_New {
+
     private int mBlockX, mBlockY, mBlockZ, mDim;
 
     public MessageUpdateFluidDisplayItem() {
@@ -53,4 +56,5 @@ public class MessageUpdateFluidDisplayItem extends GT_Packet_New {
             }
         }
     }
+
 }

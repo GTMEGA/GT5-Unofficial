@@ -1,5 +1,6 @@
 package gregtech.api.gui;
 
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -10,9 +11,9 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
+
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -21,7 +22,55 @@ import net.minecraftforge.fluids.IFluidContainerItem;
  */
 public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
 
+    protected interface IFluidAccess {
+
+        static IFluidAccess from(GT_MetaTileEntity_BasicTank aTank, boolean aIsFillableStack) {
+            return new BasicTankFluidAccess(aTank, aIsFillableStack);
+        }
+
+        void set(FluidStack stack);
+
+        FluidStack get();
+
+        int getCapacity();
+
+    }
+
+
+    static class BasicTankFluidAccess implements IFluidAccess {
+
+        private final GT_MetaTileEntity_BasicTank mTank;
+
+        private final boolean mIsFillableStack;
+
+        public BasicTankFluidAccess(GT_MetaTileEntity_BasicTank aTank, boolean aIsFillableStack) {
+            this.mTank = aTank;
+            this.mIsFillableStack = aIsFillableStack;
+        }
+
+        @Override
+        public void set(FluidStack stack) {
+            if (mIsFillableStack) {
+                mTank.setFillableStack(stack);
+            } else {
+                mTank.setDrainableStack(stack);
+            }
+        }
+
+        @Override
+        public FluidStack get() {
+            return mIsFillableStack ? mTank.getFillableStack() : mTank.getDrainableStack();
+        }
+
+        @Override
+        public int getCapacity() {
+            return mTank.getCapacity();
+        }
+
+    }
+
     public int mContent = 0;
+
     private int oContent = 0;
 
     public GT_Container_BasicTank(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
@@ -33,6 +82,16 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
         addSlotToContainer(new Slot(mTileEntity, 0, 80, 17));
         addSlotToContainer(new GT_Slot_Output(mTileEntity, 1, 80, 53));
         addSlotToContainer(new GT_Slot_Render(mTileEntity, 2, 59, 42));
+    }
+
+    @Override
+    public int getSlotCount() {
+        return 2;
+    }
+
+    @Override
+    public int getShiftClickSlotCount() {
+        return 1;
     }
 
     @Override
@@ -56,50 +115,133 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
     }
 
-    protected static ItemStack handleFluidSlotClick(IFluidAccess aFluidAccess, EntityPlayer aPlayer, boolean aProcessFullStack, boolean aCanDrain, boolean aCanFill) {
+    protected static ItemStack handleFluidSlotClick(
+            IFluidAccess aFluidAccess,
+            EntityPlayer aPlayer,
+            boolean aProcessFullStack,
+            boolean aCanDrain,
+            boolean aCanFill
+                                                   ) {
         ItemStack tStackHeld = aPlayer.inventory.getItemStack();
         ItemStack tStackSizedOne = GT_Utility.copyAmount(1, tStackHeld);
-        if (tStackSizedOne == null || tStackHeld.stackSize == 0) return null;
+        if (tStackSizedOne == null || tStackHeld.stackSize == 0) {
+            return null;
+        }
         FluidStack tInputFluid = aFluidAccess.get();
         FluidStack tFluidHeld = GT_Utility.getFluidForFilledItem(tStackSizedOne, true);
-        if (tFluidHeld != null && tFluidHeld.amount <= 0)
+        if (tFluidHeld != null && tFluidHeld.amount <= 0) {
             tFluidHeld = null;
+        }
         if (tInputFluid == null) {
             // tank empty, consider fill only from now on
             if (!aCanFill)
-                // cannot fill and nothing to take, bail out
+            // cannot fill and nothing to take, bail out
+            {
                 return null;
+            }
             if (tFluidHeld == null)
-                // no fluid to fill
+            // no fluid to fill
+            {
                 return null;
+            }
             return fillFluid(aFluidAccess, aPlayer, tFluidHeld, aProcessFullStack);
         }
         // tank not empty, both action possible
         if (tFluidHeld != null && tInputFluid.amount < aFluidAccess.getCapacity()) {
             // both nonnull and have space left for filling.
             if (aCanFill)
-                // actually both pickup and fill is reasonable, but I'll go with fill here
+            // actually both pickup and fill is reasonable, but I'll go with fill here
+            {
                 return fillFluid(aFluidAccess, aPlayer, tFluidHeld, aProcessFullStack);
+            }
             if (!aCanDrain)
-                // cannot take AND cannot fill, why make this call then?
+            // cannot take AND cannot fill, why make this call then?
+            {
                 return null;
+            }
             // the slot does not allow filling, so try take some
             return drainFluid(aFluidAccess, aPlayer, aProcessFullStack);
         } else {
             // cannot fill and there is something to take
             if (!aCanDrain)
-                // but the slot does not allow taking, so bail out
+            // but the slot does not allow taking, so bail out
+            {
                 return null;
+            }
             return drainFluid(aFluidAccess, aPlayer, aProcessFullStack);
         }
     }
 
-    protected static ItemStack drainFluid(IFluidAccess aFluidAccess, EntityPlayer aPlayer, boolean aProcessFullStack) {
-        FluidStack tTankStack = aFluidAccess.get();
-        if (tTankStack == null) return null;
+    protected static ItemStack fillFluid(IFluidAccess aFluidAccess, EntityPlayer aPlayer, FluidStack aFluidHeld, boolean aProcessFullStack) {
+        // we are not using aMachine.fill() here any more, so we need to check for fluid type here ourselves
+        if (aFluidAccess.get() != null && !aFluidAccess.get().isFluidEqual(aFluidHeld)) {
+            return null;
+        }
         ItemStack tStackHeld = aPlayer.inventory.getItemStack();
         ItemStack tStackSizedOne = GT_Utility.copyAmount(1, tStackHeld);
-        if (tStackSizedOne == null || tStackHeld.stackSize == 0) return null;
+        if (tStackSizedOne == null) {
+            return null;
+        }
+
+        int tFreeSpace = aFluidAccess.getCapacity() - (aFluidAccess.get() != null ? aFluidAccess.get().amount : 0);
+        if (tFreeSpace <= 0)
+        // no space left
+        {
+            return null;
+        }
+
+        // find out how much fluid can be taken
+        // some cells cannot be partially filled
+        ItemStack tStackEmptied = null;
+        int tAmountTaken = 0;
+        if (tFreeSpace >= aFluidHeld.amount) {
+            // fully accepted - try take it from item now
+            // IFluidContainerItem is intentionally not checked here. it will be checked later
+            tStackEmptied = GT_Utility.getContainerForFilledItem(tStackSizedOne, false);
+            tAmountTaken = aFluidHeld.amount;
+        }
+        if (tStackEmptied == null && tStackSizedOne.getItem() instanceof IFluidContainerItem) {
+            // either partially accepted, or is IFluidContainerItem
+            IFluidContainerItem container = (IFluidContainerItem) tStackSizedOne.getItem();
+            FluidStack tDrained = container.drain(tStackSizedOne, tFreeSpace, true);
+            if (tDrained != null && tDrained.amount > 0) {
+                // something is actually drained - change the cell and drop it to player
+                tStackEmptied = tStackSizedOne;
+                tAmountTaken = tDrained.amount;
+            }
+        }
+        if (tStackEmptied == null)
+        // somehow the cell refuse to give out that amount of fluid, no op then
+        {
+            return null;
+        }
+
+        // find out how many fill can we do
+        // same round down behavior as above
+        // however here the fluid stack is not changed at all, so the exact code will slightly differ
+        int tParallel = aProcessFullStack ? Math.min(tFreeSpace / tAmountTaken, tStackHeld.stackSize) : 1;
+        if (aFluidAccess.get() == null) {
+            FluidStack tNewFillableStack = aFluidHeld.copy();
+            tNewFillableStack.amount = tAmountTaken * tParallel;
+            aFluidAccess.set(tNewFillableStack);
+        } else {
+            aFluidAccess.get().amount += tAmountTaken * tParallel;
+        }
+        tStackEmptied.stackSize = tParallel;
+        replaceCursorItemStack(aPlayer, tStackEmptied);
+        return tStackEmptied;
+    }
+
+    protected static ItemStack drainFluid(IFluidAccess aFluidAccess, EntityPlayer aPlayer, boolean aProcessFullStack) {
+        FluidStack tTankStack = aFluidAccess.get();
+        if (tTankStack == null) {
+            return null;
+        }
+        ItemStack tStackHeld = aPlayer.inventory.getItemStack();
+        ItemStack tStackSizedOne = GT_Utility.copyAmount(1, tStackHeld);
+        if (tStackSizedOne == null || tStackHeld.stackSize == 0) {
+            return null;
+        }
         int tOriginalFluidAmount = tTankStack.amount;
         ItemStack tFilledContainer = GT_Utility.fillFluidContainer(tTankStack, tStackSizedOne, true, false);
         if (tFilledContainer == null && tStackSizedOne.getItem() instanceof IFluidContainerItem) {
@@ -126,63 +268,10 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
             }
             replaceCursorItemStack(aPlayer, tFilledContainer);
         }
-        if (tTankStack.amount <= 0)
+        if (tTankStack.amount <= 0) {
             aFluidAccess.set(null);
+        }
         return tFilledContainer;
-    }
-
-    protected static ItemStack fillFluid(IFluidAccess aFluidAccess, EntityPlayer aPlayer, FluidStack aFluidHeld, boolean aProcessFullStack) {
-        // we are not using aMachine.fill() here any more, so we need to check for fluid type here ourselves
-        if (aFluidAccess.get() != null && !aFluidAccess.get().isFluidEqual(aFluidHeld))
-            return null;
-        ItemStack tStackHeld = aPlayer.inventory.getItemStack();
-        ItemStack tStackSizedOne = GT_Utility.copyAmount(1, tStackHeld);
-        if (tStackSizedOne == null)
-            return null;
-
-        int tFreeSpace = aFluidAccess.getCapacity() - (aFluidAccess.get() != null ? aFluidAccess.get().amount : 0);
-        if (tFreeSpace <= 0)
-            // no space left
-            return null;
-
-        // find out how much fluid can be taken
-        // some cells cannot be partially filled
-        ItemStack tStackEmptied = null;
-        int tAmountTaken = 0;
-        if (tFreeSpace >= aFluidHeld.amount) {
-            // fully accepted - try take it from item now
-            // IFluidContainerItem is intentionally not checked here. it will be checked later
-            tStackEmptied = GT_Utility.getContainerForFilledItem(tStackSizedOne, false);
-            tAmountTaken = aFluidHeld.amount;
-        }
-        if (tStackEmptied == null && tStackSizedOne.getItem() instanceof IFluidContainerItem) {
-            // either partially accepted, or is IFluidContainerItem
-            IFluidContainerItem container = (IFluidContainerItem) tStackSizedOne.getItem();
-            FluidStack tDrained = container.drain(tStackSizedOne, tFreeSpace, true);
-            if (tDrained != null && tDrained.amount > 0) {
-                // something is actually drained - change the cell and drop it to player
-                tStackEmptied = tStackSizedOne;
-                tAmountTaken = tDrained.amount;
-            }
-        }
-        if (tStackEmptied == null)
-            // somehow the cell refuse to give out that amount of fluid, no op then
-            return null;
-
-        // find out how many fill can we do
-        // same round down behavior as above
-        // however here the fluid stack is not changed at all, so the exact code will slightly differ
-        int tParallel = aProcessFullStack ? Math.min(tFreeSpace / tAmountTaken, tStackHeld.stackSize) : 1;
-        if (aFluidAccess.get() == null) {
-            FluidStack tNewFillableStack = aFluidHeld.copy();
-            tNewFillableStack.amount = tAmountTaken * tParallel;
-            aFluidAccess.set(tNewFillableStack);
-        } else {
-            aFluidAccess.get().amount += tAmountTaken * tParallel;
-        }
-        tStackEmptied.stackSize = tParallel;
-        replaceCursorItemStack(aPlayer, tStackEmptied);
-        return tStackEmptied;
     }
 
     private static void replaceCursorItemStack(EntityPlayer aPlayer, ItemStack tStackResult) {
@@ -206,11 +295,14 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) return;
-        if (((GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity()).mFluid != null)
+        if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) {
+            return;
+        }
+        if (((GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity()).mFluid != null) {
             mContent = ((GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity()).mFluid.amount;
-        else
+        } else {
             mContent = 0;
+        }
         for (Object crafter : this.crafters) {
             ICrafting var1 = (ICrafting) crafter;
             if (mTimer % 500 == 0 || oContent != mContent) {
@@ -236,50 +328,4 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
         }
     }
 
-    @Override
-    public int getSlotCount() {
-        return 2;
-    }
-
-    @Override
-    public int getShiftClickSlotCount() {
-        return 1;
-    }
-
-    protected interface IFluidAccess {
-        void set(FluidStack stack);
-        FluidStack get();
-        int getCapacity();
-        static IFluidAccess from(GT_MetaTileEntity_BasicTank aTank, boolean aIsFillableStack) {
-            return new BasicTankFluidAccess(aTank, aIsFillableStack);
-        }
-    }
-
-    static class BasicTankFluidAccess implements IFluidAccess {
-        private final GT_MetaTileEntity_BasicTank mTank;
-        private final boolean mIsFillableStack;
-
-        public BasicTankFluidAccess(GT_MetaTileEntity_BasicTank aTank, boolean aIsFillableStack) {
-            this.mTank = aTank;
-            this.mIsFillableStack = aIsFillableStack;
-        }
-
-        @Override
-        public void set(FluidStack stack) {
-            if (mIsFillableStack)
-                mTank.setFillableStack(stack);
-            else
-                mTank.setDrainableStack(stack);
-        }
-
-        @Override
-        public FluidStack get() {
-            return mIsFillableStack ? mTank.getFillableStack() : mTank.getDrainableStack();
-        }
-
-        @Override
-        public int getCapacity() {
-            return mTank.getCapacity();
-        }
-    }
 }

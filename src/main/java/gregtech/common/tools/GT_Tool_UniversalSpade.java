@@ -1,5 +1,6 @@
 package gregtech.common.tools;
 
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
@@ -16,7 +17,50 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
+
 public class GT_Tool_UniversalSpade extends GT_Tool {
+
+    @Override
+    public float getBaseDamage() {
+        return 3.0F;
+    }
+
+    @Override
+    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+        return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "shovel", "axe", "saw", "sword", "crowbar") ||
+               GT_ToolHarvestHelper.isAppropriateMaterial(aBlock, Material.sand, Material.grass, Material.ground, Material.snow, Material.clay, Material.leaves,
+                                                          Material.vine, Material.wood, Material.cactus, Material.circuits, Material.gourd, Material.web,
+                                                          Material.cloth, Material.carpet, Material.plants, Material.cake, Material.tnt, Material.sponge
+                                                         );
+    }
+
+    @Override
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(
+                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadUniversalSpade.mTextureIndex] : GT_MetaGenerated_Tool.getSecondaryMaterial(
+                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.stick.mTextureIndex];
+    }
+
+    @Override
+    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+    }
+
+    @Override
+    public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
+        super.onToolCrafted(aStack, aPlayer);
+        aPlayer.triggerAchievement(AchievementList.buildSword);
+        try {
+            GT_Mod.achievements.issueAchievement(aPlayer, "unitool");
+        } catch (Exception ignored) {
+        }
+    }
+
+    @Override
+    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+        aItem.addItemBehavior(aID, new Behaviour_Crowbar(2, 2000));
+    }
+
     @Override
     public int getToolDamagePerBlockBreak() {
         return 50;
@@ -43,11 +87,6 @@ public class GT_Tool_UniversalSpade extends GT_Tool {
     }
 
     @Override
-    public float getBaseDamage() {
-        return 3.0F;
-    }
-
-    @Override
     public float getSpeedMultiplier() {
         return 0.75F;
     }
@@ -55,6 +94,11 @@ public class GT_Tool_UniversalSpade extends GT_Tool {
     @Override
     public float getMaxDurabilityMultiplier() {
         return 1.0F;
+    }
+
+    @Override
+    public String getMiningSound() {
+        return null;
     }
 
     @Override
@@ -69,12 +113,7 @@ public class GT_Tool_UniversalSpade extends GT_Tool {
 
     @Override
     public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(0);
-    }
-
-    @Override
-    public String getMiningSound() {
-        return null;
+        return GregTech_API.sSoundList.get(0);
     }
 
     @Override
@@ -93,62 +132,15 @@ public class GT_Tool_UniversalSpade extends GT_Tool {
     }
 
     @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
-        return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "shovel", "axe", "saw", "sword", "crowbar")
-                || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock,
-                Material.sand,
-                Material.grass,
-                Material.ground,
-                Material.snow,
-                Material.clay,
-                Material.leaves,
-                Material.vine,
-                Material.wood,
-                Material.cactus,
-                Material.circuits,
-                Material.gourd,
-                Material.web,
-                Material.cloth,
-                Material.carpet,
-                Material.plants,
-                Material.cake,
-                Material.tnt,
-                Material.sponge
-        );
-    }
-
-    @Override
     public ItemStack getBrokenItem(ItemStack aStack) {
         return null;
     }
 
     @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadUniversalSpade.mTextureIndex] : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.stick.mTextureIndex];
-    }
-
-    @Override
-    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
-    }
-
-    @Override
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
-        aItem.addItemBehavior(aID, new Behaviour_Crowbar(2, 2000));
-    }
-
-    @Override
-    public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
-        super.onToolCrafted(aStack, aPlayer);
-        aPlayer.triggerAchievement(AchievementList.buildSword);
-        try {
-            GT_Mod.instance.achievements.issueAchievement(aPlayer, "unitool");
-        } catch (Exception ignored) {
-        }
-    }
-
-    @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " has been digged by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
+        return new ChatComponentText(
+                EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " has been digged by " + EnumChatFormatting.GREEN +
+                aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
     }
+
 }
