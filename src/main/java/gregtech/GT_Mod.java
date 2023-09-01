@@ -18,6 +18,7 @@ import gregtech.api.objects.ReverseShapelessRecipe;
 import gregtech.api.objects.XSTR;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
+import gregtech.api.util.interop.ic2.IC2Interop;
 import gregtech.api.util.keybind.GT_KeyHandler;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
@@ -807,64 +808,9 @@ public class GT_Mod implements IGT_Mod {
         GT_ModHandler.removeRecipeDelayed(new ItemStack(Blocks.wooden_slab, 1, 0), new ItemStack(Blocks.wooden_slab, 1, 1), new ItemStack(Blocks.wooden_slab, 1, 2));
         GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.wooden_slab, 6, 0), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"WWW", 'W', new ItemStack(Blocks.planks, 1, 0)});
 
-        // Save a copy of these list before activateOreDictHandler(), then loop over them.
-        Map<IRecipeInput, RecipeOutput> aMaceratorRecipeList = GT_ModHandler.getMaceratorRecipeList();
-        Map<IRecipeInput, RecipeOutput> aCompressorRecipeList = GT_ModHandler.getCompressorRecipeList();
-        Map<IRecipeInput, RecipeOutput> aExtractorRecipeList = GT_ModHandler.getExtractorRecipeList();
-        Map<IRecipeInput, RecipeOutput> aOreWashingRecipeList = GT_ModHandler.getOreWashingRecipeList();
-        Map<IRecipeInput, RecipeOutput> aThermalCentrifugeRecipeList = GT_ModHandler.getThermalCentrifugeRecipeList();
-
-        GT_Log.out.println("GT_Mod: Activating OreDictionary Handler, this can take some time, as it scans the whole OreDictionary");
-        GT_FML_LOGGER.info("If your Log stops here, you were too impatient. Wait a bit more next time, before killing Minecraft with the Task Manager.");
-
         Stopwatch stopwatch = Stopwatch.createStarted();
-        gregtechproxy.activateOreDictHandler();
-        GT_FML_LOGGER.info("Congratulations, you have been waiting long enough (" + stopwatch.stop() + "). Have a Cake.");
-        GT_Log.out.println("GT_Mod: List of Lists of Tool Recipes: " + GT_ModHandler.sSingleNonBlockDamagableRecipeList_list.toString());
-        GT_Log.out.println("GT_Mod: Vanilla Recipe List -> Outputs null or stackSize <=0: " + GT_ModHandler.sVanillaRecipeList_warntOutput.toString());
-        GT_Log.out.println("GT_Mod: Single Non Block Damagable Recipe List -> Outputs null or stackSize <=0: " + GT_ModHandler.sSingleNonBlockDamagableRecipeList_warntOutput.toString());
 
-        Set<Materials> replaceVanillaItemsSet = gregtechproxy.mUseGreatlyShrukenReplacementList ? Arrays.stream(Materials.values()).filter(GT_RecipeRegistrator::hasVanillaRecipes).collect(Collectors.toSet()) : new HashSet<>(Arrays.asList(Materials.values()));
-
-        stopwatch.reset();
-        stopwatch.start();
-        GT_FML_LOGGER.info("Replacing Vanilla Materials in recipes, please wait.");
-
-        ProgressManager.ProgressBar progressBar = ProgressManager.push("Register materials", replaceVanillaItemsSet.size());
-        if (GT_Values.cls_enabled){
-            try {
-                GT_CLS_Compat.doActualRegistrationCLS(progressBar,replaceVanillaItemsSet);
-                GT_CLS_Compat.pushToDisplayProgress();
-            } catch (InvocationTargetException | IllegalAccessException e) {
-                GT_Mod.GT_FML_LOGGER.catching(e);
-            }
-        }
-        else {
-            replaceVanillaItemsSet.forEach(m -> {
-                progressBar.step(m.mDefaultLocalName);
-                doActualRegistration(m);
-            });
-        }
-        ProgressManager.pop(progressBar);
-        GT_FML_LOGGER.info("Replaced Vanilla Materials (" + stopwatch.stop() + "). Have a Cake.");
-
-
-        stopwatch.reset();
-        stopwatch.start();
-        // remove gemIridium exploit
-        ItemStack iridiumOre = GT_ModHandler.getIC2Item("iridiumOre", 1);
-        aCompressorRecipeList.entrySet().stream()
-                .filter(e -> e.getKey().getInputs().size() == 1 && e.getKey().getInputs().get(0).isItemEqual(iridiumOre))
-                .findAny()
-                .ifPresent(e -> aCompressorRecipeList.remove(e.getKey()));
-        //Add default IC2 recipe to GT
-        GT_ModHandler.addIC2RecipesToGT(aMaceratorRecipeList, GT_Recipe.GT_Recipe_Map.sMaceratorRecipes, true, true, true);
-        GT_ModHandler.addIC2RecipesToGT(aCompressorRecipeList, GT_Recipe.GT_Recipe_Map.sCompressorRecipes, true, true, true);
-        GT_ModHandler.addIC2RecipesToGT(aExtractorRecipeList, GT_Recipe.GT_Recipe_Map.sExtractorRecipes, true, true, true);
-        GT_ModHandler.addIC2RecipesToGT(aOreWashingRecipeList, GT_Recipe.GT_Recipe_Map.sOreWasherRecipes, false, true, true);
-        GT_ModHandler.addIC2RecipesToGT(aThermalCentrifugeRecipeList, GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes, true, true, true);
-        GT_FML_LOGGER.info("IC2 Removal (" + stopwatch.stop() + "). Have a Cake.");
-
+        IC2Interop.INSTANCE.parseIC2Recipes(stopwatch);
 
         if (GT_Values.D1) {
             GT_ModHandler.sSingleNonBlockDamagableRecipeList.forEach(iRecipe -> GT_Log.out.println("=> " + iRecipe.getRecipeOutput().getDisplayName()));

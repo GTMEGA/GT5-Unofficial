@@ -1,6 +1,7 @@
 package gregtech.api.util.interop.ic2;
 
 
+import com.google.common.base.Stopwatch;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -33,6 +34,10 @@ public class IC2InteropBase {
 
     public boolean shouldJoinIC2Enet(final TileEntity target) {
         return false;
+    }
+
+    public void parseIC2Recipes(final Stopwatch stopwatch) {
+
     }
 
 }
