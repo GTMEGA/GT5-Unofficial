@@ -761,7 +761,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         public GT_Recipe addRecipe(GT_Recipe aRecipe) {
-            return addRecipe(aRecipe, true, false, false);
+            return addRecipe(aRecipe, false, false, false);
         }
 
         protected GT_Recipe addRecipe(GT_Recipe aRecipe, boolean aCheckForCollisions, boolean aFakeRecipe, boolean aHidden) {
