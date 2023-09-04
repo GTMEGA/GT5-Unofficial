@@ -41,13 +41,11 @@ import gregtech.loaders.load.GT_CoverBehaviorLoader;
 import gregtech.loaders.load.GT_FuelLoader;
 import gregtech.loaders.load.GT_ItemIterator;
 import gregtech.loaders.load.GT_SonictronLoader;
-import gregtech.loaders.misc.GT_Achievements;
 import gregtech.loaders.misc.GT_Bees;
 import gregtech.loaders.misc.GT_CoverLoader;
 import gregtech.loaders.misc.NetworkDispatcher;
 import gregtech.loaders.postload.*;
 import gregtech.loaders.preload.*;
-import gregtech.loaders.preload.GT_Loader_MetaTileEntities;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 import net.minecraft.creativetab.CreativeTabs;
@@ -134,7 +132,7 @@ public class GT_Mod implements IGT_Mod {
     @SidedProxy(modId = "gregtech", clientSide = "gregtech.common.GT_Client", serverSide = "gregtech.common.GT_Server")
     public static GT_Proxy gregtechproxy;
     public static int MAX_IC2 = 2147483647;
-    public static GT_Achievements achievements;
+    // public static GT_Achievements achievements;
     private final String aTextGeneral = "general";
     private final String aTextIC2 = "ic2_";
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
@@ -1025,7 +1023,7 @@ public class GT_Mod implements IGT_Mod {
         addSolidFakeLargeBoilerFuels();
         identifyAnySteam();
 
-        achievements = new GT_Achievements();
+        // achievements = new GT_Achievements();
 
         ReverseShapedRecipe.runReverseRecipes();
         ReverseShapelessRecipe.runReverseRecipes();
