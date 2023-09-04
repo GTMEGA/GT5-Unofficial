@@ -137,7 +137,7 @@ public class GT_Tool_Chainsaw_MV extends GT_Tool_Chainsaw_LV implements IAOETool
             return 0;
         }
         var result = 0.0f;
-        val borker = new GT_TreeBorker(world, x, y, z, 3, 32, 32, -1, false);
+        val borker = new GT_TreeBorker(world, x, y, z, 1, 32, 32, -1, false);
         if (borker.isValidBlock(x, y, z)) {
             borker.borkTrees(x, y, z);
         }
