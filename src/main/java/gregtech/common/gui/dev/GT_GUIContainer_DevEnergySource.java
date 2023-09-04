@@ -7,8 +7,12 @@ import gregtech.api.gui.widgets.*;
 import gregtech.api.interfaces.IGuiScreen;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
+import lombok.val;
+import lombok.var;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
+
+import java.awt.*;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
@@ -105,14 +109,15 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
      */
     @Override
     public void drawExtras(final int mouseX, final int mouseY, final float parTicks) {
-        final int tColor = 0xFF3030FF;
-        final int left = 140;
+        val tColor = new Color(0x30, 0x30, 0xFF, 0xFF);
+        val eColor = new Color(144, 8, 8, 0xFF);
+        val left = 140;
         drawString(String.format("%s(%d Eu/t)", getTierString(), V[getSource().getData().getTier()]), left, 40, tColor);
-        long volt = getSource().getData().getVoltage();
+        var volt = getSource().getData().getVoltage();
         drawString(String.format("%d Eu/t(%s)", volt, VN[GT_Utility.getTier(volt)]), left, 61, tColor);
         drawString("Amperage", left, 81, tColor);
         if (!getSource().getData().canRun()) {
-            drawString(getSource().getDisabledStatus(), 8, 100, rgbaToInt(0xFF, 0x55, 0x55, 0xFF));
+            drawString(getSource().getDisabledStatus(), 8, 100, eColor);
         }
     }
 

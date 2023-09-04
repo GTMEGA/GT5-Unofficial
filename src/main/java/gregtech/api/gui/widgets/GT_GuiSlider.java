@@ -1,10 +1,12 @@
 package gregtech.api.gui.widgets;
 
 
+import gregtech.api.gui.GT_GUIContainer_Plus;
 import gregtech.api.interfaces.IGuiScreen;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
+import lombok.var;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -56,7 +58,7 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     private int guiY = 0;
 
-    private final double barRadius = 0.1, sliderWidthFuzzy = 0.1;
+    private final double barRadius = 0.1, sliderWidthFuzzy = 0.1, sliderHeightFuzzy = 0.3f;
 
     private double min;
 
@@ -138,7 +140,7 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
             return;
         }
         val range = max - min;
-        val subRange = range / subdivisions;
+        val subRange = range / (subdivisions + 1);
         val notches = Math.floor(current / subRange);
         current = notches * subRange + min;
     }
@@ -266,21 +268,21 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
     }
 
     public double getValue() {
-        double val = current * (max - min) + min;
+        var val = current * (max - min) + min;
         val = Math.max(val, min);
         val = Math.min(val, max);
         return val;
     }
 
     public void setValue(final double value) {
-        final double range = this.max - this.min;
+        val range = this.max - this.min;
         this.current = range != 0 ? (value - this.min) / range : this.min;
     }
 
     public void onMousePressed(final int mouseX, final int mouseY, final int clickType) {
         if (clickType == 0 && mouseInBar(mouseX, mouseY, clickType)) {
-            val pseudoLeft = x + width * barRadius;
-            val pseudoWidth = x + width - width * barRadius;
+            val pseudoLeft = x + width * barRadius / 2;
+            val pseudoWidth = width - width * barRadius;
             this.current = (mouseX - pseudoLeft) / pseudoWidth;
             updateSlider(true);
             this.isDragged = true;
@@ -309,18 +311,19 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
     }
 
     protected void drawBackground(final int mouseX, final int mouseY, final float parTicks) {
-        final int edgeColor, midColor;
-        final int hoverModifier = this.inBounds(mouseX, mouseY, 0) ? 0x00303000 : 0;
-        edgeColor = 0xFF3030FF ^ hoverModifier;
-        midColor = 0x3F3030FF ^ hoverModifier;
-        final int left = guiX;
-        final int right = guiX + width;
-        final int midPoint = (int) (guiX + width * current);
+        val hoverModifier = this.inBounds(mouseX, mouseY, 0) ? 0x00303000 : 0;
+        val positionLeft = (int) (getCurrentX() - getPseudoWidth() * barRadius / 2);
+        val positionRight = (int) (getCurrentX() + getPseudoWidth() * barRadius / 2);
+        val edgeColor = GT_GUIContainer_Plus.colorToARGB(new Color(0x30, 0x30, 0xFF, 0xFF)) ^ hoverModifier;
+        val midColor = GT_GUIContainer_Plus.colorToARGB(new Color(0x30, 0x30, 0xFF, 0x3F)) ^ hoverModifier;
+        val left = guiX;
+        val right = guiX + width;
+        val midPoint = (int) getCurrentX();
         final int mpLeft;
         final int mpRight;
         if (isDragged) {
-            mpLeft = (int) (midPoint - width * barRadius);
-            mpRight = (int) (midPoint + width * barRadius);
+            mpLeft = (int) positionLeft;
+            mpRight = (int) positionRight;
         } else {
             mpLeft = mpRight = midPoint;
         }
@@ -349,17 +352,17 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
     }
 
     protected void drawInfo(final int mouseX, final int mouseY, final float parTicks) {
-        final String format = String.format("%%.%df", precision);
+        val format = String.format("%%.%df", precision);
         String aStr = String.format(format, min);
         String bStr = String.format(format, max);
-        final int aWidth = this.gui.getFontRenderer().getStringWidth(aStr);
-        int bWidth = this.gui.getFontRenderer().getStringWidth(bStr);
-        int firLoc = guiX;
-        int secLoc = guiX + width - bWidth;
+        val aWidth = this.gui.getFontRenderer().getStringWidth(aStr);
+        var bWidth = this.gui.getFontRenderer().getStringWidth(bStr);
+        var firLoc = guiX;
+        var secLoc = guiX + width - bWidth;
         int aY = guiY + height + Math.max(1, height / 10);
         if (aWidth + bWidth > width * 0.8) {
-            final double aAbs = Math.abs(min);
-            final double bAbs = Math.abs(max);
+            val aAbs = Math.abs(min);
+            val bAbs = Math.abs(max);
             if (aAbs > Math.pow(10, 3)) {
                 aStr = getCompressedString(min);
             }
@@ -378,21 +381,35 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
             } else {
                 str = textHandler.handle(this);
             }
-            final int sWidth = this.gui.getFontRenderer().getStringWidth(str);
+            val sWidth = this.gui.getFontRenderer().getStringWidth(str);
             this.gui.getFontRenderer().drawString(str, mouseX - sWidth / 2, Math.min(guiY - height * 2, mouseY - height), textColor());
         }
     }
 
     protected void drawSlide(final int mouseX, final int mouseY, final float parTicks) {
-        final int positionLeft = (int) (guiX + width * (current - barRadius));
-        final int positionRight = (int) (guiX + width * (current + barRadius));
+        val pseudoWidth = getPseudoWidth();
+        val currentX = getCurrentX();
+        val positionLeft = (int) (currentX - pseudoWidth * barRadius / 2);
+        val positionRight = (int) (currentX + pseudoWidth * barRadius / 2);
         final int color;
         if (isDragged) {
-            color = 0xFF3F3F7F;
+            color = GT_GUIContainer_Plus.colorToARGB(new Color(43, 43, 80, 0xFF));
         } else {
-            color = 0x7F3F3F7F;
+            color = GT_GUIContainer_Plus.colorToARGB(new Color(0x3F, 0x3F, 0xFF, 0x7F));
         }
         drawRect(positionLeft, guiY, positionRight, guiY + height, color);
+    }
+
+    private double getCurrentX() {
+        return getPseudoLeft() + current * getPseudoWidth();
+    }
+
+    private double getPseudoLeft() {
+        return guiX + width * barRadius / 2;
+    }
+
+    private double getPseudoWidth() {
+        return width * (1 - barRadius);
     }
 
     /**
@@ -443,11 +460,11 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
     }
 
     protected int textColor() {
-        return 0xFF3F3FFF;
+        return GT_GUIContainer_Plus.colorToARGB(new Color(0x3F, 0x3F, 0xFF, 0xFF));
     }
 
     protected boolean mouseInBar(final int mouseX, final int mouseY, final int clickState) {
-        return mouseX > getX() - width * sliderWidthFuzzy / 2 && mouseX < getX() + width + width * sliderWidthFuzzy / 2 && mouseY > getY() - height / 20 && mouseY < getY() + height + height / 20;
+        return mouseX > getX() - width * sliderWidthFuzzy && mouseX < getX() + width + width * sliderWidthFuzzy && mouseY > getY() - height * sliderHeightFuzzy && mouseY < getY() + height + height * sliderHeightFuzzy;
     }
 
     private String getCompressedString(final double amt) {

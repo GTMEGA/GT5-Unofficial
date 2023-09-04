@@ -12,6 +12,7 @@ import gregtech.api.interfaces.IGuiScreen;
 import gregtech.api.util.interop.NEIInterop;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.val;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -28,6 +29,7 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import java.awt.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -300,6 +302,10 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         sliders.forEach(slider -> slider.onMouseReleased(mouseX, mouseY, clickState));
     }
 
+    public static int colorToARGB(final Color color) {
+        return color.getAlpha() << 24 | color.getRed() << 16 | color.getGreen() << 8 | color.getBlue();
+    }
+
     /**
      * Fired when a key is typed. This is the equivalent of KeyListener.keyTyped(KeyEvent e).
      *
@@ -430,9 +436,13 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         return this.mc.thePlayer.dimension;
     }
 
-    public int drawString(final String text, final int x, final int y, final int color) {
+    private int drawString(final String text, final int x, final int y, final int color) {
         getFontRenderer().drawString(text, x, y, color);
         return getFontRenderer().getStringWidth(text);
+    }
+
+    public int drawString(final String text, final int x, final int y, final Color color) {
+        return drawString(text, x, y, colorToARGB(color));
     }
 
     @Override
@@ -720,11 +730,12 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         x = slot.xDisplayPosition;
         y = slot.yDisplayPosition;
         GL11.glColorMask(true, true, true, false);
-        drawGradientRect(x - 1, y - 1, x + 17, y + 17, 0x3F000000, 0x0F000000);
-        final int a, b;
-        a = rgbaToInt(0x0F, 0x0F, 0xFF, 0xAF);
-        b = rgbaToInt(0x00, 0x00, 0x40, 0x1F);
-        drawGradientRect(x, y, x + 16, y + 16, a, b);
+        val c0 = colorToARGB(new Color(0x00, 0x00, 0x00, 0x3F));
+        val c1 = colorToARGB(new Color(0x00, 0x00, 0x00, 0x0F));
+        drawGradientRect(x - 1, y - 1, x + 17, y + 17, c0, c1);
+        val c2 = colorToARGB(new Color(0x0F, 0x0F, 0xFF, 0xAF));
+        val c3 = colorToARGB(new Color(0x00, 0x00, 0x40, 0x1F));
+        drawGradientRect(x, y, x + 16, y + 16, c2, c3);
         GL11.glColorMask(true, true, true, true);
     }
 
@@ -755,20 +766,13 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glColorMask(true, true, true, false);
-        drawGradientRect(x, y, x + 16, y + 16, 0x80FFFFFF, 0x80AFAFFF);
+        val c0 = colorToARGB(new Color(0xFF, 0xFF, 0xFF, 0x80));
+        val c1 = colorToARGB(new Color(0xAF, 0xAF, 0xFF, 0x80));
+        drawGradientRect(x, y, x + 16, y + 16, c0, c1);
         GL11.glColorMask(true, true, true, true);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glPopMatrix();
-    }
-
-    protected int rgbaToInt(final int red, final int green, final int blue, final int alpha) {
-        int result = 0;
-        result |= (alpha & 0xFF) << 24;
-        result |= (red & 0xFF) << 16;
-        result |= (green & 0xFF) << 8;
-        result |= (blue & 0xFF);
-        return result;
     }
 
     protected void setField(final String name, final Object newValue)
