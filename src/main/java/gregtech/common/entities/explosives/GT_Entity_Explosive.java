@@ -69,7 +69,7 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
                 this.doExplode();
             }
         } else {
-            final int n = rand.nextInt(10) + 1;
+            final int n = rand.nextInt(2) + 1;
             for (int i = 0; i < n; i++) {
                 final double x, y, z;
                 x = rand.nextDouble() * 1.4 - 0.7;

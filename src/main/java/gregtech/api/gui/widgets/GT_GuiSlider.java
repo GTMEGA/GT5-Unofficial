@@ -4,6 +4,7 @@ package gregtech.api.gui.widgets;
 import gregtech.api.interfaces.IGuiScreen;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.val;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -34,15 +35,7 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     private final IGuiScreen gui;
 
-    @Getter
-    private int x;
-
-    @Getter
-    private int y;
-
-    private int guiX = 0;
-
-    private int guiY = 0;
+    private final int subdivisions;
 
     private final int width;
 
@@ -52,6 +45,18 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     @Getter
     private final int id;
+
+    @Getter
+    private final int x;
+
+    @Getter
+    private final int y;
+
+    private int guiX = 0;
+
+    private int guiY = 0;
+
+    private final double barRadius = 0.1, sliderWidthFuzzy = 0.1;
 
     private double min;
 
@@ -79,7 +84,16 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
     private boolean drawOnDrag = false;
 
     public GT_GuiSlider(
-            final int id, final IGuiScreen gui, final int x, final int y, final int width, final int height, double min, double max, final double current
+            final int id,
+            final IGuiScreen gui,
+            final int x,
+            final int y,
+            final int width,
+            final int height,
+            double min,
+            double max,
+            final double current,
+            final int subdivisions
                        ) {
         this.id = id;
         this.gui = gui;
@@ -94,9 +108,14 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         }
         this.min = min;
         this.max = max;
+        this.subdivisions = subdivisions;
         setValue(current);
         updateSlider(false);
         this.gui.addElement(this);
+    }
+
+    public boolean hasSubdivisions() {
+        return subdivisions > 0;
     }
 
     public void updateBounds(double newMin, double newMax, final boolean propagate) {
@@ -112,6 +131,16 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         final double newRange = this.max - this.min;
         this.current = newRange != 0 ? (this.current * oldRange + oldMin - this.min) / newRange : newMin;
         this.updateSlider(propagate);
+    }
+
+    public void lockSliderToSubdivisions() {
+        if (!hasSubdivisions()) {
+            return;
+        }
+        val range = max - min;
+        val subRange = range / subdivisions;
+        val notches = Math.floor(current / subRange);
+        current = notches * subRange + min;
     }
 
     public void updateBounds(final double[] bounds, final boolean propagate) {
@@ -141,24 +170,6 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     public GT_GuiSlider addDependentSliders(final GT_GuiSlider... sliders) {
         this.dependents.addAll(Arrays.asList(sliders));
-        return this;
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public IGT_GuiHook getOnClickHook() {
-        return hook;
-    }
-
-    /**
-     * @param hook
-     * @return
-     */
-    @Override
-    public IGuiScreen.IGuiElement setOnClickHook(final IGT_GuiHook hook) {
-        this.hook = hook;
         return this;
     }
 
@@ -221,9 +232,27 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
      */
     @Override
     public boolean inBounds(final int mouseX, final int mouseY, final int clickType) {
-        final boolean inside = mouseX > getX() - width / 20 && mouseX < getX() + width + width / 20 && mouseY > getY() && mouseY < getY() + height;
+        final boolean inside = mouseX > getX() - width * sliderWidthFuzzy / 2 && mouseX < getX() + width + width * sliderWidthFuzzy / 2 && mouseY > getY() && mouseY < getY() + height;
         this.inside = inside;
         return inside;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public IGT_GuiHook getOnClickHook() {
+        return hook;
+    }
+
+    /**
+     * @param hook
+     * @return
+     */
+    @Override
+    public IGuiScreen.IGuiElement setOnClickHook(final IGT_GuiHook hook) {
+        this.hook = hook;
+        return this;
     }
 
     public void onMouseDragged(final int mouseX, final int mouseY) {
@@ -250,7 +279,9 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     public void onMousePressed(final int mouseX, final int mouseY, final int clickType) {
         if (clickType == 0 && mouseInBar(mouseX, mouseY, clickType)) {
-            this.current = (double) (mouseX - (x + width / 20)) / (double) (this.width - width / 10);
+            val pseudoLeft = x + width * barRadius;
+            val pseudoWidth = x + width - width * barRadius;
+            this.current = (mouseX - pseudoLeft) / pseudoWidth;
             updateSlider(true);
             this.isDragged = true;
         } else {
@@ -263,6 +294,7 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
     public void onMouseReleased(final int mouseX, final int mouseY, final int clickState) {
         if (clickState == 1) {
             this.isDragged = false;
+            lockSliderToSubdivisions();
         }
     }
 
@@ -287,8 +319,8 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         final int mpLeft;
         final int mpRight;
         if (isDragged) {
-            mpLeft = midPoint - width / 10;
-            mpRight = midPoint + width / 10;
+            mpLeft = (int) (midPoint - width * barRadius);
+            mpRight = (int) (midPoint + width * barRadius);
         } else {
             mpLeft = mpRight = midPoint;
         }
@@ -351,24 +383,9 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         }
     }
 
-    private String getCompressedString(final double amt) {
-        final String fmt = String.format("%%.%df%%s", 1);
-        final String[] negPrefix = {"", "m", "μ", "p", "f", "a", "z", "y", "q"};
-        final String[] posPrefix = {"", "k", "M", "b", "t", "q", "Q", "s", "S", "o", "n", "d"};
-        final int pow = getLogTen(amt);
-        final String suffix;
-        if (pow < 0) {
-            suffix = negPrefix[-pow / 3];
-        } else {
-            suffix = posPrefix[pow / 3];
-        }
-        return String.format(fmt, amt * Math.pow(10, -((double)((pow / 3) * 3))), suffix);
-    }
-
     protected void drawSlide(final int mouseX, final int mouseY, final float parTicks) {
-        final double barWidth = 0.2;
-        final int positionLeft = (int) (guiX + width * (current - barWidth / 2));
-        final int positionRight = (int) (guiX + width * (current + barWidth / 2));
+        final int positionLeft = (int) (guiX + width * (current - barRadius));
+        final int positionRight = (int) (guiX + width * (current + barRadius));
         final int color;
         if (isDragged) {
             color = 0xFF3F3F7F;
@@ -430,7 +447,21 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
     }
 
     protected boolean mouseInBar(final int mouseX, final int mouseY, final int clickState) {
-        return mouseX > getX() - width / 20 && mouseX < getX() + width + width / 20 && mouseY > getY() - height / 20 && mouseY < getY() + height + height / 20;
+        return mouseX > getX() - width * sliderWidthFuzzy / 2 && mouseX < getX() + width + width * sliderWidthFuzzy / 2 && mouseY > getY() - height / 20 && mouseY < getY() + height + height / 20;
+    }
+
+    private String getCompressedString(final double amt) {
+        final String fmt = String.format("%%.%df%%s", 1);
+        final String[] negPrefix = {"", "m", "μ", "p", "f", "a", "z", "y", "q"};
+        final String[] posPrefix = {"", "k", "M", "b", "t", "q", "Q", "s", "S", "o", "n", "d"};
+        final int pow = getLogTen(amt);
+        final String suffix;
+        if (pow < 0) {
+            suffix = negPrefix[-pow / 3];
+        } else {
+            suffix = posPrefix[pow / 3];
+        }
+        return String.format(fmt, amt * Math.pow(10, -((double) ((pow / 3) * 3))), suffix);
     }
 
 }

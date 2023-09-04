@@ -161,7 +161,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
     }
 
     private void addVoltTierSlider() {
-        final GT_GuiSlider voltTierSlider = new GT_GuiSlider(0, this, 8, 40, 128, 8, 0.0, 15.0, getSource().getData().getTier());
+        final GT_GuiSlider voltTierSlider = new GT_GuiSlider(0, this, 8, 40, 128, 8, 0.0, 15.0, getSource().getData().getTier(), 16);
         voltTierSlider.setTextHandler(slider -> String.format("Tier: %s", VN[(int) slider.getValue()]));
         voltTierSlider.setOnChange(slider -> {
             final IGuiScreen gui = slider.getGui();
