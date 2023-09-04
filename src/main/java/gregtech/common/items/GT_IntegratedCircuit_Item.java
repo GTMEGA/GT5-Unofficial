@@ -5,13 +5,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -107,21 +104,21 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aIconRegister) {
         super.registerIcons(aIconRegister);
-        for (int i=0; i < mIconDamage.length; i++) {
+        for (int i = 0; i < mIconDamage.length; i++) {
             mIconDamage[i] = aIconRegister.registerIcon(RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i));
         }
-        if (GregTech_API.sPostloadFinished) {
-            GT_Log.out.println("GT_Mod: Starting Item Icon Load Phase");
-            GT_FML_LOGGER.info("GT_Mod: Starting Item Icon Load Phase");
-            GregTech_API.sItemIcons = aIconRegister;
-            try {
-                for (Runnable tRunnable : GregTech_API.sGTItemIconload) {
-                    tRunnable.run();
-                }
-            } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
-            GT_Log.out.println("GT_Mod: Finished Item Icon Load Phase");
-            GT_FML_LOGGER.info("GT_Mod: Finished Item Icon Load Phase");
+        GT_Log.out.println("GT_Mod: Starting Item Icon Load Phase");
+        GT_FML_LOGGER.info("GT_Mod: Starting Item Icon Load Phase");
+        GregTech_API.sItemIcons = aIconRegister;
+        try {
+            for (Runnable tRunnable : GregTech_API.sGTItemIconload) {
+                tRunnable.run();
+            }
+        } catch (Throwable e) {
+            e.printStackTrace(GT_Log.err);
         }
+        GT_Log.out.println("GT_Mod: Finished Item Icon Load Phase");
+        GT_FML_LOGGER.info("GT_Mod: Finished Item Icon Load Phase");
     }
 
     @Override

@@ -288,7 +288,6 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister aIconRegister) {
-        if (!GregTech_API.sPostloadFinished) return;
         GT_Log.out.println("GT_Mod: Setting up Icon Register for Blocks");
         GregTech_API.setBlockIconRegister(aIconRegister);
 
