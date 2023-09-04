@@ -8,7 +8,6 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.IPacketReceivableItem;
@@ -519,20 +518,20 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
         if (pickedUp < 0) {
             pickedUp = Long.MAX_VALUE;
         }
-        processAchievement(player, pickedUp);
+        // processAchievement(player, pickedUp);
         compound.setLong("pickedUp", pickedUp);
         stack.setTagCompound(compound);
         setNBT(stack);
     }
 
-    private void processAchievement(final EntityPlayer player, final long pickupCount) {
-        if (pickupCount >= Integer.MAX_VALUE) {
-            GT_Mod.achievements.issueAchievement(player, "lottaItems");
-        }
-        if (pickupCount == Long.MAX_VALUE) {
-            GT_Mod.achievements.issueAchievement(player, "wholeLottaItems");
-        }
-    }
+    //private void processAchievement(final EntityPlayer player, final long pickupCount) {
+    //    if (pickupCount >= Integer.MAX_VALUE) {
+    //        GT_Mod.achievements.issueAchievement(player, "lottaItems");
+    //    }
+    //    if (pickupCount == Long.MAX_VALUE) {
+    //        GT_Mod.achievements.issueAchievement(player, "wholeLottaItems");
+    //    }
+    //}
 
     private void handlePickedUp(
             final World world,
@@ -542,7 +541,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
             long pickupCount,
             final EntityPlayer player,
             final NBTTagCompound compound
-                               ) {
+    ) {
         if (pickupCount < 0) {
             pickupCount = Long.MAX_VALUE;
         }

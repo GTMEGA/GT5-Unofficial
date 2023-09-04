@@ -20,6 +20,7 @@ public class GT_Block_Potentiometer extends GT_Generic_Block {
 
     public GT_Block_Potentiometer() {
         super(GT_Item_Potentiometer.class, "potentiometer", Material.rock);
+        setBlockTextureName("gregtech:iconsets/BLOCK_POTENTIOMETER_BACKGROUND");
     }
 
     /**
