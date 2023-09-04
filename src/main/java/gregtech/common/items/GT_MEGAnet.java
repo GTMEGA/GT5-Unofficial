@@ -31,6 +31,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableInt;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -274,7 +275,9 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
     }
 
     private boolean itemUse(final ItemStack stack, final EntityPlayer player, final World world) {
-        // toggle(world, player, stack);
+        if (player.isSneaking()) {
+            toggle(world, player, stack);
+        }
         return !world.isRemote && player.isSneaking();
     }
 
@@ -382,7 +385,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
     @Override
     protected void addAdditionalToolTips(final List aList, final ItemStack aStack, final EntityPlayer aPlayer) {
         aList.add((isActive(aStack) ? EnumChatFormatting.GREEN + "Active" : EnumChatFormatting.RED + "Inactive"));
-        aList.add("Shift + RMB to toggle.");
+        aList.add(getToggleInfoString());
         final int range = getRange(aStack);
         aList.add((String.format("Range of (%d / %d)", range, heldRange(range))));
         final MEGAnetFilter filter = getFilter(aStack);
@@ -399,6 +402,21 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
         }
         aList.add(String.format("Magnetized" + EnumChatFormatting.GOLD + " %d " + EnumChatFormatting.GRAY + "items!", getPickedUp(aStack)));
         aList.add(EnumChatFormatting.DARK_BLUE + "" + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + "The MEGAnet!");
+    }
+
+    private static String getToggleInfoString() {
+        var s = EnumChatFormatting.YELLOW + "Shift + RMB" + EnumChatFormatting.RESET;
+        if (GT_Values.KB.getKeyBindings().get("key.meganet.toggle") != null) {
+            s += " or press ";
+            val temp = GT_Values.KB.getKeyBindings().get("key.meganet.toggle");
+            if (temp.getKeyCode() > 0) {
+                s += EnumChatFormatting.YELLOW + Keyboard.getKeyName(temp.getKeyCode()) + EnumChatFormatting.RESET;
+            } else {
+                s += "the MEGAnet keybind, (currently unset),";
+            }
+        }
+        s += " to toggle";
+        return s;
     }
 
     /**
