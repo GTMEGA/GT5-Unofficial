@@ -420,6 +420,14 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         return 1L;
     }
 
+    /**
+     * @return
+     */
+    @Override
+    public boolean canDrop() {
+        return false;
+    }
+
     @Override
     public void markDirty() {
         super.markDirty();

@@ -371,6 +371,14 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
      * @return
      */
     @Override
+    public boolean canDrop() {
+        return false;
+    }
+
+    /**
+     * @return
+     */
+    @Override
     public boolean isSimpleMachine() {
         return false;
     }

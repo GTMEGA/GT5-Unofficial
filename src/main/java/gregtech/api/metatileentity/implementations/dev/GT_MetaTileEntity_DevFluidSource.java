@@ -542,6 +542,14 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
         return GT_Utility.validatePlayerCanDoFancyStuff(aPlayer, true);
     }
 
+    /**
+     * @return
+     */
+    @Override
+    public boolean canDrop() {
+        return false;
+    }
+
     @Override
     public int getCapacity() {
         return Integer.MAX_VALUE;
