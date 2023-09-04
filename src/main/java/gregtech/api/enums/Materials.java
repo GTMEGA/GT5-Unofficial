@@ -1258,13 +1258,18 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void setEnchantmentFortuneTools() {
-        IronWood.setEnchantmentForTools(Enchantment.fortune, 1);
-        Steeleaf.setEnchantmentForTools(Enchantment.fortune, 2);
-//      Midasium                .setEnchantmentForTools(Enchantment.fortune, 2);
-        Mithril.setEnchantmentForTools(Enchantment.fortune, 3);
-        Vinteum.setEnchantmentForTools(Enchantment.fortune, 1);
+        Gold.setEnchantmentForTools(Enchantment.fortune, 2);
+        Brass.setEnchantmentForTools(Enchantment.fortune, 1);
+        Steel.setEnchantmentForTools(Enchantment.fortune, 1);
+        StainlessSteel.setEnchantmentForTools(Enchantment.fortune, 2);
+        Aluminium.setEnchantmentForTools(Enchantment.fortune, 3);
+        RoseGold.setEnchantmentForTools(Enchantment.fortune, 3);
+        IronWood.setEnchantmentForTools(Enchantment.fortune, 2);
+        Steeleaf.setEnchantmentForTools(Enchantment.fortune, 3);
+        Mithril.setEnchantmentForTools(Enchantment.fortune, 4);
+        Vinteum.setEnchantmentForTools(Enchantment.fortune, 3);
         Thaumium.setEnchantmentForTools(Enchantment.fortune, 2);
-        InfusedWater.setEnchantmentForTools(Enchantment.fortune, 3);
+        InfusedWater.setEnchantmentForTools(Enchantment.fortune, 2);
     }
 
     private static void setEnchantmentFireAspectTools() {
@@ -1273,7 +1278,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Firestone.setEnchantmentForTools(Enchantment.fireAspect, 3);
         FierySteel.setEnchantmentForTools(Enchantment.fireAspect, 3);
         Pyrotheum.setEnchantmentForTools(Enchantment.fireAspect, 3);
-        Blaze.setEnchantmentForTools(Enchantment.fireAspect, 3);
+        Blaze.setEnchantmentForTools(Enchantment.fireAspect, 1);
         InfusedFire.setEnchantmentForTools(Enchantment.fireAspect, 3);
     }
 
@@ -1288,8 +1293,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     private static void setEnchantmentSmiteTools() {
         BlackBronze.setEnchantmentForTools(Enchantment.smite, 2);
-        Gold.setEnchantmentForTools(Enchantment.smite, 3);
-        RoseGold.setEnchantmentForTools(Enchantment.smite, 4);
+        Silver.setEnchantmentForTools(Enchantment.smite, 4);
         Platinum.setEnchantmentForTools(Enchantment.smite, 5);
         InfusedVis.setEnchantmentForTools(Enchantment.smite, 5);
         Ichorium.setEnchantmentForTools(Enchantment.smite, 8);
@@ -1308,12 +1312,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     private static void setEnchantmentSharpnessTools() {
         Iron.setEnchantmentForTools(Enchantment.sharpness, 1);
-        Bronze.setEnchantmentForTools(Enchantment.sharpness, 1);
-        Brass.setEnchantmentForTools(Enchantment.sharpness, 2);
+        Bronze.setEnchantmentForTools(Enchantment.sharpness, 2);
         HSLA.setEnchantmentForTools(Enchantment.sharpness, 2);
         Steel.setEnchantmentForTools(Enchantment.sharpness, 2);
-        WroughtIron.setEnchantmentForTools(Enchantment.sharpness, 2);
-        StainlessSteel.setEnchantmentForTools(Enchantment.sharpness, 3);
+        WroughtIron.setEnchantmentForTools(Enchantment.sharpness, 1);
         Knightmetal.setEnchantmentForTools(Enchantment.sharpness, 3);
         ShadowIron.setEnchantmentForTools(Enchantment.sharpness, 3);
         ShadowSteel.setEnchantmentForTools(Enchantment.sharpness, 4);

@@ -4,7 +4,8 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
-import gregtech.common.blocks.GT_Block_Ore;
+import gregtech.common.blocks.GT_Block_Ore_Abstract;
+import gregtech.common.blocks.GT_Block_Ore_Abstract.OreSize;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
@@ -71,12 +72,13 @@ public class GT_Worldgen_GT_Ore_SmallPieces
         if (this.mMeta > 0) {
             int j = Math.max(1, this.mAmount / 2 + aRandom.nextInt(this.mAmount) / 2);
             for ( int i = 0; i < j; i++) {
-                GT_Block_Ore.setOreBlock(aWorld,
-                                         aChunkX + 8 + aRandom.nextInt(16),
-                                         this.mMinY + aRandom.nextInt(Math.max(1, this.mMaxY - this.mMinY)),
-                                         aChunkZ + 8 + aRandom.nextInt(16),
-                                         GregTech_API.sGeneratedMaterials[this.mMeta],
-                                         isUnderdark);
+                GT_Block_Ore_Abstract.setOreBlock(aWorld,
+                                                  aChunkX + 8 + aRandom.nextInt(16),
+                                                  this.mMinY + aRandom.nextInt(Math.max(1, this.mMaxY - this.mMinY)),
+                                                  aChunkZ + 8 + aRandom.nextInt(16),
+                                                  GregTech_API.sGeneratedMaterials[this.mMeta],
+                                                  isUnderdark,
+                                                  OreSize.Small);
                 count++;
             }
         }

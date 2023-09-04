@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity;
 
+import gregtech.api.interfaces.IAdvancedGUIEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
@@ -425,6 +426,15 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     public final void onAdjacentBlockChange(int aX, int aY, int aZ) {
         clearNullMarkersFromTileEntityBuffer();
+        if (getMetaTileEntity() instanceof IAdvancedGUIEntity) {
+            ((IAdvancedGUIEntity) getMetaTileEntity()).onNeighborChange(aX, aY, aZ);
+        }
+    }
+
+    public void onNeighborBlockChange(int aX, int aY, int aZ) {
+        if (getMetaTileEntity() instanceof IAdvancedGUIEntity) {
+            ((IAdvancedGUIEntity) getMetaTileEntity()).onNeighborBlockChange(aX, aY, aZ);
+        }
     }
 
     public void updateNeighbours(int mStrongRedstone, int oStrongRedstone) {

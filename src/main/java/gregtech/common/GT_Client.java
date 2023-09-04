@@ -34,15 +34,12 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
+import gregtech.common.entities.explosives.GT_Entity_DaisyCutterExplosive;
+import gregtech.common.entities.explosives.GT_Entity_MiningExplosive;
+import gregtech.common.entities.explosives.GT_Entity_TunnelExplosive;
 import gregtech.common.net.MessageUpdateFluidDisplayItem;
-import gregtech.common.render.GT_CapeRenderer;
-import gregtech.common.render.GT_FlaskRenderer;
-import gregtech.common.render.GT_FluidDisplayStackRenderer;
-import gregtech.common.render.GT_MetaGenerated_Item_Renderer;
-import gregtech.common.render.GT_MetaGenerated_Tool_Renderer;
-import gregtech.common.render.GT_PollutionRenderer;
-import gregtech.common.render.GT_Renderer_Block;
-import gregtech.common.render.GT_Renderer_Entity_Arrow;
+import gregtech.common.render.*;
+import gregtech.common.render.GT_ExplosiveRenderer;
 import ic2.api.tile.IWrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -440,6 +437,10 @@ public class GT_Client extends GT_Proxy
         new GT_MetaGenerated_Tool_Renderer();
         new GT_Renderer_Entity_Arrow(GT_Entity_Arrow.class, "arrow");
         new GT_Renderer_Entity_Arrow(GT_Entity_Arrow_Potion.class, "arrow_potions");
+        new GT_ExplosiveRenderer().addExplosive(GT_Entity_MiningExplosive.class).addExplosive(GT_Entity_DaisyCutterExplosive.class).addExplosive(
+                GT_Entity_TunnelExplosive.class);
+        /* new GT_MiningExplosiveRenderer();
+        new GT_DaisyCutterRenderer(); */
         new GT_FlaskRenderer();
         new GT_FluidDisplayStackRenderer();
     }

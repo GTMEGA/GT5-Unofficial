@@ -268,6 +268,11 @@ public class GregTech_API {
             sBlockCasings8;
     public static Block
             sBlockLongDistancePipes;
+
+    public static Item sMEGAnet;
+
+    public static Block sPotentiometer;
+
     /**
      * Getting assigned by the Config
      */
@@ -298,7 +303,9 @@ public class GregTech_API {
             mTranslocator = false,
             mTConstruct = false,
             mGalacticraft = false,
-            mAE2 = false;
+            mAE2 = false,
+            mNEI = false,
+            mDWS = false;
     public static int
             mEUtoRF = 360,
             mRFtoEU = 20;
@@ -324,6 +331,11 @@ public class GregTech_API {
             sLoadFinished = false,
             sPostloadStarted = false,
             sPostloadFinished = false;
+
+    public static Block sBlockMiningExplosive, sBlockDaisyCutter, sBlockTunEx;
+
+    public static Item sItemRemoteDetonator, sBorker;
+
     private static Class sBaseMetaTileEntityClass = null;
 
     /**
@@ -368,6 +380,16 @@ public class GregTech_API {
         sSoundList.put(210, aTextIC2Lower + ":" + "machines.InterruptOne");
         sSoundList.put(211, aTextIC2Lower + ":" + "machines.KaChing");
         sSoundList.put(212, aTextIC2Lower + ":" + "machines.MagnetizerLoop");
+        //
+        sSoundList.put(213, MOD_ID.toLowerCase() + ":" + "mining_explosives_explosion");
+        sSoundList.put(214, MOD_ID.toLowerCase() + ":" + "mining_explosives_trigger");
+        sSoundList.put(215, MOD_ID.toLowerCase() + ":" + "meganet_pickup");
+        sSoundList.put(216, MOD_ID.toLowerCase() + ":" + "meganet_active");
+        sSoundList.put(217, MOD_ID.toLowerCase() + ":" + "meganet_inactive");
+        sSoundList.put(218, MOD_ID.toLowerCase() + ":" + "remote_detonator_add");
+        sSoundList.put(219, MOD_ID.toLowerCase() + ":" + "remote_detonator_remove");
+        sSoundList.put(220, MOD_ID.toLowerCase() + ":" + "remote_detonator_trigger");
+        sSoundList.put(221, MOD_ID.toLowerCase() + ":" + "potentiometer_click");
     }
 
     /**

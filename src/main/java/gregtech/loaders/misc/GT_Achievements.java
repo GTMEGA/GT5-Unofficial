@@ -29,9 +29,17 @@ import thaumcraft.api.ThaumcraftApiHelper;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-public class GT_Achievements {
+/**
+ * We are not using these achievements in our progression.
+ * <p>
+ * Most of them are entirely not relevant, and much of this causes slow down when picking up items.
+ * <p>
+ * For now, this class is disabled.
+ */
+@Deprecated
+public final class GT_Achievements {
     public static int oreReg = -1;
-    public static int assReg=-1;
+    public static int assReg = -1;
     public ConcurrentHashMap<String, Achievement> achievementList;
     public ConcurrentHashMap<String, Boolean> issuedAchievements;
     public int adjX = 5;
@@ -185,6 +193,8 @@ public class GT_Achievements {
             MinecraftForge.EVENT_BUS.register(this);
             FMLCommonHandler.instance().bus().register(this);
         }
+        registerAchievement("lottaItems", 0, 0, new ItemStack(GregTech_API.sMEGAnet, Integer.MAX_VALUE), "", false);
+        registerAchievement("wholeLottaItems", 0, 0, new ItemStack(GregTech_API.sMEGAnet, Integer.MAX_VALUE, 1), "lottaItems", true);
     }
 
     public static void registerOre(Materials aMaterial, int min, int max, int chance, boolean overworld, boolean nether, boolean end) {
@@ -627,5 +637,15 @@ public class GT_Achievements {
                 recipe.mHidden=false;
             }
         }
+    }
+
+    public static final class Dummy {
+        public void issueAchievement(EntityPlayer entityplayer, String textId) {}
+
+        public void issueAchivementHatch(EntityPlayer player, ItemStack stack) {}
+
+        public Achievement getAchievement(String unlocalizedName) {return null;}
+
+        public void issueAchivementHatchFluid(EntityPlayer playerEntityByName, FluidStack mOutputFluid) {}
     }
 }

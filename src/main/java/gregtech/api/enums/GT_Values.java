@@ -3,9 +3,13 @@ package gregtech.api.enums;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
+import gregtech.api.util.keybind.GT_KeyBindings;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -145,6 +149,11 @@ public class GT_Values {
      * This way it is possible to have a Call Hierarchy of NullPointers in FluidStack based Functions, and also because most of the time I don't know what kind of Data Type the "null" stands for
      */
     public static final FluidStack NF = null;
+
+    public static final GT_KeyBindings KB = GT_KeyBindings.INSTANCE;
+
+    public static boolean dump_meta_entity_space = true;
+
     /**
      * MOD ID Strings, since they are very common Parameters.
      */
@@ -175,7 +184,9 @@ public class GT_Values {
             MOD_ID_GC_CORE = "GalacticraftCore",
             MOD_ID_GC_MARS = "GalacticraftMars",
             MOD_ID_GC_PLANETS = "GalacticraftPlanets",
-            MOD_ID_DC = "dreamcraft";
+            MOD_ID_DC = "dreamcraft",
+            MOD_ID_NEI = "NotEnoughItems",
+            MOD_ID_DWS = "dws";
     /**
      * File Paths and Resource Paths
      */
@@ -222,7 +233,7 @@ public class GT_Values {
      * Whether or not to place small ores as placer ores for an orevein
      */
     public static boolean oreveinPlacerOres;
-    /** 
+    /**
      * Multiplier to control how many placer ores get generated.
      */
     public static int oreveinPlacerOresMultiplier;
@@ -230,18 +241,18 @@ public class GT_Values {
      * How wide to look for oreveins that affect a requested chunk. Trying to use oreveins larger than this will not work correctly. Increasing the size will cause additional worldgenerator lag.
      * Disabled for now, using 64 in Deep Dark, 32 elsewhere
      */
-    // public static int oreveinMaxSize; 
+    // public static int oreveinMaxSize;
     /**
      * Not really Constants, but they set using the Config and therefore should be constant (those are for the Debug Mode)
      */
     public static boolean D1 = false, D2 = false;
     /**
      * Debug parameter for cleanroom testing.
-     */     
+     */
     public static boolean debugCleanroom = false;
     /**
      * Debug parameter for driller testing.
-     */     
+     */
     public static boolean debugDriller = false;
     /**
      * Debug parameter for world generation. Tracks chunks added/removed from run queue.
@@ -303,7 +314,7 @@ public class GT_Values {
 
     public static boolean debugChunkloaders = false;
     public static boolean cls_enabled;
-    
+
     public static boolean hideAssLineRecipes = false;
     public static boolean updateFluidDisplayItems = true;
     public static final int STEAM_PER_WATER = 160;
@@ -311,4 +322,25 @@ public class GT_Values {
      *  If true, then digital chest with AE2 storage bus will be accessible only through AE2
      */
     public static boolean disableDigitalChestsExternalAccess = false;
+
+    public static int MEFortune = 3, MERays = 32, MEFuse = 160, MEMaxRemoteRange = 256, MERemoteDelay = 15;
+
+    public static float MERayBaseRayDist = 0.3f, MERayPowerDropRatio = 0.5f, MERayDropBump = 0.3f, MEOrePowerBoost = 3.0f, MERockResistanceDrop = 0.25f,
+            MESoilPowerBoost = 1.0f, MEOtherResistanceDrop = 10.0f, MEExplosionPower = 9.0f, MEMaxEntitySize = 1.2f, MEOreChance = 1.0f, MESoilChance = 0.05f,
+            MERockChance = 0.025f, MEOtherChance = 0.0f, MEMaxRange = 4.5f, MEMinEntitySize = 0.8f, MEOffsetRatio = 0.75f;
+
+    public static boolean MEFancyDrops = true, MERequiresRemote = true;
+
+    public static boolean getConfigValue(final Configuration config, final String category, final String key, final boolean defValue, final String comment) {
+        return config.get(category, key, defValue, comment).getBoolean(defValue);
+    }
+
+    public static int getConfigValue(final Configuration config, final String category, final String key, final int defValue, final String comment) {
+        return config.get(category, key, defValue, comment).getInt(defValue);
+    }
+
+    public static float getConfigValue(final Configuration config, final String category, final String key, final float defValue, final String comment) {
+        return (float) config.get(category, key, defValue, comment).getDouble(defValue);
+    }
+
 }

@@ -1140,7 +1140,19 @@ public class Textures {
         PIPE_RESTRICTOR_DR,
         PIPE_RESTRICTOR_LR,
 
-        OVERLAY_ME_HATCH;
+        OVERLAY_ME_HATCH,
+        OVERLAY_DEV_ENERGY_SOURCE,
+        OVERLAY_DEV_ITEM_SOURCE,
+        OVERLAY_DEV_FLUID_SOURCE,
+        OVERLAY_RS_INACTIVE,
+        OVERLAY_RS_ACTIVE,
+
+        BLOCK_POTENTIOMETER_BACKGROUND,
+        BLOCK_POTENTIOMETER_FOREGROUND,
+        MINING_EXPLOSIVE, DAISY_CUTTER, TUNEX,
+
+        AUTOMATION_RECIPEFILTER,
+        AUTOMATION_RECIPEFILTER_GLOW;
 
         /**
          * Icon for Fresh CFoam
@@ -1727,6 +1739,27 @@ public class Textures {
          * by Default pages are null
          */
         public static ITexture[][] casingTexturePages = new ITexture[128][];//page holder so we don't make an short long array
+
+        public static IIconContainer[] MINING_EXPLOSIVES = {
+                new CustomIcon("iconsets/EXPLOSIVES/" + "MINING_EXPLOSIVE_SIDES"),
+                new CustomIcon("iconsets/EXPLOSIVES/" + "MINING_EXPLOSIVE_BOTTOM"),
+                new CustomIcon("iconsets/EXPLOSIVES/" + "MINING_EXPLOSIVE_TOP"),
+                new CustomIcon("iconsets/EXPLOSIVES/" + "MINING_EXPLOSIVE_TOP_ACTIVE")
+        };
+
+        public static IIconContainer[] DAISY_CUTTERS = {
+                new CustomIcon("iconsets/EXPLOSIVES/" + "DAISY_CUTTER_SIDES"),
+                new CustomIcon("iconsets/EXPLOSIVES/" + "DAISY_CUTTER_BOTTOM"),
+                new CustomIcon("iconsets/EXPLOSIVES/" + "DAISY_CUTTER_TOP"),
+                new CustomIcon("iconsets/EXPLOSIVES/" + "DAISY_CUTTER_TOP_ACTIVE"),
+        };
+
+        public static IIconContainer[] TUNNELING_EXPLOSIVES = {
+                new CustomIcon("iconsets/EXPLOSIVES/" + "TUNEX_SIDES"),
+                new CustomIcon("iconsets/EXPLOSIVES/" + "TUNEX_BOTTOM"),
+                new CustomIcon("iconsets/EXPLOSIVES/" + "TUNEX_TOP"),
+                new CustomIcon("iconsets/EXPLOSIVES/" + "TUNEX_TOP_ACTIVE"),
+        };
 
         static {
             for (byte i = 0; i < MACHINE_CASINGS.length; i++)

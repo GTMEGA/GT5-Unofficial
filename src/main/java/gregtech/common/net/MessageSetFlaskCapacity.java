@@ -33,11 +33,6 @@ public final class MessageSetFlaskCapacity extends GT_Packet_New {
     }
 
     @Override
-    public byte getPacketID() {
-        return 5;
-    }
-
-    @Override
     public void encode(ByteBuf aOut) {
         aOut.writeInt(capacity);
         aOut.writeInt(dimID);

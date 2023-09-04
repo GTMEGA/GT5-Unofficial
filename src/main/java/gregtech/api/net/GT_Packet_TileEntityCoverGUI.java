@@ -102,11 +102,6 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
     }
 
     @Override
-    public byte getPacketID() {
-        return 7;
-    }
-
-    @Override
     public void encode(ByteBuf aOut) {
         aOut.writeInt(mX);
         aOut.writeShort(mY);

@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.basic;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
@@ -12,14 +11,13 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_UndergroundOil;
-import gregtech.common.blocks.GT_Block_Ore;
+import gregtech.common.blocks.GT_Block_Ore_Abstract;
 import ic2.core.Ic2Items;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
@@ -115,8 +113,8 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
                     for (int f = min; f <= max; f+=step) {
                         for (int g = min; g <= max; g+=step) {
                             Block tBlock = this.getBaseMetaTileEntity().getBlockOffset(f, -i, g);
-                            if (tBlock instanceof GT_Block_Ore) {
-                                Materials tMaterial = ((GT_Block_Ore) tBlock).getOreType();
+                            if (tBlock instanceof GT_Block_Ore_Abstract) {
+                                Materials tMaterial = ((GT_Block_Ore_Abstract) tBlock).getOreType();
                                 if ((tMaterial != null) && (tMaterial != Materials._NULL)) {
                                     if (!tStringList.contains(tMaterial.mDefaultLocalName)) {
                                         tStringList.add(tMaterial.mDefaultLocalName);

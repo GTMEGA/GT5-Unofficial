@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.basic;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
@@ -11,14 +10,13 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Ore;
+import gregtech.common.blocks.GT_Block_Ore_Abstract;
 import ic2.core.Ic2Items;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
@@ -223,8 +221,8 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
     private String checkForOre(int x, int y, int z) {
         Block tBlock = this.getBaseMetaTileEntity().getBlock(x, y, z);
 
-        if (tBlock instanceof GT_Block_Ore) {
-            return ((GT_Block_Ore) tBlock).getOreType().mDefaultLocalName;
+        if (tBlock instanceof GT_Block_Ore_Abstract) {
+            return ((GT_Block_Ore_Abstract) tBlock).getOreType().mDefaultLocalName;
         } else {
             int tMetaID = getBaseMetaTileEntity().getWorld().getBlockMetadata(x, y, z);
             ItemStack is = new ItemStack(tBlock, 1, tMetaID);

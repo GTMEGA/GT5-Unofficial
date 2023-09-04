@@ -56,8 +56,4 @@ public class GT_Packet_Sound extends GT_Packet_New {
         GT_Utility.doSoundAtClient(mSoundName, 1, mSoundStrength, mSoundPitch, mX, mY, mZ);
     }
 
-    @Override
-    public byte getPacketID() {
-        return 1;
-    }
 }

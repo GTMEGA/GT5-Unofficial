@@ -17,13 +17,14 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.MessageToMessageCodec;
+import lombok.Getter;
+import lombok.NonNull;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
-import java.util.EnumMap;
-import java.util.List;
+import java.util.*;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 
@@ -31,21 +32,49 @@ import static gregtech.GT_Mod.GT_FML_LOGGER;
 @SuppressWarnings("deprecation")
 public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet> implements IGT_NetworkHandler {
     private final EnumMap<Side, FMLEmbeddedChannel> mChannel;
-    private final GT_Packet[] mSubChannels;
+
+
+    @Getter
+    public enum PacketEnum {
+        TILE_ENTITY(new GT_Packet_TileEntity()),
+        SOUND(new GT_Packet_Sound()),
+        BLOCK_EVENT(new GT_Packet_Block_Event()),
+        POLLUTION(new GT_Packet_Pollution()),
+        MESSAGE_SET_FLASK_CAPACITY(new MessageSetFlaskCapacity()),
+        TILE_ENTITY_COVER(new GT_Packet_TileEntityCover()),
+        TILE_ENTITY_COVER_GUI(new GT_Packet_TileEntityCoverGUI()),
+        MESSAGE_UPDATE_FLUID_DISPLAY_ITEM(new MessageUpdateFluidDisplayItem()),
+        CLIENT_PREFERENCE(new GT_Packet_ClientPreference()),
+        WIRELESS_REDSTONE_COVER(new GT_Packet_WirelessRedstoneCover()),
+        TILE_ENTITY_COVER_NEW(new GT_Packet_TileEntityCoverNew()),
+        TILE_ENTITY_GUI(new GT_Packet_TileEntityGUI()),
+        INVENTORY_UPDATE(new GT_Packet_InventoryUpdate());
+
+        private final GT_Packet_New packet;
+
+        @Getter
+        private static final Map<Class<? extends GT_Packet>, PacketEnum> packetMap = new HashMap<>();
+
+        static {
+            Arrays.stream(values()).forEach(packetEnum -> packetMap.put(packetEnum.getPacket().getClass(), packetEnum));
+        }
+
+        PacketEnum(final @NonNull GT_Packet_New packet) {
+            this.packet = packet;
+        }
+
+        public static @NonNull GT_Packet processData(final @NonNull ByteArrayDataInput aData) {
+            return values()[aData.readByte()].packet.decode(aData);
+        }
+
+        public static byte getID(final @NonNull Class<? extends GT_Packet> packetClass) {
+            return (byte) packetMap.get(packetClass).ordinal();
+        }
+
+    }
 
     public GT_Network() {
         this.mChannel = NetworkRegistry.INSTANCE.newChannel("GregTech", this, new HandlerShared());
-        this.mSubChannels = new GT_Packet[]{ new GT_Packet_TileEntity(),
-                                             new GT_Packet_Sound(),
-                                             new GT_Packet_Block_Event(),
-                                             new GT_Packet_Pollution(),
-                                             new MessageSetFlaskCapacity(),
-                                             new GT_Packet_TileEntityCover(),
-                                             new GT_Packet_TileEntityCoverGUI(),
-                                             new MessageUpdateFluidDisplayItem(),
-                                             new GT_Packet_ClientPreference(),
-                                             new GT_Packet_WirelessRedstoneCover(),
-                                             new GT_Packet_TileEntityCoverNew() };
     }
 
     @Override
@@ -60,7 +89,7 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
     protected void decode(ChannelHandlerContext aContext, FMLProxyPacket aPacket, List<Object> aOutput)
             throws Exception {
         ByteArrayDataInput aData = ByteStreams.newDataInput(aPacket.payload().array());
-        GT_Packet tPacket = this.mSubChannels[aData.readByte()].decode(aData);
+        GT_Packet tPacket = PacketEnum.processData(aData);
         tPacket.setINetHandler(aPacket.handler());
         aOutput.add(tPacket);
     }

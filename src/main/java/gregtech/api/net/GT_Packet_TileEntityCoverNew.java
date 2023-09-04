@@ -59,11 +59,6 @@ public class GT_Packet_TileEntityCoverNew extends GT_Packet_New {
     }
 
     @Override
-    public byte getPacketID() {
-        return 11;
-    }
-
-    @Override
     public void setINetHandler(INetHandler aHandler) {
         if (aHandler instanceof NetHandlerPlayServer) {
             mPlayer = ((NetHandlerPlayServer) aHandler).playerEntity;

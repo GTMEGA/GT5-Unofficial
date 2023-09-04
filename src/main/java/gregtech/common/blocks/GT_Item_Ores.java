@@ -29,7 +29,7 @@ public class GT_Item_Ores extends ItemBlock {
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
     	String aName = super.getItemStackDisplayName(aStack);
-    	if (this.field_150939_a instanceof GT_Block_Ore) {
+    	if (this.field_150939_a instanceof GT_Block_Ore_Abstract) {
     		aName = Materials.getLocalizedNameForItem(aName, aStack.getItemDamage() % 1000);
     	}
     	return aName;

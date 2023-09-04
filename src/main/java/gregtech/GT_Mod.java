@@ -4,7 +4,6 @@ import com.google.common.base.Stopwatch;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enchants.Enchantment_EnderDamage;
@@ -18,12 +17,17 @@ import gregtech.api.objects.ReverseShapelessRecipe;
 import gregtech.api.objects.XSTR;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
+import gregtech.api.util.keybind.GT_KeyHandler;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
 import gregtech.common.GT_Proxy;
 import gregtech.common.GT_RecipeAdder;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
+import gregtech.common.entities.explosives.GT_Entity_DaisyCutterExplosive;
+import gregtech.common.entities.explosives.GT_Entity_MiningExplosive;
+import gregtech.common.entities.explosives.GT_Entity_TunnelExplosive;
+import gregtech.common.items.GT_MEGAnet;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gregtech.common.misc.GT_Command;
@@ -42,7 +46,6 @@ import gregtech.loaders.misc.GT_CoverLoader;
 import gregtech.loaders.misc.NetworkDispatcher;
 import gregtech.loaders.postload.*;
 import gregtech.loaders.preload.*;
-import gregtech.loaders.preload.GT_Loader_MetaTileEntities;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 import net.minecraft.creativetab.CreativeTabs;
@@ -75,8 +78,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_AE;
-import static gregtech.api.enums.GT_Values.MOD_ID_FR;
+import static cpw.mods.fml.relauncher.Side.CLIENT;
+import static gregtech.api.enums.GT_Values.*;
+
 
 @SuppressWarnings("ALL")
 @Mod(modid = "gregtech", name = "GregTech", version = "MC1710", useMetadata = false,
@@ -129,7 +133,7 @@ public class GT_Mod implements IGT_Mod {
     @SidedProxy(modId = "gregtech", clientSide = "gregtech.common.GT_Client", serverSide = "gregtech.common.GT_Server")
     public static GT_Proxy gregtechproxy;
     public static int MAX_IC2 = 2147483647;
-    public static GT_Achievements achievements;
+    public static GT_Achievements.Dummy achievements = new GT_Achievements.Dummy();
     private final String aTextGeneral = "general";
     private final String aTextIC2 = "ic2_";
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
@@ -187,7 +191,7 @@ public class GT_Mod implements IGT_Mod {
             }
         }
 
-        if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+        if (FMLCommonHandler.instance().getSide() == CLIENT) {
             MinecraftForge.EVENT_BUS.register(new ExtraIcons());
             MinecraftForge.EVENT_BUS.register(new IntegratedCircuitScroll());
         }
@@ -215,9 +219,11 @@ public class GT_Mod implements IGT_Mod {
         GregTech_API.mTConstruct = Loader.isModLoaded("TConstruct");
         GregTech_API.mGalacticraft = Loader.isModLoaded("GalacticraftCore");
         GregTech_API.mAE2 = Loader.isModLoaded(MOD_ID_AE);
+        GregTech_API.mNEI = Loader.isModLoaded(MOD_ID_NEI);
         GT_Log.out.println("GT_Mod: Are you there Translocator? " + GregTech_API.mTranslocator);
         GT_Log.out.println("GT_Mod: Are you there TConstruct? " + GregTech_API.mTConstruct);
         GT_Log.out.println("GT_Mod: Are you there GalacticraftCore? " + GregTech_API.mGalacticraft);
+        GT_Log.out.println("GT_Mod: Are you there NEI? " + GregTech_API.mNEI);
 
         GT_Log.mLogFile = new File(aEvent.getModConfigurationDirectory().getParentFile(), "logs/GregTech.log");
         if (!GT_Log.mLogFile.exists()) {
@@ -261,9 +267,20 @@ public class GT_Mod implements IGT_Mod {
             }
             try {
                 GT_Log.pal = new PrintStream(GT_Log.mPlayerActivityLogFile);
-            } catch (Throwable ignored) {
-            }
+            } catch (Throwable ignored) {}
         }
+        if (tMainConfig.get(aTextGeneral, "MTEDefrag", false, "Shows free MTE space in the event of a conflict").getBoolean(false)) {
+            GT_Log.mMTELogFile = new File(aEvent.getModConfigurationDirectory().getParent(), "logs/MetaTileEntity.log");
+            if (!GT_Log.mMTELogFile.exists()) {
+                try {
+                    GT_Log.mMTELogFile.createNewFile();
+                } catch (Throwable ignored) {}
+            }
+            try {
+                GT_Log.mte = new PrintStream(GT_Log.mMTELogFile);
+            } catch (Throwable ignored) {}
+        }
+
         try {
             List<String> tList = ((GT_Log.LogBuffer) GT_Log.ore).mBufferedOreDictLog;
             GT_Log.ore.println("******************************************************************************");
@@ -284,6 +301,7 @@ public class GT_Mod implements IGT_Mod {
         GT_Values.hideAssLineRecipes = tMainConfig.get(aTextGeneral, "hide assline recipes", false).getBoolean(false);
         GT_Values.updateFluidDisplayItems = tMainConfig.get(aTextGeneral, "update fluid display items", true).getBoolean(true);
         GT_Values.allow_broken_recipemap = tMainConfig.get(aTextGeneral, "debug allow broken recipemap", false).getBoolean(false);
+        GT_Values.dump_meta_entity_space = tMainConfig.get(aTextGeneral, "MTEDefrag", dump_meta_entity_space, "Shows free MTE space in the event of a conflict").getBoolean(dump_meta_entity_space);
         GT_Values.debugCleanroom = tMainConfig.get(aTextGeneral, "debugCleanroom", false).getBoolean(false);
         GT_Values.debugDriller = tMainConfig.get(aTextGeneral, "debugDriller", false).getBoolean(false);
         GT_Values.debugWorldGen = tMainConfig.get(aTextGeneral, "debugWorldGen", false).getBoolean(false);
@@ -314,6 +332,34 @@ public class GT_Mod implements IGT_Mod {
             System.out.close();
             System.err.close();
         }
+        // Mining explosive config
+        final String meSection = "mining_explosives";
+        GT_Values.MEFortune = GT_Values.getConfigValue(tMainConfig, meSection, "fortune", GT_Values.MEFortune, "Fortune bonus");
+        GT_Values.MERays = GT_Values.getConfigValue(tMainConfig, meSection, "numRays", GT_Values.MERays, "Number of rays to cast along each axis");
+        GT_Values.MEFuse = GT_Values.getConfigValue(tMainConfig, meSection, "fuse", GT_Values.MEFuse, "Fuse length in ticks");
+        GT_Values.MERemoteDelay = GT_Values.getConfigValue(tMainConfig, meSection, "remoteDelay", GT_Values.MERemoteDelay, "Time between detonations when the remoted is activated");
+        GT_Values.MEMaxRemoteRange = GT_Values.getConfigValue(tMainConfig, meSection, "remoteRange", GT_Values.MEMaxRemoteRange, "Maximum distance the player can go while still detonating explosives");
+        //
+        GT_Values.MERayBaseRayDist = GT_Values.getConfigValue(tMainConfig, meSection, "baseRayDistance", GT_Values.MERayBaseRayDist, "Base length of the ray");
+        GT_Values.MERayPowerDropRatio = GT_Values.getConfigValue(tMainConfig, meSection, "rayPowerDropRatio", GT_Values.MERayPowerDropRatio, "The amount the ray power is multiplied by each step");
+        GT_Values.MERayDropBump = GT_Values.getConfigValue(tMainConfig, meSection, "rayDropBump", GT_Values.MERayDropBump, "Extra power drop");
+        GT_Values.MEOrePowerBoost = GT_Values.getConfigValue(tMainConfig, meSection, "orePowerBoost", GT_Values.MEOrePowerBoost, "How much explosion power an ore increases the ray by");
+        GT_Values.MERockResistanceDrop = GT_Values.getConfigValue(tMainConfig, meSection, "rockResistanceDrop", GT_Values.MERockResistanceDrop, "How much rock's explosion resistance is multiplied by");
+        GT_Values.MESoilPowerBoost = GT_Values.getConfigValue(tMainConfig, meSection, "soilPowerBoost", GT_Values.MESoilPowerBoost, "How much explosion power soil increases the ray by");
+        GT_Values.MEOtherResistanceDrop = GT_Values.getConfigValue(tMainConfig, meSection, "otherResistanceDrop", GT_Values.MEOtherResistanceDrop, "How much other block's explosion resistance is multiplied by");
+        GT_Values.MEExplosionPower = GT_Values.getConfigValue(tMainConfig, meSection, "explosionPower", GT_Values.MEExplosionPower, "Raw explosion power. (TNT has 4.0)");
+        GT_Values.MEMaxEntitySize = GT_Values.getConfigValue(tMainConfig, meSection, "maxSize", GT_Values.MEMaxEntitySize, "How large in blocks the primed entity can grow");
+        GT_Values.MEOreChance = GT_Values.getConfigValue(tMainConfig, meSection, "oreChance", GT_Values.MEOreChance, "Odds of getting an ore drop");
+        GT_Values.MESoilChance = GT_Values.getConfigValue(tMainConfig, meSection, "soilChance", GT_Values.MESoilChance, "Odds of getting a soil drop");
+        GT_Values.MERockChance = GT_Values.getConfigValue(tMainConfig, meSection, "rockChance", GT_Values.MERockChance, "Odds of getting a rock drop");
+        GT_Values.MEOtherChance = GT_Values.getConfigValue(tMainConfig, meSection, "otherChance", GT_Values.MEOtherChance, "Odds of getting an other drop");
+        GT_Values.MEMaxRange = GT_Values.getConfigValue(tMainConfig, meSection, "maxRange", GT_Values.MEMaxRange, "Maximum range of the explosion");
+        GT_Values.MEMinEntitySize = GT_Values.getConfigValue(tMainConfig, meSection, "minSize", GT_Values.MEMinEntitySize, "Minimum entity size");
+        GT_Values.MEOffsetRatio = GT_Values.getConfigValue(tMainConfig, meSection, "offsetRatio", GT_Values.MEOffsetRatio, "Ratio of the total radius that the explosion is offset by");
+        //
+        GT_Values.MEFancyDrops = GT_Values.getConfigValue(tMainConfig, meSection, "doFancyDrops", GT_Values.MEFancyDrops, "Whether to deliver the items to the player directly");
+        GT_Values.MERequiresRemote = GT_Values.getConfigValue(tMainConfig, meSection, "requireRemote", GT_Values.MEFancyDrops, "Whether the mining explosives require remote activation");
+        //
         /*if (tMainConfig.get(aTextGeneral, "disable_STDERR", false).getBoolean(false)) {
             System.err.close();
         }*/
@@ -481,6 +527,10 @@ public class GT_Mod implements IGT_Mod {
         EntityRegistry.registerModEntity(GT_Entity_Arrow.class, "GT_Entity_Arrow", 1, GT_Values.GT, 160, 1, true);
         EntityRegistry.registerModEntity(GT_Entity_Arrow_Potion.class, "GT_Entity_Arrow_Potion", 2, GT_Values.GT, 160, 1, true);
 
+        EntityRegistry.registerModEntity(GT_Entity_MiningExplosive.class, "GT_Entity_MiningExplosive", 3, GT_Values.GT, 160, 1, false);
+        EntityRegistry.registerModEntity(GT_Entity_DaisyCutterExplosive.class, "GT_Entity_DaisyCutter", 4, GT_Values.GT, 160, 1, false);
+        EntityRegistry.registerModEntity(GT_Entity_TunnelExplosive.class, "GT_Entity_TunnelExplosive", 5, GT_Values.GT, 160, 1, false);
+
         GT_FML_LOGGER.info("preReader");
         List<String> oreTags = new ArrayList<>();
         if (Loader.isModLoaded("MineTweaker3")) {
@@ -612,7 +662,7 @@ public class GT_Mod implements IGT_Mod {
         new GT_CoverBehaviorLoader().run();
         new GT_SonictronLoader().run();
         new GT_SpawnEventHandler();
-        
+
         if (gregtechproxy.mSortToTheEnd) {
             try {
                 GT_Log.out.println("GT_Mod: Sorting GregTech to the end of the Mod List for further processing.");
@@ -696,6 +746,14 @@ public class GT_Mod implements IGT_Mod {
         }
         new NetworkDispatcher();
 
+        if (FMLCommonHandler.instance().getSide() == CLIENT) {
+            initKeybinds(aEvent);
+        }
+    }
+
+    @SideOnly(CLIENT)
+    private static void initKeybinds(final FMLInitializationEvent aEvent) {
+        new GT_KeyHandler("key.meganet.toggle", "Toggle MEGAnet", GT_MEGAnet.MEGANetHotkeyHandler.INSTANCE::togglePlayerMeganet);
     }
 
     @Mod.EventHandler
@@ -722,7 +780,7 @@ public class GT_Mod implements IGT_Mod {
                 GT_Log.out.println("META " + i + " " + GregTech_API.METATILEENTITIES[i].getMetaName());
             }
         }
-        
+
         if (gregtechproxy.mSortToTheEnd) {
             gregtechproxy.registerUnificationEntries();
         } else {
@@ -807,8 +865,8 @@ public class GT_Mod implements IGT_Mod {
         GT_ModHandler.addIC2RecipesToGT(aOreWashingRecipeList, GT_Recipe.GT_Recipe_Map.sOreWasherRecipes, false, true, true);
         GT_ModHandler.addIC2RecipesToGT(aThermalCentrifugeRecipeList, GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes, true, true, true);
         GT_FML_LOGGER.info("IC2 Removal (" + stopwatch.stop() + "). Have a Cake.");
-        
-        
+
+
         if (GT_Values.D1) {
             GT_ModHandler.sSingleNonBlockDamagableRecipeList.forEach(iRecipe -> GT_Log.out.println("=> " + iRecipe.getRecipeOutput().getDisplayName()));
         }
@@ -844,7 +902,7 @@ public class GT_Mod implements IGT_Mod {
             })
            .filter(tName -> GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, aTextIC2 + tName, true))
            .map(tName -> GT_ModHandler.getIC2Item(tName, 1L)).forEach(GT_ModHandler::removeRecipeByOutputDelayed);
-        
+
 
         if (gregtechproxy.mNerfedVanillaTools) {
             GT_Log.out.println("GT_Mod: Nerfing Vanilla Tool Durability");
@@ -879,9 +937,9 @@ public class GT_Mod implements IGT_Mod {
             Items.diamond_hoe.setMaxDamage(768);
         }
 
-        
-        
-        /* 
+
+
+        /*
          * Until this point most crafting recipe additions, and removals, have been buffered.
          * Go through, execute the removals in bulk, and then any deferred additions.  The bulk removals in particular significantly speed up the recipe list
          * modifications.
@@ -892,7 +950,7 @@ public class GT_Mod implements IGT_Mod {
         GT_Log.out.println("GT_Mod: Adding buffered Recipes.");
         GT_ModHandler.stopBufferingCraftingRecipes();
         GT_FML_LOGGER.info("Executed delayed Crafting Recipes (" + stopwatch.stop() + "). Have a Cake.");
-        
+
         GT_Log.out.println("GT_Mod: Saving Lang File.");
         GT_LanguageManager.sEnglishFile.save();
         GregTech_API.sPostloadFinished = true;
@@ -968,7 +1026,7 @@ public class GT_Mod implements IGT_Mod {
         addSolidFakeLargeBoilerFuels();
         identifyAnySteam();
 
-        achievements = new GT_Achievements();
+        // achievements = new GT_Achievements();
 
         ReverseShapedRecipe.runReverseRecipes();
         ReverseShapelessRecipe.runReverseRecipes();
@@ -984,13 +1042,13 @@ public class GT_Mod implements IGT_Mod {
 
 
         CreativeTabs mainTab = new CreativeTabs("GTtools") {
-            @SideOnly(Side.CLIENT)
+            @SideOnly(CLIENT)
             @Override
             public ItemStack getIconItemStack() {
                 return ItemList.Tool_Cheat.get(1, new ItemStack(Blocks.iron_block, 1));
             }
 
-            @SideOnly(Side.CLIENT)
+            @SideOnly(CLIENT)
             @Override
             public Item getTabIconItem() {
                 return ItemList.Circuit_Integrated.getItem();

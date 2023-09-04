@@ -7,6 +7,7 @@ import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.graphs.Lock;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.paths.NodePath;
+import gregtech.api.interfaces.IAdvancedGUIEntity;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -1541,6 +1542,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     public void onNeighborBlockChange(int aX, int aY, int aZ) {
+        super.onNeighborBlockChange(aX, aY, aZ);
         if (canAccessData()) {
             final IMetaTileEntity meta = getMetaTileEntity();
             if (meta instanceof MetaPipeEntity) {
