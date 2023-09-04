@@ -137,7 +137,7 @@ public class GT_Tool_Chainsaw_MV extends GT_Tool_Chainsaw_LV implements IAOETool
             return 0;
         }
         var result = 0.0f;
-        val borker = new GT_TreeBorker(world, x, y, z, 1, 32, 32, -1, false);
+        val borker = new GT_TreeBorker(world, x, y, z, 1, 96, 96, -1, false);
         if (borker.isValidBlock(x, y, z)) {
             borker.borkTrees(x, y, z);
         }
@@ -146,7 +146,7 @@ public class GT_Tool_Chainsaw_MV extends GT_Tool_Chainsaw_LV implements IAOETool
             val tY = pos[1];
             val tZ = pos[2];
             val currentBlock = world.getBlock(tX, tY, tZ);
-            val hardness = currentBlock.getBlockHardness(world, tX, tY, tZ);
+            val hardness = currentBlock.getBlockHardness(world, tX, tY, tZ) * getDamageMultiplyer();
             result += hardness * damagePerBlock;
             breakBlock(stack, stats, 0, hardness, 0, digSpeed, world, tX, tY, tZ, (EntityPlayerMP) player, currentBlock);
         }
