@@ -11,6 +11,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.IAdvancedTEData;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.dev.GT_Container_DevEnergySource;
 import gregtech.common.gui.dev.GT_GUIContainer_DevEnergySource;
@@ -411,7 +412,7 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
 
     @Override
     public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return aPlayer.capabilities.isCreativeMode;
+        return GT_Utility.validatePlayerCanDoFancyStuff(aPlayer, true);
     }
 
     @Override

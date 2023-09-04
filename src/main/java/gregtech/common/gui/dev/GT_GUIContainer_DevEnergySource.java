@@ -20,6 +20,18 @@ import static gregtech.api.enums.GT_Values.VN;
 
 public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plus {
 
+    public static final Color TEXT_COLOR = new Color(0x30, 0x30, 0xFF, 0xFF);
+
+    public static final Color ERROR_COLOR = new Color(144, 8, 8, 0xFF);
+
+    private static int vTBoxY() {
+        return vSliderY() + 20;
+    }
+
+    private static int aTBoxY() {
+        return vTBoxY() + 20;
+    }
+
     public GT_GUIContainer_DevEnergySource(
             final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity
                                           ) {
@@ -109,20 +121,36 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
      */
     @Override
     public void drawExtras(final int mouseX, final int mouseY, final float parTicks) {
-        val tColor = new Color(0x30, 0x30, 0xFF, 0xFF);
-        val eColor = new Color(144, 8, 8, 0xFF);
         val left = 140;
-        drawString(String.format("%s(%d Eu/t)", getTierString(), V[getSource().getData().getTier()]), left, 40, tColor);
+        drawString(String.format("%s(%d Eu/t)", getTierString(), V[getSource().getData().getTier()]), left, vSliderY(), TEXT_COLOR);
         var volt = getSource().getData().getVoltage();
-        drawString(String.format("%d Eu/t(%s)", volt, VN[GT_Utility.getTier(volt)]), left, 61, tColor);
-        drawString("Amperage", left, 81, tColor);
+        drawString(String.format("%d Eu/t(%s)", volt, VN[GT_Utility.getTier(volt)]), left, vTBoxY(), TEXT_COLOR);
+        drawString("Amperage", left, aTBoxY(), TEXT_COLOR);
         if (!getSource().getData().canRun()) {
-            drawString(getSource().getDisabledStatus(), 8, 100, eColor);
+            drawString(getSource().getDisabledStatus(), elementLeft(), (int) (topButtonRowY() + buttonSize() * 1.5f), ERROR_COLOR);
+        } else {
+            drawString("Running", elementLeft(), (int) (topButtonRowY() + buttonSize() * 1.5f), TEXT_COLOR);
         }
     }
 
     public String getTierString() {
         return VN[getSource().getData().getTier()];
+    }
+
+    private static int vSliderY() {
+        return topButtonRowY() + buttonSize() + 24;
+    }
+
+    private static int buttonSize() {
+        return 16;
+    }
+
+    private static int elementLeft() {
+        return 8;
+    }
+
+    private static int topButtonRowY() {
+        return 8;
     }
 
     @Override
@@ -131,21 +159,26 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
     }
 
     private void addGUIElements() {
-        new GT_GuiIconCheckButton(this, 0, 8, 8, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Enable Activity", "Disable Activity").setChecked(
-                !getSource().getData().isEnabled()).setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
-            if (screen instanceof GT_GUIContainer_DevEnergySource && button instanceof GT_GuiIconCheckButton) {
-                ((GT_GuiIconCheckButton) button).setChecked(((GT_GUIContainer_DevEnergySource) screen).getSource().getData().isEnabled());
-            }
-        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
-        new GT_GuiIconButton(this, 1, 24, 8, GT_GuiIcon.MATH_ZERO).setTooltipText("Sets amperage and voltage to 0");
-        addRedstoneButton();
+        addButtons();
         addVoltTierSlider();
         addVoltageTextBox();
         addAmperageTextBox();
     }
 
+    private void addButtons() {
+        new GT_GuiIconCheckButton(
+                this, 0, elementLeft(), topButtonRowY(), GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Enable Activity", "Disable Activity").setChecked(
+                !getSource().getData().isEnabled()).setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
+            if (screen instanceof GT_GUIContainer_DevEnergySource && button instanceof GT_GuiIconCheckButton) {
+                ((GT_GuiIconCheckButton) button).setChecked(((GT_GUIContainer_DevEnergySource) screen).getSource().getData().isEnabled());
+            }
+        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
+        new GT_GuiIconButton(this, 1, elementLeft() + buttonSize(), topButtonRowY(), GT_GuiIcon.MATH_ZERO).setTooltipText("Sets amperage and voltage to 0");
+        addRedstoneButton();
+    }
+
     private void addRedstoneButton() {
-        final GT_GuiCycleButton rsButton = new GT_GuiCycleButton(this, 2, 40, 8, 0, new GT_GuiCycleButton.IconToolTipPair[]{
+        final GT_GuiCycleButton rsButton = new GT_GuiCycleButton(this, 2, elementLeft() + 2 * buttonSize(), topButtonRowY(), 0, new GT_GuiCycleButton.IconToolTipPair[]{
                 new GT_GuiCycleButton.IconToolTipPair(GT_GuiIcon.CROSS, "Ignores redstone"),
                 new GT_GuiCycleButton.IconToolTipPair(GT_GuiIcon.REDSTONE_OFF, "Requires low signal"),
                 new GT_GuiCycleButton.IconToolTipPair(GT_GuiIcon.REDSTONE_ON, "Requires signal"),
@@ -166,7 +199,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
     }
 
     private void addVoltTierSlider() {
-        final GT_GuiSlider voltTierSlider = new GT_GuiSlider(0, this, 8, 40, 128, 8, 0.0, 15.0, getSource().getData().getTier(), 16);
+        final GT_GuiSlider voltTierSlider = new GT_GuiSlider(0, this, elementLeft(), vSliderY(), 128, 8, 0.0, 15.0, getSource().getData().getTier(), 16);
         voltTierSlider.setTextHandler(slider -> String.format("Tier: %s", VN[(int) slider.getValue()]));
         voltTierSlider.setOnChange(slider -> {
             final IGuiScreen gui = slider.getGui();
@@ -183,7 +216,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
     }
 
     private void addVoltageTextBox() {
-        final GT_GuiIntegerTextBox vBox = new GT_GuiIntegerTextBox(this, 3, 8, 60, 128, 10);
+        final GT_GuiIntegerTextBox vBox = new GT_GuiIntegerTextBox(this, 3, elementLeft(), vTBoxY(), 128, 10);
         vBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
             if (screen instanceof GT_GUIContainer_DevEnergySource && button instanceof GT_GuiIntegerTextBox && !((GT_GuiIntegerTextBox) button).isFocused()) {
                 ((GT_GuiIntegerTextBox) button).setText(String.valueOf(((GT_GUIContainer_DevEnergySource) screen).getSource().getData().getVoltage()));
@@ -194,7 +227,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
     }
 
     private void addAmperageTextBox() {
-        final GT_GuiIntegerTextBox aBox = new GT_GuiIntegerTextBox(this, 4, 8, 80, 128, 10);
+        final GT_GuiIntegerTextBox aBox = new GT_GuiIntegerTextBox(this, 4, elementLeft(), aTBoxY(), 128, 10);
         aBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
             if (screen instanceof GT_GUIContainer_DevEnergySource && button instanceof GT_GuiIntegerTextBox && !((GT_GuiIntegerTextBox) button).isFocused()) {
                 ((GT_GuiIntegerTextBox) button).setText(String.valueOf(((GT_GUIContainer_DevEnergySource) screen).getSource().getData().getAmps()));

@@ -7,6 +7,7 @@ import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.damagesources.GT_DamageSources.DamageSourceHotItem;
@@ -126,6 +127,7 @@ import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
  * Just a few Utility Functions I use.
  */
 public class GT_Utility {
+
     /**
      * Formats a number with group separator and at most 2 fraction digits.
      */
@@ -141,6 +143,9 @@ public class GT_Utility {
     private static final Map<String, Fluid> sFluidUnlocalizedNameToFluid = new HashMap<>();
     /** Must use {@code Supplier} here because the ore prefixes have not yet been registered at class load time. */
     private static final Map<OrePrefixes, Supplier<ItemStack>> sOreToCobble = new HashMap<>();
+
+    public static final DamageSource HOUSTON = new DamageSource("Houston");
+
     public static volatile int VERSION = 509;
     public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true, RF_CHECK = false;
     public static Map<GT_PlayedSound, Integer> sPlayedSoundMap = new /*Concurrent*/HashMap<>();
@@ -175,6 +180,10 @@ public class GT_Utility {
         sOreToCobble.put(
                 OrePrefixes.oreEndstone,
                 () -> new ItemStack(Blocks.end_stone));
+
+        // TODO: Figure out how to do this
+        // GT_LanguageManager.addStringLocalization("death.attack.Houston", "$s was smote by Houston for violating the laws of physics.");
+
     }
 
     public static int safeInt(long number, int margin) {
@@ -3036,4 +3045,28 @@ public class GT_Utility {
 
         return false;
     }
+
+    public static boolean playerIsOP(EntityPlayer player) {
+        return player instanceof EntityPlayerMP && ((EntityPlayerMP) player).mcServer.getConfigurationManager().func_152596_g(player.getGameProfile());
+    }
+
+    public static boolean playerIsCreative(EntityPlayer player) {
+        return player.capabilities.isCreativeMode;
+    }
+
+    public static boolean playerCanDoFancyStuff(EntityPlayer player) {
+        return playerIsOP(player) || playerIsCreative(player);
+    }
+
+    public static boolean validatePlayerCanDoFancyStuff(EntityPlayer player, boolean doDamage) {
+        if (playerCanDoFancyStuff(player)) {
+            return true;
+        }
+        player.addChatMessage(new ChatComponentText("You don't have the stones to use this"));
+        if (doDamage) {
+            player.attackEntityFrom(HOUSTON, 1);
+        }
+        return false;
+    }
+
 }

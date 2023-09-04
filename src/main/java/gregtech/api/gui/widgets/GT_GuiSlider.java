@@ -312,23 +312,28 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     protected void drawBackground(final int mouseX, final int mouseY, final float parTicks) {
         val hoverModifier = this.inBounds(mouseX, mouseY, 0) ? 0x00303000 : 0;
-        val positionLeft = (int) (getCurrentX() - getPseudoWidth() * barRadius / 2);
-        val positionRight = (int) (getCurrentX() + getPseudoWidth() * barRadius / 2);
         val edgeColor = GT_GUIContainer_Plus.colorToARGB(new Color(0x30, 0x30, 0xFF, 0xFF)) ^ hoverModifier;
         val midColor = GT_GUIContainer_Plus.colorToARGB(new Color(0x30, 0x30, 0xFF, 0x3F)) ^ hoverModifier;
         val left = guiX;
         val right = guiX + width;
-        val midPoint = (int) getCurrentX();
-        final int mpLeft;
-        final int mpRight;
+        final int barLeft;
+        final int barRight;
         if (isDragged) {
-            mpLeft = (int) positionLeft;
-            mpRight = (int) positionRight;
+            barLeft = getPositionLeft();
+            barRight = getPositionRight();
         } else {
-            mpLeft = mpRight = midPoint;
+            barLeft = barRight = (int) getCurrentX();
         }
-        drawGradientRect(left, guiY, mpLeft, guiY + height, edgeColor, midColor, false);
-        drawGradientRect(mpRight, guiY, right, guiY + height, midColor, edgeColor, false);
+        drawGradientRect(left, guiY, barLeft, guiY + height, edgeColor, midColor, false);
+        drawGradientRect(barRight, guiY, right, guiY + height, midColor, edgeColor, false);
+    }
+
+    private int getPositionRight() {
+        return (int) (getCurrentX() + getPseudoWidth() * barRadius / 2);
+    }
+
+    private int getPositionLeft() {
+        return (int) (getCurrentX() - getPseudoWidth() * barRadius / 2);
     }
 
     protected int getLogTen(double val) {
@@ -387,17 +392,13 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
     }
 
     protected void drawSlide(final int mouseX, final int mouseY, final float parTicks) {
-        val pseudoWidth = getPseudoWidth();
-        val currentX = getCurrentX();
-        val positionLeft = (int) (currentX - pseudoWidth * barRadius / 2);
-        val positionRight = (int) (currentX + pseudoWidth * barRadius / 2);
         final int color;
         if (isDragged) {
             color = GT_GUIContainer_Plus.colorToARGB(new Color(43, 43, 80, 0xFF));
         } else {
             color = GT_GUIContainer_Plus.colorToARGB(new Color(0x3F, 0x3F, 0xFF, 0x7F));
         }
-        drawRect(positionLeft, guiY, positionRight, guiY + height, color);
+        drawRect(getPositionLeft(), guiY, getPositionRight(), guiY + height, color);
     }
 
     private double getCurrentX() {
