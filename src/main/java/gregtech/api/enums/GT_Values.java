@@ -329,7 +329,7 @@ public class GT_Values {
             MESoilPowerBoost = 1.0f, MEOtherResistanceDrop = 10.0f, MEExplosionPower = 9.0f, MEMaxEntitySize = 1.2f, MEOreChance = 1.0f, MESoilChance = 0.05f,
             MERockChance = 0.025f, MEOtherChance = 0.0f, MEMaxRange = 4.5f, MEMinEntitySize = 0.8f, MEOffsetRatio = 0.75f;
 
-    public static boolean MEFancyDrops = true, MERequiresRemote = true;
+    public static boolean MEFancyDrops = false, MERequiresRemote = true;
 
     public static boolean getConfigValue(final Configuration config, final String category, final String key, final boolean defValue, final String comment) {
         return config.get(category, key, defValue, comment).getBoolean(defValue);
