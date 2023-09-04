@@ -2,9 +2,7 @@ package gregtech.api.util;
 
 
 import gregtech.api.enums.OrePrefixes;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -16,6 +14,8 @@ import java.util.*;
 
 
 @Getter
+@Builder
+@AllArgsConstructor
 @RequiredArgsConstructor
 public class GT_TreeBorker {
 
@@ -42,12 +42,17 @@ public class GT_TreeBorker {
     /**
      * Maximum spread from a given block, negative means unlimited
      * */
-    private final int maxSpread;
+    @Builder.Default
+    private int maxSpread = -1;
 
     /**
      * Maximum total blocks it will process, negative means unlimited
      * */
-    private final int maxScannable;
+    @Builder.Default
+    private int maxScannable = -1;
+
+    @Builder.Default
+    private boolean allowLeaves = true;
 
     private final Queue<int[]> positions = new ArrayDeque<>();
 
@@ -65,7 +70,6 @@ public class GT_TreeBorker {
             seen.add(getLongFromCoords(sX, sY, sZ));
             return this;
         }
-//        System.out.printf("Borking: %d at (%d %d %d) %n", i++, sX, sY, sZ);
         final Queue<Long> longQueue = new ArrayDeque<>();
         final Queue<int[]> posQueue = new ArrayDeque<>();
         int count = 0;
@@ -126,8 +130,8 @@ public class GT_TreeBorker {
     }
 
     public boolean isPlant(final Block block) {
-        return (block.getMaterial() == Material.leaves) || (block.getMaterial() == Material.vine) || (block.getMaterial() == Material.plants) ||
-               (block.getMaterial() == Material.gourd);
+        return allowLeaves && ((block.getMaterial() == Material.leaves) || (block.getMaterial() == Material.vine) || (block.getMaterial() == Material.plants) ||
+               (block.getMaterial() == Material.gourd));
     }
 
     public ChunkPosition getChunkPosition(final int[] coords) {

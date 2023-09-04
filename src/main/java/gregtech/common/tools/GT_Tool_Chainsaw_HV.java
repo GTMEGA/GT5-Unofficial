@@ -4,7 +4,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import net.minecraft.item.ItemStack;
 
-public class GT_Tool_Chainsaw_HV extends GT_Tool_Chainsaw_LV {
+public class GT_Tool_Chainsaw_HV extends GT_Tool_Chainsaw_MV {
     @Override
     public int getToolDamagePerBlockBreak() {
         return 800;
