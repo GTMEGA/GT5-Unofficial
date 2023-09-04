@@ -638,4 +638,14 @@ public final class GT_Achievements {
             }
         }
     }
+
+    public static final class Dummy {
+        public void issueAchievement(EntityPlayer entityplayer, String textId) {}
+
+        public void issueAchivementHatch(EntityPlayer player, ItemStack stack) {}
+
+        public Achievement getAchievement(String unlocalizedName) {return null;}
+
+        public void issueAchivementHatchFluid(EntityPlayer playerEntityByName, FluidStack mOutputFluid) {}
+    }
 }

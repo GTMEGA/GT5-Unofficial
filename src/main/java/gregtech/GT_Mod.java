@@ -41,6 +41,7 @@ import gregtech.loaders.load.GT_CoverBehaviorLoader;
 import gregtech.loaders.load.GT_FuelLoader;
 import gregtech.loaders.load.GT_ItemIterator;
 import gregtech.loaders.load.GT_SonictronLoader;
+import gregtech.loaders.misc.GT_Achievements;
 import gregtech.loaders.misc.GT_Bees;
 import gregtech.loaders.misc.GT_CoverLoader;
 import gregtech.loaders.misc.NetworkDispatcher;
@@ -132,7 +133,7 @@ public class GT_Mod implements IGT_Mod {
     @SidedProxy(modId = "gregtech", clientSide = "gregtech.common.GT_Client", serverSide = "gregtech.common.GT_Server")
     public static GT_Proxy gregtechproxy;
     public static int MAX_IC2 = 2147483647;
-    // public static GT_Achievements achievements;
+    public static GT_Achievements.Dummy achievements = new GT_Achievements.Dummy();
     private final String aTextGeneral = "general";
     private final String aTextIC2 = "ic2_";
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
