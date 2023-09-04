@@ -4,7 +4,6 @@ import com.google.common.base.Stopwatch;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enchants.Enchantment_EnderDamage;
@@ -79,6 +78,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static cpw.mods.fml.relauncher.Side.CLIENT;
 import static gregtech.api.enums.GT_Values.*;
 
 
@@ -191,7 +191,7 @@ public class GT_Mod implements IGT_Mod {
             }
         }
 
-        if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+        if (FMLCommonHandler.instance().getSide() == CLIENT) {
             MinecraftForge.EVENT_BUS.register(new ExtraIcons());
             MinecraftForge.EVENT_BUS.register(new IntegratedCircuitScroll());
         }
@@ -746,11 +746,13 @@ public class GT_Mod implements IGT_Mod {
         }
         new NetworkDispatcher();
 
-        initKeybinds(aEvent);
-
+        if (FMLCommonHandler.instance().getSide() == CLIENT) {
+            initKeybinds(aEvent);
+        }
     }
 
-    public void initKeybinds(final FMLInitializationEvent aEvent) {
+    @SideOnly(CLIENT)
+    private static void initKeybinds(final FMLInitializationEvent aEvent) {
         new GT_KeyHandler("key.meganet.toggle", "Toggle MEGAnet", GT_MEGAnet.MEGANetHotkeyHandler.INSTANCE::togglePlayerMeganet);
     }
 
@@ -1040,13 +1042,13 @@ public class GT_Mod implements IGT_Mod {
 
 
         CreativeTabs mainTab = new CreativeTabs("GTtools") {
-            @SideOnly(Side.CLIENT)
+            @SideOnly(CLIENT)
             @Override
             public ItemStack getIconItemStack() {
                 return ItemList.Tool_Cheat.get(1, new ItemStack(Blocks.iron_block, 1));
             }
 
-            @SideOnly(Side.CLIENT)
+            @SideOnly(CLIENT)
             @Override
             public Item getTabIconItem() {
                 return ItemList.Circuit_Integrated.getItem();
