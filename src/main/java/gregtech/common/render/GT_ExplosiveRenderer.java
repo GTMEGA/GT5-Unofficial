@@ -5,7 +5,6 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
-import gregtech.common.blocks.explosives.GT_Block_Explosive;
 import gregtech.common.entities.explosives.GT_Entity_Explosive;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.Render;
@@ -86,7 +85,7 @@ public class GT_ExplosiveRenderer extends Render {
     protected void renderTheBlock(final GT_Entity_Explosive entityExplosive, final float brightness) {
         final RenderBlocks renderer = RenderBlocks.getInstance();
         GL11.glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
-        renderer.renderBlockAsItem(entityExplosive.getBlockToRenderAs(), entityExplosive.getMetadata() | GT_Block_Explosive.sideMask, brightness);
+        renderer.renderBlockAsItem(entityExplosive.getBlockToRenderAs(), entityExplosive.getMetadata(), brightness);
     }
 
 }

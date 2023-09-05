@@ -21,7 +21,7 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
             final World world, final EntityTNTPrimed entity, final double x, final double y, final double z, final float power
                                   ) {
         super(world, entity, x, y, z, power);
-        this.borker = new GT_TreeBorker(world, MathHelper.floor_double(x), MathHelper.floor_double(y), MathHelper.floor_double(z), 3, 64, 12, -1);
+        this.borker = new GT_TreeBorker(world, MathHelper.floor_double(x), MathHelper.floor_double(y), MathHelper.floor_double(z), 3, 64, 12, -1, true);
     }
 
     /**

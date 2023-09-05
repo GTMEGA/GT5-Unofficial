@@ -10,6 +10,8 @@ import lombok.val;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 
+import java.awt.*;
+
 
 public class GT_GUIContainer_DevFluidSource extends GT_GUIContainer_Machine_Plus {
 
@@ -189,14 +191,15 @@ public class GT_GUIContainer_DevFluidSource extends GT_GUIContainer_Machine_Plus
 
     @Override
     public void drawExtras(final int mouseX, final int mouseY, final float parTicks) {
-        final int inactiveColor = 0xFF30304F;
-        final int activeColor = 0xFF3030FF;
-        final int left = boxX() + 3 + boxWidth();
-        final boolean pT = getSource().getData().isPerTick();
-        drawString("/ tick", left, 24, pT ? activeColor : inactiveColor);
-        drawString("/ second", left, 34, pT ? inactiveColor : activeColor);
+        val inactiveColor = new Color(0x30, 0x30, 0x4F, 0xFF);
+        val activeColor = new Color(0x30, 0x30, 0xFF, 0xFF);
+        val errorColor = new Color(0xFF, 0x55, 0x55, 0xFF);
+        val left = boxX() + 3 + boxWidth();
+        val isPerTick = getSource().getData().isPerTick();
+        drawString("/ tick", left, 24, isPerTick ? activeColor : inactiveColor);
+        drawString("/ second", left, 34, isPerTick ? inactiveColor : activeColor);
         if (!getSource().canRun()) {
-            drawString(getSource().getDisabledStatus(), left, 44, rgbaToInt(0xFF, 0x55, 0x55, 0xFF));
+            drawString(getSource().getDisabledStatus(), left, 44, errorColor);
         }
     }
 

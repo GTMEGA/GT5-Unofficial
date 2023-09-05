@@ -36,7 +36,7 @@ public class TreeBorkTester extends GT_Generic_Item {
             final float hitY, final float hitZ
                                  ) {
         if (!world.isRemote) {
-            final GT_TreeBorker borker = new GT_TreeBorker(world, x, y, z, 3, 64, 16, 1024);
+            final GT_TreeBorker borker = new GT_TreeBorker(world, x, y, z, 3, 64, 16, 1024, true);
             borker.borkTrees(x, y, z);
             borker.getPositions().forEach(coords -> {
                 world.setBlockToAir(coords[0], coords[1], coords[2]);

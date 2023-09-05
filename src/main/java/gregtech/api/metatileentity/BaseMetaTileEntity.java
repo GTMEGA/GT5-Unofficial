@@ -947,7 +947,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
             doEnetUpdate();
             cableUpdateDelay = 10;
-            
+
             if (mMetaTileEntity.shouldTriggerBlockUpdate()) {
                 // If we're triggering a block update this will call onMachineBlockUpdate()
                 GregTech_API.causeMachineUpdate(worldObj, xCoord, yCoord, zCoord);
@@ -1446,6 +1446,9 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public ArrayList<ItemStack> getDrops() {
+        if (mMetaTileEntity == null || !mMetaTileEntity.canDrop()) {
+            return new ArrayList<>();
+        }
         ItemStack rStack = new ItemStack(GregTech_API.sBlockMachines, 1, mID);
         NBTTagCompound tNBT = new NBTTagCompound();
         if (mRecipeStuff != null && !mRecipeStuff.hasNoTags()) tNBT.setTag("GT.CraftingComponents", mRecipeStuff);

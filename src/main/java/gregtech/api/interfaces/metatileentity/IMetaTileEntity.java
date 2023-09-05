@@ -431,4 +431,8 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     default void getWailaNBT(NBTTagCompound tag, World world, BlockCoord pos) {
     }
 
+    default boolean canDrop() {
+        return true;
+    }
+
 }

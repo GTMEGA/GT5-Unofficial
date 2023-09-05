@@ -539,7 +539,15 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
      */
     @Override
     public boolean isAccessAllowed(final EntityPlayer aPlayer) {
-        return aPlayer.capabilities.isCreativeMode;
+        return GT_Utility.validatePlayerCanDoFancyStuff(aPlayer, true);
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public boolean canDrop() {
+        return false;
     }
 
     @Override

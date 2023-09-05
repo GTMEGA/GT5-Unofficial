@@ -364,7 +364,15 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
      */
     @Override
     public boolean isAccessAllowed(final EntityPlayer aPlayer) {
-        return aPlayer.capabilities.isCreativeMode;
+        return GT_Utility.validatePlayerCanDoFancyStuff(aPlayer, true);
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public boolean canDrop() {
+        return false;
     }
 
     /**
