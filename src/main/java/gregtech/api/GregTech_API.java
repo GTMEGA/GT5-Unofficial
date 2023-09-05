@@ -21,6 +21,7 @@ import gregtech.api.threads.GT_Runnable_Cable_Update;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
 import gregtech.api.world.GT_Worldgen;
+import gregtech.common.items.GT_MEGAnet;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -269,7 +270,7 @@ public class GregTech_API {
     public static Block
             sBlockLongDistancePipes;
 
-    public static Item sMEGAnet;
+    public static GT_MEGAnet sMEGAnet;
 
     public static Block sPotentiometer;
 

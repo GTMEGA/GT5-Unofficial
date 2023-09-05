@@ -27,10 +27,14 @@ import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.gui.GT_ContainerVolumetricFlask;
 import gregtech.common.gui.GT_Container_IntegratedCircuit;
 import gregtech.common.gui.GT_GUIContainerVolumetricFlask;
+import gregtech.common.gui.meganet.GT_MEGAnet_Container;
+import gregtech.common.gui.meganet.GT_MEGAnet_GuiContainer;
+import gregtech.common.items.GT_MEGAnet;
 import gregtech.common.items.GT_MetaGenerated_Item_98;
 import gregtech.common.gui.GT_GUIContainer_IntegratedCircuit;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -1668,6 +1672,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     @Override
     public Object getServerGuiElement(int aID, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
+        if (aID < 0) {
+            aID = -aID;
+            if (aID == 1) {
+                val meganet = GT_MEGAnet.MEGANetInteractionHandler.INSTANCE.getPlayerMeganet(aPlayer);
+                if (meganet != null) {
+                    return new GT_MEGAnet_Container(aPlayer, meganet, GregTech_API.sMEGAnet.getFilter(meganet));
+                }
+            }
+        }
         if(aID>=1000){
             int ID = aID-1000;
             if (ID == 10) {
@@ -1695,6 +1708,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     @Override
     public Object getClientGuiElement(int aID, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
+        if (aID < 0) {
+            aID = -aID;
+            if (aID == 1) {
+                val meganet = GT_MEGAnet.MEGANetInteractionHandler.INSTANCE.getPlayerMeganet(aPlayer);
+                if (meganet != null) {
+                    return new GT_MEGAnet_GuiContainer(new GT_MEGAnet_Container(aPlayer, meganet, GregTech_API.sMEGAnet.getFilter(meganet)));
+                }
+            }
+        }
         if(aID>=1000){
             int ID = aID-1000;
             if (ID == 10) {

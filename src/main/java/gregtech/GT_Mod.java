@@ -753,7 +753,8 @@ public class GT_Mod implements IGT_Mod {
 
     @SideOnly(CLIENT)
     private static void initKeybinds(final FMLInitializationEvent aEvent) {
-        new GT_KeyHandler("key.meganet.toggle", "Toggle MEGAnet", GT_MEGAnet.MEGANetHotkeyHandler.INSTANCE::togglePlayerMeganet);
+        new GT_KeyHandler("key.meganet.toggle", "Toggle MEGAnet", GT_MEGAnet.MEGANetInteractionHandler.INSTANCE::togglePlayerMeganet);
+        new GT_KeyHandler("key.meganet.gui", "Open MEGAnet Menu", GT_MEGAnet.MEGANetInteractionHandler.INSTANCE::openGUI);
     }
 
     @Mod.EventHandler

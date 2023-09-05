@@ -1,6 +1,7 @@
 package gregtech.common.items;
 
 
+import appeng.integration.modules.GT;
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import com.google.common.io.ByteArrayDataInput;
@@ -41,11 +42,11 @@ import java.util.List;
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles", striprefs = true)
 public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketReceivableItem {
 
-    public static class MEGANetHotkeyHandler {
+    public static class MEGANetInteractionHandler {
 
-        public static MEGANetHotkeyHandler INSTANCE = new MEGANetHotkeyHandler();
+        public static MEGANetInteractionHandler INSTANCE = new MEGANetInteractionHandler();
 
-        private MEGANetHotkeyHandler() {
+        private MEGANetInteractionHandler() {
             FMLCommonHandler.instance().bus().register(this);
         }
 
@@ -105,6 +106,10 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
                     doToggle(player, (GT_MEGAnet) stack.getItem(), bauble.booleanValue(), slotIdx.intValue());
                 }
             }
+        }
+
+        public void openGUI(final @NonNull EntityPlayer player) {
+            player.openGui(GT_Values.GT, -1, player.worldObj, 0, 0, 0);
         }
 
         private void doToggle(final EntityPlayer player, final GT_MEGAnet item, final boolean bauble, final int slot) {
@@ -181,7 +186,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
             return nbt.hasKey("filter") ? new MEGAnetFilter(nbt.getCompoundTag("filter")) : new MEGAnetFilter();
         }
 
-        private final List<ItemSetting> filter = new ArrayList<>(MAX_FILTERED);
+        private final List<ItemSetting> filter = new ArrayList<>();
 
         @Builder.Default private boolean enabled = false;
 
@@ -192,7 +197,11 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
             if (filterNBT.hasKey("itemFilter", Constants.NBT.TAG_LIST)) {
                 final NBTTagList itemList = filterNBT.getTagList("itemFilter", Constants.NBT.TAG_COMPOUND);
                 for (int i = 0; i < itemList.tagCount() && i < MAX_FILTERED; i++) {
-                    filter.add(ItemSetting.readFromNBT(itemList.getCompoundTagAt(i)));
+                    if (i > filter.size()) {
+                        filter.add(ItemSetting.readFromNBT(itemList.getCompoundTagAt(i)));
+                    } else {
+                        filter.set(i, ItemSetting.readFromNBT(itemList.getCompoundTagAt(i)));
+                    }
                 }
             }
         }
@@ -628,7 +637,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
         return BASE_RANGE;
     }
 
-    protected MEGAnetFilter getFilter(final @NonNull ItemStack stack) {
+    public MEGAnetFilter getFilter(final @NonNull ItemStack stack) {
         return MEGAnetFilter.readFromNBT(validateNBT(stack));
     }
 

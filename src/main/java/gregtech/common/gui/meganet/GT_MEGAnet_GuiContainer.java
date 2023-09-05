@@ -23,4 +23,9 @@ public class GT_MEGAnet_GuiContainer extends GT_GUIContainer_Plus {
         return 82;
     }
 
+    @Override
+    protected boolean autoDrawSlots() {
+        return true;
+    }
+
 }
