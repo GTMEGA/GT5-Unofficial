@@ -526,7 +526,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
     }
 
     protected MEGAnetFilter getFilter(final @NonNull ItemStack stack) {
-        return new MEGAnetFilter(); // MEGAnetFilter.readFromNBT(validateNBT(stack)); // <- Disabled for now
+        return MEGAnetFilter.readFromNBT(validateNBT(stack));
     }
 
     private void incrementPickedUp(final EntityPlayer player, final ItemStack stack, final int stackSize) {
