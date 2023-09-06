@@ -8,6 +8,8 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.damagesources.GT_DamageSources.DamageSourceHotItem;
@@ -72,6 +74,7 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.*;
@@ -110,6 +113,7 @@ import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.GT_Mod.gregtechproxy;
 import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.GT_Values.DW;
 import static gregtech.api.enums.GT_Values.E;
@@ -3067,6 +3071,14 @@ public class GT_Utility {
             player.attackEntityFrom(HOUSTON, 1);
         }
         return false;
+    }
+
+    public static EntityPlayer getPlayerFromUUID(final UUID uuid) {
+        return gregtechproxy.getPlayerFromUUID(uuid);
+    }
+
+    public static EntityPlayer getPlayerFromUUID(final UUIDWrapper wrapper) {
+        return getPlayerFromUUID(wrapper.getUuid());
     }
 
 }

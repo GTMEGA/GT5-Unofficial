@@ -14,6 +14,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.IPacketReceivableItem;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.net.GT_Packet_InventoryUpdate;
+import gregtech.api.net.GT_Packet_OpenGUI;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.api.util.interop.BaublesInterop;
@@ -36,6 +37,7 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -70,7 +72,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
         }
 
         public ItemStack getPlayerMeganet(final EntityPlayer player, final boolean requireEnabled, final MutableInt slot, final MutableBoolean bauble) {
-            if (player != null && player.worldObj.isRemote) {
+            if (player != null/*  && player.worldObj.isRemote */) {
                 int idx = 0;
                 if (BaublesInterop.INSTANCE.isBaublesLoaded()) {
                     for (val stack : BaublesInterop.INSTANCE.getBaubles(player)) {
@@ -109,7 +111,8 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
         }
 
         public void openGUI(final @NonNull EntityPlayer player) {
-            player.openGui(GT_Values.GT, -1, player.worldObj, 0, 0, 0);
+            // player.openGui(GT_Values.GT, -1, player.worldObj, 0, 0, 0);
+            GT_Values.NW.sendToServer(new GT_Packet_OpenGUI(player, -1));
         }
 
         private void doToggle(final EntityPlayer player, final GT_MEGAnet item, final boolean bauble, final int slot) {
@@ -179,14 +182,14 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
         }
 
 
-        public static final int MAX_FILTERED = 15;
+        public static final int MAX_FILTERED = 36;
 
         @NonNull
         public static MEGAnetFilter readFromNBT(final @NonNull NBTTagCompound nbt) {
             return nbt.hasKey("filter") ? new MEGAnetFilter(nbt.getCompoundTag("filter")) : new MEGAnetFilter();
         }
 
-        private final List<ItemSetting> filter = new ArrayList<>();
+        private final ItemSetting filter[] = new ItemSetting[MAX_FILTERED];
 
         @Builder.Default private boolean enabled = false;
 
@@ -197,11 +200,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
             if (filterNBT.hasKey("itemFilter", Constants.NBT.TAG_LIST)) {
                 final NBTTagList itemList = filterNBT.getTagList("itemFilter", Constants.NBT.TAG_COMPOUND);
                 for (int i = 0; i < itemList.tagCount() && i < MAX_FILTERED; i++) {
-                    if (i > filter.size()) {
-                        filter.add(ItemSetting.readFromNBT(itemList.getCompoundTagAt(i)));
-                    } else {
-                        filter.set(i, ItemSetting.readFromNBT(itemList.getCompoundTagAt(i)));
-                    }
+                        filter[i] = ItemSetting.readFromNBT(itemList.getCompoundTagAt(i));
                 }
             }
         }
@@ -223,7 +222,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
         }
 
         public boolean matchesFilter(final @NonNull ItemStack stack) {
-            return whitelist == filter.stream().anyMatch(fStack -> GT_Utility.areStacksEqual(fStack.getStack(), stack));
+            return whitelist == Arrays.stream(filter).anyMatch(fStack -> GT_Utility.areStacksEqual(fStack.getStack(), stack));
         }
 
         @Override
@@ -251,7 +250,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
             if (index < 0 || index >= MAX_FILTERED) {
                 return null;
             }
-            return filter.get(index);
+            return filter[index];
         }
 
         @Override
@@ -481,13 +480,13 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
     protected void addAdditionalToolTips(final List aList, final ItemStack aStack, final EntityPlayer aPlayer) {
         aList.add((isActive(aStack) ? EnumChatFormatting.GREEN + "Active" : EnumChatFormatting.RED + "Inactive"));
         aList.add(getToggleInfoString());
-        final int range = getRange(aStack);
+        val range = getRange(aStack);
         aList.add((String.format("Range of (%d / %d)", range, heldRange(range))));
-        final MEGAnetFilter filter = getFilter(aStack);
+        val filter = getFilter(aStack);
         if (FILTER_WORKS) {
             if (filter.isEnabled()) {
                 aList.add("Filter mode: " + (filter.isWhitelist() ? EnumChatFormatting.WHITE + "Whitelist" : EnumChatFormatting.DARK_GRAY + "Blacklist"));
-                final int filSize = filter.getFilter().size();
+                val filSize = filter.getFilter().length;
                 if (filSize > 0) {
                     aList.add(String.format("Filtering %d items", filSize));
                 }
@@ -692,11 +691,19 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
 
     private void doMagnetStuff(final ItemStack stack, final World world, final Entity entity, final boolean currentItem) {
         if (!world.isRemote) {
-            if (defBool(validateNBT(stack), "enabled", true) && getTimer(stack) % TIMER == 0) {
+            if (isEnabled(stack) && isTimerActive(stack)) {
                 magnetize(stack, world, entity, currentItem);
             }
             adjustTimer(stack);
         }
+    }
+
+    private boolean isTimerActive(final ItemStack stack) {
+        return getTimer(stack) % TIMER == 0;
+    }
+
+    public boolean isEnabled(final ItemStack stack) {
+        return defBool(validateNBT(stack), "enabled", true);
     }
 
 }

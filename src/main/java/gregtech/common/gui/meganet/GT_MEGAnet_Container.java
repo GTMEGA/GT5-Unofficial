@@ -1,6 +1,5 @@
 package gregtech.common.gui.meganet;
 
-import eu.usrv.yamcore.network.PacketDispatcher;
 import gregtech.api.GregTech_API;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.IDWSCompatible;
@@ -19,14 +18,16 @@ public class GT_MEGAnet_Container extends Container implements IDWSCompatible {
 
     private @NonNull final EntityPlayer owner;
 
-    private @NonNull final ItemStack source;
+    private @NonNull final ItemStack stack;
 
     private @NonNull final GT_MEGAnet.MEGAnetFilter filter;
 
-    public GT_MEGAnet_Container(final @NonNull EntityPlayer owner, final @NonNull ItemStack source, final GT_MEGAnet.@NonNull MEGAnetFilter filter) {
+    public static @NonNull final GT_MEGAnet MEGANET = GregTech_API.sMEGAnet;
+
+    public GT_MEGAnet_Container(final @NonNull EntityPlayer owner, final @NonNull ItemStack stack, final GT_MEGAnet.@NonNull MEGAnetFilter filter) {
         super();
         this.owner = owner;
-        this.source = source;
+        this.stack = stack;
         this.filter = filter;
         addSlots();
     }
@@ -41,6 +42,17 @@ public class GT_MEGAnet_Container extends Container implements IDWSCompatible {
         return 338;
     }
 
+    protected boolean getMEGAnetActive() {
+        if (!stackValid()) {
+            return false;
+        }
+        return MEGANET.isEnabled(stack);
+    }
+
+    public boolean stackValid() {
+        return stack.getItem() instanceof GT_MEGAnet;
+    }
+
     private void addSlots() {
         addFilterSlots();
         bindPlayerInventory();
@@ -48,25 +60,43 @@ public class GT_MEGAnet_Container extends Container implements IDWSCompatible {
 
     private void addFilterSlots() {
         val numCols = getNumSlots() / 3;
+        val left = getSlotLeft() + 1;
         for (var rowIndex = 0; rowIndex < 3; rowIndex++) {
-            val y = 18 + rowIndex * 18;
+            val y = 10 + rowIndex * 18;
             for (var colIndex = 0; colIndex < numCols; colIndex++) {
                 val slotIndex = colIndex + rowIndex * numCols;
-                val x = 18 + colIndex * 18;
+                val x = left + colIndex * 18;
                 addSlotToContainer(new GT_Slot_Holo(filter, slotIndex, x, y, true, false, 1));
             }
         }
     }
 
+    /**
+     * @param slotIndex
+     * @param clickType
+     * @param shift
+     * @param player
+     * @return
+     */
+    @Override
+    public ItemStack slotClick(final int slotIndex, final int clickType, final int shift, final EntityPlayer player) {
+        val slot = (Slot) inventorySlots.get(slotIndex);
+        if (slot != null && slot.getStack() != null && slot.getStack().getItem() instanceof GT_MEGAnet) {
+            return null;
+        }
+        val result =  super.slotClick(slotIndex, clickType, shift, player);
+        synchronize();
+        return result;
+    }
+
     private void bindPlayerInventory() {
-        val nRows = 4;
-        val numSlots = getNumSlots();
+        val nRows = getNumPlayerInventoryRows();
+        val numSlots = getNumPlayerInventorySlots();
         var total = 0;
         val ySlotSpacing = 18;
         val xSlotSpacing = 18;
         val nSlotsInRow = getSlotsPerRow();
-        val guiWidth = getGuiWidth();
-        val xOffsetBase = (guiWidth - nSlotsInRow * xSlotSpacing) / 2;
+        val xOffsetBase = getSlotLeft();
         val hotBarSpacing = 4;
         for (var rowIndex = 0; rowIndex < nRows && total < numSlots; rowIndex++) {
             val isHotbar = rowIndex == 0;
@@ -81,6 +111,38 @@ public class GT_MEGAnet_Container extends Container implements IDWSCompatible {
         }
     }
 
+    /**
+     * Looks for changes made in the container, sends them to every listener.
+     */
+    @Override
+    public void detectAndSendChanges() {
+        if (!owner.worldObj.isRemote) {
+            synchronize();
+        }
+        super.detectAndSendChanges();
+    }
+
+    /**
+     * @param id
+     * @param val
+     */
+    @Override
+    public void updateProgressBar(final int id, final int val) {
+        super.updateProgressBar(id, val);
+    }
+
+    private int getNumPlayerInventoryRows() {
+        return 4;
+    }
+
+    private int getSlotLeft() {
+        return (getGuiWidth() - getSlotsPerRow() * 18) / 2;
+    }
+
+    private int getNumPlayerInventorySlots() {
+        return getNumPlayerInventoryRows() * getSlotsPerRow();
+    }
+
     private int getGuiWidth() {
         return applyDWSBump(baseWidth());
     }
@@ -90,7 +152,7 @@ public class GT_MEGAnet_Container extends Container implements IDWSCompatible {
     }
 
     public int getNumSlots() {
-        return getSlotsPerRow() * 4;
+        return GT_MEGAnet.MEGAnetFilter.MAX_FILTERED;
     }
 
     @Override
@@ -99,10 +161,10 @@ public class GT_MEGAnet_Container extends Container implements IDWSCompatible {
     }
 
     public void synchronize() {
-        if (!(source.getItem() instanceof GT_MEGAnet)) {
+        if (!stackValid()) {
             return;
         }
-        ((GT_MEGAnet) source.getItem()).setMEGANetFilter(source, filter);
+        MEGANET.setMEGANetFilter(stack, filter);
     }
 
 }

@@ -15,7 +15,6 @@ import lombok.NonNull;
 import lombok.val;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -25,14 +24,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.GuiScreenEvent;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import java.awt.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,16 +68,16 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         this.guiHeight = this.ySize = height;
     }
 
+    public int getDWSWidthBump() {
+        return 0;
+    }
+
     /**
      * @return
      */
     @Override
     public int baseWidth() {
         return baseGuiWidth;
-    }
-
-    public int getDWSWidthBump() {
-        return 0;
     }
 
     /**
@@ -253,17 +248,6 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
     }
 
     /**
-     * @param slot
-     * @param slotIndex
-     * @param controlDown
-     * @param mouseButton
-     */
-    @Override
-    protected void handleMouseClick(final Slot slot, int slotIndex, final int controlDown, final int mouseButton) {
-        super.handleMouseClick(slot, slotIndex, controlDown, mouseButton);
-    }
-
-    /**
      * @param mouseX Raw mouse X
      * @return mouseX within Gui
      */
@@ -302,8 +286,15 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         sliders.forEach(slider -> slider.onMouseReleased(mouseX, mouseY, clickState));
     }
 
-    public static int colorToARGB(final Color color) {
-        return color.getAlpha() << 24 | color.getRed() << 16 | color.getGreen() << 8 | color.getBlue();
+    /**
+     * @param slot
+     * @param slotIndex
+     * @param controlDown
+     * @param mouseButton
+     */
+    @Override
+    protected void handleMouseClick(final Slot slot, int slotIndex, final int controlDown, final int mouseButton) {
+        super.handleMouseClick(slot, slotIndex, controlDown, mouseButton);
     }
 
     /**
@@ -387,53 +378,12 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
 
     }
 
-    /**
-     * @return private field clickedSlot, only usable with touchscreens, but I wanted parity
-     */
-    public Slot getClickedSlot() {
-        try {
-            return (Slot) getField("clickedSlot");
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            handleError(e, "clickedSlot");
-            return null;
-        }
-    }
-
-    protected Object getField(final String name)
-            throws NoSuchFieldException, IllegalAccessException {
-        final Field result = GuiContainer.class.getDeclaredField(name);
-        result.setAccessible(true);
-        return result.get(this);
-    }
-
-    protected void handleError(final Throwable err, final String context) {
-        System.err.printf("%s: %s%n", err.getClass().getCanonicalName(), err.getMessage());
-        System.err.printf("Context: %s%n", context);
-        System.err.flush();
-    }
-
-    public int getClickState() {
-        final String fieldName = "field_146987_F";
-        try {
-            return (int) getField(fieldName);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            handleError(e, fieldName);
-            return 0;
-        }
-    }
-
-    public ItemStack getReturningStack() {
-        final String fieldName = "returningStack";
-        try {
-            return (ItemStack) getField(fieldName);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            handleError(e, fieldName);
-            return null;
-        }
-    }
-
     public int getDimension() {
         return this.mc.thePlayer.dimension;
+    }
+
+    public int drawString(final String text, final int x, final int y, final Color color) {
+        return drawString(text, x, y, colorToARGB(color));
     }
 
     private int drawString(final String text, final int x, final int y, final int color) {
@@ -441,16 +391,30 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         return getFontRenderer().getStringWidth(text);
     }
 
-    public int drawString(final String text, final int x, final int y, final Color color) {
-        return drawString(text, x, y, colorToARGB(color));
+    public static int colorToARGB(final Color color) {
+        return color.getAlpha() << 24 | color.getRed() << 16 | color.getGreen() << 8 | color.getBlue();
+    }
+
+    /**
+     * Draws a textured rectangle at the stored z-value. Args: x, y, u, v, width, height
+     *
+     * @param x
+     * @param y
+     * @param u
+     * @param v
+     * @param width
+     * @param height
+     */
+    @Override
+    public void drawTexturedModalRect(
+            final int x, final int y, final int u, final int v, final int width, final int height
+                                     ) {
+        super.drawTexturedModalRect(x, y, u, v, width, height);
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(final float par1, final int par2, final int par3) {
-        /* super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-        int x = (this.width - this.xSize) / 2;
-        int y = (this.height - this.ySize) / 2;
-        drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize); */
+
     }
 
     /**
@@ -498,22 +462,6 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         drawBigTexturedModalRect(x, y, 0, 0, guiWidth, guiHeight, 512, 512);
     }
 
-    /**
-     * Draws a textured rectangle at the stored z-value. Args: x, y, u, v, width, height
-     *
-     * @param x
-     * @param y
-     * @param u
-     * @param v
-     * @param width
-     * @param height
-     */
-    @Override
-    public void drawTexturedModalRect(
-            final int x, final int y, final int u, final int v, final int width, final int height
-                                     ) {
-        super.drawTexturedModalRect(x, y, u, v, width, height);
-    }
 
     /**
      * Allows you to draw textures bigger than 256x256
@@ -573,7 +521,7 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
 
     public void drawSlots(final int mouseX, final int mouseY) {
         for (int i = 0; i < this.inventorySlots.inventorySlots.size(); i++) {
-            handleDrawSlot((Slot)inventorySlots.inventorySlots.get(i), mouseX, mouseY);
+            handleDrawSlot((Slot) inventorySlots.inventorySlots.get(i), mouseX, mouseY);
         }
     }
 
@@ -594,12 +542,12 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
 
     protected void drawItems(final int mouseX, final int mouseY) {
         final InventoryPlayer player = this.mc.thePlayer.inventory;
-        final ItemStack inDragged = getDraggedStack();
+        final ItemStack inDragged = draggedStack;
         ItemStack dragged = inDragged == null ? player.getItemStack() : inDragged;
         if (dragged != null) {
             final int dragOffset = inDragged == null ? 8 : 16;
             String s = null;
-            if (inDragged != null && isRightMouseClicked()) {
+            if (inDragged != null && isRightMouseClick) {
                 dragged = dragged.copy();
                 dragged.stackSize = MathHelper.ceiling_float_int((float) dragged.stackSize / 2.0F);
             } else if (this.field_147007_t && this.field_147008_s.size() > 1) {
@@ -622,7 +570,7 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
             NEIInterop.INSTANCE.renderTooltips(this, mouseX, mouseY);
         } else {
             final InventoryPlayer player = this.mc.thePlayer.inventory;
-            if (player.getItemStack() == null && getTheSlot() != null && getTheSlot().getHasStack()) {
+            if (player.getItemStack() == null && theSlot != null && theSlot.getHasStack()) {
                 final ItemStack inSlot = getTheSlot().getStack();
                 renderToolTip(inSlot, mouseX, mouseY);
             }
@@ -647,75 +595,33 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
     }
 
     protected void handleDrawSlot(final Slot slot, final int mouseX, final int mouseY) {
-        final String methodName = "func_146977_a";
-        try {
-            if (autoDrawSlots()) {
-                drawSlot(slot);
-            }
-            final Method slotDrawer = GuiContainer.class.getDeclaredMethod(methodName, Slot.class);
-            slotDrawer.setAccessible(true);
-            slotDrawer.invoke(this, slot);
-            if (getIsMouseOverSlot(slot, mouseX, mouseY) && isSlotEnabled(slot, mouseX, mouseY)) {
-                setTheSlot(slot);
-                renderSlotHighlight(slot);
-            }
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            handleError(e, methodName);
+        if (autoDrawSlots()) {
+            drawSlot(slot);
         }
+        partialDrawSlot(slot);
+        if (isMouseOverSlot(slot, mouseX, mouseY) && isSlotEnabled(slot, mouseX, mouseY)) {
+            theSlot = slot;
+            renderSlotHighlight(slot);
+        }
+    }
+
+    protected void partialDrawSlot(final Slot slot) {
+        func_146977_a(slot);
     }
 
     public abstract void drawExtras(final int mouseX, final int mouseY, final float parTicks);
 
-    public ItemStack getDraggedStack() {
-        final String fieldName = "draggedStack";
-        try {
-            return (ItemStack) getField(fieldName);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            handleError(e, fieldName);
-            throw new RuntimeException(e);
-            // return null;
-        }
-    }
-
-    public boolean isRightMouseClicked() {
-        final String fieldName = "isRightMouseClick";
-        try {
-            return (boolean) getField(fieldName);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            handleError(e, fieldName);
-            return false;
-        }
-    }
 
     public int getDragStackSize() {
-        final String fieldName = "field_146996_I";
-        try {
-            return (int) getField(fieldName);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            handleError(e, fieldName);
-            return 0;
-        }
+        return field_146996_I;
     }
 
     protected void drawStack(final ItemStack stack, final int x, final int y, final String s) {
-        final String methodName = "drawItemStack";
-        try {
-            final Method diStack = GuiContainer.class.getDeclaredMethod(methodName, ItemStack.class, int.class, int.class, String.class);
-            diStack.setAccessible(true);
-            diStack.invoke(this, stack, x, y, s);
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            handleError(e, methodName);
-        }
+        drawItemStack(stack, x, y, s);
     }
 
     public Slot getTheSlot() {
-        final String fieldName = "theSlot";
-        try {
-            return (Slot) getField(fieldName);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            handleError(e, fieldName);
-            return null;
-        }
+        return theSlot;
     }
 
     /**
@@ -737,18 +643,6 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         val c3 = colorToARGB(new Color(0x00, 0x00, 0x40, 0x1F));
         drawGradientRect(x, y, x + 16, y + 16, c2, c3);
         GL11.glColorMask(true, true, true, true);
-    }
-
-    protected boolean getIsMouseOverSlot(final Slot slot, int mouseX, int mouseY) {
-        final String fieldName = "isMouseOverSlot";
-        try {
-            final Method imoSlot = GuiContainer.class.getDeclaredMethod(fieldName, Slot.class, int.class, int.class);
-            imoSlot.setAccessible(true);
-            return (boolean) imoSlot.invoke(this, slot, mouseX, mouseY);
-        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
-            handleError(e, fieldName);
-        }
-        return false;
     }
 
     protected boolean isSlotEnabled(final Slot slot, final int mouseX, final int mouseY) {
@@ -773,22 +667,6 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glPopMatrix();
-    }
-
-    protected void setField(final String name, final Object newValue)
-            throws NoSuchFieldException, IllegalAccessException {
-        final Field result = GuiContainer.class.getDeclaredField(name);
-        result.setAccessible(true);
-        result.set(this, newValue);
-    }
-
-    public void setTheSlot(final Slot slot) {
-        final String fieldName = "theSlot";
-        try {
-            setField(fieldName, slot);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            handleError(e, fieldName);
-        }
     }
 
 }

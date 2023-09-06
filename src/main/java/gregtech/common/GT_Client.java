@@ -1,6 +1,6 @@
 // Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
 // Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
+// Decompiler options: packimports(3)
 // Source File Name:   GT_Client.java
 
 package gregtech.common;
@@ -41,6 +41,7 @@ import gregtech.common.net.MessageUpdateFluidDisplayItem;
 import gregtech.common.render.*;
 import gregtech.common.render.GT_ExplosiveRenderer;
 import ic2.api.tile.IWrenchable;
+import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
@@ -48,6 +49,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
@@ -59,13 +61,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.opengl.GL11;
 
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
 
@@ -513,6 +509,20 @@ public class GT_Client extends GT_Proxy
     @Override
     public int getReloadCount() {
         return mReloadCount;
+    }
+
+    /**
+     * @param uuid
+     * @return
+     */
+    @Override
+    public EntityPlayer getPlayerFromUUID(final UUID uuid) {
+        return MinecraftServer.getServer().getEntityWorld().func_152378_a(uuid);
+        /* val player = Minecraft.getMinecraft().thePlayer;
+        if (player.getUniqueID().equals(uuid)) {
+            return player;
+        }
+        return null; */
     }
 
     @SubscribeEvent

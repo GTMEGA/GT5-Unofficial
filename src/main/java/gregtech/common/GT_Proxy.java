@@ -2128,4 +2128,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             }
         }
     }
+
+    public abstract EntityPlayer getPlayerFromUUID(UUID uuid);
+
 }
