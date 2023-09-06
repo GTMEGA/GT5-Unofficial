@@ -30,6 +30,7 @@ import gregtech.common.entities.explosives.GT_Entity_TunnelExplosive;
 import gregtech.common.items.GT_MEGAnet;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
+import gregtech.common.items.explosives.GT_RemoteDetonator;
 import gregtech.common.misc.GT_Command;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Massfabricator;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineBase;
@@ -755,6 +756,7 @@ public class GT_Mod implements IGT_Mod {
     private static void initKeybinds(final FMLInitializationEvent aEvent) {
         new GT_KeyHandler("key.meganet.toggle", "Toggle MEGAnet", GT_MEGAnet.MEGANetInteractionHandler.INSTANCE::togglePlayerMeganet);
         new GT_KeyHandler("key.meganet.gui", "Open MEGAnet Menu", GT_MEGAnet.MEGANetInteractionHandler.INSTANCE::openGUI);
+        new GT_KeyHandler("key.remote_detonator.gui", "Open Remote Detonator Menu", GT_RemoteDetonator.RemoteDetonatorInteractionHandler.INSTANCE::openGUI);
     }
 
     @Mod.EventHandler

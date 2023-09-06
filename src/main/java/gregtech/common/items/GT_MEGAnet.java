@@ -17,6 +17,8 @@ import gregtech.api.net.GT_Packet_OpenGUI;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.api.util.interop.BaublesInterop;
+import gregtech.common.gui.meganet.GT_MEGAnet_Container;
+import gregtech.common.gui.meganet.GT_MEGAnet_GuiContainer;
 import io.netty.buffer.ByteBuf;
 import lombok.*;
 import net.minecraft.entity.Entity;
@@ -40,6 +42,7 @@ import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.function.Function;
 
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles", striprefs = true)
@@ -140,7 +143,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
         }
 
         public ItemStack getPlayerMeganet(final EntityPlayer player, final boolean requireEnabled, final MutableInt slot, final MutableBoolean bauble) {
-            if (player != null/*  && player.worldObj.isRemote */) {
+            /*if (player != null*//*  && player.worldObj.isRemote *//*) {
                 int idx = 0;
                 if (BaublesInterop.INSTANCE.isBaublesLoaded()) {
                     for (val stack : BaublesInterop.INSTANCE.getBaubles(player)) {
@@ -164,7 +167,8 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
                     idx += 1;
                 }
             }
-            return null;
+            return null;*/
+            return GT_Utility.getItemInPlayerInventory(player, stack -> stack.getItem() instanceof GT_MEGAnet && (!requireEnabled || ((GT_MEGAnet) stack.getItem()).isActive(stack)), slot, bauble);
         }
 
         public void togglePlayerMeganet(final EntityPlayer player) {
@@ -176,6 +180,26 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
                     doToggle(player, (GT_MEGAnet) stack.getItem(), bauble.booleanValue(), slotIdx.intValue());
                 }
             }
+        }
+
+        public GT_MEGAnet_Container getServerGUI(final EntityPlayer player) {
+            MutableInt slotIndex = new MutableInt(-1);
+            MutableBoolean bauble = new MutableBoolean(false);
+            val meganet = getPlayerMeganet(player, false, slotIndex, bauble);
+            if (meganet != null) {
+                return new GT_MEGAnet_Container(player, meganet, GregTech_API.sMEGAnet.getFilter(meganet), slotIndex.intValue(), bauble.booleanValue());
+            }
+            return null;
+        }
+
+        public GT_MEGAnet_GuiContainer getClientGUI(final EntityPlayer player) {
+            MutableInt slotIndex = new MutableInt(-1);
+            MutableBoolean bauble = new MutableBoolean(false);
+            val meganet = getPlayerMeganet(player, false, slotIndex, bauble);
+            if (meganet != null) {
+                return new GT_MEGAnet_GuiContainer(new GT_MEGAnet_Container(player, meganet, GregTech_API.sMEGAnet.getFilter(meganet), slotIndex.intValue(), bauble.booleanValue()));
+            }
+            return null;
         }
 
         private void doToggle(final EntityPlayer player, final GT_MEGAnet item, final boolean bauble, final int slot) {

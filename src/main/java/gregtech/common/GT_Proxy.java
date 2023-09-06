@@ -29,11 +29,13 @@ import gregtech.common.gui.GT_Container_IntegratedCircuit;
 import gregtech.common.gui.GT_GUIContainerVolumetricFlask;
 import gregtech.common.gui.meganet.GT_MEGAnet_Container;
 import gregtech.common.gui.meganet.GT_MEGAnet_GuiContainer;
+import gregtech.common.gui.remotedetonator.GT_RemoteDetonator_Container;
 import gregtech.common.items.GT_MEGAnet;
 import gregtech.common.items.GT_MetaGenerated_Item_98;
 import gregtech.common.gui.GT_GUIContainer_IntegratedCircuit;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.explosives.GT_RemoteDetonator;
 import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
@@ -1677,12 +1679,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         if (aID < 0) {
             aID = -aID;
             if (aID == 1) {
-                MutableInt slotIndex = new MutableInt(-1);
-                MutableBoolean bauble = new MutableBoolean(false);
-                val meganet = GT_MEGAnet.MEGANetInteractionHandler.INSTANCE.getPlayerMeganet(aPlayer, false, slotIndex, bauble);
-                if (meganet != null) {
-                    return new GT_MEGAnet_Container(aPlayer, meganet, GregTech_API.sMEGAnet.getFilter(meganet), slotIndex.intValue(), bauble.booleanValue());
-                }
+                return GT_MEGAnet.MEGANetInteractionHandler.INSTANCE.getServerGUI(aPlayer);
+            } else if (aID == 2) {
+                return GT_RemoteDetonator.RemoteDetonatorInteractionHandler.INSTANCE.getServerGUI(aPlayer);
             }
         }
         if(aID>=1000){
@@ -1715,12 +1714,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         if (aID < 0) {
             aID = -aID;
             if (aID == 1) {
-                MutableInt slotIndex = new MutableInt(-1);
-                MutableBoolean bauble = new MutableBoolean(false);
-                val meganet = GT_MEGAnet.MEGANetInteractionHandler.INSTANCE.getPlayerMeganet(aPlayer, false, slotIndex, bauble);
-                if (meganet != null) {
-                    return new GT_MEGAnet_GuiContainer(new GT_MEGAnet_Container(aPlayer, meganet, GregTech_API.sMEGAnet.getFilter(meganet), slotIndex.intValue(), bauble.booleanValue()));
-                }
+                return GT_MEGAnet.MEGANetInteractionHandler.INSTANCE.getClientGUI(aPlayer);
+            } else if (aID == 2) {
+                return GT_RemoteDetonator.RemoteDetonatorInteractionHandler.INSTANCE.getClientGUI(aPlayer);
             }
         }
         if(aID>=1000){

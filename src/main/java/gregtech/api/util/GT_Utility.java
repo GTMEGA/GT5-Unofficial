@@ -41,12 +41,14 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.threads.GT_Runnable_Sound;
 import gregtech.api.util.extensions.ArrayExt;
+import gregtech.api.util.interop.BaublesInterop;
 import gregtech.common.GT_Pollution;
 import gregtech.common.blocks.GT_Block_Ore_Abstract;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
+import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -97,6 +99,8 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.mutable.MutableBoolean;
+import org.apache.commons.lang3.mutable.MutableInt;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
@@ -3079,6 +3083,32 @@ public class GT_Utility {
 
     public static EntityPlayer getPlayerFromUUID(final UUIDWrapper wrapper) {
         return getPlayerFromUUID(wrapper.getUuid());
+    }
+
+    public static ItemStack getItemInPlayerInventory(final EntityPlayer player, final Function<ItemStack, Boolean> checker, final MutableInt slotIndex, final MutableBoolean bauble) {
+        if (player != null) {
+            int index = 0;
+            if (BaublesInterop.INSTANCE.isBaublesLoaded()) {
+                for (val stack: BaublesInterop.INSTANCE.getBaubles(player)) {
+                    if (stack != null && checker.apply(stack)) {
+                        slotIndex.setValue(index);
+                        bauble.setValue(true);
+                        return stack;
+                    }
+                    index++;
+                }
+            }
+            index = 0;
+            for (val stack: player.inventory.mainInventory) {
+                if (stack != null && checker.apply(stack)) {
+                    slotIndex.setValue(index);
+                    bauble.setValue(false);
+                    return stack;
+                }
+                index++;
+            }
+        }
+        return null;
     }
 
 }

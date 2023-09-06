@@ -22,6 +22,7 @@ import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.items.GT_MEGAnet;
+import gregtech.common.items.explosives.GT_RemoteDetonator;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -335,7 +336,8 @@ public class GregTech_API {
 
     public static Block sBlockMiningExplosive, sBlockDaisyCutter, sBlockTunEx;
 
-    public static Item sItemRemoteDetonator, sBorker;
+    public static GT_RemoteDetonator sItemRemoteDetonator;
+    public static Item sBorker;
 
     private static Class sBaseMetaTileEntityClass = null;
 
