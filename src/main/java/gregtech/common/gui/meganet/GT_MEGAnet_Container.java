@@ -1,8 +1,11 @@
 package gregtech.common.gui.meganet;
 
+
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.IDWSCompatible;
+import gregtech.api.net.GT_Packet_InventoryUpdate;
 import gregtech.common.items.GT_MEGAnet;
 import lombok.Getter;
 import lombok.NonNull;
@@ -13,22 +16,39 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+
 @Getter
 public class GT_MEGAnet_Container extends Container implements IDWSCompatible {
 
-    private @NonNull final EntityPlayer owner;
+    public static @NonNull
+    final GT_MEGAnet MEGANET = GregTech_API.sMEGAnet;
 
-    private @NonNull final ItemStack stack;
+    private @NonNull
+    final EntityPlayer owner;
 
-    private @NonNull final GT_MEGAnet.MEGAnetFilter filter;
+    private @NonNull
+    final ItemStack stack;
 
-    public static @NonNull final GT_MEGAnet MEGANET = GregTech_API.sMEGAnet;
+    private @NonNull
+    final GT_MEGAnet.MEGAnetFilter filter;
 
-    public GT_MEGAnet_Container(final @NonNull EntityPlayer owner, final @NonNull ItemStack stack, final GT_MEGAnet.@NonNull MEGAnetFilter filter) {
+    private final int slotIndex;
+
+    private final boolean isBauble;
+
+    public GT_MEGAnet_Container(
+            final @NonNull EntityPlayer owner,
+            final @NonNull ItemStack stack,
+            final GT_MEGAnet.@NonNull MEGAnetFilter filter,
+            final int slotIndex,
+            final boolean isBauble
+                               ) {
         super();
         this.owner = owner;
         this.stack = stack;
         this.filter = filter;
+        this.slotIndex = slotIndex;
+        this.isBauble = isBauble;
         addSlots();
     }
 
@@ -42,6 +62,101 @@ public class GT_MEGAnet_Container extends Container implements IDWSCompatible {
         return 338;
     }
 
+    public void sendSettingUpdate() {
+        if (!isServerSide()) {
+            GT_Values.NW.sendToServer(new GT_Packet_InventoryUpdate(owner, stack.getItem(), isBauble, slotIndex,
+                                                                    new GT_MEGAnet.MEGANetSettingChange(MEGANET.isEnabled(stack), MEGANET.getRange(stack))
+            ));
+        }
+    }
+
+    private boolean isServerSide() {
+        return !owner.worldObj.isRemote;
+    }
+
+    public void sendFilterUpdate() {
+        if (!isServerSide()) {
+            GT_Values.NW.sendToServer(new GT_Packet_InventoryUpdate(owner, stack.getItem(), isBauble, slotIndex, filter));
+        }
+    }
+
+    /**
+     * Looks for changes made in the container, sends them to every listener.
+     */
+    @Override
+    public void detectAndSendChanges() {
+        if (isServerSide()) {
+            synchronize();
+        }
+        super.detectAndSendChanges();
+    }
+
+    /**
+     * @param slotIndex
+     * @param clickType
+     * @param shift
+     * @param player
+     * @return
+     */
+    @Override
+    public ItemStack slotClick(final int slotIndex, final int clickType, final int shift, final EntityPlayer player) {
+        if (slotIndex < 0) {
+            return super.slotClick(slotIndex, clickType, shift, player);
+        }
+        val slot = (Slot) inventorySlots.get(slotIndex);
+        if (slot == null || slot.getStack() != null && slot.getStack().getItem() instanceof GT_MEGAnet) {
+            return null;
+        }
+        if (slotIndex < GT_MEGAnet.MEGAnetFilter.MAX_FILTERED) {
+            slot.putStack(player.inventory.getItemStack());
+            synchronize();
+            return null;
+        }
+        val result = super.slotClick(slotIndex, clickType, shift, player);
+        synchronize();
+        return result;
+    }
+
+    /**
+     * @param id
+     * @param val
+     */
+    @Override
+    public void updateProgressBar(final int id, final int val) {
+        super.updateProgressBar(id, val);
+    }
+
+    @Override
+    public boolean canInteractWith(final EntityPlayer player) {
+        return true;
+    }
+
+    public void synchronize() {
+        if (!stackValid()) {
+            return;
+        }
+        MEGANET.setMEGANetFilter(stack, filter);
+    }
+
+    public boolean stackValid() {
+        return stack.getItem() instanceof GT_MEGAnet;
+    }
+
+    public int getSlotsPerRow() {
+        return GregTech_API.mDWS ? 18 : 9;
+    }
+
+    public int getNumSlots() {
+        return GT_MEGAnet.MEGAnetFilter.MAX_FILTERED;
+    }
+
+    protected boolean toggleMeganet() {
+        setMEGAnetActive(!getMEGAnetActive());
+        synchronize();
+        sendSettingUpdate();
+        return getMEGAnetActive();
+    }
+
     protected boolean getMEGAnetActive() {
         if (!stackValid()) {
             return false;
@@ -49,8 +164,12 @@ public class GT_MEGAnet_Container extends Container implements IDWSCompatible {
         return MEGANET.isEnabled(stack);
     }
 
-    public boolean stackValid() {
-        return stack.getItem() instanceof GT_MEGAnet;
+    protected void setMEGAnetActive(final boolean active) {
+        if (!stackValid()) {
+            return;
+        }
+        MEGANET.setEnabled(stack, active);
+        sendSettingUpdate();
     }
 
     private void addSlots() {
@@ -69,24 +188,6 @@ public class GT_MEGAnet_Container extends Container implements IDWSCompatible {
                 addSlotToContainer(new GT_Slot_Holo(filter, slotIndex, x, y, true, false, 1));
             }
         }
-    }
-
-    /**
-     * @param slotIndex
-     * @param clickType
-     * @param shift
-     * @param player
-     * @return
-     */
-    @Override
-    public ItemStack slotClick(final int slotIndex, final int clickType, final int shift, final EntityPlayer player) {
-        val slot = (Slot) inventorySlots.get(slotIndex);
-        if (slot != null && slot.getStack() != null && slot.getStack().getItem() instanceof GT_MEGAnet) {
-            return null;
-        }
-        val result =  super.slotClick(slotIndex, clickType, shift, player);
-        synchronize();
-        return result;
     }
 
     private void bindPlayerInventory() {
@@ -111,26 +212,6 @@ public class GT_MEGAnet_Container extends Container implements IDWSCompatible {
         }
     }
 
-    /**
-     * Looks for changes made in the container, sends them to every listener.
-     */
-    @Override
-    public void detectAndSendChanges() {
-        if (!owner.worldObj.isRemote) {
-            synchronize();
-        }
-        super.detectAndSendChanges();
-    }
-
-    /**
-     * @param id
-     * @param val
-     */
-    @Override
-    public void updateProgressBar(final int id, final int val) {
-        super.updateProgressBar(id, val);
-    }
-
     private int getNumPlayerInventoryRows() {
         return 4;
     }
@@ -145,26 +226,6 @@ public class GT_MEGAnet_Container extends Container implements IDWSCompatible {
 
     private int getGuiWidth() {
         return applyDWSBump(baseWidth());
-    }
-
-    public int getSlotsPerRow() {
-        return GregTech_API.mDWS ? 18 : 9;
-    }
-
-    public int getNumSlots() {
-        return GT_MEGAnet.MEGAnetFilter.MAX_FILTERED;
-    }
-
-    @Override
-    public boolean canInteractWith(final EntityPlayer player) {
-        return true;
-    }
-
-    public void synchronize() {
-        if (!stackValid()) {
-            return;
-        }
-        MEGANET.setMEGANetFilter(stack, filter);
     }
 
 }

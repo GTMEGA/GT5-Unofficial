@@ -79,6 +79,8 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import org.apache.commons.lang3.mutable.MutableBoolean;
+import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.io.File;
@@ -1675,9 +1677,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         if (aID < 0) {
             aID = -aID;
             if (aID == 1) {
-                val meganet = GT_MEGAnet.MEGANetInteractionHandler.INSTANCE.getPlayerMeganet(aPlayer);
+                MutableInt slotIndex = new MutableInt(-1);
+                MutableBoolean bauble = new MutableBoolean(false);
+                val meganet = GT_MEGAnet.MEGANetInteractionHandler.INSTANCE.getPlayerMeganet(aPlayer, false, slotIndex, bauble);
                 if (meganet != null) {
-                    return new GT_MEGAnet_Container(aPlayer, meganet, GregTech_API.sMEGAnet.getFilter(meganet));
+                    return new GT_MEGAnet_Container(aPlayer, meganet, GregTech_API.sMEGAnet.getFilter(meganet), slotIndex.intValue(), bauble.booleanValue());
                 }
             }
         }
@@ -1711,9 +1715,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         if (aID < 0) {
             aID = -aID;
             if (aID == 1) {
-                val meganet = GT_MEGAnet.MEGANetInteractionHandler.INSTANCE.getPlayerMeganet(aPlayer);
+                MutableInt slotIndex = new MutableInt(-1);
+                MutableBoolean bauble = new MutableBoolean(false);
+                val meganet = GT_MEGAnet.MEGANetInteractionHandler.INSTANCE.getPlayerMeganet(aPlayer, false, slotIndex, bauble);
                 if (meganet != null) {
-                    return new GT_MEGAnet_GuiContainer(new GT_MEGAnet_Container(aPlayer, meganet, GregTech_API.sMEGAnet.getFilter(meganet)));
+                    return new GT_MEGAnet_GuiContainer(new GT_MEGAnet_Container(aPlayer, meganet, GregTech_API.sMEGAnet.getFilter(meganet), slotIndex.intValue(), bauble.booleanValue()));
                 }
             }
         }

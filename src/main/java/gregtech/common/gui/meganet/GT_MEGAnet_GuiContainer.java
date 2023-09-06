@@ -22,6 +22,10 @@ public class GT_MEGAnet_GuiContainer extends GT_GUIContainer_Plus {
     private void addGUIElements() {
         val check = new GT_GuiIconCheckButton(this, 0, 256, 9, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS);
         check.setChecked(meganetContainer.getMEGAnetActive());
+        check.setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
+            check.setChecked(meganetContainer.toggleMeganet());
+            check.setUpdateCooldown(20);
+        });
     }
 
     /**

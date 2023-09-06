@@ -68,9 +68,9 @@ public class GT_Packet_InventoryUpdate extends GT_Packet_New {
         aOut.writeBoolean(bauble);
         aOut.writeInt(slot);
         if (data == null) {
-            aOut.writeByte(0);
+            aOut.writeBoolean(false);
         } else {
-            aOut.writeByte(1);
+            aOut.writeBoolean(true);
             data.writeToByteBuf(aOut);
         }
     }
@@ -83,7 +83,7 @@ public class GT_Packet_InventoryUpdate extends GT_Packet_New {
         val item = Item.getItemById(aData.readInt());
         val bauble = aData.readBoolean();
         val slot = aData.readInt();
-        return new GT_Packet_InventoryUpdate(MinecraftServer.getServer().getEntityWorld().func_152378_a(id), item, bauble, slot, item instanceof IPacketReceivableItem ? ((IPacketReceivableItem) item).readFromBytes(aData) : null);
+        return new GT_Packet_InventoryUpdate(MinecraftServer.getServer().getEntityWorld().func_152378_a(id), item, bauble, slot, item instanceof IPacketReceivableItem && aData.readBoolean() ? ((IPacketReceivableItem) item).readFromBytes(aData) : null);
     }
 
 }
