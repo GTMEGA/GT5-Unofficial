@@ -37,15 +37,16 @@ public class GT_GuiTooltipManager {
         lastMouseX = mouseX;
         lastMouseY = mouseY;
 
-        if (mouseStopped > DELAY)
+        if (mouseStopped > DELAY) {
             mouseX -= render.getGuiLeft();
             mouseY -= render.getGuiTop();
             for (GT_GuiTooltip tip : tips) {
-                if(tip.enabled && tip.bounds.contains(mouseX, mouseY)){
+                if (tip != null && tip.enabled && tip.bounds.contains(mouseX, mouseY)) {
                     tip.updateText();
                     drawTooltip(tip, mouseX, mouseY, render);
                     break;
                 }
+            }
         }
     }
 

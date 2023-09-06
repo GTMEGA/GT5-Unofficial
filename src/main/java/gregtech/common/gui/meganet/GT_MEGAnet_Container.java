@@ -20,29 +20,20 @@ import net.minecraft.item.ItemStack;
 @Getter
 public class GT_MEGAnet_Container extends Container implements IDWSCompatible {
 
-    public static @NonNull
-    final GT_MEGAnet MEGANET = GregTech_API.sMEGAnet;
+    public static @NonNull final GT_MEGAnet MEGANET = GregTech_API.sMEGAnet;
 
-    private @NonNull
-    final EntityPlayer owner;
+    private @NonNull final EntityPlayer owner;
 
-    private @NonNull
-    final ItemStack stack;
-
-    private @NonNull
-    final GT_MEGAnet.MEGAnetFilter filter;
+    private @NonNull final ItemStack stack;
 
     private final int slotIndex;
 
     private final boolean isBauble;
 
-    public GT_MEGAnet_Container(
-            final @NonNull EntityPlayer owner,
-            final @NonNull ItemStack stack,
-            final GT_MEGAnet.@NonNull MEGAnetFilter filter,
-            final int slotIndex,
-            final boolean isBauble
-                               ) {
+    private final GT_MEGAnet.MEGAnetFilter filter;
+
+    public GT_MEGAnet_Container(final @NonNull EntityPlayer owner, final @NonNull ItemStack stack, final @NonNull GT_MEGAnet.MEGAnetFilter filter,
+                                final int slotIndex, final boolean isBauble) {
         super();
         this.owner = owner;
         this.stack = stack;
@@ -63,21 +54,54 @@ public class GT_MEGAnet_Container extends Container implements IDWSCompatible {
     }
 
     public void sendSettingUpdate() {
-        if (!isServerSide()) {
+        if (isClientSide()) {
             GT_Values.NW.sendToServer(new GT_Packet_InventoryUpdate(owner, stack.getItem(), isBauble, slotIndex,
-                                                                    new GT_MEGAnet.MEGANetSettingChange(MEGANET.isEnabled(stack), MEGANET.getRange(stack))
-            ));
+                                                                    new GT_MEGAnet.MEGANetSettingChange(MEGANET.isEnabled(stack), MEGANET.getRange(stack))));
         }
-    }
-
-    private boolean isServerSide() {
-        return !owner.worldObj.isRemote;
     }
 
     public void sendFilterUpdate() {
-        if (!isServerSide()) {
+        synchronize();
+        if (isClientSide()) {
             GT_Values.NW.sendToServer(new GT_Packet_InventoryUpdate(owner, stack.getItem(), isBauble, slotIndex, filter));
         }
+    }
+
+    protected boolean toggleFilter() {
+        setFilterActive(!getFilterActive());
+        return getFilterActive();
+    }
+
+    protected boolean getFilterWhitelist() {
+        return filter.isWhitelist();
+    }
+
+    protected void setFilterWhitelist(final boolean whiteList) {
+        filter.setWhitelist(whiteList);
+        sendFilterUpdate();
+    }
+
+    protected boolean toggleWhitelist() {
+        setFilterWhitelist(!getFilterWhitelist());
+        return getFilterWhitelist();
+    }
+
+    protected void setRange(final int value) {
+        MEGANET.setRange(stack, value);
+        sendSettingUpdate();
+    }
+
+    protected int getRange() {
+        return MEGANET.getRange(stack);
+    }
+
+    private void setFilterActive(final boolean active) {
+        filter.setEnabled(active);
+        sendFilterUpdate();
+    }
+
+    private boolean isClientSide() {
+        return owner.worldObj.isRemote;
     }
 
     /**
@@ -85,9 +109,6 @@ public class GT_MEGAnet_Container extends Container implements IDWSCompatible {
      */
     @Override
     public void detectAndSendChanges() {
-        if (isServerSide()) {
-            synchronize();
-        }
         super.detectAndSendChanges();
     }
 
@@ -96,25 +117,35 @@ public class GT_MEGAnet_Container extends Container implements IDWSCompatible {
      * @param clickType
      * @param shift
      * @param player
+     *
      * @return
      */
     @Override
     public ItemStack slotClick(final int slotIndex, final int clickType, final int shift, final EntityPlayer player) {
         if (slotIndex < 0) {
+            // Ignore weird negative slot indices
             return super.slotClick(slotIndex, clickType, shift, player);
         }
         val slot = (Slot) inventorySlots.get(slotIndex);
         if (slot == null || slot.getStack() != null && slot.getStack().getItem() instanceof GT_MEGAnet) {
+            // Do not allow manipulation of the MEGAnet item itself
             return null;
         }
         if (slotIndex < GT_MEGAnet.MEGAnetFilter.MAX_FILTERED) {
+            // Ghost filter slot interaction
             slot.putStack(player.inventory.getItemStack());
-            synchronize();
+            sendFilterUpdate();
             return null;
         }
-        val result = super.slotClick(slotIndex, clickType, shift, player);
-        synchronize();
-        return result;
+        // Standard bs
+        return super.slotClick(slotIndex, clickType, shift, player);
+    }
+
+    public void synchronize() {
+        if (isStackInvalid()) {
+            return;
+        }
+        MEGANET.setMEGANetFilter(stack, filter);
     }
 
     /**
@@ -131,15 +162,8 @@ public class GT_MEGAnet_Container extends Container implements IDWSCompatible {
         return true;
     }
 
-    public void synchronize() {
-        if (!stackValid()) {
-            return;
-        }
-        MEGANET.setMEGANetFilter(stack, filter);
-    }
-
-    public boolean stackValid() {
-        return stack.getItem() instanceof GT_MEGAnet;
+    public boolean isStackInvalid() {
+        return !(stack.getItem() instanceof GT_MEGAnet);
     }
 
     public int getSlotsPerRow() {
@@ -150,22 +174,24 @@ public class GT_MEGAnet_Container extends Container implements IDWSCompatible {
         return GT_MEGAnet.MEGAnetFilter.MAX_FILTERED;
     }
 
+    protected boolean getFilterActive() {
+        return filter.isEnabled();
+    }
+
     protected boolean toggleMeganet() {
         setMEGAnetActive(!getMEGAnetActive());
-        synchronize();
-        sendSettingUpdate();
         return getMEGAnetActive();
     }
 
     protected boolean getMEGAnetActive() {
-        if (!stackValid()) {
+        if (isStackInvalid()) {
             return false;
         }
         return MEGANET.isEnabled(stack);
     }
 
     protected void setMEGAnetActive(final boolean active) {
-        if (!stackValid()) {
+        if (isStackInvalid()) {
             return;
         }
         MEGANET.setEnabled(stack, active);

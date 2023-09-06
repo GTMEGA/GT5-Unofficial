@@ -371,6 +371,18 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         this.mc.setIngameFocus();
     }
 
+    protected void uncheckButtons() {
+        GuiButton button;
+        for (Object o : buttonList) {
+            button = (GuiButton) o;
+            button.enabled = true;
+        }
+    }
+
+    public boolean isDWSEnabled() {
+        return GregTech_API.mDWS;
+    }
+
     /**
      * Given textbox's value might have changed.
      */
@@ -636,12 +648,12 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         x = slot.xDisplayPosition;
         y = slot.yDisplayPosition;
         GL11.glColorMask(true, true, true, false);
-        val c0 = colorToARGB(new Color(0x00, 0x00, 0x00, 0x3F));
-        val c1 = colorToARGB(new Color(0x00, 0x00, 0x00, 0x0F));
-        drawGradientRect(x - 1, y - 1, x + 17, y + 17, c0, c1);
-        val c2 = colorToARGB(new Color(0x0F, 0x0F, 0xFF, 0xAF));
-        val c3 = colorToARGB(new Color(0x00, 0x00, 0x40, 0x1F));
-        drawGradientRect(x, y, x + 16, y + 16, c2, c3);
+        val backgroundGradientStart = colorToARGB(new Color(0x00, 0x00, 0x00, 0x3F));
+        val backgroundGradientEnd = colorToARGB(new Color(0x00, 0x00, 0x00, 0x0F));
+        drawGradientRect(x - 1, y - 1, x + 17, y + 17, backgroundGradientStart, backgroundGradientEnd);
+        val foregroundGradientStart = colorToARGB(new Color(0x0F, 0x0F, 0xFF, 0xAF));
+        val foregroundGradientEnd = colorToARGB(new Color(0x00, 0x00, 0x40, 0x1F));
+        drawGradientRect(x, y, x + 16, y + 16, foregroundGradientStart, foregroundGradientEnd);
         GL11.glColorMask(true, true, true, true);
     }
 
@@ -660,9 +672,9 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glColorMask(true, true, true, false);
-        val c0 = colorToARGB(new Color(0xFF, 0xFF, 0xFF, 0x80));
-        val c1 = colorToARGB(new Color(0xAF, 0xAF, 0xFF, 0x80));
-        drawGradientRect(x, y, x + 16, y + 16, c0, c1);
+        val highlightGradientStart = colorToARGB(new Color(0xFF, 0xFF, 0xFF, 0x80));
+        val highlightGradientEnd = colorToARGB(new Color(0xAF, 0xAF, 0xFF, 0x80));
+        drawGradientRect(x, y, x + 16, y + 16, highlightGradientStart, highlightGradientEnd);
         GL11.glColorMask(true, true, true, true);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_DEPTH_TEST);

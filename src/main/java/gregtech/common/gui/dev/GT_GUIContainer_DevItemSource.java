@@ -21,59 +21,34 @@ public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus 
     }
 
     private void addGuiElements() {
-        new GT_GuiIconCheckButton(this, 0, buttonX(), 24, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Enable Activity", "Disable Activity").setChecked(
-                !getSource().getData().isActive()).setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
-            if (screen instanceof GT_GUIContainer_DevItemSource && button instanceof GT_GuiIconCheckButton) {
-                ((GT_GuiIconCheckButton) button).setChecked(((GT_GUIContainer_DevItemSource) screen).getSource().getData().isActive());
-            }
-        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
-        new GT_GuiIconButton(this, 1, buttonX(), 42, GT_GuiIcon.MATH_ZERO).setTooltipText("Set output rate to zero");
+        val source = getSource();
+        //
+        val check = new GT_GuiIconCheckButton(this, 0, buttonX(), 24, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Enable Activity", "Disable Activity");
+        check.setChecked(!getSource().getData().isActive());
+        check.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> check.setChecked(source.getData().isActive()));
+        check.setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
+            check.setChecked(source.toggleActive());
+            button.setUpdateCooldown(20);
+            sendUpdateToServer();
+        });
+        //
+        val zero = new GT_GuiIconButton(this, 1, buttonX(), 42, GT_GuiIcon.MATH_ZERO);
+        zero.setTooltipText("Set output rate to zero");
+        zero.setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
+            source.zeroOut();
+            sendUpdateToServer();
+        });
+        //
         addRedstoneButton();
         addTextBoxes();
-    }
-
-    public int buttonX() {
-        return getGuiWidth() - 40;
     }
 
     public GT_Container_DevItemSource getSource() {
         return (GT_Container_DevItemSource) mContainer;
     }
 
-    private void addRedstoneButton() {
-        final GT_GuiCycleButton rsButton = new GT_GuiCycleButton(this, 2, buttonX(), 60, 0, new GT_GuiCycleButton.IconToolTipPair[]{
-                new GT_GuiCycleButton.IconToolTipPair(GT_GuiIcon.CROSS, "Ignores redstone"),
-                new GT_GuiCycleButton.IconToolTipPair(GT_GuiIcon.REDSTONE_OFF, "Requires low signal"),
-                new GT_GuiCycleButton.IconToolTipPair(GT_GuiIcon.REDSTONE_ON, "Requires signal"),
-                });
-        rsButton.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
-            if (screen instanceof GT_GUIContainer_DevItemSource && button instanceof GT_GuiCycleButton) {
-                ((GT_GuiCycleButton) button).setState(((GT_GUIContainer_DevItemSource) screen).getSource().getData().getRedstoneMode().ordinal());
-            }
-        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
-            if (screen instanceof GT_GUIContainer_DevItemSource && button instanceof GT_GuiCycleButton) {
-                ((GT_GuiCycleButton) button).cycle();
-                ((GT_GUIContainer_DevItemSource) screen).getSource().setRedstoneMode(RSControlMode.getMode(((GT_GuiCycleButton) button).getState()));
-                button.setUpdateCooldown(20);
-                sendUpdateToServer();
-            }
-        });
-        rsButton.setDoCycle(false);
-    }
-
-    private void addTextBoxes() {
-        val perTickBox = new GT_GuiIntegerTextBox(this, 3, boxX(), 24, boxWidth(), 10);
-        perTickBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
-            if (screen instanceof GT_GUIContainer_DevItemSource && button instanceof GT_GuiIntegerTextBox && !((GT_GuiIntegerTextBox) button).isFocused()) {
-                ((GT_GuiIntegerTextBox) button).setText(((GT_GUIContainer_DevItemSource) screen).getIPTString());
-            }
-        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
-        val perSecondBox = new GT_GuiIntegerTextBox(this, 4, boxX(), 34, boxWidth(), 10);
-        perSecondBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
-            if (screen instanceof GT_GUIContainer_DevItemSource && button instanceof GT_GuiIntegerTextBox && !((GT_GuiIntegerTextBox) button).isFocused()) {
-                ((GT_GuiIntegerTextBox) button).setText(((GT_GUIContainer_DevItemSource) screen).getIPSString());
-            }
-        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
+    public int buttonX() {
+        return getGuiWidth() - 40;
     }
 
     /**
@@ -82,6 +57,42 @@ public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus 
     @Override
     public void sendUpdateToServer() {
         getSource().sendPacket();
+    }
+
+    private void addRedstoneButton() {
+        val source = getSource();
+        val rsButton = new GT_GuiCycleButton(this, 2, buttonX(), 60, 0, new GT_GuiCycleButton.IconToolTipPair[]{
+                new GT_GuiCycleButton.IconToolTipPair(GT_GuiIcon.CROSS, "Ignores redstone"),
+                new GT_GuiCycleButton.IconToolTipPair(GT_GuiIcon.REDSTONE_OFF, "Requires low signal"),
+                new GT_GuiCycleButton.IconToolTipPair(GT_GuiIcon.REDSTONE_ON, "Requires signal"),
+                });
+        rsButton.setState(source.getData().getRedstoneMode().ordinal());
+        rsButton.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> rsButton.setState(source.getData().getRedstoneMode().ordinal()));
+        rsButton.setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
+            rsButton.cycle();
+            source.setRedstoneMode(RSControlMode.getMode(((GT_GuiCycleButton) button).getState()));
+            button.setUpdateCooldown(20);
+            sendUpdateToServer();
+        });
+        rsButton.setDoCycle(false);
+    }
+
+    private void addTextBoxes() {
+        val gui = this;
+        //
+        val perTickBox = new GT_GuiIntegerTextBox(this, 3, boxX(), 24, boxWidth(), 10);
+        perTickBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
+            if (!perTickBox.isFocused()) {
+                perTickBox.setText(gui.getIPTString());
+            }
+        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
+        //
+        val perSecondBox = new GT_GuiIntegerTextBox(this, 4, boxX(), 34, boxWidth(), 10);
+        perSecondBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
+            if (!perSecondBox.isFocused()) {
+                perSecondBox.setText(gui.getIPSString());
+            }
+        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
     }
 
     private int boxX() {
@@ -124,20 +135,13 @@ public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus 
     }
 
     /**
-     * @param button Handler for a button click
+     * @param button
+     *         Handler for a button click
      */
     @Override
     public void buttonClicked(final GuiButton button) {
         super.buttonClicked(button);
-        if (button.id == 0 && button instanceof GT_GuiIconCheckButton) {
-            ((GT_GuiIconCheckButton) button).setChecked(getSource().toggleActive());
-        } else if (button.id == 1) {
-            getSource().zeroOut();
-        } else if (button.id == 2 && button instanceof GT_GuiCycleButton) {
-            getSource().setRedstoneMode(RSControlMode.getMode(((GT_GuiCycleButton) button).getState()));
-        }
-        sendUpdateToServer();
-        updateButtons();
+        uncheckButtons();
         clearSelectedButton();
     }
 
@@ -214,12 +218,6 @@ public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus 
     @Override
     protected boolean autoDrawSlots() {
         return true;
-    }
-
-    private void updateButtons() {
-        for (Object o : buttonList) {
-            ((GuiButton) o).enabled = true;
-        }
     }
 
     /**

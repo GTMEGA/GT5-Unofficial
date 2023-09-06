@@ -39,8 +39,7 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles", striprefs = true)
@@ -216,30 +215,22 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
             }
 
             @Builder.Default
-            private ItemStack stack = null;
-
-            @Builder.Default
             private boolean ignoreMetadata = false;
 
             @Builder.Default
             private boolean ignoreNBTData = false;
 
             public ItemSetting(final @NonNull NBTTagCompound compound) {
-                this(ItemStack.loadItemStackFromNBT(compound.getCompoundTag("item")), defBool(compound, "iMeta", false), defBool(compound, "iNBT", false));
+                this(defBool(compound, "iMeta", false), defBool(compound, "iNBT", false));
             }
 
             @NonNull
             public NBTTagCompound writeToNBT(final @NonNull NBTTagCompound compound) {
                 final NBTTagCompound setting = new NBTTagCompound();
-                setting.setTag("item", stack.writeToNBT(new NBTTagCompound()));
                 setting.setBoolean("iMeta", ignoreMetadata);
                 setting.setBoolean("iNBT", ignoreNBTData);
                 compound.setTag("setting", setting);
                 return compound;
-            }
-
-            public boolean isValid() {
-                return stack != null;
             }
 
             public boolean toggleIgnoreMetadata() {
@@ -258,7 +249,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
             @Nonnull
             @Override
             public ISerializableObject copy() {
-                return new ItemSetting(stack, ignoreMetadata, ignoreNBTData);
+                return new ItemSetting(ignoreMetadata, ignoreNBTData);
             }
 
             /**
@@ -303,12 +294,16 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
             @Nonnull
             @Override
             public ISerializableObject readFromPacket(final ByteArrayDataInput aBuf, final EntityPlayerMP aPlayer) {
-                return new ItemSetting(null, aBuf.readBoolean(), aBuf.readBoolean());
+                return new ItemSetting(aBuf.readBoolean(), aBuf.readBoolean());
             }
 
             public void applyFrom(final @NonNull ItemSetting other) {
                 ignoreMetadata = other.ignoreMetadata;
                 ignoreNBTData = other.ignoreNBTData;
+            }
+
+            public boolean match(final ItemStack inFilter, final ItemStack checkAgainst) {
+                return GT_Utility.areStacksEqual(inFilter, checkAgainst, ignoreNBTData);
             }
 
         }
@@ -321,7 +316,9 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
             return nbt.hasKey("filter") ? new MEGAnetFilter(nbt.getCompoundTag("filter")) : new MEGAnetFilter();
         }
 
-        private final ItemSetting[] filter = new ItemSetting[MAX_FILTERED];
+        private final List<ItemSetting> filter = new ArrayList<>(Collections.nCopies(MAX_FILTERED, new ItemSetting()));
+
+        private final ItemStack[] filteredStacks = new ItemStack[MAX_FILTERED];
 
         @Builder.Default
         private boolean enabled = false;
@@ -333,24 +330,45 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
             this(defBool(filterNBT, "enabled", false), defBool(filterNBT, "whitelist", false));
             if (filterNBT.hasKey("itemFilter", Constants.NBT.TAG_LIST)) {
                 final NBTTagList itemList = filterNBT.getTagList("itemFilter", Constants.NBT.TAG_COMPOUND);
+                for (int i = 0; i < MAX_FILTERED; i++) {
+                    setSetting(i, ItemSetting.readFromNBT(itemList.getCompoundTagAt(i)));
+                }
+            }
+            if (filterNBT.hasKey("filteredStacks", Constants.NBT.TAG_LIST)) {
+                final NBTTagList itemList = filterNBT.getTagList("filteredStacks", Constants.NBT.TAG_COMPOUND);
                 for (int i = 0; i < itemList.tagCount() && i < MAX_FILTERED; i++) {
-                    filter[i] = ItemSetting.readFromNBT(itemList.getCompoundTagAt(i));
+                    filteredStacks[i] = ItemStack.loadItemStackFromNBT(itemList.getCompoundTagAt(i));
                 }
             }
         }
 
+        public MEGAnetFilter(final List<ItemSetting> filter, final boolean enabled, final boolean whitelist) {
+            for (int i = 0; i < MAX_FILTERED; i++) {
+                this.filter.set(i, filter.get(i));
+            }
+            this.enabled = enabled;
+            this.whitelist = whitelist;
+        }
+
         @NonNull
         public NBTTagCompound writeToNBT(final @NonNull NBTTagCompound nbt) {
-            final NBTTagCompound filterNBT = new NBTTagCompound();
+            val filterNBT = new NBTTagCompound();
             filterNBT.setBoolean("enabled", enabled);
             filterNBT.setBoolean("whitelist", whitelist);
-            final NBTTagList filteredItems = new NBTTagList();
+            val filterSettings = new NBTTagList();
             for (final ItemSetting setting : filter) {
-                if (setting != null && setting.isValid()) {
-                    filteredItems.appendTag(setting.writeToNBT(new NBTTagCompound()));
+                if (setting != null) {
+                    filterSettings.appendTag(setting.writeToNBT(new NBTTagCompound()));
                 }
             }
-            filterNBT.setTag("itemFilter", filteredItems);
+            filterNBT.setTag("itemFilter", filterSettings);
+            val filterStacks = new NBTTagList();
+            for (final ItemStack stack : filteredStacks) {
+                if (stack != null) {
+                    filterStacks.appendTag(stack.writeToNBT(new NBTTagCompound()));
+                }
+            }
+            filterNBT.setTag("filteredStacks", filterStacks);
             nbt.setTag("filter", filterNBT);
             return nbt;
         }
@@ -359,11 +377,17 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
             if (!enabled || numFiltered() <= 0) {
                 return true;
             }
-            return whitelist == Arrays.stream(filter).anyMatch(fStack -> GT_Utility.areStacksEqual(fStack.getStack(), stack));
+            var result = false;
+            for (var i = 0; i < MAX_FILTERED; i++ ) {
+                if (filter.get(i).match(filteredStacks[i], stack)) {
+                    result = true;
+                }
+            }
+            return whitelist == result;
         }
 
         public int numFiltered() {
-            return (int) Arrays.stream(filter).filter(setting -> setting != null && setting.isValid()).count();
+            return (int) Arrays.stream(filteredStacks).filter(Objects::nonNull).count();
         }
 
         @Override
@@ -373,8 +397,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
 
         @Override
         public ItemStack getStackInSlot(final int slotIndex) {
-            val setting = getSetting(slotIndex);
-            return setting != null ? setting.getStack() : null;
+            return filteredStacks[slotIndex];
         }
 
         @Override
@@ -391,16 +414,14 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
             if (index < 0 || index >= MAX_FILTERED) {
                 return null;
             }
-            return filter[index];
+            return filter.get(index);
         }
 
         @Override
         public void setInventorySlotContents(final int slotIndex, final ItemStack stack) {
-            val setting = getSetting(slotIndex);
-            if (setting != null) {
-                setting.setStack(stack);
-            } else {
-                filter[slotIndex] = new ItemSetting(stack, false, false);
+            filteredStacks[slotIndex] = stack;
+            if (stack == null) {
+                setSetting(slotIndex, new ItemSetting());
             }
         }
 
@@ -450,7 +471,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
         @Nonnull
         @Override
         public ISerializableObject copy() {
-            return new MEGAnetFilter(enabled, whitelist);
+            return new MEGAnetFilter(filter, enabled, whitelist);
         }
 
         /**
@@ -475,11 +496,8 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
             aBuf.writeByte(2);
             aBuf.writeBoolean(enabled);
             aBuf.writeBoolean(whitelist);
-            aBuf.writeInt(numFiltered());
             for (val setting : filter) {
-                if (setting != null && setting.isValid()) {
-                    setting.writeToByteBuf(aBuf);
-                }
+                setting.writeToByteBuf(aBuf);
             }
         }
 
@@ -503,15 +521,14 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
         @Override
         public ISerializableObject readFromPacket(final ByteArrayDataInput aBuf, final EntityPlayerMP aPlayer) {
             val newFilter = new MEGAnetFilter(aBuf.readBoolean(), aBuf.readBoolean());
-            val numFiltered = aBuf.readInt();
-            for (int i = 0; i < numFiltered; i++) {
+            for (int i = 0; i < MAX_FILTERED; i++) {
                 var cur = newFilter.getSetting(i);
                 if (cur == null) {
                     cur = (ItemSetting) new ItemSetting().readFromPacket(aBuf, aPlayer);
                 } else {
                     cur.applyFrom((ItemSetting) cur.readFromPacket(aBuf, aPlayer));
                 }
-                newFilter.setSetting(i, cur);
+                setSetting(i, cur);
             }
             return newFilter;
         }
@@ -535,7 +552,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
             if (index < 0 || index >= MAX_FILTERED) {
                 return;
             }
-            filter[index] = newSetting;
+            filter.set(index, newSetting);
         }
 
     }
@@ -543,7 +560,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
 
     public static final int TIMER = 10, BASE_RANGE = 12, MAX_RANGE = 16;
 
-    private static final boolean FILTER_WORKS = false;
+    private static final boolean FILTER_WORKS = true;
 
     public static boolean defBool(final @NonNull NBTTagCompound comp, final @NonNull String tag, final boolean defVal) {
         if (comp.hasKey(tag)) {
@@ -717,12 +734,12 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
         aList.add((isActive(aStack) ? EnumChatFormatting.GREEN + "Active" : EnumChatFormatting.RED + "Inactive"));
         aList.add(getToggleInfoString());
         val range = getRange(aStack);
-        aList.add((String.format("Range of (%d / %d)", range, heldRange(range))));
+        aList.add((String.format("Range of %d (%d)", range, heldRange(range))));
         val filter = getFilter(aStack);
         if (FILTER_WORKS) {
             if (filter.isEnabled()) {
                 aList.add("Filter mode: " + (filter.isWhitelist() ? EnumChatFormatting.WHITE + "Whitelist" : EnumChatFormatting.DARK_GRAY + "Blacklist"));
-                val filSize = filter.getFilter().length;
+                val filSize = filter.numFiltered();
                 if (filSize > 0) {
                     aList.add(String.format("Filtering %d items", filSize));
                 }
@@ -862,7 +879,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
         return itemEntity.delayBeforeCanPickup <= 0 && getFilter(stack).matchesFilter(itemEntity.getEntityItem());
     }
 
-    protected int heldRange(final int baseRange) {
+    public int heldRange(final int baseRange) {
         return baseRange * 2;
     }
 

@@ -4,7 +4,6 @@ package gregtech.common.gui.dev;
 import gregtech.api.enums.RSControlMode;
 import gregtech.api.gui.GT_GUIContainer_Machine_Plus;
 import gregtech.api.gui.widgets.*;
-import gregtech.api.interfaces.IGuiScreen;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 import lombok.val;
@@ -32,28 +31,35 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
         return vTBoxY() + 20;
     }
 
-    public GT_GUIContainer_DevEnergySource(
-            final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity
-                                          ) {
+    private static int vSliderY() {
+        return topButtonRowY() + buttonSize() + 24;
+    }
+
+    private static int buttonSize() {
+        return 16;
+    }
+
+    private static int elementLeft() {
+        return 8;
+    }
+
+    private static int topButtonRowY() {
+        return 8;
+    }
+
+    public GT_GUIContainer_DevEnergySource(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity) {
         super(new GT_Container_DevEnergySource(aInventoryPlayer, aTileEntity), "gregtech:textures/gui/DevEnergySource.png", 256, 166);
         addGUIElements();
     }
 
     /**
-     * @param button Handler for a button click
+     * @param button
+     *         Handler for a button click
      */
     @Override
     public void buttonClicked(final GuiButton button) {
         super.buttonClicked(button);
-        if (button.id == 0 && button instanceof GT_GuiIconCheckButton) {
-            ((GT_GuiIconCheckButton) button).setChecked(getSource().toggleEnabled());
-        } else if (button.id == 1) {
-            getSource().zeroOut();
-        } else if (button.id == 2 && button instanceof GT_GuiCycleButton) {
-            getSource().setMode(RSControlMode.getMode(((GT_GuiCycleButton) button).getState()));
-        }
-        sendUpdateToServer();
-        updateButtons();
+        uncheckButtons();
         clearSelectedButton();
 
     }
@@ -70,18 +76,11 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
         getSource().sendPacket();
     }
 
-    private void updateButtons() {
-        GuiButton button;
-        for (Object o : buttonList) {
-            button = (GuiButton) o;
-            button.enabled = true;
-        }
-    }
-
     /**
      * Given textbox's value might have changed.
      *
-     * @param box Textbox to apply
+     * @param box
+     *         Textbox to apply
      */
     @Override
     public void applyTextBox(final GT_GuiIntegerTextBox box) {
@@ -115,9 +114,12 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
     }
 
     /**
-     * @param mouseX   Mouse X
-     * @param mouseY   Mouse Y
-     * @param parTicks Still dunno lol
+     * @param mouseX
+     *         Mouse X
+     * @param mouseY
+     *         Mouse Y
+     * @param parTicks
+     *         Still dunno lol
      */
     @Override
     public void drawExtras(final int mouseX, final int mouseY, final float parTicks) {
@@ -137,22 +139,6 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
         return VN[getSource().getData().getTier()];
     }
 
-    private static int vSliderY() {
-        return topButtonRowY() + buttonSize() + 24;
-    }
-
-    private static int buttonSize() {
-        return 16;
-    }
-
-    private static int elementLeft() {
-        return 8;
-    }
-
-    private static int topButtonRowY() {
-        return 8;
-    }
-
     @Override
     public boolean hasDWSAlternativeBackground() {
         return false;
@@ -166,75 +152,70 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
     }
 
     private void addButtons() {
-        new GT_GuiIconCheckButton(
-                this, 0, elementLeft(), topButtonRowY(), GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Enable Activity", "Disable Activity").setChecked(
-                !getSource().getData().isEnabled()).setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
-            if (screen instanceof GT_GUIContainer_DevEnergySource && button instanceof GT_GuiIconCheckButton) {
-                ((GT_GuiIconCheckButton) button).setChecked(((GT_GUIContainer_DevEnergySource) screen).getSource().getData().isEnabled());
-            }
+        val source = getSource();
+        val activityCheck = new GT_GuiIconCheckButton(this, 0, elementLeft(), topButtonRowY(), GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Enable Activity",
+                                                      "Disable Activity");
+        activityCheck.setChecked(!getSource().getData().isEnabled()).setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
+            activityCheck.setChecked(source.getData().isEnabled());
+            sendUpdateToServer();
         }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
-        new GT_GuiIconButton(this, 1, elementLeft() + buttonSize(), topButtonRowY(), GT_GuiIcon.MATH_ZERO).setTooltipText("Sets amperage and voltage to 0");
+        //
+        val zeroButton = new GT_GuiIconButton(this, 1, elementLeft() + buttonSize(), topButtonRowY(), GT_GuiIcon.MATH_ZERO);
+        zeroButton.setTooltipText("Sets amperage and voltage to 0");
+        zeroButton.setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
+            source.zeroOut();
+            sendUpdateToServer();
+        });
         addRedstoneButton();
     }
 
     private void addRedstoneButton() {
-        final GT_GuiCycleButton rsButton = new GT_GuiCycleButton(this, 2, elementLeft() + 2 * buttonSize(), topButtonRowY(), 0, new GT_GuiCycleButton.IconToolTipPair[]{
+        val source = getSource();
+        val rsButton = new GT_GuiCycleButton(this, 2, elementLeft() + 2 * buttonSize(), topButtonRowY(), 0, new GT_GuiCycleButton.IconToolTipPair[]{
                 new GT_GuiCycleButton.IconToolTipPair(GT_GuiIcon.CROSS, "Ignores redstone"),
                 new GT_GuiCycleButton.IconToolTipPair(GT_GuiIcon.REDSTONE_OFF, "Requires low signal"),
                 new GT_GuiCycleButton.IconToolTipPair(GT_GuiIcon.REDSTONE_ON, "Requires signal"),
                 });
-        rsButton.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
-            if (screen instanceof GT_GUIContainer_DevEnergySource && button instanceof GT_GuiCycleButton) {
-                ((GT_GuiCycleButton) button).setState(((GT_GUIContainer_DevEnergySource) screen).getSource().getData().getMode().ordinal());
-            }
-        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
-            if (screen instanceof GT_GUIContainer_DevEnergySource && button instanceof GT_GuiCycleButton) {
-                ((GT_GuiCycleButton) button).cycle();
-                ((GT_GUIContainer_DevEnergySource) screen).getSource().setMode(RSControlMode.getMode(((GT_GuiCycleButton) button).getState()));
-                button.setUpdateCooldown(20);
-                sendUpdateToServer();
-            }
+        rsButton.setState(source.getData().getMode().ordinal());
+        rsButton.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> rsButton.setState(source.getData().getMode().ordinal()));
+        rsButton.setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
+            rsButton.cycle();
+            source.setMode(RSControlMode.getMode(((GT_GuiCycleButton) button).getState()));
+            button.setUpdateCooldown(20);
+            sendUpdateToServer();
         });
         rsButton.setDoCycle(false);
     }
 
     private void addVoltTierSlider() {
-        final GT_GuiSlider voltTierSlider = new GT_GuiSlider(0, this, elementLeft(), vSliderY(), 128, 8, 0.0, 15.0, getSource().getData().getTier(), 16);
+        val source = getSource();
+        val voltTierSlider = new GT_GuiSlider(0, this, elementLeft(), vSliderY(), 128, 8, 0.0, 15.0, getSource().getData().getTier(), 16);
         voltTierSlider.setTextHandler(slider -> String.format("Tier: %s", VN[(int) slider.getValue()]));
-        voltTierSlider.setOnChange(slider -> {
-            final IGuiScreen gui = slider.getGui();
-            if (gui instanceof GT_GUIContainer_DevEnergySource) {
-                slider.setValue(((GT_GUIContainer_DevEnergySource) gui).getSource().getData().getTier());
-            }
-        });
+        voltTierSlider.setOnChange(slider -> slider.setValue(source.getData().getTier()));
         voltTierSlider.setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
-            if (screen instanceof GT_GUIContainer_DevEnergySource && button instanceof GT_GuiSlider) {
-                ((GT_GUIContainer_DevEnergySource) screen).getSource().setEnergyTier((int) ((GT_GuiSlider) button).getValue());
-                sendUpdateToServer();
-            }
+            source.setEnergyTier((int) voltTierSlider.getValue());
+            sendUpdateToServer();
         });
     }
 
     private void addVoltageTextBox() {
-        final GT_GuiIntegerTextBox vBox = new GT_GuiIntegerTextBox(this, 3, elementLeft(), vTBoxY(), 128, 10);
+        val source = getSource();
+        val vBox = new GT_GuiIntegerTextBox(this, 3, elementLeft(), vTBoxY(), 128, 10);
         vBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
-            if (screen instanceof GT_GUIContainer_DevEnergySource && button instanceof GT_GuiIntegerTextBox && !((GT_GuiIntegerTextBox) button).isFocused()) {
-                ((GT_GuiIntegerTextBox) button).setText(String.valueOf(((GT_GUIContainer_DevEnergySource) screen).getSource().getData().getVoltage()));
+            if (!vBox.isFocused()) {
+                vBox.setText(String.valueOf(source.getData().getVoltage()));
             }
-        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
-            button.setUpdateCooldown(20);
-        });
+        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> vBox.setUpdateCooldown(20));
     }
 
     private void addAmperageTextBox() {
-        final GT_GuiIntegerTextBox aBox = new GT_GuiIntegerTextBox(this, 4, elementLeft(), aTBoxY(), 128, 10);
+        val source = getSource();
+        val aBox = new GT_GuiIntegerTextBox(this, 4, elementLeft(), aTBoxY(), 128, 10);
         aBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
-            if (screen instanceof GT_GUIContainer_DevEnergySource && button instanceof GT_GuiIntegerTextBox && !((GT_GuiIntegerTextBox) button).isFocused()) {
-                ((GT_GuiIntegerTextBox) button).setText(String.valueOf(((GT_GUIContainer_DevEnergySource) screen).getSource().getData().getAmps()));
+            if (!aBox.isFocused()) {
+                aBox.setText(String.valueOf(source.getData().getAmps()));
             }
-        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
-            button.setUpdateCooldown(20);
-        });
+        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
     }
 
 }

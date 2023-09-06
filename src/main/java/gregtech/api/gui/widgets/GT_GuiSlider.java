@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
+@Setter
 @Getter
 public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
@@ -80,6 +81,8 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
     private ITextHandler textHandler = null;
 
     private boolean inside = false;
+
+    private boolean showNumbers = true;
 
     @Getter
     @Setter
@@ -324,8 +327,16 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         } else {
             barLeft = barRight = (int) getCurrentX();
         }
-        drawGradientRect(left, guiY, barLeft, guiY + height, edgeColor, midColor, false);
+        drawBarLower(left, barLeft, edgeColor, midColor);
+        drawBarUpper(barRight, right, midColor, edgeColor);
+    }
+
+    protected void drawBarUpper(final int barRight, final int right, final int midColor, final int edgeColor) {
         drawGradientRect(barRight, guiY, right, guiY + height, midColor, edgeColor, false);
+    }
+
+    protected void drawBarLower(final int left, final int barLeft, final int edgeColor, final int midColor) {
+        drawGradientRect(left, guiY, barLeft, guiY + height, edgeColor, midColor, false);
     }
 
     private int getPositionRight() {
@@ -358,27 +369,29 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     protected void drawInfo(final int mouseX, final int mouseY, final float parTicks) {
         val format = String.format("%%.%df", precision);
-        String aStr = String.format(format, min);
-        String bStr = String.format(format, max);
-        val aWidth = this.gui.getFontRenderer().getStringWidth(aStr);
-        var bWidth = this.gui.getFontRenderer().getStringWidth(bStr);
-        var firLoc = guiX;
-        var secLoc = guiX + width - bWidth;
-        int aY = guiY + height + Math.max(1, height / 10);
-        if (aWidth + bWidth > width * 0.8) {
-            val aAbs = Math.abs(min);
-            val bAbs = Math.abs(max);
-            if (aAbs > Math.pow(10, 3)) {
-                aStr = getCompressedString(min);
+        if (showNumbers) {
+            String aStr = String.format(format, min);
+            String bStr = String.format(format, max);
+            val aWidth = this.gui.getFontRenderer().getStringWidth(aStr);
+            var bWidth = this.gui.getFontRenderer().getStringWidth(bStr);
+            var firLoc = guiX;
+            var secLoc = guiX + width - bWidth;
+            int aY = guiY + height + Math.max(1, height / 10);
+            if (aWidth + bWidth > width * 0.8) {
+                val aAbs = Math.abs(min);
+                val bAbs = Math.abs(max);
+                if (aAbs > Math.pow(10, 3)) {
+                    aStr = getCompressedString(min);
+                }
+                if (bAbs > Math.pow(10, 3)) {
+                    bStr = getCompressedString(max);
+                    bWidth = this.gui.getFontRenderer().getStringWidth(bStr);
+                    secLoc = guiX + width - bWidth;
+                }
             }
-            if (bAbs > Math.pow(10, 3)) {
-                bStr = getCompressedString(max);
-                bWidth = this.gui.getFontRenderer().getStringWidth(bStr);
-                secLoc = guiX + width - bWidth;
-            }
+            this.gui.getFontRenderer().drawString(aStr, firLoc, aY, textColor());
+            this.gui.getFontRenderer().drawString(bStr, secLoc, aY, textColor());
         }
-        this.gui.getFontRenderer().drawString(aStr, firLoc, aY, textColor());
-        this.gui.getFontRenderer().drawString(bStr, secLoc, aY, textColor());
         if (isDragged && isDrawOnDrag()) {
             final String str;
             if (textHandler == null) {

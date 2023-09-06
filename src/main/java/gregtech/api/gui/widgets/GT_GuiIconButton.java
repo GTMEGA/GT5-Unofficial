@@ -52,8 +52,9 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
 
     @Override
     public void onInit() {
-        if (tooltip != null)
+        if (tooltip != null) {
             gui.addToolTip(tooltip);
+        }
         xPosition = x0 + gui.getGuiLeft();
         yPosition = y0 + gui.getGuiTop();
     }
@@ -65,8 +66,9 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
 
     @Override
     public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-        if (this.tooltip != null)
+        if (this.tooltip != null) {
             this.tooltip.enabled = true;
+        }
 
         if (this.visible) {
             //moused over
