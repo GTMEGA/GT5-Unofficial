@@ -88,7 +88,7 @@ public class GT_MEGAnet_GuiContainer extends GT_GUIContainer_Plus {
         meganetEnabledButton.setChecked(meganetContainer.getMEGAnetActive()); // <--- This seems redundant, but it helps ensure the tooltips are initialized
         meganetEnabledButton.setOnUpdateBehavior(
                 (screen, button, mouseX, mouseY, clickType) -> meganetEnabledButton.setChecked(meganetContainer.getMEGAnetActive()));
-        meganetEnabledButton.setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
+        meganetEnabledButton.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
             meganetEnabledButton.setChecked(meganetContainer.toggleMeganet());
             meganetEnabledButton.setUpdateCooldown(20);
         });
@@ -99,7 +99,7 @@ public class GT_MEGAnet_GuiContainer extends GT_GUIContainer_Plus {
         meganetFilterActiveButton.setChecked(meganetContainer.getFilterActive()); // <--- This seems redundant, but it helps ensure the tooltips are initialized
         meganetFilterActiveButton.setOnUpdateBehavior(
                 (screen, button, mouseX, mouseY, clickType) -> meganetFilterActiveButton.setChecked(meganetContainer.getFilterActive()));
-        meganetFilterActiveButton.setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
+        meganetFilterActiveButton.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
             meganetFilterActiveButton.setChecked(meganetContainer.toggleFilter());
             meganetFilterActiveButton.setUpdateCooldown(20);
         });
@@ -111,7 +111,7 @@ public class GT_MEGAnet_GuiContainer extends GT_GUIContainer_Plus {
                 meganetContainer.getFilterActive()); // <--- This seems redundant, but it helps ensure the tooltips are initialized
         meganetFilterWhitelistButton.setOnUpdateBehavior(
                 (screen, button, mouseX, mouseY, clickType) -> meganetFilterWhitelistButton.setChecked(meganetContainer.getFilterWhitelist()));
-        meganetFilterWhitelistButton.setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
+        meganetFilterWhitelistButton.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
             meganetFilterWhitelistButton.setChecked(meganetContainer.toggleWhitelist());
             meganetFilterWhitelistButton.setUpdateCooldown(20);
         });

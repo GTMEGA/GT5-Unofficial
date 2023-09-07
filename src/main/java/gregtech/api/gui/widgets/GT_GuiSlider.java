@@ -5,6 +5,7 @@ import gregtech.api.gui.GT_GUIContainer_Plus;
 import gregtech.api.interfaces.IGuiScreen;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import lombok.val;
 import lombok.var;
 import net.minecraft.client.gui.Gui;
@@ -21,6 +22,12 @@ import java.util.List;
 @Setter
 @Getter
 public class GT_GuiSlider extends Gui implements IGT_GuiButton {
+
+    public enum SlideJustification {
+        LEFT,
+        RIGHT,
+        CENTER
+    }
 
     public interface ITextHandler {
 
@@ -46,20 +53,19 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     private final List<GT_GuiSlider> dependents = new ArrayList<>();
 
-    @Getter
+    private SlideJustification justification = SlideJustification.CENTER;
+
     private final int id;
 
-    @Getter
     private final int x;
 
-    @Getter
     private final int y;
 
     private int guiX = 0;
 
     private int guiY = 0;
 
-    private final double barRadius = 0.1, sliderWidthFuzzy = 0.1, sliderHeightFuzzy = 0.3f;
+    private double barRadius = 0.1, sliderWidthFuzzy = 0.1, sliderHeightFuzzy = 0.3f;
 
     private double min;
 
@@ -69,23 +75,27 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     private GT_GuiTooltip tooltip = null;
 
-    private IGT_GuiHook hook = null;
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private IGT_GuiHook onClickBehavior, onInitBehavior, onUpdateBehavior;
+
+    private int updateCooldown = 0;
 
     private IOnChange onChange = null;
 
     private boolean isDragged = false;
 
-    @Setter
     private int precision = 0;
 
     private ITextHandler textHandler = null;
+
+    private boolean liveUpdate = false;
 
     private boolean inside = false;
 
     private boolean showNumbers = true;
 
-    @Getter
-    @Setter
     private boolean drawOnDrag = false;
 
     public GT_GuiSlider(
@@ -242,26 +252,11 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         return inside;
     }
 
-    /**
-     * @return
-     */
-    @Override
-    public IGT_GuiHook getOnClickHook() {
-        return hook;
-    }
-
-    /**
-     * @param hook
-     * @return
-     */
-    @Override
-    public IGuiScreen.IGuiElement setOnClickHook(final IGT_GuiHook hook) {
-        this.hook = hook;
-        return this;
-    }
-
     public void onMouseDragged(final int mouseX, final int mouseY) {
         if (this.isDragged) {
+            if (this.onChange != null && this.liveUpdate) {
+                this.onChange.hook(this);
+            }
             onMousePressed(mouseX, mouseY, 0);
         } else {
             if (this.onChange != null) {
@@ -340,11 +335,31 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
     }
 
     private int getPositionRight() {
-        return (int) (getCurrentX() + getPseudoWidth() * barRadius / 2);
+        switch (justification) {
+            case LEFT: {
+                return (int) ((getCurrentX() + getPseudoWidth() * barRadius / 2) + getPseudoWidth() * (1 + barRadius));
+            }
+            case RIGHT:
+            case CENTER:
+            default: {
+                return (int) (getCurrentX() + getPseudoWidth() * barRadius / 2);
+            }
+        }
+        // return (int) (getCurrentX() + getPseudoWidth() * barRadius / 2);
     }
 
     private int getPositionLeft() {
-        return (int) (getCurrentX() - getPseudoWidth() * barRadius / 2);
+        switch (justification) {
+            case RIGHT: {
+                return (int) (getCurrentX() - getPseudoWidth() * barRadius / 2 - getPseudoWidth() * (1 - barRadius));
+            }
+            case LEFT:
+            case CENTER:
+            default: {
+                return (int) (getCurrentX() - getPseudoWidth() * barRadius / 2);
+            }
+        }
+        // return (int) (getCurrentX() - getPseudoWidth() * barRadius / 2);
     }
 
     protected int getLogTen(double val) {

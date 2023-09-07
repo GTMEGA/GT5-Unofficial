@@ -158,11 +158,11 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
         activityCheck.setChecked(!getSource().getData().isEnabled()).setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
             activityCheck.setChecked(source.getData().isEnabled());
             sendUpdateToServer();
-        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
+        }).setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
         //
         val zeroButton = new GT_GuiIconButton(this, 1, elementLeft() + buttonSize(), topButtonRowY(), GT_GuiIcon.MATH_ZERO);
         zeroButton.setTooltipText("Sets amperage and voltage to 0");
-        zeroButton.setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
+        zeroButton.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
             source.zeroOut();
             sendUpdateToServer();
         });
@@ -178,10 +178,9 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
                 });
         rsButton.setState(source.getData().getMode().ordinal());
         rsButton.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> rsButton.setState(source.getData().getMode().ordinal()));
-        rsButton.setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
-            rsButton.cycle();
+        rsButton.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
+            rsButton.cycle().setUpdateCooldown(20);
             source.setMode(RSControlMode.getMode(((GT_GuiCycleButton) button).getState()));
-            button.setUpdateCooldown(20);
             sendUpdateToServer();
         });
         rsButton.setDoCycle(false);
@@ -192,7 +191,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
         val voltTierSlider = new GT_GuiSlider(0, this, elementLeft(), vSliderY(), 128, 8, 0.0, 15.0, getSource().getData().getTier(), 16);
         voltTierSlider.setTextHandler(slider -> String.format("Tier: %s", VN[(int) slider.getValue()]));
         voltTierSlider.setOnChange(slider -> slider.setValue(source.getData().getTier()));
-        voltTierSlider.setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
+        voltTierSlider.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
             source.setEnergyTier((int) voltTierSlider.getValue());
             sendUpdateToServer();
         });
@@ -205,7 +204,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
             if (!vBox.isFocused()) {
                 vBox.setText(String.valueOf(source.getData().getVoltage()));
             }
-        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> vBox.setUpdateCooldown(20));
+        }).setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> vBox.setUpdateCooldown(20));
     }
 
     private void addAmperageTextBox() {
@@ -215,7 +214,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
             if (!aBox.isFocused()) {
                 aBox.setText(String.valueOf(source.getData().getAmps()));
             }
-        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
+        }).setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
     }
 
 }

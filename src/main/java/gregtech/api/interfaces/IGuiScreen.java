@@ -2,9 +2,12 @@ package gregtech.api.interfaces;
 
 
 import gregtech.api.gui.widgets.GT_GuiTooltip;
+import lombok.val;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.entity.RenderItem;
+
+import java.awt.*;
 
 
 public interface IGuiScreen {
@@ -25,17 +28,11 @@ public interface IGuiScreen {
 
         IGuiElement setTooltipText(String... text);
 
-        default int getUpdateCooldown() {
-            return 0;
-        }
+        int getUpdateCooldown();
 
-        default void setUpdateCooldown(final int val) {
+        void setUpdateCooldown(final int val);
 
-        }
-
-        default boolean inBounds(final int mouseX, final int mouseY, final int clickType) {
-            return false;
-        }
+        boolean inBounds(final int mouseX, final int mouseY, final int clickType);
 
         default void onInit(IGuiScreen screen, int mouseX, int mouseY, final int clickType) {
             final IGT_GuiHook action = getOnInitBehavior();
@@ -44,16 +41,12 @@ public interface IGuiScreen {
             }
         }
 
-        default IGT_GuiHook getOnInitBehavior() {
-            return null;
-        }
+        IGT_GuiHook getOnInitBehavior();
 
-        default IGuiElement setOnInitBehavior(final IGT_GuiHook hook) {
-            return this;
-        }
+        IGuiElement setOnInitBehavior(final IGT_GuiHook hook);
 
         default void onUpdate(IGuiScreen screen, int mouseX, int mouseY, final int clickType) {
-            final IGT_GuiHook action = getOnUpdateBehavior();
+            val action = getOnUpdateBehavior();
             if (action != null && getUpdateCooldown() <= 0) {
                 action.action(screen, this, mouseX, mouseY, clickType);
             }
@@ -64,28 +57,22 @@ public interface IGuiScreen {
             }
         }
 
-        default IGT_GuiHook getOnUpdateBehavior() {
-            return null;
-        }
+        IGT_GuiHook getOnUpdateBehavior();
 
-        default IGuiElement setOnUpdateBehavior(IGT_GuiHook hook) {
-            return this;
-        }
+        IGuiElement setOnUpdateBehavior(IGT_GuiHook hook);
 
         default void onClick(IGuiScreen screen, int mouseX, int mouseY, final int clickType) {
-            final IGT_GuiHook hook = getOnClickHook();
+            final IGT_GuiHook hook = getOnClickBehavior();
             if (hook != null) {
                 hook.action(screen, this, mouseX, mouseY, clickType);
             }
         }
 
-        default IGT_GuiHook getOnClickHook() {
-            return null;
-        }
+        IGT_GuiHook getOnClickBehavior();
 
-        default IGuiElement setOnClickHook(IGT_GuiHook hook) {
-            return this;
-        }
+        IGuiElement setOnClickBehavior(IGT_GuiHook hook);
+
+        Rectangle getBounds();
 
     }
 

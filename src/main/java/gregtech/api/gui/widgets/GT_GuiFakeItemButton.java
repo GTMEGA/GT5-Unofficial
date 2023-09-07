@@ -1,6 +1,9 @@
 package gregtech.api.gui.widgets;
 
 import gregtech.api.interfaces.IGuiScreen;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
@@ -14,6 +17,15 @@ public class GT_GuiFakeItemButton implements IGT_GuiButton {
     private IGuiScreen gui;
     private int x0, y0, xPosition, yPosition;
     private int width, height;
+
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private IGT_GuiHook onInitBehavior, onClickBehavior, onUpdateBehavior;
+
+    @Getter
+    @Setter
+    private int updateCooldown = 0;
 
     private GT_GuiTooltip tooltip = null;
 
@@ -80,6 +92,17 @@ public class GT_GuiFakeItemButton implements IGT_GuiButton {
             this.tooltip.setToolTipText(text);
         }
         return this;
+    }
+
+    /**
+     * @param mouseX
+     * @param mouseY
+     * @param clickType
+     * @return
+     */
+    @Override
+    public boolean inBounds(final int mouseX, final int mouseY, final int clickType) {
+        return getBounds().contains(mouseX, mouseY);
     }
 
     public Rectangle getBounds() {

@@ -38,7 +38,7 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
     @Override
     public IGuiScreen.IGuiElement setOnUpdateBehavior(final IGT_GuiHook hook) {
         this.onUpdate = hook;
-        return IGT_GuiButton.super.setOnUpdateBehavior(hook);
+        return this;
     }
 
     public GT_GuiIconButton(IGuiScreen gui, int id, int x, int y, GT_GuiIcon icon) {
@@ -146,7 +146,7 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
      * @return
      */
     @Override
-    public IGT_GuiHook getOnClickHook() {
+    public IGT_GuiHook getOnClickBehavior() {
         return onClick;
     }
 
@@ -155,9 +155,9 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
      * @return
      */
     @Override
-    public IGuiScreen.IGuiElement setOnClickHook(final IGT_GuiHook hook) {
+    public IGuiScreen.IGuiElement setOnClickBehavior(final IGT_GuiHook hook) {
         this.onClick = hook;
-        return IGT_GuiButton.super.setOnClickHook(hook);
+        return this;
     }
 
     /**
@@ -174,6 +174,34 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
     @Override
     public void setUpdateCooldown(final int val) {
         this.updateCooldown = val;
+    }
+
+    /**
+     * @param mouseX
+     * @param mouseY
+     * @param clickType
+     * @return
+     */
+    @Override
+    public boolean inBounds(final int mouseX, final int mouseY, final int clickType) {
+        return false;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public IGT_GuiHook getOnInitBehavior() {
+        return null;
+    }
+
+    /**
+     * @param hook
+     * @return
+     */
+    @Override
+    public IGuiScreen.IGuiElement setOnInitBehavior(final IGT_GuiHook hook) {
+        return null;
     }
 
 }

@@ -26,7 +26,7 @@ public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus 
         val check = new GT_GuiIconCheckButton(this, 0, buttonX(), 24, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Enable Activity", "Disable Activity");
         check.setChecked(!getSource().getData().isActive());
         check.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> check.setChecked(source.getData().isActive()));
-        check.setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
+        check.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
             check.setChecked(source.toggleActive());
             button.setUpdateCooldown(20);
             sendUpdateToServer();
@@ -34,7 +34,7 @@ public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus 
         //
         val zero = new GT_GuiIconButton(this, 1, buttonX(), 42, GT_GuiIcon.MATH_ZERO);
         zero.setTooltipText("Set output rate to zero");
-        zero.setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
+        zero.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
             source.zeroOut();
             sendUpdateToServer();
         });
@@ -68,7 +68,7 @@ public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus 
                 });
         rsButton.setState(source.getData().getRedstoneMode().ordinal());
         rsButton.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> rsButton.setState(source.getData().getRedstoneMode().ordinal()));
-        rsButton.setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
+        rsButton.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
             rsButton.cycle();
             source.setRedstoneMode(RSControlMode.getMode(((GT_GuiCycleButton) button).getState()));
             button.setUpdateCooldown(20);
@@ -85,14 +85,14 @@ public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus 
             if (!perTickBox.isFocused()) {
                 perTickBox.setText(gui.getIPTString());
             }
-        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
+        }).setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
         //
         val perSecondBox = new GT_GuiIntegerTextBox(this, 4, boxX(), 34, boxWidth(), 10);
         perSecondBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
             if (!perSecondBox.isFocused()) {
                 perSecondBox.setText(gui.getIPSString());
             }
-        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
+        }).setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
     }
 
     private int boxX() {
