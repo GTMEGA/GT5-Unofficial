@@ -24,11 +24,12 @@ public class GT_RemoteDetonator_GuiContainer extends GT_GUIContainer_Plus {
         val scrollPanel = new GT_GuiScrollPanel<>(this, 0, 0, 0, 100, 100, 0.0, 98, 98);
         val scrollBar = new GT_GuiSlider(1, this, 0, 110, 50, 10, 0.0, 1.0, 0.0, -1);
         //
-        scrollPanel.setOnUpdateBehavior((screen, element, mouseX, mouseY, clickType) -> scrollBar.setBarRadius(scrollPanel.renderWindowEffectiveHeight()));
+        // scrollPanel.setOnUpdateBehavior((screen, element, mouseX, mouseY, clickType) -> scrollBar.setBarDiameter(scrollPanel.effectiveWindowHeight()));
         for (int i = 0; i < 10; i++) {
             val scroll = new RemoteDetonator_GuiEntry(scrollPanel);
             scrollPanel.addScrollableElement(scroll);
         }
+        scrollBar.setBarDiameter(0.82);
         //
         scrollBar.setOnChange((slider) -> scrollPanel.setCurrentScroll(scrollBar.getCurrent()));
         scrollBar.setLiveUpdate(true);

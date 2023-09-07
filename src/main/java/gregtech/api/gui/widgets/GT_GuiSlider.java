@@ -65,7 +65,7 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     private int guiY = 0;
 
-    private double barRadius = 0.1, sliderWidthFuzzy = 0.1, sliderHeightFuzzy = 0.3f;
+    private double barDiameter = 0.1, sliderWidthFuzzy = 0.1, sliderHeightFuzzy = 0.3f;
 
     private double min;
 
@@ -279,8 +279,8 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     public void onMousePressed(final int mouseX, final int mouseY, final int clickType) {
         if (clickType == 0 && mouseInBar(mouseX, mouseY, clickType)) {
-            val pseudoLeft = x + width * barRadius / 2;
-            val pseudoWidth = width - width * barRadius;
+            val pseudoLeft = x + width * barDiameter / 2;
+            val pseudoWidth = width - width * barDiameter;
             this.current = (mouseX - pseudoLeft) / pseudoWidth;
             updateSlider(true);
             this.isDragged = true;
@@ -336,13 +336,13 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     private int getPositionRight() {
         switch (justification) {
-            case LEFT: {
-                return (int) ((getCurrentX() + getPseudoWidth() * barRadius / 2) + getPseudoWidth() * (1 + barRadius));
+            /* case LEFT: {
+                return (int) ((getCurrentX() + getPseudoWidth() * barDiameter / 2) + getPseudoWidth() * (1 + barDiameter));
             }
             case RIGHT:
-            case CENTER:
+            case CENTER: */
             default: {
-                return (int) (getCurrentX() + getPseudoWidth() * barRadius / 2);
+                return (int) (getCurrentX() + getPseudoWidth() * barDiameter / 2);
             }
         }
         // return (int) (getCurrentX() + getPseudoWidth() * barRadius / 2);
@@ -350,13 +350,13 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     private int getPositionLeft() {
         switch (justification) {
-            case RIGHT: {
-                return (int) (getCurrentX() - getPseudoWidth() * barRadius / 2 - getPseudoWidth() * (1 - barRadius));
+            /* case RIGHT: {
+                return (int) (getCurrentX() - getPseudoWidth() * barDiameter / 2 - getPseudoWidth() * (1 - barDiameter));
             }
             case LEFT:
-            case CENTER:
+            case CENTER: */
             default: {
-                return (int) (getCurrentX() - getPseudoWidth() * barRadius / 2);
+                return (int) (getCurrentX() - getPseudoWidth() * barDiameter / 2);
             }
         }
         // return (int) (getCurrentX() - getPseudoWidth() * barRadius / 2);
@@ -434,11 +434,11 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
     }
 
     private double getPseudoLeft() {
-        return guiX + width * barRadius / 2;
+        return guiX + width * barDiameter / 2;
     }
 
     private double getPseudoWidth() {
-        return width * (1 - barRadius);
+        return width * (1 - barDiameter);
     }
 
     /**

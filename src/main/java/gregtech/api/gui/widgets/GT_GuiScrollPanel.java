@@ -147,6 +147,8 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
         drawString(getFontRenderer(), String.format("Scroll: %.2f",  currentScroll), x + contentOffsetX() + myWidth + 10, y + contentOffsetY(), 0xFFFFFF);
         drawString(getFontRenderer(), String.format("Window start: %.2f",  pseudoRenderStart()), x + contentOffsetX() + myWidth + 10, y + contentOffsetY() + 15, 0xFFFFFF);
         drawString(getFontRenderer(), String.format("Window end: %.2f",  pseudoRenderEnd()), x + contentOffsetX() + myWidth + 10, y + contentOffsetY() + 30, 0xFFFFFF);
+        drawString(getFontRenderer(), String.format("Window height: %.2f", effectiveTotalContentHeight()), x + contentOffsetX() + myWidth + 10, y + contentOffsetY() + 45, 0xFFFFFF);
+        drawString(getFontRenderer(), String.format("Scroll view height: %.2f", effectiveWindowHeight()), x + contentOffsetX() + myWidth + 10, y + contentOffsetY() + 60, 0xFFFFFF);
     }
 
     public void setCurrentScroll(final double currentScroll) {
@@ -173,6 +175,10 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
         for (final IScrollableElement element : scrollableElements.values()) {
             element.onInit();
         }
+    }
+
+    public double effectiveScroll() {
+        return currentScroll * (effectiveTotalContentHeight() - effectiveWindowHeight());
     }
 
     /**
@@ -355,7 +361,7 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
 
     public boolean inRange(final double pseudoY, final double elementPseudoHeight) {
         val elemEnd = pseudoY + elementPseudoHeight;
-        return pseudoY > pseudoRenderStart() && pseudoY < pseudoRenderEnd() && elemEnd > pseudoRenderStart() && elemEnd < pseudoRenderEnd();
+        return pseudoY >= pseudoRenderStart() && pseudoY <= pseudoRenderEnd() && elemEnd > pseudoRenderStart() && elemEnd < pseudoRenderEnd();
     }
 
     protected void drawScrollableContent(final int mouseX, final int mouseY, final float parTicks) {
@@ -377,7 +383,7 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
             val elementPseudoY = getRenderHeightStart(pseudoY(currentHeightTotal));
             val elementPseudoHeight = pseudoY(element.getScrollHeight());
             if (inRange(elementPseudoY, elementPseudoHeight)) {
-                val verticalOffset = (int)(currentHeightRendered /* + element.getScrollHeight() */ - totalHeight * pseudoRenderStart());
+                val verticalOffset = (int)(currentHeightTotal  - totalHeight * pseudoRenderStart());
                 element.setRenderX(x + getGuiLeft() + contentOffsetX());
                 element.setRenderY(y + getGuiTop() + contentOffsetY() + verticalOffset);
                 element.setCanRender(true);
@@ -414,19 +420,26 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
         return (double) y / (double) (totalHeight);
     }
 
-    public double renderWindowEffectiveHeight() {
-        if (totalHeight <= scrollHeight || totalHeight == 0) {
+    public double effectiveTotalContentHeight() {
+        if (totalHeight <= scrollHeight || totalHeight == 0 || scrollHeight == 0) {
             return 1.0;
         }
-        return scrollHeight / (double) totalHeight;
+        return totalHeight / (double) (scrollHeight);
+    }
+
+    public double effectiveWindowHeight() {
+        if (totalHeight <= scrollHeight || totalHeight == 0 || scrollHeight == 0) {
+            return 1.0;
+        }
+        return (double) scrollHeight / totalHeight;
     }
 
     private double pseudoRenderStart() {
-        return Math.max(0.0, currentScroll);
+        return Math.min(effectiveTotalContentHeight() - effectiveScroll(), effectiveScroll());
     }
 
     private double pseudoRenderEnd() {
-        return Math.min(1.0, currentScroll + renderWindowEffectiveHeight());
+        return Math.min(effectiveTotalContentHeight(), effectiveScroll() + effectiveWindowHeight());
     }
 
     public int contentOffsetX() {
