@@ -21,7 +21,7 @@ public class GT_RemoteDetonator_GuiContainer extends GT_GUIContainer_Plus {
     }
 
     private void addGUIElements() {
-        val scrollPanel = new GT_GuiScrollPanel<>(this, 0, 0, 0, 100, 100, 0.0, 98, 98);
+        val scrollPanel = new GT_GuiScrollPanel<>(this, 0, 0, 0, 100, 100, 0.0, 94, 94);
         val scrollBar = new GT_GuiSlider(1, this, 0, 110, 50, 10, 0.0, 1.0, 0.0, -1);
         //
         // scrollPanel.setOnUpdateBehavior((screen, element, mouseX, mouseY, clickType) -> scrollBar.setBarDiameter(scrollPanel.effectiveWindowHeight()));

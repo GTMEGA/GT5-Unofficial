@@ -52,6 +52,9 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
 
     }
 
+    // TODO: Remove
+    private static final Random TEST_REMOVE = new Random();
+
 
     private final ParentType parent;
 
@@ -143,7 +146,7 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
         val bg = new Color(19, 19, 19, 0xFF);
         val fg = new Color(0x00, 0x00, 0x00, 0x7F);
         Gui.drawRect(x, y, x + myWidth, y + myHeight, bg.getRGB());
-        Gui.drawRect(x, y, x + contentOffsetX() + scrollWidth, y + contentOffsetY() + scrollHeight, fg.getRGB());
+        Gui.drawRect(getContentX(), getContentY(), getContentX() + scrollWidth, getContentY() + scrollHeight, fg.getRGB());
         drawString(getFontRenderer(), String.format("Scroll: %.2f",  currentScroll), x + contentOffsetX() + myWidth + 10, y + contentOffsetY(), 0xFFFFFF);
         drawString(getFontRenderer(), String.format("Window start: %.2f",  pseudoRenderStart()), x + contentOffsetX() + myWidth + 10, y + contentOffsetY() + 15, 0xFFFFFF);
         drawString(getFontRenderer(), String.format("Window end: %.2f",  pseudoRenderEnd()), x + contentOffsetX() + myWidth + 10, y + contentOffsetY() + 30, 0xFFFFFF);
@@ -364,16 +367,23 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
         return pseudoY >= pseudoRenderStart() && pseudoY <= pseudoRenderEnd() && elemEnd > pseudoRenderStart() && elemEnd < pseudoRenderEnd();
     }
 
+    public double getWidthFactor() {
+        return (double) myWidth / parent.width;
+    }
+
+    public double getHeightFactor() {
+        return (double) myHeight / parent.height;
+    }
+
     protected void drawScrollableContent(final int mouseX, final int mouseY, final float parTicks) {
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         GL11.glPushMatrix();
         //
-        /* GL11.glClearColor(0, 0, 0, 1);
-        GL11.glClearStencil(0);
-        GL11.glEnable(GL11.GL_STENCIL_TEST);
-        GL11.glClear(GL11.GL_STENCIL_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_COLOR_BUFFER_BIT);
-        GL11.glStencilMask(0xFF);
-        GL11.glStencilFunc(GL11.GL_ALWAYS, 1, 0xFF); */
+        /*drawString(getFontRenderer(), String.format("Mouse: (%d, %d)",  mouseX, mouseY), mouseX + 20, mouseY, 0xFFFFFF);
+        val temp = new Color(0xFF, 0xFF, 0xFF, 0x7F);
+        Gui.drawRect(mouseX, mouseY, mouseX + scrollWidth, mouseY + scrollHeight, temp.getRGB());*/
+        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+        GL11.glScissor(getContentX(), (int) (getContentY() + scrollHeight / getHeightFactor()), (int) (scrollWidth / getWidthFactor()), (int) (scrollHeight / getHeightFactor()));
         //
         var currentHeightTotal = 0;
         var currentHeightRendered = 0;
@@ -384,8 +394,8 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
             val elementPseudoHeight = pseudoY(element.getScrollHeight());
             if (inRange(elementPseudoY, elementPseudoHeight)) {
                 val verticalOffset = (int)(currentHeightTotal  - totalHeight * pseudoRenderStart());
-                element.setRenderX(x + getGuiLeft() + contentOffsetX());
-                element.setRenderY(y + getGuiTop() + contentOffsetY() + verticalOffset);
+                element.setRenderX(getContentX());
+                element.setRenderY(getContentY() + verticalOffset);
                 element.setCanRender(true);
                 element.draw(mouseX, mouseY, parTicks);
                 currentHeightRendered += verticalOffset;
@@ -393,10 +403,18 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
             currentHeightTotal += element.getScrollHeight();
         }
         //
-        /* GL11.glDisable(GL11.GL_STENCIL_TEST); */
+        GL11.glDisable(GL11.GL_SCISSOR_TEST);
         //
         GL11.glPopMatrix();
         GL11.glPopAttrib();
+    }
+
+    private int getContentY() {
+        return y + contentOffsetY() + getGuiTop();
+    }
+
+    private int getContentX() {
+        return x + contentOffsetX() + getGuiLeft();
     }
 
     protected void drawRegularContent(final int mouseX, final int mouseY, final float parTicks) {
