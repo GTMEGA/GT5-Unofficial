@@ -4,6 +4,7 @@ package gregtech.common.gui.remotedetonator;
 import gregtech.api.gui.widgets.GT_GuiScrollPanel;
 import gregtech.api.gui.widgets.GT_GuiTooltip;
 import gregtech.api.interfaces.IGuiScreen;
+import gregtech.common.items.explosives.GT_RemoteDetonator;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -18,6 +19,10 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
 
     private final GT_GuiScrollPanel<GT_RemoteDetonator_GuiContainer> scrollPanel;
 
+    private final GT_RemoteDetonator.RemoteDetonationTargetList targetList;
+
+    private final GT_RemoteDetonator.RemoteDetonationTargetList.Target target;
+
     private GT_GuiTooltip tooltip;
 
     private String[] tooltipText;
@@ -29,7 +34,6 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
     @Setter
     private int updateCooldown = 0;
 
-    @Getter
     @Setter
     private boolean canRender = false;
 
@@ -40,8 +44,10 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
     @Setter
     private IGT_GuiHook onInitBehavior, onUpdateBehavior, onClickBehavior;
 
-    public RemoteDetonator_GuiEntry(final GT_GuiScrollPanel<GT_RemoteDetonator_GuiContainer> scrollPanel) {
+    public RemoteDetonator_GuiEntry(final GT_GuiScrollPanel<GT_RemoteDetonator_GuiContainer> scrollPanel, final GT_RemoteDetonator.RemoteDetonationTargetList targetList, final GT_RemoteDetonator.RemoteDetonationTargetList.Target target) {
         this.scrollPanel = scrollPanel;
+        this.targetList = targetList;
+        this.target = target;
         scrollPanel.addScrollableElement(this);
     }
 
@@ -81,18 +87,23 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
     }
 
     /**
+     * Go to {@link GT_RemoteDetonator.RemoteDetonationTargetList.ExplosiveType} To change colors
+     *
      * @param mouseX
      * @param mouseY
      * @param parTicks
      */
     @Override
     public void draw(final int mouseX, final int mouseY, final float parTicks) {
-        val bg = new Color(0xFF, 0xFF, 0xFF, 0xFF);
-        val fg = new Color(0x00, 0x00, 0x00, 0x7F);
-        Gui.drawRect(getRenderX(), getRenderY(), getRenderX() + getScrollWidth(), getRenderY() + getScrollHeight(), bg.getRGB());
-        Gui.drawRect(getRenderX() + 1, getRenderY() + 1, getRenderX() + getScrollWidth() - 1, getRenderY() + getScrollHeight() - 1, fg.getRGB());
+        val rX = getRenderX();
+        val rY = getRenderY();
+        val sW = getScrollWidth();
+        val sH = getScrollHeight();
         if (queryCanRender()) {
-            scrollPanel.drawString(scrollPanel.getFontRenderer(), String.format("Test %d", scrollID), renderX + 1, renderY + 1, Color.WHITE.getRGB());
+            Gui.drawRect(rX, rY, rX + sW, rY + sH, target.getExplosiveType().getBackgroundColor().getRGB());
+            val string = String.format("%d (%d, %d, %d)", scrollID, target.getX(), target.getY(), target.getZ());
+            val stringWidth = scrollPanel.getFontRenderer().getStringWidth(string);
+            scrollPanel.drawCenteredString(scrollPanel.getFontRenderer(), string, rX + sW - stringWidth, (rY + sH) / 2, target.getExplosiveType().getTextColor().getRGB());
         }
     }
 

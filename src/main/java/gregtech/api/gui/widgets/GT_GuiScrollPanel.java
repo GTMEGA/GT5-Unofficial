@@ -438,7 +438,7 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
         return Math.max(0.0, Math.min(1.0, currentScroll)) * getMaxScrollFactor();
     }
 
-    private double getMaxScrollFactor() {
+    public double getMaxScrollFactor() {
         if (scrollHeight >= totalHeight || totalHeight == 0) {
             return 0.0;
         }

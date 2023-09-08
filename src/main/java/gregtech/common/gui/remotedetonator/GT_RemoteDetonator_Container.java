@@ -12,7 +12,7 @@ public class GT_RemoteDetonator_Container extends Container {
 
     public static final GT_RemoteDetonator REMOTE_DETONATOR = GregTech_API.sItemRemoteDetonator;
 
-    private final EntityPlayer player;
+    private final EntityPlayer owner;
 
     private final ItemStack stack;
 
@@ -22,10 +22,10 @@ public class GT_RemoteDetonator_Container extends Container {
 
     private final boolean bauble;
 
-    public GT_RemoteDetonator_Container(final EntityPlayer player, final ItemStack remoteDetonator, final int slotIndex, final boolean bauble) {
-        this.player = player;
+    public GT_RemoteDetonator_Container(final EntityPlayer owner, final ItemStack remoteDetonator, final int slotIndex, final boolean bauble) {
+        this.owner = owner;
         this.stack = remoteDetonator;
-        this.targetList = REMOTE_DETONATOR.getRemoteDetonationTargetList(remoteDetonator, player);
+        this.targetList = REMOTE_DETONATOR.getRemoteDetonationTargetList(remoteDetonator, owner);
         this.slotIndex = slotIndex;
         this.bauble = bauble;
     }
@@ -33,6 +33,10 @@ public class GT_RemoteDetonator_Container extends Container {
     @Override
     public boolean canInteractWith(final EntityPlayer entityPlayer) {
         return true;
+    }
+
+    public void synchronize() {
+
     }
 
 }
