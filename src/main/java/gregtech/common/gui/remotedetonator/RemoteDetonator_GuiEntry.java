@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.val;
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.gui.Gui;
 import net.minecraft.item.ItemStack;
 
@@ -109,7 +111,9 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
             Gui.drawRect(rX, rY, rX + sW, rY + sH, target.getExplosiveType().getBackgroundColor().getRGB());
             val string = String.format("(%d, %d, %d)", target.getX(), target.getY(), target.getZ());
             val stringWidth = scrollPanel.getFontRenderer().getStringWidth(string);
+            GL11.glPushMatrix();
             scrollPanel.getParent().drawItemStack(stackCache.computeIfAbsent(target.getExplosiveType().getExplosive(), ItemStack::new), rX + 20, rY + 3, "");
+            GL11.glPopMatrix();
             scrollPanel.drawString(scrollPanel.getFontRenderer(), String.format("#%d", scrollID + 1), rX + 5, rY + 5, Color.white.getRGB());
             scrollPanel.drawString(scrollPanel.getFontRenderer(), string, rX + sW - (stringWidth + 5), rY + 5, target.getExplosiveType().getTextColor().getRGB());
         }
