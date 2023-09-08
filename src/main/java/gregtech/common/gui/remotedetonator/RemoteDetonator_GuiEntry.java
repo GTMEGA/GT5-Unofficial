@@ -42,6 +42,7 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
 
     public RemoteDetonator_GuiEntry(final GT_GuiScrollPanel<GT_RemoteDetonator_GuiContainer> scrollPanel) {
         this.scrollPanel = scrollPanel;
+        scrollPanel.addScrollableElement(this);
     }
 
     /**
@@ -57,7 +58,7 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
      */
     @Override
     public int getScrollHeight() {
-        return 12;
+        return 20;
     }
 
     /**

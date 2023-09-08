@@ -42,6 +42,13 @@ public class GT_MEGAnet_GuiContainer extends GT_GUIContainer_Plus {
     }
 
     @Override
+    public void closeScreen() {
+        meganetContainer.sendSettingUpdate();
+        meganetContainer.sendFilterUpdate();
+        super.closeScreen();
+    }
+
+    @Override
     public void drawExtras(final int mouseX, final int mouseY, final float parTicks) {
         val range = GT_MEGAnet_Container.MEGANET.getRange(meganetContainer.getStack());
         drawString(String.format("Range: %d (%d) blocks", range, GT_MEGAnet_Container.MEGANET.heldRange(range)), rangeSlideX(), rangeSlideY() + 15, TEXT_COLOR);
@@ -75,42 +82,28 @@ public class GT_MEGAnet_GuiContainer extends GT_GUIContainer_Plus {
         return true;
     }
 
-    @Override
-    public void closeScreen() {
-        meganetContainer.sendSettingUpdate();
-        meganetContainer.sendFilterUpdate();
-        super.closeScreen();
-    }
-
     private void addGUIElements() {
-        val meganetEnabledButton = new GT_GuiIconCheckButton(this, 0, enabledButtonX(), buttonY(), GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Disable MEGAnet",
-                                                             "Enable MEGAnet");
+        val meganetEnabledButton = new GT_GuiIconCheckButton(this, 0, enabledButtonX(), buttonY(), GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Disable MEGAnet", "Enable MEGAnet");
         meganetEnabledButton.setChecked(meganetContainer.getMEGAnetActive()); // <--- This seems redundant, but it helps ensure the tooltips are initialized
-        meganetEnabledButton.setOnUpdateBehavior(
-                (screen, button, mouseX, mouseY, clickType) -> meganetEnabledButton.setChecked(meganetContainer.getMEGAnetActive()));
+        meganetEnabledButton.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> meganetEnabledButton.setChecked(meganetContainer.getMEGAnetActive()));
         meganetEnabledButton.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
             meganetEnabledButton.setChecked(meganetContainer.toggleMeganet());
             meganetEnabledButton.setUpdateCooldown(20);
         });
         addToolTip(meganetEnabledButton.getTooltip());
         //
-        val meganetFilterActiveButton = new GT_GuiIconCheckButton(this, 1, filterEnabledButtonX(), buttonY(), GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS,
-                                                                  "Disable Filter", "Enable Filter");
+        val meganetFilterActiveButton = new GT_GuiIconCheckButton(this, 1, filterEnabledButtonX(), buttonY(), GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Disable Filter", "Enable Filter");
         meganetFilterActiveButton.setChecked(meganetContainer.getFilterActive()); // <--- This seems redundant, but it helps ensure the tooltips are initialized
-        meganetFilterActiveButton.setOnUpdateBehavior(
-                (screen, button, mouseX, mouseY, clickType) -> meganetFilterActiveButton.setChecked(meganetContainer.getFilterActive()));
+        meganetFilterActiveButton.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> meganetFilterActiveButton.setChecked(meganetContainer.getFilterActive()));
         meganetFilterActiveButton.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
             meganetFilterActiveButton.setChecked(meganetContainer.toggleFilter());
             meganetFilterActiveButton.setUpdateCooldown(20);
         });
         addToolTip(meganetFilterActiveButton.getTooltip());
         //
-        val meganetFilterWhitelistButton = new GT_GuiIconCheckButton(this, 2, filterWhiteListButtonX(), buttonY(), GT_GuiIcon.WHITELIST, GT_GuiIcon.BLACKLIST,
-                                                                     "Blacklist", "Whitelist");
-        meganetFilterWhitelistButton.setChecked(
-                meganetContainer.getFilterActive()); // <--- This seems redundant, but it helps ensure the tooltips are initialized
-        meganetFilterWhitelistButton.setOnUpdateBehavior(
-                (screen, button, mouseX, mouseY, clickType) -> meganetFilterWhitelistButton.setChecked(meganetContainer.getFilterWhitelist()));
+        val meganetFilterWhitelistButton = new GT_GuiIconCheckButton(this, 2, filterWhiteListButtonX(), buttonY(), GT_GuiIcon.WHITELIST, GT_GuiIcon.BLACKLIST, "Blacklist", "Whitelist");
+        meganetFilterWhitelistButton.setChecked(meganetContainer.getFilterActive()); // <--- This seems redundant, but it helps ensure the tooltips are initialized
+        meganetFilterWhitelistButton.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> meganetFilterWhitelistButton.setChecked(meganetContainer.getFilterWhitelist()));
         meganetFilterWhitelistButton.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
             meganetFilterWhitelistButton.setChecked(meganetContainer.toggleWhitelist());
             meganetFilterWhitelistButton.setUpdateCooldown(20);

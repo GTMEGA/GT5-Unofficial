@@ -66,7 +66,11 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     private int guiY = 0;
 
-    private double barDiameter = 0.1, sliderWidthFuzzy = 0.1, sliderHeightFuzzy = 0.3f;
+    private double barDiameter = 0.1;
+
+    private double sliderWidthFuzzy = 0.1;
+
+    private double sliderHeightFuzzy = 0.3;
 
     private double min;
 
@@ -119,6 +123,10 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         setValue(current);
         updateSlider(false);
         this.gui.addElement(this);
+    }
+
+    public void setBarDiameter(final double newDiameter) {
+        barDiameter = Math.max(0.0, Math.min(1.0, newDiameter));
     }
 
     public void updateBounds(double newMin, double newMax, final boolean propagate) {
@@ -185,6 +193,7 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
      */
     @Override
     public void draw(final int mouseX, final int mouseY, final float parTicks) {
+        onUpdate(this.gui, mouseX, mouseY, 0);
         drawBackground(mouseX, mouseY, parTicks);
         drawInfo(mouseX, mouseY, parTicks);
         onMouseDragged(mouseX - this.gui.getGuiLeft(), mouseY - this.gui.getGuiTop());
@@ -221,9 +230,7 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
      */
     @Override
     public boolean inBounds(final int mouseX, final int mouseY, final int clickType) {
-        final boolean inside = mouseX > getX() - width * sliderWidthFuzzy / 2 && mouseX < getX() + width + width * sliderWidthFuzzy / 2 && mouseY > getY() && mouseY < getY() + height;
-        this.inside = inside;
-        return inside;
+        return this.inside = mouseX > getX() - width * sliderWidthFuzzy / 2 && mouseX < getX() + width + width * sliderWidthFuzzy / 2 && mouseY > getY() && mouseY < getY() + height;
     }
 
     public Rectangle getBounds() {
@@ -309,13 +316,13 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         final int barLeft;
         final int barRight;
         if (isDragged) {
-            barLeft = getPositionLeft();
-            barRight = getPositionRight();
+            barLeft = (int) (width * getPseudoLeft());
+            barRight = (int) (width * getPseudoRight());
         } else {
-            barLeft = barRight = (int) getCurrentX();
+            barLeft = barRight = (int) (width * getPseudoX());
         }
-        drawBarLower(left, barLeft, edgeColor, midColor);
-        drawBarUpper(barRight, right, midColor, edgeColor);
+        drawBarLower(guiX + left, guiX + barLeft, edgeColor, midColor);
+        drawBarUpper(guiX + barRight, guiX + right, midColor, edgeColor);
     }
 
     protected void drawBarUpper(final int barRight, final int right, final int midColor, final int edgeColor) {
@@ -390,7 +397,7 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         } else {
             color = GT_GUIContainer_Plus.colorToARGB(new Color(0x3F, 0x3F, 0xFF, 0x7F));
         }
-        drawRect(getPositionLeft(), guiY, getPositionRight(), guiY + height, color);
+        drawRect((int) (guiX + width * getPseudoLeft()), guiY, (int) (guiX + width * getPseudoRight()), guiY + height, color);
     }
 
     /**
@@ -448,44 +455,20 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         return mouseX > getX() - width * sliderWidthFuzzy && mouseX < getX() + width + width * sliderWidthFuzzy && mouseY > getY() - height * sliderHeightFuzzy && mouseY < getY() + height + height * sliderHeightFuzzy;
     }
 
-    private int getPositionRight() {
-        switch (justification) {
-            /* case LEFT: {
-                return (int) ((getCurrentX() + getPseudoWidth() * barDiameter / 2) + getPseudoWidth() * (1 + barDiameter));
-            }
-            case RIGHT:
-            case CENTER: */
-            default: {
-                return (int) (getCurrentX() + getPseudoWidth() * barDiameter / 2);
-            }
-        }
-        // return (int) (getCurrentX() + getPseudoWidth() * barRadius / 2);
-    }
-
-    private int getPositionLeft() {
-        switch (justification) {
-            /* case RIGHT: {
-                return (int) (getCurrentX() - getPseudoWidth() * barDiameter / 2 - getPseudoWidth() * (1 - barDiameter));
-            }
-            case LEFT:
-            case CENTER: */
-            default: {
-                return (int) (getCurrentX() - getPseudoWidth() * barDiameter / 2);
-            }
-        }
-        // return (int) (getCurrentX() - getPseudoWidth() * barRadius / 2);
-    }
-
-    private double getCurrentX() {
-        return getPseudoLeft() + current * getPseudoWidth();
+    private double getPseudoRight() {
+        return getPseudoX() + barDiameter / 2;
     }
 
     private double getPseudoLeft() {
-        return guiX + width * barDiameter / 2;
+        return getPseudoX() - barDiameter / 2;
     }
 
-    private double getPseudoWidth() {
-        return width * (1 - barDiameter);
+    private double getPseudoX() {
+        return current;
+    }
+
+    private double getPseudoRemainderWidth() {
+        return 1 - barDiameter;
     }
 
     private String getCompressedString(final double amt) {
