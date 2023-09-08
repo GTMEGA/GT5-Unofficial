@@ -5,8 +5,7 @@ import gregtech.api.gui.widgets.GT_GuiScrollPanel;
 import gregtech.api.gui.widgets.GT_GuiSlider;
 import lombok.Getter;
 import lombok.val;
-
-import java.util.Random;
+import net.minecraft.client.Minecraft;
 
 
 @Getter
@@ -20,9 +19,30 @@ public class GT_RemoteDetonator_GuiContainer extends GT_GUIContainer_Plus {
         addGUIElements();
     }
 
+    /**
+     * Causes the screen to lay out its subcomponents again. This is the equivalent of the Java call
+     * Container.validate()
+     *
+     * @param minecraft
+     * @param width
+     * @param height
+     */
+    @Override
+    public void setWorldAndResolution(final Minecraft minecraft, final int width, final int height) {
+        super.setWorldAndResolution(minecraft, width, height);
+    }
+
     private void addGUIElements() {
-        val scrollPanel = new GT_GuiScrollPanel<>(this, 0, 0, 0, 100, 100, 0.0, 94, 94);
-        val scrollBar = new GT_GuiSlider(1, this, 0, 110, 50, 10, 0.0, 1.0, 0.0, -1);
+        val x = 5;
+        val yOffset = 5;
+        val height = 100;
+        val barSpace = 6;
+        val barHeight = 10;
+        val scrollHeight = height - 4;
+        // val temp = (166 - (barHeight * 2 + barSpace + height + yOffset)) / 2;
+        val barY = yOffset + height + barSpace;
+        val scrollPanel = new GT_GuiScrollPanel<>(this, 0, x, yOffset, 80, height, 0.0, 76, scrollHeight);
+        val scrollBar = new GT_GuiSlider(this, 1, x, barY, 80, barHeight, 0.0, 1.0, 0.0, -1);
         //
         // scrollPanel.setOnUpdateBehavior((screen, element, mouseX, mouseY, clickType) -> scrollBar.setBarDiameter(scrollPanel.effectiveWindowHeight()));
         for (int i = 0; i < 10; i++) {

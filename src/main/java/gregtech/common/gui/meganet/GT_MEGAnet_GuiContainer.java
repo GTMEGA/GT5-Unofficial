@@ -117,7 +117,7 @@ public class GT_MEGAnet_GuiContainer extends GT_GUIContainer_Plus {
         });
         addToolTip(meganetFilterWhitelistButton.getTooltip());
         //
-        val meganetRangeSlider = new GT_GuiSlider(3, this, rangeSlideX(), rangeSlideY(), 96, 10, 0.0, GT_MEGAnet.MAX_RANGE, meganetContainer.getRange(), -1);
+        val meganetRangeSlider = new GT_GuiSlider(this, 3, rangeSlideX(), rangeSlideY(), 96, 10, 0.0, GT_MEGAnet.MAX_RANGE, meganetContainer.getRange(), -1);
         meganetRangeSlider.setOnChange((slider) -> {
             meganetContainer.setRange((int) meganetRangeSlider.getValue());
             meganetRangeSlider.setUpdateCooldown(20);

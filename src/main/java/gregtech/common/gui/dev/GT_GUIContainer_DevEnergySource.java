@@ -188,7 +188,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
 
     private void addVoltTierSlider() {
         val source = getSource();
-        val voltTierSlider = new GT_GuiSlider(0, this, elementLeft(), vSliderY(), 128, 8, 0.0, 15.0, getSource().getData().getTier(), 16);
+        val voltTierSlider = new GT_GuiSlider(this, 0, elementLeft(), vSliderY(), 128, 8, 0.0, 15.0, getSource().getData().getTier(), 16);
         voltTierSlider.setTextHandler(slider -> String.format("Tier: %s", VN[(int) slider.getValue()]));
         voltTierSlider.setOnChange(slider -> slider.setValue(source.getData().getTier()));
         voltTierSlider.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {

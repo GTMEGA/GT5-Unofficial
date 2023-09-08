@@ -3,8 +3,10 @@ package gregtech.api.interfaces;
 
 import gregtech.api.gui.widgets.GT_GuiTooltip;
 import lombok.val;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.entity.RenderItem;
 
 import java.awt.*;
@@ -101,5 +103,11 @@ public interface IGuiScreen {
     RenderItem getItemRenderer();
 
     FontRenderer getFontRenderer();
+
+    default void setWorldAndResolution(final Minecraft minecraft, final int width, final int height) {
+        if (this instanceof GuiScreen) {
+            ((GuiScreen) this).setWorldAndResolution(minecraft, width, height);
+        }
+    }
 
 }

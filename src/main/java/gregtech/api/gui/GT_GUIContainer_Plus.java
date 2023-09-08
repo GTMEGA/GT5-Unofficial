@@ -13,8 +13,10 @@ import gregtech.api.util.interop.NEIInterop;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.val;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -41,6 +43,8 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
     protected final List<GT_GuiIntegerTextBox> textBoxes = new ArrayList<>();
 
     protected final List<GT_GuiSlider> sliders = new ArrayList<>();
+
+    protected final List<IGuiScreen> subWindows = new ArrayList<>();
 
     protected final RenderItem itemRenderer = new RenderItem();
 
@@ -212,6 +216,22 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         }
     }
 
+    /**
+     * Causes the screen to lay out its subcomponents again. This is the equivalent of the Java call
+     * Container.validate()
+     *
+     * @param minecraft
+     * @param width
+     * @param height
+     */
+    @Override
+    public void setWorldAndResolution(final Minecraft minecraft, final int width, final int height) {
+        super.setWorldAndResolution(minecraft, width, height);
+        for (IGuiScreen subWindow : subWindows) {
+            ((GuiScreen)subWindow).setWorldAndResolution(minecraft, width, height);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     private void addElements() {
         for (IGuiElement element : elements) {
@@ -223,6 +243,9 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
             }
             if (element instanceof GT_GuiSlider) {
                 sliders.add((GT_GuiSlider) element);
+            }
+            if (element instanceof IGuiScreen) {
+                subWindows.add((IGuiScreen) element);
             }
         }
     }
