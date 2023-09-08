@@ -77,9 +77,6 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
     private final int myWidth;
 
     @Setter
-    private double fuzz = 0.1;
-
-    @Setter
     private Color panelBackground = new Color(19, 19, 19, 0xFF);
 
     @Setter
@@ -369,12 +366,12 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
     }
 
     public boolean inRange(final int elementHeight, final int netHeight) {
-        val pseudoHeight = getAsProportionOfScrollHeight(elementHeight);
-        val pseudoY = getAsProportionOfScrollHeight(netHeight) - pseudoPanelStart();
-        val elemEnd = pseudoY + pseudoHeight;
-        val start = pseudoPanelStart() - fuzz;
-        val end = pseudoPanelEnd() + fuzz;
-        return (pseudoY >= start && pseudoY <= end) || (elemEnd >= start && elemEnd <= end);
+        val start = pseudoPanelStart();
+        val end = pseudoPanelEnd();
+        val elemStart = getAsProportionOfContent(netHeight);
+        val pseudoHeight = getAsProportionOfContent(elementHeight);
+        val elemEnd = elemStart + pseudoHeight;
+        return (elemStart >= start || elemEnd >= start) && (elemStart <= end || elemEnd <= end);
     }
 
     public int contentOffsetX() {
@@ -453,14 +450,18 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
     }
 
     public double effectiveWindowHeight() {
-        return 1.0;
+        double height = (double) scrollHeight / totalHeight;
+        if (height > 1) {
+            height = 1;
+        }
+        return height;
     }
 
-    private double getAsProportionOfScrollHeight(final int y) {
-        if (scrollHeight <= 0) {
+    private double getAsProportionOfContent(final int y) {
+        if (totalHeight <= 0) {
             return 0.0;
         }
-        return (double) y / (double) (scrollHeight);
+        return (double) y / (double) (totalHeight);
     }
 
     private double pseudoPanelEnd() {
