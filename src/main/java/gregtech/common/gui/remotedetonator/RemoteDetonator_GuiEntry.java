@@ -4,6 +4,7 @@ package gregtech.common.gui.remotedetonator;
 import gregtech.api.gui.widgets.GT_GuiScrollPanel;
 import gregtech.api.gui.widgets.GT_GuiTooltip;
 import gregtech.api.interfaces.IGuiScreen;
+import gregtech.common.blocks.explosives.GT_Block_Explosive;
 import gregtech.common.items.explosives.GT_RemoteDetonator;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +14,8 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.item.ItemStack;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Getter
@@ -24,7 +27,7 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
 
     private final GT_RemoteDetonator.RemoteDetonationTargetList.Target target;
 
-    private final ItemStack blockStack;
+    private static final Map<GT_Block_Explosive, ItemStack> stackCache = new HashMap<>();
 
     private GT_GuiTooltip tooltip;
 
@@ -52,7 +55,6 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
         this.targetList = targetList;
         this.target = target;
         scrollPanel.addScrollableElement(this);
-        this.blockStack = new ItemStack(target.getExplosiveType().getExplosive());
     }
 
     /**
@@ -107,9 +109,9 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
             Gui.drawRect(rX, rY, rX + sW, rY + sH, target.getExplosiveType().getBackgroundColor().getRGB());
             val string = String.format("(%d, %d, %d)", target.getX(), target.getY(), target.getZ());
             val stringWidth = scrollPanel.getFontRenderer().getStringWidth(string);
-            scrollPanel.getParent().drawItemStack(blockStack, rX + 5, rY + 5, "");
-            scrollPanel.drawString(scrollPanel.getFontRenderer(), String.format("#%d", scrollID + 1), rX, (rY + sH) / 2, Color.white.getRGB());
-            scrollPanel.drawString(scrollPanel.getFontRenderer(), string, rX + sW + 5 - stringWidth, (rY + sH) / 2, target.getExplosiveType().getTextColor().getRGB());
+            scrollPanel.getParent().drawItemStack(stackCache.computeIfAbsent(target.getExplosiveType().getExplosive(), ItemStack::new), rX + 20, rY + 3, "");
+            scrollPanel.drawString(scrollPanel.getFontRenderer(), String.format("#%d", scrollID + 1), rX + 5, rY + 5, Color.white.getRGB());
+            scrollPanel.drawString(scrollPanel.getFontRenderer(), string, rX + sW - (stringWidth + 5), rY + 5, target.getExplosiveType().getTextColor().getRGB());
         }
     }
 
