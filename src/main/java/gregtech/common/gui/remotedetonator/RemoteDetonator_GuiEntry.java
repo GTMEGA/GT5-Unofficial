@@ -10,6 +10,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.val;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.item.ItemStack;
 
 import java.awt.*;
 
@@ -22,6 +23,8 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
     private final GT_RemoteDetonator.RemoteDetonationTargetList targetList;
 
     private final GT_RemoteDetonator.RemoteDetonationTargetList.Target target;
+
+    private final ItemStack blockStack;
 
     private GT_GuiTooltip tooltip;
 
@@ -49,6 +52,7 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
         this.targetList = targetList;
         this.target = target;
         scrollPanel.addScrollableElement(this);
+        this.blockStack = new ItemStack(target.getExplosiveType().getExplosive());
     }
 
     /**
@@ -101,9 +105,11 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
         val sH = getScrollHeight();
         if (queryCanRender()) {
             Gui.drawRect(rX, rY, rX + sW, rY + sH, target.getExplosiveType().getBackgroundColor().getRGB());
-            val string = String.format("%d (%d, %d, %d)", scrollID, target.getX(), target.getY(), target.getZ());
+            val string = String.format("(%d, %d, %d)", target.getX(), target.getY(), target.getZ());
             val stringWidth = scrollPanel.getFontRenderer().getStringWidth(string);
-            scrollPanel.drawCenteredString(scrollPanel.getFontRenderer(), string, rX + sW - stringWidth, (rY + sH) / 2, target.getExplosiveType().getTextColor().getRGB());
+            scrollPanel.getParent().drawItemStack(blockStack, rX + 5, rY + 5, "");
+            scrollPanel.drawString(scrollPanel.getFontRenderer(), String.format("#%d", scrollID + 1), rX, (rY + sH) / 2, Color.white.getRGB());
+            scrollPanel.drawString(scrollPanel.getFontRenderer(), string, rX + sW + 5 - stringWidth, (rY + sH) / 2, target.getExplosiveType().getTextColor().getRGB());
         }
     }
 
