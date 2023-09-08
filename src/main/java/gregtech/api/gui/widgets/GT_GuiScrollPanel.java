@@ -87,7 +87,7 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
 
     private int totalHeight = 0;
 
-    private int lastID = 0;
+    private int lastID = 0, maxID = -1;
 
     @Setter
     private RenderItem itemRenderer = null;
@@ -348,12 +348,19 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
         while (scrollableElements.containsKey(last)) {
             last += 1;
         }
+        if (last > maxID) {
+            maxID = last;
+        }
         return lastID = last;
     }
 
     public IScrollableElement removeScrollableElement(final IScrollableElement element) {
         var last = lastID - 1;
         while (!scrollableElements.containsKey(last)) {
+            if (last <= 0) {
+                last = maxID + 1;
+                break;
+            }
             last -= 1;
         }
         lastID = last;
