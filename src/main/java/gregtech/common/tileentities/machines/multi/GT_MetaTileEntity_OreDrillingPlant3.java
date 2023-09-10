@@ -18,6 +18,16 @@ public class GT_MetaTileEntity_OreDrillingPlant3 extends GT_MetaTileEntity_OreDr
     }
 
     @Override
+    protected int fortune() {
+        return 400;
+    }
+
+    @Override
+    protected int perTickStackSize() {
+        return 3;
+    }
+
+    @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         return createTooltip("III");
     }
