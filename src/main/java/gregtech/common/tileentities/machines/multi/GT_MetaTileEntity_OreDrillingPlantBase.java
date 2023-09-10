@@ -124,6 +124,9 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     private boolean processOreList(){
         int amountTransferred = 0;
         if (currentlyMiningItems != null && currentlyMiningItems.stackSize != 0) {
+            if (!tryConsumeDrillingFluid()) {
+                return false;
+            }
             amountTransferred = decreaseOutput();
             if (amountTransferred == perTickStackSize()) return true;
         }
