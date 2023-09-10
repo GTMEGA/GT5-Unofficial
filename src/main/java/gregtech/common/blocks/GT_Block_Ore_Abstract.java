@@ -179,6 +179,13 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
         return drops;
     }
 
+    public ItemStack getDropsMining(World world, int x, int y, int z, int metadata, int fortune) {
+        val fortuneFactor = fortune + 1;
+        val stack = GT_OreDictUnificator.get(OrePrefixes.oreChunk, this.oreType, fortuneFactor);
+        stack.stackSize = fortuneFactor;
+        return stack;
+    }
+
     @Override
     protected boolean canSilkHarvest() {
         return false;

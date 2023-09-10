@@ -12,7 +12,9 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
+import gregtech.common.blocks.GT_Block_Ore;
 import gregtech.common.blocks.GT_Block_Ore_Abstract;
+import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -26,10 +28,7 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.*;
 
 import static gregtech.api.enums.GT_Values.VN;
 
@@ -37,6 +36,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     private final ArrayList<ChunkPosition> oreBlockPositions = new ArrayList<>();
     protected int mTier = 1;
     private int chunkRadiusConfig = getRadiusInChunks();
+    protected ItemStack currentlyMiningItems = null;
 
     private static final int[] FORTUNE = {12, 15, 18, 21, 24};
 
@@ -52,6 +52,12 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("chunkRadiusConfig", chunkRadiusConfig);
+        if (currentlyMiningItems != null) {
+            val nbt = new NBTTagCompound();
+            currentlyMiningItems.writeToNBT(nbt);
+            aNBT.setTag("currentMining",nbt);
+        }
+        aNBT.setInteger("currentMiningCount",currentlyMiningItems.stackSize);
     }
 
     @Override
@@ -59,6 +65,11 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         super.loadNBTData(aNBT);
         if (aNBT.hasKey("chunkRadiusConfig"))
             chunkRadiusConfig = aNBT.getInteger("chunkRadiusConfig");
+        if (aNBT.hasKey("currentMining")) {
+            currentlyMiningItems = GT_Utility.loadItem(aNBT,"currentMining");
+            currentlyMiningItems.stackSize = aNBT.getInteger("currentMiningCount");
+        }
+
     }
 
     @Override
@@ -85,6 +96,10 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.machines.workareaset") + " " + (chunkRadiusConfig << 4) + " " + StatCollector.translateToLocal("GT5U.machines.radius"));
     }
 
+    abstract protected int fortune();
+
+    abstract protected int perTickStackSize();
+
     @Override
     protected boolean workingDownward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe, int yHead, int oldYHead) {
         if (yHead != oldYHead)
@@ -107,12 +122,18 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         return processOreList();
     }
     private boolean processOreList(){
+        int amountTransferred = 0;
+        if (currentlyMiningItems != null && currentlyMiningItems.stackSize != 0) {
+            amountTransferred = decreaseOutput();
+            if (amountTransferred == perTickStackSize()) return true;
+        }
+
         ChunkPosition oreBlockPos = null;
         int x = 0, y = 0, z = 0;
         Block oreBlock = null;
         int oreBlockMetadata = 0;
 
-        while ((oreBlock == null || !GT_Utility.isOre(oreBlock, oreBlockMetadata)) && !oreBlockPositions.isEmpty()) {
+        while ((oreBlock == null || !isBigOreBlock(oreBlock,oreBlockMetadata)) && !oreBlockPositions.isEmpty()) {
             oreBlockPos = oreBlockPositions.remove(0);
             x = oreBlockPos.chunkPosX;
             y = oreBlockPos.chunkPosY;
@@ -126,14 +147,48 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             oreBlockPositions.add(0, oreBlockPos);
             return false;
         }
-        if (oreBlock != null && GT_Utility.isOre(oreBlock, oreBlockMetadata)) {
+        if (oreBlock != null && isBigOreBlock(oreBlock,oreBlockMetadata)) {
             //TODO replace with proper rock variant
-            Collection<ItemStack> oreBlockDrops = getBlockDrops(oreBlock, x, y, z);
+            currentlyMiningItems = getBlockDrops((GT_Block_Ore) oreBlock, x, y, z);
             getBaseMetaTileEntity().getWorld().setBlock(x, y, z, Blocks.cobblestone, 0, 3);
-            mOutputItems = getOutputByDrops(oreBlockDrops);
+
+            if (amountTransferred > 0) {
+                decreaseOutputSecondary(perTickStackSize() - amountTransferred);
+                return true;
+            }
+            decreaseOutput();
         }
         return true;
     }
+
+    protected int decreaseOutput() {
+        if (mOutputItems == null || mOutputItems.length != 2) {
+            mOutputItems = new ItemStack[2];
+        }
+        int transferAmount = Math.min(perTickStackSize(),currentlyMiningItems.stackSize);
+        mOutputItems[0] = currentlyMiningItems.copy();
+        mOutputItems[0].stackSize = transferAmount;
+        currentlyMiningItems.stackSize -= transferAmount;
+        if (currentlyMiningItems.stackSize == 0) currentlyMiningItems = null;
+        return transferAmount;
+    }
+
+    protected void decreaseOutputSecondary(int max) {
+        int transferAmount = Math.min(Math.min(perTickStackSize(),max),currentlyMiningItems.stackSize);
+        mOutputItems[1] = currentlyMiningItems.copy();
+        mOutputItems[1].stackSize = transferAmount;
+        currentlyMiningItems.stackSize -= transferAmount;
+        if (currentlyMiningItems.stackSize == 0) currentlyMiningItems = null;
+    }
+
+    protected boolean isBigOreBlock(Block block, int meta) {
+        if (block instanceof GT_Block_Ore) {
+            return true;
+        }
+        return false;
+    }
+
+
     @Override
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe, int yHead, int oldYHead) {
         if (!mChunkLoadingEnabled)
@@ -269,14 +324,9 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         return itemStack;
     }
 
-    private Collection<ItemStack> getBlockDrops(final Block oreBlock, int posX, int posY, int posZ) {
+    private ItemStack getBlockDrops(final GT_Block_Ore oreBlock, int posX, int posY, int posZ) {
         final int blockMeta = getBaseMetaTileEntity().getMetaID(posX, posY, posZ);
-        if (oreBlock.canSilkHarvest(getBaseMetaTileEntity().getWorld(), null, posX, posY, posZ, blockMeta)) {
-            return Collections.singleton(new ItemStack(oreBlock, 1, blockMeta));
-        } else {
-            final int fort = mTier > FORTUNE.length ? FORTUNE[FORTUNE.length - 1] : FORTUNE[mTier];
-            return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, fort);
-        }
+        return oreBlock.getDropsMining(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, fortune());
     }
 
     private boolean tryConsumeDrillingFluid() {
@@ -327,11 +377,8 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         int blockMeta = getBaseMetaTileEntity().getMetaID(x, y, z);
         ChunkPosition blockPos = new ChunkPosition(x, y, z);
 
-        if (!oreBlockPositions.contains(blockPos)) {
-            if (block instanceof GT_Block_Ore_Abstract) {
-                oreBlockPositions.add(blockPos);
-            } else if (GT_Utility.isOre(block, blockMeta))
-                oreBlockPositions.add(blockPos);
+        if (!oreBlockPositions.contains(blockPos) && isBigOreBlock(block,blockMeta)) {
+            oreBlockPositions.add(blockPos);
         }
     }
 
