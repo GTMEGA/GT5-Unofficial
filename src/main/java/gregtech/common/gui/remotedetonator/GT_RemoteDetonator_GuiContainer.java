@@ -31,7 +31,7 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
         val yOffset = 13;
         val height = 140;
         val barHeight = 10;
-        val width = 150;
+        val width = 180;
         val scrollHeight = height - 4;
         scrollPanel = new GT_GuiScrollPanel<>(this, 0, x, yOffset, width, height, 0.0, width - 4, scrollHeight);
         scrollBar = new GT_GuiSlider(this, 1, width + 20, 13, 80, barHeight, 0.0, 1.0, 0.0, -1);

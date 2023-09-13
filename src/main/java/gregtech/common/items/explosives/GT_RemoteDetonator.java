@@ -162,8 +162,12 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
 
             protected void trigger(final @NonNull World world, final @NonNull EntityPlayer player) {
                 val block = world.getBlock(x, y, z);
+                val metadata = world.getBlockMetadata(x, y, z);
                 if (block instanceof GT_Block_Explosive && !world.isRemote) {
-                    ((GT_Block_Explosive) block).remoteTrigger(world, x, y, z, player);
+                    val explosive = (GT_Block_Explosive) block;
+                    if (explosive.isPrimed(metadata)) {
+                        explosive.remoteTrigger(world, x, y, z, player);
+                    }
                 }
                 triggered = true;
             }

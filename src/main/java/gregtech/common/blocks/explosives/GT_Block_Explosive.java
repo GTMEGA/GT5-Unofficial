@@ -153,7 +153,7 @@ public abstract class GT_Block_Explosive extends GT_Generic_Block {
         return index;
     }
 
-    protected boolean isPrimed(final int meta) {
+    public boolean isPrimed(final int meta) {
         return (meta & primeMask) != 0;
     }
 
