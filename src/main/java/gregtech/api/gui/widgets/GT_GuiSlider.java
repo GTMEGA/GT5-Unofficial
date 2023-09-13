@@ -290,8 +290,8 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         onClick(this.gui, mouseX, mouseY, clickType);
     }
 
-    public void onMouseReleased(final int mouseX, final int mouseY, final int clickType) {
-        if (clickType == 0) {
+    public void onMouseReleased(final int mouseX, final int mouseY, final int clickState) {
+        if (clickState == 1) {
             this.isDragged = false;
             lockSliderToSubdivisions();
         }
