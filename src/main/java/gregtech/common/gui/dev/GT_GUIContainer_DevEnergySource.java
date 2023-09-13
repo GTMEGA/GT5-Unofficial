@@ -158,17 +158,17 @@ public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine
         val activityCheck = new GT_GuiIconCheckButton(this, 0, elementLeft(), topButtonRowY(), GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Enable Activity",
                                                       "Disable Activity");
         activityCheck.setChecked(!getSource().getData().isEnabled());
-        activityCheck.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
-            activityCheck.setChecked(source.getData().isEnabled());
+        activityCheck.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> activityCheck.setChecked(source.getData().isEnabled()));
+        activityCheck.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
+            activityCheck.setChecked(source.toggleEnabled());
+            activityCheck.setUpdateCooldown(COOLDOWN);
             sendUpdateToServer();
         });
-        activityCheck.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> activityCheck.setUpdateCooldown(COOLDOWN));
         //
         val zeroButton = new GT_GuiIconButton(this, 1, elementLeft() + buttonSize(), topButtonRowY(), GT_GuiIcon.MATH_ZERO);
         zeroButton.setTooltipText("Sets amperage and voltage to 0");
         zeroButton.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
             source.zeroOut();
-            zeroButton.setUpdateCooldown(COOLDOWN);
             sendUpdateToServer();
         });
         addRedstoneButton();
@@ -202,16 +202,13 @@ public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine
             voltTierSlider.setUpdateCooldown(COOLDOWN);
             sendUpdateToServer();
         });
+        voltTierSlider.setLiveUpdate(true);
     }
 
     private void addVoltageTextBox() {
         val source = getSource();
         val vBox = new GT_GuiIntegerTextBox(this, 3, elementLeft(), vTBoxY(), 128, 10);
-        vBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
-            if (!vBox.isFocused()) {
-                vBox.setText(String.valueOf(source.getData().getVoltage()));
-            }
-        });
+        vBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> vBox.setText(String.valueOf(source.getData().getVoltage())));
         vBox.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
             vBox.setFocused(true);
             vBox.setUpdateCooldown(COOLDOWN);
@@ -221,11 +218,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine
     private void addAmperageTextBox() {
         val source = getSource();
         val aBox = new GT_GuiIntegerTextBox(this, 4, elementLeft(), aTBoxY(), 128, 10);
-        aBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
-            if (!aBox.isFocused()) {
-                aBox.setText(String.valueOf(source.getData().getAmps()));
-            }
-        });
+        aBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> aBox.setText(String.valueOf(source.getData().getAmps())));
         aBox.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
             aBox.setFocused(true);
             aBox.setUpdateCooldown(COOLDOWN);

@@ -104,8 +104,8 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
     public void mouseReleased(int mouseX, int mouseY) {
         this.gui.clearSelectedButton();
         if(mousePressed(Minecraft.getMinecraft(), mouseX, mouseY)) {
-            this.gui.buttonClicked(this);
             this.onClick(this.gui, mouseX, mouseY, 1);
+            this.gui.buttonClicked(this);
         }
     }
 

@@ -15,6 +15,8 @@ import java.awt.*;
 
 public class GT_GUIContainer_DevFluidSource extends GT_RichGuiContainer_Machine {
 
+    public static int COOLDOWN = 30;
+
     public GT_GUIContainer_DevFluidSource(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity) {
         super(new GT_Container_DevFluidSource(aInventoryPlayer, aTileEntity), "gregtech:textures/gui/DevFluidSource.png", 256, 166);
         addGUIElements();
@@ -28,7 +30,7 @@ public class GT_GUIContainer_DevFluidSource extends GT_RichGuiContainer_Machine 
         check.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> check.setChecked(source.getData().isActive()));
         check.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
             check.setChecked(source.toggleActive());
-            button.setUpdateCooldown(20);
+            check.setUpdateCooldown(COOLDOWN);
             sendUpdateToServer();
         });
         //
@@ -68,7 +70,7 @@ public class GT_GUIContainer_DevFluidSource extends GT_RichGuiContainer_Machine 
         rsButton.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
             rsButton.cycle();
             source.setMode(RSControlMode.getMode(((GT_GuiCycleButton) button).getState()));
-            button.setUpdateCooldown(20);
+            rsButton.setUpdateCooldown(COOLDOWN);
             sendUpdateToServer();
         });
         rsButton.setDoCycle(false);
@@ -78,18 +80,12 @@ public class GT_GUIContainer_DevFluidSource extends GT_RichGuiContainer_Machine 
         val gui = this;
         //
         val perTickBox = new GT_GuiIntegerTextBox(this, 3, boxX(), 24, boxWidth(), 10);
-        perTickBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
-            if (!perTickBox.isFocused()) {
-                perTickBox.setText(gui.getIPTString());
-            }
-        }).setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
+        perTickBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> perTickBox.setText(gui.getIPTString()));
+        perTickBox.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(COOLDOWN));
         //
         val perSecondBox = new GT_GuiIntegerTextBox(this, 4, boxX(), 34, boxWidth(), 10);
-        perSecondBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
-            if (!perSecondBox.isFocused()) {
-                perSecondBox.setText(gui.getIPSString());
-            }
-        }).setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
+        perSecondBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> perSecondBox.setText(gui.getIPSString()));
+        perSecondBox.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(COOLDOWN));
     }
 
     private int boxX() {
