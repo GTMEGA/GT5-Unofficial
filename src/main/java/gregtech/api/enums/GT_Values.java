@@ -4,6 +4,7 @@ import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
 import gregtech.api.util.keybind.GT_KeyBindings;
+import gregtech.common.GT_Network_New;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -217,6 +218,9 @@ public class GT_Values {
      * For Internal Usage (Network)
      */
     public static IGT_NetworkHandler NW;
+
+    public static GT_Network_New NWN;
+
     /**
      * Control percentage of filled 3x3 chunks. Lower number means less oreveins spawn
      */

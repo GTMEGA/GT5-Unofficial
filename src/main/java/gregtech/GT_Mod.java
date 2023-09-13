@@ -18,10 +18,7 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
 import gregtech.api.util.keybind.GT_KeyHandler;
-import gregtech.common.GT_DummyWorld;
-import gregtech.common.GT_Network;
-import gregtech.common.GT_Proxy;
-import gregtech.common.GT_RecipeAdder;
+import gregtech.common.*;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.entities.explosives.GT_Entity_DaisyCutterExplosive;
@@ -162,6 +159,8 @@ public class GT_Mod implements IGT_Mod {
         GT_Values.GT = this;
         GT_Values.DW = new GT_DummyWorld();
         GT_Values.NW = new GT_Network();
+        GT_Values.NWN = new GT_Network_New();
+        GT_Values.NWN.registerPackets();
         GregTech_API.sRecipeAdder = GT_Values.RA = new GT_RecipeAdder();
 
         Textures.BlockIcons.VOID.name();
