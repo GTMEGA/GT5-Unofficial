@@ -23,9 +23,7 @@ public class GT_Packet_ClientPreference_New implements IMessage {
 
         @Override
         public IMessage handleServerMessage(final EntityPlayer player, final GT_Packet_ClientPreference_New message, final MessageContext ctx) {
-            if (player instanceof EntityPlayerMP) {
-                GT_Mod.gregtechproxy.setClientPreference(((EntityPlayerMP) player).getUniqueID(), message.getPreference());
-            }
+            GT_Mod.gregtechproxy.setClientPreference(player.getUniqueID(), message.getPreference());
             return null;
         }
 
