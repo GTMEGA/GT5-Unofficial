@@ -2,7 +2,6 @@ package gregtech.loaders.postload;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Log;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
@@ -101,7 +100,7 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.saltpeter", true, 10, 60, 8, false, true, false, false, false, false, Materials.Saltpeter);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.sulfur", true, 5, 60, 40, false, true, false, false, false, false, Materials.Sulfur);
 
-            //TODO: GTNH Custom Small Ores
+            //TODO: Custom Small Ores
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.titanium", true, 10, 180, 32, false, false, false, Materials.Titanium);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.tungsten", true, 10, 120, 16, false, false, false, Materials.Tungsten);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.meteoriciron", true, 50, 70, 8, false, false, false, Materials.MeteoricIron);
@@ -162,7 +161,7 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.oilsand", true, 50, 80, 50, 2, 32, true, false, false, Materials.Oilsands, Materials.Oilsands, Materials.Oilsands, Materials.Oilsands);
 
             /*
-             * TODO: custom GTNH OreMixes
+             * TODO: custom OreMixes
              * WARNING: NO DUPLICATS IN aName OR DEPRECATED MATERIALS IN HERE.
              * Materials can be used unlimited, since achievements for Ores are turned off.
              */
@@ -195,7 +194,7 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.infusedgold", true, 15, 40, 30, 2, 16, false, false, false, Materials.Gold, Materials.Gold, Materials.InfusedGold, Materials.Platinum);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.niobium", true, 5, 30, 60, 2, 24, false, false, false, Materials.Niobium, Materials.Yttrium, Materials.Gallium, Materials.Gallium);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.tungstenirons", true, 5, 25, 16, 2, 30, false, false, false, Materials.Tungsten, Materials.Silicon, Materials.DeepIron, Materials.ShadowIron);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.uraniumgtnh", true, 10, 30, 60, 2, 24, false, false, false, Materials.Thorium, Materials.Uranium, Materials.Plutonium241, Materials.Uranium235);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.balleruranium", true, 10, 30, 60, 2, 24, false, false, false, Materials.Thorium, Materials.Uranium, Materials.Plutonium241, Materials.Uranium235);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.vanadiumgold", true, 10, 50, 60, 2, 24, false, false, false, Materials.Vanadium, Materials.Magnetite, Materials.Gold, Materials.Chrome);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.netherstar", true, 20, 60, 60, 2, 24, false, false, false, Materials.GarnetSand, Materials.NetherStar, Materials.GarnetRed, Materials.GarnetYellow);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.garnet", true, 10, 30, 40, 2, 16, false, false, false, Materials.GarnetRed, Materials.GarnetYellow, Materials.Chrysotile, Materials.Realgar);

@@ -16,14 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntityFurnace;
 
-import static gregtech.api.enums.Textures.BlockIcons.BOILER_FRONT;
-import static gregtech.api.enums.Textures.BlockIcons.BOILER_FRONT_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.BOILER_FRONT_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.BOILER_FRONT_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
+import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
     public GT_MetaTileEntity_Boiler_Bronze(int aID, String aName, String aNameRegional) {
@@ -152,10 +145,10 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
                 //If its a block of the following materials
                 GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.block.get(Materials.Coal)) ||
                 GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.block.get(Materials.Lignite)) ||
-                GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.block.get(Materials.Charcoal))||
+                GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.block.get(Materials.Charcoal)) ||
                 GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.block.get(Materials.Diamond)) ||
 
-                 //if its either a Railcraft Coke Block or a custom GTNH compressed Coal/charcoal/lignite/coke block
+                //if its either a Railcraft Coke Block or a custom compressed Coal/charcoal/lignite/coke block
                 (
                  Block.getBlockFromItem(this.mInventory[2].getItem()) != null && //check if the block exists
                 (
