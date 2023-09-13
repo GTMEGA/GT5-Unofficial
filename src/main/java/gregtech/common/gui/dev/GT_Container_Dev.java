@@ -76,6 +76,7 @@ public abstract class GT_Container_Dev<MachineType extends MetaTileEntity & IAdv
     }
 
     protected void sendPacket() {
+        // TODO Figure this out
         GT_Values.NW.sendToServer(GT_Packet_TileEntityGUI.createFromMachine(machine, data, mPlayerInventory.player.dimension));
     }
 
