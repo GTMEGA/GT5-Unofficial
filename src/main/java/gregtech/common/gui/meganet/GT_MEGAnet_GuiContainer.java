@@ -1,7 +1,7 @@
 package gregtech.common.gui.meganet;
 
 
-import gregtech.api.gui.GT_GUIContainer_Plus;
+import gregtech.api.gui.GT_RichGuiContainer;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.gui.widgets.GT_GuiSlider;
@@ -14,7 +14,7 @@ import java.awt.*;
 
 
 @Getter
-public class GT_MEGAnet_GuiContainer extends GT_GUIContainer_Plus {
+public class GT_MEGAnet_GuiContainer extends GT_RichGuiContainer {
 
     private final Color TEXT_COLOR = new Color(69, 69, 198, 0xFF);
 

@@ -58,6 +58,19 @@ public class GT_GuiIntegerTextBox extends GuiTextField implements IGuiScreen.IGu
     }
 
     /**
+     * @param screen
+     * @param mouseX
+     * @param mouseY
+     * @param clickType
+     */
+    @Override
+    public void onUpdate(final IGuiScreen screen, final int mouseX, final int mouseY, final int clickType) {
+        if (!isFocused()) {
+            IGuiScreen.IGuiElement.super.onUpdate(screen, mouseX, mouseY, clickType);
+        }
+    }
+
+    /**
      * @return
      */
     @Override

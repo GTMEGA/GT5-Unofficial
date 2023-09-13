@@ -1,7 +1,7 @@
 package gregtech.api.gui.widgets;
 
 
-import gregtech.api.gui.GT_GUIContainer_Plus;
+import gregtech.api.gui.GT_RichGuiContainer;
 import gregtech.api.interfaces.IGuiScreen;
 import lombok.Getter;
 import lombok.Setter;
@@ -316,8 +316,8 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     protected void drawBackground(final int mouseX, final int mouseY, final float parTicks) {
         val hoverModifier = this.inBounds(mouseX, mouseY, 0) ? 0x00303000 : 0;
-        val edgeColor = GT_GUIContainer_Plus.colorToARGB(new Color(0x30, 0x30, 0xFF, 0xFF)) ^ hoverModifier;
-        val midColor = GT_GUIContainer_Plus.colorToARGB(new Color(0x30, 0x30, 0xFF, 0x3F)) ^ hoverModifier;
+        val edgeColor = GT_RichGuiContainer.colorToARGB(new Color(0x30, 0x30, 0xFF, 0xFF)) ^ hoverModifier;
+        val midColor = GT_RichGuiContainer.colorToARGB(new Color(0x30, 0x30, 0xFF, 0x3F)) ^ hoverModifier;
         val left = x;
         val right = x + width;
         final int barLeft;
@@ -405,9 +405,9 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
     protected void drawSlide(final int mouseX, final int mouseY, final float parTicks) {
         final int color;
         if (isDragged) {
-            color = GT_GUIContainer_Plus.colorToARGB(new Color(43, 43, 80, 0xFF));
+            color = GT_RichGuiContainer.colorToARGB(new Color(43, 43, 80, 0xFF));
         } else {
-            color = GT_GUIContainer_Plus.colorToARGB(new Color(0x3F, 0x3F, 0xFF, 0x7F));
+            color = GT_RichGuiContainer.colorToARGB(new Color(0x3F, 0x3F, 0xFF, 0x7F));
         }
         drawRect(getBarLeft(), y, getBarRight(), y + height, color);
     }
@@ -460,7 +460,7 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
     }
 
     protected int textColor() {
-        return GT_GUIContainer_Plus.colorToARGB(new Color(0x3F, 0x3F, 0xFF, 0xFF));
+        return GT_RichGuiContainer.colorToARGB(new Color(0x3F, 0x3F, 0xFF, 0xFF));
     }
 
     protected boolean mouseInBar(final int mouseX, final int mouseY, final int clickState) {

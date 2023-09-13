@@ -1,20 +1,18 @@
 package gregtech.common.gui.remotedetonator;
 
 
-import gregtech.api.gui.GT_GUIContainer_Plus;
+import gregtech.api.gui.GT_RichGuiContainer;
 import gregtech.api.gui.widgets.GT_GuiScrollPanel;
 import gregtech.api.gui.widgets.GT_GuiSlider;
 import lombok.Getter;
 import lombok.val;
 import net.minecraft.client.Minecraft;
 
-import java.awt.*;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 
 @Getter
-public class GT_RemoteDetonator_GuiContainer extends GT_GUIContainer_Plus {
+public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
 
     private final GT_RemoteDetonator_Container remoteDetonatorContainer;
 

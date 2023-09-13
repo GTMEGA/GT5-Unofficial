@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT_GuiTooltipManager.GT_IToolTipRenderer, IGuiScreen, IDWSCompatibleGUI {
+public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_GuiTooltipManager.GT_IToolTipRenderer, IGuiScreen, IDWSCompatibleGUI {
 
     protected static final boolean debug = false;
 
@@ -64,7 +64,7 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
 
     protected GuiButton selectedButton = null;
 
-    public GT_GUIContainer_Plus(final Container aContainer, final String aGuiBackground, final int width, final int height) {
+    public GT_RichGuiContainer(final Container aContainer, final String aGuiBackground, final int width, final int height) {
         super(aContainer, aGuiBackground);
         this.dwsGuiBackground = new ResourceLocation(this.dwsGuiBackgroundPath = getDWSGuiBackgroundPath(aGuiBackground));
         this.baseGuiWidth = width;

@@ -3,7 +3,7 @@ package gregtech.common.gui.dev;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.RSControlMode;
-import gregtech.api.gui.GT_GUIContainer_Machine_Plus;
+import gregtech.api.gui.GT_RichGuiContainer_Machine;
 import gregtech.api.gui.widgets.*;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import lombok.val;
@@ -13,7 +13,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import java.awt.*;
 
 
-public class GT_GUIContainer_DevFluidSource extends GT_GUIContainer_Machine_Plus {
+public class GT_GUIContainer_DevFluidSource extends GT_RichGuiContainer_Machine {
 
     public GT_GUIContainer_DevFluidSource(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity) {
         super(new GT_Container_DevFluidSource(aInventoryPlayer, aTileEntity), "gregtech:textures/gui/DevFluidSource.png", 256, 166);

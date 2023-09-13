@@ -2,7 +2,7 @@ package gregtech.common.gui.dev;
 
 
 import gregtech.api.enums.RSControlMode;
-import gregtech.api.gui.GT_GUIContainer_Machine_Plus;
+import gregtech.api.gui.GT_RichGuiContainer_Machine;
 import gregtech.api.gui.widgets.*;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
@@ -17,7 +17,9 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
 
 
-public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plus {
+public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine {
+
+    public static final int COOLDOWN = 30;
 
     public static final Color TEXT_COLOR = new Color(0x30, 0x30, 0xFF, 0xFF);
 
@@ -97,10 +99,10 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
             getSource().setVoltage(i);
         }
         if (box.id == 4) {
-            final int l = (int) Math.max(0, i);
-            getSource().setAmperage(l);
+            i = (int) Math.max(0, i);
+            getSource().setAmperage((int) i);
         }
-        box.setUpdateCooldown(20);
+        box.setUpdateCooldown(COOLDOWN);
         box.setText(String.valueOf(i));
         sendUpdateToServer();
     }
@@ -155,15 +157,18 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
         val source = getSource();
         val activityCheck = new GT_GuiIconCheckButton(this, 0, elementLeft(), topButtonRowY(), GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Enable Activity",
                                                       "Disable Activity");
-        activityCheck.setChecked(!getSource().getData().isEnabled()).setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
+        activityCheck.setChecked(!getSource().getData().isEnabled());
+        activityCheck.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
             activityCheck.setChecked(source.getData().isEnabled());
             sendUpdateToServer();
-        }).setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
+        });
+        activityCheck.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> activityCheck.setUpdateCooldown(COOLDOWN));
         //
         val zeroButton = new GT_GuiIconButton(this, 1, elementLeft() + buttonSize(), topButtonRowY(), GT_GuiIcon.MATH_ZERO);
         zeroButton.setTooltipText("Sets amperage and voltage to 0");
         zeroButton.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
             source.zeroOut();
+            zeroButton.setUpdateCooldown(COOLDOWN);
             sendUpdateToServer();
         });
         addRedstoneButton();
@@ -179,8 +184,9 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
         rsButton.setState(source.getData().getMode().ordinal());
         rsButton.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> rsButton.setState(source.getData().getMode().ordinal()));
         rsButton.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
-            rsButton.cycle().setUpdateCooldown(20);
-            source.setMode(RSControlMode.getMode(((GT_GuiCycleButton) button).getState()));
+            rsButton.cycle();
+            rsButton.setUpdateCooldown(COOLDOWN);
+            source.setMode(RSControlMode.getMode(rsButton.getState()));
             sendUpdateToServer();
         });
         rsButton.setDoCycle(false);
@@ -193,6 +199,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
         voltTierSlider.setOnChange(slider -> slider.setValue(source.getData().getTier()));
         voltTierSlider.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
             source.setEnergyTier((int) voltTierSlider.getValue());
+            voltTierSlider.setUpdateCooldown(COOLDOWN);
             sendUpdateToServer();
         });
     }
@@ -204,7 +211,11 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
             if (!vBox.isFocused()) {
                 vBox.setText(String.valueOf(source.getData().getVoltage()));
             }
-        }).setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> vBox.setUpdateCooldown(20));
+        });
+        vBox.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
+            vBox.setFocused(true);
+            vBox.setUpdateCooldown(COOLDOWN);
+        });
     }
 
     private void addAmperageTextBox() {
@@ -214,7 +225,11 @@ public class GT_GUIContainer_DevEnergySource extends GT_GUIContainer_Machine_Plu
             if (!aBox.isFocused()) {
                 aBox.setText(String.valueOf(source.getData().getAmps()));
             }
-        }).setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
+        });
+        aBox.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> {
+            aBox.setFocused(true);
+            aBox.setUpdateCooldown(COOLDOWN);
+        });
     }
 
 }
