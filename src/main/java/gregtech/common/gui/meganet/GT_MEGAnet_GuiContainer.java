@@ -2,7 +2,7 @@ package gregtech.common.gui.meganet;
 
 
 import gregtech.api.gui.GT_RichGuiContainer;
-import gregtech.api.gui.widgets.GT_GuiIcon;
+import gregtech.api.gui.widgets.icon.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.gui.widgets.GT_GuiSlider;
 import gregtech.common.items.GT_MEGAnet;

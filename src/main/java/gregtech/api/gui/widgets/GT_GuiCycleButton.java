@@ -1,6 +1,8 @@
 package gregtech.api.gui.widgets;
 
 
+import gregtech.api.gui.widgets.icon.GT_GuiIcon;
+import gregtech.api.gui.widgets.icon.IGT_GuiIcon;
 import gregtech.api.interfaces.IGuiScreen;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +15,7 @@ public class GT_GuiCycleButton extends GT_GuiIconButton {
     @RequiredArgsConstructor
     public static class IconToolTipPair {
 
-        private final GT_GuiIcon icon;
+        private final IGT_GuiIcon icon;
 
         private final String tooltip;
 
