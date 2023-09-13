@@ -137,7 +137,7 @@ public class GT_Mod implements IGT_Mod {
     public static GT_Achievements.Dummy achievements = new GT_Achievements.Dummy();
     private final String aTextGeneral = "general";
     private final String aTextIC2 = "ic2_";
-    public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
+    public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech 5u MEGA");
 
 
     static {
@@ -440,7 +440,7 @@ public class GT_Mod implements IGT_Mod {
         if (gregtechproxy.mEnableCleanroom)
             GT_MetaTileEntity_Cleanroom.loadConfig(tMainConfig);
         gregtechproxy.mLowGravProcessing = Loader.isModLoaded(GT_Values.MOD_ID_GC_CORE) && tMainConfig.get("general", "LowGravProcessing", true).getBoolean(true);
-        gregtechproxy.mUseGreatlyShrukenReplacementList = tMainConfig.get("general", "GTNH Optimised Material Loading", true).getBoolean(true);
+        gregtechproxy.mUseGreatlyShrukenReplacementList = tMainConfig.get("general", "Optimised Material Loading", true).getBoolean(true);
         Calendar now = Calendar.getInstance();
         gregtechproxy.mAprilFool = GregTech_API.sSpecialFile.get(ConfigCategories.general, "AprilFool", now.get(Calendar.MONTH) == Calendar.APRIL && now.get(Calendar.DAY_OF_MONTH) == 1);
         gregtechproxy.mCropNeedBlock = tMainConfig.get("general", "CropNeedBlockBelow", true).getBoolean(true);

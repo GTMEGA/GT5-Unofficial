@@ -2603,7 +2603,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         GT_LanguageManager.addStringLocalization("for.bees.species." + lowercaseName, species, true);
 
         this.branch = branch;
-        this.species = new GT_AlleleBeeSpecies(uid, dominant, name, "GTNH", description, branch.getBranch(), binomial, primary, secondary);
+        this.species = new GT_AlleleBeeSpecies(uid, dominant, name, "GregTech", description, branch.getBranch(), binomial, primary, secondary);
     }
 
     public static void initBees() {
