@@ -149,9 +149,7 @@ public abstract class GT_Explosion extends Explosion {
         expZ = explosionZ;
         double rayLength = 0.0;
         for (
-                float rayDist = getBaseRayDist();
-                rayValid(power, rayLength, expX, expY, expZ);
-                power -= rayDist * dropRatio, rayLength = magnitude(expX - explosionX, expY - explosionY, expZ - explosionZ)
+                float rayDist = getBaseRayDist(); rayValid(power, rayLength, expX, expY, expZ); power -= rayDist * dropRatio, rayLength = magnitude(expX - explosionX, expY - explosionY, expZ - explosionZ)
         ) {
             final int posX, posY, posZ;
             posX = MathHelper.floor_double(expX);
@@ -165,8 +163,7 @@ public abstract class GT_Explosion extends Explosion {
                 final int bMetadata = pubWorld.getBlockMetadata(posX, posY, posZ);
                 if (canDamage(block, bMetadata, posX, posY, posZ)) {
                     if (block.getMaterial() != Material.air) {
-                        final float expDrop = exploder != null ? exploder.func_145772_a(this, pubWorld, posX, posY, posZ, block) : block.getExplosionResistance(
-                                null, pubWorld, posX, posY, posZ, explosionX, explosionY, explosionZ);
+                        final float expDrop = exploder != null ? exploder.func_145772_a(this, pubWorld, posX, posY, posZ, block) : block.getExplosionResistance(null, pubWorld, posX, posY, posZ, explosionX, explosionY, explosionZ);
                         power -= (expDrop + dropBump) * rayDist;
                     }
 
@@ -194,7 +191,12 @@ public abstract class GT_Explosion extends Explosion {
         return seen.contains(pos) || targeted.contains(pos);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings(
+            {
+                    "rawtypes",
+                    "unchecked"
+            }
+    )
     protected void doEntityStuff() {
         final int i, j, k, i2, l, j2;
         i = MathHelper.floor_double(this.explosionX - (double) this.explosionSize - 1.0D);
@@ -226,10 +228,7 @@ public abstract class GT_Explosion extends Explosion {
                     blockDensity = pubWorld.getBlockDensity(expVec, entity.boundingBox);
                     invDist = (1.0 - distance) * blockDensity;
                     if (!(entity instanceof EntityItem)) {
-                        entity.attackEntityFrom(
-                                DamageSource.setExplosionSource(this),
-                                (float) ((int) ((invDist * invDist + invDist) / 2.0 * 8.0 * (double) explosionSize + 1.0))
-                                               );
+                        entity.attackEntityFrom(DamageSource.setExplosionSource(this), (float) ((int) ((invDist * invDist + invDist) / 2.0 * 8.0 * (double) explosionSize + 1.0)));
                     }
                     final double enchantProtection = EnchantmentProtection.func_92092_a(entity, invDist) * 3.0;
                     entity.motionX += (disX * enchantProtection) * 20 * disMag;
@@ -294,7 +293,8 @@ public abstract class GT_Explosion extends Explosion {
                 item.setPosition(entity.posX, entity.posY + 0.5f, entity.posZ);
                 item.delayBeforeCanPickup = 5;
             });
-        } else  */if (entity != null) {
+        } else  */
+        if (entity != null) {
             harvested.forEach(stack -> spawnItem(stack, entity));
         } else {
             harvested.forEach(this::spawnItem);

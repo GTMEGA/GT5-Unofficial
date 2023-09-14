@@ -314,6 +314,10 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         return this;
     }
 
+    public double barRadius() {
+        return barDiameter / 2;
+    }
+
     protected void drawBackground(final int mouseX, final int mouseY, final float parTicks) {
         val hoverModifier = this.inBounds(mouseX, mouseY, 0) ? 0x00303000 : 0;
         val edgeColor = GT_RichGuiContainer.colorToARGB(new Color(0x30, 0x30, 0xFF, 0xFF)) ^ hoverModifier;
@@ -358,10 +362,6 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
             }
         }
         return result;
-    }
-
-    public double barRadius() {
-        return barDiameter / 2;
     }
 
     protected void drawInfo(final int mouseX, final int mouseY, final float parTicks) {
@@ -497,8 +497,31 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     private String getCompressedString(final double amt) {
         final String fmt = String.format("%%.%df%%s", 1);
-        final String[] negPrefix = {"", "m", "μ", "p", "f", "a", "z", "y", "q"};
-        final String[] posPrefix = {"", "k", "M", "b", "t", "q", "Q", "s", "S", "o", "n", "d"};
+        final String[] negPrefix = {
+                "",
+                "m",
+                "μ",
+                "p",
+                "f",
+                "a",
+                "z",
+                "y",
+                "q"
+        };
+        final String[] posPrefix = {
+                "",
+                "k",
+                "M",
+                "b",
+                "t",
+                "q",
+                "Q",
+                "s",
+                "S",
+                "o",
+                "n",
+                "d"
+        };
         final int pow = getLogTen(amt);
         final String suffix;
         if (pow < 0) {

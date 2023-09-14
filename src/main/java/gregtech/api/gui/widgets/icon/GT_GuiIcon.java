@@ -1,5 +1,6 @@
 package gregtech.api.gui.widgets.icon;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
@@ -8,6 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
 
 @Getter
 public enum GT_GuiIcon implements IGT_GuiIcon {
@@ -78,6 +80,7 @@ public enum GT_GuiIcon implements IGT_GuiIcon {
 
     INVALID();
 
+
     @AllArgsConstructor
     @Getter
     public enum Atlas {
@@ -106,6 +109,7 @@ public enum GT_GuiIcon implements IGT_GuiIcon {
         }
 
     }
+
 
     public final int x, y, width, height;
 

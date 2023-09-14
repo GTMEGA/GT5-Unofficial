@@ -1,7 +1,6 @@
 package gregtech.api.gui.widgets;
 
 
-import gregtech.api.gui.widgets.icon.GT_GuiIcon;
 import gregtech.api.gui.widgets.icon.IGT_GuiIcon;
 import gregtech.api.interfaces.IGuiScreen;
 import lombok.Getter;
@@ -21,6 +20,7 @@ public class GT_GuiCycleButton extends GT_GuiIconButton {
 
     }
 
+
     private final IconToolTipPair[] iconToolTipPairs;
 
     @Getter
@@ -33,6 +33,25 @@ public class GT_GuiCycleButton extends GT_GuiIconButton {
         super(gui, id, x, y, null);
         this.iconToolTipPairs = iconToolTipPairs;
         this.setState(state);
+    }
+
+    public GT_GuiCycleButton setState(final int newState) {
+        this.state = newState % iconToolTipPairs.length;
+        if (this.state < 0) {
+            this.state += iconToolTipPairs.length;
+        }
+        final IconToolTipPair pair = getPair(this.state);
+        this.setIcon(pair.getIcon());
+        this.setTooltipText(pair.tooltip, String.format("Next: %s", getPair(this.state + 1).tooltip));
+        return this;
+    }
+
+    public IconToolTipPair getPair(int state) {
+        state = state % iconToolTipPairs.length;
+        if (state < 0) {
+            state += iconToolTipPairs.length;
+        }
+        return iconToolTipPairs[state];
     }
 
     /**
@@ -51,25 +70,6 @@ public class GT_GuiCycleButton extends GT_GuiIconButton {
 
     public GT_GuiCycleButton cycle() {
         return this.setState(getState() + 1);
-    }
-
-    public IconToolTipPair getPair(int state) {
-        state = state % iconToolTipPairs.length;
-        if (state < 0) {
-            state += iconToolTipPairs.length;
-        }
-        return iconToolTipPairs[state];
-    }
-
-    public GT_GuiCycleButton setState(final int newState) {
-        this.state = newState % iconToolTipPairs.length;
-        if (this.state < 0) {
-            this.state += iconToolTipPairs.length;
-        }
-        final IconToolTipPair pair = getPair(this.state);
-        this.setIcon(pair.getIcon());
-        this.setTooltipText(pair.tooltip, String.format("Next: %s", getPair(this.state + 1).tooltip));
-        return this;
     }
 
 }

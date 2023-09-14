@@ -206,16 +206,6 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
         super.drawHoveringText(par1List, par2, par3, font);
     }
 
-    @Override
-    public void initGui() {
-        super.initGui();
-        addElements();
-        onInitGui(guiLeft, guiTop, width, height);
-        for (IGuiElement element : elements) {
-            element.onInit();
-        }
-    }
-
     /**
      * Causes the screen to lay out its subcomponents again. This is the equivalent of the Java call
      * Container.validate()
@@ -228,7 +218,17 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
     public void setWorldAndResolution(final Minecraft minecraft, final int width, final int height) {
         super.setWorldAndResolution(minecraft, width, height);
         for (IGuiScreen subWindow : subWindows) {
-            ((GuiScreen)subWindow).setWorldAndResolution(minecraft, width, height);
+            ((GuiScreen) subWindow).setWorldAndResolution(minecraft, width, height);
+        }
+    }
+
+    @Override
+    public void initGui() {
+        super.initGui();
+        addElements();
+        onInitGui(guiLeft, guiTop, width, height);
+        for (IGuiElement element : elements) {
+            element.onInit();
         }
     }
 
@@ -394,23 +394,15 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
         this.mc.setIngameFocus();
     }
 
-    protected void uncheckButtons() {
-        GuiButton button;
-        for (Object o : buttonList) {
-            button = (GuiButton) o;
-            button.enabled = true;
-        }
-    }
-
-    public boolean isDWSEnabled() {
-        return GregTech_API.mDWS;
-    }
-
     /**
      * Given textbox's value might have changed.
      */
     public void applyTextBox(GT_GuiIntegerTextBox box) {
 
+    }
+
+    public boolean isDWSEnabled() {
+        return GregTech_API.mDWS;
     }
 
     public int getDimension() {
@@ -445,6 +437,14 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
             final int x, final int y, final int u, final int v, final int width, final int height
                                      ) {
         super.drawTexturedModalRect(x, y, u, v, width, height);
+    }
+
+    protected void uncheckButtons() {
+        GuiButton button;
+        for (Object o : buttonList) {
+            button = (GuiButton) o;
+            button.enabled = true;
+        }
     }
 
     @Override

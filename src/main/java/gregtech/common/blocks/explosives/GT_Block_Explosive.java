@@ -60,11 +60,9 @@ public abstract class GT_Block_Explosive extends GT_Generic_Block {
      */
     @Override
     public boolean onBlockActivated(
-            final World world, final int x, final int y, final int z, final EntityPlayer player, final int side, final float hitX, final float hitY,
-            final float hitZ
+            final World world, final int x, final int y, final int z, final EntityPlayer player, final int side, final float hitX, final float hitY, final float hitZ
                                    ) {
-        if (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof GT_RemoteDetonator || !playerActivatedMe(side, hitX, hitY, hitZ) ||
-            GT_Values.MERequiresRemote) {
+        if (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof GT_RemoteDetonator || !playerActivatedMe(side, hitX, hitY, hitZ) || GT_Values.MERequiresRemote) {
             return true;
         }
         if (!world.isRemote) {
@@ -111,7 +109,10 @@ public abstract class GT_Block_Explosive extends GT_Generic_Block {
     }
 
     private float[] getAppropriateHits(final int side, final float hitX, final float hitY, final float hitZ) {
-        final float[] result = {0.0f, 0.0f};
+        final float[] result = {
+                0.0f,
+                0.0f
+        };
         final int axis = side / 2;
         switch (axis) {
             case 0: {

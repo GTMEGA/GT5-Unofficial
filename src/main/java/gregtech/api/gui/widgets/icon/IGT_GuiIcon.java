@@ -1,9 +1,11 @@
 package gregtech.api.gui.widgets.icon;
 
+
 import lombok.NonNull;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
+
 
 public interface IGT_GuiIcon {
 
