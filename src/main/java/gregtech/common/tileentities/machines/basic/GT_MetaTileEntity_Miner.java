@@ -39,7 +39,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine {
     static final int[] ENERGY = {8, 8, 30, 120, 480}; //Miner energy consumption per tier
 
     // Fortune bonus per tier
-    static final int[] FORTUNE = {3, 6, 9, 12};
+    static final int[] FORTUNE = {1, 2, 5, 8};
 
     private int radiusConfig; //Miner configured radius
     private final ArrayList<ChunkPosition> oreBlockPositions = new ArrayList<>();
