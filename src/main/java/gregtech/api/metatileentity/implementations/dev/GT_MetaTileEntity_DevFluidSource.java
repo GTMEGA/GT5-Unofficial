@@ -84,6 +84,7 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
             aBuf.writeInt(mode.ordinal());
             aBuf.writeBoolean(active);
             aBuf.writeBoolean(perTick);
+            aBuf.writeBoolean(perTick);
             aBuf.writeInt(rPT);
             aBuf.writeInt(rPS);
         }
@@ -117,8 +118,8 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
         @Override
         public void readFrom(final ISerializableObject other) {
             GUIData toReadFrom = (GUIData) other;
+            setMode(toReadFrom.mode);
             setActive(toReadFrom.active);
-            setMode(toReadFrom.getMode());
             setPerTick(toReadFrom.perTick);
             setRPT(toReadFrom.rPT);
             setRPS(toReadFrom.rPS);
