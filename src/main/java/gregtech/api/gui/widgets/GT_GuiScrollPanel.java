@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 
 @Getter
-public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extends GuiScreen implements IGuiScreen.IGuiElement, IGuiScreen {
+public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extends GuiScreen implements IGT_GuiSubWindow {
 
     public interface IScrollableElement extends IGuiElement {
 
@@ -31,21 +31,21 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
 
         void setRenderY(final int renderY);
 
-        default boolean queryCanRender() {
-            val result = isCanRender();
-            setCanRender(false);
-            return result;
-        }
-
         boolean isCanRender();
 
         void setCanRender(final boolean canRender);
+
+        int getRenderX();
+
+        int getRenderY();
 
         GT_GuiScrollPanel<?> getScrollPanel();
 
         int getScrollID();
 
         IScrollableElement setScrollID(int scrollID);
+
+        void receiveClick(final int mouseX, final int mouseY, final int mouseButton);
 
     }
 
@@ -340,6 +340,24 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
         scrollableElements.put(id, element.setScrollID(id));
     }
 
+    @Override
+    public void receiveClick(final int mouseX, final int mouseY, final int mouseButton) {
+        if (mouseButton == 0) {
+            val keys = scrollableElements.keySet().stream().sorted().collect(Collectors.toList());
+//            System.out.println("Click: " + mouseX + ", " + mouseY);
+//            System.out.println("Adjusted: " + (mouseX - getContentX()) + ", " + (mouseY - getContentY()));
+            for (val key : keys) {
+                val element = scrollableElements.get(key);
+//                System.out.println("Element X: " + element.getRenderX() + ", Y: " + element.getRenderY() + ", Height: " + element.getScrollHeight() + ", Width: " + element.getScrollWidth());
+                if (element.inBounds(mouseX, mouseY, mouseButton)) {
+//                    System.out.println("Got element: " + element);
+                    element.receiveClick(mouseX, mouseY, mouseButton);
+                    break;
+                }
+            }
+        }
+    }
+
     private int getNextID() {
         var last = lastID;
         while (scrollableElements.containsKey(last)) {
@@ -413,6 +431,8 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
             element.setRenderY(myY);
             element.setCanRender(true);
             element.draw(mouseX, mouseY, parTicks);
+        } else {
+            element.setCanRender(false);
         }
     }
 

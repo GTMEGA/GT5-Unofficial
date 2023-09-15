@@ -28,7 +28,7 @@ import java.util.Map;
 
 
 @Getter
-public class GT_GuiScrollPanel2D<ParentType extends GuiScreen & IGuiScreen> extends GuiScreen implements IGuiScreen.IGuiElement, IGuiScreen {
+public class GT_GuiScrollPanel2D<ParentType extends GuiScreen & IGuiScreen> extends GuiScreen implements IGT_GuiSubWindow {
 
     public interface IScrollableElement extends IGuiElement {
 
@@ -407,6 +407,11 @@ public class GT_GuiScrollPanel2D<ParentType extends GuiScreen & IGuiScreen> exte
 
     public int contentOffsetY() {
         return (myHeight - windowHeight) / 2;
+    }
+
+    @Override
+    public void receiveClick(final int mouseX, final int mouseY, final int mouseButton) {
+
     }
 
     protected void drawScrollableContent(final int mouseX, final int mouseY, final float parTicks) {

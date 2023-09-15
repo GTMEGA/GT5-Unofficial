@@ -271,9 +271,12 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     public void onMousePressed(final int mouseX, final int mouseY, final int clickType) {
         if (clickType == 0 && mouseInBar(mouseX, mouseY, clickType)) {
-            val pseudoLeft = x + width * barRadius();
+            val barRad = barRadius();
+            val pseudoLeft = x + width * barRad;
             val pseudoWidth = width * inverseDiameter();
-            this.current = (mouseX - pseudoLeft) / pseudoWidth;
+            if (barRad < 1.0) {
+                this.current = (mouseX - pseudoLeft) / pseudoWidth;
+            }
             updateSlider(true);
             this.isDragged = true;
         } else {

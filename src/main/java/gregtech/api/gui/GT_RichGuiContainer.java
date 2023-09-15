@@ -3,10 +3,7 @@ package gregtech.api.gui;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
-import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
-import gregtech.api.gui.widgets.GT_GuiSlider;
-import gregtech.api.gui.widgets.GT_GuiTooltip;
-import gregtech.api.gui.widgets.GT_GuiTooltipManager;
+import gregtech.api.gui.widgets.*;
 import gregtech.api.interfaces.IDWSCompatibleGUI;
 import gregtech.api.interfaces.IGuiScreen;
 import gregtech.api.util.interop.NEIInterop;
@@ -44,7 +41,7 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
 
     protected final List<GT_GuiSlider> sliders = new ArrayList<>();
 
-    protected final List<IGuiScreen> subWindows = new ArrayList<>();
+    protected final List<IGT_GuiSubWindow> subWindows = new ArrayList<>();
 
     protected final RenderItem itemRenderer = new RenderItem();
 
@@ -56,8 +53,6 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
     @Getter
     private final int guiHeight;
 
-    private final String dwsGuiBackgroundPath;
-
     private final ResourceLocation dwsGuiBackground;
 
     private final int baseGuiWidth;
@@ -66,7 +61,7 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
 
     public GT_RichGuiContainer(final Container aContainer, final String aGuiBackground, final int width, final int height) {
         super(aContainer, aGuiBackground);
-        this.dwsGuiBackground = new ResourceLocation(this.dwsGuiBackgroundPath = getDWSGuiBackgroundPath(aGuiBackground));
+        this.dwsGuiBackground = new ResourceLocation(getDWSGuiBackgroundPath(aGuiBackground));
         this.baseGuiWidth = width;
         this.guiWidth = this.xSize = applyDWSBump(baseWidth());
         this.guiHeight = this.ySize = height;
@@ -244,8 +239,8 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
             if (element instanceof GT_GuiSlider) {
                 sliders.add((GT_GuiSlider) element);
             }
-            if (element instanceof IGuiScreen) {
-                subWindows.add((IGuiScreen) element);
+            if (element instanceof IGT_GuiSubWindow) {
+                subWindows.add((IGT_GuiSubWindow) element);
             }
         }
     }
@@ -268,6 +263,7 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
         final int mouseY = getMouseY(rawMY);
         sliders.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType)).forEach(slider -> slider.onMousePressed(mouseX, mouseY, clickType));
         textBoxes.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType)).forEach(this::setFocusedTextBox);
+        subWindows.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType)).forEach(element -> element.receiveClick(mouseX, mouseY, clickType));
     }
 
     /**
@@ -459,6 +455,8 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
      */
     @Override
     public void drawScreen(final int mouseX, final int mouseY, final float parTicks) {
+        preDrawHook(mouseX, mouseY, parTicks);
+
         neiPreDraw();
         drawDefaultBackground();
         drawBackground();
@@ -474,6 +472,22 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
         magicGLMid2();
         renderTooltips(mouseX, mouseY);
         magicGLPost();
+
+        postDrawHook(mouseX, mouseY, parTicks);
+    }
+
+    /**
+     * Do not use this for GL calls, this is for handling per-frame logic
+     * */
+    protected void postDrawHook(final int mouseX, final int mouseY, final float parTicks) {
+
+    }
+
+    /**
+     * Do not use this for GL calls, this is for handling per-frame logic
+     * */
+    protected void preDrawHook(final int mouseX, final int mouseY, final float parTicks) {
+
     }
 
     /**

@@ -9,12 +9,10 @@ import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.net.GT_Packet_OpenGUI;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.blocks.explosives.GT_Block_DaisyCutter;
 import gregtech.common.blocks.explosives.GT_Block_Explosive;
 import gregtech.common.gui.remotedetonator.GT_RemoteDetonator_Container;
 import gregtech.common.gui.remotedetonator.GT_RemoteDetonator_GuiContainer;
 import lombok.*;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -85,13 +83,9 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         @Getter
         @RequiredArgsConstructor
         public enum ExplosiveType {
-            MINING(GregTech_API.sBlockMiningExplosive, new Color(145, 83, 35, 0xFF), new Color(27, 66, 101, 0xFF)),
-            TUNNEL(GregTech_API.sBlockTunEx, new Color(84, 54, 44, 0xFF), new Color(124, 121, 121, 0xFF)),
-            DAISY_CUTTER(GregTech_API.sBlockDaisyCutter, new Color(105, 176, 58, 0xFF), new Color(196, 189, 109, 0xFF));
-
-            private final GT_Block_Explosive explosive;
-
-            private final Color textColor, backgroundColor;
+            MINING(GregTech_API.sBlockMiningExplosive, new Color(145, 83, 35, 0xFF), new Color(27, 66, 101, 0xFF), new Color(27, 100, 150, 0xFF)),
+            TUNNEL(GregTech_API.sBlockTunEx, new Color(84, 54, 44, 0xFF), new Color(124, 121, 121, 0xFF), new Color(189, 186, 186, 0xFF)),
+            DAISY_CUTTER(GregTech_API.sBlockDaisyCutter, new Color(105, 176, 58, 0xFF), new Color(196, 189, 109, 0xFF), new Color(196, 189, 80, 0xFF));
 
             public static ExplosiveType getType(final GT_Block_Explosive explosive) {
                 for (val type : values()) {
@@ -102,6 +96,10 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
                 return null;
             }
 
+            private final GT_Block_Explosive explosive;
+
+            private final Color textColor, backgroundColorNormal, backgroundColorSelected;
+
         }
 
         @Getter
@@ -109,25 +107,21 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         @Setter
         @AllArgsConstructor
         @EqualsAndHashCode
+        @ToString(onlyExplicitlyIncluded = true)
         public static class Target {
 
-            @EqualsAndHashCode.Exclude
-            private int index = -1;
+            @EqualsAndHashCode.Exclude private int index = -1;
 
+            @ToString.Include
             @EqualsAndHashCode.Exclude
             private ExplosiveType explosiveType;
 
-            private int x = -1;
+            @ToString.Include
+            private int x = -1, y = -1, z = -1;
 
-            private int y = -1;
+            @EqualsAndHashCode.Exclude private boolean triggered = false;
 
-            private int z = -1;
-
-            @EqualsAndHashCode.Exclude
-            private boolean triggered = false;
-
-            @EqualsAndHashCode.Exclude
-            private boolean valid = false;
+            @EqualsAndHashCode.Exclude private boolean valid = false;
 
             public Target(final int x, final int y, final int z) {
                 this(-1, null, x, y, z, false, false);
@@ -231,14 +225,11 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
 
         private int dimension;
 
-        @Builder.Default
-        private int maxTarget = -1, timer = -1;
+        @Builder.Default private int maxTarget = -1, timer = -1;
 
-        @Builder.Default
-        private int delay = GT_Values.MERemoteDelay;
+        @Builder.Default private int delay = GT_Values.MERemoteDelay;
 
-        @Builder.Default
-        private boolean triggered = false, done = true;
+        @Builder.Default private boolean triggered = false, done = true;
 
         public RemoteDetonationTargetList(final @NonNull EntityPlayer player) {
             this(player.dimension, -1, -1, GT_Values.MERemoteDelay, false, false);
@@ -357,11 +348,17 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
     }
 
     /**
-     * @param aWorld  The world
-     * @param aX      The X Position
-     * @param aY      The X Position
-     * @param aZ      The X Position
-     * @param aPlayer The Player that is wielding the item
+     * @param aWorld
+     *         The world
+     * @param aX
+     *         The X Position
+     * @param aY
+     *         The X Position
+     * @param aZ
+     *         The X Position
+     * @param aPlayer
+     *         The Player that is wielding the item
+     *
      * @return
      */
     @Override
@@ -459,16 +456,24 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
     /**
      * This is called when the item is used, before the block is activated.
      *
-     * @param stack  The Item Stack
-     * @param player The Player that used the item
-     * @param world  The Current World
-     * @param x      Target X Position
-     * @param y      Target Y Position
-     * @param z      Target Z Position
-     * @param side   The side of the target hit
+     * @param stack
+     *         The Item Stack
+     * @param player
+     *         The Player that used the item
+     * @param world
+     *         The Current World
+     * @param x
+     *         Target X Position
+     * @param y
+     *         Target Y Position
+     * @param z
+     *         Target Z Position
+     * @param side
+     *         The side of the target hit
      * @param hitX
      * @param hitY
      * @param hitZ
+     *
      * @return Return true to prevent any further processing.
      */
     @Override
