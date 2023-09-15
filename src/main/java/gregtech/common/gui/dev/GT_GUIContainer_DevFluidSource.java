@@ -126,14 +126,10 @@ public class GT_GUIContainer_DevFluidSource extends GT_RichGuiContainer_Machine 
     public void drawExtras(final int mouseX, final int mouseY, final float parTicks) {
         val inactiveColor = new Color(0x30, 0x30, 0x4F, 0xFF);
         val activeColor = new Color(0x30, 0x30, 0xFF, 0xFF);
-        val errorColor = new Color(0xFF, 0x55, 0x55, 0xFF);
         val left = boxX() + 3 + boxWidth();
         val isPerTick = getSource().getData().isPerTick();
         drawString("/ tick", left, 24, isPerTick ? activeColor : inactiveColor);
         drawString("/ second", left, 34, isPerTick ? inactiveColor : activeColor);
-        /*if (!getSource().canRun()) {
-            drawString(getSource().getDisabledStatus(), left, 44, errorColor);
-        }*/
     }
 
     private int boxX() {

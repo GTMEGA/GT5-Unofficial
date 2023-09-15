@@ -1,7 +1,9 @@
 package gregtech.common.gui.dev;
 
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.RSControlMode;
+import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.dev.GT_MetaTileEntity_DevFluidSource;
 import gregtech.api.util.GT_Utility;
@@ -12,6 +14,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidContainerItem;
 
 
 @Getter
@@ -46,7 +49,9 @@ public class GT_Container_DevFluidSource extends GT_Container_Dev<GT_MetaTileEnt
      */
     @Override
     public void addSlots(final InventoryPlayer aPlayerInventory) {
-        super.addSlots(aPlayerInventory);
+        val slotX = getGuiWidth()  / 2 - (GregTech_API.mDWS ? 96 : 64) - 20;
+        val slotY = 25;
+        addSlotToContainer(new GT_Slot_Holo(mMetaTileEntity, 0, slotX, slotY, false, true, 1));
     }
 
     /**
@@ -98,13 +103,18 @@ public class GT_Container_DevFluidSource extends GT_Container_Dev<GT_MetaTileEnt
             if (!(mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_DevFluidSource)) {
                 return null;
             }
-            if (aSlotIndex == 1) {
-                FluidStack inHand = GT_Utility.getFluidForFilledItem(aPlayer.inventory.getItemStack(), true);
-                if (inHand == null) {
-                    machine.setFluidName(null);
-                } else {
-                    machine.setFluidName(inHand.getFluid().getName());
+            if (aSlotIndex == 0) {
+                val stackInHand = aPlayer.inventory.getItemStack();
+                if (stackInHand == null) {
+                    machine.setDrainableStack(null);
+                } else if (!(stackInHand.getItem() instanceof IFluidContainerItem)) {
+                    return null;
                 }
+                FluidStack inHand = GT_Utility.getFluidForFilledItem(stackInHand, true);
+                if (inHand != null) {
+                    inHand.amount = Integer.MAX_VALUE;
+                }
+                machine.setDrainableStack(inHand);
             }
         }
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
@@ -150,20 +160,6 @@ public class GT_Container_DevFluidSource extends GT_Container_Dev<GT_MetaTileEnt
             setRPT(data.getRPS() / 20);
         }
         detectAndSendChanges();
-    }
-
-    protected String getDisabledStatus() {
-        if (!data.isActive()) {
-            return "Disabled by User";
-        }
-        if (!data.isRsActive()) {
-            return "Disabled by Redstone";
-        }
-        return "";
-    }
-
-    protected boolean canRun() {
-        return data.isActive() && data.isRsActive();
     }
 
 }

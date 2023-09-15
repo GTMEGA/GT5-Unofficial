@@ -761,7 +761,8 @@ public class GT_Mod implements IGT_Mod {
     private static void initKeybinds(final FMLInitializationEvent aEvent) {
         new GT_KeyHandler("key.meganet.toggle", "Toggle MEGAnet", GT_MEGAnet.MEGANetInteractionHandler.INSTANCE::togglePlayerMeganet);
         new GT_KeyHandler("key.meganet.gui", "Open MEGAnet Menu", GT_MEGAnet.MEGANetInteractionHandler.INSTANCE::openGUI);
-        new GT_KeyHandler("key.remote_detonator.gui", "Open Remote Detonator Menu", GT_RemoteDetonator.RemoteDetonatorInteractionHandler.INSTANCE::openGUI);
+        // Removed for now, as it's not working properly
+        // new GT_KeyHandler("key.remote_detonator.gui", "Open Remote Detonator Menu", GT_RemoteDetonator.RemoteDetonatorInteractionHandler.INSTANCE::openGUI);
     }
 
     @Mod.EventHandler

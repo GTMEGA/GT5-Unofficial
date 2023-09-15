@@ -174,15 +174,13 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     }
 
 
-    public static final int numSlots = 3;
+    public static final int numSlots = 1;
 
-    public static final int inputSlot = 0, outputSlot = 1, displaySlot = 2;
+    public static final int inputSlot = 0, outputSlot = 1;
 
     private final byte[] rsInputs = new byte[6];
 
     private final GUIData internalData = new GUIData();
-
-    private String fluidName = null;
 
     private int tPeriod = 1;
 
@@ -207,8 +205,18 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     public void receiveGuiData(final ISerializableObject data) {
         if (data instanceof GUIData) {
             internalData.readFrom(data);
+            adjustFluidRate();
             processRS();
             markDirty();
+        }
+    }
+
+    private void adjustFluidRate() {
+        if (internalData.isPerTick()) {
+            internalData.setRPS(internalData.getRPT() * 20);
+            tPeriod = 1;
+        } else {
+            tPeriod = 20;
         }
     }
 
@@ -323,7 +331,7 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
 
     @Override
     public boolean isValidSlot(final int aIndex) {
-        return aIndex != getStackDisplaySlot() && aIndex != displaySlot;
+        return aIndex != getStackDisplaySlot() && aIndex != inputSlot;
     }
 
     /**
@@ -335,16 +343,13 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     public void saveNBTData(final NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         final NBTTagCompound devNBT = (NBTTagCompound) internalData.saveDataToNBT();
-        if (hasFluid()) {
-            devNBT.setString("fName", fluidName);
-        }
         devNBT.setInteger("tick", tCount);
         devNBT.setInteger("period", tPeriod);
         aNBT.setTag("dev", devNBT);
     }
 
     public boolean hasFluid() {
-        return fluidName != null;
+        return mFluid != null;
     }
 
     /**
@@ -354,10 +359,8 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
      */
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
         final NBTTagCompound devNBT = aNBT.getCompoundTag("dev");
-        if (devNBT.hasKey("fName")) {
-            fluidName = devNBT.getString("fname");
-        }
         internalData.loadDataFromNBT(devNBT);
         tCount = devNBT.getInteger("tick");
         tPeriod = devNBT.getInteger("period");
@@ -380,7 +383,7 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
 
     @Override
     public boolean canTankBeEmptied() {
-        return false;
+        return getDrainableStack() != null;
     }
 
     @Override
@@ -395,7 +398,7 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
 
     @Override
     public int getStackDisplaySlot() {
-        return displaySlot;
+        return inputSlot;
     }
 
     /**
@@ -423,7 +426,7 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     @Override
     public void updateFluidDisplayItem() {
         super.updateFluidDisplayItem();
-        mInventory[displaySlot] = GT_Utility.getFluidDisplayStack(getFluid(), false, true);
+        mInventory[inputSlot] = GT_Utility.getFluidDisplayStack(getFluid(), false, true);
     }
 
     @Override
@@ -431,7 +434,7 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
         if (!hasFluid()) {
             return null;
         }
-        return FluidRegistry.getFluidStack(fluidName, Integer.MAX_VALUE);
+        return mFluid;
     }
 
     /**
@@ -481,11 +484,22 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
         return tCount == 0;
     }
 
+    /**
+     * @param aFluid
+     * @return
+     */
+    @Override
+    public FluidStack setDrainableStack(final FluidStack aFluid) {
+        val result =  super.setDrainableStack(aFluid);
+        markDirty();
+        return result;
+    }
+
     private void doFluidPush(final IGregTechTileEntity aBaseMetaTileEntity) {
         IFluidHandler atSide = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
         if (atSide != null) {
             byte front = aBaseMetaTileEntity.getFrontFacing(), back = aBaseMetaTileEntity.getBackFacing();
-            FluidStack simDrained = aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(front), 0, false);
+            FluidStack simDrained = aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(front), getRate(), false);
             if (simDrained != null) {
                 int simFilledAmount = atSide.fill(ForgeDirection.getOrientation(back), simDrained, false);
                 if (simFilledAmount > 0) {
@@ -493,6 +507,15 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
                     atSide.fill(ForgeDirection.getOrientation(back), drained, true);
                 }
             }
+            mFluid.amount = Integer.MAX_VALUE;
+        }
+    }
+
+    public int getRate() {
+        if (internalData.isPerTick()) {
+            return internalData.rPT;
+        } else {
+            return internalData.rPS;
         }
     }
 
@@ -606,51 +629,6 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
             rTextures[5][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], rsActive, fluidSource};
         }
         return rTextures;
-    }
-
-    public boolean canRun() {
-        return internalData.isActive() && internalData.isRsActive();
-    }
-
-    public void syncRates() {
-        if (internalData.isPerTick()) {
-            internalData.setRPS(internalData.rPT * 20);
-            tPeriod = 1;
-        } else {
-            tPeriod = 20;
-        }
-        adjustCount();
-        markDirty();
-    }
-
-    protected void setPerTick(final boolean perTick) {
-        internalData.setPerTick(perTick);
-        markDirty();
-    }
-
-    protected void setRatePerTick(final int ratePerTick) {
-        internalData.setRPT(ratePerTick);
-        markDirty();
-    }
-
-    protected void setRatePerSecond(final int ratePerSecond) {
-        internalData.setRPS(ratePerSecond);
-        markDirty();
-    }
-
-    protected void setRsActive(final boolean rsActive) {
-        internalData.setRsActive(rsActive);
-        markDirty();
-    }
-
-    protected void setActive(final boolean active) {
-        internalData.setActive(active);
-        markDirty();
-    }
-
-    public void setFluidName(final String fluidName) {
-        this.fluidName = fluidName;
-        markDirty();
     }
 
 }

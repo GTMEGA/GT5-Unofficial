@@ -182,18 +182,4 @@ public class GT_Container_DevItemSource extends GT_Container_Dev<GT_MetaTileEnti
         detectAndSendChanges();
     }
 
-    protected boolean canRun() {
-        return data.isActive() && data.isRsActive();
-    }
-
-    protected String getDisabledStatus() {
-        if (!data.isActive()) {
-            return "Disabled by User";
-        }
-        if (!data.isRsActive()) {
-            return "Disabled by Redstone";
-        }
-        return "";
-    }
-
 }
