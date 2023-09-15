@@ -3,7 +3,7 @@ package gregtech.common.gui.remotedetonator;
 
 import gregtech.api.gui.GT_RichGuiContainer;
 import gregtech.api.gui.widgets.GT_GuiScrollPanel;
-import gregtech.api.gui.widgets.GT_GuiSlider;
+import gregtech.api.gui.widgets.slider.GT_GuiSlider_Horizontal;
 import gregtech.common.blocks.explosives.GT_Block_Explosive;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +20,7 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
 
     private GT_GuiScrollPanel<GT_RemoteDetonator_GuiContainer> scrollPanel;
 
-    private GT_GuiSlider scrollBar;
+    private GT_GuiSlider_Horizontal scrollBar;
 
     @Setter
     private RemoteDetonator_GuiEntry selectedEntry = null, hoveredEntry = null;
@@ -31,19 +31,6 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
         addGUIElements();
     }
 
-    @Override
-    protected void preDrawHook(final int mouseX, final int mouseY, final float parTicks) {
-        for (val element: scrollPanel.getScrollableElements().values()) {
-            val entry = (RemoteDetonator_GuiEntry) element;
-            if (entry.inBounds(mouseX, mouseY, 0)) {
-                hoveredEntry = entry;
-                break;
-            } else if (hoveredEntry == entry) {
-                hoveredEntry = null;
-            }
-        }
-    }
-
     private void addGUIElements() {
         val x = 13;
         val yOffset = 13;
@@ -52,10 +39,10 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
         val width = 180;
         val scrollHeight = height - 4;
         scrollPanel = new GT_GuiScrollPanel<>(this, 0, x, yOffset, width, height, 0.0, width - 4, scrollHeight);
-        scrollBar = new GT_GuiSlider(this, 1, width + 20, 13, 80, barHeight, 0.0, 1.0, 0.0, -1);
+        scrollBar = new GT_GuiSlider_Horizontal(this, 1, width + 20, yOffset, 80, barHeight, 0.0, 1.0, 0.0, -1);
         //
         val keys = remoteDetonatorContainer.getTargetList().getTargets().keySet().stream().sorted().collect(Collectors.toList());
-        for (val key: keys) {
+        for (val key : keys) {
             val target = remoteDetonatorContainer.getTargetList().getTargets().get(key);
             val entry = new RemoteDetonator_GuiEntry(scrollPanel, remoteDetonatorContainer.getTargetList(), target);
             entry.setOnClickBehavior((screen, element, mouseX, mouseY, mouseButton) -> onEntryClick(entry));
@@ -68,6 +55,14 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
         scrollBar.setLiveUpdate(true);
     }
 
+    private void onEntryClick(final RemoteDetonator_GuiEntry entry) {
+        if (selectedEntry != entry) {
+            selectedEntry = entry;
+        } else {
+            selectedEntry = null;
+        }
+    }
+
     private void onEntryUpdate(final RemoteDetonator_GuiEntry entry) {
         val target = entry.getTarget();
         val x = target.getX();
@@ -76,14 +71,11 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
         val world = remoteDetonatorContainer.getWorld();
         val block = world.getBlock(x, y, z);
         val metadata = world.getBlockMetadata(x, y, z);
-        entry.setValid((block instanceof GT_Block_Explosive) && ((GT_Block_Explosive) block).isPrimed(metadata));
-    }
-
-    private void onEntryClick(final RemoteDetonator_GuiEntry entry) {
-        if (selectedEntry != entry) {
-            selectedEntry = entry;
+        entry.setValidBlock((block instanceof GT_Block_Explosive));
+        if (entry.isValidBlock() && block instanceof GT_Block_Explosive) {
+            entry.setBlockPrimed(((GT_Block_Explosive) block).isPrimed(metadata));
         } else {
-            selectedEntry = null;
+            entry.setBlockPrimed(false);
         }
     }
 
@@ -98,6 +90,19 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
     @Override
     public void setWorldAndResolution(final Minecraft minecraft, final int width, final int height) {
         super.setWorldAndResolution(minecraft, width, height);
+    }
+
+    @Override
+    protected void preDrawHook(final int mouseX, final int mouseY, final float parTicks) {
+        for (val element : scrollPanel.getScrollableElements().values()) {
+            val entry = (RemoteDetonator_GuiEntry) element;
+            if (entry.inBounds(mouseX, mouseY, 0)) {
+                hoveredEntry = entry;
+                break;
+            } else if (hoveredEntry == entry) {
+                hoveredEntry = null;
+            }
+        }
     }
 
     @Override

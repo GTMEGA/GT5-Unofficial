@@ -1,5 +1,6 @@
 package gregtech.common.gui.remotedetonator;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.common.items.explosives.GT_RemoteDetonator;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
 
 @Getter
 public class GT_RemoteDetonator_Container extends Container {

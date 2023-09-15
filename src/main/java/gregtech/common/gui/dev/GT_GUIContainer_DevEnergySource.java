@@ -5,6 +5,7 @@ import gregtech.api.enums.RSControlMode;
 import gregtech.api.gui.GT_RichGuiContainer_Machine;
 import gregtech.api.gui.widgets.*;
 import gregtech.api.gui.widgets.icon.GT_GuiIcon;
+import gregtech.api.gui.widgets.slider.GT_GuiSlider_Horizontal;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 import lombok.val;
@@ -235,18 +236,18 @@ public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine
     }
 
     private void addVoltTierSlider() {
-        val voltTierSlider = new GT_GuiSlider(this, 0, elementLeft(), vSliderY(), 128, 8, 0.0, 15.0, getSource().getData().getTier(), 16);
+        val voltTierSlider = new GT_GuiSlider_Horizontal(this, 0, elementLeft(), vSliderY(), 128, 8, 0.0, 15.0, getSource().getData().getTier(), 16);
         voltTierSlider.setTextHandler(slider -> String.format("Tier: %s", VN[(int) slider.getValue()]));
         voltTierSlider.setOnChange(this::voltSliderOnChange);
         voltTierSlider.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> voltTierSliderOnClick(voltTierSlider));
         voltTierSlider.setLiveUpdate(true);
     }
 
-    private void voltSliderOnChange(final GT_GuiSlider slider) {
+    private void voltSliderOnChange(final GT_GuiSlider_Horizontal slider) {
         slider.setValue(getSource().getData().getTier());
     }
 
-    private void voltTierSliderOnClick(final GT_GuiSlider voltTierSlider) {
+    private void voltTierSliderOnClick(final GT_GuiSlider_Horizontal voltTierSlider) {
         getSource().setEnergyTier((int) voltTierSlider.getValue());
         voltTierSlider.setUpdateCooldown(COOLDOWN);
         sendUpdateToServer();

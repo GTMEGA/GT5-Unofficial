@@ -4,6 +4,7 @@ package gregtech.api.gui;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.gui.widgets.*;
+import gregtech.api.gui.widgets.slider.GT_GuiSlider_Horizontal;
 import gregtech.api.interfaces.IDWSCompatibleGUI;
 import gregtech.api.interfaces.IGuiScreen;
 import gregtech.api.util.interop.NEIInterop;
@@ -39,7 +40,7 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
 
     protected final List<GT_GuiIntegerTextBox> textBoxes = new ArrayList<>();
 
-    protected final List<GT_GuiSlider> sliders = new ArrayList<>();
+    protected final List<GT_GuiSlider_Horizontal> sliders = new ArrayList<>();
 
     protected final List<IGT_GuiSubWindow> subWindows = new ArrayList<>();
 
@@ -236,8 +237,8 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
             if (element instanceof GT_GuiIntegerTextBox) {
                 textBoxes.add((GT_GuiIntegerTextBox) element);
             }
-            if (element instanceof GT_GuiSlider) {
-                sliders.add((GT_GuiSlider) element);
+            if (element instanceof GT_GuiSlider_Horizontal) {
+                sliders.add((GT_GuiSlider_Horizontal) element);
             }
             if (element instanceof IGT_GuiSubWindow) {
                 subWindows.add((IGT_GuiSubWindow) element);
@@ -264,6 +265,17 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
         sliders.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType)).forEach(slider -> slider.onMousePressed(mouseX, mouseY, clickType));
         textBoxes.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType)).forEach(this::setFocusedTextBox);
         subWindows.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType)).forEach(element -> element.receiveClick(mouseX, mouseY, clickType));
+    }
+
+    /**
+     * @param stack
+     * @param x
+     * @param y
+     * @param displayString
+     */
+    @Override
+    public void drawItemStack(final ItemStack stack, final int x, final int y, final String displayString) {
+        super.drawItemStack(stack, x, y, displayString);
     }
 
     /**

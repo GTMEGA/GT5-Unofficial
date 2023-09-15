@@ -1,38 +1,35 @@
-package gregtech.api.gui.widgets;
+package gregtech.api.gui.widgets.slider;
 
 
 import gregtech.api.gui.GT_RichGuiContainer;
+import gregtech.api.gui.widgets.GT_GuiTooltip;
 import gregtech.api.interfaces.IGuiScreen;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.val;
 import lombok.var;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
 @Setter
 @Getter
-public class GT_GuiSlider extends Gui implements IGT_GuiButton {
+public class GT_GuiSlider_Horizontal extends GT_GuiSlider_Base {
 
     public interface ITextHandler {
 
-        String handle(final GT_GuiSlider slider);
+        String handle(final GT_GuiSlider_Base slider);
 
     }
 
 
     public interface IOnChange {
 
-        void hook(final GT_GuiSlider slider);
+        void hook(final GT_GuiSlider_Base slider);
 
     }
 
@@ -51,8 +48,6 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
     private final int width;
 
     private final int height;
-
-    private final List<GT_GuiSlider> dependents = new ArrayList<>();
 
     private final int id;
 
@@ -103,9 +98,9 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
 
     private boolean drawOnDrag = false;
 
-    public GT_GuiSlider(
+    public GT_GuiSlider_Horizontal(
             final IGuiScreen gui, final int id, final int x, final int y, final int width, final int height, double min, double max, final double current, final int subdivisions
-                       ) {
+                                  ) {
         this.id = id;
         this.gui = gui;
         this.x = x;
@@ -125,8 +120,23 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         this.gui.addElement(this);
     }
 
+    public void updateSlider(final boolean propagate) {
+        if (current > 1.0) {
+            current = 1.0;
+        }
+        if (current < 0.0) {
+            current = 0.0;
+        }
+    }
+
     public void setBarDiameter(final double newDiameter) {
         barDiameter = Math.max(0.0, Math.min(1.0, newDiameter));
+    }
+
+    public void updateBounds(final double[] bounds, final boolean propagate) {
+        if (bounds.length == 2) {
+            updateBounds(bounds[0], bounds[1], propagate);
+        }
     }
 
     public void updateBounds(double newMin, double newMax, final boolean propagate) {
@@ -142,36 +152,6 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         val newRange = this.max - this.min;
         this.current = newRange != 0 ? (this.current * oldRange + oldMin - this.min) / newRange : newMin;
         this.updateSlider(propagate);
-    }
-
-    public void updateBounds(final double[] bounds, final boolean propagate) {
-        if (bounds.length == 2) {
-            updateBounds(bounds[0], bounds[1], propagate);
-        }
-    }
-
-    public void updateSlider(final boolean propagate) {
-        if (current > 1.0) {
-            current = 1.0;
-        }
-        if (current < 0.0) {
-            current = 0.0;
-        }
-        if (propagate) {
-            for (final GT_GuiSlider slider : dependents) {
-                slider.updateSlider(false);
-            }
-        }
-    }
-
-    public GT_GuiSlider addDependentSlider(final GT_GuiSlider slider) {
-        dependents.add(slider);
-        return this;
-    }
-
-    public GT_GuiSlider addDependentSliders(final GT_GuiSlider... sliders) {
-        this.dependents.addAll(Arrays.asList(sliders));
-        return this;
     }
 
     /**
@@ -307,12 +287,12 @@ public class GT_GuiSlider extends Gui implements IGT_GuiButton {
         return subdivisions > 0;
     }
 
-    public GT_GuiSlider setTextHandler(final ITextHandler textHandler) {
+    public GT_GuiSlider_Horizontal setTextHandler(final ITextHandler textHandler) {
         this.textHandler = textHandler;
         return this;
     }
 
-    public GT_GuiSlider setOnChange(final IOnChange onChange) {
+    public GT_GuiSlider_Horizontal setOnChange(final IOnChange onChange) {
         this.onChange = onChange;
         return this;
     }

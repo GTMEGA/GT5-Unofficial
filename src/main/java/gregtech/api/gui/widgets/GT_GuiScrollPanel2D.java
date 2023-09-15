@@ -7,19 +7,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.val;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.*;
+import net.minecraft.client.renderer.entity.RenderItem;
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.entity.RenderItem;
-
-import java.awt.Color;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +44,9 @@ public class GT_GuiScrollPanel2D<ParentType extends GuiScreen & IGuiScreen> exte
         void setCanRender(final boolean canRender);
 
         GT_GuiScrollPanel2D<?> getScrollPanel();
+
     }
+
 
     private final ParentType parent;
 
@@ -95,7 +90,7 @@ public class GT_GuiScrollPanel2D<ParentType extends GuiScreen & IGuiScreen> exte
     @Setter
     private int updateCooldown = 0;
 
-    private Vector2 currentScroll = new Vector2();
+    private final Vector2 currentScroll = new Vector2();
 
     private GT_GuiTooltip tooltip;
 
@@ -375,7 +370,7 @@ public class GT_GuiScrollPanel2D<ParentType extends GuiScreen & IGuiScreen> exte
             totalBounds = new Rectangle(0, 0, 0, 0);
         } else {
             boolean first = true;
-            for (val elemPair: scrollableElements.entrySet()) {
+            for (val elemPair : scrollableElements.entrySet()) {
                 val point = elemPair.getValue();
                 val elem = elemPair.getKey();
                 if (first) {
@@ -412,6 +407,31 @@ public class GT_GuiScrollPanel2D<ParentType extends GuiScreen & IGuiScreen> exte
     @Override
     public void receiveClick(final int mouseX, final int mouseY, final int mouseButton) {
 
+    }
+
+    public Vector2 effectiveScroll() {
+        double x = Math.max(0.0, Math.min(1.0, currentScroll.x));
+        double y = Math.max(0.0, Math.min(1.0, currentScroll.y));
+        val scroll = getMaxScrollFactor();
+        scroll.x *= x;
+        scroll.y *= y;
+        return scroll;
+    }
+
+    public Vector2 getMaxScrollFactor() {
+        return new Vector2(getMaxScrollFactor(windowWidth, totalBounds.width), getMaxScrollFactor(windowHeight, totalBounds.height));
+    }
+
+    public Vector2 effectiveWindowSize() {
+        double w = (double) windowWidth / totalBounds.width;
+        double h = (double) windowHeight / totalBounds.height;
+        if (w > 1) {
+            w = 1;
+        }
+        if (h > 1) {
+            h = 1;
+        }
+        return new Vector2(w, h);
     }
 
     protected void drawScrollableContent(final int mouseX, final int mouseY, final float parTicks) {
@@ -470,36 +490,11 @@ public class GT_GuiScrollPanel2D<ParentType extends GuiScreen & IGuiScreen> exte
         return effectiveScroll();
     }
 
-    public Vector2 effectiveScroll() {
-        double x = Math.max(0.0, Math.min(1.0, currentScroll.x));
-        double y = Math.max(0.0, Math.min(1.0, currentScroll.y));
-        val scroll = getMaxScrollFactor();
-        scroll.x *= x;
-        scroll.y *= y;
-        return scroll;
-    }
-
-    public Vector2 getMaxScrollFactor() {
-        return new Vector2(getMaxScrollFactor(windowWidth, totalBounds.width), getMaxScrollFactor(windowHeight, totalBounds.height));
-    }
-
     private double getMaxScrollFactor(int scrollSize, int totalSize) {
         if (scrollSize >= totalSize || totalSize == 0) {
             return 0.0;
         }
         return 1 - (double) scrollSize / totalSize;
-    }
-
-    public Vector2 effectiveWindowSize() {
-        double w = (double) windowWidth / totalBounds.width;
-        double h = (double) windowHeight / totalBounds.height;
-        if (w > 1) {
-            w = 1;
-        }
-        if (h > 1) {
-            h = 1;
-        }
-        return new Vector2(w, h);
     }
 
     private Vector2 getAsProportionOfContent(int x, int y) {
