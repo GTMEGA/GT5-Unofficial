@@ -5,6 +5,7 @@ import gregtech.api.enums.RSControlMode;
 import gregtech.api.gui.GT_RichGuiContainer_Machine;
 import gregtech.api.gui.widgets.*;
 import gregtech.api.gui.widgets.icon.GT_GuiIcon;
+import gregtech.api.gui.widgets.slider.GT_GuiSlider_Base;
 import gregtech.api.gui.widgets.slider.GT_GuiSlider_Horizontal;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
@@ -243,11 +244,11 @@ public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine
         voltTierSlider.setLiveUpdate(true);
     }
 
-    private void voltSliderOnChange(final GT_GuiSlider_Horizontal slider) {
+    private void voltSliderOnChange(final GT_GuiSlider_Base slider) {
         slider.setValue(getSource().getData().getTier());
     }
 
-    private void voltTierSliderOnClick(final GT_GuiSlider_Horizontal voltTierSlider) {
+    private void voltTierSliderOnClick(final GT_GuiSlider_Base voltTierSlider) {
         getSource().setEnergyTier((int) voltTierSlider.getValue());
         voltTierSlider.setUpdateCooldown(COOLDOWN);
         sendUpdateToServer();

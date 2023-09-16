@@ -4,12 +4,14 @@ package gregtech.common.gui.remotedetonator;
 import gregtech.api.gui.GT_RichGuiContainer;
 import gregtech.api.gui.widgets.GT_GuiScrollPanel;
 import gregtech.api.gui.widgets.slider.GT_GuiSlider_Horizontal;
+import gregtech.api.gui.widgets.slider.GT_GuiSlider_Vertical;
 import gregtech.common.blocks.explosives.GT_Block_Explosive;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
 import net.minecraft.client.Minecraft;
 
+import java.awt.*;
 import java.util.stream.Collectors;
 
 
@@ -20,7 +22,7 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
 
     private GT_GuiScrollPanel<GT_RemoteDetonator_GuiContainer> scrollPanel;
 
-    private GT_GuiSlider_Horizontal scrollBar;
+    private GT_GuiSlider_Vertical scrollBar;
 
     @Setter
     private RemoteDetonator_GuiEntry selectedEntry = null, hoveredEntry = null;
@@ -35,11 +37,11 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
         val x = 13;
         val yOffset = 13;
         val height = 140;
-        val barHeight = 10;
+        val barWidth = 10;
         val width = 180;
         val scrollHeight = height - 4;
         scrollPanel = new GT_GuiScrollPanel<>(this, 0, x, yOffset, width, height, 0.0, width - 4, scrollHeight);
-        scrollBar = new GT_GuiSlider_Horizontal(this, 1, width + 20, yOffset, 80, barHeight, 0.0, 1.0, 0.0, -1);
+        scrollBar = new GT_GuiSlider_Vertical(this, 1, width + 20, yOffset, barWidth, height, 0.0, 1.0, 0.0, -1);
         //
         val keys = remoteDetonatorContainer.getTargetList().getTargets().keySet().stream().sorted().collect(Collectors.toList());
         for (val key : keys) {
@@ -90,6 +92,20 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
     @Override
     public void setWorldAndResolution(final Minecraft minecraft, final int width, final int height) {
         super.setWorldAndResolution(minecraft, width, height);
+    }
+
+    /**
+     * @param mouseX
+     * @param mouseY
+     * @param parTicks
+     */
+    @Override
+    public void drawForegroundLayer(final int mouseX, final int mouseY, final float parTicks) {
+        super.drawForegroundLayer(mouseX, mouseY, parTicks);
+        /* val c1 = new Color(0xFF, 0xFF, 0xFF, 0xFF);
+        val c2 = new Color(0x00, 0x00, 0x00, 0xFF);
+        scrollBar.drawGradientRect(250, 8, 300, 28, c1.getRGB(), c2.getRGB(), true);
+        scrollBar.drawGradientRect(250, 28, 300, 48, c1.getRGB(), c2.getRGB(), false); */
     }
 
     @Override
