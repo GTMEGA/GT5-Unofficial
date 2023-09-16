@@ -32,7 +32,6 @@ import org.lwjgl.input.Keyboard;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
-import java.lang.annotation.Target;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -105,6 +104,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
 
     }
 
+
     public static class RemoteDetonatorInteractionHandler {
 
         public static final RemoteDetonatorInteractionHandler INSTANCE = new RemoteDetonatorInteractionHandler();
@@ -153,24 +153,9 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         @Getter
         @RequiredArgsConstructor
         public enum ExplosiveType {
-            MINING(GregTech_API.sBlockMiningExplosive, new ExplosiveColorPalette(
-                    new Color(187, 102, 41, 0xFF),
-                    new Color(133, 69, 22, 0xFF),
-                    new Color(98, 98, 98, 0xFF),
-                    new Color(138, 137, 137, 0xFF)
-            )),
-            TUNNEL(GregTech_API.sBlockTunEx, new ExplosiveColorPalette(
-                    new Color(133, 84, 10, 0xFF),
-                    new Color(80, 40, 4, 0xFF),
-                    new Color(124, 124, 124, 0xFF),
-                    new Color(89, 89, 89, 0xFF)
-            )),
-            DAISY_CUTTER(GregTech_API.sBlockDaisyCutter, new ExplosiveColorPalette(
-                    new Color(22, 98, 22, 0xFF),
-                    new Color(15, 68, 15, 0xFF),
-                    new Color(84, 175, 84, 0xFF),
-                    new Color(107, 222, 107, 0xFF)
-            ));
+            MINING(GregTech_API.sBlockMiningExplosive, new ExplosiveColorPalette(new Color(187, 102, 41, 0xFF), new Color(133, 69, 22, 0xFF), new Color(98, 98, 98, 0xFF), new Color(138, 137, 137, 0xFF))),
+            TUNNEL(GregTech_API.sBlockTunEx, new ExplosiveColorPalette(new Color(133, 84, 10, 0xFF), new Color(80, 40, 4, 0xFF), new Color(124, 124, 124, 0xFF), new Color(89, 89, 89, 0xFF))),
+            DAISY_CUTTER(GregTech_API.sBlockDaisyCutter, new ExplosiveColorPalette(new Color(22, 98, 22, 0xFF), new Color(15, 68, 15, 0xFF), new Color(84, 175, 84, 0xFF), new Color(107, 222, 107, 0xFF)));
 
 
             @RequiredArgsConstructor
@@ -248,6 +233,13 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
                 return this;
             }
 
+            public double getDistance(final EntityPlayer player) {
+                val dX = player.posX - x;
+                val dY = player.posY - y;
+                val dZ = player.posZ - z;
+                return Math.sqrt(dX * dX + dY * dY + dZ * dZ);
+            }
+
             @NonNull
             protected NBTTagCompound writeToNBT(final @NonNull NBTTagCompound nbtTagCompound) {
                 nbtTagCompound.setInteger("index", index);
@@ -282,13 +274,6 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
 
             public int getDistanceFromTarget(final int pX, final int pY, final int pZ) {
                 return magnitude(pX - this.x, pY - this.y, pZ - this.z);
-            }
-
-            public double getDistance(final EntityPlayer player) {
-                val dX = player.posX - x;
-                val dY = player.posY - y;
-                val dZ = player.posZ - z;
-                return Math.sqrt(dX * dX + dY * dY + dZ * dZ);
             }
 
             private int magnitude(final int x, final int y, final int z) {
@@ -631,6 +616,12 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         return null;
     }
 
+    public RemoteDetonationTargetList getRemoteDetonationTargetList(final ItemStack stack, final EntityPlayer player) {
+        val targetList = RemoteDetonationTargetList.readFromNBT(validateNBT(stack), player);
+        stack.setTagCompound(targetList.writeToNBT(new NBTTagCompound()));
+        return targetList;
+    }
+
     /**
      * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
      *
@@ -706,12 +697,6 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         }
         stack.setTagCompound(remoteDetonationTargetList.writeToNBT(new NBTTagCompound()));
         return !world.isRemote;
-    }
-
-    public RemoteDetonationTargetList getRemoteDetonationTargetList(final ItemStack stack, final EntityPlayer player) {
-        val targetList = RemoteDetonationTargetList.readFromNBT(validateNBT(stack), player);
-        stack.setTagCompound(targetList.writeToNBT(new NBTTagCompound()));
-        return targetList;
     }
 
     public void trigger(final @NonNull World aWorld, final @NonNull EntityPlayer player, final @NonNull RemoteDetonationTargetList remoteDetonationTargetList, final int x, final int y, final int z) {

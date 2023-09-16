@@ -17,7 +17,7 @@ public class GT_Item_Explosive extends ItemBlock {
         super(block);
         this.mName = "gt." + uName;
         if (block instanceof GT_Block_Explosive) {
-            ((GT_Block_Explosive)block).setItem(this);
+            ((GT_Block_Explosive) block).setItem(this);
         }
         setMaxDamage(0);
         setHasSubtypes(false);
