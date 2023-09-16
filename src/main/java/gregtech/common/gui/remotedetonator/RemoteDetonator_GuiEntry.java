@@ -14,6 +14,7 @@ import lombok.experimental.Accessors;
 import lombok.val;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -66,6 +67,10 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
     @Setter
     private double factor;
 
+    @Getter
+    @Setter
+    private boolean zebra;
+
     public RemoteDetonator_GuiEntry(final GT_GuiScrollPanel<GT_RemoteDetonator_GuiContainer> scrollPanel, final GT_RemoteDetonator.RemoteDetonationTargetList targetList, final GT_RemoteDetonator.RemoteDetonationTargetList.Target target) {
         this.scrollPanel = scrollPanel;
         this.targetList = targetList;
@@ -96,6 +101,7 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
 
     @Override
     public void receiveClick(final int mouseX, final int mouseY, final int mouseButton) {
+        System.out.println("Clicked: " + mouseButton);
         onClick(scrollPanel, mouseX, mouseY, mouseButton);
     }
 
@@ -127,23 +133,30 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
             val rectYStart = rY + bump;
             val rectYEnd = rY + sH - bump;
             val textY = rY + (sH - 10) / 2;
-            final Color color;
+            Color backgroundColor, textColor;
             if (isValidBlock()) {
                 if (!isSelectedEntry()) {
-                    color = target.getExplosiveType().getBackgroundColor();
+                    backgroundColor = target.getExplosiveType().getPalette().getBackgroundColor();
+                    textColor = target.getExplosiveType().getPalette().getTextColor();
                 } else {
-                    color = target.getExplosiveType().getBackgroundColor().darker();
+                    backgroundColor = target.getExplosiveType().getPalette().getBackgroundColorSelected();
+                    textColor = target.getExplosiveType().getPalette().getTextColorSelected();
                 }
             } else {
-                color = new Color(128, 0, 0, 255);
+                backgroundColor = new Color(128, 0, 0, 255);
+                textColor = Color.WHITE;
             }
             if (isHoveredEntry()) {
-                Gui.drawRect(rX, rY, rX + sW, rY + sH, lighter(color).getRGB());
+                Gui.drawRect(rX, rY, rX + sW, rY + sH, lighter(backgroundColor).getRGB());
             } else {
-                Gui.drawRect(rX, rY, rX + sW, rY + sH, color.darker().getRGB());
+                Gui.drawRect(rX, rY, rX + sW, rY + sH, backgroundColor.darker().getRGB());
             }
-            val textColor = inverse(color).darker();
-            Gui.drawRect(rectXStart, rectYStart, rectXEnd, rectYEnd, color.getRGB());
+            if (isZebra()) {
+                backgroundColor = backgroundColor.darker();
+            } else {
+                backgroundColor = lighter(backgroundColor);
+            }
+            Gui.drawRect(rectXStart, rectYStart, rectXEnd, rectYEnd, backgroundColor.getRGB());
             val idString = String.format("#%d", scrollID + 1);
             val idStringWidth = scrollPanel.getFontRenderer().getStringWidth(idString);
             val idStringX = rX + 5;

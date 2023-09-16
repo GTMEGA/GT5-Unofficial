@@ -12,10 +12,13 @@ import gregtech.api.util.ISerializableObject;
 import gregtech.common.blocks.explosives.GT_Block_Explosive;
 import gregtech.common.gui.remotedetonator.GT_RemoteDetonator_Container;
 import gregtech.common.gui.remotedetonator.GT_RemoteDetonator_GuiContainer;
+import io.netty.buffer.ByteBuf;
 import lombok.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
@@ -24,9 +27,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableInt;
+import org.lwjgl.input.Keyboard;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
+import java.lang.annotation.Target;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +40,70 @@ import java.util.Map;
 
 
 public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceivableItem {
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RemoteDetonatorDelayUpdate implements ISerializableObject {
+
+        private int delay;
+
+        /**
+         * @return
+         */
+        @Nonnull
+        @Override
+        public ISerializableObject copy() {
+            return new RemoteDetonatorDelayUpdate(delay);
+        }
+
+        /**
+         * @return
+         */
+        @Deprecated
+        @Nonnull
+        @Override
+        public NBTBase saveDataToNBT() {
+            return new NBTTagCompound();
+        }
+
+        /**
+         * Write data to given ByteBuf
+         * The data saved this way is intended to be stored for short amount of time over network.
+         * DO NOT store it to disks.
+         *
+         * @param aBuf
+         */
+        @Override
+        public void writeToByteBuf(final ByteBuf aBuf) {
+            aBuf.writeByte(1);
+            aBuf.writeInt(delay);
+        }
+
+        /**
+         * @param aNBT
+         */
+        @Deprecated
+        @Override
+        public void loadDataFromNBT(final NBTBase aNBT) {
+
+        }
+
+        /**
+         * Read data from given parameter and return this.
+         * The data read this way is intended to be stored for short amount of time over network.
+         *
+         * @param aBuf
+         * @param aPlayer
+         */
+        @Nonnull
+        @Override
+        public ISerializableObject readFromPacket(final ByteArrayDataInput aBuf, final EntityPlayerMP aPlayer) {
+            return new RemoteDetonatorDelayUpdate(aBuf.readInt());
+        }
+
+    }
 
     public static class RemoteDetonatorInteractionHandler {
 
@@ -83,9 +153,40 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         @Getter
         @RequiredArgsConstructor
         public enum ExplosiveType {
-            MINING(GregTech_API.sBlockMiningExplosive,  new Color(187, 102, 41, 0xFF)),
-            TUNNEL(GregTech_API.sBlockTunEx, new Color(112, 54, 27, 0xFF)),
-            DAISY_CUTTER(GregTech_API.sBlockDaisyCutter,  new Color(42, 138, 16, 0xFF));
+            MINING(GregTech_API.sBlockMiningExplosive, new ExplosiveColorPalette(
+                    new Color(187, 102, 41, 0xFF),
+                    new Color(133, 69, 22, 0xFF),
+                    new Color(98, 98, 98, 0xFF),
+                    new Color(138, 137, 137, 0xFF)
+            )),
+            TUNNEL(GregTech_API.sBlockTunEx, new ExplosiveColorPalette(
+                    new Color(133, 84, 10, 0xFF),
+                    new Color(80, 40, 4, 0xFF),
+                    new Color(124, 124, 124, 0xFF),
+                    new Color(89, 89, 89, 0xFF)
+            )),
+            DAISY_CUTTER(GregTech_API.sBlockDaisyCutter, new ExplosiveColorPalette(
+                    new Color(22, 98, 22, 0xFF),
+                    new Color(15, 68, 15, 0xFF),
+                    new Color(84, 175, 84, 0xFF),
+                    new Color(107, 222, 107, 0xFF)
+            ));
+
+
+            @RequiredArgsConstructor
+            @Getter
+            public static class ExplosiveColorPalette {
+
+                private final Color backgroundColor;
+
+                private final Color backgroundColorSelected;
+
+                private final Color textColor;
+
+                private final Color textColorSelected;
+
+
+            }
 
             public static ExplosiveType getType(final GT_Block_Explosive explosive) {
                 for (val type : values()) {
@@ -98,9 +199,10 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
 
             private final GT_Block_Explosive explosive;
 
-            private final Color backgroundColor;
+            private final ExplosiveColorPalette palette;
 
         }
+
 
         @Getter
         @NoArgsConstructor
@@ -110,7 +212,8 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         @ToString(onlyExplicitlyIncluded = true)
         public static class Target {
 
-            @EqualsAndHashCode.Exclude private int index = -1;
+            @EqualsAndHashCode.Exclude
+            private int index = -1;
 
             @ToString.Include
             @EqualsAndHashCode.Exclude
@@ -119,9 +222,11 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
             @ToString.Include
             private int x = -1, y = -1, z = -1;
 
-            @EqualsAndHashCode.Exclude private boolean triggered = false;
+            @EqualsAndHashCode.Exclude
+            private boolean triggered = false;
 
-            @EqualsAndHashCode.Exclude private boolean valid = false;
+            @EqualsAndHashCode.Exclude
+            private boolean valid = false;
 
             public Target(final int x, final int y, final int z) {
                 this(-1, null, x, y, z, false, false);
@@ -179,6 +284,13 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
                 return magnitude(pX - this.x, pY - this.y, pZ - this.z);
             }
 
+            public double getDistance(final EntityPlayer player) {
+                val dX = player.posX - x;
+                val dY = player.posY - y;
+                val dZ = player.posZ - z;
+                return Math.sqrt(dX * dX + dY * dY + dZ * dZ);
+            }
+
             private int magnitude(final int x, final int y, final int z) {
                 return MathHelper.floor_double(Math.sqrt(x * x + y * y + z * z));
             }
@@ -225,11 +337,14 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
 
         private int dimension;
 
-        @Builder.Default private int maxTarget = -1, timer = -1;
+        @Builder.Default
+        private int maxTarget = -1, timer = -1;
 
-        @Builder.Default private int delay = GT_Values.MERemoteDelay;
+        @Builder.Default
+        private int delay = GT_Values.MERemoteDelay;
 
-        @Builder.Default private boolean triggered = false, done = true;
+        @Builder.Default
+        private boolean triggered = false, done = true;
 
         public RemoteDetonationTargetList(final @NonNull EntityPlayer player) {
             this(player.dimension, -1, -1, GT_Values.MERemoteDelay, false, false);
@@ -340,6 +455,76 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
 
     }
 
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RemoteDetonatorArmedUpdate implements ISerializableObject {
+
+        private RemoteDetonationTargetList.Target target;
+
+        private boolean armed;
+
+        /**
+         * @return
+         */
+        @Nonnull
+        @Override
+        public ISerializableObject copy() {
+            return new RemoteDetonatorArmedUpdate(target, armed);
+        }
+
+        /**
+         * @return
+         */
+        @Deprecated
+        @Nonnull
+        @Override
+        public NBTBase saveDataToNBT() {
+            return new NBTTagCompound();
+        }
+
+        /**
+         * Write data to given ByteBuf
+         * The data saved this way is intended to be stored for short amount of time over network.
+         * DO NOT store it to disks.
+         *
+         * @param aBuf
+         */
+        @Override
+        public void writeToByteBuf(final ByteBuf aBuf) {
+            aBuf.writeByte(2);
+            aBuf.writeInt(target.getExplosiveType().ordinal());
+            aBuf.writeInt(target.getX());
+            aBuf.writeInt(target.getY());
+            aBuf.writeInt(target.getZ());
+            aBuf.writeBoolean(armed);
+        }
+
+        /**
+         * @param aNBT
+         */
+        @Override
+        public void loadDataFromNBT(final NBTBase aNBT) {
+
+        }
+
+        /**
+         * Read data from given parameter and return this.
+         * The data read this way is intended to be stored for short amount of time over network.
+         *
+         * @param aBuf
+         * @param aPlayer
+         */
+        @Nonnull
+        @Override
+        public ISerializableObject readFromPacket(final ByteArrayDataInput aBuf, final EntityPlayerMP aPlayer) {
+            return new RemoteDetonatorArmedUpdate(new RemoteDetonationTargetList.Target(-1, RemoteDetonationTargetList.ExplosiveType.values()[aBuf.readInt()], aBuf.readInt(), aBuf.readInt(), aBuf.readInt()), aBuf.readBoolean());
+        }
+
+    }
+
     public GT_RemoteDetonator() {
         super("remote_detonator", "Remote Detonator", "Triggers gregtech explosives remotely.");
         setMaxStackSize(1);
@@ -348,17 +533,11 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
     }
 
     /**
-     * @param aWorld
-     *         The world
-     * @param aX
-     *         The X Position
-     * @param aY
-     *         The X Position
-     * @param aZ
-     *         The X Position
-     * @param aPlayer
-     *         The Player that is wielding the item
-     *
+     * @param aWorld  The world
+     * @param aX      The X Position
+     * @param aY      The X Position
+     * @param aZ      The X Position
+     * @param aPlayer The Player that is wielding the item
      * @return
      */
     @Override
@@ -371,7 +550,12 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
      * @param aStack
      * @param aPlayer
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings(
+            {
+                    "rawtypes",
+                    "unchecked"
+            }
+    )
     @Override
     protected void addAdditionalToolTips(final List aList, final ItemStack aStack, final EntityPlayer aPlayer) {
         val compound = validateNBT(aStack);
@@ -381,6 +565,14 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         val numTargets = compound.getInteger("num");
         if (numTargets > 0) {
             aList.add(String.format("Explosives armed: %d", numTargets));
+        }
+        aList.add(String.format("Delay: %d ticks", remoteDetonationTargetList.getDelay()));
+        aList.add("Press Shift+RMB to trigger");
+        val temp = GT_Values.KB.getKeyBindings().get("key.remote_detonator.gui");
+        if (temp.getKeyCode() > 0) {
+            aList.add(String.format("Press %s to open GUI", Keyboard.getKeyName(temp.getKeyCode())));
+        } else {
+            aList.add("Press [unbound] to open GUI");
         }
         if (remoteDetonationTargetList.isTriggered()) {
             aList.add(EnumChatFormatting.DARK_RED + "DETONATING!" + EnumChatFormatting.GRAY + " Stand Clear!");
@@ -410,12 +602,32 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
 
     @Override
     public void onPacketReceived(final World world, final EntityPlayer player, final ItemStack stack, final ISerializableObject data) {
-
+        if (data instanceof RemoteDetonatorDelayUpdate) {
+            val remoteDetonationTargetList = getRemoteDetonationTargetList(stack, player);
+            remoteDetonationTargetList.setDelay(((RemoteDetonatorDelayUpdate) data).getDelay());
+            stack.setTagCompound(remoteDetonationTargetList.writeToNBT(new NBTTagCompound()));
+        } else if (data instanceof RemoteDetonatorArmedUpdate) {
+            val remoteDetonationTargetList = getRemoteDetonationTargetList(stack, player);
+            val target = ((RemoteDetonatorArmedUpdate) data).getTarget();
+            val armed = ((RemoteDetonatorArmedUpdate) data).isArmed();
+            if (armed) {
+                remoteDetonationTargetList.addTarget(target.getExplosiveType(), target.getX(), target.getY(), target.getZ());
+            } else {
+                remoteDetonationTargetList.removeTarget(target.getX(), target.getY(), target.getZ());
+            }
+            stack.setTagCompound(remoteDetonationTargetList.writeToNBT(new NBTTagCompound()));
+        }
     }
 
     @Nullable
     @Override
     public ISerializableObject readFromBytes(final ByteArrayDataInput aData) {
+        switch (aData.readByte()) {
+            case 1:
+                return new RemoteDetonatorDelayUpdate().readFromPacket(aData, null);
+            case 2:
+                return new RemoteDetonatorArmedUpdate().readFromPacket(aData, null);
+        }
         return null;
     }
 
@@ -456,24 +668,16 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
     /**
      * This is called when the item is used, before the block is activated.
      *
-     * @param stack
-     *         The Item Stack
-     * @param player
-     *         The Player that used the item
-     * @param world
-     *         The Current World
-     * @param x
-     *         Target X Position
-     * @param y
-     *         Target Y Position
-     * @param z
-     *         Target Z Position
-     * @param side
-     *         The side of the target hit
+     * @param stack  The Item Stack
+     * @param player The Player that used the item
+     * @param world  The Current World
+     * @param x      Target X Position
+     * @param y      Target Y Position
+     * @param z      Target Z Position
+     * @param side   The side of the target hit
      * @param hitX
      * @param hitY
      * @param hitZ
-     *
      * @return Return true to prevent any further processing.
      */
     @Override

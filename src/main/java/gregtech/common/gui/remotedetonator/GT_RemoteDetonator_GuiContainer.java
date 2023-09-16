@@ -1,21 +1,23 @@
 package gregtech.common.gui.remotedetonator;
 
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_RichGuiContainer;
 import gregtech.api.gui.widgets.GT_GuiIconButton;
-import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.gui.widgets.GT_GuiScrollPanel;
-import gregtech.api.gui.widgets.icon.GT_GuiIcon;
 import gregtech.api.gui.widgets.slider.GT_GuiSlider_Vertical;
+import gregtech.api.net.GT_Packet_InventoryUpdate;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.explosives.GT_Block_Explosive;
+import gregtech.common.items.explosives.GT_RemoteDetonator;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 
+import java.awt.*;
 import java.util.stream.Collectors;
 
 
@@ -26,16 +28,12 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
 
     private GT_GuiScrollPanel<GT_RemoteDetonator_GuiContainer> scrollPanel;
 
-    private GT_GuiIconButton detonateButton;
-
     private GT_GuiSlider_Vertical scrollBar;
 
     private GT_GuiIntegerTextBox detonationDelay;
 
     @Setter
     private RemoteDetonator_GuiEntry selectedEntry = null, hoveredEntry = null;
-
-    private GT_GuiIconCheckButton toggleExplosiveArmedButton;
 
     public GT_RemoteDetonator_GuiContainer(final GT_RemoteDetonator_Container aContainer) {
         super(aContainer, "gregtech:textures/gui/remote_detonator_gui.png", 338, 166);
@@ -58,7 +56,7 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
         for (val key : keys) {
             val target = remoteDetonatorContainer.getTargetList().getTargets().get(key);
             val entry = new RemoteDetonator_GuiEntry(scrollPanel, remoteDetonatorContainer.getTargetList(), target);
-            entry.setOnClickBehavior((screen, element, mouseX, mouseY, mouseButton) -> onEntryClick(entry));
+            entry.setOnClickBehavior((screen, element, mouseX, mouseY, mouseButton) -> onEntryClick(entry, mouseButton));
             entry.setOnUpdateBehavior((screen, element, mouseX, mouseY, clickType) -> onEntryUpdate(entry));
         }
         //
@@ -68,53 +66,45 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
         scrollBar.setLiveUpdate(true);
         //
         val detonationDelayX = scrollBarX + barWidth + 5;
-        detonationDelay = new GT_GuiIntegerTextBox(this, 2, detonationDelayX, yOffset, 75, 10);
+        detonationDelay = new GT_GuiIntegerTextBox(this, 2, detonationDelayX, yOffset + 1, 75, 10);
         detonationDelay.setText(String.valueOf(remoteDetonatorContainer.getTargetList().getDelay()));
-        //
-        val buttonY = yOffset + 15;
-        detonateButton = new GT_GuiIconButton(this, 3, detonationDelayX, buttonY, GT_GuiIcon.MEGA_EXPLOSION);
-        detonateButton.setBackgroundIconNormal(GT_GuiIcon.BUTTON_NORMAL);
-        detonateButton.setTooltipText("Detonate Explosives");
-        //
-        toggleExplosiveArmedButton = new GT_GuiIconCheckButton(this, 4, detonationDelayX + 20, buttonY, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Arm Explosives", "Disarm Explosives");
-        toggleExplosiveArmedButton.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> toggleExplosiveArmedButtonOnUpdate(toggleExplosiveArmedButton));
-        toggleExplosiveArmedButton.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> toggleExplosiveArmedButtonOnClick(toggleExplosiveArmedButton));
     }
 
-    private void toggleExplosiveArmedButtonOnClick(final GT_GuiIconCheckButton toggleExplosiveArmedButton) {
-        if (selectedEntry != null && selectedEntry.isValidBlock()) {
-            val target = selectedEntry.getTarget();
-            val x = target.getX();
-            val y = target.getY();
-            val z = target.getZ();
-            val world = remoteDetonatorContainer.getWorld();
-            val block = world.getBlock(x, y, z);
-            val metadata = world.getBlockMetadata(x, y, z);
-            if (block instanceof GT_Block_Explosive) {
-                val explosive = (GT_Block_Explosive) block;
-                val isPrimed = explosive.isPrimed(metadata);
-                explosive.setPrimed(world, x, y, z, !isPrimed);
-                toggleExplosiveArmedButton.setChecked(!isPrimed);
+    private void onEntryClick(final RemoteDetonator_GuiEntry entry, final int clickType) {
+        switch (clickType) {
+            case 0: {
+                if (selectedEntry != entry) {
+                    selectedEntry = entry;
+                } else {
+                    selectedEntry = null;
+                }
+                break;
+            }
+            case 1: {
+                toggleEntry(entry);
             }
         }
     }
 
-    private void toggleExplosiveArmedButtonOnUpdate(final GT_GuiIconCheckButton toggleExplosiveArmedButton) {
-        if (selectedEntry != null && selectedEntry.isValidBlock()) {
-            toggleExplosiveArmedButton.enabled = true;
-            toggleExplosiveArmedButton.setChecked(selectedEntry.isBlockPrimed());
-        } else {
-            toggleExplosiveArmedButton.setChecked(false);
-            toggleExplosiveArmedButton.enabled = false;
+    private void toggleEntry(final RemoteDetonator_GuiEntry entry) {
+        val target = entry.getTarget();
+        val x = target.getX();
+        val y = target.getY();
+        val z = target.getZ();
+        val world = remoteDetonatorContainer.getWorld();
+        val block = world.getBlock(x, y, z);
+        val metadata = world.getBlockMetadata(x, y, z);
+        if (block instanceof GT_Block_Explosive) {
+            val explosive = (GT_Block_Explosive) block;
+            val isPrimed = !explosive.isPrimed(metadata);
+            entry.setBlockPrimed(isPrimed);
+            explosive.setPrimed(world, x, y, z, isPrimed);
+            sendArmedUpdate(target, isPrimed);
         }
     }
 
-    private void onEntryClick(final RemoteDetonator_GuiEntry entry) {
-        if (selectedEntry != entry) {
-            selectedEntry = entry;
-        } else {
-            selectedEntry = null;
-        }
+    private void sendArmedUpdate(final GT_RemoteDetonator.RemoteDetonationTargetList.Target target, final boolean armed) {
+        GT_Values.NW.sendToServer(new GT_Packet_InventoryUpdate(remoteDetonatorContainer.getOwner(), GT_RemoteDetonator_Container.REMOTE_DETONATOR, remoteDetonatorContainer.isBauble(), remoteDetonatorContainer.getSlotIndex(), new GT_RemoteDetonator.RemoteDetonatorArmedUpdate(target, armed)));
     }
 
     private void onEntryUpdate(final RemoteDetonator_GuiEntry entry) {
@@ -168,7 +158,7 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
             resetTextBox(box);
             return;
         }
-        int value = -1;
+        int value;
         if (box.id == 2) {
             try {
                 value = Integer.parseInt(s);
@@ -176,19 +166,18 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
                 resetTextBox(box);
                 return;
             }
+            if (value <= 0) {
+                resetTextBox(box);
+                return;
+            }
             remoteDetonatorContainer.getTargetList().setDelay(value);
-        }
-        if (value > 0) {
-            box.setUpdateCooldown(20);
             box.setText(String.valueOf(value));
-            sendUpdateToServer();
-        } else {
-            resetTextBox(box);
+            sendDelayUpdate(value);
         }
     }
 
-    private void sendUpdateToServer() {
-
+    private void sendDelayUpdate(final int value) {
+        GT_Values.NW.sendToServer(new GT_Packet_InventoryUpdate(remoteDetonatorContainer.getOwner(), GT_RemoteDetonator_Container.REMOTE_DETONATOR, remoteDetonatorContainer.isBauble(), remoteDetonatorContainer.getSlotIndex(), new GT_RemoteDetonator.RemoteDetonatorDelayUpdate(value)));
     }
 
     @Override
@@ -202,20 +191,6 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
                 hoveredEntry = null;
             }
         }
-    }
-
-    /**
-     * @param mouseX
-     * @param mouseY
-     * @param parTicks
-     */
-    @Override
-    public void drawForegroundLayer(final int mouseX, final int mouseY, final float parTicks) {
-        super.drawForegroundLayer(mouseX, mouseY, parTicks);
-        /* val c1 = new Color(0xFF, 0xFF, 0xFF, 0xFF);
-        val c2 = new Color(0x00, 0x00, 0x00, 0xFF);
-        scrollBar.drawGradientRect(250, 8, 300, 28, c1.getRGB(), c2.getRGB(), true);
-        scrollBar.drawGradientRect(250, 28, 300, 48, c1.getRGB(), c2.getRGB(), false); */
     }
 
     @Override
@@ -236,11 +211,13 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
             if (block instanceof GT_Block_Explosive) {
                 val explosive = (GT_Block_Explosive) block;
                 val isPrimed = explosive.isPrimed(metadata);
-                val explosiveName = GT_LanguageManager.getTranslation(explosive.getItem().getUnlocalizedName());
+                val explosiveName = GT_LanguageManager.getTranslation(explosive.getItem().getUnlocalizedName(null) + ".name");
                 val armedText = isPrimed ? "Armed" : "Disarmed";
+                val distanceText = String.format("%.1f blocks away", target.getDistance(remoteDetonatorContainer.getOwner()));
                 val color = isPrimed ? 0xFF0000 : 0x000000;
-                drawString(getFontRenderer(), explosiveName, 210, 50, target.getExplosiveType().getBackgroundColor().getRGB());
+                drawString(getFontRenderer(), explosiveName, 210, 50, target.getExplosiveType().getPalette().getBackgroundColor().getRGB());
                 drawString(getFontRenderer(), armedText, 210, 62, color);
+                drawString(getFontRenderer(), distanceText, 210, 74, new Color(112, 112, 112, 0xFF).getRGB());
             }
         }
     }

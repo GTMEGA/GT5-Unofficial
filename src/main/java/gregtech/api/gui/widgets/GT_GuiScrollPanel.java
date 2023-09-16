@@ -45,6 +45,10 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
 
         IScrollableElement setScrollID(int scrollID);
 
+        boolean isZebra();
+
+        void setZebra(final boolean zebra);
+
         void receiveClick(final int mouseX, final int mouseY, final int mouseButton);
 
     }
@@ -371,18 +375,16 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
     public void receiveClick(final int mouseX, final int mouseY, final int mouseButton) {
         val pseudoX = mouseX + parent.getGuiLeft();
         val pseudoY = mouseY + parent.getGuiTop();
-        if (mouseButton == 0) {
-            val keys = scrollableElements.keySet().stream().sorted().collect(Collectors.toList());
+        val keys = scrollableElements.keySet().stream().sorted().collect(Collectors.toList());
 //            System.out.println("Click: " + mouseX + ", " + mouseY);
 //            System.out.println("Adjusted: " + (mouseX - getContentX()) + ", " + (mouseY - getContentY()));
-            for (val key : keys) {
-                val element = scrollableElements.get(key);
+        for (val key : keys) {
+            val element = scrollableElements.get(key);
 //                System.out.println("Element X: " + element.getRenderX() + ", Y: " + element.getRenderY() + ", Height: " + element.getScrollHeight() + ", Width: " + element.getScrollWidth());
-                if (element.inBounds(pseudoX, pseudoY, mouseButton)) {
+            if (element.inBounds(pseudoX, pseudoY, mouseButton)) {
 //                    System.out.println("Got element: " + element);
-                    element.receiveClick(pseudoX, pseudoY, mouseButton);
-                    break;
-                }
+                element.receiveClick(pseudoX, pseudoY, mouseButton);
+                break;
             }
         }
     }
@@ -460,10 +462,12 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
         drawScrollPanelBackground(mouseX, mouseY, parTicks);
         var totalElementHeight = 0;
         val keys = scrollableElements.keySet().stream().sorted().collect(Collectors.toList());
+        int index = 0;
         for (final Integer key : keys) {
             val element = scrollableElements.get(key);
-            renderIndividualScrollableElement(mouseX, mouseY, parTicks, totalElementHeight, element);
+            renderIndividualScrollableElement(index, mouseX, mouseY, parTicks, totalElementHeight, element);
             totalElementHeight += element.getScrollHeight();
+            index += 1;
         }
         //
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
@@ -471,13 +475,14 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
         GL11.glPopAttrib();
     }
 
-    protected void renderIndividualScrollableElement(final int mouseX, final int mouseY, final float parTicks, final int totalElementHeight, final IScrollableElement element) {
+    protected void renderIndividualScrollableElement(final int index, final int mouseX, final int mouseY, final float parTicks, final int totalElementHeight, final IScrollableElement element) {
         if (inRange(element.getScrollHeight(), totalElementHeight)) {
             val verticalOffset = (int) (totalElementHeight - totalHeight * pseudoPanelStart());
             val myX = getContentX();
             val myY = getContentY() + verticalOffset;
             element.setRenderX(myX);
             element.setRenderY(myY);
+            element.setZebra(index % 2 == 0);
             element.setCanRender(true);
             element.draw(mouseX, mouseY, parTicks);
         } else {
