@@ -5,7 +5,7 @@ import gregtech.api.interfaces.IGuiScreen;
 import lombok.val;
 
 
-public class GT_GuiSlider_Vertical extends GT_GuiSlider_Base {
+public class GT_GuiSlider_Vertical extends GT_GuiSlider {
 
     public GT_GuiSlider_Vertical(final IGuiScreen gui, final int id, final int x, final int y, final int width, final int height, final double min, final double max, final double current, final int subdivisions) {
         super(gui, id, x, y, width, height, min, max, current, subdivisions);

@@ -9,7 +9,7 @@ import lombok.val;
 
 @Setter
 @Getter
-public class GT_GuiSlider_Horizontal extends GT_GuiSlider_Base {
+public class GT_GuiSlider_Horizontal extends GT_GuiSlider {
 
 
     public GT_GuiSlider_Horizontal(

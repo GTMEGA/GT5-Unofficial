@@ -14,7 +14,9 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
     public static final int DEFAULT_WIDTH = 16;
     public static final int DEFAULT_HEIGHT = 16;
 
-    private final GT_GuiIcon highlightDownIcon = GT_GuiIcon.BUTTON_HIGHLIGHT_DOWN;
+    @Getter
+    @Setter
+    private GT_GuiIcon highlightDownIcon = GT_GuiIcon.BUTTON_HIGHLIGHT_DOWN;
 
     @Getter
     @Setter
@@ -76,6 +78,7 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
         if (tooltip != null) {
             gui.addToolTip(tooltip);
         }
+        onInit(this.gui, 0, 0, 0);
         xPosition = x0 + gui.getGuiLeft();
         yPosition = y0 + gui.getGuiTop();
     }

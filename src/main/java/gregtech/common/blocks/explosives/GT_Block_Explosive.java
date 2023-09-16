@@ -4,7 +4,10 @@ package gregtech.common.blocks.explosives;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_Generic_Block;
+import gregtech.common.items.explosives.GT_Item_Explosive;
 import gregtech.common.items.explosives.GT_RemoteDetonator;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -20,6 +23,10 @@ public abstract class GT_Block_Explosive extends GT_Generic_Block {
     public static final int sideMask = primeMask - 1;
 
     protected final IIconContainer[] icons;
+
+    @Getter
+    @Setter
+    protected GT_Item_Explosive item;
 
     protected GT_Block_Explosive(final Class<? extends ItemBlock> aItemClass, final String aName, final IIconContainer[] icons) {
         super(aItemClass, aName, Material.tnt);

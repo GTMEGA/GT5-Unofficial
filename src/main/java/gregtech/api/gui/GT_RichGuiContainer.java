@@ -4,8 +4,7 @@ package gregtech.api.gui;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.gui.widgets.*;
-import gregtech.api.gui.widgets.slider.GT_GuiSlider_Base;
-import gregtech.api.gui.widgets.slider.GT_GuiSlider_Horizontal;
+import gregtech.api.gui.widgets.slider.GT_GuiSlider;
 import gregtech.api.interfaces.IDWSCompatibleGUI;
 import gregtech.api.interfaces.IGuiScreen;
 import gregtech.api.util.interop.NEIInterop;
@@ -41,7 +40,7 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
 
     protected final List<GT_GuiIntegerTextBox> textBoxes = new ArrayList<>();
 
-    protected final List<GT_GuiSlider_Base> sliders = new ArrayList<>();
+    protected final List<GT_GuiSlider> sliders = new ArrayList<>();
 
     protected final List<IGT_GuiSubWindow> subWindows = new ArrayList<>();
 
@@ -238,8 +237,8 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
             if (element instanceof GT_GuiIntegerTextBox) {
                 textBoxes.add((GT_GuiIntegerTextBox) element);
             }
-            if (element instanceof GT_GuiSlider_Base) {
-                sliders.add((GT_GuiSlider_Base) element);
+            if (element instanceof GT_GuiSlider) {
+                sliders.add((GT_GuiSlider) element);
             }
             if (element instanceof IGT_GuiSubWindow) {
                 subWindows.add((IGT_GuiSubWindow) element);

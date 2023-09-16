@@ -83,7 +83,7 @@ public class GT_GUIContainer_DevItemSource extends GT_RichGuiContainer_Machine {
      */
     @Override
     public void applyTextBox(final GT_GuiIntegerTextBox box) {
-        String s = box.getText().trim();
+        val s = box.getText().trim();
         int value;
         if (s.contains(".")) {
             double v;

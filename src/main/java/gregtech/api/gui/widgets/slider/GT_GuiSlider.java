@@ -18,18 +18,18 @@ import java.awt.*;
 
 
 @Getter
-public abstract class GT_GuiSlider_Base extends Gui implements IGuiScreen.IGuiElement {
+public abstract class GT_GuiSlider extends Gui implements IGuiScreen.IGuiElement {
 
     public interface ITextHandler {
 
-        String handle(final GT_GuiSlider_Base slider);
+        String handle(final GT_GuiSlider slider);
 
     }
 
 
     public interface IOnChange {
 
-        void hook(final GT_GuiSlider_Base slider);
+        void hook(final GT_GuiSlider slider);
 
     }
 
@@ -130,7 +130,7 @@ public abstract class GT_GuiSlider_Base extends Gui implements IGuiScreen.IGuiEl
     @Setter
     private boolean drawOnDrag = false;
 
-    public GT_GuiSlider_Base(final IGuiScreen gui, final int id, final int x, final int y, final int width, final int height, double min, double max, final double current, final int subdivisions) {
+    public GT_GuiSlider(final IGuiScreen gui, final int id, final int x, final int y, final int width, final int height, double min, double max, final double current, final int subdivisions) {
         this.gui = gui;
         this.subdivisions = subdivisions;
         this.width = width;

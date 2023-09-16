@@ -2,6 +2,7 @@ package gregtech.common.items.explosives;
 
 
 import gregtech.api.enums.GT_Values;
+import gregtech.common.blocks.explosives.GT_Block_Explosive;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

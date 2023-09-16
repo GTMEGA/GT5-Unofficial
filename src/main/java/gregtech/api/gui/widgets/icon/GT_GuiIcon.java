@@ -78,6 +78,9 @@ public enum GT_GuiIcon implements IGT_GuiIcon {
     MATH_EIGHT(Atlas.MATH, 8, 64, 8, 8),
     MATH_NINE(Atlas.MATH, 8, 72, 8, 8),
 
+    // Mega Buttons
+    MEGA_EXPLOSION(Atlas.MEGA_BUTTONS, 0, 0, 32, 32),
+
     INVALID();
 
 
