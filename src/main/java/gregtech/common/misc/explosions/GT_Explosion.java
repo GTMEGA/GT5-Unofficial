@@ -373,7 +373,7 @@ public abstract class GT_Explosion extends Explosion {
     protected abstract boolean rayValid(final float power, final double rayLength, final double posX, final double posY, final double posZ, final double maxRadius);
 
     protected boolean rayValid(final GT_Explosion_PreCalculation.Ray ray) {
-        return rayValid((float) ray.getPower(), ray.getLength(), ray.getX(), ray.getY(), ray.getZ(), ray.getMaxLength());
+        return rayValid((float) ray.power, ray.myLength, ray.posX, ray.posY, ray.posZ, ray.maxLength);
     }
 
     protected double getRangeForRay(final double posX, final double posY, final double posZ, final double maxRadius) {
@@ -381,7 +381,7 @@ public abstract class GT_Explosion extends Explosion {
     }
 
     protected double getRangeForRay(final GT_Explosion_PreCalculation.Ray ray) {
-        return getRangeForRay(ray.getX(), ray.getY(), ray.getZ(), ray.getMaxLength());
+        return ray.maxLength;
     }
 
     protected float getRayPowerDropRatio() {

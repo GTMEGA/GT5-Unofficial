@@ -46,7 +46,7 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
         this.metadata = metadata;
         this.explosion = createExplosion();
         this.preCalc = new GT_Explosion_PreCalculation(this, this.explosion, world, explosion.getX(), explosion.getY(), explosion.getZ(), this.fuse);
-        preCalc.createRays();
+        preCalc.initialize();
     }
 
     @NonNull
@@ -82,6 +82,7 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
             this.setDead();
             if (!this.worldObj.isRemote) {
                 this.doExplode();
+                this.preCalc.finalizeExplosion();
             }
         } else {
             final int n = rand.nextInt(2) + 1;

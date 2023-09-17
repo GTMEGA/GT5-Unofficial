@@ -18,66 +18,54 @@ import java.util.Set;
 public class GT_Explosion_PreCalculation {
 
     @RequiredArgsConstructor
-    @Getter
     @ToString
     @EqualsAndHashCode(of = {"aX", "aY", "aZ"})
     public static class Ray {
 
-        private final @NonNull GT_Explosion_PreCalculation parent;
+        public final @NonNull GT_Explosion_PreCalculation parent;
 
-        private final double aX, aY, aZ;
+        public final double aX, aY, aZ;
 
-        private final double maxLength;
+        public double maxLength;
 
-        private double distance = 0.0;
+        public double distance = 0.0;
 
-        @Setter
-        private double power = 0.0;
+        public double power = 0.0;
 
-        @Accessors(fluent = true)
-        private boolean canContinue = true;
+        public double myLength = 0.0;
+
+        public double posX, posY, posZ;
+
+        public ChunkPosition chunkPosition = null;
+
+        public boolean canContinue = true;
+
+        protected void init() {
+            march(0);
+        }
 
         protected void decreasePower(final float drop) {
             power -= drop;
             if (power <= 0.0) {
-                disable();
+                canContinue = false;
             }
         }
 
         private void march(final double amount) {
             distance += amount;
-        }
-
-        @NonNull
-        private ChunkPosition getChunkPosition() {
-            return new ChunkPosition(MathHelper.floor_double(getX()), MathHelper.floor_double(getY()), MathHelper.floor_double(getZ()));
-        }
-
-        double getX() {
-            return aX * distance + parent.sourceX;
-        }
-
-        double getY() {
-            return aY * distance + parent.sourceY;
-        }
-
-        double getZ() {
-            return aZ * distance + parent.sourceZ;
-        }
-
-        private void disable() {
-            canContinue = false;
-        }
-
-        double getLength() {
             val x = aX * distance;
             val y = aY * distance;
             val z = aZ * distance;
-            return Math.sqrt(x * x + y * y + z * z);
+            posX = (x + parent.sourceX);
+            posY = (y + parent.sourceY);
+            posZ = (z + parent.sourceZ);
+            chunkPosition = new ChunkPosition(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ));
+            myLength =  Math.sqrt(x * x + y * y + z * z);
         }
 
     }
 
+    protected static final Set<GT_Explosion_PreCalculation> active = new HashSet<>();
 
     private final @NonNull GT_Entity_Explosive explosionSource;
 
@@ -95,7 +83,8 @@ public class GT_Explosion_PreCalculation {
 
     private final Set<ChunkPosition> seenPositions = new HashSet<>(), targetPositions = new HashSet<>();
 
-    public void createRays() {
+    public void initialize() {
+        active.add(this);
         val maxRaysX = explosion.getMaxX();
         val maxRaysY = explosion.getMaxY();
         val maxRaysZ = explosion.getMaxZ();
@@ -110,8 +99,10 @@ public class GT_Explosion_PreCalculation {
                         aX /= magnitude;
                         aY /= magnitude;
                         aZ /= magnitude;
-                        val ray = new Ray(this, aX, aY, aZ, explosion.getExpRadius());
-                        ray.setPower(explosion.getRayPower());
+                        val ray = new Ray(this, aX, aY, aZ);
+                        ray.power = explosion.getRayPower();
+                        ray.init();
+                        ray.maxLength = explosion.getRangeForRay(ray.posX, ray.posY, ray.posZ, explosion.getExpRadius());
                         rays.add(ray);
                     }
                 }
@@ -122,7 +113,7 @@ public class GT_Explosion_PreCalculation {
     public void tick() {
         val proportionEnd = (ticked + 1) / (double) maxFuse;
         for (val ray: rays) {
-            if (!ray.canContinue()) {
+            if (!ray.canContinue) {
                 continue;
             }
             doRayTick(ray, proportionEnd);
@@ -131,8 +122,8 @@ public class GT_Explosion_PreCalculation {
     }
 
     private void doRayTick(final @NonNull Ray ray, final double proportionEnd) {
-        while (ray.canContinue() && explosion.rayValid(ray) && ray.getLength() < explosion.getRangeForRay(ray) * proportionEnd) {
-            val currentPosition = ray.getChunkPosition();
+        while (ray.canContinue && explosion.rayValid(ray) && ray.myLength < explosion.getRangeForRay(ray) * proportionEnd) {
+            val currentPosition = ray.chunkPosition;
             if (hasNotEncountered(currentPosition)) {
                 seenPositions.add(currentPosition);
                 val x = currentPosition.chunkPosX;
@@ -145,23 +136,35 @@ public class GT_Explosion_PreCalculation {
                         val explosionPowerDrop = explosionSource.func_145772_a(explosion, world, x, y, z, block);
                         ray.decreasePower(getRayDrop(explosionPowerDrop));
                     }
-                    if (ray.getPower() > 0.0 && canDestroy(ray, block, x, y, z)) {
+                    if (ray.power > 0.0 && canDestroy(ray, block, x, y, z)) {
                         targetPositions.add(currentPosition);
                         explosion.handleChunkPosition(currentPosition);
                     }
                 }
-                ray.march(explosion.getBaseRayDist());
             }
             ray.march(explosion.getBaseRayDist());
             ray.decreasePower(explosion.getBaseRayDist() * explosion.getRayPowerDropRatio());
         }
         if (!explosion.rayValid(ray)) {
-            ray.disable();
+            ray.canContinue = false;
         }
     }
 
+    public void finalizeExplosion() {
+        active.remove(this);
+    }
+
     private boolean hasNotEncountered(final ChunkPosition currentPosition) {
-        return !seenPositions.contains(currentPosition) && explosion.handlePositionPre(currentPosition);
+        val first = !seenPositions.contains(currentPosition) && explosion.handlePositionPre(currentPosition);
+        if (!first) {
+            return false;
+        }
+        for (val active: active) {
+            if (active.targetPositions.contains(currentPosition)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private float getRayDrop(final float explosionPowerDrop) {
@@ -169,7 +172,7 @@ public class GT_Explosion_PreCalculation {
     }
 
     private boolean canDestroy(final Ray ray, final Block block, final int x, final int y, final int z) {
-        return explosionSource.func_145774_a(explosion, world, x, y, z, block, (float) ray.getPower());
+        return explosionSource.func_145774_a(explosion, world, x, y, z, block, (float) ray.power);
     }
 
 }

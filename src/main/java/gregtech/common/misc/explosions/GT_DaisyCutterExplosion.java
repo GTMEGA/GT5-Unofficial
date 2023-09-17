@@ -88,7 +88,7 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
      */
     @Override
     protected void explosionAPost() {
-        targeted.addAll(borker.getPositions().stream().map(borker::getChunkPosition).collect(Collectors.toSet()));
+        // targeted.addAll(borker.getPositions().stream().map(borker::getChunkPosition).collect(Collectors.toSet()));
     }
 
     /**
@@ -156,6 +156,7 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
             }
         }
         super.handleChunkPosition(pos);
+        targeted.addAll(borker.getPositions().stream().map(borker::getChunkPosition).collect(Collectors.toSet()));
     }
 
     /**
