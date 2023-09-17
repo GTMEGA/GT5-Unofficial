@@ -106,6 +106,26 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
     }
 
     /**
+     * @param pseudoX
+     * @param pseudoY
+     * @param lastClick
+     */
+    @Override
+    public void receiveDrag(final int pseudoX, final int pseudoY, final int lastClick) {
+
+    }
+
+    /**
+     * @param mouseX
+     * @param mouseY
+     * @param clickState
+     */
+    @Override
+    public void receiveMouseMovement(final int mouseX, final int mouseY, final int clickState) {
+
+    }
+
+    /**
      *
      */
     @Override

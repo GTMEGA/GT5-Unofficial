@@ -210,7 +210,7 @@ public abstract class GT_GuiSlider extends Gui implements IGuiScreen.IGuiElement
         onUpdate(this.gui, mouseX, mouseY, 0);
         drawBackground(mouseX, mouseY, parTicks);
         drawInfo(mouseX, mouseY, parTicks);
-        onMouseDragged(mouseX, mouseY);
+        onMouseDragged(mouseX, mouseY, 0);
         drawSlide(mouseX, mouseY, parTicks);
         //
         GL11.glPopMatrix();
@@ -296,7 +296,7 @@ public abstract class GT_GuiSlider extends Gui implements IGuiScreen.IGuiElement
         return new Rectangle(sliderLeft, sliderTop, (int) (width * (1 + sliderWidthFuzzy)), (int) (height * (1 + sliderHeightFuzzy)));
     }
 
-    public void onMouseDragged(final int mouseX, final int mouseY) {
+    public void onMouseDragged(final int mouseX, final int mouseY, final int lastClick) {
         if (this.isDragged && inBounds(mouseX, mouseY, 0)) {
             if (this.onChange != null && this.liveUpdate) {
                 this.onChange.hook(this);
@@ -443,5 +443,9 @@ public abstract class GT_GuiSlider extends Gui implements IGuiScreen.IGuiElement
     protected abstract void drawBarUpper(int start, int end, int midColor, int edgeColor);
 
     protected abstract void drawBarLower(int start, int end, int edgeColor, int midColor);
+
+    public double getRange() {
+        return max - min;
+    }
 
 }

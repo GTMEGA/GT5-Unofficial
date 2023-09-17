@@ -409,6 +409,26 @@ public class GT_GuiScrollPanel2D<ParentType extends GuiScreen & IGuiScreen> exte
 
     }
 
+    /**
+     * @param mouseX
+     * @param mouseY
+     * @param lastClick
+     */
+    @Override
+    public void receiveDrag(final int mouseX, final int mouseY, final int lastClick) {
+
+    }
+
+    /**
+     * @param mouseX
+     * @param mouseY
+     * @param clickState
+     */
+    @Override
+    public void receiveMouseMovement(final int mouseX, final int mouseY, final int clickState) {
+
+    }
+
     public Vector2 effectiveScroll() {
         double x = Math.max(0.0, Math.min(1.0, currentScroll.x));
         double y = Math.max(0.0, Math.min(1.0, currentScroll.y));

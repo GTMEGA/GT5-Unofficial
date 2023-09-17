@@ -268,6 +268,22 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
     }
 
     /**
+     * Called when a mouse button is pressed and the mouse is moved around. Parameters are : mouseX, mouseY,
+     * lastButtonClicked & timeSinceMouseClick.
+     *
+     * @param mouseX
+     * @param mouseY
+     * @param lastClick
+     * @param timeSinceLastClick
+     */
+    @Override
+    protected void mouseClickMove(final int mouseX, final int mouseY, final int lastClick, final long timeSinceLastClick) {
+        super.mouseClickMove(mouseX, mouseY, lastClick, timeSinceLastClick);
+        sliders.stream().filter(element -> element.inBounds(mouseX, mouseY, lastClick)).forEach(slider -> slider.onMouseDragged(mouseX, mouseY, lastClick));
+        subWindows.stream().filter(element -> element.inBounds(mouseX, mouseY, lastClick)).forEach(element -> element.receiveDrag(mouseX, mouseY, lastClick));
+    }
+
+    /**
      * @param stack
      * @param x
      * @param y
@@ -315,6 +331,7 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
     protected void mouseMovedOrUp(final int mouseX, final int mouseY, final int clickState) {
         super.mouseMovedOrUp(mouseX, mouseY, clickState);
         sliders.forEach(slider -> slider.onMouseReleased(mouseX, mouseY, clickState));
+        subWindows.forEach(element -> element.receiveMouseMovement(mouseX, mouseY, clickState));
     }
 
     /**

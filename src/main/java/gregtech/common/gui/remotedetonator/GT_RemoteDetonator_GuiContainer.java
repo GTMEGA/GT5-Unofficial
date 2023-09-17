@@ -3,7 +3,6 @@ package gregtech.common.gui.remotedetonator;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_RichGuiContainer;
-import gregtech.api.gui.widgets.GT_GuiIconButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.gui.widgets.GT_GuiScrollPanel;
 import gregtech.api.gui.widgets.slider.GT_GuiSlider_Vertical;
@@ -16,6 +15,7 @@ import lombok.Setter;
 import lombok.val;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import org.lwjgl.input.Mouse;
 
 import java.awt.*;
 import java.util.stream.Collectors;
@@ -48,8 +48,19 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
         val barWidth = 10;
         val width = 180;
         val scrollHeight = height - 4;
-        scrollPanel = new GT_GuiScrollPanel<>(this, 0, scrollPanelX, yOffset, width, height, 0.0, width - 4, scrollHeight);
         val scrollBarX = width + scrollPanelX + 2;
+        val detonationDelayX = scrollBarX + barWidth + 5;
+        //
+        scrollPanel = new GT_GuiScrollPanel<>(this, 0, scrollPanelX, yOffset, width, height, 0.0, width - 4, scrollHeight);
+        scrollPanel.setOnUpdateBehavior((gui, panel, mouseX, mouseY, lastClick) -> {
+            val dWheel = Mouse.getDWheel();
+            if (dWheel != 0) {
+                val wheelModifier = -dWheel * 0.001;
+                scrollPanel.setCurrentScroll(scrollPanel.getCurrentScroll() + wheelModifier);
+            }
+            scrollBar.setValue(scrollPanel.getCurrentScroll() * scrollBar.getRange());
+        });
+        //
         scrollBar = new GT_GuiSlider_Vertical(this, 1, scrollBarX, yOffset, barWidth, height, 0.0, 1.0, 0.0, -1);
         //
         val keys = remoteDetonatorContainer.getTargetList().getTargets().keySet().stream().sorted().collect(Collectors.toList());
@@ -65,7 +76,6 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
         scrollBar.setOnUpdateBehavior((screen, element, mouseX, mouseY, clickType) -> scrollBar.setBarDiameter(1 - scrollPanel.getMaxScrollFactor()));
         scrollBar.setLiveUpdate(true);
         //
-        val detonationDelayX = scrollBarX + barWidth + 5;
         detonationDelay = new GT_GuiIntegerTextBox(this, 2, detonationDelayX, yOffset + 1, 75, 10);
         detonationDelay.setText(String.valueOf(remoteDetonatorContainer.getTargetList().getDelay()));
     }
@@ -83,6 +93,22 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
             case 1: {
                 toggleEntry(entry);
             }
+        }
+    }
+
+    private void onEntryUpdate(final RemoteDetonator_GuiEntry entry) {
+        val target = entry.getTarget();
+        val x = target.getX();
+        val y = target.getY();
+        val z = target.getZ();
+        val world = remoteDetonatorContainer.getWorld();
+        val block = world.getBlock(x, y, z);
+        val metadata = world.getBlockMetadata(x, y, z);
+        entry.setValidBlock((block instanceof GT_Block_Explosive));
+        if (entry.isValidBlock() && block instanceof GT_Block_Explosive) {
+            entry.setBlockPrimed(((GT_Block_Explosive) block).isPrimed(metadata));
+        } else {
+            entry.setBlockPrimed(false);
         }
     }
 
@@ -104,23 +130,9 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
     }
 
     private void sendArmedUpdate(final GT_RemoteDetonator.RemoteDetonationTargetList.Target target, final boolean armed) {
-        GT_Values.NW.sendToServer(new GT_Packet_InventoryUpdate(remoteDetonatorContainer.getOwner(), GT_RemoteDetonator_Container.REMOTE_DETONATOR, remoteDetonatorContainer.isBauble(), remoteDetonatorContainer.getSlotIndex(), new GT_RemoteDetonator.RemoteDetonatorArmedUpdate(target, armed)));
-    }
-
-    private void onEntryUpdate(final RemoteDetonator_GuiEntry entry) {
-        val target = entry.getTarget();
-        val x = target.getX();
-        val y = target.getY();
-        val z = target.getZ();
-        val world = remoteDetonatorContainer.getWorld();
-        val block = world.getBlock(x, y, z);
-        val metadata = world.getBlockMetadata(x, y, z);
-        entry.setValidBlock((block instanceof GT_Block_Explosive));
-        if (entry.isValidBlock() && block instanceof GT_Block_Explosive) {
-            entry.setBlockPrimed(((GT_Block_Explosive) block).isPrimed(metadata));
-        } else {
-            entry.setBlockPrimed(false);
-        }
+        GT_Values.NW.sendToServer(new GT_Packet_InventoryUpdate(remoteDetonatorContainer.getOwner(), GT_RemoteDetonator_Container.REMOTE_DETONATOR, remoteDetonatorContainer.isBauble(), remoteDetonatorContainer.getSlotIndex(),
+                                                                new GT_RemoteDetonator.RemoteDetonatorArmedUpdate(target, armed)
+        ));
     }
 
     /**
@@ -177,7 +189,9 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
     }
 
     private void sendDelayUpdate(final int value) {
-        GT_Values.NW.sendToServer(new GT_Packet_InventoryUpdate(remoteDetonatorContainer.getOwner(), GT_RemoteDetonator_Container.REMOTE_DETONATOR, remoteDetonatorContainer.isBauble(), remoteDetonatorContainer.getSlotIndex(), new GT_RemoteDetonator.RemoteDetonatorDelayUpdate(value)));
+        GT_Values.NW.sendToServer(new GT_Packet_InventoryUpdate(remoteDetonatorContainer.getOwner(), GT_RemoteDetonator_Container.REMOTE_DETONATOR, remoteDetonatorContainer.isBauble(), remoteDetonatorContainer.getSlotIndex(),
+                                                                new GT_RemoteDetonator.RemoteDetonatorDelayUpdate(value)
+        ));
     }
 
     @Override

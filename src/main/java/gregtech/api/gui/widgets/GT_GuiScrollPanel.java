@@ -21,6 +21,14 @@ import java.util.stream.Collectors;
 @Getter
 public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extends GuiScreen implements IGT_GuiSubWindow {
 
+    public interface OnDragBehavior {
+        void onUpdate(final GT_GuiScrollPanel<?> panel, final int mouseX, final int mouseY, final int lastClick);
+    }
+
+    public interface OnMoveBehavior {
+        void onUpdate(final GT_GuiScrollPanel<?> panel, final int mouseX, final int mouseY, final int lastClick);
+    }
+
     public interface IScrollableElement extends IGuiElement {
 
         int getScrollWidth();
@@ -51,6 +59,10 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
 
         void receiveClick(final int mouseX, final int mouseY, final int mouseButton);
 
+        void receiveDrag(int pseudoX, int pseudoY, int lastClick);
+
+        void receiveMouseMovement(int mouseX, int mouseY, int clickState);
+
     }
 
 
@@ -79,6 +91,14 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
     private final int myHeight;
 
     private final int myWidth;
+
+    @Accessors(chain = true)
+    @Setter
+    private OnDragBehavior onDragBehavior = null;
+
+    @Accessors(chain = true)
+    @Setter
+    private OnMoveBehavior onMoveBehavior = null;
 
     @Setter
     private Color panelBackground = new Color(19, 19, 19, 0xFF);
@@ -386,6 +406,56 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
                 element.receiveClick(pseudoX, pseudoY, mouseButton);
                 break;
             }
+        }
+    }
+
+    /**
+     * @param mouseX
+     * @param mouseY
+     * @param lastClick
+     */
+    @Override
+    public void receiveDrag(final int mouseX, final int mouseY, final int lastClick) {
+        val pseudoX = mouseX + parent.getGuiLeft();
+        val pseudoY = mouseY + parent.getGuiTop();
+        val keys = scrollableElements.keySet().stream().sorted().collect(Collectors.toList());
+        for (val key : keys) {
+            val element = scrollableElements.get(key);
+            if (element.inBounds(pseudoX, pseudoY, lastClick)) {
+                element.receiveDrag(pseudoX, pseudoY, lastClick);
+                break;
+            }
+        }
+        onDrag(mouseX, mouseY, lastClick);
+    }
+
+    /**
+     * @param mouseX
+     * @param mouseY
+     * @param clickState
+     */
+    @Override
+    public void receiveMouseMovement(final int mouseX, final int mouseY, final int clickState) {
+        val keys = scrollableElements.keySet().stream().sorted().collect(Collectors.toList());
+        for (val key : keys) {
+            val element = scrollableElements.get(key);
+            if (element.inBounds(mouseX, mouseY, clickState)) {
+                element.receiveMouseMovement(mouseX, mouseY, clickState);
+                break;
+            }
+        }
+        onMove(mouseX, mouseY, clickState);
+    }
+
+    private void onMove(final int mouseX, final int mouseY, final int clickState) {
+        if (onMoveBehavior != null) {
+            onMoveBehavior.onUpdate(this, mouseX, mouseY, clickState);
+        }
+    }
+
+    private void onDrag(final int mouseX, final int mouseY, final int lastClick) {
+        if (onDragBehavior != null) {
+            onDragBehavior.onUpdate(this, mouseX, mouseY, lastClick);
         }
     }
 
