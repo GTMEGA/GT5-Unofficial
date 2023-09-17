@@ -356,6 +356,8 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         @NonNull
         public NBTTagCompound writeToNBT(final @NonNull NBTTagCompound compound) {
             if (isDone()) {
+                val result = new NBTTagCompound();
+                result.setInteger("delay", delay);
                 return new NBTTagCompound();
             }
             val list = new NBTTagList();

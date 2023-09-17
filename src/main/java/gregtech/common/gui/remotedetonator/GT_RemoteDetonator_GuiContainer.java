@@ -52,14 +52,7 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
         val detonationDelayX = scrollBarX + barWidth + 5;
         //
         scrollPanel = new GT_GuiScrollPanel<>(this, 0, scrollPanelX, yOffset, width, height, 0.0, width - 4, scrollHeight);
-        scrollPanel.setOnUpdateBehavior((gui, panel, mouseX, mouseY, lastClick) -> {
-            val dWheel = Mouse.getDWheel();
-            if (dWheel != 0) {
-                val wheelModifier = -dWheel * 0.001;
-                scrollPanel.setCurrentScroll(scrollPanel.getCurrentScroll() + wheelModifier);
-            }
-            scrollBar.setValue(scrollPanel.getCurrentScroll() * scrollBar.getRange());
-        });
+        scrollPanel.setOnUpdateBehavior((gui, panel, mouseX, mouseY, lastClick) -> scrollPanelOnUpdate());
         //
         scrollBar = new GT_GuiSlider_Vertical(this, 1, scrollBarX, yOffset, barWidth, height, 0.0, 1.0, 0.0, -1);
         //
@@ -78,6 +71,15 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
         //
         detonationDelay = new GT_GuiIntegerTextBox(this, 2, detonationDelayX, yOffset + 1, 75, 10);
         detonationDelay.setText(String.valueOf(remoteDetonatorContainer.getTargetList().getDelay()));
+    }
+
+    private void scrollPanelOnUpdate() {
+        val dWheel = Mouse.getDWheel();
+        if (dWheel != 0) {
+            val wheelModifier = -dWheel * 0.001;
+            scrollPanel.setCurrentScroll(scrollPanel.getCurrentScroll() + wheelModifier);
+        }
+        scrollBar.setValue(scrollPanel.getCurrentScroll() * scrollBar.getRange());
     }
 
     private void onEntryClick(final RemoteDetonator_GuiEntry entry, final int clickType) {
