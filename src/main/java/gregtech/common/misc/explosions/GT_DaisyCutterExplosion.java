@@ -2,6 +2,7 @@ package gregtech.common.misc.explosions;
 
 
 import gregtech.api.util.GT_TreeBorker;
+import gregtech.common.entities.explosives.GT_Entity_Explosive;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.util.MathHelper;
@@ -18,7 +19,7 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
     // private final Set<ChunkPosition> tempSet = new HashSet<>();
 
     public GT_DaisyCutterExplosion(
-            final World world, final EntityTNTPrimed entity, final double x, final double y, final double z, final float power
+            final World world, final GT_Entity_Explosive entity, final double x, final double y, final double z, final float power
                                   ) {
         super(world, entity, x, y, z, power);
         this.borker = new GT_TreeBorker(world, MathHelper.floor_double(x), MathHelper.floor_double(y), MathHelper.floor_double(z), 3, 64, 12, -1, true);
@@ -53,6 +54,14 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
     @Override
     protected int getMaxRays() {
         return super.getMaxRays() / 8;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    protected double getExpRadius() {
+        return 24;
     }
 
     /**
@@ -104,11 +113,12 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
      * @param posX
      * @param posY
      * @param posZ
+     * @param maxRadius
      * @return
      */
     @Override
-    protected boolean rayValid(final float power, final double rayLength, final double posX, final double posY, final double posZ) {
-        return rayLength < 24;
+    protected boolean rayValid(final float power, final double rayLength, final double posX, final double posY, final double posZ, final double maxRadius) {
+        return rayLength < maxRadius;
     }
 
     /**

@@ -5,6 +5,8 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.common.misc.explosions.GT_DaisyCutterExplosion;
+import gregtech.common.misc.explosions.GT_Explosion;
+import lombok.NonNull;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
@@ -26,12 +28,14 @@ public class GT_Entity_DaisyCutterExplosive extends GT_Entity_Explosive {
     }
 
     /**
-     *
+     * @return
      */
+    @NonNull
     @Override
-    protected void doExplode() {
-        new GT_DaisyCutterExplosion(worldObj, this, posX, posY, posZ, GT_Values.MEExplosionPower).perform();
+    protected GT_Explosion createExplosion() {
+        return new GT_DaisyCutterExplosion(worldObj, this, posX, posY, posZ, GT_Values.MEExplosionPower);
     }
+
 
     /**
      * @param explosion

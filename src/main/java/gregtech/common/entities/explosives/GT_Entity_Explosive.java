@@ -4,8 +4,11 @@ package gregtech.common.entities.explosives;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import gregtech.api.enums.GT_Values;
 import gregtech.common.blocks.explosives.GT_Block_Explosive;
+import gregtech.common.misc.explosions.GT_Explosion;
+import gregtech.common.misc.explosions.GT_Explosion_PreCalculation;
 import io.netty.buffer.ByteBuf;
 import lombok.Getter;
+import lombok.NonNull;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
@@ -18,9 +21,13 @@ import net.minecraft.world.World;
 @Getter
 public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEntityAdditionalSpawnData {
 
+    private GT_Explosion_PreCalculation preCalc;
+
     protected int metadata;
 
     protected double realX, realY, realZ;
+
+    protected GT_Explosion explosion;
 
     public GT_Entity_Explosive(final World world) {
         super(world);
@@ -37,7 +44,13 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
         this.motionZ = 0.0;
         this.fuse = GT_Values.MEFuse;
         this.metadata = metadata;
+        this.explosion = createExplosion();
+        this.preCalc = new GT_Explosion_PreCalculation(this, this.explosion, world, explosion.getX(), explosion.getY(), explosion.getZ(), this.fuse);
+        preCalc.createRays();
     }
+
+    @NonNull
+    protected abstract GT_Explosion createExplosion();
 
     protected void setSize() {
         final float newSize = getNewSize();
@@ -62,9 +75,11 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
     @Override
     public void onUpdate() {
         setPosition(realX, realY, realZ);
+        if (preCalc != null) {
+            preCalc.tick();
+        }
         if (fuse-- <= 0) {
             this.setDead();
-
             if (!this.worldObj.isRemote) {
                 this.doExplode();
             }
@@ -108,7 +123,9 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
         this.realZ = compound.getDouble("rZ");
     }
 
-    protected abstract void doExplode();
+    protected void doExplode() {
+        explosion.perform();
+    }
 
     /**
      * @param explosion

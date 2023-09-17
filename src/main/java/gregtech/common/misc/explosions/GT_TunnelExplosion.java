@@ -31,7 +31,15 @@ public class GT_TunnelExplosion extends GT_Explosion {
      * @return
      */
     @Override
-    protected int getMaxX() {
+    protected double getExpRadius() {
+        return GT_Values.MEMaxRange;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public int getMaxX() {
         final int result = super.getMaxX();
         return getAxisIndex() == 0 ? result : result * 4;
     }
@@ -40,7 +48,7 @@ public class GT_TunnelExplosion extends GT_Explosion {
      * @return
      */
     @Override
-    protected int getMaxY() {
+    public int getMaxY() {
         final int result = super.getMaxY();
         return getAxisIndex() == 1 ? result : result * 4;
     }
@@ -49,7 +57,7 @@ public class GT_TunnelExplosion extends GT_Explosion {
      * @return
      */
     @Override
-    protected int getMaxZ() {
+    public int getMaxZ() {
         final int result = super.getMaxZ();
         return getAxisIndex() == 2 ? result : result * 4;
     }
@@ -60,20 +68,41 @@ public class GT_TunnelExplosion extends GT_Explosion {
      * @param posX
      * @param posY
      * @param posZ
+     * @param maxRadius
      * @return
      */
     @Override
-    protected boolean rayValid(final float power, final double rayLength, final double posX, final double posY, final double posZ) {
+    protected boolean rayValid(final float power, final double rayLength, final double posX, final double posY, final double posZ, final double maxRadius) {
         final double rayX, rayY, rayZ;
         rayX = posX - explosionX;
         rayY = posY - explosionY;
         rayZ = posZ - explosionZ;
         final double radius = getRadius(rayX, rayY, rayZ);
-        double range = GT_Values.MEMaxRange;
+        /* double range = maxRadius;
+        if (facingCorrectly(rayX, rayY, rayZ)) {
+            range *= 6;
+        } */
+        return power > 0.0 && rayLength < getRangeForRay(posX, posY, posZ, maxRadius) && radius < getTunnelRadius();
+    }
+
+    /**
+     * @param posX
+     * @param posY
+     * @param posZ
+     * @param maxRadius
+     * @return
+     */
+    @Override
+    protected double getRangeForRay(final double posX, final double posY, final double posZ, final double maxRadius) {
+        final double rayX, rayY, rayZ;
+        rayX = posX - explosionX;
+        rayY = posY - explosionY;
+        rayZ = posZ - explosionZ;
+        double range = maxRadius;
         if (facingCorrectly(rayX, rayY, rayZ)) {
             range *= 6;
         }
-        return power > 0.0 && rayLength < range && radius < getTunnelRadius();
+        return range;
     }
 
     /**

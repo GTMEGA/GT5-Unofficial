@@ -5,7 +5,9 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.common.blocks.explosives.GT_Block_TunnelExplosive;
+import gregtech.common.misc.explosions.GT_Explosion;
 import gregtech.common.misc.explosions.GT_TunnelExplosion;
+import lombok.NonNull;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
@@ -28,16 +30,16 @@ public class GT_Entity_TunnelExplosive extends GT_Entity_Explosive {
     }
 
     /**
-     *
+     * @return
      */
     @Override
-    protected void doExplode() {
+    protected @NonNull GT_Explosion createExplosion() {
         final ForgeDirection side = ((GT_Block_TunnelExplosive) GregTech_API.sBlockTunEx).getFacing(metadata);
         final double xOff, yOff, zOff;
         xOff = side.offsetX;
         yOff = side.offsetY;
         zOff = side.offsetZ;
-        new GT_TunnelExplosion(worldObj, this, posX + xOff, posY + yOff, posZ + zOff, GT_Values.MEExplosionPower, side).perform();
+        return new GT_TunnelExplosion(worldObj, this, posX + xOff, posY + yOff, posZ + zOff, GT_Values.MEExplosionPower, side);
     }
 
     /**
