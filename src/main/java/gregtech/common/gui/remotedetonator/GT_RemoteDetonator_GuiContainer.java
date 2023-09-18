@@ -180,9 +180,9 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
                 resetTextBox(box);
                 return;
             }
-            if (value <= 0) {
-                resetTextBox(box);
-                return;
+            if (value < 10) {
+                box.setText("10");
+                value = 10;
             }
             remoteDetonatorContainer.getTargetList().setDelay(value);
             box.setText(String.valueOf(value));

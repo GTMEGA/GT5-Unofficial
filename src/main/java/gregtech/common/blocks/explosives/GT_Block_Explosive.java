@@ -112,7 +112,8 @@ public abstract class GT_Block_Explosive extends GT_Generic_Block {
 
     private boolean playerActivatedMe(final int side, final float hitX, final float hitY, final float hitZ) {
         float[] hits = getAppropriateHits(side, hitX, hitY, hitZ);
-        return hits[0] > 0.3f && hits[0] < 0.7f && hits[1] > 0.3f && hits[1] < 0.8f;
+        // return hits[0] > 0.3f && hits[0] < 0.7f && hits[1] > 0.3f && hits[1] < 0.8f;
+        return false;
     }
 
     private float[] getAppropriateHits(final int side, final float hitX, final float hitY, final float hitZ) {

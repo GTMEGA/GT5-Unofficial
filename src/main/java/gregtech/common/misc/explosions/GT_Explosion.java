@@ -376,6 +376,10 @@ public abstract class GT_Explosion extends Explosion {
         return rayValid((float) ray.power, ray.myLength, ray.posX, ray.posY, ray.posZ, ray.maxLength);
     }
 
+    protected void preprocessRay(final GT_Explosion_PreCalculation.Ray ray) {
+
+    }
+
     protected double getRangeForRay(final double posX, final double posY, final double posZ, final double maxRadius) {
         return maxRadius;
     }
@@ -434,6 +438,9 @@ public abstract class GT_Explosion extends Explosion {
 
     protected void spawnItem(final ItemStack stack, final double x, final double y, final double z) {
         pubWorld.spawnEntityInWorld(new EntityItem(pubWorld, x, y, z, stack));
+    }
+
+    protected void processRay(final GT_Explosion_PreCalculation.Ray ray) {
     }
 
 }

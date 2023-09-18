@@ -284,7 +284,8 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
 
         @NonNull
         public static RemoteDetonationTargetList readFromNBT(final @NonNull NBTTagCompound compound, final @NonNull EntityPlayer player) {
-            return compound.hasKey("targets") && compound.hasKey("dim") ? new RemoteDetonationTargetList(compound).addFromList(compound.getTagList("targets", Constants.NBT.TAG_COMPOUND)) : new RemoteDetonationTargetList(player);
+            val delay = compound.hasKey("delay") ? compound.getInteger("delay") : GT_Values.MERemoteDelay;
+            return compound.hasKey("targets") && compound.hasKey("dim") ? new RemoteDetonationTargetList(compound).addFromList(compound.getTagList("targets", Constants.NBT.TAG_COMPOUND)) : new RemoteDetonationTargetList(player, delay);
         }
 
         @NonNull
@@ -331,8 +332,9 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         @Builder.Default
         private boolean triggered = false, done = true;
 
-        public RemoteDetonationTargetList(final @NonNull EntityPlayer player) {
+        public RemoteDetonationTargetList(final @NonNull EntityPlayer player, final int delay) {
             this(player.dimension, -1, -1, GT_Values.MERemoteDelay, false, false);
+            this.delay = delay;
         }
 
         public RemoteDetonationTargetList(final @NonNull NBTTagCompound compound) {

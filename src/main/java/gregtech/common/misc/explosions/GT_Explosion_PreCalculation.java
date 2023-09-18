@@ -40,6 +40,12 @@ public class GT_Explosion_PreCalculation {
 
         public boolean canContinue = true;
 
+        public final boolean[] flagFields = new boolean[3];
+
+        public final int[] intFields = new int[3];
+
+        public final double[] doubleFields = new double[3];
+
         protected void init() {
             march(0);
         }
@@ -61,6 +67,7 @@ public class GT_Explosion_PreCalculation {
             posZ = (z + parent.sourceZ);
             chunkPosition = new ChunkPosition(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ));
             myLength =  Math.sqrt(x * x + y * y + z * z);
+            this.parent.explosion.processRay(this);
         }
 
     }
@@ -103,6 +110,7 @@ public class GT_Explosion_PreCalculation {
                         ray.power = explosion.getRayPower();
                         ray.init();
                         ray.maxLength = explosion.getRangeForRay(ray.posX, ray.posY, ray.posZ, explosion.getExpRadius());
+                        explosion.preprocessRay(ray);
                         rays.add(ray);
                     }
                 }
@@ -122,9 +130,10 @@ public class GT_Explosion_PreCalculation {
     }
 
     private void doRayTick(final @NonNull Ray ray, final double proportionEnd) {
-        while (ray.canContinue && explosion.rayValid(ray) && ray.myLength < explosion.getRangeForRay(ray) * proportionEnd) {
+        ChunkPosition last = null;
+        while ((ray.canContinue = explosion.rayValid(ray)) && ray.myLength < ray.maxLength * proportionEnd) {
             val currentPosition = ray.chunkPosition;
-            if (hasNotEncountered(currentPosition)) {
+            if (currentPosition != last && hasNotEncountered(currentPosition)) {
                 seenPositions.add(currentPosition);
                 val x = currentPosition.chunkPosX;
                 val y = currentPosition.chunkPosY;
@@ -144,9 +153,7 @@ public class GT_Explosion_PreCalculation {
             }
             ray.march(explosion.getBaseRayDist());
             ray.decreasePower(explosion.getBaseRayDist() * explosion.getRayPowerDropRatio());
-        }
-        if (!explosion.rayValid(ray)) {
-            ray.canContinue = false;
+            last = currentPosition;
         }
     }
 

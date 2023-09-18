@@ -17,6 +17,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
+import static gregtech.GT_Mod.GT_FML_LOGGER;
+
 
 @Getter
 public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEntityAdditionalSpawnData {
@@ -82,7 +84,9 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
             this.setDead();
             if (!this.worldObj.isRemote) {
                 this.doExplode();
-                this.preCalc.finalizeExplosion();
+                if (preCalc != null) {
+                    this.preCalc.finalizeExplosion();
+                }
             }
         } else {
             final int n = rand.nextInt(2) + 1;
@@ -125,7 +129,11 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
     }
 
     protected void doExplode() {
-        explosion.perform();
+        if (explosion != null) {
+            explosion.perform();
+        } else {
+            GT_FML_LOGGER.error("Explosion is null! You probably reloaded the world, sorry");
+        }
     }
 
     /**
