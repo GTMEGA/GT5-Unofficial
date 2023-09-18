@@ -55,22 +55,6 @@ public class GT_TunnelExplosion extends GT_Explosion {
      * @return
      */
     @Override
-    protected int getMaxRays() {
-        return super.getMaxRays();
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    protected double getExpRadius() {
-        return GT_Values.MEMaxRange;
-    }
-
-    /**
-     * @return
-     */
-    @Override
     public int getMaxX() {
         final int result = super.getMaxX();
         return axisIndex == 0 ? result : result * 2;
@@ -95,6 +79,45 @@ public class GT_TunnelExplosion extends GT_Explosion {
     }
 
     /**
+     * @return
+     */
+    @Override
+    protected int getMaxRays() {
+        return super.getMaxRays();
+    }
+
+    /**
+     * @param block
+     * @return
+     */
+    @Override
+    protected float getDropChance(final Block block) {
+        return 0.001f;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    protected double getExpRadius() {
+        return GT_Values.MEMaxRange;
+    }
+
+    /**
+     * @param ray
+     * @return
+     */
+    @Override
+    protected boolean rayValid(final GT_Explosion_PreCalculation.Ray ray) {
+        final double rayX, rayY, rayZ;
+        rayX = ray.posX - explosionX;
+        rayY = ray.posY - explosionY;
+        rayZ = ray.posZ - explosionZ;
+        val radiusSquared = ray.doubleFields[1];
+        return ray.myLength < ray.maxLength && radiusSquared < ray.doubleFields[0];
+    }
+
+    /**
      * @param power
      * @param rayLength
      * @param posX
@@ -115,20 +138,6 @@ public class GT_TunnelExplosion extends GT_Explosion {
             range *= 6;
         } */
         return power > 0.0 && rayLength < getRangeForRay(posX, posY, posZ, maxRadius) && radius < getTunnelRadius();
-    }
-
-    /**
-     * @param ray
-     * @return
-     */
-    @Override
-    protected boolean rayValid(final GT_Explosion_PreCalculation.Ray ray) {
-        final double rayX, rayY, rayZ;
-        rayX = ray.posX - explosionX;
-        rayY = ray.posY - explosionY;
-        rayZ = ray.posZ - explosionZ;
-        val radiusSquared = ray.doubleFields[1];
-        return ray.myLength < ray.maxLength && radiusSquared < ray.doubleFields[0];
     }
 
     /**
@@ -180,15 +189,6 @@ public class GT_TunnelExplosion extends GT_Explosion {
     @Override
     protected float getRayPowerDropRatio() {
         return super.getRayPowerDropRatio() * 0.1f;
-    }
-
-    /**
-     * @param block
-     * @return
-     */
-    @Override
-    protected float getDropChance(final Block block) {
-        return 0.001f;
     }
 
     /**

@@ -4,7 +4,6 @@ package gregtech.common.misc.explosions;
 import gregtech.api.util.GT_TreeBorker;
 import gregtech.common.entities.explosives.GT_Entity_Explosive;
 import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
@@ -26,18 +25,6 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
     }
 
     /**
-     * @param block
-     * @param i
-     * @param j
-     * @param k
-     */
-    @Override
-    protected void destroyBlock(final Block block, final int i, final int j, final int k) {
-        super.destroyBlock(block, i, j, k);
-        // pubWorld.setBlock(i, j, k, Blocks.glass, 0, 3);
-    }
-
-    /**
      *
      */
     @Override
@@ -54,6 +41,35 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
     @Override
     protected int getMaxRays() {
         return super.getMaxRays() / 8;
+    }
+
+    /**
+     *
+     */
+    @Override
+    protected void explosionAPost() {
+        // targeted.addAll(borker.getPositions().stream().map(borker::getChunkPosition).collect(Collectors.toSet()));
+    }
+
+    /**
+     * @param block
+     * @param i
+     * @param j
+     * @param k
+     */
+    @Override
+    protected void destroyBlock(final Block block, final int i, final int j, final int k) {
+        super.destroyBlock(block, i, j, k);
+        // pubWorld.setBlock(i, j, k, Blocks.glass, 0, 3);
+    }
+
+    /**
+     * @param block
+     * @return
+     */
+    @Override
+    protected float getDropChance(final Block block) {
+        return 0.01f;
     }
 
     /**
@@ -81,14 +97,6 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
     @Override
     protected boolean hasEncountered(final ChunkPosition pos) {
         return super.hasEncountered(pos) || borker.hasSeen(pos);
-    }
-
-    /**
-     *
-     */
-    @Override
-    protected void explosionAPost() {
-        // targeted.addAll(borker.getPositions().stream().map(borker::getChunkPosition).collect(Collectors.toSet()));
     }
 
     /**
@@ -130,6 +138,22 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
     }
 
     /**
+     * @param block
+     * @param metadata
+     * @param x
+     * @param y
+     * @param z
+     * @return
+     */
+    @Override
+    protected float getDamageChance(final Block block, final int metadata, final int x, final int y, final int z) {
+        if (!isPlant(block, metadata, x, y, z)) {
+            return 0.0f;
+        }
+        return 1.0f;
+    }
+
+    /**
      * @return
      */
     @Override
@@ -159,39 +183,14 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
         targeted.addAll(borker.getPositions().stream().map(borker::getChunkPosition).collect(Collectors.toSet()));
     }
 
-    /**
-     * @param block
-     * @return
-     */
-    @Override
-    protected float getDropChance(final Block block) {
-        return 0.01f;
-    }
-
-    /**
-     * @param block
-     * @param metadata
-     * @param x
-     * @param y
-     * @param z
-     * @return
-     */
-    @Override
-    protected float getDamageChance(final Block block, final int metadata, final int x, final int y, final int z) {
-        if (!isPlant(block, metadata, x, y, z)) {
-            return 0.0f;
-        }
-        return 1.0f;
-    }
-
-    public boolean isPlant(final Block block, final int metadata, final int x, final int y, final int z) {
-        return borker.isValidBlock(block, metadata, x, y, z) || borker.isPlant(block);
-    }
-
     protected void bork(final int x, final int y, final int z) {
         if (borker.isValidBlock(x, y, z)) {
             borker.borkTrees(x, y, z);
         }
+    }
+
+    public boolean isPlant(final Block block, final int metadata, final int x, final int y, final int z) {
+        return borker.isValidBlock(block, metadata, x, y, z) || borker.isPlant(block);
     }
 
 }

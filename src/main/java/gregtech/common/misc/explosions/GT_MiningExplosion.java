@@ -8,7 +8,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockGrass;
 import net.minecraft.block.BlockOre;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.world.World;
 
 
@@ -18,16 +17,6 @@ public class GT_MiningExplosion extends GT_Explosion {
             final World world, final GT_Entity_Explosive entity, final double x, final double y, final double z, final float power
                              ) {
         super(world, entity, x, y, z, power);
-    }
-
-    @Override
-    protected boolean rayValid(final float power, final double rayLength, final double posX, final double posY, final double posZ, final double maxRadius) {
-        return power > 0.0f && rayLength < maxRadius;
-    }
-
-    @Override
-    protected double getExpRadius() {
-        return GT_Values.MEMaxRange + (pubWorld.rand.nextDouble() * 2.5) - 1.5;
     }
 
     @Override
@@ -43,6 +32,16 @@ public class GT_MiningExplosion extends GT_Explosion {
             }
         }
         return GT_Values.MEOtherChance;
+    }
+
+    @Override
+    protected double getExpRadius() {
+        return GT_Values.MEMaxRange + (pubWorld.rand.nextDouble() * 2.5) - 1.5;
+    }
+
+    @Override
+    protected boolean rayValid(final float power, final double rayLength, final double posX, final double posY, final double posZ, final double maxRadius) {
+        return power > 0.0f && rayLength < maxRadius;
     }
 
 }
