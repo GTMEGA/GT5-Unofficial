@@ -111,6 +111,7 @@ public abstract class GT_Explosion extends Explosion {
         Set<ChunkPosition> blocksToDestroy;
         GT_Explosion_PreCalculation preCalc;
         if (gtExplosive != null && (preCalc = gtExplosive.getPreCalc()) != null) {
+            // It was literally just the s ven
             blocksToDestroy = Stream.concat(targeted.stream(), preCalc.getTargetPositions().stream()).collect(Collectors.toSet());
         } else {
             blocksToDestroy = targeted;
