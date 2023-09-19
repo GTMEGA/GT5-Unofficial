@@ -19,13 +19,13 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-import org.spongepowered.libraries.com.google.common.collect.Streams;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public abstract class GT_Explosion extends Explosion {
@@ -111,7 +111,7 @@ public abstract class GT_Explosion extends Explosion {
         Set<ChunkPosition> blocksToDestroy;
         GT_Explosion_PreCalculation preCalc;
         if (gtExplosive != null && (preCalc = gtExplosive.getPreCalc()) != null) {
-            blocksToDestroy = Streams.concat(targeted.stream(), preCalc.getTargetPositions().stream()).collect(Collectors.toSet());
+            blocksToDestroy = Stream.concat(targeted.stream(), preCalc.getTargetPositions().stream()).collect(Collectors.toSet());
         } else {
             blocksToDestroy = targeted;
         }
