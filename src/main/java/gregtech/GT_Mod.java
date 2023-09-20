@@ -497,7 +497,7 @@ public class GT_Mod implements IGT_Mod {
 
         if (gregtechproxy.mPollution) {
             GT_Log.out.println("'No, venjamin!'");
-            gregtechproxy.mPollution = false;
+            // gregtechproxy.mPollution = false;
         }
 
         new Enchantment_EnderDamage();
