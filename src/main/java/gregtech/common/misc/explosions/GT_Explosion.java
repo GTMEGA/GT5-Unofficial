@@ -5,6 +5,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.common.entities.explosives.GT_Entity_Explosive;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentProtection;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -24,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public abstract class GT_Explosion extends Explosion {
@@ -104,35 +106,34 @@ public abstract class GT_Explosion extends Explosion {
      */
     @Override
     public void doExplosionB(final boolean b0) {
-
-
-//        playSound();
-//        pubWorld.spawnParticle("hugeexplosion", explosionX, explosionY, explosionZ, 1.0, 0.0, 0.0);
-//        Set<ChunkPosition> blocksToDestroy;
-//        GT_Explosion_PreCalculation preCalc;
-//        if (gtExplosive != null && (preCalc = gtExplosive.getPreCalc()) != null) {
-//            blocksToDestroy = Streams.concat(targeted.stream(), preCalc.getTargetPositions().stream()).collect(Collectors.toSet());
-//        } else {
-//            blocksToDestroy = targeted;
-//        }
-//        for (ChunkPosition position : blocksToDestroy) {
-//            int i, j, k, meta;
-//            Block block;
-//            i = position.chunkPosX;
-//            j = position.chunkPosY;
-//            k = position.chunkPosZ;
-//            block = pubWorld.getBlock(i, j, k);
-//            meta = pubWorld.getBlockMetadata(i, j, k);
-//            //
-//            doParticles(b0, (float) i, (float) j, (float) k);
-//            if (block.getMaterial() != Material.air) {
-//                if (block.canDropFromExplosion(this)) {
-//                    getDrops(block, i, j, k, meta);
-//                }
-//                destroyBlock(block, i, j, k);
-//            }
-//        }
-//        processDrops();
+        playSound();
+        pubWorld.spawnParticle("hugeexplosion", explosionX, explosionY, explosionZ, 1.0, 0.0, 0.0);
+        Set<ChunkPosition> blocksToDestroy;
+        GT_Explosion_PreCalculation preCalc;
+        if (gtExplosive != null && (preCalc = gtExplosive.getPreCalc()) != null) {
+            // It was literally just the s ven
+            blocksToDestroy = Stream.concat(targeted.stream(), preCalc.getTargetPositions().stream()).collect(Collectors.toSet());
+        } else {
+            blocksToDestroy = targeted;
+        }
+        for (ChunkPosition position : blocksToDestroy) {
+            int i, j, k, meta;
+            Block block;
+            i = position.chunkPosX;
+            j = position.chunkPosY;
+            k = position.chunkPosZ;
+            block = pubWorld.getBlock(i, j, k);
+            meta = pubWorld.getBlockMetadata(i, j, k);
+            //
+            doParticles(b0, (float) i, (float) j, (float) k);
+            if (block.getMaterial() != Material.air) {
+                if (block.canDropFromExplosion(this)) {
+                    getDrops(block, i, j, k, meta);
+                }
+                destroyBlock(block, i, j, k);
+            }
+        }
+        processDrops();
     }
 
     protected void explosionPost() {

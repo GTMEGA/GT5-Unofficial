@@ -121,6 +121,7 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
             setMode(toReadFrom.mode);
             setActive(toReadFrom.active);
             setPerTick(toReadFrom.perTick);
+            setRsActive(toReadFrom.rsActive);
             setRPT(toReadFrom.rPT);
             setRPS(toReadFrom.rPS);
         }
@@ -467,7 +468,7 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     @Override
     public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork()) {
+        if (aBaseMetaTileEntity.isServerSide() && canRun() && aBaseMetaTileEntity.isAllowedToWork()) {
             processSlots();
             if (hasFluid() && isExecutionTick()) {
                 doFluidPush(aBaseMetaTileEntity);
@@ -475,6 +476,10 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
             tickForward();
             markDirty();
         }
+    }
+
+    private boolean canRun() {
+        return internalData.active && internalData.rsActive;
     }
 
     private void processSlots() {
