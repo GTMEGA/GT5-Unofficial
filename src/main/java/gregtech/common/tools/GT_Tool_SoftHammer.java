@@ -26,7 +26,7 @@ public class GT_Tool_SoftHammer extends GT_Tool {
 
     @Override
     public int getToolDamagePerContainerCraft() {
-        return 800;
+        return 400;
     }
 
     @Override
