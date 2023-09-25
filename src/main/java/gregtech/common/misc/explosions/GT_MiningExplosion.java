@@ -35,13 +35,13 @@ public class GT_MiningExplosion extends GT_Explosion {
     }
 
     @Override
-    protected double getExpRadius() {
-        return GT_Values.MEMaxRange + (pubWorld.rand.nextDouble() * 2.5) - 1.5;
+    protected boolean rayValid(GT_Explosion_PreCalculation.Ray ray) {
+        return ray.power > 0.0f && ray.myLength < ray.maxLength;
     }
 
     @Override
-    protected boolean rayValid(final float power, final double rayLength, final double posX, final double posY, final double posZ, final double maxRadius) {
-        return power > 0.0f && rayLength < maxRadius;
+    protected double precalcRayMaxLength(GT_Explosion_PreCalculation.Ray ray) {
+        return GT_Values.MEMaxRange + pubWorld.rand.nextDouble() * 2.5f - 1.5f;
     }
 
 }
