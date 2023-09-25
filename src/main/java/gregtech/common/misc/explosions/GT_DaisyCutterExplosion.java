@@ -1,6 +1,7 @@
 package gregtech.common.misc.explosions;
 
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_TreeBorker;
 import gregtech.common.entities.explosives.GT_Entity_Explosive;
 import net.minecraft.block.Block;
@@ -73,14 +74,6 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
     }
 
     /**
-     * @return
-     */
-    @Override
-    protected double getExpRadius() {
-        return 24;
-    }
-
-    /**
      * @param pos
      * @return
      */
@@ -115,18 +108,14 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
         return super.getBaseRayDist() / 4.0f;
     }
 
-    /**
-     * @param power
-     * @param rayLength
-     * @param posX
-     * @param posY
-     * @param posZ
-     * @param maxRadius
-     * @return
-     */
     @Override
-    protected boolean rayValid(final float power, final double rayLength, final double posX, final double posY, final double posZ, final double maxRadius) {
-        return rayLength < maxRadius;
+    protected boolean rayValid(GT_Explosion_PreCalculation.Ray ray) {
+        return ray.myLength < ray.maxLength;
+    }
+
+    @Override
+    protected double precalcRayMaxLength(GT_Explosion_PreCalculation.Ray ray) {
+        return GT_Values.MEMaxRange;
     }
 
     /**
