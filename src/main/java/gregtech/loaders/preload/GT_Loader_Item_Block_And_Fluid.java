@@ -15,6 +15,7 @@ import gregtech.api.util.*;
 import gregtech.common.blocks.*;
 import gregtech.common.blocks.explosives.GT_Block_DaisyCutter;
 import gregtech.common.blocks.explosives.GT_Block_MiningExplosive;
+import gregtech.common.blocks.explosives.GT_Block_NukeExplosive;
 import gregtech.common.blocks.explosives.GT_Block_TunnelExplosive;
 import gregtech.common.items.*;
 import gregtech.common.items.explosives.GT_RemoteDetonator;
@@ -229,6 +230,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockMiningExplosive = new GT_Block_MiningExplosive();
         GregTech_API.sBlockDaisyCutter = new GT_Block_DaisyCutter();
         GregTech_API.sBlockTunEx = new GT_Block_TunnelExplosive();
+        GregTech_API.sBlockNuke = new GT_Block_NukeExplosive();
         GregTech_API.sItemRemoteDetonator = new GT_RemoteDetonator();
         GregTech_API.sBorker = new TreeBorkTester();
 

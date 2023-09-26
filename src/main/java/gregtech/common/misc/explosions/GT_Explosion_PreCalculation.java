@@ -95,6 +95,9 @@ public class GT_Explosion_PreCalculation {
 
     private int ticked = 0;
 
+    @Setter
+    private boolean continueCalculating = true;
+
     public void initialize() {
         active.add(this);
         val maxRaysX = explosion.getMaxX();
@@ -124,6 +127,9 @@ public class GT_Explosion_PreCalculation {
     }
 
     public void tick() {
+        if (!continueCalculating) {
+            return;
+        }
         val proportionEnd = (ticked + 1) / (double) maxFuse;
         for (val ray : rays) {
             if (!ray.canContinue) {

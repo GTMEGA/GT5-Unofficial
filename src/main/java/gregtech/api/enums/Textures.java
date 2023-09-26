@@ -1149,7 +1149,7 @@ public class Textures {
 
         BLOCK_POTENTIOMETER_BACKGROUND,
         BLOCK_POTENTIOMETER_FOREGROUND,
-        MINING_EXPLOSIVE, DAISY_CUTTER, TUNEX,
+        MINING_EXPLOSIVE, DAISY_CUTTER, TUNEX, NUKE,
 
         AUTOMATION_RECIPEFILTER,
         AUTOMATION_RECIPEFILTER_GLOW;
@@ -1760,6 +1760,13 @@ public class Textures {
                 new CustomIcon("iconsets/EXPLOSIVES/" + "TUNEX_TOP"),
                 new CustomIcon("iconsets/EXPLOSIVES/" + "TUNEX_TOP_ACTIVE"),
         };
+
+        public static IIconContainer[] NUKE_EXPLOSIVES = {
+                new CustomIcon("iconsets/EXPLOSIVES/" + "NUKE_SIDES"),
+                new CustomIcon("iconsets/EXPLOSIVES/" + "NUKE_BOTTOM"),
+                new CustomIcon("iconsets/EXPLOSIVES/" + "NUKE_TOP"),
+                new CustomIcon("iconsets/EXPLOSIVES/" + "NUKE_TOP_ACTIVE"),
+                };
 
         static {
             for (byte i = 0; i < MACHINE_CASINGS.length; i++)

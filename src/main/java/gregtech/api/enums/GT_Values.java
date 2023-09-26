@@ -331,7 +331,11 @@ public class GT_Values {
 
     public static float TEMaxRange = 30.0f, TERadius = 4.0f, TERadiusVariation = 1.5f;
 
+    public static float NUKEPower = 100.0f, NUKERadius = 50.0f;
+
     public static boolean MEFancyDrops = false, MERequiresRemote = true;
+
+    public static int NUKEFuse = 500, NUKEDestructionTime = 50;
 
     public static boolean getConfigValue(final Configuration config, final String category, final String key, final boolean defValue, final String comment) {
         return config.get(category, key, defValue, comment).getBoolean(defValue);

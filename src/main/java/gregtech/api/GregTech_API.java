@@ -335,7 +335,7 @@ public class GregTech_API {
             sPostloadStarted = false,
             sPostloadFinished = false;
 
-    public static GT_Block_Explosive sBlockMiningExplosive, sBlockDaisyCutter, sBlockTunEx;
+    public static GT_Block_Explosive sBlockMiningExplosive, sBlockDaisyCutter, sBlockTunEx, sBlockNuke;
 
     public static GT_RemoteDetonator sItemRemoteDetonator;
     public static Item sBorker;
@@ -394,6 +394,8 @@ public class GregTech_API {
         sSoundList.put(219, MOD_ID.toLowerCase() + ":" + "remote_detonator_remove");
         sSoundList.put(220, MOD_ID.toLowerCase() + ":" + "remote_detonator_trigger");
         sSoundList.put(221, MOD_ID.toLowerCase() + ":" + "potentiometer_click");
+        sSoundList.put(222, MOD_ID.toLowerCase() + ":" + "nuke_explosion");
+        sSoundList.put(223, MOD_ID.toLowerCase() + ":" + "nuke_trigger");
     }
 
     /**

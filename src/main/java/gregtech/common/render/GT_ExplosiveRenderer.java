@@ -59,7 +59,7 @@ public class GT_ExplosiveRenderer extends Render {
     public void doRender(final GT_Entity_Explosive entity, final double x, final double y, final double z, final float f0, final float someTimer) {
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x, (float) y, (float) z);
-        float f2 = GT_Values.MEMaxEntitySize - (entity.fuse - someTimer + 1.0f) / ((float) GT_Values.MEFuse / 2);
+        float f2 = GT_Values.MEMaxEntitySize - (entity.fuse - someTimer + 1.0f) / ((float) entity.getMaxFuse() / 2);
         f2 = Math.max(f2, GT_Values.MEMinEntitySize);
         float f3 = Math.min(f2, 1.0f);
         GL11.glScalef(f2, f2, f2);

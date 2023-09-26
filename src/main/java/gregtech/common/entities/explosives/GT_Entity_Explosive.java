@@ -31,6 +31,8 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
 
     protected GT_Explosion explosion;
 
+    protected int maxFuse;
+
     public GT_Entity_Explosive(final World world) {
         super(world);
     }
@@ -44,9 +46,10 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
         this.motionX = 0.0;
         this.motionY = 0.0;
         this.motionZ = 0.0;
-        this.fuse = GT_Values.MEFuse;
         this.metadata = metadata;
         this.explosion = createExplosion();
+        this.fuse = this.explosion.getFuse();
+        this.maxFuse = this.fuse;
         this.preCalc = new GT_Explosion_PreCalculation(this, this.explosion, world, explosion.getX(), explosion.getY(), explosion.getZ(), this.fuse);
         preCalc.initialize();
     }
@@ -81,12 +84,9 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
             preCalc.tick();
         }
         if (fuse-- <= 0) {
-            this.setDead();
+            endExplosion();
             if (!this.worldObj.isRemote) {
-                this.doExplode();
-                if (preCalc != null) {
-                    this.preCalc.finalizeExplosion();
-                }
+                explosionStuff();
             }
         } else {
             final int n = rand.nextInt(2) + 1;
@@ -97,6 +97,17 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
                 z = rand.nextDouble() * 1.4 - 0.7;
                 this.worldObj.spawnParticle("smoke", posX + x, posY + y, posZ + z, x / 4, y / 4, z / 4);
             }
+        }
+    }
+
+    protected void endExplosion() {
+        this.setDead();
+    }
+
+    protected void explosionStuff() {
+        this.doExplode();
+        if (preCalc != null) {
+            this.preCalc.finalizeExplosion();
         }
     }
 

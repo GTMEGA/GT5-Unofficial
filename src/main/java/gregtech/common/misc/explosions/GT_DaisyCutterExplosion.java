@@ -59,7 +59,7 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
      * @param k
      */
     @Override
-    protected void destroyBlock(final Block block, final int i, final int j, final int k) {
+    public void destroyBlock(final Block block, final int i, final int j, final int k) {
         super.destroyBlock(block, i, j, k);
         // pubWorld.setBlock(i, j, k, Blocks.glass, 0, 3);
     }

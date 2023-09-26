@@ -155,7 +155,8 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         public enum ExplosiveType {
             MINING(GregTech_API.sBlockMiningExplosive, new ExplosiveColorPalette(new Color(187, 102, 41, 0xFF), new Color(133, 69, 22, 0xFF), new Color(98, 98, 98, 0xFF), new Color(138, 137, 137, 0xFF))),
             TUNNEL(GregTech_API.sBlockTunEx, new ExplosiveColorPalette(new Color(133, 84, 10, 0xFF), new Color(80, 40, 4, 0xFF), new Color(124, 124, 124, 0xFF), new Color(89, 89, 89, 0xFF))),
-            DAISY_CUTTER(GregTech_API.sBlockDaisyCutter, new ExplosiveColorPalette(new Color(22, 98, 22, 0xFF), new Color(15, 68, 15, 0xFF), new Color(84, 175, 84, 0xFF), new Color(107, 222, 107, 0xFF)));
+            DAISY_CUTTER(GregTech_API.sBlockDaisyCutter, new ExplosiveColorPalette(new Color(22, 98, 22, 0xFF), new Color(15, 68, 15, 0xFF), new Color(84, 175, 84, 0xFF), new Color(107, 222, 107, 0xFF))),
+            NUKE(GregTech_API.sBlockNuke, new ExplosiveColorPalette(new Color(98, 22, 22, 0xFF), new Color(68, 15, 15, 0xFF), new Color(255, 229, 38, 0xFF), new Color(165, 142, 0, 0xFF)));
 
 
             @RequiredArgsConstructor

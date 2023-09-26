@@ -234,7 +234,7 @@ public abstract class GT_Explosion extends Explosion {
         }
     }
 
-    protected void destroyBlock(final Block block, final int i, final int j, final int k) {
+    public void destroyBlock(final Block block, final int i, final int j, final int k) {
         block.onBlockExploded(pubWorld, i, j, k, this);
     }
 
@@ -323,6 +323,10 @@ public abstract class GT_Explosion extends Explosion {
     }
 
     protected void processRay(final GT_Explosion_PreCalculation.Ray ray) {
+    }
+
+    public int getFuse() {
+        return GT_Values.MEFuse;
     }
 
 }
