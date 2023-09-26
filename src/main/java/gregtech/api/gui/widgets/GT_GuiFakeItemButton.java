@@ -1,5 +1,6 @@
 package gregtech.api.gui.widgets;
 
+import gregtech.api.gui.widgets.icon.GT_GuiIcon;
 import gregtech.api.interfaces.IGuiScreen;
 import lombok.Getter;
 import lombok.Setter;
@@ -63,7 +64,7 @@ public class GT_GuiFakeItemButton implements IGT_GuiButton {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         if (bgIcon != null){
-            GT_GuiIcon.render(bgIcon, xPosition-1, yPosition-1, 18, 18,0,true);
+            bgIcon.render(xPosition-1, yPosition-1, 18, 18,0,true);
         }
 
         if (item != null)

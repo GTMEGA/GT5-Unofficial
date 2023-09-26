@@ -17,9 +17,7 @@ import static gregtech.GT_Mod.GT_FML_LOGGER;
 
 
 @Getter
-public abstract class GT_Container_Dev<MachineType extends MetaTileEntity & IAdvancedGUIEntity, DataType extends IAdvancedTEData> extends
-                                                                                                                                  GT_ContainerMetaTile_Machine implements
-                                                                                                                                                               IDWSCompatible {
+public abstract class GT_Container_Dev<MachineType extends MetaTileEntity & IAdvancedGUIEntity, DataType extends IAdvancedTEData> extends GT_ContainerMetaTile_Machine implements IDWSCompatible {
 
     protected final DataType data;
 
@@ -76,6 +74,7 @@ public abstract class GT_Container_Dev<MachineType extends MetaTileEntity & IAdv
     }
 
     protected void sendPacket() {
+        // TODO Figure this out
         GT_Values.NW.sendToServer(GT_Packet_TileEntityGUI.createFromMachine(machine, data, mPlayerInventory.player.dimension));
     }
 

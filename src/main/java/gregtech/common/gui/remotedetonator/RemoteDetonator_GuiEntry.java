@@ -3,41 +3,47 @@ package gregtech.common.gui.remotedetonator;
 
 import gregtech.api.gui.widgets.GT_GuiScrollPanel;
 import gregtech.api.gui.widgets.GT_GuiTooltip;
+import gregtech.api.gui.widgets.icon.GT_GuiIcon;
 import gregtech.api.interfaces.IGuiScreen;
 import gregtech.common.blocks.explosives.GT_Block_Explosive;
 import gregtech.common.items.explosives.GT_RemoteDetonator;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 import lombok.val;
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.gui.Gui;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
 
+@ToString(onlyExplicitlyIncluded = true)
 @Getter
 public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableElement {
+
+    private static final Map<GT_Block_Explosive, ItemStack> stackCache = new HashMap<>();
 
     private final GT_GuiScrollPanel<GT_RemoteDetonator_GuiContainer> scrollPanel;
 
     private final GT_RemoteDetonator.RemoteDetonationTargetList targetList;
 
+    @ToString.Include
     private final GT_RemoteDetonator.RemoteDetonationTargetList.Target target;
 
-    private static final Map<GT_Block_Explosive, ItemStack> stackCache = new HashMap<>();
-
-    private GT_GuiTooltip tooltip;
-
-    private String[] tooltipText;
+    private final Color baseTextColor = new Color(119, 119, 119, 255);
 
     @Accessors(chain = true)
     @Setter
     int scrollID = 0;
+
+    private GT_GuiTooltip tooltip;
+
+    private String[] tooltipText;
 
     @Setter
     private int updateCooldown = 0;
@@ -48,15 +54,29 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
     @Setter
     private int renderX, renderY;
 
+    @Setter
+    private boolean validBlock = true;
+
+    @Setter
+    private boolean blockPrimed = true;
+
     @Accessors(chain = true)
     @Setter
     private IGT_GuiHook onInitBehavior, onUpdateBehavior, onClickBehavior;
+
+    @Setter
+    private double factor;
+
+    @Getter
+    @Setter
+    private boolean zebra;
 
     public RemoteDetonator_GuiEntry(final GT_GuiScrollPanel<GT_RemoteDetonator_GuiContainer> scrollPanel, final GT_RemoteDetonator.RemoteDetonationTargetList targetList, final GT_RemoteDetonator.RemoteDetonationTargetList.Target target) {
         this.scrollPanel = scrollPanel;
         this.targetList = targetList;
         this.target = target;
         scrollPanel.addScrollableElement(this);
+        setFactor((double) Math.min(getScrollWidth(), getScrollHeight()) / (itemSize() + 2));
     }
 
     /**
@@ -67,12 +87,42 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
         return scrollPanel.getScrollWidth();
     }
 
+    private static int itemSize() {
+        return 18;
+    }
+
     /**
      * @return
      */
     @Override
     public int getScrollHeight() {
-        return 20;
+        return 30;
+    }
+
+    @Override
+    public void receiveClick(final int mouseX, final int mouseY, final int mouseButton) {
+        System.out.println("Clicked: " + mouseButton);
+        onClick(scrollPanel, mouseX, mouseY, mouseButton);
+    }
+
+    /**
+     * @param pseudoX
+     * @param pseudoY
+     * @param lastClick
+     */
+    @Override
+    public void receiveDrag(final int pseudoX, final int pseudoY, final int lastClick) {
+
+    }
+
+    /**
+     * @param mouseX
+     * @param mouseY
+     * @param clickState
+     */
+    @Override
+    public void receiveMouseMovement(final int mouseX, final int mouseY, final int clickState) {
+
     }
 
     /**
@@ -80,18 +130,7 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
      */
     @Override
     public void onInit() {
-
-    }
-
-    /**
-     * @param screen
-     * @param mouseX
-     * @param mouseY
-     * @param clickType
-     */
-    @Override
-    public void onUpdate(final IGuiScreen screen, final int mouseX, final int mouseY, final int clickType) {
-        // GT_GuiScrollPanel.IScrollableElement.super.onUpdate(screen, mouseX, mouseY, clickType);
+        onInit(scrollPanel, 0, 0, 0);
     }
 
     /**
@@ -103,20 +142,69 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
      */
     @Override
     public void draw(final int mouseX, final int mouseY, final float parTicks) {
-        val rX = getRenderX();
-        val rY = getRenderY();
-        val sW = getScrollWidth();
-        val sH = getScrollHeight();
-        if (queryCanRender()) {
-            Gui.drawRect(rX, rY, rX + sW, rY + sH, target.getExplosiveType().getBackgroundColor().getRGB());
-            val string = String.format("(%d, %d, %d)", target.getX(), target.getY(), target.getZ());
-            val stringWidth = scrollPanel.getFontRenderer().getStringWidth(string);
-            GL11.glPushMatrix();
-            scrollPanel.getParent().drawItemStack(stackCache.computeIfAbsent(target.getExplosiveType().getExplosive(), ItemStack::new), rX + 20, rY + 3, "");
-            GL11.glPopMatrix();
-            scrollPanel.drawString(scrollPanel.getFontRenderer(), String.format("#%d", scrollID + 1), rX + 5, rY + 5, Color.white.getRGB());
-            scrollPanel.drawString(scrollPanel.getFontRenderer(), string, rX + sW - (stringWidth + 5), rY + 5, target.getExplosiveType().getTextColor().getRGB());
+        if (canRender) {
+            val bump = isHoveredEntry() ? 2 : 1;
+            val rX = getRenderX();
+            val rY = getRenderY();
+            val sW = getScrollWidth();
+            val sH = getScrollHeight();
+            val rectXStart = rX + bump;
+            val rectXEnd = rX + sW - bump;
+            val rectYStart = rY + bump;
+            val rectYEnd = rY + sH - bump;
+            val textY = rY + (sH - 10) / 2;
+            Color backgroundColor, textColor;
+            if (isValidBlock()) {
+                if (!isSelectedEntry()) {
+                    backgroundColor = target.getExplosiveType().getPalette().getBackgroundColor();
+                    textColor = target.getExplosiveType().getPalette().getTextColor();
+                } else {
+                    backgroundColor = target.getExplosiveType().getPalette().getBackgroundColorSelected();
+                    textColor = target.getExplosiveType().getPalette().getTextColorSelected();
+                }
+            } else {
+                backgroundColor = new Color(128, 0, 0, 255);
+                textColor = Color.WHITE;
+            }
+            if (isHoveredEntry()) {
+                Gui.drawRect(rX, rY, rX + sW, rY + sH, lighter(backgroundColor).getRGB());
+            } else {
+                Gui.drawRect(rX, rY, rX + sW, rY + sH, backgroundColor.darker().getRGB());
+            }
+            if (isZebra()) {
+                backgroundColor = backgroundColor.darker();
+            } else {
+                backgroundColor = lighter(backgroundColor);
+            }
+            Gui.drawRect(rectXStart, rectYStart, rectXEnd, rectYEnd, backgroundColor.getRGB());
+            val idString = String.format("#%d", scrollID + 1);
+            val idStringWidth = scrollPanel.getFontRenderer().getStringWidth(idString);
+            val idStringX = rX + 5;
+            val posString = String.format("(%d, %d, %d)", target.getX(), target.getY(), target.getZ());
+            val posStringWidth = scrollPanel.getFontRenderer().getStringWidth(posString);
+            val posStringX = rX + sW - (posStringWidth + 5);
+            val itemIconX = (getScrollWidth() - (idStringWidth + posStringWidth + itemSize() + 2)) / 2 + idStringWidth;
+            renderBlock(itemIconX, rY + 3);
+            drawString(idString, idStringX, textY, textColor);
+            drawString(posString, posStringX, textY, textColor);
+            onUpdate(scrollPanel, mouseX, mouseY, 0);
+        } else {
+            if (isHoveredEntry()) {
+                scrollPanel.getParent().setHoveredEntry(null);
+            }
         }
+    }
+
+    public Color lighter(final Color other) {
+        return new Color((int) Math.min(other.getRed() / 0.7, 255), (int) Math.min(other.getGreen() / 0.7, 255), (int) Math.min(other.getBlue() / 0.7, 255), other.getAlpha());
+    }
+
+    public void drawString(final String text, final int x, final int y, final Color color) {
+        scrollPanel.getFontRenderer().drawString(text, x, y, color.getRGB());
+    }
+
+    public Color inverse(final Color color) {
+        return new Color(255 - color.getRed(), 255 - color.getGreen(), 255 - color.getBlue(), color.getAlpha());
     }
 
     /**
@@ -142,7 +230,8 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
      */
     @Override
     public boolean inBounds(final int mouseX, final int mouseY, final int clickType) {
-        return canRender && getBounds().contains(mouseX, mouseY);
+        val inside = getBounds().contains(mouseX, mouseY);
+        return canRender && inside;
     }
 
     /**
@@ -151,6 +240,43 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
     @Override
     public Rectangle getBounds() {
         return new Rectangle(renderX, renderY, getScrollWidth(), getScrollHeight());
+    }
+
+    private boolean isHoveredEntry() {
+        return getHoveredEntry() == this;
+    }
+
+    private boolean isSelectedEntry() {
+        return getSelectedEntry() == this;
+    }
+
+    private void renderBlock(int rX, int rY) {
+        GL11.glPushMatrix();
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+        //
+        /* rX = (int) (rX / factor);
+        rY = (int) (rY / factor); */
+        GL11.glTranslatef((float)(scrollPanel.getScrollPanelLeft() + rX), (float) rY, 0.0F);
+        GL11.glScalef((float) factor, (float) factor, 1.0F);
+        if (isBlockPrimed()) {
+            GL11.glDisable(GL11.GL_LIGHTING);
+        }
+        if (isValidBlock()) {
+            scrollPanel.getParent().drawItemStack(stackCache.computeIfAbsent(target.getExplosiveType().getExplosive(), ItemStack::new), 0, 0, "");
+        } else {
+            GT_GuiIcon.CROSS.render(0, 0, 16, 16, 0, true);
+        }
+        //
+        GL11.glPopAttrib();
+        GL11.glPopMatrix();
+    }
+
+    private RemoteDetonator_GuiEntry getHoveredEntry() {
+        return scrollPanel.getParent().getHoveredEntry();
+    }
+
+    private RemoteDetonator_GuiEntry getSelectedEntry() {
+        return scrollPanel.getParent().getSelectedEntry();
     }
 
 }

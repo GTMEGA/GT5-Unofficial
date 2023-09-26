@@ -1,10 +1,10 @@
 package gregtech.common.gui.meganet;
 
 
-import gregtech.api.gui.GT_GUIContainer_Plus;
-import gregtech.api.gui.widgets.GT_GuiIcon;
+import gregtech.api.gui.GT_RichGuiContainer;
+import gregtech.api.gui.widgets.icon.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
-import gregtech.api.gui.widgets.GT_GuiSlider;
+import gregtech.api.gui.widgets.slider.GT_GuiSlider_Horizontal;
 import gregtech.common.items.GT_MEGAnet;
 import lombok.Getter;
 import lombok.val;
@@ -14,7 +14,7 @@ import java.awt.*;
 
 
 @Getter
-public class GT_MEGAnet_GuiContainer extends GT_GUIContainer_Plus {
+public class GT_MEGAnet_GuiContainer extends GT_RichGuiContainer {
 
     private final Color TEXT_COLOR = new Color(69, 69, 198, 0xFF);
 
@@ -110,7 +110,7 @@ public class GT_MEGAnet_GuiContainer extends GT_GUIContainer_Plus {
         });
         addToolTip(meganetFilterWhitelistButton.getTooltip());
         //
-        val meganetRangeSlider = new GT_GuiSlider(this, 3, rangeSlideX(), rangeSlideY(), 96, 10, 0.0, GT_MEGAnet.MAX_RANGE, meganetContainer.getRange(), -1);
+        val meganetRangeSlider = new GT_GuiSlider_Horizontal(this, 3, rangeSlideX(), rangeSlideY(), 96, 10, 0.0, GT_MEGAnet.MAX_RANGE, meganetContainer.getRange(), -1);
         meganetRangeSlider.setOnChange((slider) -> {
             meganetContainer.setRange((int) meganetRangeSlider.getValue());
             meganetRangeSlider.setUpdateCooldown(20);

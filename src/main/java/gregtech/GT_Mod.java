@@ -137,7 +137,7 @@ public class GT_Mod implements IGT_Mod {
     public static GT_Achievements.Dummy achievements = new GT_Achievements.Dummy();
     private final String aTextGeneral = "general";
     private final String aTextIC2 = "ic2_";
-    public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
+    public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech 5u MEGA");
 
 
     static {
@@ -333,33 +333,7 @@ public class GT_Mod implements IGT_Mod {
             System.out.close();
             System.err.close();
         }
-        // Mining explosive config
-        final String meSection = "mining_explosives";
-        GT_Values.MEFortune = GT_Values.getConfigValue(tMainConfig, meSection, "fortune", GT_Values.MEFortune, "Fortune bonus");
-        GT_Values.MERays = GT_Values.getConfigValue(tMainConfig, meSection, "numRays", GT_Values.MERays, "Number of rays to cast along each axis");
-        GT_Values.MEFuse = GT_Values.getConfigValue(tMainConfig, meSection, "fuse", GT_Values.MEFuse, "Fuse length in ticks");
-        GT_Values.MERemoteDelay = GT_Values.getConfigValue(tMainConfig, meSection, "remoteDelay", GT_Values.MERemoteDelay, "Time between detonations when the remoted is activated");
-        GT_Values.MEMaxRemoteRange = GT_Values.getConfigValue(tMainConfig, meSection, "remoteRange", GT_Values.MEMaxRemoteRange, "Maximum distance the player can go while still detonating explosives");
-        //
-        GT_Values.MERayBaseRayDist = GT_Values.getConfigValue(tMainConfig, meSection, "baseRayDistance", GT_Values.MERayBaseRayDist, "Base length of the ray");
-        GT_Values.MERayPowerDropRatio = GT_Values.getConfigValue(tMainConfig, meSection, "rayPowerDropRatio", GT_Values.MERayPowerDropRatio, "The amount the ray power is multiplied by each step");
-        GT_Values.MERayDropBump = GT_Values.getConfigValue(tMainConfig, meSection, "rayDropBump", GT_Values.MERayDropBump, "Extra power drop");
-        GT_Values.MEOrePowerBoost = GT_Values.getConfigValue(tMainConfig, meSection, "orePowerBoost", GT_Values.MEOrePowerBoost, "How much explosion power an ore increases the ray by");
-        GT_Values.MERockResistanceDrop = GT_Values.getConfigValue(tMainConfig, meSection, "rockResistanceDrop", GT_Values.MERockResistanceDrop, "How much rock's explosion resistance is multiplied by");
-        GT_Values.MESoilPowerBoost = GT_Values.getConfigValue(tMainConfig, meSection, "soilPowerBoost", GT_Values.MESoilPowerBoost, "How much explosion power soil increases the ray by");
-        GT_Values.MEOtherResistanceDrop = GT_Values.getConfigValue(tMainConfig, meSection, "otherResistanceDrop", GT_Values.MEOtherResistanceDrop, "How much other block's explosion resistance is multiplied by");
-        GT_Values.MEExplosionPower = GT_Values.getConfigValue(tMainConfig, meSection, "explosionPower", GT_Values.MEExplosionPower, "Raw explosion power. (TNT has 4.0)");
-        GT_Values.MEMaxEntitySize = GT_Values.getConfigValue(tMainConfig, meSection, "maxSize", GT_Values.MEMaxEntitySize, "How large in blocks the primed entity can grow");
-        GT_Values.MEOreChance = GT_Values.getConfigValue(tMainConfig, meSection, "oreChance", GT_Values.MEOreChance, "Odds of getting an ore drop");
-        GT_Values.MESoilChance = GT_Values.getConfigValue(tMainConfig, meSection, "soilChance", GT_Values.MESoilChance, "Odds of getting a soil drop");
-        GT_Values.MERockChance = GT_Values.getConfigValue(tMainConfig, meSection, "rockChance", GT_Values.MERockChance, "Odds of getting a rock drop");
-        GT_Values.MEOtherChance = GT_Values.getConfigValue(tMainConfig, meSection, "otherChance", GT_Values.MEOtherChance, "Odds of getting an other drop");
-        GT_Values.MEMaxRange = GT_Values.getConfigValue(tMainConfig, meSection, "maxRange", GT_Values.MEMaxRange, "Maximum range of the explosion");
-        GT_Values.MEMinEntitySize = GT_Values.getConfigValue(tMainConfig, meSection, "minSize", GT_Values.MEMinEntitySize, "Minimum entity size");
-        GT_Values.MEOffsetRatio = GT_Values.getConfigValue(tMainConfig, meSection, "offsetRatio", GT_Values.MEOffsetRatio, "Ratio of the total radius that the explosion is offset by");
-        //
-        GT_Values.MEFancyDrops = GT_Values.getConfigValue(tMainConfig, meSection, "doFancyDrops", GT_Values.MEFancyDrops, "Whether to deliver the items to the player directly");
-        GT_Values.MERequiresRemote = GT_Values.getConfigValue(tMainConfig, meSection, "requireRemote", GT_Values.MEFancyDrops, "Whether the mining explosives require remote activation");
+        explosiveConfig(tMainConfig);
         //
         /*if (tMainConfig.get(aTextGeneral, "disable_STDERR", false).getBoolean(false)) {
             System.err.close();
@@ -429,18 +403,18 @@ public class GT_Mod implements IGT_Mod {
         gregtechproxy.mTEMachineRecipes = tMainConfig.get("general", "TEMachineRecipes", false).getBoolean(false);
         gregtechproxy.mEnableAllMaterials = tMainConfig.get("general", "EnableAllMaterials", false).getBoolean(false);
         gregtechproxy.mEnableAllComponents = tMainConfig.get("general", "EnableAllComponents", false).getBoolean(false);
-        gregtechproxy.mPollution = tMainConfig.get("Pollution", "EnablePollution", true).getBoolean(true);
-        gregtechproxy.mPollutionSmogLimit = tMainConfig.get("Pollution", "SmogLimit", 500000).getInt(500000);
-        gregtechproxy.mPollutionPoisonLimit = tMainConfig.get("Pollution", "PoisonLimit", 750000).getInt(750000);
-        gregtechproxy.mPollutionVegetationLimit = tMainConfig.get("Pollution", "VegetationLimit", 1000000).getInt(1000000);
-        gregtechproxy.mPollutionSourRainLimit = tMainConfig.get("Pollution", "SourRainLimit", 2000000).getInt(2000000);
+        gregtechproxy.mPollution = tMainConfig.get("Pollution", "EnablePollution", false).getBoolean(false);
+        gregtechproxy.mPollutionSmogLimit = tMainConfig.get("Pollution", "SmogLimit", Integer.MAX_VALUE).getInt(Integer.MAX_VALUE);
+        gregtechproxy.mPollutionPoisonLimit = tMainConfig.get("Pollution", "PoisonLimit", Integer.MAX_VALUE).getInt(Integer.MAX_VALUE);
+        gregtechproxy.mPollutionVegetationLimit = tMainConfig.get("Pollution", "VegetationLimit", Integer.MAX_VALUE).getInt(Integer.MAX_VALUE);
+        gregtechproxy.mPollutionSourRainLimit = tMainConfig.get("Pollution", "SourRainLimit", Integer.MAX_VALUE).getInt(Integer.MAX_VALUE);
         gregtechproxy.mExplosionItemDrop = tMainConfig.get("general", "ExplosionItemDrops", false).getBoolean(false);
         gregtechproxy.mUndergroundOil.getConfig(tMainConfig, "undergroundfluid");
         gregtechproxy.mEnableCleanroom = tMainConfig.get("general", "EnableCleanroom", true).getBoolean(true);
         if (gregtechproxy.mEnableCleanroom)
             GT_MetaTileEntity_Cleanroom.loadConfig(tMainConfig);
         gregtechproxy.mLowGravProcessing = Loader.isModLoaded(GT_Values.MOD_ID_GC_CORE) && tMainConfig.get("general", "LowGravProcessing", true).getBoolean(true);
-        gregtechproxy.mUseGreatlyShrukenReplacementList = tMainConfig.get("general", "GTNH Optimised Material Loading", true).getBoolean(true);
+        gregtechproxy.mUseGreatlyShrukenReplacementList = tMainConfig.get("general", "Optimised Material Loading", true).getBoolean(true);
         Calendar now = Calendar.getInstance();
         gregtechproxy.mAprilFool = GregTech_API.sSpecialFile.get(ConfigCategories.general, "AprilFool", now.get(Calendar.MONTH) == Calendar.APRIL && now.get(Calendar.DAY_OF_MONTH) == 1);
         gregtechproxy.mCropNeedBlock = tMainConfig.get("general", "CropNeedBlockBelow", true).getBoolean(true);
@@ -493,6 +467,11 @@ public class GT_Mod implements IGT_Mod {
             } else if (tPrefix.mIsUsedForBlocks) {
                 tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, tMainConfig.get("features", "MaxOtherBlockStackSize", 64).getInt())));
             }
+        }
+
+        if (gregtechproxy.mPollution) {
+            GT_Log.out.println("'No, venjamin!'");
+            // gregtechproxy.mPollution = false;
         }
 
         new Enchantment_EnderDamage();
@@ -704,6 +683,39 @@ public class GT_Mod implements IGT_Mod {
 
         if (FMLCommonHandler.instance().getEffectiveSide().isServer())
             GT_Assemblyline_Server.fillMap(aEvent);
+    }
+
+    private static void explosiveConfig(Configuration tMainConfig) {
+        // Mining explosive config
+        final String meSection = "mining_explosives";
+        GT_Values.MEFortune = GT_Values.getConfigValue(tMainConfig, meSection, "fortune", GT_Values.MEFortune, "Fortune bonus");
+        GT_Values.MERays = GT_Values.getConfigValue(tMainConfig, meSection, "numRays", GT_Values.MERays, "Number of rays to cast along each axis");
+        GT_Values.MEFuse = GT_Values.getConfigValue(tMainConfig, meSection, "fuse", GT_Values.MEFuse, "Fuse length in ticks");
+        GT_Values.MERemoteDelay = GT_Values.getConfigValue(tMainConfig, meSection, "remoteDelay", GT_Values.MERemoteDelay, "Time between detonations when the remoted is activated");
+        GT_Values.MEMaxRemoteRange = GT_Values.getConfigValue(tMainConfig, meSection, "remoteRange", GT_Values.MEMaxRemoteRange, "Maximum distance the player can go while still detonating explosives");
+        //
+        GT_Values.MERayBaseRayDist = GT_Values.getConfigValue(tMainConfig, meSection, "baseRayDistance", GT_Values.MERayBaseRayDist, "Base length of the ray");
+        GT_Values.MERayPowerDropRatio = GT_Values.getConfigValue(tMainConfig, meSection, "rayPowerDropRatio", GT_Values.MERayPowerDropRatio, "The amount the ray power is multiplied by each step");
+        GT_Values.MERayDropBump = GT_Values.getConfigValue(tMainConfig, meSection, "rayDropBump", GT_Values.MERayDropBump, "Extra power drop");
+        GT_Values.MEOrePowerBoost = GT_Values.getConfigValue(tMainConfig, meSection, "orePowerBoost", GT_Values.MEOrePowerBoost, "How much explosion power an ore increases the ray by");
+        GT_Values.MERockResistanceDrop = GT_Values.getConfigValue(tMainConfig, meSection, "rockResistanceDrop", GT_Values.MERockResistanceDrop, "How much rock's explosion resistance is multiplied by");
+        GT_Values.MESoilPowerBoost = GT_Values.getConfigValue(tMainConfig, meSection, "soilPowerBoost", GT_Values.MESoilPowerBoost, "How much explosion power soil increases the ray by");
+        GT_Values.MEOtherResistanceDrop = GT_Values.getConfigValue(tMainConfig, meSection, "otherResistanceDrop", GT_Values.MEOtherResistanceDrop, "How much other block's explosion resistance is multiplied by");
+        GT_Values.MEExplosionPower = GT_Values.getConfigValue(tMainConfig, meSection, "explosionPower", GT_Values.MEExplosionPower, "Raw explosion power. (TNT has 4.0)");
+        GT_Values.MEMaxEntitySize = GT_Values.getConfigValue(tMainConfig, meSection, "maxSize", GT_Values.MEMaxEntitySize, "How large in blocks the primed entity can grow");
+        GT_Values.MEOreChance = GT_Values.getConfigValue(tMainConfig, meSection, "oreChance", GT_Values.MEOreChance, "Odds of getting an ore drop");
+        GT_Values.MESoilChance = GT_Values.getConfigValue(tMainConfig, meSection, "soilChance", GT_Values.MESoilChance, "Odds of getting a soil drop");
+        GT_Values.MERockChance = GT_Values.getConfigValue(tMainConfig, meSection, "rockChance", GT_Values.MERockChance, "Odds of getting a rock drop");
+        GT_Values.MEOtherChance = GT_Values.getConfigValue(tMainConfig, meSection, "otherChance", GT_Values.MEOtherChance, "Odds of getting an other drop");
+        GT_Values.MEMaxRange = GT_Values.getConfigValue(tMainConfig, meSection, "maxRange", GT_Values.MEMaxRange, "Maximum range of the explosion");
+        GT_Values.MEMinEntitySize = GT_Values.getConfigValue(tMainConfig, meSection, "minSize", GT_Values.MEMinEntitySize, "Minimum entity size");
+        GT_Values.MEOffsetRatio = GT_Values.getConfigValue(tMainConfig, meSection, "offsetRatio", GT_Values.MEOffsetRatio, "Ratio of the total radius that the explosion is offset by");
+        //
+        GT_Values.MEFancyDrops = GT_Values.getConfigValue(tMainConfig, meSection, "doFancyDrops", GT_Values.MEFancyDrops, "Whether to deliver the items to the player directly");
+        GT_Values.MERequiresRemote = GT_Values.getConfigValue(tMainConfig, meSection, "requireRemote", GT_Values.MEFancyDrops, "Whether the mining explosives require remote activation");
+        TERadius = GT_Values.getConfigValue(tMainConfig, meSection, "radius", TERadius, "Radius of the tunnel explosive");
+        TERadiusVariation = GT_Values.getConfigValue(tMainConfig, meSection, "radiusVariation", TERadiusVariation, "Variation in the radius of the tunnel explosive");
+        TEMaxRange = GT_Values.getConfigValue(tMainConfig, meSection, "TEmaxRange", TEMaxRange, "Maximum range of the tunnel explosive");
     }
 
     @Mod.EventHandler

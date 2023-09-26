@@ -19,7 +19,15 @@ import java.util.stream.Collectors;
 
 
 @Getter
-public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extends GuiScreen implements IGuiScreen.IGuiElement, IGuiScreen {
+public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extends GuiScreen implements IGT_GuiSubWindow {
+
+    public interface OnDragBehavior {
+        void onUpdate(final GT_GuiScrollPanel<?> panel, final int mouseX, final int mouseY, final int lastClick);
+    }
+
+    public interface OnMoveBehavior {
+        void onUpdate(final GT_GuiScrollPanel<?> panel, final int mouseX, final int mouseY, final int lastClick);
+    }
 
     public interface IScrollableElement extends IGuiElement {
 
@@ -27,25 +35,33 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
 
         int getScrollHeight();
 
-        void setRenderX(final int renderX);
-
-        void setRenderY(final int renderY);
-
-        default boolean queryCanRender() {
-            val result = isCanRender();
-            setCanRender(false);
-            return result;
-        }
-
         boolean isCanRender();
 
         void setCanRender(final boolean canRender);
+
+        int getRenderX();
+
+        void setRenderX(final int renderX);
+
+        int getRenderY();
+
+        void setRenderY(final int renderY);
 
         GT_GuiScrollPanel<?> getScrollPanel();
 
         int getScrollID();
 
         IScrollableElement setScrollID(int scrollID);
+
+        boolean isZebra();
+
+        void setZebra(final boolean zebra);
+
+        void receiveClick(final int mouseX, final int mouseY, final int mouseButton);
+
+        void receiveDrag(int pseudoX, int pseudoY, int lastClick);
+
+        void receiveMouseMovement(int mouseX, int mouseY, int clickState);
 
     }
 
@@ -75,6 +91,14 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
     private final int myHeight;
 
     private final int myWidth;
+
+    @Accessors(chain = true)
+    @Setter
+    private OnDragBehavior onDragBehavior = null;
+
+    @Accessors(chain = true)
+    @Setter
+    private OnMoveBehavior onMoveBehavior = null;
 
     @Setter
     private Color panelBackground = new Color(19, 19, 19, 0xFF);
@@ -147,12 +171,28 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
      */
     @Override
     public void drawBackground(final int alwaysZero) {
-        Gui.drawRect(x + getGuiLeft(), y + getGuiTop(), x + getGuiLeft() + myWidth, y + getGuiTop() + myHeight, panelBackground.getRGB());
+        Gui.drawRect(getScrollPanelLeft(), getScrollPanelTop(), getScrollPanelRight(), getScrollPanelBottom(), panelBackground.getRGB());
 /*         drawString(getFontRenderer(), String.format("Start: %.2f", pseudoPanelStart()), x + getGuiLeft() + myWidth, y + getGuiTop(), Color.WHITE.getRGB());
         drawString(getFontRenderer(), String.format("End: %.2f", pseudoPanelEnd()), x + getGuiLeft() + myWidth, y + getGuiTop() + 15, Color.WHITE.getRGB());
         drawString(getFontRenderer(), String.format("Effective: %.2f", effectiveScroll()), x + getGuiLeft() + myWidth, y + getGuiTop() + 30, Color.WHITE.getRGB());
         drawString(getFontRenderer(), String.format("Current: %.2f", currentScroll), x + getGuiLeft() + myWidth, y + getGuiTop() + 45, Color.WHITE.getRGB());
         drawString(getFontRenderer(), String.format("Max: %.2f", getMaxScrollFactor()), x + getGuiLeft() + myWidth, y + getGuiTop() + 60, Color.WHITE.getRGB()); */
+    }
+
+    public int getScrollPanelBottom() {
+        return getScrollPanelTop() + myHeight;
+    }
+
+    public int getScrollPanelRight() {
+        return getScrollPanelLeft() + myWidth;
+    }
+
+    public int getScrollPanelTop() {
+        return y + getGuiTop();
+    }
+
+    public int getScrollPanelLeft() {
+        return x + getGuiLeft();
     }
 
     public void setCurrentScroll(final double currentScroll) {
@@ -351,6 +391,74 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
         return lastID = last;
     }
 
+    @Override
+    public void receiveClick(final int mouseX, final int mouseY, final int mouseButton) {
+        val pseudoX = mouseX + parent.getGuiLeft();
+        val pseudoY = mouseY + parent.getGuiTop();
+        val keys = scrollableElements.keySet().stream().sorted().collect(Collectors.toList());
+//            System.out.println("Click: " + mouseX + ", " + mouseY);
+//            System.out.println("Adjusted: " + (mouseX - getContentX()) + ", " + (mouseY - getContentY()));
+        for (val key : keys) {
+            val element = scrollableElements.get(key);
+//                System.out.println("Element X: " + element.getRenderX() + ", Y: " + element.getRenderY() + ", Height: " + element.getScrollHeight() + ", Width: " + element.getScrollWidth());
+            if (element.inBounds(pseudoX, pseudoY, mouseButton)) {
+//                    System.out.println("Got element: " + element);
+                element.receiveClick(pseudoX, pseudoY, mouseButton);
+                break;
+            }
+        }
+    }
+
+    /**
+     * @param mouseX
+     * @param mouseY
+     * @param lastClick
+     */
+    @Override
+    public void receiveDrag(final int mouseX, final int mouseY, final int lastClick) {
+        val pseudoX = mouseX + parent.getGuiLeft();
+        val pseudoY = mouseY + parent.getGuiTop();
+        val keys = scrollableElements.keySet().stream().sorted().collect(Collectors.toList());
+        for (val key : keys) {
+            val element = scrollableElements.get(key);
+            if (element.inBounds(pseudoX, pseudoY, lastClick)) {
+                element.receiveDrag(pseudoX, pseudoY, lastClick);
+                break;
+            }
+        }
+        onDrag(mouseX, mouseY, lastClick);
+    }
+
+    /**
+     * @param mouseX
+     * @param mouseY
+     * @param clickState
+     */
+    @Override
+    public void receiveMouseMovement(final int mouseX, final int mouseY, final int clickState) {
+        val keys = scrollableElements.keySet().stream().sorted().collect(Collectors.toList());
+        for (val key : keys) {
+            val element = scrollableElements.get(key);
+            if (element.inBounds(mouseX, mouseY, clickState)) {
+                element.receiveMouseMovement(mouseX, mouseY, clickState);
+                break;
+            }
+        }
+        onMove(mouseX, mouseY, clickState);
+    }
+
+    private void onMove(final int mouseX, final int mouseY, final int clickState) {
+        if (onMoveBehavior != null) {
+            onMoveBehavior.onUpdate(this, mouseX, mouseY, clickState);
+        }
+    }
+
+    private void onDrag(final int mouseX, final int mouseY, final int lastClick) {
+        if (onDragBehavior != null) {
+            onDragBehavior.onUpdate(this, mouseX, mouseY, lastClick);
+        }
+    }
+
     public IScrollableElement removeScrollableElement(final IScrollableElement element) {
         var last = lastID - 1;
         while (!scrollableElements.containsKey(last)) {
@@ -382,60 +490,8 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
         return (myHeight - scrollHeight) / 2;
     }
 
-    protected void drawScrollableContent(final int mouseX, final int mouseY, final float parTicks) {
-        val scaled = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight).getScaleFactor();
-        //
-        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        GL11.glScissor(getContentX() * scaled, mc.displayHeight - ((getContentY() + scrollHeight) * scaled), scrollWidth * scaled, scrollHeight * scaled);
-        //
-        drawScrollPanelBackground(mouseX, mouseY, parTicks);
-        var totalElementHeight = 0;
-        val keys = scrollableElements.keySet().stream().sorted().collect(Collectors.toList());
-        for (final Integer key : keys) {
-            val element = scrollableElements.get(key);
-            renderIndividualScrollableElement(mouseX, mouseY, parTicks, totalElementHeight, element);
-            totalElementHeight += element.getScrollHeight();
-        }
-        //
-        GL11.glDisable(GL11.GL_SCISSOR_TEST);
-        GL11.glPopMatrix();
-        GL11.glPopAttrib();
-    }
-
-    protected void renderIndividualScrollableElement(final int mouseX, final int mouseY, final float parTicks, final int totalElementHeight, final IScrollableElement element) {
-        if (inRange(element.getScrollHeight(), totalElementHeight)) {
-            val verticalOffset = (int) (totalElementHeight - totalHeight * pseudoPanelStart());
-            val myX = getContentX();
-            val myY = getContentY() + verticalOffset;
-            element.setRenderX(myX);
-            element.setRenderY(myY);
-            element.setCanRender(true);
-            element.draw(mouseX, mouseY, parTicks);
-        }
-    }
-
-    protected void drawScrollPanelBackground(final int mouseX, final int mouseY, final float parTicks) {
-        Gui.drawRect(getContentX(), getContentY(), getContentX() + scrollWidth, getContentY() + scrollHeight, panelInteriorBackground.getRGB());
-    }
-
-    protected void drawRegularContent(final int mouseX, final int mouseY, final float parTicks) {
-        for (final IGuiElement element : elements) {
-            element.draw(mouseX, mouseY, parTicks);
-        }
-    }
-
-    private int getContentY() {
-        return y + contentOffsetY() + getGuiTop();
-    }
-
-    private int getContentX() {
-        return x + contentOffsetX() + getGuiLeft();
-    }
-
-    private double pseudoPanelStart() {
-        return effectiveScroll();
+    public int getMCScaleFactor() {
+        return new ScaledResolution(mc, mc.displayWidth, mc.displayHeight).getScaleFactor();
     }
 
     public double effectiveScroll() {
@@ -455,6 +511,67 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
             height = 1;
         }
         return height;
+    }
+
+    public int getContentY() {
+        return y + contentOffsetY() + getGuiTop();
+    }
+
+    public int getContentX() {
+        return x + contentOffsetX() + getGuiLeft();
+    }
+
+    protected void drawScrollableContent(final int mouseX, final int mouseY, final float parTicks) {
+        val scaled = getMCScaleFactor();
+        //
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+        GL11.glScissor(getContentX() * scaled, mc.displayHeight - ((getContentY() + scrollHeight) * scaled), scrollWidth * scaled, scrollHeight * scaled);
+        //
+        drawScrollPanelBackground(mouseX, mouseY, parTicks);
+        var totalElementHeight = 0;
+        val keys = scrollableElements.keySet().stream().sorted().collect(Collectors.toList());
+        int index = 0;
+        for (final Integer key : keys) {
+            val element = scrollableElements.get(key);
+            renderIndividualScrollableElement(index, mouseX, mouseY, parTicks, totalElementHeight, element);
+            totalElementHeight += element.getScrollHeight();
+            index += 1;
+        }
+        //
+        GL11.glDisable(GL11.GL_SCISSOR_TEST);
+        GL11.glPopMatrix();
+        GL11.glPopAttrib();
+    }
+
+    protected void renderIndividualScrollableElement(final int index, final int mouseX, final int mouseY, final float parTicks, final int totalElementHeight, final IScrollableElement element) {
+        if (inRange(element.getScrollHeight(), totalElementHeight)) {
+            val verticalOffset = (int) (totalElementHeight - totalHeight * pseudoPanelStart());
+            val myX = getContentX();
+            val myY = getContentY() + verticalOffset;
+            element.setRenderX(myX);
+            element.setRenderY(myY);
+            element.setZebra(index % 2 == 0);
+            element.setCanRender(true);
+            element.draw(mouseX, mouseY, parTicks);
+        } else {
+            element.setCanRender(false);
+        }
+    }
+
+    protected void drawScrollPanelBackground(final int mouseX, final int mouseY, final float parTicks) {
+        Gui.drawRect(getContentX(), getContentY(), getContentX() + scrollWidth, getContentY() + scrollHeight, panelInteriorBackground.getRGB());
+    }
+
+    protected void drawRegularContent(final int mouseX, final int mouseY, final float parTicks) {
+        for (final IGuiElement element : elements) {
+            element.draw(mouseX, mouseY, parTicks);
+        }
+    }
+
+    private double pseudoPanelStart() {
+        return effectiveScroll();
     }
 
     private double getAsProportionOfContent(final int y) {

@@ -3,12 +3,12 @@ package gregtech.loaders.materialprocessing;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.GTNH_ExtraMaterials;
+import gregtech.api.enums.Post64KiloByteLimitMaterials;
 import gregtech.api.enums.TextureSet;
 
 public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandler {
     public ProcessingConfig() {
-        new GTNH_ExtraMaterials();
+        new Post64KiloByteLimitMaterials();
         Materials.add(this);
     }
 

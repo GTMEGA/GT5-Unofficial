@@ -3,10 +3,8 @@ package gregtech.api.gui;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
-import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
-import gregtech.api.gui.widgets.GT_GuiSlider;
-import gregtech.api.gui.widgets.GT_GuiTooltip;
-import gregtech.api.gui.widgets.GT_GuiTooltipManager;
+import gregtech.api.gui.widgets.*;
+import gregtech.api.gui.widgets.slider.GT_GuiSlider;
 import gregtech.api.interfaces.IDWSCompatibleGUI;
 import gregtech.api.interfaces.IGuiScreen;
 import gregtech.api.util.interop.NEIInterop;
@@ -34,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT_GuiTooltipManager.GT_IToolTipRenderer, IGuiScreen, IDWSCompatibleGUI {
+public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_GuiTooltipManager.GT_IToolTipRenderer, IGuiScreen, IDWSCompatibleGUI {
 
     protected static final boolean debug = false;
 
@@ -44,7 +42,7 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
 
     protected final List<GT_GuiSlider> sliders = new ArrayList<>();
 
-    protected final List<IGuiScreen> subWindows = new ArrayList<>();
+    protected final List<IGT_GuiSubWindow> subWindows = new ArrayList<>();
 
     protected final RenderItem itemRenderer = new RenderItem();
 
@@ -56,17 +54,15 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
     @Getter
     private final int guiHeight;
 
-    private final String dwsGuiBackgroundPath;
-
     private final ResourceLocation dwsGuiBackground;
 
     private final int baseGuiWidth;
 
     protected GuiButton selectedButton = null;
 
-    public GT_GUIContainer_Plus(final Container aContainer, final String aGuiBackground, final int width, final int height) {
+    public GT_RichGuiContainer(final Container aContainer, final String aGuiBackground, final int width, final int height) {
         super(aContainer, aGuiBackground);
-        this.dwsGuiBackground = new ResourceLocation(this.dwsGuiBackgroundPath = getDWSGuiBackgroundPath(aGuiBackground));
+        this.dwsGuiBackground = new ResourceLocation(getDWSGuiBackgroundPath(aGuiBackground));
         this.baseGuiWidth = width;
         this.guiWidth = this.xSize = applyDWSBump(baseWidth());
         this.guiHeight = this.ySize = height;
@@ -206,16 +202,6 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         super.drawHoveringText(par1List, par2, par3, font);
     }
 
-    @Override
-    public void initGui() {
-        super.initGui();
-        addElements();
-        onInitGui(guiLeft, guiTop, width, height);
-        for (IGuiElement element : elements) {
-            element.onInit();
-        }
-    }
-
     /**
      * Causes the screen to lay out its subcomponents again. This is the equivalent of the Java call
      * Container.validate()
@@ -228,7 +214,17 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
     public void setWorldAndResolution(final Minecraft minecraft, final int width, final int height) {
         super.setWorldAndResolution(minecraft, width, height);
         for (IGuiScreen subWindow : subWindows) {
-            ((GuiScreen)subWindow).setWorldAndResolution(minecraft, width, height);
+            ((GuiScreen) subWindow).setWorldAndResolution(minecraft, width, height);
+        }
+    }
+
+    @Override
+    public void initGui() {
+        super.initGui();
+        addElements();
+        onInitGui(guiLeft, guiTop, width, height);
+        for (IGuiElement element : elements) {
+            element.onInit();
         }
     }
 
@@ -244,8 +240,8 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
             if (element instanceof GT_GuiSlider) {
                 sliders.add((GT_GuiSlider) element);
             }
-            if (element instanceof IGuiScreen) {
-                subWindows.add((IGuiScreen) element);
+            if (element instanceof IGT_GuiSubWindow) {
+                subWindows.add((IGT_GuiSubWindow) element);
             }
         }
     }
@@ -266,8 +262,36 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         super.mouseClicked(rawMX, rawMY, clickType);
         final int mouseX = getMouseX(rawMX);
         final int mouseY = getMouseY(rawMY);
-        sliders.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType)).forEach(slider -> slider.onMousePressed(mouseX, mouseY, clickType));
+        sliders.stream().filter(element -> element.inBounds(rawMX, rawMY, clickType)).forEach(slider -> slider.onMousePressed(rawMX, rawMY, clickType));
         textBoxes.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType)).forEach(this::setFocusedTextBox);
+        subWindows.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType)).forEach(element -> element.receiveClick(mouseX, mouseY, clickType));
+    }
+
+    /**
+     * Called when a mouse button is pressed and the mouse is moved around. Parameters are : mouseX, mouseY,
+     * lastButtonClicked & timeSinceMouseClick.
+     *
+     * @param mouseX
+     * @param mouseY
+     * @param lastClick
+     * @param timeSinceLastClick
+     */
+    @Override
+    protected void mouseClickMove(final int mouseX, final int mouseY, final int lastClick, final long timeSinceLastClick) {
+        super.mouseClickMove(mouseX, mouseY, lastClick, timeSinceLastClick);
+        sliders.stream().filter(element -> element.inBounds(mouseX, mouseY, lastClick)).forEach(slider -> slider.onMouseDragged(mouseX, mouseY, lastClick));
+        subWindows.stream().filter(element -> element.inBounds(mouseX, mouseY, lastClick)).forEach(element -> element.receiveDrag(mouseX, mouseY, lastClick));
+    }
+
+    /**
+     * @param stack
+     * @param x
+     * @param y
+     * @param displayString
+     */
+    @Override
+    public void drawItemStack(final ItemStack stack, final int x, final int y, final String displayString) {
+        super.drawItemStack(stack, x, y, displayString);
     }
 
     /**
@@ -307,6 +331,7 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
     protected void mouseMovedOrUp(final int mouseX, final int mouseY, final int clickState) {
         super.mouseMovedOrUp(mouseX, mouseY, clickState);
         sliders.forEach(slider -> slider.onMouseReleased(mouseX, mouseY, clickState));
+        subWindows.forEach(element -> element.receiveMouseMovement(mouseX, mouseY, clickState));
     }
 
     /**
@@ -394,23 +419,15 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         this.mc.setIngameFocus();
     }
 
-    protected void uncheckButtons() {
-        GuiButton button;
-        for (Object o : buttonList) {
-            button = (GuiButton) o;
-            button.enabled = true;
-        }
-    }
-
-    public boolean isDWSEnabled() {
-        return GregTech_API.mDWS;
-    }
-
     /**
      * Given textbox's value might have changed.
      */
     public void applyTextBox(GT_GuiIntegerTextBox box) {
 
+    }
+
+    public boolean isDWSEnabled() {
+        return GregTech_API.mDWS;
     }
 
     public int getDimension() {
@@ -447,6 +464,14 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         super.drawTexturedModalRect(x, y, u, v, width, height);
     }
 
+    protected void uncheckButtons() {
+        GuiButton button;
+        for (Object o : buttonList) {
+            button = (GuiButton) o;
+            button.enabled = true;
+        }
+    }
+
     @Override
     protected void drawGuiContainerBackgroundLayer(final float par1, final int par2, final int par3) {
 
@@ -459,6 +484,8 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
      */
     @Override
     public void drawScreen(final int mouseX, final int mouseY, final float parTicks) {
+        preDrawHook(mouseX, mouseY, parTicks);
+
         neiPreDraw();
         drawDefaultBackground();
         drawBackground();
@@ -474,6 +501,22 @@ public abstract class GT_GUIContainer_Plus extends GT_GUIContainer implements GT
         magicGLMid2();
         renderTooltips(mouseX, mouseY);
         magicGLPost();
+
+        postDrawHook(mouseX, mouseY, parTicks);
+    }
+
+    /**
+     * Do not use this for GL calls, this is for handling per-frame logic
+     * */
+    protected void postDrawHook(final int mouseX, final int mouseY, final float parTicks) {
+
+    }
+
+    /**
+     * Do not use this for GL calls, this is for handling per-frame logic
+     * */
+    protected void preDrawHook(final int mouseX, final int mouseY, final float parTicks) {
+
     }
 
     /**

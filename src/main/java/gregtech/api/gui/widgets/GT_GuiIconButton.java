@@ -1,7 +1,10 @@
 package gregtech.api.gui.widgets;
 
+import gregtech.api.gui.widgets.icon.GT_GuiIcon;
+import gregtech.api.gui.widgets.icon.IGT_GuiIcon;
 import gregtech.api.interfaces.IGuiScreen;
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import org.lwjgl.opengl.GL11;
@@ -11,10 +14,30 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
     public static final int DEFAULT_WIDTH = 16;
     public static final int DEFAULT_HEIGHT = 16;
 
+    @Getter
+    @Setter
+    private GT_GuiIcon highlightDownIcon = GT_GuiIcon.BUTTON_HIGHLIGHT_DOWN;
+
+    @Getter
+    @Setter
+    private IGT_GuiIcon backgroundIconDown = GT_GuiIcon.BUTTON_DOWN;
+
+    @Getter
+    @Setter
+    private IGT_GuiIcon backgroundIconDisabled = GT_GuiIcon.BUTTON_DISABLED;
+
+    @Getter
+    @Setter
+    private IGT_GuiIcon backgroundIconHighlight = GT_GuiIcon.BUTTON_HIGHLIGHT;
+
+    @Getter
+    @Setter
+    private IGT_GuiIcon backgroundIconNormal = GT_GuiIcon.BUTTON_NORMAL;
+
     public IGT_GuiHook onClick = null, onInit = null, onUpdate = null;
 
     @Getter
-    protected GT_GuiIcon icon;
+    protected IGT_GuiIcon icon;
     private int x0, y0;
     protected IGuiScreen gui;
     private String[] tooltipText;
@@ -41,7 +64,7 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
         return this;
     }
 
-    public GT_GuiIconButton(IGuiScreen gui, int id, int x, int y, GT_GuiIcon icon) {
+    public GT_GuiIconButton(IGuiScreen gui, int id, int x, int y, IGT_GuiIcon icon) {
         super(id, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, "");
         this.gui = gui;
         this.icon = icon;
@@ -55,6 +78,7 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
         if (tooltip != null) {
             gui.addToolTip(tooltip);
         }
+        onInit(this.gui, 0, 0, 0);
         xPosition = x0 + gui.getGuiLeft();
         yPosition = y0 + gui.getGuiTop();
     }
@@ -88,11 +112,11 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
             else
                 GL11.glColor4f(1, 1, 1, 1);
 
-            GT_GuiIcon.render(getButtonTexture(this.field_146123_n), x, y, width, height, 0, true);
+            getButtonTexture(this.field_146123_n).render(x, y, width, height, 0, true);
 
             GL11.glColor4f(1, 1, 1, 1);
             if (icon != null) {
-                GT_GuiIcon.render(icon, x, y, width, height , 0, true);
+                icon.render(x, y, width, height , 0, true);
             }
 
             GL11.glPopAttrib();
@@ -104,21 +128,22 @@ public class GT_GuiIconButton extends GuiButton implements IGT_GuiButton {
     public void mouseReleased(int mouseX, int mouseY) {
         this.gui.clearSelectedButton();
         if(mousePressed(Minecraft.getMinecraft(), mouseX, mouseY)) {
-            this.gui.buttonClicked(this);
             this.onClick(this.gui, mouseX, mouseY, 1);
+            this.gui.buttonClicked(this);
         }
     }
 
-    public GT_GuiIcon getButtonTexture(boolean mouseOver) {
-        if (!enabled)
-            return GT_GuiIcon.BUTTON_DISABLED;
+    public IGT_GuiIcon getButtonTexture(boolean mouseOver) {
+        if (!enabled) {
+            return backgroundIconDisabled;
+        }
         if (this.equals(this.gui.getSelectedButton()))
-            return mouseOver ? GT_GuiIcon.BUTTON_HIGHLIGHT_DOWN : GT_GuiIcon.BUTTON_DOWN;
+            return mouseOver ? highlightDownIcon : backgroundIconDown;
 
-        return mouseOver ? GT_GuiIcon.BUTTON_HIGHLIGHT : GT_GuiIcon.BUTTON_NORMAL;
+        return mouseOver ? backgroundIconHighlight : backgroundIconNormal;
     }
 
-    public GT_GuiIconButton setIcon(GT_GuiIcon icon) {
+    public GT_GuiIconButton setIcon(IGT_GuiIcon icon) {
         this.icon = icon;
         return this;
     }

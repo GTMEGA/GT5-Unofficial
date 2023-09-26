@@ -3,6 +3,7 @@ package gregtech.common.items.explosives;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.common.blocks.explosives.GT_Block_Explosive;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -15,6 +16,9 @@ public class GT_Item_Explosive extends ItemBlock {
     public GT_Item_Explosive(final Block block, final String uName, final String eName) {
         super(block);
         this.mName = "gt." + uName;
+        if (block instanceof GT_Block_Explosive) {
+            ((GT_Block_Explosive) block).setItem(this);
+        }
         setMaxDamage(0);
         setHasSubtypes(false);
         setCreativeTab(GregTech_API.TAB_GREGTECH);

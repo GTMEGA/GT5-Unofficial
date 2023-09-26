@@ -2072,8 +2072,9 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     getCoverBehaviorAtSideNew((byte) aSide.ordinal()).letsFluidOut((byte) aSide.ordinal(), getCoverIDAtSide((byte) aSide.ordinal()), getComplexCoverDataAtSide((byte) aSide.ordinal()), mMetaTileEntity.getFluid() == null ? null : mMetaTileEntity.getFluid().getFluid(), this)
                 )
             )
-        )
+        ) {
             return mMetaTileEntity.drain(aSide, maxDrain, doDrain);
+        }
         return null;
     }
 

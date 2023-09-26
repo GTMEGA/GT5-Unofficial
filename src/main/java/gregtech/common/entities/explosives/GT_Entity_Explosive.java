@@ -4,8 +4,11 @@ package gregtech.common.entities.explosives;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import gregtech.api.enums.GT_Values;
 import gregtech.common.blocks.explosives.GT_Block_Explosive;
+import gregtech.common.misc.explosions.GT_Explosion;
+import gregtech.common.misc.explosions.GT_Explosion_PreCalculation;
 import io.netty.buffer.ByteBuf;
 import lombok.Getter;
+import lombok.NonNull;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
@@ -14,13 +17,19 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
+import static gregtech.GT_Mod.GT_FML_LOGGER;
+
 
 @Getter
 public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEntityAdditionalSpawnData {
 
+    private GT_Explosion_PreCalculation preCalc;
+
     protected int metadata;
 
     protected double realX, realY, realZ;
+
+    protected GT_Explosion explosion;
 
     public GT_Entity_Explosive(final World world) {
         super(world);
@@ -37,7 +46,13 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
         this.motionZ = 0.0;
         this.fuse = GT_Values.MEFuse;
         this.metadata = metadata;
+        this.explosion = createExplosion();
+        this.preCalc = new GT_Explosion_PreCalculation(this, this.explosion, world, explosion.getX(), explosion.getY(), explosion.getZ(), this.fuse);
+        preCalc.initialize();
     }
+
+    @NonNull
+    protected abstract GT_Explosion createExplosion();
 
     protected void setSize() {
         final float newSize = getNewSize();
@@ -62,11 +77,16 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
     @Override
     public void onUpdate() {
         setPosition(realX, realY, realZ);
+        if (preCalc != null) {
+            preCalc.tick();
+        }
         if (fuse-- <= 0) {
             this.setDead();
-
             if (!this.worldObj.isRemote) {
                 this.doExplode();
+                if (preCalc != null) {
+                    this.preCalc.finalizeExplosion();
+                }
             }
         } else {
             final int n = rand.nextInt(2) + 1;
@@ -108,7 +128,13 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
         this.realZ = compound.getDouble("rZ");
     }
 
-    protected abstract void doExplode();
+    protected void doExplode() {
+        if (explosion != null) {
+            explosion.perform();
+        } else {
+            GT_FML_LOGGER.error("Explosion is null! You probably reloaded the world, sorry");
+        }
+    }
 
     /**
      * @param explosion

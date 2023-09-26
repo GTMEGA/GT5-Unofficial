@@ -771,6 +771,12 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
                 aList.add("Filter disabled");
             }
         }
+        val temp = GT_Values.KB.getKeyBindings().get("key.meganet.gui");
+        if (temp.getKeyCode() > 0) {
+            aList.add("Press " + EnumChatFormatting.YELLOW + Keyboard.getKeyName(temp.getKeyCode()) + EnumChatFormatting.RESET + " to open GUI");
+        } else {
+            aList.add("Press the MEGAnet keybind, (currently unset), to open GUI");
+        }
         aList.add(String.format("Magnetized" + EnumChatFormatting.GOLD + " %d " + EnumChatFormatting.GRAY + "items!", getPickedUp(aStack)));
         aList.add(EnumChatFormatting.DARK_BLUE + "" + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + "The MEGAnet!");
     }
