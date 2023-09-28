@@ -57,7 +57,7 @@ public final class MultiblockMachineLoader {
         registerDefaultGregtechMaps();
 
         Distillation_Tower.set(new GT_MetaTileEntity_DistillationTower(1126, "multimachine.distillationtower", "Distillation Tower").getStackForm(1L));
-        addCraftingRecipe(Distillation_Tower.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CBC", "FMF", "CBC", 'M', Hull_HV, 'B', pipeLarge.get(StainlessSteel), 'C', circuitPower.get(PWR_MV), 'F', Electric_Pump_MV});
+        addCraftingRecipe(Distillation_Tower.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CBC", "FMF", "CBC", 'M', Hull_MV, 'B', pipeLarge.get(StainlessSteel), 'C', circuitPower.get(PWR_MV), 'F', Electric_Pump_MV});
 
         LargeSteamTurbine.set(new GT_MetaTileEntity_LargeTurbine_Steam(1131, "multimachine.largeturbine", "Deprecated Steam Turbine").getStackForm(1L));
         LargeGasTurbine.set(new GT_MetaTileEntity_LargeTurbine_Gas(1151, "multimachine.largegasturbine", "Deprecated Gas Turbine").getStackForm(1L));
