@@ -71,7 +71,7 @@ public class GT_MetaTileEntity_LargeBoiler_Steel extends GT_MetaTileEntity_Large
 
     @Override
     public int getEUt() {
-        return 600;
+        return 1024;
     }
 
     @Override
