@@ -14,6 +14,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.GT_Cover_Fluidfilter;
+import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -823,6 +824,14 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         }
     	return 0;
 	}
+
+    public int getConnectionCount() {
+        int connectionCount = 0;
+        for (int i = 0; i < 6; i++) {
+            if (isConnectedAtSide(i)) ++connectionCount;
+        }
+        return connectionCount;
+    }
 
     protected void checkConnections() {
         // Verify connections around us.  If GT6 style cables are not enabled then revert to old behavior and try

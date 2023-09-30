@@ -23,6 +23,7 @@ import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.GT_Cover_Drain;
 import gregtech.common.covers.GT_Cover_FluidRegulator;
+import lombok.val;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,6 +40,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import org.apache.commons.lang3.tuple.MutableTriple;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static gregtech.api.enums.GT_Values.D1;
@@ -388,15 +390,15 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (GT_Mod.gregtechproxy.gt6Pipe) {
             byte tSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
-            byte tMask = (byte) (1 << tSide);
             if (aPlayer.isSneaking()) {
                 if (isInputDisabledAtSide(tSide)) {
-                    mDisableInput &= ~tMask;
+                    enableInput(tSide, new HashSet<>());
                     GT_Utility.sendChatToPlayer(aPlayer, trans("212", "Input enabled"));
-                    if (!isConnectedAtSide(tSide))
-                        connect(tSide);
+                    // why is this even here
+//                    if (!isConnectedAtSide(tSide))
+//                        connect(tSide);
                 } else {
-                    mDisableInput |= tMask;
+                    disableInput(tSide,new HashSet<>());
                     GT_Utility.sendChatToPlayer(aPlayer, trans("213", "Input disabled"));
                 }
             } else {
@@ -411,6 +413,115 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
             return true;
         }
         return false;
+    }
+
+    protected void disableInput(int side, HashSet<GT_MetaPipeEntity_Fluid> goneOver) {
+        byte tMask = (byte) (1 << side);
+        mDisableInput |= tMask;
+        goneOver.add(this);
+        recursiveConnectionDisable(side,goneOver);
+    }
+
+    protected void enableInput(int side, HashSet<GT_MetaPipeEntity_Fluid> goneOver) {
+        byte tMask = (byte) (1 << side);
+        mDisableInput &= ~tMask;
+        goneOver.add(this);
+        recursiveConnectionEnable(side,goneOver);
+    }
+
+
+
+    protected void recursiveConnectionDisable(int side, HashSet<GT_MetaPipeEntity_Fluid> goneOver) {
+        val connectionCount = getConnectionCount();
+        if (connectionCount <= 2) {
+            for (int i = 0; i < 6; i++) {
+                if (!isConnectedAtSide(i)) continue;
+                val meta = getPipeAtSide(i);
+                if (meta == null || goneOver.contains(meta)) continue;
+                if (i == side) {
+                    forwardConnectionDisable(i,meta,goneOver);
+                } else {
+                    backwardConnectionDisable(i,meta,goneOver);
+                }
+            }
+        } else if (isConnectedAtSide(side)) {
+            val meta = getPipeAtSide(side);
+            if (meta != null && !goneOver.contains(meta)) {
+                forwardConnectionDisable(side,meta,goneOver);
+            }
+        }
+    }
+
+    protected void forwardConnectionDisable(int previousSide, GT_MetaPipeEntity_Fluid entity, HashSet<GT_MetaPipeEntity_Fluid> goneOver) {
+        val  previousSideInverted = ForgeDirection.getOrientation(previousSide).getOpposite().ordinal();
+        int connectionCount = entity.getConnectionCount();
+        if (connectionCount == 2) {
+            for (int i = 0; i < 6; i++) {
+                if (i == previousSideInverted || !entity.isConnectedAtSide(i)) continue;
+                entity.disableInput(i,goneOver);
+            }
+        }
+    }
+
+    protected void backwardConnectionDisable(int previousSide, GT_MetaPipeEntity_Fluid entity, HashSet<GT_MetaPipeEntity_Fluid> goneOver) {
+        val previousSideInverted = ForgeDirection.getOrientation(previousSide).getOpposite().ordinal();
+        int connectionCount = entity.getConnectionCount();
+        for (int i = 0; i < 6; i++) {
+            if (i != previousSideInverted || !entity.isConnectedAtSide(i)) continue;
+            entity.disableInput(i,goneOver);
+        }
+    }
+
+    protected void recursiveConnectionEnable(int side, HashSet<GT_MetaPipeEntity_Fluid> goneOver) {
+        val connectionCount = getConnectionCount();
+        if (connectionCount <= 2) {
+            for (int i = 0; i < 6; i++) {
+                if (!isConnectedAtSide(i)) continue;
+                val meta = getPipeAtSide(i);
+                if (meta == null || goneOver.contains(meta)) continue;
+                if (i == side) {
+                    forwardConnectionEnable(i,meta,goneOver);
+                } else {
+                    backwardConnectionEnable(i,meta,goneOver);
+                }
+            }
+        } else if (isConnectedAtSide(side)) {
+            val meta = getPipeAtSide(side);
+            if (meta != null && !goneOver.contains(meta)) {
+                forwardConnectionEnable(side,meta,goneOver);
+            }
+        }
+    }
+
+    protected void forwardConnectionEnable(int previousSide, GT_MetaPipeEntity_Fluid entity, HashSet<GT_MetaPipeEntity_Fluid> goneOver) {
+        val  previousSideInverted = ForgeDirection.getOrientation(previousSide).getOpposite().ordinal();
+        int connectionCount = entity.getConnectionCount();
+        if (connectionCount == 2) {
+            for (int i = 0; i < 6; i++) {
+                if (i == previousSideInverted || !entity.isConnectedAtSide(i)) continue;
+                entity.enableInput(i,goneOver);
+            }
+        }
+    }
+
+    protected void backwardConnectionEnable(int previousSide, GT_MetaPipeEntity_Fluid entity, HashSet<GT_MetaPipeEntity_Fluid> goneOver) {
+        val previousSideInverted = ForgeDirection.getOrientation(previousSide).getOpposite().ordinal();
+        int connectionCount = entity.getConnectionCount();
+        for (int i = 0; i < 6; i++) {
+            if (i != previousSideInverted || !entity.isConnectedAtSide(i)) continue;
+            entity.enableInput(i,goneOver);
+        }
+    }
+
+    protected GT_MetaPipeEntity_Fluid getPipeAtSide(int side) {
+        val te = getBaseMetaTileEntity().getTileEntityAtSide((byte) side);
+        if (te instanceof IGregTechTileEntity) {
+            val meta = ((IGregTechTileEntity) te).getMetaTileEntity();
+            if (meta instanceof GT_MetaPipeEntity_Fluid) {
+                return (GT_MetaPipeEntity_Fluid) meta;
+            }
+        }
+        return null;
     }
 
     @Override
