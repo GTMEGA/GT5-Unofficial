@@ -72,7 +72,7 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Furnace")
                 .addInfo("Controller Block for the Multi Smelter")
-                .addInfo("Smelts up to 8-128 items at once")
+                .addInfo("Smelts up to 16-136 items at once")
                 .addInfo("Items smelted increases with coil tier")
                 .addPollutionAmount(20 * getPollutionPerTick(null))
                 .addSeparator()
@@ -119,7 +119,7 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
             return false;
 
         int mVolatage = GT_Utility.safeInt(getMaxInputVoltage());
-        int tMaxParrallel = 8 * this.mLevel;
+        int tMaxParrallel = 8 * this.mLevel + 8;
         int tCurrenParrallel = 0;
         ItemStack tSmeltStack = tInputList.get(0);
         ItemStack tOutputStack = GT_ModHandler.getSmeltingOutput(tSmeltStack,false,null);
