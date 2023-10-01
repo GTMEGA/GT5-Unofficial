@@ -720,6 +720,7 @@ public class GT_Mod implements IGT_Mod {
 
     @Mod.EventHandler
     public void onLoad(FMLInitializationEvent aEvent) {
+        GT_Utility.removeSimpleIC2MachineRecipe(new ItemStack(Blocks.clay),GT_ModHandler.getMaceratorRecipeList(),null);
         if (GregTech_API.sLoadStarted) {
             return;
         }

@@ -136,6 +136,7 @@ public class GT_RecipeRegistrator {
     public static void registerMaterialRecycling(ItemStack aStack, ItemData aData) {
         if (GT_Utility.isStackInvalid(aStack) || GT_Utility.areStacksEqual(new ItemStack(Items.blaze_rod), aStack) || aData == null || !aData.hasValidMaterialData() || aData.mMaterial.mAmount <= 0 || GT_Utility.getFluidForFilledItem(aStack, false) != null)
             return;
+        if (GT_Utility.areStacksEqual(new ItemStack(Items.clay_ball),aStack) || GT_Utility.areStacksEqual(new ItemStack(Blocks.clay),aStack)) return;
         registerReverseMacerating(GT_Utility.copyAmount(1, aStack), aData, aData.mPrefix == null);
         registerReverseSmelting(GT_Utility.copyAmount(1, aStack), aData.mMaterial.mMaterial, aData.mMaterial.mAmount, true);
         registerReverseFluidSmelting(GT_Utility.copyAmount(1, aStack), aData.mMaterial.mMaterial, aData.mMaterial.mAmount, aData.getByProduct(0));
