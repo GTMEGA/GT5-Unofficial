@@ -121,6 +121,11 @@ public class GT_Tool_Wrench extends GT_Tool {
     }
 
     @Override
+    public boolean isCorrectTool(String toolClass) {
+        return toolClass.equals("wrench");
+    }
+
+    @Override
     public ItemStack getBrokenItem(ItemStack aStack) {
         return null;
     }

@@ -112,7 +112,11 @@ public class GT_Tool_Saw extends GT_Tool {
                 Material.ice,
                 Material.packedIce
         );
+    }
 
+    @Override
+    public boolean isCorrectTool(String toolClass) {
+        return toolClass.equals("axe") || toolClass.equals("saw");
     }
 
     @Override
