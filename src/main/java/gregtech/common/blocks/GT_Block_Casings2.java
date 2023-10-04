@@ -36,7 +36,7 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Assembler Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Pump Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Motor Machine Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Bronze Pipe Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Brass Pipe Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Steel Pipe Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Titanium Pipe Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Tungstensteel Pipe Casing");
