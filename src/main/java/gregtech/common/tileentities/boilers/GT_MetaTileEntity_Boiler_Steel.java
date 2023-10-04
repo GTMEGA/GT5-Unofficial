@@ -22,7 +22,7 @@ public class GT_MetaTileEntity_Boiler_Steel extends GT_MetaTileEntity_Boiler_Bro
     public GT_MetaTileEntity_Boiler_Steel(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, new String[]{
                 "Faster than the Bronze Boiler",
-                "Produces 75L of Steam per second",
+                "Produces 80L of Steam per second",
                 "Causes 30 Pollution per second"});
     }
 
@@ -90,7 +90,7 @@ public class GT_MetaTileEntity_Boiler_Steel extends GT_MetaTileEntity_Boiler_Bro
 
     @Override
     protected int getProductionPerSecond() {
-        return 150/EU_PER_STEAM;
+        return 160/EU_PER_STEAM;
     }
 
     @Override
