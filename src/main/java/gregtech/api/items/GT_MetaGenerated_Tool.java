@@ -483,24 +483,28 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
     public float getDigSpeed(ItemStack aStack, Block aBlock, int aMetaData) {
         if (!isItemStackUsable(aStack)) return 0.0F;
         IToolStats tStats = getToolStats(aStack);
-        if (tStats == null || Math.max(0, getHarvestLevel(aStack, "")) < aBlock.getHarvestLevel(aMetaData)) return 0.0F;
+        if (tStats == null || Math.max(0, getHarvestLevel(aStack, "")) < aBlock.getHarvestLevel(aMetaData)) return 1f;
         float digSpeed = tStats.isMinableBlock(aBlock, (byte) aMetaData) ? Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed) : 0.0F;
         if (tStats instanceof IAOETool) {
-            return ((IAOETool) tStats).getDigSpeed(digSpeed, tStats, aStack);
+            return Math.max(((IAOETool) tStats).getDigSpeed(digSpeed, tStats, aStack),0.25f);
         }
-        return digSpeed;
+        return Math.max(digSpeed,1f);
     }
-
 
     @Override
     public final boolean canHarvestBlock(Block aBlock, ItemStack aStack) {
-        return getDigSpeed(aStack, aBlock, (byte) 0) > 0.0F;
+        IToolStats tStats = getToolStats(aStack);
+        return tStats.isMinableBlock(aBlock, (byte) 0);
     }
 
     @Override
     public final int getHarvestLevel(ItemStack aStack, String aToolClass) {
+        //return -1;
         IToolStats tStats = getToolStats(aStack);
-        return tStats == null ? -1 : tStats.getBaseQuality() + getPrimaryMaterial(aStack).mToolQuality;
+        if (aToolClass.equals("") || tStats.isCorrectTool(aToolClass)) {
+            return tStats == null ? -1 : tStats.getBaseQuality() + getPrimaryMaterial(aStack).mToolQuality;
+        }
+        return -1;
     }
 
     @Override

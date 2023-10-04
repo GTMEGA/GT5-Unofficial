@@ -95,6 +95,11 @@ public class GT_Tool_File
     }
 
     @Override
+    public boolean isCorrectTool(String toolClass) {
+        return toolClass.equals("file");
+    }
+
+    @Override
     public ItemStack getBrokenItem(ItemStack aStack) {
         return null;
     }

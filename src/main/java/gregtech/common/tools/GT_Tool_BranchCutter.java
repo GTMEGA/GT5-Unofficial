@@ -70,6 +70,12 @@ public class GT_Tool_BranchCutter extends GT_Tool {
     }
 
     @Override
+    public boolean isCorrectTool(String toolClass) {
+        return toolClass.equals("grafter");
+    }
+
+
+    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? Textures.ItemIcons.GRAFTER : null;
     }
