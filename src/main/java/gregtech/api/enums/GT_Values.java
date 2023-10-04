@@ -318,6 +318,7 @@ public class GT_Values {
     public static boolean hideAssLineRecipes = false;
     public static boolean updateFluidDisplayItems = true;
     public static final int STEAM_PER_WATER = 160;
+    public static final int EU_PER_STEAM = 2;
     /**
      *  If true, then digital chest with AE2 storage bus will be accessible only through AE2
      */

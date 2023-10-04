@@ -14,13 +14,14 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import static gregtech.api.enums.GT_Values.EU_PER_STEAM;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaTileEntity_Boiler_Semi extends GT_MetaTileEntity_Boiler {
     public static final int COOLDOWN_INTERVAL = 20;
     public static final int ENERGY_PER_LAVA = 1;
     public static final int CONSUMPTION_PER_HEATUP = 16;
-    public static final int PRODUCTION_PER_SECOND = 640;
+    public static final int PRODUCTION_PER_SECOND = 320/EU_PER_STEAM;
     public static final int POLLUTION_PER_SECOND = 20;
     public static final float EFFICIENCY = 0.8f;
     protected static Fluid creosent;

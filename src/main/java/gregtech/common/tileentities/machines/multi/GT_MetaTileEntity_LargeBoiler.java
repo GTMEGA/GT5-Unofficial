@@ -32,6 +32,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_Values.STEAM_PER_WATER;
+import static gregtech.api.enums.GT_Values.EU_PER_STEAM;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE_GLOW;
@@ -87,8 +88,8 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Boiler")
                 .addInfo("Controller block for the Large " + getCasingMaterial() + " Boiler")
-                .addInfo("Produces " + (getEUt() * 40) * (runtimeBoost(20) / 20f) + "L of Steam with 1 Coal at " + getEUt() * 40 + "L/s")//?
-                .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
+                .addInfo("Produces " + (((getEUt() * 20) / EU_PER_STEAM) * (runtimeBoost(20) / 20f) + "L of Steam with 1 Coal at " + ((getEUt() * 20) / EU_PER_STEAM)) + "L/s")
+                .addInfo("A programmed circuit in the main block throttles the boiler (-250L/s per config)")
                 .addInfo(String.format("Diesel fuels have 1/4 efficiency - Takes %.2f seconds to heat up", 500.0 / getEfficiencyIncrease()))//? check semifluid again
                 .addPollutionAmount(20 * getPollutionPerTick(null))
                 .addSeparator()
@@ -231,14 +232,15 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
         if (this.mEUt > 0) {
             if (this.mSuperEfficencyIncrease > 0)
                 mEfficiency = Math.max(0, Math.min(mEfficiency + mSuperEfficencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
-            int tGeneratedEU = (int) (this.mEUt * 2L * this.mEfficiency / 10000L);
-            if (tGeneratedEU > 0) {
-                long amount = (tGeneratedEU + STEAM_PER_WATER) / STEAM_PER_WATER;
-                excessWater += amount * STEAM_PER_WATER - tGeneratedEU;
+            long steamGenerated = (this.mEUt * (long) this.mEfficiency / 10000L);
+            steamGenerated = steamGenerated/ EU_PER_STEAM;
+            if (steamGenerated > 0) {
+                long amount = (steamGenerated + STEAM_PER_WATER) / STEAM_PER_WATER;
+                excessWater += (int) (amount * STEAM_PER_WATER - steamGenerated);
                 amount -= excessWater / STEAM_PER_WATER;
                 excessWater %= STEAM_PER_WATER;
                 if (depleteInput(Materials.Water.getFluid(amount)) || depleteInput(GT_ModHandler.getDistilledWater(amount))) {
-                    addOutput(GT_ModHandler.getSteam(tGeneratedEU));
+                    addOutput(GT_ModHandler.getSteam(steamGenerated));
                 } else {
                     GT_Log.exp.println("Boiler "+this.mName+" had no Water!");
                     explodeMultiblock();

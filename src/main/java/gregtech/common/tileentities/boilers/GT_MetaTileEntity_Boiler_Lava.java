@@ -13,6 +13,7 @@ import gregtech.common.gui.GT_GUIContainer_Boiler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.fluids.FluidStack;
 
+import static gregtech.api.enums.GT_Values.EU_PER_STEAM;
 import static gregtech.api.enums.Textures.BlockIcons.BOILER_LAVA_FRONT;
 import static gregtech.api.enums.Textures.BlockIcons.BOILER_LAVA_FRONT_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.BOILER_LAVA_FRONT_ACTIVE_GLOW;
@@ -26,7 +27,7 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     public static final int COOLDOWN_INTERVAL = 20;
     public static final int ENERGY_PER_LAVA = 1;
     public static final int CONSUMPTION_PER_HEATUP = 3;
-    public static final int PRODUCTION_PER_SECOND = 600;
+    public static final int PRODUCTION_PER_SECOND = 300 / EU_PER_STEAM;
     public static final int POLLUTION_PER_SECOND = 20;
 
     public GT_MetaTileEntity_Boiler_Lava(int aID, String aName, String aNameRegional) {

@@ -16,13 +16,14 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntityFurnace;
 
+import static gregtech.api.enums.GT_Values.EU_PER_STEAM;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
     public GT_MetaTileEntity_Boiler_Bronze(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, new String[]{
                 "An early way to get Steam Power",
-                "Produces 120L of Steam per second",
+                "Produces 30L of Steam per second",
                 "Causes 20 Pollution per second"});
     }
 
@@ -101,7 +102,7 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
 
     @Override
     protected int getProductionPerSecond() {
-        return 120;
+        return 60/EU_PER_STEAM;
     }
 
     @Override
