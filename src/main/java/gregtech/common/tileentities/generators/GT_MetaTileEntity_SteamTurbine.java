@@ -11,6 +11,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import net.minecraftforge.fluids.FluidStack;
 
+import static gregtech.api.enums.GT_Values.EU_PER_STEAM;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaTileEntity_SteamTurbine extends GT_MetaTileEntity_BasicGenerator {
@@ -76,12 +77,12 @@ public class GT_MetaTileEntity_SteamTurbine extends GT_MetaTileEntity_BasicGener
     @Override
     public int getFuelValue(FluidStack aLiquid) {
         if (aLiquid == null) return 0;
-        return GT_ModHandler.isAnySteam(aLiquid) ? 3 : 0;
+        return GT_ModHandler.isAnySteam(aLiquid) ? 3 * 2 * EU_PER_STEAM : 0;
     }
 
     @Override
     public int consumedFluidPerOperation(FluidStack aLiquid) {
-        return this.mEfficiency;
+        return this.mEfficiency    ;
     }
 
     @Override

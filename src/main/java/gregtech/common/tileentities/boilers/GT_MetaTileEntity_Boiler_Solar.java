@@ -23,6 +23,7 @@ import java.util.List;
 
 import static gregtech.api.GregTech_API.sMachineFile;
 import static gregtech.api.enums.ConfigCategories.machineconfig;
+import static gregtech.api.enums.GT_Values.EU_PER_STEAM;
 import static net.minecraft.util.EnumChatFormatting.GOLD;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 
@@ -306,11 +307,11 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
         }
 
         public int getMinOutputPerSecond() {
-            return minOutputPerSecond;
+            return minOutputPerSecond / EU_PER_STEAM;
         }
 
         public int getMaxOutputPerSecond() {
-            return maxOutputPerSecond;
+            return maxOutputPerSecond / EU_PER_STEAM;
         }
 
         public int getCoolDownTicks() {
