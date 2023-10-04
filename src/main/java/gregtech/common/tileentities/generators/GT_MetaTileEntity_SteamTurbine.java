@@ -21,7 +21,7 @@ public class GT_MetaTileEntity_SteamTurbine extends GT_MetaTileEntity_BasicGener
     public GT_MetaTileEntity_SteamTurbine(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, new String[]{
                 "Converts Steam into EU",
-                "Base rate: 2L of Steam -> 1 EU"});
+                "Base rate: 1L of Steam -> 2 EU"});
         onConfigLoad();
     }
 
