@@ -164,8 +164,8 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_En
         if (inputs.length > 0 || fluids.length > 0) {
             long tVoltage = getMaxInputVoltage();
             byte tier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.findRecipe(getBaseMetaTileEntity(), false,
-                    false, gregtech.api.enums.GT_Values.V[tier], fluids, inputs);
+            GT_Recipe tRecipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false,
+                                                          false, gregtech.api.enums.GT_Values.V[tier], fluids, inputs);
             if (tRecipe != null && tRecipe.isRecipeInputEqual(true, fluids, inputs)) {
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
@@ -185,6 +185,11 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_En
             }
         }
         return false;
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes;
     }
 
     @Override

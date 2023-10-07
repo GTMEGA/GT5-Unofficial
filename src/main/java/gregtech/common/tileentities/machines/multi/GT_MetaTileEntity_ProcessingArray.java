@@ -20,6 +20,7 @@ import gregtech.api.util.GT_ProcessingArray_Manager;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
+import lombok.val;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -77,7 +78,7 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3, true)
                 .addController("Front center")
-                .addCasingInfo("Robust Tungstensteel Machine Casing", 14)
+                .addCasingInfo("Clean Stainless Steel Machine Casing", getRequiredCasingCount())
                 .addEnergyHatch("Any casing", 1)
                 .addMaintenanceHatch("Any casing", 1)
                 .addInputBus("Any casing", 1)
@@ -90,17 +91,18 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        val casingTextureIndex = getHatchTextureIndex();
         if (aSide == aFacing) {
             if (aActive) return new ITexture[]{
-                    BlockIcons.casingTexturePages[0][48],
+                    BlockIcons.casingTexturePages[0][casingTextureIndex],
                     TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE).extFacing().build(),
                     TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW).extFacing().glow().build()};
             return new ITexture[]{
-                    BlockIcons.casingTexturePages[0][48],
+                    BlockIcons.casingTexturePages[0][casingTextureIndex],
                     TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY).extFacing().build(),
                     TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW).extFacing().glow().build()};
         }
-        return new ITexture[]{Textures.BlockIcons.casingTexturePages[0][48]};
+        return new ITexture[]{Textures.BlockIcons.casingTexturePages[0][casingTextureIndex]};
     }
 
     @Override
@@ -317,12 +319,12 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
 
     @Override
     protected IStructureElement<GT_MetaTileEntity_CubicMultiBlockBase<?>> getCasingElement() {
-        return ofBlock(GregTech_API.sBlockCasings4, 0);
+        return ofBlock(GregTech_API.sBlockCasings4, 1);
     }
 
     @Override
     protected int getHatchTextureIndex() {
-        return 48;
+        return 49;
     }
 
     @Override
