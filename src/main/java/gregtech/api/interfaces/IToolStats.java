@@ -111,6 +111,11 @@ public interface IToolStats {
     boolean isWrench();
 
     /**
+     * @return If this Tool can be used as an ProjRed Screwdriver.
+     */
+    boolean isScrewdriver();
+
+    /**
      * @return If this Tool can be used as Weapon i.e. if that is the main purpose.
      */
     boolean isWeapon();

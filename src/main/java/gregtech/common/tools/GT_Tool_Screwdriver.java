@@ -102,6 +102,11 @@ public class GT_Tool_Screwdriver extends GT_Tool {
     }
 
     @Override
+    public boolean isScrewdriver() {
+        return true;
+    }
+
+    @Override
     public boolean isMiningTool() {
         return false;
     }
