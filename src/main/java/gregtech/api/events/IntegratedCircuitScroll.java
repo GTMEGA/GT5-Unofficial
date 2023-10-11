@@ -33,13 +33,13 @@ public class IntegratedCircuitScroll {
                             int newValue = heldItem.getItemDamage() + 1;
                             if (newValue <= maxValue) {
                                 heldItem.setItemDamage(newValue);
-                                NetworkDispatcher.INSTANCE.sendToServer(new MessageSetIntegratedCircuit((byte) newValue));
+                                NetworkDispatcher.INSTANCE.sendToServer(new MessageSetIntegratedCircuit((byte) newValue,false));
                             }
                         } else {
                             int newValue = heldItem.getItemDamage() - 1;
                             if (newValue >= minValue) {
                                 heldItem.setItemDamage(newValue);
-                                NetworkDispatcher.INSTANCE.sendToServer(new MessageSetIntegratedCircuit((byte) newValue));
+                                NetworkDispatcher.INSTANCE.sendToServer(new MessageSetIntegratedCircuit((byte) newValue,false));
                             }
                         }
                         //send packet

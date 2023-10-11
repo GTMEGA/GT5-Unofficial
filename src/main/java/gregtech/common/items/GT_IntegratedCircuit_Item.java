@@ -129,7 +129,8 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        player.openGui(GT_Values.GT,1011,world,0,0,0);
+        if (!world.isRemote)
+            player.openGui(GT_Values.GT,1011,world,0,0,0);
         return super.onItemRightClick(stack, world, player);
     }
 }

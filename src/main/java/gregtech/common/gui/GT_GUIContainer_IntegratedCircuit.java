@@ -43,7 +43,7 @@ public class GT_GUIContainer_IntegratedCircuit extends GuiContainer {
         if (btn instanceof GT_GuiButtonNumber) {
             int newValue = ((GT_GuiButtonNumber) btn).getValue();
             container.circuit.setItemDamage(newValue);
-            NetworkDispatcher.INSTANCE.sendToServer(new MessageSetIntegratedCircuit((byte) newValue));
+            NetworkDispatcher.INSTANCE.sendToServer(new MessageSetIntegratedCircuit((byte) newValue,true));
             mc.thePlayer.closeScreen();
         }
     }
