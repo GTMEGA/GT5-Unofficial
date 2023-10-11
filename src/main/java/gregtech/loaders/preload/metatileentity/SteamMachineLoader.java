@@ -20,10 +20,10 @@ public final class SteamMachineLoader {
     public static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
-        Machine_Bronze_Boiler.set(new GT_MetaTileEntity_Boiler_Bronze(100, "boiler.bronze", "Small Coal Boiler").getStackForm(1L));
+        Machine_Bronze_Boiler.set(new GT_MetaTileEntity_Boiler_Bronze(100, "boiler.bronze", "Brass Coal Boiler").getStackForm(1L));
         Machine_Steel_Boiler.set(new GT_MetaTileEntity_Boiler_Steel(101, "boiler.steel", "High Pressure Coal Boiler").getStackForm(1L));
         Machine_Steel_Boiler_Lava.set(new GT_MetaTileEntity_Boiler_Lava(102, "boiler.lava", "High Pressure Lava Boiler").getStackForm(1L));
-        Machine_Bronze_Boiler_Solar.set(new GT_MetaTileEntity_Boiler_Solar(105, "boiler.solar", "Simple Solar Boiler").getStackForm(1L));
+        Machine_Bronze_Boiler_Solar.set(new GT_MetaTileEntity_Boiler_Solar(105, "boiler.solar", "Brass Solar Boiler").getStackForm(1L));
         Machine_HP_Solar.set(new GT_MetaTileEntity_Boiler_Solar_Steel(114, "boiler.steel.solar", "High Pressure Solar Boiler").getStackForm(1L));
         Machine_Steel_Boiler_SemiFluid.set(new GT_MetaTileEntity_Boiler_Semi(9333, "boiler.semi", "High Pressure SemiFluid Boiler").getStackForm(1));
         addCraftingRecipe(Machine_Bronze_Boiler.get(1L), RECIPE_MASK, new Object[]{"PPP", "PwP", "BFB", 'F', craftingIronFurnace, 'P', plate.get(Brass), 'B', new ItemStack(Blocks.brick_block, 1)});
@@ -45,21 +45,21 @@ public final class SteamMachineLoader {
         Machine_HP_Compressor.set(new GT_MetaTileEntity_Compressor_Steel(116, "hpmachine.compressor", "High Pressure Compressor").getStackForm(1L));
         Machine_Bronze_AlloySmelter.set(new GT_MetaTileEntity_AlloySmelter_Bronze(118, "bronzemachine.alloysmelter", "Steam Alloy Smelter").getStackForm(1L));
         Machine_HP_AlloySmelter.set(new GT_MetaTileEntity_AlloySmelter_Steel(119, "hpmachine.alloysmelter", "High Pressure Alloy Smelter").getStackForm(1L));
-        Machine_HP_Sifter.set(new GT_MetaTileEntity_Sifter_Steel(9330, "hpmachine.sifter", "High Pressure Sifter", "Stay calm and keep sifting.").getStackForm(1L));
-        Machine_HP_Sifter.set(new GT_MetaTileEntity_Mixer_Steel(9331, "hpmachine.mixer", "High Pressure Mixer", "Will it Blend?").getStackForm(1L));
+        Machine_HP_Sifter.set(new GT_MetaTileEntity_Sifter_Steel(9330, "hpmachine.sifter", "High Pressure Sifter", "Coal time!").getStackForm(1L));
+        Machine_HP_Sifter.set(new GT_MetaTileEntity_Mixer_Steel(9331, "hpmachine.mixer", "High Pressure Mixer", "Tough enough to stir brick!").getStackForm(1L));
         Machine_HP_Sifter.set(new GT_MetaTileEntity_Mixer_Bronze(9332, "bronzemachine.mixer", "Steam Mixer", "Will it Blend?").getStackForm(1L));
         addCraftingRecipe(Machine_Bronze_Furnace.get(1L), RECIPE_MASK, new Object[]{"XXX", "XMX", "XFX", 'M', Hull_Bronze_Bricks, 'X', pipeSmall.get(Brass), 'F', craftingFurnace});
-        addCraftingRecipe(Machine_HP_Furnace.get(1L), RECIPE_MASK, new Object[]{"XSX", "PMP", "XXX", 'M', Machine_Bronze_Furnace, 'X', pipeSmall.get(WroughtIron), 'P', plate.get(WroughtIron), 'S', plate.get(Steel)});
+        addCraftingRecipe(Machine_HP_Furnace.get(1L), RECIPE_MASK, new Object[]{"XSX", "PMP", "XXX", 'M', Machine_Bronze_Furnace, 'X', pipeSmall.get(WroughtIron), 'P', plate.get(Steel), 'S', plate.get(Steel)});
         addCraftingRecipe(Machine_Bronze_Macerator.get(1L), RECIPE_MASK, new Object[]{"DXD", "XMX", "PXP", 'M', Hull_Bronze, 'X', pipeSmall.get(Brass), 'P', craftingPiston, 'D', gem.get(Diamond)});
-        addCraftingRecipe(Machine_HP_Macerator.get(1L), RECIPE_MASK, new Object[]{"PSP", "XMX", "PPP", 'M', Machine_Bronze_Macerator, 'X', pipeSmall.get(WroughtIron), 'P', plate.get(WroughtIron), 'S', plate.get(Steel)});
+        addCraftingRecipe(Machine_HP_Macerator.get(1L), RECIPE_MASK, new Object[]{"PSP", "XMX", "PPP", 'M', Machine_Bronze_Macerator, 'X', pipeSmall.get(WroughtIron), 'P', plate.get(Steel), 'S', plate.get(Steel)});
         addCraftingRecipe(Machine_Bronze_Extractor.get(1L), RECIPE_MASK, new Object[]{"XXX", "PMG", "XXX", 'M', Hull_Bronze, 'X', pipeSmall.get(Brass), 'P', craftingPiston, 'G', new ItemStack(Blocks.glass, 1)});
-        addCraftingRecipe(Machine_HP_Extractor.get(1L), RECIPE_MASK, new Object[]{"XSX", "PMP", "XXX", 'M', Machine_Bronze_Extractor, 'X', pipeSmall.get(WroughtIron), 'P', plate.get(WroughtIron), 'S', plate.get(Steel)});
+        addCraftingRecipe(Machine_HP_Extractor.get(1L), RECIPE_MASK, new Object[]{"XSX", "PMP", "XXX", 'M', Machine_Bronze_Extractor, 'X', pipeSmall.get(WroughtIron), 'P', plate.get(Steel), 'S', plate.get(Steel)});
         addCraftingRecipe(Machine_Bronze_Hammer.get(1L), RECIPE_MASK, new Object[]{"XPX", "XMX", "XAX", 'M', Hull_Bronze, 'X', pipeSmall.get(Brass), 'P', craftingPiston, 'A', craftingAnvil});
-        addCraftingRecipe(Machine_HP_Hammer.get(1L), RECIPE_MASK, new Object[]{"PSP", "XMX", "PPP", 'M', Machine_Bronze_Hammer, 'X', pipeSmall.get(WroughtIron), 'P', plate.get(WroughtIron), 'S', plate.get(Steel)});
+        addCraftingRecipe(Machine_HP_Hammer.get(1L), RECIPE_MASK, new Object[]{"PSP", "XMX", "PPP", 'M', Machine_Bronze_Hammer, 'X', pipeSmall.get(WroughtIron), 'P', plate.get(Steel), 'S', plate.get(Steel)});
         addCraftingRecipe(Machine_Bronze_Compressor.get(1L), RECIPE_MASK, new Object[]{"XXX", "PMP", "XXX", 'M', Hull_Bronze, 'X', pipeSmall.get(Brass), 'P', craftingPiston});
-        addCraftingRecipe(Machine_HP_Compressor.get(1L), RECIPE_MASK, new Object[]{"XSX", "PMP", "XXX", 'M', Machine_Bronze_Compressor, 'X', pipeSmall.get(WroughtIron), 'P', plate.get(WroughtIron), 'S', plate.get(Steel)});
+        addCraftingRecipe(Machine_HP_Compressor.get(1L), RECIPE_MASK, new Object[]{"XSX", "PMP", "XXX", 'M', Machine_Bronze_Compressor, 'X', pipeSmall.get(WroughtIron), 'P', plate.get(Steel), 'S', plate.get(Steel)});
         addCraftingRecipe(Machine_Bronze_AlloySmelter.get(1L), RECIPE_MASK, new Object[]{"XXX", "FMF", "XXX", 'M', Hull_Bronze_Bricks, 'X', pipeSmall.get(Brass), 'F', craftingFurnace});
-        addCraftingRecipe(Machine_HP_AlloySmelter.get(1L), RECIPE_MASK, new Object[]{"PSP", "PMP", "PXP", 'M', Machine_Bronze_AlloySmelter, 'X', pipeSmall.get(WroughtIron), 'P', plate.get(WroughtIron), 'S', plate.get(Steel)});
+        addCraftingRecipe(Machine_HP_AlloySmelter.get(1L), RECIPE_MASK, new Object[]{"PSP", "PMP", "PXP", 'M', Machine_Bronze_AlloySmelter, 'X', pipeSmall.get(WroughtIron), 'P', plate.get(Steel), 'S', plate.get(Steel)});
         LOADED = true;
     }
 }
