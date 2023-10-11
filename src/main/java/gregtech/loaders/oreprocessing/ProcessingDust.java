@@ -127,7 +127,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     case "Mercury":
                         break;
                     case "Oilsands":
-                        GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(true, new ItemStack[]{GT_Utility.copyAmount(1L, aStack)}, null, null, null, new FluidStack[]{Materials.OilHeavy.getFluid(1000)}, 660, 8, 0);
+                        GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(true, new ItemStack[]{GT_Utility.copyAmount(1L, aStack)}, null, null, null, new FluidStack[]{Materials.Oil.getFluid(1000)}, 660, 8, 0);
                         break;
                     case "Coal":
                         if (GT_Mod.gregtechproxy.mTEMachineRecipes)
