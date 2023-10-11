@@ -24,6 +24,15 @@ dependencies {
         transitive = false
     }
 
+    // ProjectRed Core 4.7.0pre12.95
+    compileOnly(deobfCurse("projectred-core-228702:2280728"))
+
+    // MRTJPCore 1.1.0.33-universal
+    compileOnly(deobfCurse("mrtjpcore-229002:2279413"))
+
+    // ForgeMultipart 1.2.0.345
+    compileOnly(deobfCurse("multipart-229323:2242993"))
+
     //EnderCore 0.2.0.39_beta
     compileOnly(deobfCurse("endercore-231868:2331048"))  // TODO: use in-house version
 
