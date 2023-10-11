@@ -792,7 +792,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addDistilleryRecipe(GT_Utility.getIntegratedCircuit(4), Materials.SeedOil.getFluid(32L), Materials.Lubricant.getFluid(8L), 80, 30, false);
         GT_Values.RA.addDistilleryRecipe(GT_Utility.getIntegratedCircuit(4), Materials.FishOil.getFluid(32L), Materials.Lubricant.getFluid(8L), 80, 30, false);
         GT_Values.RA.addDistilleryRecipe(GT_Utility.getIntegratedCircuit(4), Materials.Oil.getFluid(120L), Materials.Lubricant.getFluid(60L), 160, 30, false);
-        GT_Values.RA.addDistilleryRecipe(GT_Utility.getIntegratedCircuit(1), Materials.Biomass.getFluid(40L), Materials.Ethanol.getFluid(12L), 16, 24, false);
+        //GT_Values.RA.addDistilleryRecipe(GT_Utility.getIntegratedCircuit(1), Materials.Biomass.getFluid(40L), Materials.Ethanol.getFluid(12L), 16, 24, false);
         GT_Values.RA.addDistilleryRecipe(GT_Utility.getIntegratedCircuit(5), Materials.Biomass.getFluid(40L), Materials.Water.getFluid(12L), 16, 24, false);
         GT_Values.RA.addDistilleryRecipe(GT_Utility.getIntegratedCircuit(5), Materials.Water.getFluid(5L), GT_ModHandler.getDistilledWater(5L), 16, 10, false);
         GT_Values.RA.addDistilleryRecipe(GT_Utility.getIntegratedCircuit(1), FluidRegistry.getFluidStack("potion.potatojuice", 2), FluidRegistry.getFluidStack("potion.vodka", 1), 16, 16, true);
