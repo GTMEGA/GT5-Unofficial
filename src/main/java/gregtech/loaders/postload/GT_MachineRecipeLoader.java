@@ -792,7 +792,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addDistilleryRecipe(GT_Utility.getIntegratedCircuit(4), Materials.SeedOil.getFluid(32L), Materials.Lubricant.getFluid(8L), 80, 30, false);
         GT_Values.RA.addDistilleryRecipe(GT_Utility.getIntegratedCircuit(4), Materials.FishOil.getFluid(32L), Materials.Lubricant.getFluid(8L), 80, 30, false);
         GT_Values.RA.addDistilleryRecipe(GT_Utility.getIntegratedCircuit(4), Materials.Oil.getFluid(120L), Materials.Lubricant.getFluid(60L), 160, 30, false);
-        GT_Values.RA.addDistilleryRecipe(GT_Utility.getIntegratedCircuit(1), Materials.Biomass.getFluid(40L), Materials.Ethanol.getFluid(12L), 16, 24, false);
+        //GT_Values.RA.addDistilleryRecipe(GT_Utility.getIntegratedCircuit(1), Materials.Biomass.getFluid(40L), Materials.Ethanol.getFluid(12L), 16, 24, false);
         GT_Values.RA.addDistilleryRecipe(GT_Utility.getIntegratedCircuit(5), Materials.Biomass.getFluid(40L), Materials.Water.getFluid(12L), 16, 24, false);
         GT_Values.RA.addDistilleryRecipe(GT_Utility.getIntegratedCircuit(5), Materials.Water.getFluid(5L), GT_ModHandler.getDistilledWater(5L), 16, 10, false);
         GT_Values.RA.addDistilleryRecipe(GT_Utility.getIntegratedCircuit(1), FluidRegistry.getFluidStack("potion.potatojuice", 2), FluidRegistry.getFluidStack("potion.vodka", 1), 16, 16, true);
@@ -836,7 +836,7 @@ public class GT_MachineRecipeLoader implements Runnable {
             GT_Values.RA.addBrewingRecipe(new ItemStack(Blocks.red_mushroom, 1, 0), tFluid, FluidRegistry.getFluid("potion.poison"), false);
             GT_Values.RA.addBrewingRecipe(new ItemStack(Items.fish, 1, 3), tFluid, FluidRegistry.getFluid("potion.poison.strong"), true);
             GT_Values.RA.addBrewingRecipe(ItemList.IC2_Grin_Powder.get(1L), tFluid, FluidRegistry.getFluid("potion.poison.strong"), false);
-            GT_Values.RA.addBrewingRecipe(new ItemStack(Items.reeds, 1, 0), tFluid, FluidRegistry.getFluid("potion.reedwater"), false);
+            //GT_Values.RA.addBrewingRecipe(new ItemStack(Items.reeds, 1, 0), tFluid, FluidRegistry.getFluid("potion.reedwater"), false);
             GT_Values.RA.addBrewingRecipe(new ItemStack(Items.apple, 1, 0), tFluid, FluidRegistry.getFluid("potion.applejuice"), false);
             GT_Values.RA.addBrewingRecipe(new ItemStack(Items.golden_apple, 1, 0), tFluid, FluidRegistry.getFluid("potion.goldenapplejuice"), true);
             GT_Values.RA.addBrewingRecipe(new ItemStack(Items.golden_apple, 1, 1), tFluid, FluidRegistry.getFluid("potion.idunsapplejuice"), true);
@@ -926,7 +926,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addFermentingRecipe(FluidRegistry.getFluidStack("potion.applejuice", 50), FluidRegistry.getFluidStack("potion.cider", 25), 1024, false);
         GT_Values.RA.addFermentingRecipe(FluidRegistry.getFluidStack("potion.goldenapplejuice", 50), FluidRegistry.getFluidStack("potion.goldencider", 25), 1024, true);
         GT_Values.RA.addFermentingRecipe(FluidRegistry.getFluidStack("potion.idunsapplejuice", 50), FluidRegistry.getFluidStack("potion.notchesbrew", 25), 1024, true);
-        GT_Values.RA.addFermentingRecipe(FluidRegistry.getFluidStack("potion.reedwater", 50), FluidRegistry.getFluidStack("potion.rum", 25), 1024, true);
+        //GT_Values.RA.addFermentingRecipe(FluidRegistry.getFluidStack("potion.reedwater", 50), FluidRegistry.getFluidStack("potion.rum", 25), 1024, true);
         GT_Values.RA.addFermentingRecipe(FluidRegistry.getFluidStack("potion.rum", 50), FluidRegistry.getFluidStack("potion.piratebrew", 10), 2048, false);
         GT_Values.RA.addFermentingRecipe(FluidRegistry.getFluidStack("potion.grapejuice", 50), FluidRegistry.getFluidStack("potion.wine", 25), 1024, false);
         GT_Values.RA.addFermentingRecipe(FluidRegistry.getFluidStack("potion.wine", 50), FluidRegistry.getFluidStack("potion.vinegar", 10), 2048, true);
@@ -3170,12 +3170,12 @@ public class GT_MachineRecipeLoader implements Runnable {
 //        GT_Values.RA.addChemicalRecipe(Materials.Benzene.getCells(1),  Materials.Empty.getCells(1),        Materials.Ethylene.getGas(1000),  Materials.Styrene.getFluid(1000), Materials.Hydrogen.getCells(2), 120);
 //        GT_Values.RA.addChemicalRecipe(Materials.Ethylene.getCells(1), Materials.Empty.getCells(1),        Materials.Benzene.getFluid(1000), Materials.Styrene.getFluid(1000), Materials.Hydrogen.getCells(2), 120);
         
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Butadiene.getCells(1), ItemList.Cell_Air.get(5),  Materials.Styrene.getFluid(350),  GT_Values.NF, Materials.RawStyreneButadieneRubber.getDust(9),  Materials.Empty.getCells(6),  160, 240);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Butadiene.getCells(1), Materials.Oxygen.getCells(5),             Materials.Styrene.getFluid(350),  GT_Values.NF, Materials.RawStyreneButadieneRubber.getDust(13), Materials.Empty.getCells(6),  160, 240);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Styrene.getCells(1),   ItemList.Cell_Air.get(15), Materials.Butadiene.getGas(3000), GT_Values.NF, Materials.RawStyreneButadieneRubber.getDust(27), Materials.Empty.getCells(16), 480, 240);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Styrene.getCells(1),   Materials.Oxygen.getCells(15),            Materials.Butadiene.getGas(3000), GT_Values.NF, Materials.RawStyreneButadieneRubber.getDust(41), Materials.Empty.getCells(16), 480, 240);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Styrene.getCells(1),   Materials.Butadiene.getCells(3),          Materials.Air.getGas(15000),      GT_Values.NF, Materials.RawStyreneButadieneRubber.getDust(27), Materials.Empty.getCells(4),  480, 240);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Styrene.getCells(1),   Materials.Butadiene.getCells(3),          Materials.Oxygen.getGas(15000),   GT_Values.NF, Materials.RawStyreneButadieneRubber.getDust(41), Materials.Empty.getCells(4),  480, 240);
+//        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Butadiene.getCells(1), ItemList.Cell_Air.get(5),  Materials.Styrene.getFluid(350),  GT_Values.NF, Materials.RawStyreneButadieneRubber.getDust(9),  Materials.Empty.getCells(6),  160, 240);
+//        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Butadiene.getCells(1), Materials.Oxygen.getCells(5),             Materials.Styrene.getFluid(350),  GT_Values.NF, Materials.RawStyreneButadieneRubber.getDust(13), Materials.Empty.getCells(6),  160, 240);
+//        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Styrene.getCells(1),   ItemList.Cell_Air.get(15), Materials.Butadiene.getGas(3000), GT_Values.NF, Materials.RawStyreneButadieneRubber.getDust(27), Materials.Empty.getCells(16), 480, 240);
+//        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Styrene.getCells(1),   Materials.Oxygen.getCells(15),            Materials.Butadiene.getGas(3000), GT_Values.NF, Materials.RawStyreneButadieneRubber.getDust(41), Materials.Empty.getCells(16), 480, 240);
+//        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Styrene.getCells(1),   Materials.Butadiene.getCells(3),          Materials.Air.getGas(15000),      GT_Values.NF, Materials.RawStyreneButadieneRubber.getDust(27), Materials.Empty.getCells(4),  480, 240);
+//        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Styrene.getCells(1),   Materials.Butadiene.getCells(3),          Materials.Oxygen.getGas(15000),   GT_Values.NF, Materials.RawStyreneButadieneRubber.getDust(41), Materials.Empty.getCells(4),  480, 240);
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(3)}, new FluidStack[]{Materials.Styrene.getFluid(36),  Materials.Butadiene.getGas(108), Materials.Air.getGas(2000)},                                                     null, new ItemStack[]{Materials.RawStyreneButadieneRubber.getDust(1)}, 160, 240);
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(3)}, new FluidStack[]{Materials.Styrene.getFluid(72),  Materials.Butadiene.getGas(216), Materials.Oxygen.getGas(2000)},                                                  null, new ItemStack[]{Materials.RawStyreneButadieneRubber.getDust(3)}, 160, 240);
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(4)}, new FluidStack[]{Materials.Styrene.getFluid(540), Materials.Butadiene.getGas(1620), Materials.Titaniumtetrachloride.getFluid(100), Materials.Air.getGas(15000)},    null, new ItemStack[]{Materials.RawStyreneButadieneRubber.getDust(22), Materials.RawStyreneButadieneRubber.getDustSmall(2)}, 640, 240);

@@ -15,11 +15,12 @@ import net.minecraft.world.IBlockAccess;
 
 public class MessageSetIntegratedCircuit implements IMessage {
     byte metaValue;
+    boolean sendBack;
 
     public MessageSetIntegratedCircuit() {
     }
 
-    public MessageSetIntegratedCircuit(byte metaValue) {
+    public MessageSetIntegratedCircuit(byte metaValue, boolean sendBack) {
         this.metaValue = metaValue;
     }
 
@@ -42,7 +43,8 @@ public class MessageSetIntegratedCircuit implements IMessage {
                 ItemStack circuit = player.inventory.mainInventory[player.inventory.currentItem];
                 if (circuit.getItem() instanceof GT_IntegratedCircuit_Item) {
                     circuit.setItemDamage(message.metaValue);
-                    return new MessageSetIntegratedCircuit(message.metaValue);
+                    if (message.sendBack)
+                        return new MessageSetIntegratedCircuit(message.metaValue,false);
                 }
             }
             return null;
@@ -55,7 +57,7 @@ public class MessageSetIntegratedCircuit implements IMessage {
             if (message.metaValue >= IntegratedCircuitScroll.minValue || message.metaValue  <= IntegratedCircuitScroll.maxValue) {
                 int currentItem = player.inventory.currentItem;
                 if (currentItem < 0 || player.inventory.mainInventory.length < currentItem) return null;
-                ItemStack circuit = player.inventory.mainInventory[player.inventory.currentItem];
+                ItemStack circuit = player.inventory.mainInventory[currentItem];
                 if (circuit.getItem() instanceof GT_IntegratedCircuit_Item) {
                     if (circuit.getItemDamage() != message.metaValue) {
                         circuit.setItemDamage(message.metaValue);

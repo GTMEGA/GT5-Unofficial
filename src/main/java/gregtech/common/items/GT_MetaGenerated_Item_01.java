@@ -892,7 +892,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Cover_NeedsMaintainance.set(addItem(tLastID = 748, "Needs Maintenance Cover", "Attach to Multiblock Controller. Emits Redstone Signal if needs Maintenance", new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         GregTech_API.registerCover(ItemList.Cover_NeedsMaintainance.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(TextureFactory.of(OVERLAY_ACTIVITYDETECTOR), TextureFactory.builder().addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW).glow().build())), new GT_Cover_NeedMaintainance());
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Emitter_MV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_NeedsMaintainance.get(1L), 600, 24);
 
         GT_ModHandler.addCraftingRecipe(ItemList.ItemFilter_Export.get(1L), new Object[]{"SPS", "dIC", "SPS", 'P', OrePrefixes.plate.get(Materials.Tin), 'S', OrePrefixes.screw.get(Materials.Iron), 'I', ItemList.Component_Filter, 'C', ItemList.Conveyor_Module_LV});
         GT_ModHandler.addCraftingRecipe(ItemList.ItemFilter_Import.get(1L), new Object[]{"SPS", "CId", "SPS", 'P', OrePrefixes.plate.get(Materials.Tin), 'S', OrePrefixes.screw.get(Materials.Iron), 'I', ItemList.Component_Filter, 'C', ItemList.Conveyor_Module_LV});
