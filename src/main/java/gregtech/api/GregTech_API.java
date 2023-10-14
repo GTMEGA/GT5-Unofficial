@@ -320,7 +320,7 @@ public class GregTech_API {
     public static boolean sUseMachineMetal = false;
 
 
-    public static boolean mUseOnlyGoodSolderingMaterials = false;
+    public static boolean mUseOnlyGoodSolderingMaterials = true;
 
     private static final String aTextIC2Lower = MOD_ID_IC2.toLowerCase(Locale.ENGLISH);
     /**

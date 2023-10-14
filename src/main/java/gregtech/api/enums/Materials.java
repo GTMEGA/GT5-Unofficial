@@ -1986,8 +1986,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         NitroFuel.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
         NitroCarbon.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
 
-        Lead.add(SubTag.MORTAR_GRINDABLE, SubTag.SOLDERING_MATERIAL, SubTag.SOLDERING_MATERIAL_BAD);
-        Tin.add(SubTag.MORTAR_GRINDABLE, SubTag.SOLDERING_MATERIAL);
+        Lead.add(SubTag.MORTAR_GRINDABLE);
+        Tin.add(SubTag.MORTAR_GRINDABLE);
         SolderingAlloy.add(SubTag.MORTAR_GRINDABLE, SubTag.SOLDERING_MATERIAL, SubTag.SOLDERING_MATERIAL_GOOD);
 
         Cheese.add(SubTag.SMELTING_TO_FLUID);

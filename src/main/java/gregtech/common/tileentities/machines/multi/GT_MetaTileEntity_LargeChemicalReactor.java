@@ -82,7 +82,7 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_En
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3, false)
                 .addController("Front center")
-                .addCasingInfo("Chemically Inert Machine Casing", 8)
+                .addCasingInfo("Chemically Inert Machine Casing", 0)
                 .addOtherStructurePart("PTFE Pipe Machine Casing", "Center")
                 .addOtherStructurePart("Cupronickel Coil Block", "Adjacent to the PTFE Pipe Machine Casing", 1)
                 .addEnergyHatch("Any casing", 1, 2)
@@ -210,7 +210,7 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_En
         mCasingAmount = 0;
         mCoilAmount = 0;
         return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0) &&
-                mCasingAmount >= 8 && mCoilAmount == 1 &&
+                mCasingAmount >= 0 && mCoilAmount == 1 &&
                 !mEnergyHatches.isEmpty() && mMaintenanceHatches.size() == 1;
     }
 

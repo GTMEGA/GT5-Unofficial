@@ -104,7 +104,7 @@ public final class MultiblockMachineLoader {
 
         Machine_Multi_Cleanroom.set(new GT_MetaTileEntity_Cleanroom(1172, "multimachine.cleanroom", "Cleanroom Controller").getStackForm(1));
         //If Cleanroom is enabled, add a recipe, else hide from NEI.
-        if (gregtechproxy.mEnableCleanroom) {
+        if (false/*gregtechproxy.mEnableCleanroom*/) {
             addCraftingRecipe(Machine_Multi_Cleanroom.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"FFF", "RHR", "MCM", 'H', Hull_HV, 'F', Component_Filter, 'R', rotor.get(StainlessSteel), 'M', Electric_Motor_HV, 'C', circuitLogic.get(LOGIC_HV)});
         } else {
             if (Loader.isModLoaded("NotEnoughItems"))

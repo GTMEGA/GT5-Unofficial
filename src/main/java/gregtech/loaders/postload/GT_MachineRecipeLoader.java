@@ -610,7 +610,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 //Circuit soldering
                 //Integraded Circuits
 
-                for (ItemStack tPlate : new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L)}) {
+                for (ItemStack tPlate : new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1L)}) {
                     GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(Blocks.lever, 1, 32767), tPlate, GT_Utility.getIntegratedCircuit(1)}, tMat.getMolten(144L * tMultiplier / 2L), ItemList.Cover_Controller.get(1L), 800, 16);
                     GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(Blocks.redstone_torch, 1, 32767), tPlate, GT_Utility.getIntegratedCircuit(1)}, tMat.getMolten(144L * tMultiplier / 2L), ItemList.Cover_ActivityDetector.get(1L), 800, 16);
                     GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(Blocks.heavy_weighted_pressure_plate, 1, 32767), tPlate, GT_Utility.getIntegratedCircuit(1)}, tMat.getMolten(144L * tMultiplier / 2L), ItemList.Cover_FluidDetector.get(1L), 800, 16);
