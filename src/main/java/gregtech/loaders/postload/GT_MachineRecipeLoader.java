@@ -610,7 +610,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 //Circuit soldering
                 //Integraded Circuits
 
-                for (ItemStack tPlate : new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L)}) {
+                for (ItemStack tPlate : new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1L)}) {
                     GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(Blocks.lever, 1, 32767), tPlate, GT_Utility.getIntegratedCircuit(1)}, tMat.getMolten(144L * tMultiplier / 2L), ItemList.Cover_Controller.get(1L), 800, 16);
                     GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(Blocks.redstone_torch, 1, 32767), tPlate, GT_Utility.getIntegratedCircuit(1)}, tMat.getMolten(144L * tMultiplier / 2L), ItemList.Cover_ActivityDetector.get(1L), 800, 16);
                     GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(Blocks.heavy_weighted_pressure_plate, 1, 32767), tPlate, GT_Utility.getIntegratedCircuit(1)}, tMat.getMolten(144L * tMultiplier / 2L), ItemList.Cover_FluidDetector.get(1L), 800, 16);
@@ -3454,15 +3454,11 @@ public class GT_MachineRecipeLoader implements Runnable {
      	 */
             private void addPolybenzimidazoleRecipes() {
 
-            	//Potassium Nitride
-            	GT_Values.RA.addChemicalRecipe(Materials.Potassium.getDust(1), GT_Utility.getIntegratedCircuit(1), Materials.NitricAcid.getFluid(1000), GT_Values.NF, Materials.PotassiumNitrade.getDust(1), 100, 30);
-
             	// Chrome Trioxide
             	GT_Values.RA.addChemicalRecipe(Materials.ChromiumDioxide.getDust(1), GT_Utility.getIntegratedCircuit(1), Materials.Oxygen.getGas(1000), GT_Values.NF, Materials.ChromiumTrioxide.getDust(1), GT_Values.NI,100, 60);
 
             	//Potassium Dichromate
             	GT_Values.RA.addChemicalRecipe(Materials.Saltpeter.getDust(2), Materials.ChromiumTrioxide.getDust(2), Materials.Potassiumdichromate.getDust(1), 100, 480);
-            	GT_Values.RA.addChemicalRecipe(Materials.PotassiumNitrade.getDust(2), Materials.ChromiumTrioxide.getDust(2), Materials.Potassiumdichromate.getDust(1), 100, 480);
 
             	//Nitrochlorobenzene
             	GT_Values.RA.addChemicalRecipe(Materials.Chlorobenzene.getCells(1), GT_Utility.getIntegratedCircuit(1), Materials.NitrationMixture.getFluid(1000), Materials.DilutedSulfuricAcid.getFluid(1000), Materials.Nitrochlorobenzene.getCells(1), 100, 480);

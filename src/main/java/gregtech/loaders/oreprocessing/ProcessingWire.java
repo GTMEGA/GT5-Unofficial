@@ -54,13 +54,14 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     //GT_Values.RA.addWiremillRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L), GT_Utility.copy(new Object[]{GT_Utility.copyAmount(2L, aStack), GT_OreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 8L)}), 100, 4);
                     //GT_Values.RA.addWiremillRecipe(GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L), GT_Utility.copy(new Object[]{aStack, GT_OreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 4L)}), 50, 4);
                 }
-                if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial) && !aMaterial.contains(SubTag.NO_WORKING))
-                GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"Xx", 'X', OrePrefixes.plate.get(aMaterial)});
-                GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 2L), GT_OreDictUnificator.get(OrePrefixes.wireGt02, aMaterial, 1L), 150, 8);
+                if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial) && !aMaterial.contains(SubTag.NO_WORKING)) {
+                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"Xx", 'X', OrePrefixes.plate.get(aMaterial)});
+                }
+                /*GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 2L), GT_OreDictUnificator.get(OrePrefixes.wireGt02, aMaterial, 1L), 150, 8);
                 GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(4L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 4L), GT_OreDictUnificator.get(OrePrefixes.wireGt04, aMaterial, 1L), 200, 8);
                 GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(8L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 8L), GT_OreDictUnificator.get(OrePrefixes.wireGt08, aMaterial, 1L), 300, 8);
                 GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(12L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 12L), GT_OreDictUnificator.get(OrePrefixes.wireGt12, aMaterial, 1L), 400, 8);
-                GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(16L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 16L), GT_OreDictUnificator.get(OrePrefixes.wireGt16, aMaterial, 1L), 500, 8);
+                GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(16L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 16L), GT_OreDictUnificator.get(OrePrefixes.wireGt16, aMaterial, 1L), 500, 8);*/
                 break;
             case wireGt02:
                 cableWidth = 2;
@@ -175,12 +176,12 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             Materials.Silicone.getMolten(costMultiplier * 72), GT_OreDictUnificator.get(correspondingCable, aMaterial, 1L), 100, 8);
                     for (Materials dielectric : dielectrics) {
                         for (Materials syntheticRubber : syntheticRubbers) {
-                            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_Utility.copyAmount(4, aStack), dielectric.getDust(costMultiplier), GT_OreDictUnificator.get(OrePrefixes.foil, aMaterial, costMultiplier * 4)},
-                                    syntheticRubber.getMolten(costMultiplier * 144), GT_OreDictUnificator.get(correspondingCable, aMaterial, 4L), 400, 8);
+                            /*GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_Utility.copyAmount(4, aStack), dielectric.getDust(costMultiplier), GT_OreDictUnificator.get(OrePrefixes.foil, aMaterial, costMultiplier * 4)},
+                                    syntheticRubber.getMolten(costMultiplier * 144), GT_OreDictUnificator.get(correspondingCable, aMaterial, 4L), 400, 8);*/
                             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_Utility.copyAmount(4, aStack), dielectric.getDust(costMultiplier), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.PolyphenyleneSulfide, costMultiplier * 4)},
                                     syntheticRubber.getMolten(costMultiplier * 144), GT_OreDictUnificator.get(correspondingCable, aMaterial, 4L), 400, 8);
-                            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{aStack, dielectric.getDustSmall(costMultiplier), GT_OreDictUnificator.get(OrePrefixes.foil, aMaterial, costMultiplier)},
-                                    syntheticRubber.getMolten(costMultiplier * 36), GT_OreDictUnificator.get(correspondingCable, aMaterial, 1L), 100, 8);
+                            /*GT_Values.RA.addAssemblerRecipe(new ItemStack[]{aStack, dielectric.getDustSmall(costMultiplier), GT_OreDictUnificator.get(OrePrefixes.foil, aMaterial, costMultiplier)},
+                                    syntheticRubber.getMolten(costMultiplier * 36), GT_OreDictUnificator.get(correspondingCable, aMaterial, 1L), 100, 8);*/
                             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{aStack, dielectric.getDustSmall(costMultiplier), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.PolyphenyleneSulfide, costMultiplier)},
                                     syntheticRubber.getMolten(costMultiplier * 36), GT_OreDictUnificator.get(correspondingCable, aMaterial, 1L), 100, 8);
                         }

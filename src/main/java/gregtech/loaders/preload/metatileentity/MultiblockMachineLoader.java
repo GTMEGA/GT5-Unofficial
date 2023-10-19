@@ -53,7 +53,7 @@ public final class MultiblockMachineLoader {
         addCraftingRecipe(Casing_Fusion_Coil.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CTC", 'M', Casing_Coil_Superconductor, 'C', circuitPower.get(PWR_LUV), 'F', Field_Generator_MV, 'T', Neutron_Reflector});
 
         Processing_Array.set(new GT_MetaTileEntity_ProcessingArray(1199, "multimachine.processingarray", "Processing Array").getStackForm(1L));
-        addCraftingRecipe(Processing_Array.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', Hull_MV, 'B', pipeLarge.get(StainlessSteel), 'C', circuitLogic.get(LOGIC_MV), 'F', Robot_Arm_MV, 'T', IC2_EnergyCrystal});
+        addCraftingRecipe(Processing_Array.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', Hull_MV, 'B', pipeLarge.get(StainlessSteel), 'C', circuitLogic.get(LOGIC_MV), 'F', Robot_Arm_MV, 'T', Electric_Pump_MV});
         registerDefaultGregtechMaps();
 
         Distillation_Tower.set(new GT_MetaTileEntity_DistillationTower(1126, "multimachine.distillationtower", "Distillation Tower").getStackForm(1L));
@@ -104,7 +104,7 @@ public final class MultiblockMachineLoader {
 
         Machine_Multi_Cleanroom.set(new GT_MetaTileEntity_Cleanroom(1172, "multimachine.cleanroom", "Cleanroom Controller").getStackForm(1));
         //If Cleanroom is enabled, add a recipe, else hide from NEI.
-        if (gregtechproxy.mEnableCleanroom) {
+        if (false/*gregtechproxy.mEnableCleanroom*/) {
             addCraftingRecipe(Machine_Multi_Cleanroom.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"FFF", "RHR", "MCM", 'H', Hull_HV, 'F', Component_Filter, 'R', rotor.get(StainlessSteel), 'M', Electric_Motor_HV, 'C', circuitLogic.get(LOGIC_HV)});
         } else {
             if (Loader.isModLoaded("NotEnoughItems"))

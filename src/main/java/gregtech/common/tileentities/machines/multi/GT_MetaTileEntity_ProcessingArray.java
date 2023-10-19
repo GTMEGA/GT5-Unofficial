@@ -78,7 +78,7 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3, true)
                 .addController("Front center")
-                .addCasingInfo("Clean Stainless Steel Machine Casing", getRequiredCasingCount())
+                .addCasingInfo("Solid Steel Machine Casing", getRequiredCasingCount())
                 .addEnergyHatch("Any casing", 1)
                 .addMaintenanceHatch("Any casing", 1)
                 .addInputBus("Any casing", 1)
@@ -319,17 +319,17 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
 
     @Override
     protected IStructureElement<GT_MetaTileEntity_CubicMultiBlockBase<?>> getCasingElement() {
-        return ofBlock(GregTech_API.sBlockCasings4, 1);
+        return ofBlock(GregTech_API.sBlockCasings2, 0);
     }
 
     @Override
     protected int getHatchTextureIndex() {
-        return 49;
+        return 16;
     }
 
     @Override
     protected int getRequiredCasingCount() {
-        return 14;
+        return 8;
     }
 
     @Override
