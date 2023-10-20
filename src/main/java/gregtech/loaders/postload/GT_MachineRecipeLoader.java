@@ -802,8 +802,8 @@ public class GT_MachineRecipeLoader implements Runnable {
 //        GT_Values.RA.addDistilleryRecipe(GT_Utility.getIntegratedCircuit(4), Materials.OilMedium.getFluid(200L), Materials.Oil.getFluid(100L), 16, 24, false);
 //        GT_Values.RA.addDistilleryRecipe(GT_Utility.getIntegratedCircuit(4), Materials.OilHeavy.getFluid(100L), Materials.Oil.getFluid(100L), 16, 24, false);
 
-        GT_Values.RA.addFluidHeaterRecipe(GT_Utility.getIntegratedCircuit(1), Materials.Water.getFluid(6L), Materials.Water.getGas(960L), 30, 30);
-        GT_Values.RA.addFluidHeaterRecipe(GT_Utility.getIntegratedCircuit(1), GT_ModHandler.getDistilledWater(6L), Materials.Water.getGas(960L), 30, 30);
+        GT_Values.RA.addFluidHeaterRecipe(GT_Utility.getIntegratedCircuit(1), Materials.Water.getFluid(6L), Materials.Water.getGas((480/EU_PER_STEAM)), 30, 30);
+        GT_Values.RA.addFluidHeaterRecipe(GT_Utility.getIntegratedCircuit(1), GT_ModHandler.getDistilledWater(6L), Materials.Water.getGas((480/EU_PER_STEAM)), 30, 30);
         GT_Values.RA.addFluidHeaterRecipe(GT_Utility.getIntegratedCircuit(1), Materials.SeedOil.getFluid(16L), Materials.FryingOilHot.getFluid(16L), 16, 30);
         GT_Values.RA.addFluidHeaterRecipe(GT_Utility.getIntegratedCircuit(1), Materials.FishOil.getFluid(16L), Materials.FryingOilHot.getFluid(16L), 16, 30);
 
@@ -3145,7 +3145,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addChemicalRecipe(Materials.Ethenone.getCells(1),   Materials.NitricAcid.getCells(8),    GT_Values.NF,                        Materials.Tetranitromethane.getFluid(2000), Materials.Water.getCells(9), 480, 120);
 
         GT_Values.RA.addMixerRecipe(Materials.Fuel.getCells(1),      GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Tetranitromethane.getFluid(20), Materials.NitroFuel.getFluid(1000), Materials.Empty.getCells(1), 20, 480);
-        GT_Values.RA.addMixerRecipe(Materials.BioDiesel.getCells(1), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Tetranitromethane.getFluid(40), Materials.NitroFuel.getFluid(750), Materials.Empty.getCells(1), 20, 480);
+        GT_Values.RA.addMixerRecipe(Materials.BioDiesel.getCells(2), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Tetranitromethane.getFluid(40), Materials.NitroFuel.getFluid(750), Materials.Empty.getCells(2), 20, 480);
 
 //        GT_Values.RA.addChemicalRecipe(Materials.Propene.getCells(1),  Materials.Empty.getCells(1),         Materials.Ethylene.getGas(1000), Materials.Isoprene.getFluid(1000), Materials.Hydrogen.getCells(2), 120);
 //        GT_Values.RA.addChemicalRecipe(Materials.Ethylene.getCells(1), Materials.Empty.getCells(1),         Materials.Propene.getGas(1000),  Materials.Isoprene.getFluid(1000), Materials.Hydrogen.getCells(2), 120);
@@ -3250,7 +3250,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         //GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.LightFuel.getFluid(20000), Materials.HeavyFuel.getFluid(4000)}, new FluidStack[]{Materials.Fuel.getFluid(24000)}, null, 100, 480);
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.Fuel.getFluid(10000), Materials.Tetranitromethane.getFluid(200)}, new FluidStack[]{Materials.NitroFuel.getFluid(10000)}, null, 120, 480);
-        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.BioDiesel.getFluid(10000), Materials.Tetranitromethane.getFluid(400)}, new FluidStack[]{Materials.NitroFuel.getFluid(7500)}, null, 120, 480);
+        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.BioDiesel.getFluid(20000), Materials.Tetranitromethane.getFluid(400)}, new FluidStack[]{Materials.NitroFuel.getFluid(7500)}, null, 120, 480);
 //        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(11)}, new FluidStack[]{Materials.Methane.getGas(5000),  Materials.Water.getFluid(15000)}, new FluidStack[]{Materials.CarbonDioxide.getGas(5000), Materials.Hydrogen.getGas(15000)}, null, 175, 480);
 
 
