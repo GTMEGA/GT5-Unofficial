@@ -84,10 +84,10 @@ public final class MultiblockMachineLoader {
         addCraftingRecipe(ConcreteBackfiller1.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WPW", "EME", "CQC", 'M', Hull_LV, 'W', frameGt.get(Steel), 'E', circuitLogic.get(LOGIC_LV), 'C', Electric_Motor_LV, 'P', pipeLarge.get(Steel), 'Q', Electric_Pump_LV});
         addCraftingRecipe(ConcreteBackfiller2.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WPW", "EME", "CQC", 'M', ConcreteBackfiller1, 'W', frameGt.get(StainlessSteel), 'E', circuitLogic.get(LOGIC_HV), 'C', Electric_Motor_HV, 'P', pipeLarge.get(StainlessSteel), 'Q', Electric_Pump_HV});
 
-        OreDrill1.set(new GT_MetaTileEntity_OreDrillingPlant1(1158, "multimachine.oredrill1", "Ore Drilling Rig MKIV").getStackForm(1));
-        OreDrill2.set(new GT_MetaTileEntity_OreDrillingPlant2(1177, "multimachine.oredrill2", "Ore Drilling Rig MKV").getStackForm(1));
-        OreDrill3.set(new GT_MetaTileEntity_OreDrillingPlant3(1178, "multimachine.oredrill3", "Ore Drilling Rig MKVI").getStackForm(1));
-        OreDrill4.set(new GT_MetaTileEntity_OreDrillingPlant4(1179, "multimachine.oredrill4", "Ore Drilling Rig MKVII").getStackForm(1));
+        OreDrill1.set(new GT_MetaTileEntity_OreDrillingPlant1(1158, "multimachine.oredrill1", "Ore Drilling Rig MKI").getStackForm(1));
+        OreDrill2.set(new GT_MetaTileEntity_OreDrillingPlant2(1177, "multimachine.oredrill2", "Ore Drilling Rig MKII").getStackForm(1));
+        OreDrill3.set(new GT_MetaTileEntity_OreDrillingPlant3(1178, "multimachine.oredrill3", "Ore Drilling Rig MKIII").getStackForm(1));
+        OreDrill4.set(new GT_MetaTileEntity_OreDrillingPlant4(1179, "multimachine.oredrill4", "Ore Drilling Rig MKIV").getStackForm(1));
 
         PyrolyseOven.set(new GT_MetaTileEntity_PyrolyseOven(1159, "multimachine.pyro", "Pyrolyse Oven").getStackForm(1));
         addCraftingRecipe(PyrolyseOven.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WEP", "EME", "WCP", 'M', Hull_LV, 'W', Electric_Piston_LV, 'P', wireGt04.get(Cupronickel), 'E', circuitPower.get(PWR_LV), 'C', Electric_Pump_LV});
