@@ -33,8 +33,8 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                     case crushedPurified:
                     case crushedCentrifuged:
                         if (aMaterial.mDirectSmelting == aMaterial) {
-                            outputSize = 10;
-                            outputPrefix = OrePrefixes.nugget;
+                            outputSize = 1;
+                            outputPrefix = OrePrefixes.ingot;
                         } else {
                             if (GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
                                 outputSize = 6;
