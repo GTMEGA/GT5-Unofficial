@@ -6,8 +6,7 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_M
 import static gregtech.api.enums.ItemList.*;
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.OrePrefixes.*;
-import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
-import static gregtech.api.util.GT_ModHandler.getModItem;
+import static gregtech.api.util.GT_ModHandler.*;
 import static gregtech.loaders.preload.GT_Loader_MetaTileEntities.DISMANTLEABLE_RECIPE_MASK;
 
 public final class HatchLoader {
@@ -121,8 +120,8 @@ public final class HatchLoader {
         Hatch_Muffler_UV.set(new GT_MetaTileEntity_Hatch_Muffler(98, "hatch.muffler.tier.08", "UV Muffler Hatch", 8).getStackForm(1L));
         Hatch_Muffler_MAX.set(new GT_MetaTileEntity_Hatch_Muffler(99, "hatch.muffler.tier.09", "UHV Muffler Hatch", 9).getStackForm(1L));
 
-        addCraftingRecipe(Hatch_Muffler_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"MX ", "PR ", 'M', Hull_LV, 'P', pipeMedium.get(Brass), 'R', rotor.get(Brass), 'X', Electric_Motor_LV});
-        addCraftingRecipe(Hatch_Muffler_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"MX ", "PR ", 'M', Hull_MV, 'P', pipeMedium.get(Steel), 'R', rotor.get(Steel), 'X', Electric_Motor_MV});
+        addShapelessCraftingRecipe(Hatch_Muffler_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{Hull_LV, pipeMedium.get(Brass), rotor.get(Brass), Electric_Motor_LV});
+        addShapelessCraftingRecipe(Hatch_Muffler_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{Hull_MV, pipeMedium.get(Steel), rotor.get(Steel), Electric_Motor_MV});
 
         LOADED = true;
     }
