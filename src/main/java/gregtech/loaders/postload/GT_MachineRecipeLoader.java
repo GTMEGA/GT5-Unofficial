@@ -3551,16 +3551,16 @@ public class GT_MachineRecipeLoader implements Runnable {
         for (int aTier = 0; aTier < 10; aTier++) {
             
             if (aTier<2) {
-                GT_Values.RA.addAssemblerRecipe(aInputs[aTier], glues[0].getFluid((long)(144 * Math.pow((aTier + 4), aTier))), ItemList.HATCHES_INPUT_BUS[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
-                GT_Values.RA.addAssemblerRecipe(aInputs2[aTier], glues[0].getFluid((long)(144 * Math.pow((aTier+4), aTier))), ItemList.HATCHES_OUTPUT_BUS[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
-                GT_Values.RA.addAssemblerRecipe(flInputs[aTier], glues[0].getFluid((long)(144 * Math.pow((aTier+4), aTier))), ItemList.HATCHES_INPUT[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
-                GT_Values.RA.addAssemblerRecipe(flInputs2[aTier], glues[0].getFluid((long)(144 * Math.pow((aTier+4), aTier))), ItemList.HATCHES_OUTPUT[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
+                GT_Values.RA.addAssemblerRecipe(aInputs[aTier], glues[0].getFluid((long)(144 * Math.pow((aTier + 4), aTier))), ItemList.HATCHES_INPUT_BUS[aTier].get(1L), 100, (int) (30 * Math.pow(4, (aTier - 1))), false);
+                GT_Values.RA.addAssemblerRecipe(aInputs2[aTier], glues[0].getFluid((long)(144 * Math.pow((aTier+4), aTier))), ItemList.HATCHES_OUTPUT_BUS[aTier].get(1L), 100, (int) (30 * Math.pow(4, (aTier - 1))), false);
+                GT_Values.RA.addAssemblerRecipe(flInputs[aTier], glues[0].getFluid((long)(144 * Math.pow((aTier+4), aTier))), ItemList.HATCHES_INPUT[aTier].get(1L), 100, (int) (30 * Math.pow(4, (aTier - 1))), false);
+                GT_Values.RA.addAssemblerRecipe(flInputs2[aTier], glues[0].getFluid((long)(144 * Math.pow((aTier+4), aTier))), ItemList.HATCHES_OUTPUT[aTier].get(1L), 100, (int) (30 * Math.pow(4, (aTier - 1))), false);
             }
             if (aTier<4) {
-                GT_Values.RA.addAssemblerRecipe(aInputs[aTier], aTier == 0 ? glues[1].getMolten(72L) : glues[1].getMolten(144L * aTier), ItemList.HATCHES_INPUT_BUS[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
-                GT_Values.RA.addAssemblerRecipe(aInputs2[aTier], aTier == 0 ? glues[1].getMolten(72L) : glues[1].getMolten(144L*aTier), ItemList.HATCHES_OUTPUT_BUS[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
-                GT_Values.RA.addAssemblerRecipe(flInputs[aTier], aTier == 0 ? glues[1].getMolten(72L) : glues[1].getMolten(144L * aTier), ItemList.HATCHES_INPUT[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
-                GT_Values.RA.addAssemblerRecipe(flInputs2[aTier], aTier == 0 ? glues[1].getMolten(72L) : glues[1].getMolten(144L*aTier), ItemList.HATCHES_OUTPUT[aTier].get(1L), 480, (int) (30 * Math.pow(4, (aTier - 1))), false);
+                GT_Values.RA.addAssemblerRecipe(aInputs[aTier], aTier == 0 ? glues[1].getMolten(72L) : glues[1].getMolten(144L * aTier), ItemList.HATCHES_INPUT_BUS[aTier].get(1L), 100, (int) (30 * Math.pow(4, (aTier - 1))), false);
+                GT_Values.RA.addAssemblerRecipe(aInputs2[aTier], aTier == 0 ? glues[1].getMolten(72L) : glues[1].getMolten(144L*aTier), ItemList.HATCHES_OUTPUT_BUS[aTier].get(1L), 100, (int) (30 * Math.pow(4, (aTier - 1))), false);
+                GT_Values.RA.addAssemblerRecipe(flInputs[aTier], aTier == 0 ? glues[1].getMolten(72L) : glues[1].getMolten(144L * aTier), ItemList.HATCHES_INPUT[aTier].get(1L), 100, (int) (30 * Math.pow(4, (aTier - 1))), false);
+                GT_Values.RA.addAssemblerRecipe(flInputs2[aTier], aTier == 0 ? glues[1].getMolten(72L) : glues[1].getMolten(144L*aTier), ItemList.HATCHES_OUTPUT[aTier].get(1L), 100, (int) (30 * Math.pow(4, (aTier - 1))), false);
 
             }
             if (aTier<7) {
