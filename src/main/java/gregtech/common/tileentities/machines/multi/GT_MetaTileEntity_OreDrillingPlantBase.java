@@ -333,7 +333,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     }
 
     private boolean tryConsumeDrillingFluid() {
-        if (!depleteInput(new FluidStack(ItemList.sDrillingFluid, 2000))) {
+        if (!depleteInput(new FluidStack(ItemList.sDrillingFluid, 100))) {
             mMaxProgresstime = 0;
             return false;
         }
