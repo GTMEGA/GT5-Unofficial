@@ -393,6 +393,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         String casings = getCasingBlockItem().get(0).getDisplayName();
         
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        //TODO: Non auto-generated tooltips...
 		tt.addMachineType("Miner")
 		.addInfo("Controller Block for the Ore Drilling Plant " + (tierSuffix != null ? tierSuffix : ""))
 		.addInfo("Use a Screwdriver to configure block radius")
