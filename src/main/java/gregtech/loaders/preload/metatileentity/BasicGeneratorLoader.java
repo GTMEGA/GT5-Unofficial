@@ -31,7 +31,7 @@ public final class BasicGeneratorLoader {
         Generator_Gas_Turbine_HV.set(new GT_MetaTileEntity_GasTurbine(1117, "basicgenerator.gasturbine.tier.03", "Advanced Gas Turbine II", 3).getStackForm(1L));
 
         addCraftingRecipe(Generator_Gas_Turbine_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CRC", "RMR", "EWE", 'M', Hull_LV, 'E', Electric_Motor_LV, 'R', rotor.get(Tin), 'C', circuitPower.get(PWR_LV), 'W', cableGt01.get(Tin)});
-        addCraftingRecipe(Generator_Gas_Turbine_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CRC", "RMR", "EWE", 'M', Hull_MV, 'E', Electric_Motor_MV, 'R', rotor.get(Bronze), 'C', circuitPower.get(PWR_MV), 'W', cableGt01.get(AnyCopper)});
+        addCraftingRecipe(Generator_Gas_Turbine_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CRC", "RMR", "EWE", 'M', Hull_MV, 'E', Electric_Motor_MV, 'R', rotor.get(Brass), 'C', circuitPower.get(PWR_MV), 'W', cableGt01.get(AnyCopper)});
         addCraftingRecipe(Generator_Gas_Turbine_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CRC", "RMR", "EWE", 'M', Hull_HV, 'E', Electric_Motor_HV, 'R', rotor.get(Steel), 'C', circuitPower.get(PWR_HV), 'W', cableGt01.get(Gold)});
 
         Generator_Steam_Turbine_LV.set(new GT_MetaTileEntity_SteamTurbine(1120, "basicgenerator.steamturbine.tier.01", "Basic Steam Turbine", 1).getStackForm(1L));
@@ -39,7 +39,7 @@ public final class BasicGeneratorLoader {
         Generator_Steam_Turbine_HV.set(new GT_MetaTileEntity_SteamTurbine(1122, "basicgenerator.steamturbine.tier.03", "Advanced Steam Turbine II", 3).getStackForm(1L));
 
         addCraftingRecipe(Generator_Steam_Turbine_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "RMR", "EWE", 'M', Hull_LV, 'E', Electric_Motor_LV, 'R', rotor.get(Tin), 'C', circuitPower.get(PWR_LV), 'W', cableGt01.get(Tin), 'P', pipeMedium.get(Brass)});
-        addCraftingRecipe(Generator_Steam_Turbine_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "RMR", "EWE", 'M', Hull_MV, 'E', Electric_Motor_MV, 'R', rotor.get(Bronze), 'C', circuitPower.get(PWR_MV), 'W', cableGt01.get(AnyCopper), 'P', pipeMedium.get(Steel)});
+        addCraftingRecipe(Generator_Steam_Turbine_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "RMR", "EWE", 'M', Hull_MV, 'E', Electric_Motor_MV, 'R', rotor.get(Brass), 'C', circuitPower.get(PWR_MV), 'W', cableGt01.get(AnyCopper), 'P', pipeMedium.get(Steel)});
         addCraftingRecipe(Generator_Steam_Turbine_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "RMR", "EWE", 'M', Hull_HV, 'E', Electric_Motor_HV, 'R', rotor.get(Steel), 'C', circuitPower.get(PWR_HV), 'W', cableGt01.get(Gold), 'P', pipeMedium.get(StainlessSteel)});
 
         Generator_Naquadah_Mark_I.set(new GT_MetaTileEntity_NaquadahReactor(1190, "basicgenerator.naquadah.tier.04", new String[]{"Requires Enriched Naquadah Bolts"}, "Naquadah Reactor Mark I", 4).getStackForm(1L));
