@@ -327,6 +327,7 @@ public class GT_Mod implements IGT_Mod {
         GT_Values.disableDigitalChestsExternalAccess = tMainConfig.get("machines", "disableDigitalChestsExternalAccess", false).getBoolean(false);
         GregTech_API.TICKS_FOR_LAG_AVERAGING = tMainConfig.get(aTextGeneral, "TicksForLagAveragingWithScanner", 25).getInt(25);
         GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = tMainConfig.get(aTextGeneral, "MillisecondsPassedInGTTileEntityUntilLagWarning", 100).getInt(100);
+        PAMapChangeDamageChance = GT_Values.getConfigValue(tMainConfig, "machines", "PAMapChangeDamageChance", PAMapChangeDamageChance, String.format("The odds of a PA machine swap causing maintenance damage, set to a negative number to disable. Default: %d", PAMapChangeDamageChance));
         if (tMainConfig.get(aTextGeneral, "disable_STDOUT", false).getBoolean(false)) {
             GT_FML_LOGGER.info("Disableing Console Messages.");
             GT_FML_LOGGER.exit();

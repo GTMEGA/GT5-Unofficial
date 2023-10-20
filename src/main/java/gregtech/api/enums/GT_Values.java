@@ -334,6 +334,8 @@ public class GT_Values {
 
     public static boolean MEFancyDrops = false, MERequiresRemote = true;
 
+    public static int PAMapChangeDamageChance = 3;
+
     public static boolean getConfigValue(final Configuration config, final String category, final String key, final boolean defValue, final String comment) {
         return config.get(category, key, defValue, comment).getBoolean(defValue);
     }

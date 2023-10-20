@@ -431,26 +431,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         if (mRuntime++ > 1000) {
             mRuntime = 0;
             if (getBaseMetaTileEntity().getRandomNumber(6000) == 0) {
-                switch (getBaseMetaTileEntity().getRandomNumber(6)) {
-                    case 0:
-                        mWrench = false;
-                        break;
-                    case 1:
-                        mScrewdriver = false;
-                        break;
-                    case 2:
-                        mSoftHammer = false;
-                        break;
-                    case 3:
-                        mHardHammer = false;
-                        break;
-                    case 4:
-                        mSolderingTool = false;
-                        break;
-                    case 5:
-                        mCrowbar = false;
-                        break;
-                }
+                applyMaintenanceDamage();
             }
             if (mInventory[1] != null && getBaseMetaTileEntity().getRandomNumber(2) == 0 && !mInventory[1].getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.")) {
                 if (mInventory[1].getItem() instanceof GT_MetaGenerated_Tool_01) {
@@ -517,6 +498,29 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
             }
         }
         return true;
+    }
+
+    public void applyMaintenanceDamage() {
+        switch (getBaseMetaTileEntity().getRandomNumber(6)) {
+            case 0:
+                mWrench = false;
+                break;
+            case 1:
+                mScrewdriver = false;
+                break;
+            case 2:
+                mSoftHammer = false;
+                break;
+            case 3:
+                mHardHammer = false;
+                break;
+            case 4:
+                mSolderingTool = false;
+                break;
+            case 5:
+                mCrowbar = false;
+                break;
+        }
     }
 
     public void explodeMultiblock() {

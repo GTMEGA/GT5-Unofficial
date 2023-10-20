@@ -75,6 +75,7 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
                 .addInfo("Maximal overclocking of machines inside: Tier 9")
                 .addInfo("Only certain machines can be used. Most chemical only machines")
                 .addInfo("are not allowed.")
+                .addInfo("Changing machines can cause maintenance issues")
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3, true)
                 .addController("Front center")
@@ -310,10 +311,20 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
         if (mMachine && aTick % 20 == 0) {
             GT_Recipe_Map tCurrentMap = getRecipeMap();
             if (tCurrentMap != mLastRecipeMap) {
+                if (mLastRecipeMap != null) {
+                    paDoRandomDamage(aBaseMetaTileEntity);
+                }
                 for (GT_MetaTileEntity_Hatch_InputBus tInputBus : mInputBusses) tInputBus.mRecipeMap = tCurrentMap;
                 for (GT_MetaTileEntity_Hatch_Input tInputHatch : mInputHatches) tInputHatch.mRecipeMap = tCurrentMap;
                 mLastRecipeMap = tCurrentMap;
             }
+        }
+    }
+
+    private void paDoRandomDamage(final IGregTechTileEntity aBaseMetaTileEntity) {
+        if (aBaseMetaTileEntity.isServerSide() && GT_Values.PAMapChangeDamageChance >= 0 && aBaseMetaTileEntity.getRandomNumber(GT_Values.PAMapChangeDamageChance) == 0) {
+            aBaseMetaTileEntity.disableWorking();
+            applyMaintenanceDamage();
         }
     }
 
