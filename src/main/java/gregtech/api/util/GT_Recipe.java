@@ -764,7 +764,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return addRecipe(aRecipe, false, false, false);
         }
 
-        protected GT_Recipe addRecipe(GT_Recipe aRecipe, boolean aCheckForCollisions, boolean aFakeRecipe, boolean aHidden) {
+        public GT_Recipe addRecipe(GT_Recipe aRecipe, boolean aCheckForCollisions, boolean aFakeRecipe, boolean aHidden) {
             aRecipe.mHidden = aHidden;
             aRecipe.mFakeRecipe = aFakeRecipe;
             if (aRecipe.mFluidInputs.length < mMinimalInputFluids && aRecipe.mInputs.length < mMinimalInputItems)

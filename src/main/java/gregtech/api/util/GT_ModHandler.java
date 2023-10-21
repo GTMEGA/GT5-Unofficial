@@ -20,6 +20,7 @@ import ic2.api.reactor.IReactorComponent;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
+import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
@@ -709,7 +710,8 @@ public class GT_ModHandler {
                                     case "gt.recipe.macerator":
                                     case "gt.recipe.extractor":
                                     case "gt.recipe.compressor":
-                                        aGTRecipeMap.addRecipe(true, new ItemStack[]{GT_Utility.copyAmount((iRecipeInputRecipeOutputEntry.getKey()).getAmount(), tStack)}, (ItemStack[]) (iRecipeInputRecipeOutputEntry.getValue()).items.toArray(), null, null, null, null, 300, 2, 0);
+                                        val recipe = new GT_Recipe(false, new ItemStack[]{GT_Utility.copyAmount((iRecipeInputRecipeOutputEntry.getKey()).getAmount(), tStack)}, (ItemStack[]) (iRecipeInputRecipeOutputEntry.getValue()).items.toArray(), null, null, null, null, 300, 2, 0);
+                                        aGTRecipeMap.addRecipe(recipe,true,false,false);
                                         break;
                                     case "gt.recipe.thermalcentrifuge":
                                         aGTRecipeMap.addRecipe(true, new ItemStack[]{GT_Utility.copyAmount((iRecipeInputRecipeOutputEntry.getKey()).getAmount(), tStack)}, (ItemStack[]) (iRecipeInputRecipeOutputEntry.getValue()).items.toArray(), null, null, null, null, 500, 48, 0);

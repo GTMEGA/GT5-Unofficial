@@ -16,6 +16,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
+import lombok.val;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
 import net.minecraft.init.Blocks;
@@ -1324,10 +1325,8 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 if ((aDuration = GregTech_API.sRecipeFile.get("pulveriser", aInput, aDuration)) <= 0) {
                     return false;
                 }
-                GT_Recipe tRecipe =GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutputs, null, aChances, null, null, aDuration, aEUt, 0);
-                if ((hidden) && (tRecipe != null)) {
-                    tRecipe.mHidden = true;
-                }
+                val recipe = new GT_Recipe(false,new ItemStack[]{aInput},aOutputs,null,aChances,null,null,aDuration,aEUt,0);
+                GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.addRecipe(recipe,true,false,hidden);
                 return true;
             }
         }
