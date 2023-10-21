@@ -119,6 +119,10 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
 
         public static MEGANetInteractionHandler INSTANCE = new MEGANetInteractionHandler();
 
+        public static void doNothing() {
+
+        }
+
         private MEGANetInteractionHandler() {
             FMLCommonHandler.instance().bus().register(this);
         }
