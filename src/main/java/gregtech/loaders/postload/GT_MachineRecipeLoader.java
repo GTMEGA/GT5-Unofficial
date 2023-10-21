@@ -1461,8 +1461,8 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 8L), GT_Utility.getIntegratedCircuit(8), GT_ModHandler.getIC2Item("machine", 1L), 25, 16);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 8L), GT_Utility.getIntegratedCircuit(8), ItemList.Casing_ULV.get(1L), 25, 16);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 8L), GT_Utility.getIntegratedCircuit(8), ItemList.Casing_LV.get(1L), 50, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 8L), GT_Utility.getIntegratedCircuit(8), ItemList.Casing_MV.get(1L), 50, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 8L), GT_Utility.getIntegratedCircuit(8), ItemList.Casing_HV.get(1L), 50, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, StainlessSteel, 8L), GT_Utility.getIntegratedCircuit(8), ItemList.Casing_MV.get(1L), 50, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Aluminium, 8L), GT_Utility.getIntegratedCircuit(8), ItemList.Casing_HV.get(1L), 50, 16);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 8L), GT_Utility.getIntegratedCircuit(8), ItemList.Casing_EV.get(1L), 50, 16);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 8L), GT_Utility.getIntegratedCircuit(8), ItemList.Casing_IV.get(1L), 50, 16);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Chrome, 8L), GT_Utility.getIntegratedCircuit(8), ItemList.Casing_LuV.get(1L), 50, 16);
