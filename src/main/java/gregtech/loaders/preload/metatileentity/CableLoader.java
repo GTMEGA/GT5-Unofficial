@@ -53,11 +53,11 @@ public final class CableLoader {
         makeWires(Steel, 1520, extraLoss ? 2L : 16L, extraLoss ? 4L : 32L, 2L, V[4], true, false);
         makeWires(BlackSteel, 1540, extraLoss ? 2L : 14L, extraLoss ? 4L : 28L, 3L, V[4], true, false);
         makeWires(Titanium, 1560, extraLoss ? 2L : 12L, extraLoss ? 4L : 24L, 6L, V[4], true, false);
-        makeWires(Aluminium, 1580, extraLoss ? 1L : 8L, extraLoss ? 2L : 16L, 8L, V[4], true, false);
+        makeWires(Aluminium, 1580, extraLoss ? 1L : 8L, extraLoss ? 2L : 16L, 12L, V[4], true, false);
 
         makeWires(Graphene, 1600, extraLoss ? 1L : 16L, extraLoss ? 2L : 32L, 16L, V[5], false, true);
         makeWires(Osmium, 1620, extraLoss ? 2L : 32L, extraLoss ? 4L : 64L, 4L, V[5], true, false);
-        makeWires(Platinum, 1640, extraLoss ? 1L : 16L, extraLoss ? 2L : 32L, 2L, V[5], true, false);
+        makeWires(Platinum, 1640, extraLoss ? 1L : 16L, extraLoss ? 2L : 32L, 14L, V[5], true, false);
         makeWires(TungstenSteel, 1660, extraLoss ? 2L : 14L, extraLoss ? 4L : 28L, 6L, V[5], true, false);
         makeWires(Tungsten, 1680, extraLoss ? 2L : 12L, extraLoss ? 4L : 24L, 4L, V[5], true, false);
 
