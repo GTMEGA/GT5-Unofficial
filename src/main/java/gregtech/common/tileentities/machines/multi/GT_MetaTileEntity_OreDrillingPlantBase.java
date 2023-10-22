@@ -333,11 +333,15 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     }
 
     private boolean tryConsumeDrillingFluid() {
-        if (!depleteInput(new FluidStack(ItemList.sDrillingFluid, 100))) {
+        if (!depleteInput(new FluidStack(ItemList.sDrillingFluid, drillingFluidConsumption()))) {
             mMaxProgresstime = 0;
             return false;
         }
         return true;
+    }
+
+    protected static int drillingFluidConsumption() {
+        return 100;
     }
 
     private void fillChunkMineList(int yHead, int yDrill) {
@@ -401,6 +405,9 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
 		.addInfo("Use Soldering iron to turn off chunk mode")
 		.addInfo("In chunk mode, working area center is the chunk corner nearest to the drill")
 		.addInfo(EnumChatFormatting.RED + "Does not mine small ores.")
+        .addInfo("Fortune level: " + EnumChatFormatting.YELLOW + fortune() + EnumChatFormatting.RESET)
+        .addInfo("Harvests a lot of ore, but slowly.")
+        .addInfo("Consumes " + drillingFluidConsumption() + "L" + " of Drilling Fluid per operation")
 		.addSeparator()
 		.beginStructureBlock(3, 7, 3, false)
 		.addController("Front bottom")
