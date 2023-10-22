@@ -324,7 +324,9 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
     private void paDoRandomDamage(final IGregTechTileEntity aBaseMetaTileEntity) {
         if (aBaseMetaTileEntity.isServerSide() && GT_Values.PAMapChangeDamageChance >= 0 && aBaseMetaTileEntity.getRandomNumber(GT_Values.PAMapChangeDamageChance) == 0) {
             aBaseMetaTileEntity.disableWorking();
-            applyMaintenanceDamage();
+            for (int i = 0; i < 6; i++) {
+                applyMaintenanceDamage();
+            }
         }
     }
 
