@@ -3507,15 +3507,16 @@ public class GT_MachineRecipeLoader implements Runnable {
         };
         ItemStack[] tanks = {
                 GT_OreDictUnificator.get(OrePrefixes.cell,Materials.Empty,1L),
-                Loader.isModLoaded("BuildCraft|Factory") ? GT_ModHandler.getModItem("BuildCraft|Factory","tankBlock",1) : GT_OreDictUnificator.get(OrePrefixes.cell,Materials.Empty,1L),
-                Loader.isModLoaded("irontank") ? GT_ModHandler.getModItem("irontank","copperTank",1) : GT_OreDictUnificator.get(OrePrefixes.cell,Materials.Empty,1L),
-                Loader.isModLoaded("irontank") ? GT_ModHandler.getModItem("irontank","ironTank",1) : GT_OreDictUnificator.get(OrePrefixes.cell,Materials.Empty,1L),
-                Loader.isModLoaded("irontank") ? GT_ModHandler.getModItem("irontank","silverTank",1) : GT_OreDictUnificator.get(OrePrefixes.cell,Materials.Empty,1L),
-                Loader.isModLoaded("irontank") ? GT_ModHandler.getModItem("irontank","goldTank",1) : GT_OreDictUnificator.get(OrePrefixes.cell,Materials.Empty,1L),
-                Loader.isModLoaded("irontank") ? GT_ModHandler.getModItem("irontank","diamondTank",1) : GT_OreDictUnificator.get(OrePrefixes.cell,Materials.Empty,1L),
-                Loader.isModLoaded("irontank") ? GT_ModHandler.getModItem("irontank","obsidianTank",1) : GT_OreDictUnificator.get(OrePrefixes.cell,Materials.Empty,1L),
-                GT_ModHandler.getModItem("gregtech","gt.blockmachines",1,130),
-                GT_ModHandler.getModItem("gregtech","gt.blockmachines",1,131)
+                GT_OreDictUnificator.get(pipeLarge, Brass,1),
+                GT_OreDictUnificator.get(pipeLarge, Steel,1),
+                GT_OreDictUnificator.get(pipeLarge, StainlessSteel,1),
+                GT_OreDictUnificator.get(pipeLarge, Titanium,1),
+                GT_OreDictUnificator.get(pipeLarge, TungstenSteel,1),
+                GT_OreDictUnificator.get(pipeLarge, NiobiumTitanium,1),
+                GT_OreDictUnificator.get(pipeLarge, Enderium,1),
+                GT_OreDictUnificator.get(pipeLarge, Naquadah,1),
+                GT_OreDictUnificator.get(pipeLarge, Neutronium,1),
+                GT_OreDictUnificator.get(pipeLarge, NetherStar,1),
         };
 
         ItemStack[][] aInputs = new ItemStack[10][3];
@@ -3526,8 +3527,8 @@ public class GT_MachineRecipeLoader implements Runnable {
         for (int i = 0; i < 10; i++) {
             aInputs[i]= new ItemStack[]{ItemList.MACHINE_HULLS[i].get(1), chests[i].copy(), GT_Utility.getIntegratedCircuit(1)};
             aInputs2[i]= new ItemStack[]{ItemList.MACHINE_HULLS[i].get(1), chests[i].copy(), GT_Utility.getIntegratedCircuit(2)};
-            flInputs[i]= new ItemStack[]{ItemList.MACHINE_HULLS[i].get(1), tanks[i].copy(), GT_Utility.getIntegratedCircuit(1)};
-            flInputs2[i]= new ItemStack[]{ItemList.MACHINE_HULLS[i].get(1), tanks[i].copy(), GT_Utility.getIntegratedCircuit(2)};
+            flInputs[i]= new ItemStack[]{ItemList.MACHINE_HULLS[i].get(1), tanks[i] == null ? null : tanks[i].copy(), GT_Utility.getIntegratedCircuit(1)};
+            flInputs2[i]= new ItemStack[]{ItemList.MACHINE_HULLS[i].get(1), tanks[i] == null ? null : tanks[i].copy(), GT_Utility.getIntegratedCircuit(2)};
         }
 
         for (int aTier = 0; aTier < 10; aTier++) {
