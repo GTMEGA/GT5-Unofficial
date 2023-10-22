@@ -611,7 +611,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
         }
         if ((GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "cropharvester", true))) {
             GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("crophavester", 1L));
-            GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("crophavester", 1L), bits_no_remove_buffered, new Object[]{"ACA", "PMS", "WOW", 'M', ItemList.Hull_MV, 'C', circuitLogic.get(LOGIC_MV), 'A', ItemList.Robot_Arm_LV, 'P', ItemList.Electric_Piston_LV, 'S', ItemList.Sensor_LV, 'W', OrePrefixes.toolHeadSense.get(Materials.Aluminium), 'O', ItemList.Conveyor_Module_LV});
+            GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("crophavester", 1L), bits_no_remove_buffered, new Object[]{"ACA", "PMS", "WOW", 'M', ItemList.Hull_Bronze, 'C', circuitLogic.get(PWR_LV), 'A', ItemList.Robot_Arm_LV, 'P', OrePrefixes.plate.get(Steel), 'S',  OrePrefixes.plate.get(Steel), 'W',  OrePrefixes.plate.get(Steel), 'O', ItemList.Conveyor_Module_LV});
         }
         if ((GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "rtg", true))) {
             GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("RTGenerator", 1L));

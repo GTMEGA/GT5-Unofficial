@@ -761,6 +761,8 @@ public class GT_Mod implements IGT_Mod {
         }
         new NetworkDispatcher();
 
+        GT_MEGAnet.MEGANetInteractionHandler.doNothing();
+
         if (FMLCommonHandler.instance().getSide() == CLIENT) {
             initKeybinds(aEvent);
         }
