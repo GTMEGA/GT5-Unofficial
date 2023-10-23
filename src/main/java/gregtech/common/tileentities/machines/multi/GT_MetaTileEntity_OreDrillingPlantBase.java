@@ -406,7 +406,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
 		.addInfo("In chunk mode, working area center is the chunk corner nearest to the drill")
 		.addInfo(EnumChatFormatting.RED + "Does not mine small ores.")
         .addInfo("Fortune level: " + EnumChatFormatting.YELLOW + fortune() + EnumChatFormatting.RESET)
-        .addInfo("Harvests a lot of ore, but slowly.")
+        .addInfo("Harvests massive amounts of ore chunks, over a long period of time.")
         .addInfo("Consumes " + drillingFluidConsumption() + "L" + " of Drilling Fluid per operation")
 		.addSeparator()
 		.beginStructureBlock(3, 7, 3, false)
