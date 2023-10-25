@@ -8,6 +8,8 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.IPacketReceivableItem;
@@ -196,6 +198,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
             return null;
         }
 
+        @SideOnly(Side.CLIENT)
         public GT_MEGAnet_GuiContainer getClientGUI(final EntityPlayer player) {
             MutableInt slotIndex = new MutableInt(-1);
             MutableBoolean bauble = new MutableBoolean(false);
