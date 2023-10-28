@@ -69,6 +69,15 @@
             }
         ]
     },
+    "macerator": {
+        "category": "block",
+        "sounds": [
+            {
+                "name": "macerator1",
+                "stream": false
+            }
+        ]
+    },
     "potentiometer_click": {
         "category": "block",
         "sounds": [

@@ -394,6 +394,8 @@ public class GregTech_API {
         sSoundList.put(219, MOD_ID.toLowerCase() + ":" + "remote_detonator_remove");
         sSoundList.put(220, MOD_ID.toLowerCase() + ":" + "remote_detonator_trigger");
         sSoundList.put(221, MOD_ID.toLowerCase() + ":" + "potentiometer_click");
+        sSoundList.put(222, MOD_ID.toLowerCase() + ":" + "macerator");
+        //Don't forget to put your sounds into sounds.json too!
     }
 
     /**
