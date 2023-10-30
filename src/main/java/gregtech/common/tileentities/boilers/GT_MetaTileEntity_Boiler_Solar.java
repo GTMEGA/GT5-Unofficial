@@ -60,7 +60,7 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     }
 
     protected Config createConfig() {
-        return new Config(machineconfig + ".boiler.solar.bronze",1080000,40,120,45);
+        return new Config(machineconfig + ".boiler.solar.bronze",1080000,10,30,45);
     }
 
     /**
