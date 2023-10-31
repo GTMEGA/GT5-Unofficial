@@ -18,6 +18,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -85,10 +86,13 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        final GT_Multiblock_Tooltip_Builder tt          = new GT_Multiblock_Tooltip_Builder();
+        val                                 euPerSecond = getEUt() * 20;
+        val steamPerSecond = euPerSecond / EU_PER_STEAM;
         tt.addMachineType("Boiler")
                 .addInfo("Controller block for the Large " + getCasingMaterial() + " Boiler")
-                .addInfo("Produces " + (((getEUt() * 20) / EU_PER_STEAM) * (runtimeBoost(20) / 20f) + "L of Steam with 1 Coal at " + ((getEUt() * 20) / EU_PER_STEAM)) + "L/s")
+                .addInfo("Produces " + (steamPerSecond * (runtimeBoost(20) / 20f) + "L of Steam with 1 Coal at " + steamPerSecond) + "L/s")
+                .addInfo("Consumes " + steamPerSecond / STEAM_PER_WATER + "L of Water per second")
                 .addInfo("A programmed circuit in the main block throttles the boiler (-250L/s per config)")
                 .addInfo(String.format("Diesel fuels have 1/4 efficiency - Takes %.2f seconds to heat up", 500.0 / getEfficiencyIncrease()))//? check semifluid again
                 .addPollutionAmount(20 * getPollutionPerTick(null))
