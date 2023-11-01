@@ -110,7 +110,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         final String nameMsg = String.format("Existing: '%s' cannot coexist with '%s'", otherName, thisName);
         GT_FML_LOGGER.printf(Level.ERROR, "Conflict at ID: %d", aID);
         GT_FML_LOGGER.printf(Level.ERROR, nameMsg);
-        if (GT_Values.dump_meta_entity_space) {
+        if (GT_Values.dump_meta_entity_space || true) {
             dump_meta_spaces();
         } else {
             final String msg_0 = "Change the 'MTEDefrag' option in the main config to see free space. ";

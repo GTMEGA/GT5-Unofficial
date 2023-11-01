@@ -11,7 +11,11 @@ import static gregtech.api.enums.GT_Values.V;
 
 public class GT_MetaTileEntity_Hatch_Dynamo extends GT_MetaTileEntity_Hatch {
     public GT_MetaTileEntity_Hatch_Dynamo(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, new String[]{"Generating electric Energy from Multiblocks", "Puts out up to 1 Amp"});
+        this(aID, aName, aNameRegional, aTier, new String[]{"Generating electric Energy from Multiblocks", "Puts out up to 1 Amp"});
+    }
+
+    public GT_MetaTileEntity_Hatch_Dynamo(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
+        super(aID, aName, aNameRegional, aTier, 0, aDescription);
     }
 
     public GT_MetaTileEntity_Hatch_Dynamo(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -74,7 +78,7 @@ public class GT_MetaTileEntity_Hatch_Dynamo extends GT_MetaTileEntity_Hatch {
 
     @Override
     public long maxEUStore() {
-        return 512L + V[mTier + 1] * 2L;
+        return 512L + V[mTier + 1] * 2L * maxAmperesOut();
     }
 
     @Override

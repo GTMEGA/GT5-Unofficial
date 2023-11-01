@@ -15,31 +15,31 @@ public final class HatchLoader {
     public static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
-        Hatch_Dynamo_ULV.set(new GT_MetaTileEntity_Hatch_Dynamo(30, "hatch.dynamo.tier.00", "ULV Energy Output Hatch", 0).getStackForm(1L));
-        Hatch_Dynamo_LV.set(new GT_MetaTileEntity_Hatch_Dynamo(31, "hatch.dynamo.tier.01", "LV Energy Output Hatch", 1).getStackForm(1L));
-        Hatch_Dynamo_MV.set(new GT_MetaTileEntity_Hatch_Dynamo(32, "hatch.dynamo.tier.02", "MV Energy Output Hatch", 2).getStackForm(1L));
-        Hatch_Dynamo_HV.set(new GT_MetaTileEntity_Hatch_Dynamo(33, "hatch.dynamo.tier.03", "HV Energy Output Hatch", 3).getStackForm(1L));
-        Hatch_Dynamo_EV.set(new GT_MetaTileEntity_Hatch_Dynamo(34, "hatch.dynamo.tier.04", "EV Energy Output Hatch", 4).getStackForm(1L));
-        Hatch_Dynamo_IV.set(new GT_MetaTileEntity_Hatch_Dynamo(35, "hatch.dynamo.tier.05", "IV Energy Output Hatch", 5).getStackForm(1L));
-        Hatch_Dynamo_LuV.set(new GT_MetaTileEntity_Hatch_Dynamo(36, "hatch.dynamo.tier.06", "LuV Energy Output Hatch", 6).getStackForm(1L));
-        Hatch_Dynamo_ZPM.set(new GT_MetaTileEntity_Hatch_Dynamo(37, "hatch.dynamo.tier.07", "ZPM Energy Output Hatch", 7).getStackForm(1L));
-        Hatch_Dynamo_UV.set(new GT_MetaTileEntity_Hatch_Dynamo(38, "hatch.dynamo.tier.08", "UV Energy Output Hatch", 8).getStackForm(1L));
-        Hatch_Dynamo_MAX.set(new GT_MetaTileEntity_Hatch_Dynamo(39, "hatch.dynamo.tier.09", "UHV Energy Output Hatch", 9).getStackForm(1L));
+        Hatch_Dynamo_ULV.set(new GT_MetaTileEntity_Hatch_Dynamo(30, "hatch.dynamo.tier.00", "ULV Energy Output Hatch 1A", 0).getStackForm(1L));
+        Hatch_Dynamo_LV.set(new GT_MetaTileEntity_Hatch_Dynamo(31, "hatch.dynamo.tier.01", "LV Energy Output Hatch 1A", 1).getStackForm(1L));
+        Hatch_Dynamo_MV.set(new GT_MetaTileEntity_Hatch_Dynamo(32, "hatch.dynamo.tier.02", "MV Energy Output Hatch 1A", 2).getStackForm(1L));
+        Hatch_Dynamo_HV.set(new GT_MetaTileEntity_Hatch_Dynamo(33, "hatch.dynamo.tier.03", "HV Energy Output Hatch 1A", 3).getStackForm(1L));
+        Hatch_Dynamo_EV.set(new GT_MetaTileEntity_Hatch_Dynamo(34, "hatch.dynamo.tier.04", "EV Energy Output Hatch 1A", 4).getStackForm(1L));
+        Hatch_Dynamo_IV.set(new GT_MetaTileEntity_Hatch_Dynamo(35, "hatch.dynamo.tier.05", "IV Energy Output Hatch 1A", 5).getStackForm(1L));
+        Hatch_Dynamo_LuV.set(new GT_MetaTileEntity_Hatch_Dynamo(36, "hatch.dynamo.tier.06", "LuV Energy Output Hatch 1A", 6).getStackForm(1L));
+        Hatch_Dynamo_ZPM.set(new GT_MetaTileEntity_Hatch_Dynamo(37, "hatch.dynamo.tier.07", "ZPM Energy Output Hatch 1A", 7).getStackForm(1L));
+        Hatch_Dynamo_UV.set(new GT_MetaTileEntity_Hatch_Dynamo(38, "hatch.dynamo.tier.08", "UV Energy Output Hatch 1A", 8).getStackForm(1L));
+        Hatch_Dynamo_MAX.set(new GT_MetaTileEntity_Hatch_Dynamo(39, "hatch.dynamo.tier.09", "UHV Energy Output Hatch 1A", 9).getStackForm(1L));
 
         addCraftingRecipe(Hatch_Dynamo_ULV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"XOL", "SMP", "XOL", 'M', Hull_ULV, 'S', spring.get(Tin), 'X', circuitPower.get(PWR_LV), 'O', ULV_Coil, 'L', cell.get(Lubricant), 'P', rotor.get(Tin)});
         addCraftingRecipe(Hatch_Dynamo_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"XOL", "SMP", "XOL", 'M', Hull_LV, 'S', spring.get(Tin), 'X', circuitPower.get(PWR_LV), 'O', LV_Coil, 'L', cell.get(Lubricant), 'P', Electric_Pump_LV});
         addCraftingRecipe(Hatch_Dynamo_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"XOL", "SMP", "XOL", 'M', Hull_MV, 'S', spring.get(Copper), 'X', circuitPower.get(PWR_MV), 'O', MV_Coil, 'L', cell.get(Lubricant), 'P', Electric_Pump_MV});
 
-        Hatch_Energy_ULV.set(new GT_MetaTileEntity_Hatch_Energy(40, "hatch.energy.tier.00", "ULV Energy Input Hatch", 0).getStackForm(1L));
-        Hatch_Energy_LV.set(new GT_MetaTileEntity_Hatch_Energy(41, "hatch.energy.tier.01", "LV Energy Input Hatch", 1).getStackForm(1L));
-        Hatch_Energy_MV.set(new GT_MetaTileEntity_Hatch_Energy(42, "hatch.energy.tier.02", "MV Energy Input Hatch", 2).getStackForm(1L));
-        Hatch_Energy_HV.set(new GT_MetaTileEntity_Hatch_Energy(43, "hatch.energy.tier.03", "HV Energy Input Hatch", 3).getStackForm(1L));
-        Hatch_Energy_EV.set(new GT_MetaTileEntity_Hatch_Energy(44, "hatch.energy.tier.04", "EV Energy Input Hatch", 4).getStackForm(1L));
-        Hatch_Energy_IV.set(new GT_MetaTileEntity_Hatch_Energy(45, "hatch.energy.tier.05", "IV Energy Input Hatch", 5).getStackForm(1L));
-        Hatch_Energy_LuV.set(new GT_MetaTileEntity_Hatch_Energy(46, "hatch.energy.tier.06", "LuV Energy Input Hatch", 6).getStackForm(1L));
-        Hatch_Energy_ZPM.set(new GT_MetaTileEntity_Hatch_Energy(47, "hatch.energy.tier.07", "ZPM Energy Input Hatch", 7).getStackForm(1L));
-        Hatch_Energy_UV.set(new GT_MetaTileEntity_Hatch_Energy(48, "hatch.energy.tier.08", "UV Energy Input Hatch", 8).getStackForm(1L));
-        Hatch_Energy_MAX.set(new GT_MetaTileEntity_Hatch_Energy(49, "hatch.energy.tier.09", "UHV Energy Input Hatch", 9).getStackForm(1L));
+        Hatch_Energy_ULV.set(new GT_MetaTileEntity_Hatch_Energy(40, "hatch.energy.tier.00", "ULV Energy Input Hatch 2A", 0).getStackForm(1L));
+        Hatch_Energy_LV.set(new GT_MetaTileEntity_Hatch_Energy(41, "hatch.energy.tier.01", "LV Energy Input Hatch 2A", 1).getStackForm(1L));
+        Hatch_Energy_MV.set(new GT_MetaTileEntity_Hatch_Energy(42, "hatch.energy.tier.02", "MV Energy Input Hatch 2A", 2).getStackForm(1L));
+        Hatch_Energy_HV.set(new GT_MetaTileEntity_Hatch_Energy(43, "hatch.energy.tier.03", "HV Energy Input Hatch 2A", 3).getStackForm(1L));
+        Hatch_Energy_EV.set(new GT_MetaTileEntity_Hatch_Energy(44, "hatch.energy.tier.04", "EV Energy Input Hatch 2A", 4).getStackForm(1L));
+        Hatch_Energy_IV.set(new GT_MetaTileEntity_Hatch_Energy(45, "hatch.energy.tier.05", "IV Energy Input Hatch 2A", 5).getStackForm(1L));
+        Hatch_Energy_LuV.set(new GT_MetaTileEntity_Hatch_Energy(46, "hatch.energy.tier.06", "LuV Energy Input Hatch 2A", 6).getStackForm(1L));
+        Hatch_Energy_ZPM.set(new GT_MetaTileEntity_Hatch_Energy(47, "hatch.energy.tier.07", "ZPM Energy Input Hatch 2A", 7).getStackForm(1L));
+        Hatch_Energy_UV.set(new GT_MetaTileEntity_Hatch_Energy(48, "hatch.energy.tier.08", "UV Energy Input Hatch 2A", 8).getStackForm(1L));
+        Hatch_Energy_MAX.set(new GT_MetaTileEntity_Hatch_Energy(49, "hatch.energy.tier.09", "UHV Energy Input Hatch 2A", 9).getStackForm(1L));
 
         addCraftingRecipe(Hatch_Energy_ULV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"COL", "XMP", "COL", 'M', Hull_ULV, 'C', cableGt01.get(RedAlloy), 'X', circuitPower.get(PWR_LV), 'O', ULV_Coil, 'L', cell.get(Lubricant), 'P', rotor.get(Tin)});
         addCraftingRecipe(Hatch_Energy_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"COL", "XMP", "COL", 'M', Hull_LV, 'C', cableGt01.get(Tin), 'X', circuitPower.get(PWR_LV), 'O', LV_Coil, 'L', cell.get(Lubricant), 'P', Electric_Pump_LV});
@@ -122,6 +122,50 @@ public final class HatchLoader {
 
         addShapelessCraftingRecipe(Hatch_Muffler_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{Hull_LV, pipeMedium.get(Brass), rotor.get(Brass), Electric_Motor_LV});
         addShapelessCraftingRecipe(Hatch_Muffler_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{Hull_MV, pipeMedium.get(Steel), rotor.get(Steel), Electric_Motor_MV});
+
+        DynamoPowerHatch_16A_ULV.set(new GT_MetaTileEntity_Hatch_Dynamo_Power(9000, "hatch.dynamo.power_16.tier.00", "ULV Energy Output Hatch 16A", 0, 16L).getStackForm(1L));
+        DynamoPowerHatch_16A_LV.set(new GT_MetaTileEntity_Hatch_Dynamo_Power(9001, "hatch.dynamo.power_16.tier.01", "LV Energy Output Hatch 16A", 1, 16L).getStackForm(1L));
+        DynamoPowerHatch_16A_MV.set(new GT_MetaTileEntity_Hatch_Dynamo_Power(9002, "hatch.dynamo.power_16.tier.02", "MV Energy Output Hatch 16A", 2, 16L).getStackForm(1L));
+        DynamoPowerHatch_16A_HV.set(new GT_MetaTileEntity_Hatch_Dynamo_Power(9003, "hatch.dynamo.power_16.tier.03", "HV Energy Output Hatch 16A", 3, 16L).getStackForm(1L));
+        DynamoPowerHatch_16A_EV.set(new GT_MetaTileEntity_Hatch_Dynamo_Power(9004, "hatch.dynamo.power_16.tier.04", "EV Energy Output Hatch 16A", 4, 16L).getStackForm(1L));
+        DynamoPowerHatch_16A_IV.set(new GT_MetaTileEntity_Hatch_Dynamo_Power(9005, "hatch.dynamo.power_16.tier.05", "IV Energy Output Hatch 16A", 5, 16L).getStackForm(1L));
+        DynamoPowerHatch_16A_LuV.set(new GT_MetaTileEntity_Hatch_Dynamo_Power(9006, "hatch.dynamo.power_16.tier.06", "LuV Energy Output Hatch 16A", 6, 16L).getStackForm(1L));
+        DynamoPowerHatch_16A_ZPM.set(new GT_MetaTileEntity_Hatch_Dynamo_Power(9007, "hatch.dynamo.power_16.tier.07", "ZPM Energy Output Hatch 16A", 7, 16L).getStackForm(1L));
+        DynamoPowerHatch_16A_UV.set(new GT_MetaTileEntity_Hatch_Dynamo_Power(9008, "hatch.dynamo.power_16.tier.08", "UV Energy Output Hatch 16A", 8, 16L).getStackForm(1L));
+
+        DynamoPowerHatch_64A_ULV.set(new GT_MetaTileEntity_Hatch_Dynamo_Power(9009, "hatch.dynamo.power_64.tier.00", "ULV Energy Output Hatch 64A", 0, 64L).getStackForm(1L));
+        DynamoPowerHatch_64A_LV.set(new GT_MetaTileEntity_Hatch_Dynamo_Power(9010, "hatch.dynamo.power_64.tier.01", "LV Energy Output Hatch 64A", 1, 64L).getStackForm(1L));
+        DynamoPowerHatch_64A_MV.set(new GT_MetaTileEntity_Hatch_Dynamo_Power(9011, "hatch.dynamo.power_64.tier.02", "MV Energy Output Hatch 64A", 2, 64L).getStackForm(1L));
+        DynamoPowerHatch_64A_HV.set(new GT_MetaTileEntity_Hatch_Dynamo_Power(9012, "hatch.dynamo.power_64.tier.03", "HV Energy Output Hatch 64A", 3, 64L).getStackForm(1L));
+        DynamoPowerHatch_64A_EV.set(new GT_MetaTileEntity_Hatch_Dynamo_Power(9013, "hatch.dynamo.power_64.tier.04", "EV Energy Output Hatch 64A", 4, 64L).getStackForm(1L));
+        DynamoPowerHatch_64A_IV.set(new GT_MetaTileEntity_Hatch_Dynamo_Power(9014, "hatch.dynamo.power_64.tier.05", "IV Energy Output Hatch 64A", 5, 64L).getStackForm(1L));
+        DynamoPowerHatch_64A_LuV.set(new GT_MetaTileEntity_Hatch_Dynamo_Power(9015, "hatch.dynamo.power_64.tier.06", "LuV Energy Output Hatch 64A", 6, 64L).getStackForm(1L));
+        DynamoPowerHatch_64A_ZPM.set(new GT_MetaTileEntity_Hatch_Dynamo_Power(9016, "hatch.dynamo.power_64.tier.07", "ZPM Energy Output Hatch 64A", 7, 64L).getStackForm(1L));
+        DynamoPowerHatch_64A_UV.set(new GT_MetaTileEntity_Hatch_Dynamo_Power(9017, "hatch.dynamo.power_64.tier.08", "UV Energy Output Hatch 64A", 8, 64L).getStackForm(1L));
+        DynamoPowerHatch_16A_UHV.set(new GT_MetaTileEntity_Hatch_Dynamo_Power(9018, "hatch.dynamo.power_64.tier.09", "UHV Energy Output Hatch 64A", 9, 64L).getStackForm(1L));
+
+        EnergyPowerHatch_16A_ULV.set(new GT_MetaTileEntity_Hatch_Energy_Power(9019, "hatch.energy.power_16.tier.00", "ULV Energy Input Hatch 16A", 0, 16L).getStackForm(1L));
+        EnergyPowerHatch_16A_LV.set(new GT_MetaTileEntity_Hatch_Energy_Power(9020, "hatch.energy.power_16.tier.01", "LV Energy Input Hatch 16A", 1, 16L).getStackForm(1L));
+        EnergyPowerHatch_16A_MV.set(new GT_MetaTileEntity_Hatch_Energy_Power(9021, "hatch.energy.power_16.tier.02", "MV Energy Input Hatch 16A", 2, 16L).getStackForm(1L));
+        EnergyPowerHatch_16A_HV.set(new GT_MetaTileEntity_Hatch_Energy_Power(9022, "hatch.energy.power_16.tier.03", "HV Energy Input Hatch 16A", 3, 16L).getStackForm(1L));
+        EnergyPowerHatch_16A_EV.set(new GT_MetaTileEntity_Hatch_Energy_Power(9023, "hatch.energy.power_16.tier.04", "EV Energy Input Hatch 16A", 4, 16L).getStackForm(1L));
+        EnergyPowerHatch_16A_IV.set(new GT_MetaTileEntity_Hatch_Energy_Power(9024, "hatch.energy.power_16.tier.05", "IV Energy Input Hatch 16A", 5, 16L).getStackForm(1L));
+        EnergyPowerHatch_16A_LuV.set(new GT_MetaTileEntity_Hatch_Energy_Power(9025, "hatch.energy.power_16.tier.06", "LuV Energy Input Hatch 16A", 6, 16L).getStackForm(1L));
+        EnergyPowerHatch_16A_ZPM.set(new GT_MetaTileEntity_Hatch_Energy_Power(9026, "hatch.energy.power_16.tier.07", "ZPM Energy Input Hatch 16A", 7, 16L).getStackForm(1L));
+        EnergyPowerHatch_16A_UV.set(new GT_MetaTileEntity_Hatch_Energy_Power(9027, "hatch.energy.power_16.tier.08", "UV Energy Input Hatch 16A", 8, 16L).getStackForm(1L));
+        EnergyPowerHatch_16A_UHV.set(new GT_MetaTileEntity_Hatch_Energy_Power(9028, "hatch.energy.power_16.tier.09", "UHV Energy Input Hatch 16A", 9, 16L).getStackForm(1L));
+
+        EnergyPowerHatch_64A_ULV.set(new GT_MetaTileEntity_Hatch_Energy_Power(9029, "hatch.energy.power_64.tier.00", "ULV Energy Input Hatch 64A", 0, 64L).getStackForm(1L));
+        EnergyPowerHatch_64A_LV.set(new GT_MetaTileEntity_Hatch_Energy_Power(9030, "hatch.energy.power_64.tier.01", "LV Energy Input Hatch 64A", 1, 64L).getStackForm(1L));
+        EnergyPowerHatch_64A_MV.set(new GT_MetaTileEntity_Hatch_Energy_Power(9031, "hatch.energy.power_64.tier.02", "MV Energy Input Hatch 64A", 2, 64L).getStackForm(1L));
+        EnergyPowerHatch_64A_HV.set(new GT_MetaTileEntity_Hatch_Energy_Power(9032, "hatch.energy.power_64.tier.03", "HV Energy Input Hatch 64A", 3, 64L).getStackForm(1L));
+        EnergyPowerHatch_64A_EV.set(new GT_MetaTileEntity_Hatch_Energy_Power(9033, "hatch.energy.power_64.tier.04", "EV Energy Input Hatch 64A", 4, 64L).getStackForm(1L));
+        EnergyPowerHatch_64A_IV.set(new GT_MetaTileEntity_Hatch_Energy_Power(9034, "hatch.energy.power_64.tier.05", "IV Energy Input Hatch 64A", 5, 64L).getStackForm(1L));
+        EnergyPowerHatch_64A_LuV.set(new GT_MetaTileEntity_Hatch_Energy_Power(9035, "hatch.energy.power_64.tier.06", "LuV Energy Input Hatch 64A", 6, 64L).getStackForm(1L));
+        EnergyPowerHatch_64A_ZPM.set(new GT_MetaTileEntity_Hatch_Energy_Power(9036, "hatch.energy.power_64.tier.07", "ZPM Energy Input Hatch 64A", 7, 64L).getStackForm(1L));
+        EnergyPowerHatch_64A_UV.set(new GT_MetaTileEntity_Hatch_Energy_Power(9037, "hatch.energy.power_64.tier.08", "UV Energy Input Hatch 64A", 8, 64L).getStackForm(1L));
+        EnergyPowerHatch_64A_UHV.set(new GT_MetaTileEntity_Hatch_Energy_Power(9038, "hatch.energy.power_64.tier.09", "UHV Energy Input Hatch 64A", 9, 64L).getStackForm(1L));
+
 
         LOADED = true;
     }
