@@ -28,7 +28,7 @@ public class GT_Block_Casings3 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Radiation Proof Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Brass Firebox Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Steel Firebox Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Tungstensteel Firebox Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Titanium Firebox Casing");
         ItemList.Casing_Stripes_A.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Stripes_B.set(new ItemStack(this, 1, 1));
         ItemList.Casing_RadioactiveHazard.set(new ItemStack(this, 1, 2));

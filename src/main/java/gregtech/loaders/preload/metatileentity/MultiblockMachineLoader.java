@@ -39,12 +39,12 @@ public final class MultiblockMachineLoader {
 
         Machine_Multi_LargeBoiler_Bronze.set(new GT_MetaTileEntity_LargeBoiler_Bronze(1020, "multimachine.boiler.bronze", "Large Brass Boiler").getStackForm(1L));
         Machine_Multi_LargeBoiler_Steel.set(new GT_MetaTileEntity_LargeBoiler_Steel(1021, "multimachine.boiler.steel", "Large Steel Boiler").getStackForm(1L));
-        Machine_Multi_LargeBoiler_Titanium.set(new GT_MetaTileEntity_LargeBoiler_Titanium(1022, "multimachine.boiler.titanium", "Large Titanium Boiler").getStackForm(1L));
-        Machine_Multi_LargeBoiler_TungstenSteel.set(new GT_MetaTileEntity_LargeBoiler_TungstenSteel(1023, "multimachine.boiler.tungstensteel", "Large Tungstensteel Boiler").getStackForm(1L));
+        Machine_Multi_LargeBoiler_Titanium.set(new GT_MetaTileEntity_LargeBoiler_Titanium(1022, "multimachine.boiler.titanium", "Large Aluminium Boiler").getStackForm(1L));
+        Machine_Multi_LargeBoiler_TungstenSteel.set(new GT_MetaTileEntity_LargeBoiler_TungstenSteel(1023, "multimachine.boiler.tungstensteel", "Large Titanium Boiler").getStackForm(1L));
         addCraftingRecipe(Machine_Multi_LargeBoiler_Bronze.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Firebox_Bronze, 'C', circuitPower.get(PWR_LV), 'W', cableGt01.get(Tin)});
         addCraftingRecipe(Machine_Multi_LargeBoiler_Steel.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Firebox_Steel, 'C', circuitPower.get(PWR_MV), 'W', cableGt01.get(AnyCopper)});
-        addCraftingRecipe(Machine_Multi_LargeBoiler_Titanium.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Firebox_Titanium, 'C', circuitPower.get(PWR_EV), 'W', cableGt01.get(Gold)});
-        addCraftingRecipe(Machine_Multi_LargeBoiler_TungstenSteel.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Firebox_TungstenSteel, 'C', circuitPower.get(PWR_IV), 'W', cableGt01.get(Aluminium)});
+        addCraftingRecipe(Machine_Multi_LargeBoiler_Titanium.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Firebox_Titanium, 'C', circuitPower.get(PWR_HV), 'W', cableGt01.get(Gold)});
+        addCraftingRecipe(Machine_Multi_LargeBoiler_TungstenSteel.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Firebox_TungstenSteel, 'C', circuitPower.get(PWR_EV), 'W', cableGt01.get(Aluminium)});
 
         FusionComputer_LuV.set(new GT_MetaTileEntity_FusionComputer1(1193, "fusioncomputer.tier.06", "Fusion Control Computer MKI").getStackForm(1L));
         FusionComputer_ZPMV.set(new GT_MetaTileEntity_FusionComputer2(1194, "fusioncomputer.tier.07", "Fusion Control Computer MKII").getStackForm(1L));
