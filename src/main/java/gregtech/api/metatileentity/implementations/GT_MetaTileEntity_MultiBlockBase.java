@@ -18,6 +18,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import lombok.val;
+import lombok.var;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -636,7 +637,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                 for (int i = 0; i < ampsOnCurrentHatch; i++) {
                     aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aVoltage, false);
                 }
-                injected+=aVoltage*ampsOnCurrentHatch;
+                injected += aVoltage * ampsOnCurrentHatch;
                 if(aRemainder>0 && ampsOnCurrentHatch<aDynamo.maxAmperesOut()){
                     aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aRemainder, false);
                     injected+=aRemainder;
@@ -650,7 +651,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         long rVoltage = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
             if (isValidMetaTileEntity(tHatch)) {
-                rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.maxAmperesIn();
+                var amps = tHatch.maxAmperesIn();
+                // Fixes 2A inputs overclocking the multi improperly, kinda janky
+                // TODO: Figure out a better approach
+                amps = amps > 2 ? amps : 1;
+                rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage() * amps;
             }
         return rVoltage;
     }
