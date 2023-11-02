@@ -9,6 +9,9 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
 
@@ -1152,7 +1155,17 @@ public class Textures {
         MINING_EXPLOSIVE, DAISY_CUTTER, TUNEX,
 
         AUTOMATION_RECIPEFILTER,
-        AUTOMATION_RECIPEFILTER_GLOW;
+        AUTOMATION_RECIPEFILTER_GLOW,
+
+        POWER_16,
+        POWER_64;
+
+        public static final Map<Long, ITexture> POWER_OVERLAYS = new HashMap<>();
+
+        static {
+            POWER_OVERLAYS.put(16L, TextureFactory.of(POWER_16));
+            POWER_OVERLAYS.put(64L, TextureFactory.of(POWER_64));
+        }
 
         /**
          * Icon for Fresh CFoam

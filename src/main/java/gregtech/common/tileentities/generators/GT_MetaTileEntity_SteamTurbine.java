@@ -56,17 +56,17 @@ public class GT_MetaTileEntity_SteamTurbine extends GT_MetaTileEntity_BasicGener
         System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
         desc[mDescriptionArray.length] = "Fuel Efficiency: " + (600 / getEfficiency()) + "%";
         desc[mDescriptionArray.length + 1] = String.format("Consumes up to %sL of Steam per second",
-                (int) (1000 * (8 * Math.pow(4, mTier) + Math.pow(2, mTier)) / (600 / getEfficiency())));
+                (int) (1000 * (8 * maxAmperesOut() * Math.pow(4, mTier) + Math.pow(2, mTier)) / (600 / getEfficiency())));
         return desc;
     }
 
     @Override
     public int getCapacity() {
-        return 24000 * this.mTier;
+        return 48000 * this.mTier;
     }
 
     public void onConfigLoad() {
-        this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "SteamTurbine.efficiency.tier." + this.mTier, 7);
+        this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "steam_turbine.efficiency.tier." + this.mTier, 6);
     }
 
     @Override

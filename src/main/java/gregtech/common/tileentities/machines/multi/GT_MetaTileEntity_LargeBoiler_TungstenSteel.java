@@ -21,7 +21,7 @@ public class GT_MetaTileEntity_LargeBoiler_TungstenSteel extends GT_MetaTileEnti
     
     @Override
     public String getCasingMaterial(){
-    	return "TungstenSteel";
+    	return "Titanium";
     }
 
     @Override
@@ -36,12 +36,12 @@ public class GT_MetaTileEntity_LargeBoiler_TungstenSteel extends GT_MetaTileEnti
 
     @Override
     public byte getCasingMeta() {
-        return 0;
+        return 2;
     }
 
     @Override
     public byte getCasingTextureIndex() {
-        return 48;
+        return 50;
     }
 
     @Override

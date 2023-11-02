@@ -151,8 +151,13 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     }
 
     @Override
+    public long maxAmperesOut() {
+        return 4;
+    }
+
+    @Override
     public long maxEUStore() {
-        return Math.max(getEUVar(), V[mTier] * 80L + getMinimumStoredEU());
+        return Math.max(getEUVar(), maxAmperesOut() * V[mTier] * 80L + getMinimumStoredEU());
     }
 
     @Override

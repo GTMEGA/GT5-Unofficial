@@ -122,7 +122,7 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
 
     @Override
     public long maxEUStore() {
-        return Math.max(512L, 1L << (mTier + 2)) + V[mTier + 1] * 4L;
+        return Math.max(128L * maxAmpsLower(), 1L << (mTier + 2)) + V[mTier + 1] * maxAmpsLower();
     }
 
     @Override
@@ -137,12 +137,20 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
 
     @Override
     public long maxAmperesOut() {
-        return getBaseMetaTileEntity().isAllowedToWork() ? 16 : 4;
+        return getBaseMetaTileEntity().isAllowedToWork() ? maxAmpsLower() : maxAmpsHigher();
+    }
+
+    public long maxAmpsHigher() {
+        return 4;
+    }
+
+    public long maxAmpsLower() {
+        return 16;
     }
 
     @Override
     public long maxAmperesIn() {
-        return getBaseMetaTileEntity().isAllowedToWork() ? 4 : 16;
+        return getBaseMetaTileEntity().isAllowedToWork() ? maxAmpsHigher() : maxAmpsLower();
     }
 
     @Override
