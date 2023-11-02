@@ -7,9 +7,12 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IBatteryContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import ic2.api.item.IElectricItem;
+import lombok.val;
+import lombok.var;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -30,6 +33,8 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
     private long count = 0;
     private long mStored = 0;
     private long mMax = 0;
+
+    private long escrow = 0;
 
     public GT_MetaTileEntity_BasicBatteryBuffer(int aID, String aName, String aNameRegional, int aTier, String aDescription, int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
@@ -184,11 +189,16 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         //
+        aNBT.setLong("escrow", escrow);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        //
+        if (aNBT.hasKey("escrow")) {
+            escrow = aNBT.getLong("escrow");
+        } else {
+            escrow = 0;
+        }
     }
 
     @Override
@@ -241,7 +251,34 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
                     mChargeableCount++;
                 }
         }
+        escrowProcedure(aBaseMetaTileEntity);
         count++;
+    }
+
+    public void escrowProcedure(final IGregTechTileEntity aBaseMetaTileEntity) {
+        val amps = mChargeableCount;
+        val maxOutput = amps * V[mTier];
+        val maxEscrow = maxOutput * 2;
+        val doEscrowProcedure = aBaseMetaTileEntity instanceof BaseMetaTileEntity;
+        var toEscrow          = 0;
+        if (doEscrowProcedure && escrow < maxEscrow - maxOutput) {
+            val base = (BaseMetaTileEntity) aBaseMetaTileEntity;
+            for (val stack: mInventory) {
+                if (GT_ModHandler.isElectricItem(stack, mTier)) {
+                    val amountAvailable = GT_ModHandler.dischargeElectricItem(stack, (int) V[mTier], mTier, false, true, false);
+                    if (amountAvailable > 0) {
+                        toEscrow += GT_ModHandler.dischargeElectricItem(stack, amountAvailable, mTier, true, false, false);
+                    }
+                }
+            }
+            escrow += toEscrow;
+            val maxEuStorage = base.getEUCapacity();
+            val storedEu     = base.getStoredEU();
+            if (storedEu + escrow <= maxEuStorage) {
+                base.increaseStoredEnergyUnits(escrow, false);
+                escrow = 0;
+            }
+        }
     }
 
     @Override
