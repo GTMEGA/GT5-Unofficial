@@ -56,9 +56,6 @@ import static gregtech.api.enums.GT_Values.*;
  * Due to the many imports, this File can cause compile Problems if not all the APIs are installed
  */
 public class GT_ModHandler {
-
-    public static final int THERMAL_CENTRIFUGE_EU = 36;
-
     public static final List<IRecipe> sSingleNonBlockDamagableRecipeList = new ArrayList<>(1000);
     private static final Map<String, ItemStack> sIC2ItemMap = new HashMap<>();
 
@@ -780,14 +777,14 @@ public class GT_ModHandler {
     public static boolean addThermalCentrifugeRecipe(ItemStack aInput, int[] aChances, int aHeat, Object... aOutput) {
         if (aInput == null || aOutput == null || aOutput.length <= 0 || aOutput[0] == null) return false;
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.thermalcentrifuge, aInput, true)) return false;
-        RA.addThermalCentrifugeRecipe(aInput, aOutput.length >= 1 ? (ItemStack)aOutput[0] : null, aOutput.length >= 2 ? (ItemStack)aOutput[1] : null, aOutput.length >= 3 ? (ItemStack)aOutput[2] : null, aChances, 500, THERMAL_CENTRIFUGE_EU);
+        RA.addThermalCentrifugeRecipe(aInput, aOutput.length >= 1 ? (ItemStack)aOutput[0] : null, aOutput.length >= 2 ? (ItemStack)aOutput[1] : null, aOutput.length >= 3 ? (ItemStack)aOutput[2] : null, aChances, 500, 48);
         return true;
     }
 
     public static boolean addThermalCentrifugeRecipe(ItemStack aInput, int aHeat, Object... aOutput) {
         if (aInput == null || aOutput == null || aOutput.length <= 0 || aOutput[0] == null) return false;
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.thermalcentrifuge, aInput, true)) return false;
-        RA.addThermalCentrifugeRecipe(aInput, aOutput.length >= 1 ? (ItemStack)aOutput[0] : null, aOutput.length >= 2 ? (ItemStack)aOutput[1] : null, aOutput.length >= 3 ? (ItemStack)aOutput[2] : null, 500, THERMAL_CENTRIFUGE_EU);
+        RA.addThermalCentrifugeRecipe(aInput, aOutput.length >= 1 ? (ItemStack)aOutput[0] : null, aOutput.length >= 2 ? (ItemStack)aOutput[1] : null, aOutput.length >= 3 ? (ItemStack)aOutput[2] : null, 500, 48);
         return true;
     }
 
