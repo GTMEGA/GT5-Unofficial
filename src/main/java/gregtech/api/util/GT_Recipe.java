@@ -13,6 +13,7 @@ import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Replicator;
 import gregtech.nei.GT_NEI_DefaultHandler.FixedPositionedStack;
 import ic2.core.Ic2Items;
+import lombok.val;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -25,6 +26,8 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static gregtech.api.enums.GT_Values.*;
 
@@ -680,6 +683,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * HashMap of Recipes based on their Items
          */
         public final Map<GT_ItemStack, Collection<GT_Recipe>> mRecipeItemMap = new /*Concurrent*/HashMap<>();
+
+        public final ArrayList<Consumer<GT_Recipe>> recipeAddCallback = new ArrayList<>();
         /**
          * HashMap of Recipes based on their Fluids
          */
@@ -806,6 +811,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         public GT_Recipe add(GT_Recipe aRecipe) {
+            for (val consumer : recipeAddCallback) {
+                consumer.accept(aRecipe);
+            }
             mRecipeList.add(aRecipe);
             addToFluidMap(aRecipe);
             return addToItemMap(aRecipe);
