@@ -219,7 +219,9 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glDepthFunc(GL11.GL_EQUAL);
             GL11.glColor3ub((byte) (fluidColor >> 16), (byte) (fluidColor >> 8), (byte) fluidColor);
-            if (type.equals(ItemRenderType.INVENTORY)) {
+            if (fluidIcon == null) {
+                // Do nothing lol, fucking greg
+            } else if (type.equals(ItemRenderType.INVENTORY)) {
                 GT_RenderUtil.renderItemIcon(fluidIcon, 16.0D, -0.001D, 0.0F, 0.0F, -1.0F);
             } else {
                 ItemRenderer.renderItemIn2D(Tessellator.instance, fluidIcon.getMaxU(), fluidIcon.getMinV(), fluidIcon.getMinU(), fluidIcon.getMaxV(), fluidIcon.getIconWidth(), fluidIcon.getIconHeight(), 0.0625F);
