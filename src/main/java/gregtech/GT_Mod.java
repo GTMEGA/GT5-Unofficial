@@ -32,6 +32,7 @@ import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gregtech.common.items.explosives.GT_RemoteDetonator;
 import gregtech.common.misc.GT_Command;
+import gregtech.common.misc.GT_Command_DebugHand;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Massfabricator;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineBase;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
@@ -1224,6 +1225,7 @@ public class GT_Mod implements IGT_Mod {
         }
 
         aEvent.registerServerCommand(new GT_Command());
+        aEvent.registerServerCommand(new GT_Command_DebugHand());
         //Sets a new Machine Block Update Thread everytime a world is loaded
         GT_Runnable_MachineBlockUpdate.initExecutorService();
     }

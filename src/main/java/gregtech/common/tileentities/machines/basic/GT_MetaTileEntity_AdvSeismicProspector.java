@@ -12,6 +12,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Ore_Abstract;
 import ic2.core.Ic2Items;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -32,6 +33,8 @@ import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
 
 public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_BasicMachine {
     boolean ready = false;
+
+    @Getter
     int radius;
     int step;
     int cX;
@@ -79,9 +82,9 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
                  "2 Powderbarrels, "
                      + "4 Glyceryl Trinitrate, "
                      + "16 TNT, or "
-                     + "8 ITNT", 
+                     + "8 ITNT",
                 "Use Data Stick, Scan Data Stick, Print Data Stick, Bind Pages into Book",
-                "Ore prospecting area = " 
+                "Ore prospecting area = "
                     + radius*2
                     + "x"
                     + radius*2
@@ -115,9 +118,7 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
                 this.ready = true;
                 this.mMaxProgresstime = (aPlayer.capabilities.isCreativeMode ? 20 : 800);
 
-            } else if (ready && mMaxProgresstime == 0
-                    && aStack != null && aStack.stackSize == 1
-                    && aStack.getItem() == ItemList.Tool_DataStick.getItem()) {
+            } else if (canBeReadFrom() && aStack != null && aStack.stackSize == 1 && aStack.getItem() == ItemList.Tool_DataStick.getItem()) {
                 this.ready = false;
 
                 // prospecting ores
@@ -142,6 +143,10 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
         }
 
         return true;
+    }
+
+    public boolean canBeReadFrom() {
+        return ready && mMaxProgresstime == 0;
     }
 
     private void prospectOils(ArrayList<String> aOils) {
@@ -184,7 +189,7 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
         } catch (Exception ignored) {}
     }
 
-    private void prospectOres(Map<String, Integer> aOres) {
+    public void prospectOres(Map<String, Integer> aOres) {
         int tLeftXBound = this.getBaseMetaTileEntity().getXCoord() - radius;
         int tRightXBound = tLeftXBound + 2*radius;
 
