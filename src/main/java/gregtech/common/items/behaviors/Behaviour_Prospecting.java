@@ -1,5 +1,6 @@
 package gregtech.common.items.behaviors;
 
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -20,12 +21,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidBlock;
 
+import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
+
 public class Behaviour_Prospecting extends Behaviour_None {
+
     private final int mVanillaCosts;
+
     private final int mEUCosts;
+
     private final String mTooltip = GT_LanguageManager.addStringLocalization("gt.behaviour.prospecting", "Usable for Prospecting");
 
     public Behaviour_Prospecting(int aVanillaCosts, int aEUCosts) {
@@ -35,17 +42,7 @@ public class Behaviour_Prospecting extends Behaviour_None {
 
     @Override
     public boolean onItemUseFirst(
-            GT_MetaBase_Item aItem,
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            int aSide,
-            float hitX,
-            float hitY,
-            float hitZ
+            GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ
                                  ) {
         if (aWorld.isRemote) {
             return false;
@@ -57,17 +54,14 @@ public class Behaviour_Prospecting extends Behaviour_None {
         byte aMeta = (byte) aWorld.getBlockMetadata(aX, aY, aZ);
 
 
-        ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(aBlock, 1, aMeta));
-        if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
-            GT_Utility.sendChatToPlayer(aPlayer, trans("100", "This is ") + tAssotiation.mMaterial.mMaterial.mDefaultLocalName + trans("101", " Ore."));
+        ItemData association = GT_OreDictUnificator.getAssociation(new ItemStack(aBlock, 1, aMeta));
+        if ((association != null) && (Objects.requireNonNull(association.mPrefix).toString().startsWith("ore"))) {
+            GT_Utility.sendChatToPlayer(aPlayer, trans("100", "This is ") + Objects.requireNonNull(association.mMaterial).mMaterial.mDefaultLocalName + trans("101", " Ore."));
             GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(1), 1.0F, -1.0F, aX, aY, aZ);
             return true;
         }
 
-        if (aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.stone) || aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.netherrack) ||
-            aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.end_stone) || aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockStones) ||
-            aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockGranites) || (aBlock == GregTech_API.sBlockOresUb1) ||
-            (aBlock == GregTech_API.sBlockOresUb2) || (aBlock == GregTech_API.sBlockOresUb3) || (aBlock == GregTech_API.sBlockOres1)) {
+        if (isStone(aBlock, aWorld, aX, aY, aZ) || isGTOre(aBlock)) {
             if (GT_ModHandler.damageOrDechargeItem(aStack, this.mVanillaCosts, this.mEUCosts, aPlayer)) {
                 GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(1), 1.0F, -1.0F, aX, aY, aZ);
                 int tMetaID = 0;
@@ -115,10 +109,9 @@ public class Behaviour_Prospecting extends Behaviour_None {
                         }
                     } else {
                         tMetaID = aWorld.getBlockMetadata(tX, tY, tZ);
-                        tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
-                        if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
-                            GT_Utility.sendChatToPlayer(
-                                    aPlayer, trans("106", "Found traces of ") + tAssotiation.mMaterial.mMaterial.mDefaultLocalName + trans("101", " Ore."));
+                        association = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
+                        if ((association != null) && (association.mPrefix.toString().startsWith("ore"))) {
+                            GT_Utility.sendChatToPlayer(aPlayer, trans("106", "Found traces of ") + association.mMaterial.mMaterial.mDefaultLocalName + trans("101", " Ore."));
                             return true;
                         }
                     }
@@ -130,9 +123,19 @@ public class Behaviour_Prospecting extends Behaviour_None {
         return false;
     }
 
+    private static boolean isStone(final Block aBlock, final World aWorld, final int aX, final int aY, final int aZ) {
+        return aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.stone) || aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.netherrack) || aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.end_stone) ||
+               aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockStones) || aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockGranites);
+    }
+
+    public static boolean isGTOre(final @Nonnull Block aBlock) {
+        return (aBlock == GregTech_API.sBlockOresUb1) || (aBlock == GregTech_API.sBlockOresUb2) || (aBlock == GregTech_API.sBlockOresUb3) || (aBlock == GregTech_API.sBlockOres1);
+    }
+
     @Override
     public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         return aList;
     }
+
 }
