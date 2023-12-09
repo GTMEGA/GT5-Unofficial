@@ -33,6 +33,7 @@ import gregtech.common.items.behaviors.Behaviour_SensorKit;
 import gregtech.common.items.behaviors.Behaviour_Sonictron;
 import gregtech.common.items.behaviors.Behaviour_Spray_Color;
 import gregtech.common.items.behaviors.Behaviour_WrittenBook;
+import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
@@ -611,6 +612,17 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GregTech_API.registerCover(ItemList.FluidRegulator_ZPM.get(1L), TextureFactory.of(MACHINE_CASINGS[7][0], TextureFactory.of(OVERLAY_PUMP)), new GT_Cover_FluidRegulator(131072));
         GregTech_API.registerCover(ItemList.FluidRegulator_UV.get(1L), TextureFactory.of(MACHINE_CASINGS[8][0], TextureFactory.of(OVERLAY_PUMP)), new GT_Cover_FluidRegulator(524288));
 
+        addAdvancedFluidRegulator(ItemList.AdvFluidRegulator_ULV);
+        addAdvancedFluidRegulator(ItemList.AdvFluidRegulator_LV);
+        addAdvancedFluidRegulator(ItemList.AdvFluidRegulator_MV);
+        addAdvancedFluidRegulator(ItemList.AdvFluidRegulator_HV);
+        addAdvancedFluidRegulator(ItemList.AdvFluidRegulator_EV);
+        addAdvancedFluidRegulator(ItemList.AdvFluidRegulator_IV);
+        addAdvancedFluidRegulator(ItemList.AdvFluidRegulator_LuV);
+        addAdvancedFluidRegulator(ItemList.AdvFluidRegulator_ZPM);
+        addAdvancedFluidRegulator(ItemList.AdvFluidRegulator_UV);
+        addAdvancedFluidRegulator(ItemList.AdvFluidRegulator_UHV);
+
         ItemList.FluidFilter.set(addItem(669, "Fluid Filter Cover", "Set with Fluid Container to only accept one Fluid Type"));
         GregTech_API.registerCover(ItemList.FluidFilter.get(1L), TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_SHUTTER)), new GT_Cover_Fluidfilter());
         ItemList.ItemFilter_Export.set(addItem(270,"Item Filter Cover (Export)", "Right click with an item to set filter (Only supports Export Mode)"));
@@ -912,6 +924,15 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Tin,2L), ItemList.Component_Filter.get(1L), ItemList.Conveyor_Module_LV.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, ItemList.ItemFilter_Export.get(1L), 100, 30);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Tin,2L), ItemList.Component_Filter.get(1L), ItemList.Conveyor_Module_LV.get(1L), GT_Utility.getIntegratedCircuit(2)}, null, ItemList.ItemFilter_Import.get(1L), 100, 30);
+    }
+
+    private void addAdvancedFluidRegulator(final ItemList regulator) {
+        val highest = ItemList.AdvFluidRegulator_UHV.ordinal() - ItemList.AdvFluidRegulator_ULV.ordinal();
+        val index = regulator.ordinal() - ItemList.AdvFluidRegulator_ULV.ordinal();
+        if (index < 0 || index > highest) {
+            return;
+        }
+        GregTech_API.registerCover(regulator.get(1L), TextureFactory.of(MACHINE_CASINGS[index][0], TextureFactory.of(OVERLAY_FLUIDDETECTOR)), new GT_Cover_AdvancedFluidRegulator(index));
     }
 
     private static final Map<Materials,Materials> cauldronRemap =new HashMap<>();

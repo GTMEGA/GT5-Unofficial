@@ -429,6 +429,14 @@ public class GT_GuiScrollPanel2D<ParentType extends GuiScreen & IGuiScreen> exte
 
     }
 
+    /**
+     * @return
+     */
+    @Override
+    public Minecraft getMinecraftInstance() {
+        return mc;
+    }
+
     public Vector2 effectiveScroll() {
         double x = Math.max(0.0, Math.min(1.0, currentScroll.x));
         double y = Math.max(0.0, Math.min(1.0, currentScroll.y));

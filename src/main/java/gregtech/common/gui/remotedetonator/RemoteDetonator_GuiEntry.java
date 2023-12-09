@@ -101,7 +101,7 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
 
     @Override
     public void receiveClick(final int mouseX, final int mouseY, final int mouseButton) {
-        System.out.println("Clicked: " + mouseButton);
+        // System.out.println("Clicked: " + mouseButton);
         onClick(scrollPanel, mouseX, mouseY, mouseButton);
     }
 

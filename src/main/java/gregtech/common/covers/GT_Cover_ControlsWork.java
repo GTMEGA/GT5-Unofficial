@@ -13,6 +13,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.*;
 import io.netty.buffer.ByteBuf;
+import lombok.Setter;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -30,6 +31,7 @@ public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_Control
         private static final String STATE_FIELD = "state", SAFE_FIELD = "safe";
 
         private byte state;
+        @Setter
         private boolean safe;
 
         public InternalData() {
@@ -108,10 +110,6 @@ public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_Control
             return safe;
         }
 
-        public void setSafe(boolean safe) {
-            this.safe = safe;
-        }
-
         @Nonnull
         @Override
         public ISerializableObject copy() {
@@ -177,11 +175,19 @@ public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_Control
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
 
-            new GT_GuiIconButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.REDSTONE_ON);
-            new GT_GuiIconButton(this, 1, startX + spaceX * 0, startY + spaceY * 1, GT_GuiIcon.REDSTONE_OFF);
-            new GT_GuiIconButton(this, 2, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.CROSS);
+            new GT_GuiIconButton(this, 0, getButtonX(), getButtonY(0), GT_GuiIcon.REDSTONE_ON);
+            new GT_GuiIconButton(this, 1, getButtonX(), getButtonY(1), GT_GuiIcon.REDSTONE_OFF);
+            new GT_GuiIconButton(this, 2, getButtonX(), getButtonY(2), GT_GuiIcon.CROSS);
+            new GT_GuiIconCheckButton(this, 3, getButtonX(), getButtonY(3), GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS).setChecked(aCoverVariable.isSafe());
+        }
 
-            new GT_GuiIconCheckButton(this, 3, startX + spaceX * 0, startY + spaceY * 3, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS).setChecked(aCoverVariable.isSafe());
+        @SuppressWarnings("PointlessArithmeticExpression")
+        private int getButtonX() {
+            return startX + spaceX * 0;
+        }
+
+        private int getButtonY(final int index) {
+            return startY + spaceY * index;
         }
 
         @Override

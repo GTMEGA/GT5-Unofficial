@@ -8,7 +8,10 @@ import lombok.experimental.Accessors;
 import lombok.val;
 import lombok.var;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.entity.RenderItem;
 import org.lwjgl.opengl.GL11;
 
@@ -21,13 +24,12 @@ import java.util.stream.Collectors;
 @Getter
 public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extends GuiScreen implements IGT_GuiSubWindow {
 
-    public interface OnDragBehavior {
+    public interface ScrollHook {
+
         void onUpdate(final GT_GuiScrollPanel<?> panel, final int mouseX, final int mouseY, final int lastClick);
+
     }
 
-    public interface OnMoveBehavior {
-        void onUpdate(final GT_GuiScrollPanel<?> panel, final int mouseX, final int mouseY, final int lastClick);
-    }
 
     public interface IScrollableElement extends IGuiElement {
 
@@ -94,11 +96,7 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
 
     @Accessors(chain = true)
     @Setter
-    private OnDragBehavior onDragBehavior = null;
-
-    @Accessors(chain = true)
-    @Setter
-    private OnMoveBehavior onMoveBehavior = null;
+    private ScrollHook onDragBehavior = null, onMoveBehavior = null;
 
     @Setter
     private Color panelBackground = new Color(19, 19, 19, 0xFF);
@@ -447,6 +445,14 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
         onMove(mouseX, mouseY, clickState);
     }
 
+    /**
+     * @return
+     */
+    @Override
+    public Minecraft getMinecraftInstance() {
+        return mc;
+    }
+
     private void onMove(final int mouseX, final int mouseY, final int clickState) {
         if (onMoveBehavior != null) {
             onMoveBehavior.onUpdate(this, mouseX, mouseY, clickState);
@@ -488,10 +494,6 @@ public class GT_GuiScrollPanel<ParentType extends GuiScreen & IGuiScreen> extend
 
     public int contentOffsetY() {
         return (myHeight - scrollHeight) / 2;
-    }
-
-    public int getMCScaleFactor() {
-        return new ScaledResolution(mc, mc.displayWidth, mc.displayHeight).getScaleFactor();
     }
 
     public double effectiveScroll() {
