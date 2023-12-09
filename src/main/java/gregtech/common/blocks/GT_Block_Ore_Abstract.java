@@ -71,6 +71,10 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
         }
     }
 
+    public Materials material() {
+        return oreType;
+    }
+
     protected static void registerLocalization(Materials material, String oreNameUnlocalized, OreSize size) {
         String oreNameLocalized;
         if (GT_LanguageManager.i18nPlaceholder)
