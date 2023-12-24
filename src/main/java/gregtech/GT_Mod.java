@@ -442,6 +442,9 @@ public class GT_Mod implements IGT_Mod {
         GT_LanguageManager.i18nPlaceholder = tMainConfig.get("general", "EnablePlaceholderForMaterialNamesInLangFile", true).getBoolean(true);
         GT_MetaTileEntity_LongDistancePipelineBase.minimalDistancePoints = tMainConfig.get("general", "LongDistancePipelineMinimalDistancePoints", 64).getInt(64);
 
+        LV24EuCapAuto = GT_Values.getConfigValue(tMainConfig, "general", "LV24EuCapAuto", LV24EuCapAuto, String.format("Use the LV 24 EU Cap for machines, automatically drives >24 -> 24. Default: %s", LV24EuCapAuto));
+        MV112EuCapAuto = GT_Values.getConfigValue(tMainConfig, "general", "MV112EuCapAuto", MV112EuCapAuto, String.format("The MV 112V EU Cap for machines, automatically drives >112 -> 112. Default: %s", MV112EuCapAuto));
+
         GregTech_API.mUseOnlyGoodSolderingMaterials = GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "useonlygoodsolderingmaterials", GregTech_API.mUseOnlyGoodSolderingMaterials);
         gregtechproxy.mChangeHarvestLevels = GregTech_API.sMaterialProperties.get("havestLevel", "activateHarvestLevelChange", false);//TODO CHECK
         if (gregtechproxy.mChangeHarvestLevels) {
