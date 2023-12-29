@@ -710,11 +710,11 @@ public class GT_ModHandler {
                                     case "gt.recipe.macerator":
                                     case "gt.recipe.extractor":
                                     case "gt.recipe.compressor":
-                                        val recipe = new GT_Recipe(false, new ItemStack[]{GT_Utility.copyAmount((iRecipeInputRecipeOutputEntry.getKey()).getAmount(), tStack)}, (ItemStack[]) (iRecipeInputRecipeOutputEntry.getValue()).items.toArray(), null, null, null, null, 300, 2, 0);
+                                        val recipe = new GT_Recipe(false, new ItemStack[]{GT_Utility.copyAmount((iRecipeInputRecipeOutputEntry.getKey()).getAmount(), tStack)}, (iRecipeInputRecipeOutputEntry.getValue()).items.toArray(new ItemStack[0]), null, null, null, null, 300, 2, 0);
                                         aGTRecipeMap.addRecipe(recipe,true,false,false);
                                         break;
                                     case "gt.recipe.thermalcentrifuge":
-                                        aGTRecipeMap.addRecipe(true, new ItemStack[]{GT_Utility.copyAmount((iRecipeInputRecipeOutputEntry.getKey()).getAmount(), tStack)}, (ItemStack[]) (iRecipeInputRecipeOutputEntry.getValue()).items.toArray(), null, null, null, null, 500, 48, 0);
+                                        aGTRecipeMap.addRecipe(true, new ItemStack[]{GT_Utility.copyAmount((iRecipeInputRecipeOutputEntry.getKey()).getAmount(), tStack)}, (iRecipeInputRecipeOutputEntry.getValue()).items.toArray(new ItemStack[0]), null, null, null, null, 500, 48, 0);
                                         break;
                                 }
                             } catch (Exception e) {

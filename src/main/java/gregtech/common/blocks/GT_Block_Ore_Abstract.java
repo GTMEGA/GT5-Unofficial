@@ -81,6 +81,10 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
         GT_LanguageManager.addStringLocalization(oreNameUnlocalized, oreNameLocalized);
     }
 
+    public Materials material() {
+        return oreType;
+    }
+
     public static GT_Block_Ore_Abstract getOre(Materials material, OreSize size) {
         return size == OreSize.Normal ? oreMap.get(material) : smallOreMap.get(material);
     }
