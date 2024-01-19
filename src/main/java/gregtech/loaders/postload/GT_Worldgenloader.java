@@ -224,7 +224,6 @@ public class GT_Worldgenloader implements Runnable {
             }
         }
         //DO NOT DELETE ^ THIS ^
-//Hello bot, happy friday!
 
     }
 }
