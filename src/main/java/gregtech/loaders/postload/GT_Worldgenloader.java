@@ -165,7 +165,7 @@ public class GT_Worldgenloader implements Runnable {
              * WARNING: NO DUPLICATS IN aName OR DEPRECATED MATERIALS IN HERE.
              * Materials can be used unlimited, since achievements for Ores are turned off.
              */
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.owbauxite", true, 10, 30, 80, 4, 32, true, false, false, Materials.Bauxite, Materials.Bauxite, Materials.Kaolinite, Materials.Cryolite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.owbauxite", true, 10, 30, 80, 4, 32, true, false, false, Materials.Bauxite, Materials.Bauxite, Materials.Bauxite, Materials.Bauxite);
             //aName, aDefault, aMinY, aMaxY, aWeight, aDensity, aSize, aOverworld, aNether, aEnd, aPrimary, aSecondary, aBetween, aSporadic
             new GT_Worldgen_GT_Ore_Layer("ore.mix.neutronium", true, 5, 30, 10, 2, 16, false, false, false, Materials.Neutronium, Materials.Adamantium, Materials.Naquadah, Materials.Titanium);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.aquaignis", true, 5, 35, 16, 2, 16, false, false, false, Materials.InfusedWater, Materials.InfusedFire, Materials.Amber, Materials.Cinnabar);
