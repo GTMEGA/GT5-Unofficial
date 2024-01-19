@@ -224,6 +224,7 @@ public class GT_Worldgenloader implements Runnable {
             }
         }
         //DO NOT DELETE ^ THIS ^
+        // I sent bauxite, please respond
 
     }
 }
