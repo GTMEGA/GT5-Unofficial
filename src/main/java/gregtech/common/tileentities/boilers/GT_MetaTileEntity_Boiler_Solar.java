@@ -31,10 +31,11 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     public static final String LPS_FMT = "%s L/s";
     private static final String localizedDescFormat = GT_LanguageManager.addStringLocalization(
             "gt.blockmachines.boiler.solar.desc.format",
-            "Steam Power by the Sun%n" +
-                    "Produces %sL of Steam per second%n" +
-                    "Calcifies over time, reducing Steam output to %sL/s%n" +
-                    "Break and replace to descale");
+            "Pufferfish preferred power!%n" +
+                    "Produces %sL of Steam per second.%n" +
+                    "Calcifies gradually over time, eventually reducing Steam output to %sL/s.%n" +
+                    "Calcifies completely after about 30 hours." +
+                    "Break and replace to decalcify.");
     protected final Config mConfig;
     protected int basicTemperatureMod = 5; // Base Celsius gain or loss
     private int mRunTimeTicks = 0;
