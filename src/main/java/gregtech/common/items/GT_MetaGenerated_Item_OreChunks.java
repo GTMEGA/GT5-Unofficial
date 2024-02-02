@@ -13,11 +13,6 @@ public class GT_MetaGenerated_Item_OreChunks extends GT_MetaGenerated_Item_X32 {
     }
 
     @Override
-    public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
-        return aDoShowAllItems;
-    }
-
-    @Override
     public String getItemStackDisplayName(ItemStack aStack) {
         val tMaterial = Materials.getMetaItemMaterial(aStack);
 
