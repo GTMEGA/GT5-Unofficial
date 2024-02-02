@@ -799,7 +799,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Upgrade_Lock.get(1L), 6400, 16);
 //        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Upgrade_Lock.get(1L), 6400, 16);
 
-        ItemList.Component_Filter.set(addItem(tLastID = 729, "Item Filter", "", new ItemData(Materials.Zinc, OrePrefixes.foil.mMaterialAmount * 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L), OreDictNames.craftingFilter));
+        //ItemList.Component_Filter.set(addItem(tLastID = 729, "Item Filter", "", new ItemData(Materials.Zinc, OrePrefixes.foil.mMaterialAmount * 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L), OreDictNames.craftingFilter));
 
         ItemList.Cover_Controller.set(addItem(tLastID = 730, "Machine Controller Cover", "Turns Machines ON/OFF", new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         ItemList.Cover_ActivityDetector.set(addItem(tLastID = 731, "Activity Detector Cover", "Gives out Activity as Redstone", new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
@@ -807,7 +807,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Cover_ItemDetector.set(addItem(tLastID = 733, "Item Detector Cover", "Gives out Item Amount as Redstone", new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 1L)));
         ItemList.Cover_EnergyDetector.set(addItem(tLastID = 734, "Energy Detector Cover", "Gives out Energy Amount as Redstone", new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)));
         ItemList.Cover_PlayerDetector.set(addItem(tLastID = 735, "Player Detector Cover", "Gives out close Players as Redstone", new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Sensor_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_PlayerDetector.get(1L), 3200, 128);
+        //GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Sensor_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_PlayerDetector.get(1L), 3200, 128);
 
         GregTech_API.registerCover(ItemList.Cover_Controller.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_CONTROLLER)), new GT_Cover_ControlsWork());
         GregTech_API.registerCover(ItemList.Cover_ActivityDetector.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(TextureFactory.of(OVERLAY_ACTIVITYDETECTOR), TextureFactory.builder().addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW).glow().build())), new GT_Cover_DoesWork());
@@ -884,8 +884,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GregTech_API.registerCover(ItemList.Cover_RedstoneReceiverExternal.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_FLUIDDETECTOR)), new GT_Cover_RedstoneReceiverExternal());
         GregTech_API.registerCover(ItemList.Cover_RedstoneReceiverInternal.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_FLUIDDETECTOR)), new GT_Cover_RedstoneReceiverInternal());
 
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Emitter_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_RedstoneTransmitterExternal.get(1L), 3200, 128);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Sensor_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_RedstoneReceiverExternal.get(1L), 3200, 128);
+        //GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Emitter_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_RedstoneTransmitterExternal.get(1L), 3200, 128);
+        //GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Sensor_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_RedstoneReceiverExternal.get(1L), 3200, 128);
         //GT_ModHandler.addShapelessCraftingRecipe(ItemList.Cover_RedstoneTransmitterInternal.get(1L), new Object[]{ItemList.Cover_RedstoneTransmitterExternal.get(1L)});
         //GT_ModHandler.addShapelessCraftingRecipe(ItemList.Cover_RedstoneReceiverInternal.get(1L), new Object[]{ItemList.Cover_RedstoneReceiverExternal.get(1L)});
         //GT_ModHandler.addShapelessCraftingRecipe(ItemList.Cover_RedstoneTransmitterExternal.get(1L), new Object[]{ItemList.Cover_RedstoneTransmitterInternal.get(1L)});
