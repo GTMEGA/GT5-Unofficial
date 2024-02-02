@@ -822,20 +822,18 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Cover_Shutter.set(addItem(tLastID = 749, "Shutter Module Cover", "Blocks Inventory/Tank Side. Use together with Machine Controller.", new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L)));
 
-        GT_ModHandler.addCraftingRecipe(ItemList.Cover_Screen.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"ACA", "PPP", "ALA", 'A',
-                                                                                                                                                                                                           OrePrefixes.plate.get(Steel), 'L',
-                                                                                                                                                                                                           OrePrefixes.dust.get(Materials.Glowstone), 'C', circuitPower.get(PWR_LV), 'P', OrePrefixes.plate.get(Materials.Glass)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Cover_Screen.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"ACA", "PPP", "ALA", 'A', OrePrefixes.plate.get(Steel), 'L', OrePrefixes.dust.get(Materials.Glowstone), 'C', circuitPower.get(PWR_LV), 'P', OrePrefixes.plate.get(Materials.Glass)});
 
 //        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L), ItemList.Cover_Drain.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Shutter.get(1L), 200, 64);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L), ItemList.Cover_Drain.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Shutter.get(1L), 800, 16);
+//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L), ItemList.Cover_Drain.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Shutter.get(1L), 800, 16);
 //        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L), ItemList.Cover_Drain.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Shutter.get(1L), 400, 30);
 //        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L), new ItemStack(Blocks.iron_bars, 2), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Drain.get(1L), 200, 64);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2L), new ItemStack(Blocks.iron_bars, 2), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Drain.get(1L), 800, 16);
+//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2L), new ItemStack(Blocks.iron_bars, 2), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Drain.get(1L), 800, 16);
 //        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 2L), new ItemStack(Blocks.iron_bars, 2), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Drain.get(1L), 400, 30);
 //        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L), new ItemStack(Blocks.crafting_table, 1), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Crafting.get(1L), 200, 64);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L), new ItemStack(Blocks.crafting_table, 1), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Crafting.get(1L), 800, 16);
+//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L), new ItemStack(Blocks.crafting_table, 1), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Crafting.get(1L), 800, 16);
 //        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L), new ItemStack(Blocks.crafting_table, 1), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Crafting.get(1L), 800, 16);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Cover_Shutter.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 2), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.FluidFilter.get(1L), 800, 4);
+//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Cover_Shutter.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 2), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.FluidFilter.get(1L), 800, 4);
 
         GregTech_API.registerCover(ItemList.Cover_Screen.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(TextureFactory.of(OVERLAY_SCREEN), TextureFactory.builder().addIcon(OVERLAY_SCREEN_GLOW).glow().build())), new GT_Cover_Screen());
         GregTech_API.registerCover(ItemList.Cover_Crafting.get(1L), TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_CRAFTING)), new GT_Cover_Crafting());
@@ -869,12 +867,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         setElectricStats(32000 + tLastID, -2000000000L, 1000000000L, -1L, -3L, false);
         ItemList.Tool_Scanner.set(addItem(tLastID = 762, "Portable Scanner", "Tricorder", Behaviour_Scanner.INSTANCE, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 6L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 6L)));
         setElectricStats(32000 + tLastID, 100000L, GT_Values.V[1], 1L, -1L, false);
-        GT_ModHandler.addCraftingRecipe(ItemList.Tool_Scanner.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"EPR", "CSC", "PBP", 'C',
-                                                                                                                                                                                                           circuitLogic.get(LOGIC_LV), 'P',
-                                                                                                                                                                                                           OrePrefixes.plate.get(Steel), 'E',
-                                                                                                                                                                                                           ItemList.Emitter_LV, 'R',
-                                                                                                                                                                                                           ItemList.Sensor_LV, 'S',
-                                                                                                                                                                                                           ItemList.Cover_Screen, 'B', ItemList.Battery_RE_LV_Lithium});
+        GT_ModHandler.addCraftingRecipe(ItemList.Tool_Scanner.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"EPR", "CSC", "PBP", 'C', circuitLogic.get(LOGIC_LV), 'P', OrePrefixes.plate.get(Steel), 'E', ItemList.Emitter_LV, 'R', ItemList.Sensor_LV, 'S', ItemList.Cover_Screen, 'B', ItemList.Battery_RE_LV_Lithium});
         ItemList.NC_SensorKit.set(addItem(tLastID = 763, "GregTech Sensor Kit", "", new Behaviour_SensorKit()));
         ItemList.Duct_Tape.set(addItem(tLastID = 764, "Duct Tape", "If you can't fix it with this, use more of it!", new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), OreDictNames.craftingDuctTape));
         ItemList.McGuffium_239.set(addItem(tLastID = 765, "Mc Guffium 239", "42% better than Phlebotnium", new TC_Aspects.TC_AspectStack(TC_Aspects.ALIENIS, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.SPIRITUS, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.AURAM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITIUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.RADIO, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.NEBRISUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 8L)));
@@ -893,25 +886,22 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Emitter_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_RedstoneTransmitterExternal.get(1L), 3200, 128);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Sensor_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_RedstoneReceiverExternal.get(1L), 3200, 128);
-        GT_ModHandler.addShapelessCraftingRecipe(ItemList.Cover_RedstoneTransmitterInternal.get(1L), new Object[]{ItemList.Cover_RedstoneTransmitterExternal.get(1L)});
-        GT_ModHandler.addShapelessCraftingRecipe(ItemList.Cover_RedstoneReceiverInternal.get(1L), new Object[]{ItemList.Cover_RedstoneReceiverExternal.get(1L)});
-        GT_ModHandler.addShapelessCraftingRecipe(ItemList.Cover_RedstoneTransmitterExternal.get(1L), new Object[]{ItemList.Cover_RedstoneTransmitterInternal.get(1L)});
-        GT_ModHandler.addShapelessCraftingRecipe(ItemList.Cover_RedstoneReceiverExternal.get(1L), new Object[]{ItemList.Cover_RedstoneReceiverInternal.get(1L)});
+        //GT_ModHandler.addShapelessCraftingRecipe(ItemList.Cover_RedstoneTransmitterInternal.get(1L), new Object[]{ItemList.Cover_RedstoneTransmitterExternal.get(1L)});
+        //GT_ModHandler.addShapelessCraftingRecipe(ItemList.Cover_RedstoneReceiverInternal.get(1L), new Object[]{ItemList.Cover_RedstoneReceiverExternal.get(1L)});
+        //GT_ModHandler.addShapelessCraftingRecipe(ItemList.Cover_RedstoneTransmitterExternal.get(1L), new Object[]{ItemList.Cover_RedstoneTransmitterInternal.get(1L)});
+        //GT_ModHandler.addShapelessCraftingRecipe(ItemList.Cover_RedstoneReceiverExternal.get(1L), new Object[]{ItemList.Cover_RedstoneReceiverInternal.get(1L)});
 
         ItemList.Cover_NeedsMaintainance.set(addItem(tLastID = 748, "Needs Maintenance Cover", "Attach to Multiblock Controller. Emits Redstone Signal if needs Maintenance", new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Sensor_LV.get(1L), ItemList.Emitter_LV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Steel, 1L), GT_Utility.getIntegratedCircuit(1)}, SolderingAlloy.getMolten(72L),
-                                        ItemList.Cover_NeedsMaintainance.get(1L),
-                                        800,
-                                        16);
+        //GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Sensor_LV.get(1L), ItemList.Emitter_LV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Steel, 1L), GT_Utility.getIntegratedCircuit(1)}, SolderingAlloy.getMolten(72L), ItemList.Cover_NeedsMaintainance.get(1L), 800, 16);
         GregTech_API.registerCover(ItemList.Cover_NeedsMaintainance.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(TextureFactory.of(OVERLAY_ACTIVITYDETECTOR), TextureFactory.builder().addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW).glow().build())), new GT_Cover_NeedMaintainance());
 
-        GT_ModHandler.addCraftingRecipe(ItemList.ItemFilter_Export.get(1L), new Object[]{"SPS", "dIC", "SPS", 'P', OrePrefixes.plate.get(Materials.Tin), 'S', OrePrefixes.screw.get(Materials.Iron), 'I', ItemList.Component_Filter, 'C', ItemList.Conveyor_Module_LV});
-        GT_ModHandler.addCraftingRecipe(ItemList.ItemFilter_Import.get(1L), new Object[]{"SPS", "CId", "SPS", 'P', OrePrefixes.plate.get(Materials.Tin), 'S', OrePrefixes.screw.get(Materials.Iron), 'I', ItemList.Component_Filter, 'C', ItemList.Conveyor_Module_LV});
-        GT_ModHandler.addShapelessCraftingRecipe(ItemList.ItemFilter_Export.get(1L), new Object[]{ItemList.ItemFilter_Import.get(1L)});
-        GT_ModHandler.addShapelessCraftingRecipe(ItemList.ItemFilter_Import.get(1L), new Object[]{ItemList.ItemFilter_Export.get(1L)});
+       //GT_ModHandler.addCraftingRecipe(ItemList.ItemFilter_Export.get(1L), new Object[]{"SPS", "dIC", "SPS", 'P', OrePrefixes.plate.get(Materials.Tin), 'S', OrePrefixes.screw.get(Materials.Iron), 'I', ItemList.Component_Filter, 'C', ItemList.Conveyor_Module_LV});
+       //GT_ModHandler.addCraftingRecipe(ItemList.ItemFilter_Import.get(1L), new Object[]{"SPS", "CId", "SPS", 'P', OrePrefixes.plate.get(Materials.Tin), 'S', OrePrefixes.screw.get(Materials.Iron), 'I', ItemList.Component_Filter, 'C', ItemList.Conveyor_Module_LV});
+       //GT_ModHandler.addShapelessCraftingRecipe(ItemList.ItemFilter_Export.get(1L), new Object[]{ItemList.ItemFilter_Import.get(1L)});
+       //GT_ModHandler.addShapelessCraftingRecipe(ItemList.ItemFilter_Import.get(1L), new Object[]{ItemList.ItemFilter_Export.get(1L)});
 
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Tin,2L), ItemList.Component_Filter.get(1L), ItemList.Conveyor_Module_LV.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, ItemList.ItemFilter_Export.get(1L), 100, 30);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Tin,2L), ItemList.Component_Filter.get(1L), ItemList.Conveyor_Module_LV.get(1L), GT_Utility.getIntegratedCircuit(2)}, null, ItemList.ItemFilter_Import.get(1L), 100, 30);
+        //GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Tin,2L), ItemList.Component_Filter.get(1L), ItemList.Conveyor_Module_LV.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, ItemList.ItemFilter_Export.get(1L), 100, 30);
+        //GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Tin,2L), ItemList.Component_Filter.get(1L), ItemList.Conveyor_Module_LV.get(1L), GT_Utility.getIntegratedCircuit(2)}, null, ItemList.ItemFilter_Import.get(1L), 100, 30);
     }
 
     private static final Map<Materials,Materials> cauldronRemap =new HashMap<>();
