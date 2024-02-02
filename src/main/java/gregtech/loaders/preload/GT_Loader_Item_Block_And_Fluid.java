@@ -73,6 +73,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         new GT_MetaGenerated_Item_01();
         new GT_MetaGenerated_Item_02();
         new GT_MetaGenerated_Item_03();
+        new GT_MetaGenerated_Item_OreChunks();
+
         // GT_MetaGenerated_Item_98 is initialized in GT_Proxy.onPostLoad() because we need to wait for fluids to be registered.
         // Pre-initialization needs to happen before then, though, because the cell icons get deleted at some point between load and post-load.
         GT_MetaGenerated_Item_98.preInit();
