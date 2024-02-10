@@ -41,7 +41,7 @@ public class GT_MetaTileEntity_Furnace_Bronze extends GT_MetaTileEntity_BasicMac
     public int checkRecipe() {
         if (null != (this.mOutputItems[0] = GT_ModHandler.getSmeltingOutput(getInputAt(0), true, getOutputAt(0)))) {
             this.mEUt = 4;
-            this.mMaxProgresstime = 256;
+            this.mMaxProgresstime = 112;
             return 2;
         }
         return 0;

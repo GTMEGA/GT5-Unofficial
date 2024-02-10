@@ -71,9 +71,10 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Furnace")
-                .addInfo("Controller Block for the Multi Smelter")
-                .addInfo("Smelts up to 16-136 items at once")
-                .addInfo("Items smelted increases with coil tier")
+                .addInfo("Controller Block for the Multi Smelter.")
+                .addInfo("Smelts up to 16-136 items at once.")
+                .addInfo("Faster smelting per ingot than a regular machine.")
+                .addInfo("Item quantity smelted increases with coil tier.")
                 .addPollutionAmount(20 * getPollutionPerTick(null))
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3, true)
@@ -148,7 +149,7 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
         if (this.mOutputItems.length > 0) {
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
-            calculateOverclockedNessMulti(4, 512, 1, mVolatage);
+            calculateOverclockedNessMulti(4, 256, 1, mVolatage);
             //In case recipe is too OP for that machine
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                 return false;
