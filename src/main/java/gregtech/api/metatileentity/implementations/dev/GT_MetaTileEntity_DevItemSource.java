@@ -500,7 +500,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
     @Override
     public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[6][17][];
-        val pipe = TextureFactory.of(OVERLAY_PIPE_OUT);
+        val pipe = TextureFactory.of(OVERLAY_ITEM_OUT);
         val itemSource = TextureFactory.of(OVERLAY_DEV_ITEM_SOURCE);
         val rsInactive = TextureFactory.of(OVERLAY_RS_INACTIVE);
         val rsActive = TextureFactory.of(OVERLAY_RS_ACTIVE);

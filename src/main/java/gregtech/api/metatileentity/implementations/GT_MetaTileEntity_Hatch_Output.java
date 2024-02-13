@@ -17,7 +17,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FLUID_OUT;
 
 public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
     private String lockedFluidName = null;
@@ -43,12 +43,12 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[]{aBaseTexture, TextureFactory.of(OVERLAY_FLUID_OUT)};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[]{aBaseTexture, TextureFactory.of(OVERLAY_FLUID_OUT)};
     }
 
     @Override

@@ -472,8 +472,14 @@ public class Textures {
 
         OVERLAY_LENS,
         OVERLAY_PIPE,
+
+        OVERLAY_STEAM_OUT,
         OVERLAY_PIPE_IN,
+        OVERLAY_FLUID_IN,
+        OVERLAY_FLUID_OUT,
         OVERLAY_PIPE_OUT,
+        OVERLAY_ITEM_IN,
+        OVERLAY_ITEM_OUT,
         OVERLAY_MUFFLER,
 
         OVERLAY_CONTROLLER,
@@ -510,6 +516,7 @@ public class Textures {
         OVERLAY_ENERGY_IN,
         OVERLAY_ENERGY_OUT,
 
+        //#TODO: Better energy hatch in/out icons.
         OVERLAY_ENERGY_IN_MULTI,
         OVERLAY_ENERGY_OUT_MULTI,
         OVERLAY_FRONT_LARGE_BOILER,

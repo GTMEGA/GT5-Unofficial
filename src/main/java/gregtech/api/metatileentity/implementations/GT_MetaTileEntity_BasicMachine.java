@@ -34,7 +34,7 @@ import java.util.List;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ITEM_OUT;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
 /**
@@ -1005,26 +1005,26 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     public ITexture[] getBottomFacingPipeActive(byte aColor) {
-        return new ITexture[]{MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[]{MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_ITEM_OUT)};
     }
 
     public ITexture[] getBottomFacingPipeInactive(byte aColor) {
-        return new ITexture[]{MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[]{MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_ITEM_OUT)};
     }
 
     public ITexture[] getTopFacingPipeActive(byte aColor) {
-        return new ITexture[]{MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[]{MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_ITEM_OUT)};
     }
 
     public ITexture[] getTopFacingPipeInactive(byte aColor) {
-        return new ITexture[]{MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[]{MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_ITEM_OUT)};
     }
 
     public ITexture[] getSideFacingPipeActive(byte aColor) {
-        return new ITexture[]{MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[]{MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_ITEM_OUT)};
     }
 
     public ITexture[] getSideFacingPipeInactive(byte aColor) {
-        return new ITexture[]{MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[]{MACHINE_CASINGS[mTier][aColor + 1], TextureFactory.of(OVERLAY_ITEM_OUT)};
     }
 }

@@ -116,7 +116,7 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
                     TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_SIDE, colorModulation)};
             rTextures[3][i] = new ITexture[]{
                     TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_SIDE, colorModulation),
-                    TextureFactory.of(BlockIcons.OVERLAY_PIPE)};
+                    TextureFactory.of(BlockIcons.OVERLAY_STEAM_OUT)};
         }
         return rTextures;
     }
