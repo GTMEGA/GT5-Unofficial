@@ -126,9 +126,10 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.deepiron", true, 5, 40, 8, false, false, false, Materials.DeepIron);
 
             //GT Default Veins
+            /*
+            TODO: Add the following block of mixes to slurries
+             */
 
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.naquadah", true, 10, 90, 30, 4, 32, false, false, false, Materials.Naquadah, Materials.Naquadah, Materials.Naquadah, Materials.NaquadahEnriched);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.lignite", false, 80, 210, 20, 7, 32, false, false, false, Materials.Lignite, Materials.Lignite, Materials.Lignite, Materials.Coal);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.coal", true, 50, 80, 140, 5, 32, true, false, false, Materials.Coal, Materials.Coal, Materials.Coal, Materials.Coal);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.magnetite", true, 55, 180, 200, 6, 32, true, false, false, Materials.Magnetite, Materials.Magnetite, Materials.VanadiumMagnetite, Materials.Gold);
 //            new GT_Worldgen_GT_Ore_Layer("ore.mix.gold", true, 15, 45, 100, 2, 24, true, false, true, Materials.Magnetite, Materials.Magnetite, Materials.Gold, Materials.Iron);
@@ -160,13 +161,6 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.uranium", true, 20, 30, 20, 2, 16, false, false, false, Materials.Uraninite, Materials.Uraninite, Materials.Uranium, Materials.Uranium);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.oilsand", true, 50, 80, 50, 2, 32, true, false, false, Materials.Oilsands, Materials.Oilsands, Materials.Oilsands, Materials.Oilsands);
 
-            /*
-             * TODO: custom OreMixes
-             * WARNING: NO DUPLICATS IN aName OR DEPRECATED MATERIALS IN HERE.
-             * Materials can be used unlimited, since achievements for Ores are turned off.
-             */
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.owbauxite", true, 10, 30, 80, 4, 32, true, false, false, Materials.Bauxite, Materials.Bauxite, Materials.Bauxite, Materials.Bauxite);
-            //aName, aDefault, aMinY, aMaxY, aWeight, aDensity, aSize, aOverworld, aNether, aEnd, aPrimary, aSecondary, aBetween, aSporadic
             new GT_Worldgen_GT_Ore_Layer("ore.mix.neutronium", true, 5, 30, 10, 2, 16, false, false, false, Materials.Neutronium, Materials.Adamantium, Materials.Naquadah, Materials.Titanium);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.aquaignis", true, 5, 35, 16, 2, 16, false, false, false, Materials.InfusedWater, Materials.InfusedFire, Materials.Amber, Materials.Cinnabar);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.terraaer", true, 5, 35, 16, 2, 16, false, false, false, Materials.InfusedEarth, Materials.InfusedAir, Materials.Amber, Materials.Cinnabar);
@@ -174,14 +168,24 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.coppertin", true, 80, 200, 80, 3, 24, true, false, false, Materials.Chalcopyrite, Materials.Vermiculite, Materials.Cassiterite, Materials.Alunite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.titaniumchrome", true, 10, 70, 16, 2, 16, false, false, false, Materials.Ilmenite, Materials.Chromite, Materials.Uvarovite, Materials.Perlite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.mineralsand", true, 10, 25, 45, 3, 24, true, false, false, Materials.BasalticMineralSand, Materials.GraniticMineralSand, Materials.Gypsum, Materials.Kyanite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.owbauxite", true, 10, 30, 80, 4, 32, true, false, false, Materials.Bauxite, Materials.Bauxite, Materials.Bauxite, Materials.Bauxite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.garnettin", true, 50, 60, 50, 3, 24, true, false, false, Materials.CassiteriteSand, Materials.GarnetSand, Materials.Asbestos, Materials.Diatomite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.kaolinitezeolite", true, 50, 70, 60, 4, 16, false, false, false, Materials.Kaolinite, Materials.Zeolite, Materials.FullersEarth, Materials.GlauconiteSand);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.mica", true, 20, 40, 45, 4, 20, true, false, false, Materials.Kyanite, Materials.Mica, Materials.Cassiterite, Materials.Diatomite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.dolomite", true, 150, 200, 40, 4, 24, true, false, false, Materials.Dolomite, Materials.Wollastonite, Materials.Trona, Materials.Andradite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.TFgalena", true, 5, 35, 50, 5, 16, false, false, false, Materials.Galena, Materials.Galena, Materials.Silver, Materials.Lead);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.saltpeterelectrotine", true, 5, 45, 55, 5, 16, false, true, false, Materials.Saltpeter, Materials.Diatomite, Materials.Electrotine, Materials.Alunite);
+
+            /*
+             * TODO: custom OreMixes
+             * WARNING: NO DUPLICATES IN aName OR DEPRECATED MATERIALS IN HERE.
+             * Materials can be used unlimited, since achievements for Ores are turned off.
+             */
+
+            //aName, aDefault, aMinY, aMaxY, aWeight, aDensity, aSize, aOverworld, aNether, aEnd, aPrimary, aSecondary, aBetween, aSporadic
             new GT_Worldgen_GT_Ore_Layer("ore.mix.platinumchrome", true, 5, 30, 10, 2, 16, false, false, false, Materials.Platinum, Materials.Chrome, Materials.Cooperite, Materials.Palladium);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.iridiummytryl", true, 15, 40, 10, 2, 16, false, false, false, Materials.Nickel, Materials.Iridium, Materials.Palladium, Materials.Mithril);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.osmium", true, 5, 30, 10, 2, 16, false, false, false, Materials.Nickel, Materials.Osmium, Materials.Iridium, Materials.Nickel);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.saltpeterelectrotine", true, 5, 45, 55, 5, 16, false, true, false, Materials.Saltpeter, Materials.Diatomite, Materials.Electrotine, Materials.Alunite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.desh", true, 5, 40, 30, 2, 16, false, false, false, Materials.Desh, Materials.Desh, Materials.Scheelite, Materials.Tungstate);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.draconium", true, 20, 40, 40, 1, 16, false, false, false, Materials.Draconium, Materials.Electrotine, Materials.Jade, Materials.Vinteum);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.quantium", true, 5, 25, 30, 3, 24, false, false, false, Materials.Quantium, Materials.Amethyst, Materials.Rutile, Materials.Ardite);
@@ -205,7 +209,8 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.secondlanthanid", true, 10, 40, 10, 3, 24, false, false, false, Materials.Samarium, Materials.Neodymium, Materials.Tartarite, Materials.Tartarite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.quartzspace", true, 40, 80, 20, 3, 16, false, false, false, Materials.Quartzite, Materials.Barite, Materials.CertusQuartz, Materials.CertusQuartz);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.rutile", true, 5, 20, 15, 4, 12, false, false, false, Materials.Rutile, Materials.Titanium, Materials.Bauxite, Materials.MeteoricIron);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.TFgalena", true, 5, 35, 50, 5, 16, false, false, false, Materials.Galena, Materials.Galena, Materials.Silver, Materials.Lead);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.naquadah", true, 10, 90, 30, 4, 32, false, false, false, Materials.Naquadah, Materials.Naquadah, Materials.Naquadah, Materials.NaquadahEnriched);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.lignite", false, 80, 210, 20, 7, 32, false, false, false, Materials.Lignite, Materials.Lignite, Materials.Lignite, Materials.Coal);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.luvtantalite", true, 20, 30, 10, 4, 16, false, false, false, Materials.Pyrolusite, Materials.Apatite, Materials.Tantalite, Materials.Pyrochlore);
         }
         //DO NOT DELETE V THIS V - this is needed so that gregtech generates its Ore Layer's first (the ones up there), which can then be transformed into "GT_Worldgen_GT_Ore_Layer_Space". Also Reflexion is slow.
