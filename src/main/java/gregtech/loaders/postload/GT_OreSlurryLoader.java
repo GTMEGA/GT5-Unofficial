@@ -83,9 +83,10 @@ public class GT_OreSlurryLoader implements Runnable {
                 leftoverChance -= itemChances[j];
             }
 
-
-            itemOutputs[j] = ItemList.Solid_Waste.get(1L);
-            itemChances[j] = leftoverChance;
+            if (leftoverChance > 0) {
+                itemOutputs[j] = ItemList.Solid_Waste.get(1L);
+                itemChances[j] = leftoverChance;
+            }
 
             GT_Values.RA.addCentrifugeRecipe(circuit,
                                              null,
