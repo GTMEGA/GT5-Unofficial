@@ -338,7 +338,10 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     
     @Override
     protected boolean checkHatches(){
-        return !mMaintenanceHatches.isEmpty() && !mInputHatches.isEmpty() && !mOutputBusses.isEmpty() && !mEnergyHatches.isEmpty();
+        return !this.mMaintenanceHatches.isEmpty() &&
+               !this.mInputHatches.isEmpty() &&
+               !this.mOutputHatches.isEmpty() &&
+               !this.mEnergyHatches.isEmpty();
     }
 
     @Override
