@@ -5,6 +5,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.GT_Block_Ore_Abstract;
+import lombok.NonNull;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
@@ -397,5 +399,25 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
         }
         // Something (at least the bottom layer must have 1 block) must have been placed, return true
         return ORE_PLACED;
+    }
+
+    public boolean containsMaterial(@NonNull Materials material) {
+        if (this.mPrimary != null && material.mName.equals(this.mPrimary.mName)) {
+            return true;
+        }
+
+        if (this.mSecondary != null && material.mName.equals(this.mSecondary.mName)) {
+            return true;
+        }
+
+        if (this.mBetween != null && material.mName.equals(this.mBetween.mName)) {
+            return true;
+        }
+
+        if (this.mSporadic != null && material.mName.equals(this.mSporadic.mName)) {
+            return true;
+        }
+
+        return false;
     }
 }

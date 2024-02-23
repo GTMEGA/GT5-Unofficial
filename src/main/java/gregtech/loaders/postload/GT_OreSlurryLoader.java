@@ -2,7 +2,6 @@ package gregtech.loaders.postload;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -24,7 +23,7 @@ public class GT_OreSlurryLoader implements Runnable {
 
             this.registerSlurryRecipes(slurry);
 
-            GT_OreSlurry.slurries.add(slurry);
+            GT_OreSlurry.slurries.put(oreMix, slurry);
         }
     }
 
