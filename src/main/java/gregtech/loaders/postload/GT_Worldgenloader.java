@@ -171,7 +171,7 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.aquaignis", true, 5, 35, 16, 2, 16, false, false, false, Materials.InfusedWater, Materials.InfusedFire, Materials.Amber, Materials.Cinnabar);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.terraaer", true, 5, 35, 16, 2, 16, false, false, false, Materials.InfusedEarth, Materials.InfusedAir, Materials.Amber, Materials.Cinnabar);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.perditioordo", true, 5, 35, 16, 2, 16, false, false, false, Materials.InfusedEntropy, Materials.InfusedOrder, Materials.Amber, Materials.Cinnabar);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.coppertin", true, 80, 200, 80, 3, 24, true, false, false, Materials.Chalcopyrite, Materials.Vermiculite, Materials.Cassiterite, Materials.Alunite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.alunite", true, 80, 200, 80, 3, 24, true, false, false, Materials.Alunite, Materials.Vermiculite, Materials.Cassiterite, Materials.Chalcopyrite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.titaniumchrome", true, 10, 70, 16, 2, 16, false, false, false, Materials.Ilmenite, Materials.Chromite, Materials.Uvarovite, Materials.Perlite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.mineralsand", true, 10, 25, 45, 3, 24, true, false, false, Materials.BasalticMineralSand, Materials.GraniticMineralSand, Materials.Gypsum, Materials.Kyanite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.garnettin", true, 50, 60, 50, 3, 24, true, false, false, Materials.CassiteriteSand, Materials.GarnetSand, Materials.Asbestos, Materials.Diatomite);
