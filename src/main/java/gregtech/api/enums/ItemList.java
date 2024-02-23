@@ -2036,7 +2036,9 @@ public enum ItemList implements IItemContainer {
             sHydricSulfur,
             sIndiumConcentrate,
             sLeadZincSolution,
-            sHydrochloricAcid;
+            sHydrochloricAcid,
+            sTailings
+            ;
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;
 
