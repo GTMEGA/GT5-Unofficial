@@ -1857,7 +1857,10 @@ public enum ItemList implements IItemContainer {
     EnergyPowerHatch_64A_LuV,
     EnergyPowerHatch_64A_ZPM,
     EnergyPowerHatch_64A_UV,
-    EnergyPowerHatch_64A_UHV;
+    EnergyPowerHatch_64A_UHV,
+
+    Solid_Waste,
+    ;
 
     public static final ItemList[]
             DYE_ONLY_ITEMS = {
