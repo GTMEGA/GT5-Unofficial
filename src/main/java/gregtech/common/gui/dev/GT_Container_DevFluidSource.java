@@ -7,18 +7,13 @@ import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.dev.GT_MetaTileEntity_DevFluidSource;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.items.GT_MetaGenerated_Item_98;
-import ic2.core.item.resources.ItemCell;
 import lombok.Getter;
 import lombok.val;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidContainerItem;
 
 
 @Getter
@@ -31,11 +26,15 @@ public class GT_Container_DevFluidSource extends GT_Container_Dev<GT_MetaTileEnt
     }
 
     /**
-     * @return
+     * To add the Slots to your GUI
+     *
+     * @param aPlayerInventory the Inventory of the Player
      */
     @Override
-    public int getDWSWidthBump() {
-        return 82;
+    public void addSlots(final InventoryPlayer aPlayerInventory) {
+        val slotX = getGuiWidth() / 2 - (GregTech_API.mDWS ? 96 : 64) - 20;
+        val slotY = 25;
+        addSlotToContainer(new GT_Slot_Holo(mMetaTileEntity, 0, slotX, slotY, false, true, 1));
     }
 
     /**
@@ -47,15 +46,11 @@ public class GT_Container_DevFluidSource extends GT_Container_Dev<GT_MetaTileEnt
     }
 
     /**
-     * To add the Slots to your GUI
-     *
-     * @param aPlayerInventory
+     * @return
      */
     @Override
-    public void addSlots(final InventoryPlayer aPlayerInventory) {
-        val slotX = getGuiWidth()  / 2 - (GregTech_API.mDWS ? 96 : 64) - 20;
-        val slotY = 25;
-        addSlotToContainer(new GT_Slot_Holo(mMetaTileEntity, 0, slotX, slotY, false, true, 1));
+    public int getDWSWidthBump() {
+        return 82;
     }
 
     /**
@@ -112,21 +107,13 @@ public class GT_Container_DevFluidSource extends GT_Container_Dev<GT_MetaTileEnt
                 val itemInHand = stackInHand == null ? null : stackInHand.getItem();
                 if (stackInHand == null || itemInHand == null) {
                     machine.setDrainableStack(null);
-                } else if (itemInHand instanceof IFluidContainerItem) {
-                    FluidStack fluidStackInHand = GT_Utility.getFluidForFilledItem(stackInHand, true);
-                    if (fluidStackInHand != null) {
-                        fluidStackInHand.amount = Integer.MAX_VALUE;
-                    }
-                    machine.setDrainableStack(fluidStackInHand);
                 } else {
                     val fluidStackInHand = getFluidFromItem(stackInHand);
                     if (fluidStackInHand != null) {
                         val copy = fluidStackInHand.copy();
                         copy.amount = Integer.MAX_VALUE;
                         machine.setDrainableStack(copy);
-                    }/*  else {
-                        System.out.println("Item in hand: " + itemInHand);
-                    } */
+                    }
                 }
 
             }
@@ -135,6 +122,7 @@ public class GT_Container_DevFluidSource extends GT_Container_Dev<GT_MetaTileEnt
     }
 
     private static FluidStack getFluidFromItem(final ItemStack stack) {
+        // TODO: Figure out which of these is preferable or if both might be. Works for now but idk. API fucky.
         // return FluidContainerRegistry.getFluidForFilledItem(stackInHand);
         return GT_Utility.getFluidForFilledItem(stack, true);
     }
@@ -151,34 +139,17 @@ public class GT_Container_DevFluidSource extends GT_Container_Dev<GT_MetaTileEnt
     }
 
     protected void zeroOut() {
-        setRPT(0);
-        setRPS(0);
-        setPerTick(true);
+        setRate(0);
+        setFrequency(0);
         detectAndSendChanges();
     }
 
-    protected void setRPT(final int value) {
-        data.setRPT(value);
-        detectAndSendChanges();
+    public void setRate(final int rate) {
+        data.setRate(rate);
     }
 
-    protected void setRPS(final int value) {
-        data.setRPS(value);
-        detectAndSendChanges();
-    }
-
-    protected void setPerTick(final boolean b) {
-        data.setPerTick(b);
-        detectAndSendChanges();
-    }
-
-    protected void syncRates() {
-        if (data.isPerTick()) {
-            setRPS(data.getRPT() * 20);
-        } else {
-            setRPT(data.getRPS() / 20);
-        }
-        detectAndSendChanges();
+    public void setFrequency(final int frequency) {
+        data.setFrequency(frequency);
     }
 
 }

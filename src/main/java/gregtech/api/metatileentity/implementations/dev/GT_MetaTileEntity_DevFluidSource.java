@@ -52,17 +52,23 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
         @Builder.Default
         private boolean active = true;
 
-        @Builder.Default
-        private boolean perTick = true;
+//        @Builder.Default
+//        private boolean perTick = true;
 
         @Builder.Default
         private boolean rsActive = true;
 
         @Builder.Default
-        private int rPT = 1;
+        private int rate = 0;
 
         @Builder.Default
-        private int rPS = 20;
+        private int frequency = 20;
+
+//        @Builder.Default
+//        private int rPT = 1;
+//
+//        @Builder.Default
+//        private int rPS = 20;
 
         /**
          * @return
@@ -73,9 +79,11 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
             final NBTTagCompound result = new NBTTagCompound();
             mode.saveNBTData(result);
             result.setBoolean("active", active);
-            result.setBoolean("perTick", perTick);
-            result.setInteger("rPT", rPT);
-            result.setInteger("rPS", rPS);
+//            result.setBoolean("perTick", perTick);
+//            result.setInteger("rPT", rPT);
+//            result.setInteger("rPS", rPS);
+            result.setInteger("frequency", frequency);
+            result.setInteger("rate", rate);
             return result;
         }
 
@@ -83,10 +91,13 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
         public void writeToByteBuf(final ByteBuf aBuf) {
             aBuf.writeInt(mode.ordinal());
             aBuf.writeBoolean(active);
-            aBuf.writeBoolean(perTick);
-            aBuf.writeBoolean(perTick);
-            aBuf.writeInt(rPT);
-            aBuf.writeInt(rPS);
+            aBuf.writeBoolean(rsActive);
+            aBuf.writeInt(rate);
+            aBuf.writeInt(frequency);
+//            aBuf.writeBoolean(perTick);
+//            aBuf.writeBoolean(perTick);
+//            aBuf.writeInt(rPT);
+//            aBuf.writeInt(rPS);
         }
 
         /**
@@ -100,16 +111,19 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
             NBTTagCompound aNBT = (NBTTagCompound) oNBT;
             setMode(RSControlMode.loadFromNBTData(aNBT));
             setActive(aNBT.getBoolean("active"));
-            setPerTick(aNBT.getBoolean("perTick"));
-            setRPT(aNBT.getInteger("rPT"));
-            setRPS(aNBT.getInteger("rPS"));
+//            setPerTick(aNBT.getBoolean("perTick"));
+//            setRPT(aNBT.getInteger("rPT"));
+//            setRPS(aNBT.getInteger("rPS"));
+            setFrequency(aNBT.getInteger("frequency"));
+            setRate(aNBT.getInteger("rate"));
         }
 
         @Nonnull
         @Override
         public ISerializableObject readFromPacket(final ByteArrayDataInput aBuf, final EntityPlayerMP aPlayer) {
             return new GUIData(
-                    RSControlMode.getMode(aBuf.readInt()), aBuf.readBoolean(), aBuf.readBoolean(), aBuf.readBoolean(), aBuf.readInt(), aBuf.readInt());
+                    RSControlMode.getMode(aBuf.readInt()), aBuf.readBoolean(), aBuf.readBoolean(), aBuf.readInt(), aBuf.readInt()
+            );
         }
 
         /**
@@ -120,10 +134,12 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
             GUIData toReadFrom = (GUIData) other;
             setMode(toReadFrom.mode);
             setActive(toReadFrom.active);
-            setPerTick(toReadFrom.perTick);
+//            setPerTick(toReadFrom.perTick);
             setRsActive(toReadFrom.rsActive);
-            setRPT(toReadFrom.rPT);
-            setRPS(toReadFrom.rPS);
+            setRate(toReadFrom.rate);
+            setFrequency(toReadFrom.frequency);
+//            setRPT(toReadFrom.rPT);
+//            setRPS(toReadFrom.rPS);
         }
 
         /**
@@ -136,9 +152,11 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
         public void sendChange(final Container container, final ICrafting crafter) {
             crafter.sendProgressBarUpdate(container, 200, active ? 1 : 0);
             crafter.sendProgressBarUpdate(container, 201, mode.ordinal());
-            crafter.sendProgressBarUpdate(container, 202, perTick ? 1 : 0);
-            crafter.sendProgressBarUpdate(container, 203, rPT);
-            crafter.sendProgressBarUpdate(container, 204, rPS);
+            crafter.sendProgressBarUpdate(container, 202, rate);
+            crafter.sendProgressBarUpdate(container, 203, frequency);
+//            crafter.sendProgressBarUpdate(container, 202, perTick ? 1 : 0);
+//            crafter.sendProgressBarUpdate(container, 203, rPT);
+//            crafter.sendProgressBarUpdate(container, 204, rPS);
         }
 
         /**
@@ -159,15 +177,11 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
                     break;
                 }
                 case 202: {
-                    setPerTick(data != 0);
+                    setRate(data);
                     break;
                 }
                 case 203: {
-                    setRPT(data);
-                    break;
-                }
-                case 204: {
-                    setRPS(data);
+                    setFrequency(data);
                     break;
                 }
             }
@@ -184,7 +198,7 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
 
     private final GUIData internalData = new GUIData();
 
-    private int tPeriod = 1;
+//    private int tPeriod = 1;
 
     private int tCount = 0;
 
@@ -214,12 +228,12 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     }
 
     private void adjustFluidRate() {
-        if (internalData.isPerTick()) {
-            internalData.setRPS(internalData.getRPT() * 20);
-            tPeriod = 1;
-        } else {
-            tPeriod = 20;
-        }
+//        if (internalData.isPerTick()) {
+//            internalData.setRPS(internalData.getRPT() * 20);
+//            tPeriod = 1;
+//        } else {
+//            tPeriod = 20;
+//        }
     }
 
     @Override
@@ -346,7 +360,7 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
         super.saveNBTData(aNBT);
         final NBTTagCompound devNBT = (NBTTagCompound) internalData.saveDataToNBT();
         devNBT.setInteger("tick", tCount);
-        devNBT.setInteger("period", tPeriod);
+//        devNBT.setInteger("period", tPeriod);
         aNBT.setTag("dev", devNBT);
     }
 
@@ -365,7 +379,6 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
         final NBTTagCompound devNBT = aNBT.getCompoundTag("dev");
         internalData.loadDataFromNBT(devNBT);
         tCount = devNBT.getInteger("tick");
-        tPeriod = devNBT.getInteger("period");
     }
 
     @Override
@@ -518,11 +531,12 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     }
 
     public int getRate() {
-        if (internalData.isPerTick()) {
-            return internalData.rPT;
-        } else {
-            return internalData.rPS;
-        }
+//        if (internalData.isPerTick()) {
+//            return internalData.rPT;
+//        } else {
+//            return internalData.rPS;
+//        }
+        return internalData.rate;
     }
 
     private void tickForward() {
@@ -531,10 +545,10 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     }
 
     private void adjustCount() {
-        if (this.tPeriod <= 0) {
-            this.tPeriod = 1;
-        }
-        this.tCount = this.tCount % this.tPeriod;
+//        if (this.tPeriod <= 0) {
+//            this.tPeriod = 1;
+//        }
+        this.tCount = this.tCount % this.internalData.frequency;
     }
 
     /**

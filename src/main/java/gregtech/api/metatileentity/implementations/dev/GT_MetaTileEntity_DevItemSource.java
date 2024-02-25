@@ -45,14 +45,20 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
         @Builder.Default
         private RSControlMode redstoneMode = RSControlMode.IGNORE;
 
-        @Builder.Default
-        private int itemPerTick = 1;
+//        @Builder.Default
+//        private int itemPerTick = 1;
+//
+//        @Builder.Default
+//        private int itemPerSecond = 20;
+//
+//        @Builder.Default
+//        private boolean perTick = true;
 
         @Builder.Default
-        private int itemPerSecond = 20;
+        private int rate = 0;
 
         @Builder.Default
-        private boolean perTick = true;
+        private int frequency = 20;
 
         @Builder.Default
         private boolean active = true;
@@ -65,9 +71,11 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
         public NBTBase saveDataToNBT() {
             NBTTagCompound result = new NBTTagCompound();
             result.setBoolean("active", active);
-            result.setInteger("iPerTick", itemPerTick);
-            result.setInteger("iPerSecond", itemPerSecond);
-            result.setBoolean("perTick", perTick);
+//            result.setInteger("iPerTick", itemPerTick);
+//            result.setInteger("iPerSecond", itemPerSecond);
+//            result.setBoolean("perTick", perTick);
+            result.setInteger("rate", rate);
+            result.setInteger("frequency", frequency);
             redstoneMode.saveNBTData(result);
             return result;
         }
@@ -80,9 +88,11 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
         @Override
         public void writeToByteBuf(final ByteBuf aBuf) {
             aBuf.writeInt(redstoneMode.ordinal());
-            aBuf.writeInt(itemPerTick);
-            aBuf.writeInt(itemPerSecond);
-            aBuf.writeBoolean(perTick);
+            aBuf.writeInt(rate);
+            aBuf.writeInt(frequency);
+//            aBuf.writeInt(itemPerTick);
+//            aBuf.writeInt(itemPerSecond);
+//            aBuf.writeBoolean(perTick);
             aBuf.writeBoolean(active);
             aBuf.writeBoolean(rsActive);
         }
@@ -94,9 +104,11 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
             }
             NBTTagCompound devNBT = (NBTTagCompound) oNBT;
             active = devNBT.getBoolean("active");
-            itemPerTick = devNBT.getInteger("iPerTick");
-            itemPerSecond = devNBT.getInteger("iPerSecond");
-            perTick = devNBT.getBoolean("perTick");
+//            itemPerTick = devNBT.getInteger("iPerTick");
+//            itemPerSecond = devNBT.getInteger("iPerSecond");
+//            perTick = devNBT.getBoolean("perTick");
+            rate = devNBT.getInteger("rate");
+            frequency = devNBT.getInteger("frequency");
             redstoneMode = RSControlMode.loadFromNBTData(devNBT);
         }
 
@@ -109,7 +121,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
         @Nonnull
         @Override
         public ISerializableObject readFromPacket(final ByteArrayDataInput aBuf, final EntityPlayerMP aPlayer) {
-            return new GUIData(RSControlMode.getMode(aBuf.readInt()), aBuf.readInt(), aBuf.readInt(), aBuf.readBoolean(), aBuf.readBoolean(), aBuf.readBoolean());
+            return new GUIData(RSControlMode.getMode(aBuf.readInt()), aBuf.readInt(), aBuf.readInt(), aBuf.readBoolean(), aBuf.readBoolean());
         }
 
         /**
@@ -119,9 +131,11 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
         public void readFrom(final ISerializableObject other) {
             GUIData toReadFrom = (GUIData) other;
             setRedstoneMode(toReadFrom.redstoneMode);
-            setItemPerTick(toReadFrom.itemPerTick);
-            setItemPerSecond(toReadFrom.itemPerSecond);
-            setPerTick(toReadFrom.perTick);
+//            setItemPerTick(toReadFrom.itemPerTick);
+//            setItemPerSecond(toReadFrom.itemPerSecond);
+//            setPerTick(toReadFrom.perTick);
+            setRate(toReadFrom.rate);
+            setFrequency(toReadFrom.frequency);
             setActive(toReadFrom.active);
         }
 
@@ -134,11 +148,11 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
         @Override
         public void sendChange(final Container source, final ICrafting crafter) {
             crafter.sendProgressBarUpdate(source, 200, getRedstoneMode().ordinal());
-            crafter.sendProgressBarUpdate(source, 201, getItemPerTick());
-            crafter.sendProgressBarUpdate(source, 202, getItemPerSecond());
-            crafter.sendProgressBarUpdate(source, 203, isPerTick() ? 1 : 0);
-            crafter.sendProgressBarUpdate(source, 204, isActive() ? 1 : 0);
-            crafter.sendProgressBarUpdate(source, 205, isRsActive() ? 1 : 0);
+            crafter.sendProgressBarUpdate(source, 201, getRate());
+            crafter.sendProgressBarUpdate(source, 202, getFrequency());
+//            crafter.sendProgressBarUpdate(source, 203, isPerTick() ? 1 : 0);
+            crafter.sendProgressBarUpdate(source, 203, isActive() ? 1 : 0);
+//            crafter.sendProgressBarUpdate(source, 204, isRsActive() ? 1 : 0);
         }
 
         /**
@@ -155,25 +169,25 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
                     break;
                 }
                 case 201: {
-                    setItemPerTick(data);
+                    setRate(data);
                     break;
                 }
                 case 202: {
-                    setItemPerSecond(data);
+                    setFrequency(data);
                     break;
                 }
+//                case 203: {
+//                    setPerTick(data != 0);
+//                    break;
+//                }
                 case 203: {
-                    setPerTick(data != 0);
-                    break;
-                }
-                case 204: {
                     setActive(data != 0);
                     break;
                 }
-                case 205: {
-                    setRsActive(data != 0);
-                    break;
-                }
+//                case 205: {
+//                    setRsActive(data != 0);
+//                    break;
+//                }
             }
         }
 
@@ -405,38 +419,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
     }
 
     private int getAmount() {
-        if (isPerTick()) {
-            return getItemPerTick();
-        } else {
-            return getItemPerSecond();
-        }
-    }
-
-    public boolean isPerTick() {
-        return internalData.isPerTick();
-    }
-
-    public int getItemPerTick() {
-        return internalData.getItemPerTick();
-    }
-
-    public int getItemPerSecond() {
-        return internalData.getItemPerSecond();
-    }
-
-    public void setItemPerSecond(final int itemPerSecond) {
-        internalData.setItemPerSecond(itemPerSecond);
-        markDirty();
-    }
-
-    public void setItemPerTick(final int itemPerTick) {
-        internalData.setItemPerTick(itemPerTick);
-        markDirty();
-    }
-
-    public void setPerTick(final boolean perTick) {
-        internalData.setPerTick(perTick);
-        markDirty();
+        return internalData.getRate();
     }
 
     /**
@@ -554,9 +537,11 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
         if (data instanceof GUIData) {
             val gData = (GUIData) data;
             setMode(gData.redstoneMode);
-            setPerTick(gData.perTick);
-            setItemPerTick(gData.itemPerTick);
-            setItemPerSecond(gData.itemPerSecond);
+//            setPerTick(gData.perTick);
+//            setItemPerTick(gData.itemPerTick);
+//            setItemPerSecond(gData.itemPerSecond);
+            internalData.setRate(gData.rate);
+            internalData.setFrequency(gData.frequency);
             setActive(gData.active);
             adjustItemRate();
             processRS();
@@ -569,21 +554,18 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
     }
 
     public void adjustItemRate() {
-        if (isPerTick()) {
-            setItemPerSecond(getItemPerTick() * 20);
-            tPeriod = 1;
-        } else {
-            tPeriod = 20;
-        }
+//        if (isPerTick()) {
+//            setItemPerSecond(getItemPerTick() * 20);
+//            tPeriod = 1;
+//        } else {
+//            tPeriod = 20;
+//        }
         adjustCount();
         markDirty();
     }
 
     private void adjustCount() {
-        if (this.tPeriod <= 0) {
-            this.tPeriod = 1;
-        }
-        this.tCount = this.tCount % this.tPeriod;
+        this.tCount = this.tCount % internalData.getFrequency();
     }
 
     @Override

@@ -245,7 +245,9 @@ public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine
     }
 
     private void voltSliderOnChange(final GT_GuiSlider slider) {
-        slider.setValue(getSource().getData().getTier());
+        if (!slider.isDragged()) {
+            slider.setValue(getSource().getData().getTier());
+        }
     }
 
     private void voltTierSliderOnClick(final GT_GuiSlider voltTierSlider) {

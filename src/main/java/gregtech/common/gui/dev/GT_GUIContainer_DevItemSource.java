@@ -19,10 +19,12 @@ import java.awt.*;
 
 public class GT_GUIContainer_DevItemSource extends GT_RichGuiContainer_Machine {
 
-    public static int COOLDOWN = 30;
+    public static int COOLDOWN = 45;
 
-    private static void boxOnUpdate(final GT_GuiIntegerTextBox perTickBox, final String string) {
-        perTickBox.setText(string);
+    private static void boxOnUpdate(final GT_GuiIntegerTextBox box, final String string) {
+        if (!box.isFocused()) {
+            box.setText(string);
+        }
     }
 
     public GT_GUIContainer_DevItemSource(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity) {
@@ -34,29 +36,6 @@ public class GT_GUIContainer_DevItemSource extends GT_RichGuiContainer_Machine {
         return getGuiWidth() - 40;
     }
 
-    public String getIPTString() {
-        final int pT = getSource().getData().getItemPerTick(), pS = getSource().getData().getItemPerSecond();
-        if (getSource().getData().isPerTick()) {
-            return String.valueOf(pT);
-        } else {
-            if (pS == 0) {
-                return "0";
-            }
-            if (pS % 20 == 0) {
-                return String.valueOf(pS / 20);
-            }
-            return String.valueOf((float) pS / 20);
-        }
-    }
-
-    public String getIPSString() {
-        if (!getSource().getData().isPerTick()) {
-            return String.valueOf(getSource().getData().getItemPerSecond());
-        } else {
-            return String.valueOf(getSource().getData().getItemPerTick() * 20);
-        }
-    }
-
     /**
      * @return
      */
@@ -66,8 +45,7 @@ public class GT_GUIContainer_DevItemSource extends GT_RichGuiContainer_Machine {
     }
 
     /**
-     * @param button
-     *         Handler for a button click
+     * @param button Handler for a button click
      */
     @Override
     public void buttonClicked(final GuiButton button) {
@@ -83,44 +61,15 @@ public class GT_GUIContainer_DevItemSource extends GT_RichGuiContainer_Machine {
      */
     @Override
     public void applyTextBox(final GT_GuiIntegerTextBox box) {
-        val s = box.getText().trim();
-        int value;
-        if (s.contains(".")) {
-            double v;
-            try {
-                v = Double.parseDouble(s);
-            } catch (NumberFormatException ignored) {
-                resetTextBox(box);
-                return;
-            }
-            value = (int) v;
-        } else {
-            try {
-                value = Integer.parseInt(s);
-            } catch (NumberFormatException ignored) {
-                resetTextBox(box);
-                return;
-            }
+        val source = getSource();
+        val text = box.getText().trim();
+        if (box.id == 3) {
+            source.setRate(Integer.parseInt(text));
+            box.setText(String.valueOf(source.getData().getRate()));
+        } else if (box.id == 4) {
+            source.setFrequency(Integer.parseInt(text));
+            box.setText(String.valueOf(source.getData().getFrequency()));
         }
-        if (value < 0) {
-            resetTextBox(box);
-            return;
-        }
-        switch (box.id) {
-            case 3: {
-                getSource().setItemPerTick(value);
-                getSource().setPerTick(true);
-                break;
-            }
-            case 4: {
-                getSource().setItemPerSecond(value);
-                getSource().setPerTick(false);
-                break;
-            }
-        }
-        getSource().syncRates();
-        box.setUpdateCooldown(20);
-        box.setText(String.valueOf(value));
         sendUpdateToServer();
     }
 
@@ -143,16 +92,16 @@ public class GT_GUIContainer_DevItemSource extends GT_RichGuiContainer_Machine {
      */
     @Override
     public void drawExtras(final int mouseX, final int mouseY, final float parTicks) {
-        val inactiveColor = new Color(0x30, 0x30, 0x4F, 0xFF);
-        val activeColor = new Color(0x30, 0x30, 0xFF, 0xFF);
-        val errorColor = new Color(0xFF, 0x55, 0x55, 0xFF);
+        val textColor = new Color(0, 0, 0, 255);
         val left = boxX() + 3 + boxWidth();
-        val pT = getSource().getData().isPerTick();
-        drawString("Items / tick", left, 24, pT ? activeColor : inactiveColor);
-        drawString("Items / second", left, 34, pT ? inactiveColor : activeColor);
-        /*if (!getSource().canRun()) {
-            drawString(getSource().getDisabledStatus(), left, 44, errorColor);
-        }*/
+        val top = 24;
+        drawString("Rate", left, top, textColor);
+        drawString("Frequency (t)", left, top + 10, textColor);
+        val rate = getSource().getData().getRate();
+        val frequency = (double)getSource().getData().getFrequency();
+        val ratio = rate / frequency;
+        drawString(String.format("%.2f /t", ratio), left, top + 20, textColor);
+        drawString(String.format("%.2f /s", ratio * 20), left, top + 30, textColor);
     }
 
     private int boxX() {
@@ -228,13 +177,16 @@ public class GT_GUIContainer_DevItemSource extends GT_RichGuiContainer_Machine {
     }
 
     private void addTextBoxes() {
-        val perTickBox = new GT_GuiIntegerTextBox(this, 3, boxX(), 24, boxWidth(), 10);
-        perTickBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> boxOnUpdate(perTickBox, getIPTString()));
-        perTickBox.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> perTickBox.setUpdateCooldown(COOLDOWN));
+        val boxHeight = 10;
+        val firstBoxY = 24;
+        val secondBoxY = firstBoxY + boxHeight;
+        val rateBox = new GT_GuiIntegerTextBox(this, 3, boxX(), firstBoxY, boxWidth(), boxHeight);
+        rateBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> boxOnUpdate(rateBox, String.valueOf(getSource().getData().getRate())));
+        rateBox.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> rateBox.setUpdateCooldown(COOLDOWN));
         //
-        val perSecondBox = new GT_GuiIntegerTextBox(this, 4, boxX(), 34, boxWidth(), 10);
-        perSecondBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> boxOnUpdate(perSecondBox, getIPSString()));
-        perSecondBox.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> perSecondBox.setUpdateCooldown(COOLDOWN));
+        val frequencyBox = new GT_GuiIntegerTextBox(this, 4, boxX(), secondBoxY, boxWidth(), boxHeight);
+        frequencyBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> boxOnUpdate(frequencyBox, String.valueOf(getSource().getData().getFrequency())));
+        frequencyBox.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> frequencyBox.setUpdateCooldown(COOLDOWN));
     }
 
     private void rsButtonOnUpdate(final GT_GuiCycleButton rsButton) {

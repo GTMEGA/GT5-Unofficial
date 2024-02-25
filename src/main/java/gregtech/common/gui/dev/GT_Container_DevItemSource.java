@@ -146,39 +146,24 @@ public class GT_Container_DevItemSource extends GT_Container_Dev<GT_MetaTileEnti
         detectAndSendChanges();
     }
 
-    protected void syncRates() {
-        if (data.isPerTick()) {
-            setItemPerSecond(data.getItemPerTick() * 20);
-        } else {
-            setItemPerTick(data.getItemPerSecond() / 20);
-        }
-        detectAndSendChanges();
-    }
-
-    protected void setItemPerSecond(final int itemPerSecond) {
-        data.setItemPerSecond(itemPerSecond);
-        detectAndSendChanges();
-    }
-
-    protected void setItemPerTick(final int itemPerTick) {
-        data.setItemPerTick(itemPerTick);
-        detectAndSendChanges();
-    }
-
     protected void setActive(final boolean active) {
         data.setActive(active);
         detectAndSendChanges();
     }
 
     protected void zeroOut() {
-        setItemPerTick(0);
-        setItemPerSecond(0);
-        setPerTick(true);
+        setRate(0);
+        setFrequency(20);
         detectAndSendChanges();
     }
 
-    protected void setPerTick(final boolean perTick) {
-        data.setPerTick(perTick);
+    void setFrequency(final int frequency) {
+        data.setFrequency(frequency);
+        detectAndSendChanges();
+    }
+
+    void setRate(final int rate) {
+        data.setRate(rate);
         detectAndSendChanges();
     }
 
