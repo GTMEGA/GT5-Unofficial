@@ -116,7 +116,13 @@ public class GT_MEGAnet_GuiContainer extends GT_RichGuiContainer {
             meganetRangeSlider.setUpdateCooldown(20);
         });
         meganetRangeSlider.setShowNumbers(false);
-        meganetRangeSlider.setOnUpdateBehavior((screen, slider, mouseX, mouseY, clickType) -> meganetRangeSlider.setValue(meganetContainer.getRange()));
+        meganetRangeSlider.setOnUpdateBehavior((screen, slider, mouseX, mouseY, clickType) -> meganetUpdateBehavior(meganetRangeSlider));
+    }
+
+    private void meganetUpdateBehavior(final GT_GuiSlider_Horizontal megaNetSlider) {
+        if (!(megaNetSlider.isDragged())) {
+            megaNetSlider.setValue(meganetContainer.getRange());
+        }
     }
 
     private int filterWhiteListButtonX() {
