@@ -4,6 +4,7 @@ package gregtech.common.misc.explosions;
 import gregtech.api.enums.GT_Values;
 import gregtech.common.blocks.GT_Block_Ore_Abstract;
 import gregtech.common.entities.explosives.GT_Entity_Explosive;
+import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGrass;
 import net.minecraft.block.BlockOre;
@@ -21,11 +22,11 @@ public class GT_MiningExplosion extends GT_Explosion {
 
     @Override
     protected float getDropChance(final Block block) {
-        if (block instanceof BlockOre || block instanceof GT_Block_Ore_Abstract) {
+        val material = block.getMaterial();
+        if (material == Material.clay || block instanceof BlockOre || block instanceof GT_Block_Ore_Abstract) {
             return GT_Values.MEOreChance;
         } else {
-            final Material material = block.getMaterial();
-            if (material == Material.ground || material == Material.sand || material == Material.clay || block instanceof BlockGrass) {
+            if (material == Material.ground || material == Material.sand || block instanceof BlockGrass) {
                 return GT_Values.MESoilChance;
             } else if (material == Material.rock) {
                 return GT_Values.MERockChance;

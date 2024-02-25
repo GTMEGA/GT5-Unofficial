@@ -30,7 +30,7 @@ public class GT_Item_MiningExplosive extends GT_Item_Explosive {
         final String[] lines = {
                 "An extraordinary explosive for extracting ore from the world.",
                 String.format("Fortune bonus of %d", GT_Values.MEFortune),
-                "Mainly effective on ore, but will destroy most terrain.",
+                "Mainly effective on ore and clay, but will destroy most terrain.",
                 "Prime with a Remote Detonator",
                 "Packs a pretty mean punch, so take",
                 String.format("cover or you'll be mist in %d seconds!", GT_Values.MEFuse / 20)

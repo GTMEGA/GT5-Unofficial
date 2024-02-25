@@ -5,6 +5,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.common.entities.explosives.GT_Entity_TunnelExplosive;
 import lombok.val;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -92,6 +93,10 @@ public class GT_TunnelExplosion extends GT_Explosion {
      */
     @Override
     protected float getDropChance(final Block block) {
+        val material = block.getMaterial();
+        if ( material == Material.clay) {
+            return GT_Values.MEOreChance;
+        }
         return 0.001f;
     }
 
