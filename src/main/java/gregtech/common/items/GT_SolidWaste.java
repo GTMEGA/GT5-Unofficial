@@ -26,6 +26,10 @@ public class GT_SolidWaste extends GT_Generic_Item {
             return false;
         }
 
+        if (player != null && player.capabilities != null && !player.capabilities.isCreativeMode) {
+            return false;
+        }
+
         val chunkCoordinate = new ChunkCoordIntPair(x >> 4, z >> 4);
         val oreMix = GT_OreVeinLocations.RecordedOreVeinInChunk.get(world.provider.dimensionId,
                                                                     chunkCoordinate);
