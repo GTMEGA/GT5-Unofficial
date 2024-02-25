@@ -483,7 +483,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
 //            }
 
 
-            Chunk tChunk = this.mWorld.getChunkFromBlockCoords(this.mX, this.mZ);
+            Chunk tChunk = this.mWorld.getChunkFromBlockCoords(this.mX << 4, this.mZ << 4);
             if (tChunk != null) {
                 tChunk.isModified = true;
             }
