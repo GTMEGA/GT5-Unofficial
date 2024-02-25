@@ -7,12 +7,16 @@ import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.dev.GT_MetaTileEntity_DevFluidSource;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.items.GT_MetaGenerated_Item_98;
+import ic2.core.item.resources.ItemCell;
 import lombok.Getter;
 import lombok.val;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
@@ -105,19 +109,34 @@ public class GT_Container_DevFluidSource extends GT_Container_Dev<GT_MetaTileEnt
             }
             if (aSlotIndex == 0) {
                 val stackInHand = aPlayer.inventory.getItemStack();
-                if (stackInHand == null) {
+                val itemInHand = stackInHand == null ? null : stackInHand.getItem();
+                if (stackInHand == null || itemInHand == null) {
                     machine.setDrainableStack(null);
-                } else if (!(stackInHand.getItem() instanceof IFluidContainerItem)) {
-                    return null;
+                } else if (itemInHand instanceof IFluidContainerItem) {
+                    FluidStack fluidStackInHand = GT_Utility.getFluidForFilledItem(stackInHand, true);
+                    if (fluidStackInHand != null) {
+                        fluidStackInHand.amount = Integer.MAX_VALUE;
+                    }
+                    machine.setDrainableStack(fluidStackInHand);
+                } else {
+                    val fluidStackInHand = getFluidFromItem(stackInHand);
+                    if (fluidStackInHand != null) {
+                        val copy = fluidStackInHand.copy();
+                        copy.amount = Integer.MAX_VALUE;
+                        machine.setDrainableStack(copy);
+                    }/*  else {
+                        System.out.println("Item in hand: " + itemInHand);
+                    } */
                 }
-                FluidStack inHand = GT_Utility.getFluidForFilledItem(stackInHand, true);
-                if (inHand != null) {
-                    inHand.amount = Integer.MAX_VALUE;
-                }
-                machine.setDrainableStack(inHand);
+
             }
         }
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
+    }
+
+    private static FluidStack getFluidFromItem(final ItemStack stack) {
+        // return FluidContainerRegistry.getFluidForFilledItem(stackInHand);
+        return GT_Utility.getFluidForFilledItem(stack, true);
     }
 
     protected void setMode(final RSControlMode mode) {
