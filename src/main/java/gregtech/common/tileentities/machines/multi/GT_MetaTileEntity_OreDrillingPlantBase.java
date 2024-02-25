@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.events.GT_OreVeinLocations;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ChunkManager;
@@ -47,7 +48,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
 
     private final ArrayList<ChunkPosition> oreBlockPositions = new ArrayList<>();
     private final Map<GT_Block_Ore, Integer> oreTypeFrequency = new HashMap<>();
-    private GT_OreSlurry                     slurryType       = null;
+    private GT_OreSlurry slurryType = null;
 
 
     protected int mTier = 1;
@@ -425,7 +426,16 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         if (!oreBlockPositions.isEmpty())
             return;
 
+        this.slurryType = null;
         this.oreTypeFrequency.clear();
+
+        val chunkCoord = new ChunkCoordIntPair(xDrill >> 4, zDrill >> 4);
+        val slurryOptions = GT_OreVeinLocations.getOreVeinsInChunk(this.getBaseMetaTileEntity().getWorld().provider.dimensionId,
+                                                                   chunkCoord);
+
+        if (!slurryOptions.isEmpty()) {
+            this.slurryType = GT_OreSlurry.slurries.get(slurryOptions.get(0));
+        }
 
         tryAddOreBlockToMineList(xPipe, yHead - 1, zPipe);
         if (yHead == yDrill)
@@ -444,6 +454,27 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                     tryAddOreBlockToMineList(xDrill + xOff, yHead, zDrill + zOff);
         }
 
+        if (this.slurryType == null) {
+            this.slurryType = this.lmaoGuess();
+        }
+    }
+
+    private void tryAddOreBlockToMineList(int x, int y, int z) {
+        Block block = getBaseMetaTileEntity().getBlock(x, y, z);
+        int blockMeta = getBaseMetaTileEntity().getMetaID(x, y, z);
+        ChunkPosition blockPos = new ChunkPosition(x, y, z);
+
+        if (!oreBlockPositions.contains(blockPos) && isBigOreBlock(block, blockMeta)) {
+            oreBlockPositions.add(blockPos);
+
+            val ore = (GT_Block_Ore) block;
+
+            val frequency = this.oreTypeFrequency.computeIfAbsent(ore, key -> 0);
+            this.oreTypeFrequency.put(ore, frequency + 1);
+        }
+    }
+
+    private GT_OreSlurry lmaoGuess() {
         val oreVeinLikelihood = new HashMap<GT_Worldgen_GT_Ore_Layer, Integer>();
 
         for (val ore : this.oreTypeFrequency.keySet()) {
@@ -463,22 +494,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                                             .max(Map.Entry.comparingByValue())
                                             .orElse(null);
 
-        this.slurryType = oreVeinEntry != null ? GT_OreSlurry.slurries.get(oreVeinEntry.getKey()) : null;
-    }
-
-    private void tryAddOreBlockToMineList(int x, int y, int z) {
-        Block block = getBaseMetaTileEntity().getBlock(x, y, z);
-        int blockMeta = getBaseMetaTileEntity().getMetaID(x, y, z);
-        ChunkPosition blockPos = new ChunkPosition(x, y, z);
-
-        if (!oreBlockPositions.contains(blockPos) && isBigOreBlock(block, blockMeta)) {
-            oreBlockPositions.add(blockPos);
-
-            val ore = (GT_Block_Ore) block;
-
-            val frequency = this.oreTypeFrequency.computeIfAbsent(ore, key -> 0);
-            this.oreTypeFrequency.put(ore, frequency + 1);
-        }
+        return oreVeinEntry != null ? GT_OreSlurry.slurries.get(oreVeinEntry.getKey()) : null;
     }
 
     protected abstract int getRadiusInChunks();

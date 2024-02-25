@@ -4,11 +4,12 @@ import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.events.GT_OreVeinLocations;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
+import lombok.val;
+
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -18,6 +19,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static gregtech.api.enums.GT_Values.debugOrevein;
 import static gregtech.api.enums.GT_Values.debugWorldGen;
@@ -169,7 +171,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
         // in the dimension. For example veins that range above and below the average height
         // will be less, and veins that are completely above the average height will be much less.
 
-        public void worldGenFindVein( int oreseedX, int oreseedZ) {
+        public GT_Worldgen_GT_Ore_Layer worldGenFindVein( int oreseedX, int oreseedZ) {
             // Explanation of oreveinseed implementation.
             // (long)this.mWorld.getSeed()<<16)    Deep Dark does two oregen passes, one with getSeed set to +1 the original world seed.  This pushes that +1 off the low bits of oreseedZ, so that the hashes are far apart for the two passes.
             // ((this.mWorld.provider.dimensionId & 0xffL)<<56)    Puts the dimension in the top bits of the hash, to make sure to get unique hashes per dimension
@@ -191,11 +193,12 @@ public class GT_Worldgenerator implements IWorldGenerator {
                 " worldSeed="+this.mWorld.getSeed()
             );
 
+            GT_Worldgen_GT_Ore_Layer oreVeinMix = null;
+
             // Search for a valid orevein for this dimension
             if( !validOreveins.containsKey(oreveinSeed) ) {
-                if ( (oreveinPercentageRoll<oreveinPercentage) && (GT_Worldgen_GT_Ore_Layer.sWeight > 0) && (GT_Worldgen_GT_Ore_Layer.sList.size() > 0)) {
+                if ( (oreveinPercentageRoll<oreveinPercentage) && (GT_Worldgen_GT_Ore_Layer.sWeight > 0) && (!GT_Worldgen_GT_Ore_Layer.sList.isEmpty())) {
                     int placementAttempts = 0;
-                    boolean oreveinFound = false;
                     int i;
 
                     // Used for outputting orevein weights and bins
@@ -213,7 +216,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                             }
                         }
                     */
-                    for( i = 0; (i < oreveinAttempts) && (!oreveinFound) && (placementAttempts<oreveinMaxPlacementAttempts); i++ ) {
+                    for( i = 0; (i < oreveinAttempts) && (oreVeinMix == null) && (placementAttempts<oreveinMaxPlacementAttempts); i++ ) {
                         int tRandomWeight = oreveinRNG.nextInt(GT_Worldgen_GT_Ore_Layer.sWeight);
                         for (GT_Worldgen_GT_Ore_Layer tWorldGen : GT_Worldgen_GT_Ore_Layer.sList) {
                             tRandomWeight -= ( tWorldGen).mWeight;
@@ -232,7 +235,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                                 " dimensionName=" + tDimensionName
                                             );
                                             validOreveins.put(oreveinSeed, tWorldGen);
-                                            oreveinFound = true;
+                                            oreVeinMix = tWorldGen;
                                             break;
                                         case GT_Worldgen_GT_Ore_Layer.NO_ORE_IN_BOTTOM_LAYER:
                                             placementAttempts++;
@@ -247,7 +250,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                                 " dimensionName=" + tDimensionName
                                             );
                                             validOreveins.put(oreveinSeed, tWorldGen);
-                                            oreveinFound = true;
+                                            oreVeinMix = tWorldGen;
                                             break;
                                         case GT_Worldgen_GT_Ore_Layer.NO_OVERLAP_AIR_BLOCK:
                                             if (debugOrevein) GT_Log.out.println(
@@ -277,7 +280,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                         }
                     }
                     // Only add an empty orevein if unable to place a vein at the oreseed chunk.
-                    if ((!oreveinFound) && (this.mX == oreseedX) && (this.mZ == oreseedZ)){
+                    if ((oreVeinMix == null) && (this.mX == oreseedX) && (this.mZ == oreseedZ)){
                         if (debugOrevein) GT_Log.out.println(
                             " Empty oreveinSeed="+ oreveinSeed +
                             " mX="+ this.mX +
@@ -324,7 +327,11 @@ public class GT_Worldgenerator implements IWorldGenerator {
                             " No overlap"
                         );
                 }
+
+                oreVeinMix = tWorldGen;
             }
+
+            return oreVeinMix;
         }
 
         @Override
@@ -375,21 +382,25 @@ public class GT_Worldgenerator implements IWorldGenerator {
             }
 
             // Now process each oreseed vs this requested chunk
-            for( ; seedList.size() != 0; seedList.remove(0) ) {
+            val usedOreMixes = new HashSet<GT_Worldgen_GT_Ore_Layer>();
+
+            for(; !seedList.isEmpty(); seedList.remove(0) ) {
                 if (debugWorldGen) GT_Log.out.println(
                     "Processing seed x="+seedList.get(0).mX+
                     " z="+seedList.get(0).mZ 
                 );
-                worldGenFindVein( seedList.get(0).mX, seedList.get(0).mZ );
+
+                val usedOreMix = worldGenFindVein(seedList.get(0).mX, seedList.get(0).mZ);
+                usedOreMixes.add(usedOreMix);
             }
 
             long oregenTime = System.nanoTime();
 
-            //Asteroid Worldgen
-            int tDimensionType = this.mWorld.provider.dimensionId;
-            //String tDimensionName = this.mWorld.provider.getDimensionName();
-            Random aRandom = new Random();
-            //if (((tDimensionType == 1) && endAsteroids && ((mEndAsteroidProbability <= 1) || (aRandom.nextInt(mEndAsteroidProbability) == 0))) || ((tDimensionName.equals("Asteroids")) && gcAsteroids && ((mGCAsteroidProbability <= 1) || (aRandom.nextInt(mGCAsteroidProbability) == 0)))) {
+//            Asteroid Worldgen
+//            int tDimensionType = this.mWorld.provider.dimensionId;
+//            String tDimensionName = this.mWorld.provider.getDimensionName();
+//            Random aRandom = new Random();
+//            if (((tDimensionType == 1) && endAsteroids && ((mEndAsteroidProbability <= 1) || (aRandom.nextInt(mEndAsteroidProbability) == 0))) || ((tDimensionName.equals("Asteroids")) && gcAsteroids && ((mGCAsteroidProbability <= 1) || (aRandom.nextInt(mGCAsteroidProbability) == 0)))) {
 //            if (((tDimensionType == 1) && endAsteroids && ((mEndAsteroidProbability <= 1) || (aRandom.nextInt(mEndAsteroidProbability) == 0)))) {
 //                short primaryMeta = 0;
 //                short secondaryMeta = 0;
@@ -420,7 +431,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
 //                        }
 //                    }
 //                }
-//                //if(GT_Values.D1)GT_FML_LOGGER.info("do asteroid gen: "+this.mX+" "+this.mZ);
+//                if(GT_Values.D1)GT_FML_LOGGER.info("do asteroid gen: "+this.mX+" "+this.mZ);
 //                int tX = mX * 16 + aRandom.nextInt(16);
 //                int tY = 50 + aRandom.nextInt(200 - 50);
 //                int tZ = mZ * 16 + aRandom.nextInt(16);
@@ -486,6 +497,8 @@ public class GT_Worldgenerator implements IWorldGenerator {
             Chunk tChunk = this.mWorld.getChunkFromBlockCoords(this.mX << 4, this.mZ << 4);
             if (tChunk != null) {
                 tChunk.isModified = true;
+
+                GT_OreVeinLocations.recordOreVeinsInChunk(tChunk, usedOreMixes);
             }
             long endTime = System.nanoTime();
             long duration = (endTime - startTime);

@@ -2,6 +2,7 @@ package gregtech.loaders.postload;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.events.GT_OreVeinLocations;
 import gregtech.api.util.GT_Log;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
@@ -208,6 +209,9 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.TFgalena", true, 5, 35, 50, 5, 16, false, false, false, Materials.Galena, Materials.Galena, Materials.Silver, Materials.Lead);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.luvtantalite", true, 20, 30, 10, 4, 16, false, false, false, Materials.Pyrolusite, Materials.Apatite, Materials.Tantalite, Materials.Pyrochlore);
         }
+
+        GT_OreVeinLocations.addOreVeins(GT_Worldgen_GT_Ore_Layer.sList);
+
         //DO NOT DELETE V THIS V - this is needed so that gregtech generates its Ore Layer's first (the ones up there), which can then be transformed into "GT_Worldgen_GT_Ore_Layer_Space". Also Reflexion is slow.
         try {
             Class clazz = Class.forName("bloodasp.galacticgreg.WorldGenGaGT");
