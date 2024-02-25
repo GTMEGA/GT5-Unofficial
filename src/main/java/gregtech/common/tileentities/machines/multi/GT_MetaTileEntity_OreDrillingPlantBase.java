@@ -430,12 +430,10 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         this.oreTypeFrequency.clear();
 
         val chunkCoord = new ChunkCoordIntPair(xDrill >> 4, zDrill >> 4);
-        val slurryOptions = GT_OreVeinLocations.getOreVeinsInChunk(this.getBaseMetaTileEntity().getWorld().provider.dimensionId,
-                                                                   chunkCoord);
+        val oreMix = GT_OreVeinLocations.getOreVeinInChunk(this.getBaseMetaTileEntity().getWorld().provider.dimensionId,
+                                                           chunkCoord);
 
-        if (!slurryOptions.isEmpty()) {
-            this.slurryType = GT_OreSlurry.slurries.get(slurryOptions.get(0));
-        }
+        this.slurryType = GT_OreSlurry.slurries.get(oreMix);
 
         tryAddOreBlockToMineList(xPipe, yHead - 1, zPipe);
         if (yHead == yDrill)

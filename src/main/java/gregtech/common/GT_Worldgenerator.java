@@ -9,6 +9,7 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
 import lombok.val;
+import lombok.var;
 
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -19,7 +20,6 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import static gregtech.api.enums.GT_Values.debugOrevein;
 import static gregtech.api.enums.GT_Values.debugWorldGen;
@@ -133,7 +133,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
             }
         };
 
-        public static ArrayList<GT_Worldgenerator.WorldGenContainer.NearbySeeds> seedList = new ArrayList();
+        public static ArrayList<GT_Worldgenerator.WorldGenContainer.NearbySeeds> seedList = new ArrayList<>();
 
         // aX and aZ are now the by-chunk X and Z for the chunk of interest
         public WorldGenContainer(Random aRandom, int aX, int aZ, int aDimensionType, World aWorld, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider, String aBiome) {
@@ -371,27 +371,36 @@ public class GT_Worldgenerator implements IWorldGenerator {
             for( int x = wXbox; x < eXbox; x++ ) {
                 for( int z = nZbox; z < sZbox; z++ ) {
                     // Determine if this X/Z is an orevein seed
-                    if ( ( (Math.abs(x)%3) == 1) && ( (Math.abs(z)%3) == 1 ) ) {
+                    if (((Math.abs(x) % 3) == 1) && ((Math.abs(z) % 3) == 1 ) ) {
                         if (debugWorldGen) GT_Log.out.println(
                             "Adding seed x="+x+
                             " z="+z
                         );
-                        seedList.add( new GT_Worldgenerator.WorldGenContainer.NearbySeeds(x,z) );
+                        seedList.add( new GT_Worldgenerator.WorldGenContainer.NearbySeeds(x, z));
                     }
                 }
             }
 
             // Now process each oreseed vs this requested chunk
-            val usedOreMixes = new HashSet<GT_Worldgen_GT_Ore_Layer>();
+            var closestSeedDistance = Long.MAX_VALUE;
+            GT_Worldgen_GT_Ore_Layer usedOreMix = null;
 
-            for(; !seedList.isEmpty(); seedList.remove(0) ) {
-                if (debugWorldGen) GT_Log.out.println(
-                    "Processing seed x="+seedList.get(0).mX+
-                    " z="+seedList.get(0).mZ 
-                );
+            while (!seedList.isEmpty()) {
+                val currentOreSeed = seedList.remove(0);
 
-                val usedOreMix = worldGenFindVein(seedList.get(0).mX, seedList.get(0).mZ);
-                usedOreMixes.add(usedOreMix);
+                val distFromCurrent = ((this.mX - currentOreSeed.mX) * (this.mX - currentOreSeed.mX)) +
+                                      ((this.mZ - currentOreSeed.mZ) * (this.mZ - currentOreSeed.mZ));
+
+                if (debugWorldGen) {
+                    GT_Log.out.printf("Processing seed x=%d z=%d%n", currentOreSeed.mX, currentOreSeed.mZ);
+                }
+
+                val tempUsedMix = worldGenFindVein(currentOreSeed.mX, currentOreSeed.mZ);
+
+                if (distFromCurrent < closestSeedDistance) {
+                    closestSeedDistance = distFromCurrent;
+                    usedOreMix = tempUsedMix;
+                }
             }
 
             long oregenTime = System.nanoTime();
@@ -498,7 +507,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
             if (tChunk != null) {
                 tChunk.isModified = true;
 
-                GT_OreVeinLocations.recordOreVeinsInChunk(tChunk, usedOreMixes);
+                GT_OreVeinLocations.recordOreVeinInChunk(tChunk, usedOreMix);
             }
             long endTime = System.nanoTime();
             long duration = (endTime - startTime);
