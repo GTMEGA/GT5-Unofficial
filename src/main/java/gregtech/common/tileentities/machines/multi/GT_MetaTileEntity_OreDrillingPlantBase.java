@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.events.GT_OreVeinLocations;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ChunkManager;
@@ -11,10 +12,11 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-
+import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gregtech.common.blocks.GT_Block_Ore;
-import gregtech.common.blocks.GT_Block_Ore_Abstract;
+import gregtech.common.fluids.GT_OreSlurry;
 import lombok.val;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -26,17 +28,32 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.ChunkPosition;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 import static gregtech.api.enums.GT_Values.VN;
 
 public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTileEntity_DrillerBase {
+    protected static final String NBT_KEY_CURRENT_SLURRY = "currentSlurryType";
+    protected static final String NBT_KEY_CURRENT_MINING = "currentSlurry";
+    protected static final String NBT_KEY_CURRENT_MINING_AMOUNT = "currentSlurryAmount";
+
+    protected static final int BASE_FLUID_PER_TICK = 100;//mb;
+
     private final ArrayList<ChunkPosition> oreBlockPositions = new ArrayList<>();
+    private final Map<GT_Block_Ore, Integer> oreTypeFrequency = new HashMap<>();
+    private GT_OreSlurry slurryType = null;
+
+
     protected int mTier = 1;
     private int chunkRadiusConfig = getRadiusInChunks();
-    protected ItemStack currentlyMiningItems = null;
+    protected FluidStack currentOreSlurry = null;
 
     private static final int[] FORTUNE = {12, 15, 18, 21, 24};
 
@@ -52,24 +69,37 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("chunkRadiusConfig", chunkRadiusConfig);
-        if (currentlyMiningItems != null) {
-            val nbt = new NBTTagCompound();
-            currentlyMiningItems.writeToNBT(nbt);
-            aNBT.setTag("currentMining",nbt);
+
+        if (this.slurryType != null) {
+            aNBT.setString(NBT_KEY_CURRENT_SLURRY, this.slurryType.getName());
         }
-        aNBT.setInteger("currentMiningCount",currentlyMiningItems.stackSize);
+
+        if (this.currentOreSlurry != null) {
+            val nbt = new NBTTagCompound();
+
+            this.currentOreSlurry.writeToNBT(nbt);
+            aNBT.setTag(NBT_KEY_CURRENT_MINING, nbt);
+
+            aNBT.setInteger(NBT_KEY_CURRENT_MINING_AMOUNT, this.currentOreSlurry.amount);
+        }
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (aNBT.hasKey("chunkRadiusConfig"))
+
+        if (aNBT.hasKey("chunkRadiusConfig")) {
             chunkRadiusConfig = aNBT.getInteger("chunkRadiusConfig");
-        if (aNBT.hasKey("currentMining")) {
-            currentlyMiningItems = GT_Utility.loadItem(aNBT,"currentMining");
-            currentlyMiningItems.stackSize = aNBT.getInteger("currentMiningCount");
         }
 
+        if (aNBT.hasKey(NBT_KEY_CURRENT_SLURRY)) {
+            this.slurryType = (GT_OreSlurry) FluidRegistry.getFluid(aNBT.getString(NBT_KEY_CURRENT_SLURRY));
+        }
+
+        if (aNBT.hasKey(NBT_KEY_CURRENT_MINING)) {
+            this.currentOreSlurry = GT_Utility.loadFluid(aNBT, NBT_KEY_CURRENT_MINING);
+            this.currentOreSlurry.amount = aNBT.getInteger(NBT_KEY_CURRENT_MINING_AMOUNT);
+        }
     }
 
     @Override
@@ -98,37 +128,51 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
 
     abstract protected int fortune();
 
-    abstract protected int perTickStackSize();
+    abstract protected int perTickFluidStackMultiplier();
+
+    protected final int perTickFluidStackSize() {
+        return BASE_FLUID_PER_TICK * this.perTickFluidStackMultiplier();
+    }
 
     @Override
     protected boolean workingDownward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe, int yHead, int oldYHead) {
-        if (yHead != oldYHead)
-            oreBlockPositions.clear();
+        if (yHead != oldYHead) {
+            this.oreBlockPositions.clear();
+        }
 
         if (mWorkChunkNeedsReload && mChunkLoadingEnabled) { // ask to load machine itself
             GT_ChunkManager.requestChunkLoad((TileEntity) getBaseMetaTileEntity(), null);
             mWorkChunkNeedsReload = false;
         }
-        fillMineListIfEmpty(xDrill, yDrill, zDrill, xPipe, zPipe, yHead);
+
+        this.fillMineListIfEmpty(xDrill, yDrill, zDrill, xPipe, zPipe, yHead);
+
         if (oreBlockPositions.isEmpty()) {
-            switch (tryLowerPipeState()) {
+            switch (this.tryLowerPipeState()) {
                 case 2: mMaxProgresstime = 0; return false;
                 case 3: workState = STATE_UPWARD; return true;
                 case 1: workState = STATE_AT_BOTTOM; return true;
             }
+
             //new layer - fill again
-            fillMineListIfEmpty(xDrill, yDrill, zDrill, xPipe, zPipe, yHead);
+            this.fillMineListIfEmpty(xDrill, yDrill, zDrill, xPipe, zPipe, yHead);
         }
+
         return processOreList();
     }
-    private boolean processOreList(){
+
+    private boolean processOreList() {
         int amountTransferred = 0;
-        if (currentlyMiningItems != null && currentlyMiningItems.stackSize != 0) {
-            if (!tryConsumeDrillingFluid()) {
+
+        if (this.currentOreSlurry != null && this.currentOreSlurry.amount != 0) {
+            if (!this.tryConsumeDrillingFluid()) {
                 return false;
             }
-            amountTransferred = decreaseOutput();
-            if (amountTransferred == perTickStackSize()) return true;
+
+            amountTransferred = this.decreaseOutput();
+            if (amountTransferred == this.perTickFluidStackSize()) {
+                return true;
+            }
         }
 
         ChunkPosition oreBlockPos = null;
@@ -141,8 +185,11 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             x = oreBlockPos.chunkPosX;
             y = oreBlockPos.chunkPosY;
             z = oreBlockPos.chunkPosZ;
-            if (GT_Utility.eraseBlockByFakePlayer(getFakePlayer(getBaseMetaTileEntity()), x, y, z, true))
+
+            if (GT_Utility.eraseBlockByFakePlayer(getFakePlayer(getBaseMetaTileEntity()), x, y, z, true)) {
                 oreBlock = getBaseMetaTileEntity().getBlock(x, y, z);
+            }
+
             oreBlockMetadata = getBaseMetaTileEntity().getWorld().getBlockMetadata(x, y, z);
         }
 
@@ -150,38 +197,52 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             oreBlockPositions.add(0, oreBlockPos);
             return false;
         }
+
         if (oreBlock != null && isBigOreBlock(oreBlock,oreBlockMetadata)) {
             //TODO replace with proper rock variant
-            currentlyMiningItems = getBlockDrops((GT_Block_Ore) oreBlock, x, y, z);
+            this.currentOreSlurry = new FluidStack(this.slurryType, this.fortune() * BASE_FLUID_PER_TICK);
             getBaseMetaTileEntity().getWorld().setBlock(x, y, z, Blocks.cobblestone, 0, 3);
 
             if (amountTransferred > 0) {
-                decreaseOutputSecondary(perTickStackSize() - amountTransferred);
+                this.decreaseOutputSecondary(this.perTickFluidStackSize() - amountTransferred);
                 return true;
             }
             decreaseOutput();
         }
+
         return true;
     }
 
     protected int decreaseOutput() {
-        if (mOutputItems == null || mOutputItems.length != 2) {
-            mOutputItems = new ItemStack[2];
+        if (mOutputFluids == null || mOutputFluids.length != 2) {
+            mOutputFluids = new FluidStack[2];
         }
-        int transferAmount = Math.min(perTickStackSize(),currentlyMiningItems.stackSize);
-        mOutputItems[0] = currentlyMiningItems.copy();
-        mOutputItems[0].stackSize = transferAmount;
-        currentlyMiningItems.stackSize -= transferAmount;
-        if (currentlyMiningItems.stackSize == 0) currentlyMiningItems = null;
+
+        int transferAmount = Math.min(this.perTickFluidStackSize(), this.currentOreSlurry.amount);
+
+        mOutputFluids[0] = this.currentOreSlurry.copy();
+        mOutputFluids[0].amount = transferAmount;
+
+        this.currentOreSlurry.amount -= transferAmount;
+        if (this.currentOreSlurry.amount == 0) {
+            this.currentOreSlurry = null;
+        }
+
         return transferAmount;
     }
 
     protected void decreaseOutputSecondary(int max) {
-        int transferAmount = Math.min(Math.min(perTickStackSize(),max),currentlyMiningItems.stackSize);
-        mOutputItems[1] = currentlyMiningItems.copy();
-        mOutputItems[1].stackSize = transferAmount;
-        currentlyMiningItems.stackSize -= transferAmount;
-        if (currentlyMiningItems.stackSize == 0) currentlyMiningItems = null;
+        int transferAmount = Math.min(Math.min(this.perTickFluidStackSize(), max),
+                                      this.currentOreSlurry.amount);
+
+        mOutputFluids[1] = this.currentOreSlurry.copy();
+        mOutputFluids[1].amount = transferAmount;
+
+        this.currentOreSlurry.amount -= transferAmount;
+
+        if (this.currentOreSlurry.amount == 0) {
+            this.currentOreSlurry = null;
+        }
     }
 
     protected boolean isBigOreBlock(Block block, int meta) {
@@ -225,6 +286,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         // use corner closest to the drill as mining area center
         final int leftRight = (getXDrill() - (centerX << 4)) < 8 ? 0 : 1;
         final int topBottom = (getZDrill() - (centerZ << 4)) < 8 ? 0 : 1;
+
         mCurrentChunk = new ChunkCoordIntPair(centerX - chunkRadiusConfig + leftRight, centerZ - chunkRadiusConfig + topBottom);
         GT_ChunkManager.requestChunkLoad((TileEntity)getBaseMetaTileEntity(), mCurrentChunk);
         mWorkChunkNeedsReload = false;
@@ -277,7 +339,10 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     
     @Override
     protected boolean checkHatches(){
-        return !mMaintenanceHatches.isEmpty() && !mInputHatches.isEmpty() && !mOutputBusses.isEmpty() && !mEnergyHatches.isEmpty();
+        return !this.mMaintenanceHatches.isEmpty() &&
+               !this.mInputHatches.isEmpty() &&
+               !this.mOutputHatches.isEmpty() &&
+               !this.mEnergyHatches.isEmpty();
     }
 
     @Override
@@ -361,6 +426,15 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         if (!oreBlockPositions.isEmpty())
             return;
 
+        this.slurryType = null;
+        this.oreTypeFrequency.clear();
+
+        val chunkCoord = new ChunkCoordIntPair(xDrill >> 4, zDrill >> 4);
+        val oreMix = GT_OreVeinLocations.getOreVeinInChunk(this.getBaseMetaTileEntity().getWorld().provider.dimensionId,
+                                                           chunkCoord);
+
+        this.slurryType = GT_OreSlurry.slurries.get(oreMix);
+
         tryAddOreBlockToMineList(xPipe, yHead - 1, zPipe);
         if (yHead == yDrill)
             return; //skip controller block layer
@@ -377,6 +451,10 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 for (int zOff = -radius; zOff <= radius; zOff++)
                     tryAddOreBlockToMineList(xDrill + xOff, yHead, zDrill + zOff);
         }
+
+        if (this.slurryType == null) {
+            this.slurryType = this.lmaoGuess();
+        }
     }
 
     private void tryAddOreBlockToMineList(int x, int y, int z) {
@@ -384,9 +462,37 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         int blockMeta = getBaseMetaTileEntity().getMetaID(x, y, z);
         ChunkPosition blockPos = new ChunkPosition(x, y, z);
 
-        if (!oreBlockPositions.contains(blockPos) && isBigOreBlock(block,blockMeta)) {
+        if (!oreBlockPositions.contains(blockPos) && isBigOreBlock(block, blockMeta)) {
             oreBlockPositions.add(blockPos);
+
+            val ore = (GT_Block_Ore) block;
+
+            val frequency = this.oreTypeFrequency.computeIfAbsent(ore, key -> 0);
+            this.oreTypeFrequency.put(ore, frequency + 1);
         }
+    }
+
+    private GT_OreSlurry lmaoGuess() {
+        val oreVeinLikelihood = new HashMap<GT_Worldgen_GT_Ore_Layer, Integer>();
+
+        for (val ore : this.oreTypeFrequency.keySet()) {
+            val material = ore.material();
+
+            for (val oreMix : GT_Worldgen_GT_Ore_Layer.sList) {
+                if (oreMix.containsMaterial(material)) {
+                    val frequency = oreVeinLikelihood.computeIfAbsent(oreMix, key -> 0);
+
+                    oreVeinLikelihood.put(oreMix, frequency + 1);
+                }
+            }
+        }
+
+        val oreVeinEntry = oreVeinLikelihood.entrySet()
+                                            .stream()
+                                            .max(Map.Entry.comparingByValue())
+                                            .orElse(null);
+
+        return oreVeinEntry != null ? GT_OreSlurry.slurries.get(oreVeinEntry.getKey()) : null;
     }
 
     protected abstract int getRadiusInChunks();

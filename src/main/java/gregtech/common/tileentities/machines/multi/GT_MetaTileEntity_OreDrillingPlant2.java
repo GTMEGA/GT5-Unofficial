@@ -23,7 +23,7 @@ public class GT_MetaTileEntity_OreDrillingPlant2 extends GT_MetaTileEntity_OreDr
     }
 
     @Override
-    protected int perTickStackSize() {
+    protected int perTickFluidStackMultiplier() {
         return 2;
     }
 
