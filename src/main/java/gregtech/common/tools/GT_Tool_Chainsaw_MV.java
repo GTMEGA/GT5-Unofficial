@@ -102,7 +102,7 @@ public class GT_Tool_Chainsaw_MV extends GT_Tool_Chainsaw_LV implements IAOETool
      */
     @Override
     public float getDigSpeed(final float digSpeed, final IToolStats stats, final ItemStack stack) {
-        return 1.0f;
+        return digSpeed;
     }
 
     /**
