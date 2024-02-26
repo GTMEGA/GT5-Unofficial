@@ -59,15 +59,15 @@ public class GT_OreVeinLocations {
         }
     }
 
-    @SubscribeEvent
-    public void onChunkUnload(ChunkEvent.Unload event) {
-        if (event.world.isRemote) {
-            return;
-        }
-
-        RecordedOreVeinInChunk.remove(event.world.provider.dimensionId,
-                                      event.getChunk().getChunkCoordIntPair());
-    }
+//    @SubscribeEvent
+//    public void onChunkUnload(ChunkEvent.Unload event) {
+//        if (event.world.isRemote) {
+//            return;
+//        }
+//
+//        RecordedOreVeinInChunk.remove(event.world.provider.dimensionId,
+//                                      event.getChunk().getChunkCoordIntPair());
+//    }
 
     public static GT_Worldgen_GT_Ore_Layer getOreVeinInChunk(int dimensionId, ChunkCoordIntPair location) {
         val oreMixName = RecordedOreVeinInChunk.get(dimensionId, location);
