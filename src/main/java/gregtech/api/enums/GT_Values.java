@@ -318,6 +318,7 @@ public class GT_Values {
     public static boolean hideAssLineRecipes = false;
     public static boolean updateFluidDisplayItems = true;
     public static final int STEAM_PER_WATER = 160;
+    public static final int EU_PER_STEAM = 2;
     /**
      *  If true, then digital chest with AE2 storage bus will be accessible only through AE2
      */
@@ -326,10 +327,16 @@ public class GT_Values {
     public static int MEFortune = 3, MERays = 32, MEFuse = 160, MEMaxRemoteRange = 256, MERemoteDelay = 15;
 
     public static float MERayBaseRayDist = 0.3f, MERayPowerDropRatio = 0.5f, MERayDropBump = 0.3f, MEOrePowerBoost = 3.0f, MERockResistanceDrop = 0.25f,
-            MESoilPowerBoost = 1.0f, MEOtherResistanceDrop = 10.0f, MEExplosionPower = 9.0f, MEMaxEntitySize = 1.2f, MEOreChance = 1.0f, MESoilChance = 0.05f,
-            MERockChance = 0.025f, MEOtherChance = 0.0f, MEMaxRange = 4.5f, MEMinEntitySize = 0.8f, MEOffsetRatio = 0.75f;
+            MESoilPowerBoost = 1.0f, MEOtherResistanceDrop = 10.0f, MEExplosionPower = 9.0f, MEMaxEntitySize = 1f, MEOreChance = 1.0f, MESoilChance = 0.05f,
+            MERockChance = 0.025f, MEOtherChance = 0.0f, MEMaxRange = 3.0f, MEMinEntitySize = 0.95f, MEOffsetRatio = 0.75f;
 
-    public static boolean MEFancyDrops = true, MERequiresRemote = true;
+    public static float TEMaxRange = 30.0f, TERadius = 4.0f, TERadiusVariation = 1.5f;
+
+    public static boolean MEFancyDrops = false, MERequiresRemote = true;
+
+    public static boolean LV24EuCapAuto = true, MV112EuCapAuto = true;
+
+    public static int PAMapChangeDamageChance = 2;
 
     public static boolean getConfigValue(final Configuration config, final String category, final String key, final boolean defValue, final String comment) {
         return config.get(category, key, defValue, comment).getBoolean(defValue);

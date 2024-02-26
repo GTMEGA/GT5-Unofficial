@@ -44,12 +44,12 @@ public class GT_CraftingRecipeLoader implements Runnable {
             GT_ModHandler.addCraftingRecipe(new ItemStack(Items.bucket, 1), bits_no_remove_buffered, new Object[]{aTextIron1, " X ", 'X', OrePrefixes.ingot.get(Materials.AnyIron)});
         }
         ItemStack tMat = new ItemStack(Items.iron_ingot);
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.recipereplacements, "Iron.PressurePlate", true)) {
-            ItemStack tStack;
-            if (null != (tStack = GT_ModHandler.removeRecipe(tMat, tMat, null, null, null, null, null, null, null))) {
-                GT_ModHandler.addCraftingRecipe(tStack, bits_no_remove_buffered | GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES, new Object[]{"ShS", "XZX","SdS", 'X', OrePrefixes.plate.get(Materials.AnyIron), 'S', OrePrefixes.screw.get(Materials.Steel), 'Z', OrePrefixes.spring.get(Materials.Steel)});
-            }
-        }
+//        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.recipereplacements, "Iron.PressurePlate", true)) {
+//            ItemStack tStack;
+//            if (null != (tStack = GT_ModHandler.removeRecipe(tMat, tMat, null, null, null, null, null, null, null))) {
+//                GT_ModHandler.addCraftingRecipe(tStack, bits_no_remove_buffered | GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES, new Object[]{"ShS", "XZX","SdS", 'X', OrePrefixes.plate.get(Materials.AnyIron), 'S', OrePrefixes.screw.get(Materials.Steel), 'Z', OrePrefixes.spring.get(Materials.Steel)});
+//            }
+//        }
         if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.recipereplacements, "Iron.Door", true)) {
             ItemStack tStack;
             if (null != (tStack = GT_ModHandler.removeRecipe(tMat, tMat, null, tMat, tMat, null, tMat, tMat, null))) {
@@ -78,12 +78,12 @@ public class GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("ironFence", 6L), bits_no_remove_buffered | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{aTextIron2, aTextIron2, " w ", 'X', OrePrefixes.stick.get(Materials.AnyIron), 'S', OrePrefixes.stick.get(Materials.Wood), 'I', OrePrefixes.ingot.get(Materials.AnyIron)});
 
         tMat = new ItemStack(Items.gold_ingot);
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.recipereplacements, "Gold.PressurePlate", true)) {
-            ItemStack tStack;
-            if (null != (tStack = GT_ModHandler.removeRecipe(tMat, tMat, null, null, null, null, null, null, null))) {
-                GT_ModHandler.addCraftingRecipe(tStack, bits_no_remove_buffered | GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES, new Object[]{"ShS", "XZX","SdS", 'X', OrePrefixes.plate.get(Materials.Gold), 'S', OrePrefixes.screw.get(Materials.Steel), 'Z', OrePrefixes.spring.get(Materials.Steel)});
-            }
-        }
+//        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.recipereplacements, "Gold.PressurePlate", true)) {
+//            ItemStack tStack;
+//            if (null != (tStack = GT_ModHandler.removeRecipe(tMat, tMat, null, null, null, null, null, null, null))) {
+//                GT_ModHandler.addCraftingRecipe(tStack, bits_no_remove_buffered | GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES, new Object[]{"ShS", "XZX","SdS", 'X', OrePrefixes.plate.get(Materials.Gold), 'S', OrePrefixes.screw.get(Materials.Steel), 'Z', OrePrefixes.spring.get(Materials.Steel)});
+//            }
+//        }
         tMat = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 1L);
         if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.recipereplacements, "Rubber.Sheet", true)) {
             ItemStack tStack;
@@ -155,10 +155,10 @@ public class GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(new ItemStack(Items.minecart, 1), bits_no_remove_buffered | GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES, new Object[]{" h ", "PwP", "WPW", 'P', OrePrefixes.plate.get(Materials.AnyIron), 'W', ItemList.Component_Minecart_Wheels_Iron});
         GT_ModHandler.addCraftingRecipe(new ItemStack(Items.minecart, 1), bits_no_remove_buffered, new Object[]{" h ", "PwP", "WPW", 'P', OrePrefixes.plate.get(Materials.Steel), 'W', ItemList.Component_Minecart_Wheels_Steel});
 
-        GT_ModHandler.addCraftingRecipe(new ItemStack(Items.chest_minecart, 1), bits_no_remove_buffered | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES, new Object[]{"X", "C", 'C', new ItemStack(Items.minecart, 1), 'X', OreDictNames.craftingChest});
-        GT_ModHandler.addCraftingRecipe(new ItemStack(Items.furnace_minecart, 1), bits_no_remove_buffered | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES, new Object[]{"X", "C", 'C', new ItemStack(Items.minecart, 1), 'X', OreDictNames.craftingFurnace});
-        GT_ModHandler.addCraftingRecipe(new ItemStack(Items.hopper_minecart, 1), bits_no_remove_buffered | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES, new Object[]{"X", "C", 'C', new ItemStack(Items.minecart, 1), 'X', new ItemStack(Blocks.hopper, 1, 32767)});
-        GT_ModHandler.addCraftingRecipe(new ItemStack(Items.tnt_minecart, 1), bits_no_remove_buffered | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES, new Object[]{"X", "C", 'C', new ItemStack(Items.minecart, 1), 'X', new ItemStack(Blocks.tnt, 1, 32767)});
+        GT_ModHandler.addCraftingRecipe(new ItemStack(Items.chest_minecart, 1), bits_no_remove_buffered | GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES, new Object[]{"X", "C", 'C', new ItemStack(Items.minecart, 1), 'X', OreDictNames.craftingChest});
+        GT_ModHandler.addCraftingRecipe(new ItemStack(Items.furnace_minecart, 1), bits_no_remove_buffered | GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES, new Object[]{"X", "C", 'C', new ItemStack(Items.minecart, 1), 'X', OreDictNames.craftingFurnace});
+        GT_ModHandler.addCraftingRecipe(new ItemStack(Items.hopper_minecart, 1), bits_no_remove_buffered |  GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES, new Object[]{"X", "C", 'C', new ItemStack(Items.minecart, 1), 'X', new ItemStack(Blocks.hopper, 1, 32767)});
+        GT_ModHandler.addCraftingRecipe(new ItemStack(Items.tnt_minecart, 1), bits_no_remove_buffered |  GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES, new Object[]{"X", "C", 'C', new ItemStack(Items.minecart, 1), 'X', new ItemStack(Blocks.tnt, 1, 32767)});
 
         GT_ModHandler.addCraftingRecipe(new ItemStack(Items.chainmail_helmet, 1), bits_no_remove_buffered | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES, new Object[]{"RRR", "RhR", 'R', OrePrefixes.ring.get(Materials.Steel)});
         GT_ModHandler.addCraftingRecipe(new ItemStack(Items.chainmail_chestplate, 1), bits_no_remove_buffered | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES, new Object[]{"RhR", "RRR", "RRR", 'R', OrePrefixes.ring.get(Materials.Steel)});
@@ -611,7 +611,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
         }
         if ((GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "cropharvester", true))) {
             GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("crophavester", 1L));
-            GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("crophavester", 1L), bits_no_remove_buffered, new Object[]{"ACA", "PMS", "WOW", 'M', ItemList.Hull_MV, 'C', circuitLogic.get(LOGIC_MV), 'A', ItemList.Robot_Arm_LV, 'P', ItemList.Electric_Piston_LV, 'S', ItemList.Sensor_LV, 'W', OrePrefixes.toolHeadSense.get(Materials.Aluminium), 'O', ItemList.Conveyor_Module_LV});
+            GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("crophavester", 1L), bits_no_remove_buffered, new Object[]{"ACA", "PMS", "WOW", 'M', ItemList.Hull_Bronze, 'C', circuitLogic.get(PWR_LV), 'A', ItemList.Robot_Arm_LV, 'P', OrePrefixes.plate.get(Steel), 'S',  OrePrefixes.plate.get(Steel), 'W',  OrePrefixes.plate.get(Steel), 'O', ItemList.Conveyor_Module_LV});
         }
         if ((GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "rtg", true))) {
             GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("RTGenerator", 1L));

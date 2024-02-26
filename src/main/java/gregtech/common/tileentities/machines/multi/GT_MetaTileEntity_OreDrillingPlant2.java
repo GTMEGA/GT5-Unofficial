@@ -18,6 +18,16 @@ public class GT_MetaTileEntity_OreDrillingPlant2 extends GT_MetaTileEntity_OreDr
     }
 
     @Override
+    protected int fortune() {
+        return 200;
+    }
+
+    @Override
+    protected int perTickFluidStackMultiplier() {
+        return 2;
+    }
+
+    @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         return createTooltip("II");
     }
@@ -29,22 +39,22 @@ public class GT_MetaTileEntity_OreDrillingPlant2 extends GT_MetaTileEntity_OreDr
 
     @Override
     protected ItemList getCasingBlockItem() {
-        return ItemList.Casing_StableTitanium;
+        return ItemList.Casing_FrostProof;
     }
 
     @Override
     protected Materials getFrameMaterial() {
-        return Materials.Titanium;
+        return Materials.Aluminium;
     }
 
     @Override
     protected int getCasingTextureIndex() {
-        return 50;
+        return 17;
     }
 
     @Override
     protected int getRadiusInChunks() {
-        return 4;
+        return 1;
     }
 
     @Override

@@ -82,7 +82,7 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_En
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3, false)
                 .addController("Front center")
-                .addCasingInfo("Chemically Inert Machine Casing", 8)
+                .addCasingInfo("Chemically Inert Machine Casing", 0)
                 .addOtherStructurePart("PTFE Pipe Machine Casing", "Center")
                 .addOtherStructurePart("Cupronickel Coil Block", "Adjacent to the PTFE Pipe Machine Casing", 1)
                 .addEnergyHatch("Any casing", 1, 2)
@@ -164,8 +164,8 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_En
         if (inputs.length > 0 || fluids.length > 0) {
             long tVoltage = getMaxInputVoltage();
             byte tier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.findRecipe(getBaseMetaTileEntity(), false,
-                    false, gregtech.api.enums.GT_Values.V[tier], fluids, inputs);
+            GT_Recipe tRecipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false,
+                                                          false, gregtech.api.enums.GT_Values.V[tier], fluids, inputs);
             if (tRecipe != null && tRecipe.isRecipeInputEqual(true, fluids, inputs)) {
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
@@ -188,6 +188,11 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_En
     }
 
     @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes;
+    }
+
+    @Override
     public IStructureDefinition<GT_MetaTileEntity_LargeChemicalReactor> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
@@ -205,7 +210,7 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_En
         mCasingAmount = 0;
         mCoilAmount = 0;
         return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0) &&
-                mCasingAmount >= 8 && mCoilAmount == 1 &&
+                mCasingAmount >= 0 && mCoilAmount == 1 &&
                 !mEnergyHatches.isEmpty() && mMaintenanceHatches.size() == 1;
     }
 

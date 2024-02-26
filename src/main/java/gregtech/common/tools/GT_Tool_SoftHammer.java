@@ -26,7 +26,7 @@ public class GT_Tool_SoftHammer extends GT_Tool {
 
     @Override
     public int getToolDamagePerContainerCraft() {
-        return 800;
+        return 400;
     }
 
     @Override
@@ -102,6 +102,11 @@ public class GT_Tool_SoftHammer extends GT_Tool {
     @Override
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
         return GT_ToolHarvestHelper.isAppropriateTool(aBlock , aMetaData ,"softhammer");
+    }
+
+    @Override
+    public boolean isCorrectTool(String toolClass) {
+        return toolClass.equals("softhammer");
     }
 
     @Override

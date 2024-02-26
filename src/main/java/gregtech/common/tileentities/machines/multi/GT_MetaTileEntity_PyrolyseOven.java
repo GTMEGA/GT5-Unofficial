@@ -88,7 +88,7 @@ public class GT_MetaTileEntity_PyrolyseOven extends GT_MetaTileEntity_EnhancedMu
                 .addInfo("Controller block for the Pyrolyse Oven")
                 .addInfo("Industrial Charcoal producer")
                 .addInfo("Processing speed scales linearly with Coil tier:")
-                .addInfo("CuNi: 50%, FeAlCr: 100%, Ni4Cr: 150%, Fe50CW: 200%, etc.")
+                .addInfo("CuNi: 50%, Ni4Cr: 100%, FeAlCr: 150%, Fe50CW: 200%, etc.")
                 .addInfo("EU/t is not affected by Coil tier")
                 .addPollutionAmount(20 * getPollutionPerTick(null))
                 .addSeparator()

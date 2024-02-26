@@ -3,6 +3,8 @@ package gregtech.api.gui.widgets;
 
 import gregtech.api.interfaces.IGuiScreen;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiTextField;
 
@@ -22,7 +24,14 @@ public class GT_GuiIntegerTextBox extends GuiTextField implements IGuiScreen.IGu
 
     private GT_GuiTooltip tooltip = null;
 
-    private IGT_GuiHook onInitHook = null, onUpdateHook = null, onClickHook = null;
+    @Getter
+    @Setter
+    private int updateCooldown = 0;
+
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private IGT_GuiHook onInitBehavior = null, onUpdateBehavior = null, onClickBehavior = null;
 
     public GT_GuiIntegerTextBox(IGuiScreen gui, int id, int x, int y, int width, int height) {
         super(Minecraft.getMinecraft().fontRenderer, x, y, width, height);
@@ -33,16 +42,6 @@ public class GT_GuiIntegerTextBox extends GuiTextField implements IGuiScreen.IGu
         this.gui = gui;
         enabled = true;
         gui.addElement(this);
-    }
-
-    /**
-     * @param hook
-     * @return
-     */
-    @Override
-    public IGuiScreen.IGuiElement setOnClickHook(final IGT_GuiHook hook) {
-        this.onClickHook = hook;
-        return IGuiScreen.IGuiElement.super.setOnClickHook(hook);
     }
 
     @Override
@@ -56,6 +55,19 @@ public class GT_GuiIntegerTextBox extends GuiTextField implements IGuiScreen.IGu
     public void draw(int mouseX, int mouseY, float parTicks) {
         super.drawTextBox();
         onUpdate(this.gui, mouseX, mouseY, 0);
+    }
+
+    /**
+     * @param screen
+     * @param mouseX
+     * @param mouseY
+     * @param clickType
+     */
+    @Override
+    public void onUpdate(final IGuiScreen screen, final int mouseX, final int mouseY, final int clickType) {
+        if (!isFocused()) {
+            IGuiScreen.IGuiElement.super.onUpdate(screen, mouseX, mouseY, clickType);
+        }
     }
 
     /**
@@ -93,49 +105,6 @@ public class GT_GuiIntegerTextBox extends GuiTextField implements IGuiScreen.IGu
     @Override
     public boolean inBounds(final int mouseX, final int mouseY, final int clickType) {
         return getBounds().contains(mouseX, mouseY);
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public IGT_GuiHook getOnInitBehavior() {
-        return onInitHook;
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public IGuiScreen.IGuiElement setOnInitBehavior(final IGT_GuiHook hook) {
-        this.onInitHook = hook;
-        return IGuiScreen.IGuiElement.super.setOnInitBehavior(hook);
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public IGT_GuiHook getOnUpdateBehavior() {
-        return onUpdateHook;
-    }
-
-    /**
-     * @param hook
-     * @return
-     */
-    @Override
-    public IGuiScreen.IGuiElement setOnUpdateBehavior(final IGT_GuiHook hook) {
-        this.onUpdateHook = hook;
-        return IGuiScreen.IGuiElement.super.setOnUpdateBehavior(hook);
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public IGT_GuiHook getOnClickHook() {
-        return onClickHook;
     }
 
     @Override

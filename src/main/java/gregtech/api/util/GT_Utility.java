@@ -7,6 +7,9 @@ import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.damagesources.GT_DamageSources.DamageSourceHotItem;
@@ -38,12 +41,14 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.threads.GT_Runnable_Sound;
 import gregtech.api.util.extensions.ArrayExt;
+import gregtech.api.util.interop.BaublesInterop;
 import gregtech.common.GT_Pollution;
 import gregtech.common.blocks.GT_Block_Ore_Abstract;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
+import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -71,6 +76,7 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.*;
@@ -93,6 +99,8 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.mutable.MutableBoolean;
+import org.apache.commons.lang3.mutable.MutableInt;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
@@ -109,6 +117,7 @@ import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.GT_Mod.gregtechproxy;
 import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.GT_Values.DW;
 import static gregtech.api.enums.GT_Values.E;
@@ -126,6 +135,7 @@ import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
  * Just a few Utility Functions I use.
  */
 public class GT_Utility {
+
     /**
      * Formats a number with group separator and at most 2 fraction digits.
      */
@@ -141,6 +151,9 @@ public class GT_Utility {
     private static final Map<String, Fluid> sFluidUnlocalizedNameToFluid = new HashMap<>();
     /** Must use {@code Supplier} here because the ore prefixes have not yet been registered at class load time. */
     private static final Map<OrePrefixes, Supplier<ItemStack>> sOreToCobble = new HashMap<>();
+
+    public static final DamageSource HOUSTON = new DamageSource("Houston");
+
     public static volatile int VERSION = 509;
     public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true, RF_CHECK = false;
     public static Map<GT_PlayedSound, Integer> sPlayedSoundMap = new /*Concurrent*/HashMap<>();
@@ -175,6 +188,10 @@ public class GT_Utility {
         sOreToCobble.put(
                 OrePrefixes.oreEndstone,
                 () -> new ItemStack(Blocks.end_stone));
+
+        // TODO: Figure out how to do this
+        // GT_LanguageManager.addStringLocalization("death.attack.Houston", "$s was smote by Houston for violating the laws of physics.");
+
     }
 
     public static int safeInt(long number, int margin) {
@@ -3036,4 +3053,62 @@ public class GT_Utility {
 
         return false;
     }
+
+    public static boolean playerIsOP(EntityPlayer player) {
+        return player instanceof EntityPlayerMP && ((EntityPlayerMP) player).mcServer.getConfigurationManager().func_152596_g(player.getGameProfile());
+    }
+
+    public static boolean playerIsCreative(EntityPlayer player) {
+        return player.capabilities.isCreativeMode;
+    }
+
+    public static boolean playerCanDoFancyStuff(EntityPlayer player) {
+        return playerIsOP(player) || playerIsCreative(player);
+    }
+
+    public static boolean validatePlayerCanDoFancyStuff(EntityPlayer player, boolean doDamage) {
+        if (playerCanDoFancyStuff(player)) {
+            return true;
+        }
+        player.addChatMessage(new ChatComponentText("You don't have the stones to use this"));
+        if (doDamage) {
+            player.attackEntityFrom(HOUSTON, 1);
+        }
+        return false;
+    }
+
+    public static EntityPlayer getPlayerFromUUID(final UUID uuid) {
+        return gregtechproxy.getPlayerFromUUID(uuid);
+    }
+
+    public static EntityPlayer getPlayerFromUUID(final UUIDWrapper wrapper) {
+        return getPlayerFromUUID(wrapper.getUuid());
+    }
+
+    public static ItemStack getItemInPlayerInventory(final EntityPlayer player, final Function<ItemStack, Boolean> checker, final MutableInt slotIndex, final MutableBoolean bauble) {
+        if (player != null) {
+            int index = 0;
+            if (BaublesInterop.INSTANCE.isBaublesLoaded()) {
+                for (val stack: BaublesInterop.INSTANCE.getBaubles(player)) {
+                    if (stack != null && checker.apply(stack)) {
+                        slotIndex.setValue(index);
+                        bauble.setValue(true);
+                        return stack;
+                    }
+                    index++;
+                }
+            }
+            index = 0;
+            for (val stack: player.inventory.mainInventory) {
+                if (stack != null && checker.apply(stack)) {
+                    slotIndex.setValue(index);
+                    bauble.setValue(false);
+                    return stack;
+                }
+                index++;
+            }
+        }
+        return null;
+    }
+
 }

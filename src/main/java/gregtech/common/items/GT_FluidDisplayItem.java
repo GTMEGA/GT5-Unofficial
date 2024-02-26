@@ -7,6 +7,9 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.fluids.GT_OreSlurry;
+import lombok.val;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,11 +41,24 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
 
     @Override
     protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
-        if (FluidRegistry.getFluid(aStack.getItemDamage()) != null) {
-            String tChemicalFormula = getChemicalFormula(new FluidStack(FluidRegistry.getFluid(aStack.getItemDamage()), 1));
-            if (!tChemicalFormula.isEmpty()) aList.add(EnumChatFormatting.GRAY + tChemicalFormula + EnumChatFormatting.GRAY);
+        val fluid = FluidRegistry.getFluid(aStack.getItemDamage());
+
+        if (fluid != null) {
+            String tChemicalFormula = getChemicalFormula(new FluidStack(fluid, 1));
+
+            if (!tChemicalFormula.isEmpty()) {
+                aList.add(EnumChatFormatting.GRAY + tChemicalFormula + EnumChatFormatting.GRAY);
+            }
+
+            if (fluid instanceof GT_OreSlurry) {
+                val slurry = (GT_OreSlurry) fluid;
+
+                slurry.addTooltip(aList, aStack, aPlayer);
+            }
         }
+
         NBTTagCompound aNBT = aStack.getTagCompound();
+
         if (GT_Values.D1) {
             Fluid tFluid = FluidRegistry.getFluid(aStack.getItemDamage());
             if (tFluid != null) {
@@ -51,11 +67,13 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
         }
         if (aNBT != null) {
             long tToolTipAmount = aNBT.getLong("mFluidDisplayAmount");
+
             if (tToolTipAmount > 0L) {
-                aList.add(EnumChatFormatting.BLUE + String.format(trans("016", "Amount: %s L"), "" + tToolTipAmount) + EnumChatFormatting.GRAY);
+                aList.add(EnumChatFormatting.BLUE + String.format(this.trans("016", "Amount: %s L"), "" + tToolTipAmount) + EnumChatFormatting.GRAY);
             }
-            aList.add(EnumChatFormatting.RED + String.format(trans("017", "Temperature: %s K"), "" + aNBT.getLong("mFluidDisplayHeat")) + EnumChatFormatting.GRAY);
-            aList.add(EnumChatFormatting.GREEN + String.format(trans("018", "State: %s"), aNBT.getBoolean("mFluidState") ? "Gas" : "Liquid") + EnumChatFormatting.GRAY);
+
+            aList.add(EnumChatFormatting.RED + String.format(this.trans("017", "Temperature: %s K"), "" + aNBT.getLong("mFluidDisplayHeat")) + EnumChatFormatting.GRAY);
+            aList.add(EnumChatFormatting.GREEN + String.format(this.trans("018", "State: %s"), aNBT.getBoolean("mFluidState") ? "Gas" : "Liquid") + EnumChatFormatting.GRAY);
         }
     }
 

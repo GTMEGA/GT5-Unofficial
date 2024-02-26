@@ -87,6 +87,10 @@ public class GT_Tool_WireCutter extends GT_Tool {
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
      return GT_ToolHarvestHelper.isAppropriateTool(aBlock , aMetaData ,"cutter");
     }
+    @Override
+    public boolean isCorrectTool(String toolClass) {
+        return toolClass.equals("cutter");
+    }
 
     @Override
     public ItemStack getBrokenItem(ItemStack aStack) {

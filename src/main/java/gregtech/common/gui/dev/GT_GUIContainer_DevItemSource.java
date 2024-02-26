@@ -3,114 +3,37 @@ package gregtech.common.gui.dev;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.RSControlMode;
-import gregtech.api.gui.GT_GUIContainer_Machine_Plus;
-import gregtech.api.gui.widgets.*;
+import gregtech.api.gui.GT_RichGuiContainer_Machine;
+import gregtech.api.gui.widgets.GT_GuiCycleButton;
+import gregtech.api.gui.widgets.GT_GuiIconButton;
+import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
+import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
+import gregtech.api.gui.widgets.icon.GT_GuiIcon;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import lombok.val;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 
+import java.awt.*;
 
-public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus {
+
+public class GT_GUIContainer_DevItemSource extends GT_RichGuiContainer_Machine {
+
+    public static int COOLDOWN = 45;
+
+    private static void boxOnUpdate(final GT_GuiIntegerTextBox box, final String string) {
+        if (!box.isFocused()) {
+            box.setText(string);
+        }
+    }
 
     public GT_GUIContainer_DevItemSource(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity) {
         super(new GT_Container_DevItemSource(aInventoryPlayer, aTileEntity), "gregtech:textures/gui/DevItemSource.png", 256, 166);
         addGuiElements();
     }
 
-    private void addGuiElements() {
-        new GT_GuiIconCheckButton(this, 0, buttonX(), 24, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Enable Activity", "Disable Activity").setChecked(
-                !getSource().getData().isActive()).setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
-            if (screen instanceof GT_GUIContainer_DevItemSource && button instanceof GT_GuiIconCheckButton) {
-                ((GT_GuiIconCheckButton) button).setChecked(((GT_GUIContainer_DevItemSource) screen).getSource().getData().isActive());
-            }
-        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
-        new GT_GuiIconButton(this, 1, buttonX(), 42, GT_GuiIcon.MATH_ZERO).setTooltipText("Set output rate to zero");
-        addRedstoneButton();
-        addTextBoxes();
-    }
-
     public int buttonX() {
         return getGuiWidth() - 40;
-    }
-
-    public GT_Container_DevItemSource getSource() {
-        return (GT_Container_DevItemSource) mContainer;
-    }
-
-    private void addRedstoneButton() {
-        final GT_GuiCycleButton rsButton = new GT_GuiCycleButton(this, 2, buttonX(), 60, 0, new GT_GuiCycleButton.IconToolTipPair[]{
-                new GT_GuiCycleButton.IconToolTipPair(GT_GuiIcon.CROSS, "Ignores redstone"),
-                new GT_GuiCycleButton.IconToolTipPair(GT_GuiIcon.REDSTONE_OFF, "Requires low signal"),
-                new GT_GuiCycleButton.IconToolTipPair(GT_GuiIcon.REDSTONE_ON, "Requires signal"),
-                });
-        rsButton.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
-            if (screen instanceof GT_GUIContainer_DevItemSource && button instanceof GT_GuiCycleButton) {
-                ((GT_GuiCycleButton) button).setState(((GT_GUIContainer_DevItemSource) screen).getSource().getData().getRedstoneMode().ordinal());
-            }
-        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> {
-            if (screen instanceof GT_GUIContainer_DevItemSource && button instanceof GT_GuiCycleButton) {
-                ((GT_GuiCycleButton) button).cycle();
-                ((GT_GUIContainer_DevItemSource) screen).getSource().setRedstoneMode(RSControlMode.getMode(((GT_GuiCycleButton) button).getState()));
-                button.setUpdateCooldown(20);
-                sendUpdateToServer();
-            }
-        });
-        rsButton.setDoCycle(false);
-    }
-
-    private void addTextBoxes() {
-        val perTickBox = new GT_GuiIntegerTextBox(this, 3, boxX(), 24, boxWidth(), 10);
-        perTickBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
-            if (screen instanceof GT_GUIContainer_DevItemSource && button instanceof GT_GuiIntegerTextBox && !((GT_GuiIntegerTextBox) button).isFocused()) {
-                ((GT_GuiIntegerTextBox) button).setText(((GT_GUIContainer_DevItemSource) screen).getIPTString());
-            }
-        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
-        val perSecondBox = new GT_GuiIntegerTextBox(this, 4, boxX(), 34, boxWidth(), 10);
-        perSecondBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> {
-            if (screen instanceof GT_GUIContainer_DevItemSource && button instanceof GT_GuiIntegerTextBox && !((GT_GuiIntegerTextBox) button).isFocused()) {
-                ((GT_GuiIntegerTextBox) button).setText(((GT_GUIContainer_DevItemSource) screen).getIPSString());
-            }
-        }).setOnClickHook((screen, button, mouseX, mouseY, clickType) -> button.setUpdateCooldown(20));
-    }
-
-    /**
-     *
-     */
-    @Override
-    public void sendUpdateToServer() {
-        getSource().sendPacket();
-    }
-
-    private int boxX() {
-        return getGuiWidth() / 2 - boxWidth();
-    }
-
-    private int boxWidth() {
-        return GregTech_API.mDWS ? 96 : 64;
-    }
-
-    public String getIPTString() {
-        final int pT = getSource().getData().getItemPerTick(), pS = getSource().getData().getItemPerSecond();
-        if (getSource().getData().isPerTick()) {
-            return String.valueOf(pT);
-        } else {
-            if (pS == 0) {
-                return "0";
-            }
-            if (pS % 20 == 0) {
-                return String.valueOf(pS / 20);
-            }
-            return String.valueOf((float) pS / 20);
-        }
-    }
-
-    public String getIPSString() {
-        if (!getSource().getData().isPerTick()) {
-            return String.valueOf(getSource().getData().getItemPerSecond());
-        } else {
-            return String.valueOf(getSource().getData().getItemPerTick() * 20);
-        }
     }
 
     /**
@@ -127,15 +50,7 @@ public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus 
     @Override
     public void buttonClicked(final GuiButton button) {
         super.buttonClicked(button);
-        if (button.id == 0 && button instanceof GT_GuiIconCheckButton) {
-            ((GT_GuiIconCheckButton) button).setChecked(getSource().toggleActive());
-        } else if (button.id == 1) {
-            getSource().zeroOut();
-        } else if (button.id == 2 && button instanceof GT_GuiCycleButton) {
-            getSource().setRedstoneMode(RSControlMode.getMode(((GT_GuiCycleButton) button).getState()));
-        }
-        sendUpdateToServer();
-        updateButtons();
+        uncheckButtons();
         clearSelectedButton();
     }
 
@@ -146,45 +61,28 @@ public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus 
      */
     @Override
     public void applyTextBox(final GT_GuiIntegerTextBox box) {
-        String s = box.getText().trim();
-        int value;
-        if (s.contains(".")) {
-            double v;
-            try {
-                v = Double.parseDouble(s);
-            } catch (NumberFormatException ignored) {
-                resetTextBox(box);
-                return;
-            }
-            value = (int) v;
-        } else {
-            try {
-                value = Integer.parseInt(s);
-            } catch (NumberFormatException ignored) {
-                resetTextBox(box);
-                return;
-            }
+        val source = getSource();
+        val text = box.getText().trim();
+        if (box.id == 3) {
+            source.setRate(Integer.parseInt(text));
+            box.setText(String.valueOf(source.getData().getRate()));
+        } else if (box.id == 4) {
+            source.setFrequency(Integer.parseInt(text));
+            box.setText(String.valueOf(source.getData().getFrequency()));
         }
-        if (value < 0) {
-            resetTextBox(box);
-            return;
-        }
-        switch (box.id) {
-            case 3: {
-                getSource().setItemPerTick(value);
-                getSource().setPerTick(true);
-                break;
-            }
-            case 4: {
-                getSource().setItemPerSecond(value);
-                getSource().setPerTick(false);
-                break;
-            }
-        }
-        getSource().syncRates();
-        box.setUpdateCooldown(20);
-        box.setText(String.valueOf(value));
         sendUpdateToServer();
+    }
+
+    public GT_Container_DevItemSource getSource() {
+        return (GT_Container_DevItemSource) mContainer;
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void sendUpdateToServer() {
+        getSource().sendPacket();
     }
 
     /**
@@ -194,15 +92,24 @@ public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus 
      */
     @Override
     public void drawExtras(final int mouseX, final int mouseY, final float parTicks) {
-        final int inactiveColor = 0xFF30304F;
-        final int activeColor = 0xFF3030FF;
-        final int left = boxX() + 3 + boxWidth();
-        final boolean pT = getSource().getData().isPerTick();
-        drawString("Items / tick", left, 24, pT ? activeColor : inactiveColor);
-        drawString("Items / second", left, 34, pT ? inactiveColor : activeColor);
-        if (!getSource().canRun()) {
-            drawString(getSource().getDisabledStatus(), left, 44, rgbaToInt(0xFF, 0x55, 0x55, 0xFF));
-        }
+        val textColor = new Color(0, 0, 0, 255);
+        val left = boxX() + 3 + boxWidth();
+        val top = 24;
+        drawString("Rate", left, top, textColor);
+        drawString("Frequency (t)", left, top + 10, textColor);
+        val rate = getSource().getData().getRate();
+        val frequency = (double)getSource().getData().getFrequency();
+        val ratio = rate / frequency;
+        drawString(String.format("%.2f /t", ratio), left, top + 20, textColor);
+        drawString(String.format("%.2f /s", ratio * 20), left, top + 30, textColor);
+    }
+
+    private int boxX() {
+        return getGuiWidth() / 2 - boxWidth();
+    }
+
+    private int boxWidth() {
+        return GregTech_API.mDWS ? 96 : 64;
     }
 
     /**
@@ -213,18 +120,94 @@ public class GT_GUIContainer_DevItemSource extends GT_GUIContainer_Machine_Plus 
         return true;
     }
 
-    private void updateButtons() {
-        for (Object o : buttonList) {
-            ((GuiButton) o).enabled = true;
-        }
-    }
-
     /**
      * @return
      */
     @Override
     public boolean hasDWSAlternativeBackground() {
         return true;
+    }
+
+    private void addGuiElements() {
+        val source = getSource();
+        //
+        val check = new GT_GuiIconCheckButton(this, 0, buttonX(), 24, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Enable Activity", "Disable Activity");
+        check.setChecked(!getSource().getData().isActive());
+        check.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> checkButtonOnUpdate(check));
+        check.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> checkButtonOnClick(check, source));
+        //
+        val zero = new GT_GuiIconButton(this, 1, buttonX(), 42, GT_GuiIcon.MATH_ZERO);
+        zero.setTooltipText("Set output rate to zero");
+        zero.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> zeroOnClick(source));
+        //
+        addRedstoneButton();
+        addTextBoxes();
+    }
+
+    private void zeroOnClick(final GT_Container_DevItemSource source) {
+        source.zeroOut();
+        sendUpdateToServer();
+    }
+
+    private void checkButtonOnClick(final GT_GuiIconCheckButton check, final GT_Container_DevItemSource source) {
+        check.setChecked(source.toggleActive());
+        check.setUpdateCooldown(COOLDOWN);
+        updateButton(check, source.getData().isActive());
+        sendUpdateToServer();
+    }
+
+    private void checkButtonOnUpdate(final GT_GuiIconCheckButton check) {
+        val source = getSource();
+        check.setChecked(source.getData().isActive());
+        updateButton(check, source.getData().isActive());
+    }
+
+    private void addRedstoneButton() {
+        val source = getSource();
+        val rsIconTooltipPairs = new GT_GuiCycleButton.IconToolTipPair[]{
+                new GT_GuiCycleButton.IconToolTipPair(GT_GuiIcon.CROSS, "Ignores redstone"),
+                new GT_GuiCycleButton.IconToolTipPair(GT_GuiIcon.REDSTONE_OFF, "Requires low signal"),
+                new GT_GuiCycleButton.IconToolTipPair(GT_GuiIcon.REDSTONE_ON, "Requires signal"),
+                };
+        val rsButton = new GT_GuiCycleButton(this, 2, buttonX(), 60, 0, rsIconTooltipPairs);
+        rsButton.setState(source.getData().getRedstoneMode().ordinal());
+        rsButton.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> rsButtonOnUpdate(rsButton));
+        rsButton.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> rsButtonOnClick(rsButton));
+        rsButton.setDoCycle(false);
+    }
+
+    private void addTextBoxes() {
+        val boxHeight = 10;
+        val firstBoxY = 24;
+        val secondBoxY = firstBoxY + boxHeight;
+        val rateBox = new GT_GuiIntegerTextBox(this, 3, boxX(), firstBoxY, boxWidth(), boxHeight);
+        rateBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> boxOnUpdate(rateBox, String.valueOf(getSource().getData().getRate())));
+        rateBox.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> rateBox.setUpdateCooldown(COOLDOWN));
+        //
+        val frequencyBox = new GT_GuiIntegerTextBox(this, 4, boxX(), secondBoxY, boxWidth(), boxHeight);
+        frequencyBox.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> boxOnUpdate(frequencyBox, String.valueOf(getSource().getData().getFrequency())));
+        frequencyBox.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> frequencyBox.setUpdateCooldown(COOLDOWN));
+    }
+
+    private void rsButtonOnUpdate(final GT_GuiCycleButton rsButton) {
+        val source = getSource();
+        rsButton.setState(source.getData().getRedstoneMode().ordinal());
+        updateButton(rsButton, source.getData().isRsActive());
+    }
+
+    private void updateButton(final GT_GuiIconButton button, final boolean error) {
+        val highlightIcon = error ? GT_GuiIcon.BUTTON_HIGHLIGHT : GT_GuiIcon.BUTTON_ERROR_HIGHLIGHT;
+        val normalIcon = error ? GT_GuiIcon.BUTTON_NORMAL : GT_GuiIcon.BUTTON_ERROR_NORMAL;
+        button.setBackgroundIconHighlight(highlightIcon);
+        button.setBackgroundIconNormal(normalIcon);
+    }
+
+    private void rsButtonOnClick(final GT_GuiCycleButton rsButton) {
+        rsButton.cycle();
+        getSource().setRedstoneMode(RSControlMode.getMode(rsButton.getState()));
+        updateButton(rsButton, getSource().getData().isRsActive());
+        rsButton.setUpdateCooldown(COOLDOWN);
+        sendUpdateToServer();
     }
 
 }

@@ -98,14 +98,11 @@ public class GT_Container extends Container {
         val guiWidth = getGuiWidth();
         val xOffsetBase = (guiWidth - nSlotsInRow * xSlotSpacing) / 2;
         val hotBarSpacing = getHotBarOffset();
-        for (var rowIndex = 0; rowIndex < nRows; rowIndex++) {
+        for (var rowIndex = 0; rowIndex < nRows && total < numSlots; rowIndex++) {
             val isHotbar = rowIndex == 0;
             val y = getYSlotOffset() + (isHotbar ? hotBarSpacing + nRows * ySlotSpacing : 0) + (rowIndex - 1) * ySlotSpacing;
             val xOffset = xOffsetBase + xBump();
-            for (var colIndex = 0; colIndex < nSlotsInRow; colIndex++) {
-                if (total >= numSlots) {
-                    return;
-                }
+            for (var colIndex = 0; colIndex < nSlotsInRow && total < numSlots; colIndex++) {
                 val slotIndex = colIndex + rowIndex * nSlotsInRow;
                 val x = xOffset + colIndex * xSlotSpacing;
                 addSlotToContainer(new Slot(aInventoryPlayer, slotIndex, x, y));

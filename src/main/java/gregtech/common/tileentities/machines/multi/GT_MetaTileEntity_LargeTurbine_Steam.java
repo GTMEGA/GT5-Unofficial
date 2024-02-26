@@ -17,6 +17,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 
+import static gregtech.api.enums.GT_Values.EU_PER_STEAM;
 import static gregtech.api.enums.GT_Values.STEAM_PER_WATER;
 import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST5;
 import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST_ACTIVE5;
@@ -117,15 +118,16 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
         int remainingFlow = GT_Utility.safeInt((long) (aOptFlow * 1.25f)); // Allowed to use up to 125% of optimal flow.  Variable required outside of loop for multi-hatch scenarios.
         this.realOptFlow = aOptFlow;
 
-        storedFluid = 0;
+        storedFluid = 0; // is visual only
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) { // loop through each hatch; extract inputs and track totals.
             final FluidStack aFluidStack = aFluids.get(i);
             if (GT_ModHandler.isAnySteam(aFluidStack)) {
                 flow = Math.min(aFluidStack.amount, remainingFlow); // try to use up w/o exceeding remainingFlow
                 depleteInput(new FluidStack(aFluidStack, flow)); // deplete that amount
                 this.storedFluid += aFluidStack.amount;
-                remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
-                totalFlow += flow; // track total input used
+                long actualFlow = ((long)flow * EU_PER_STEAM * 2); // multipy by 2 becous this code asumes 1 eu == 2 steam
+                remainingFlow -= actualFlow; // track amount we're allowed to continue depleting from hatches
+                totalFlow += actualFlow; // track total input used
                 if (!achievement) {
                     GT_Mod.achievements.issueAchievement(this.getBaseMetaTileEntity().getWorld().getPlayerEntityByName(this.getBaseMetaTileEntity().getOwnerName()), "muchsteam");
                     achievement = true;

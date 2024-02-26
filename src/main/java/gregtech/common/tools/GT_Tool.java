@@ -114,6 +114,11 @@ public abstract class GT_Tool implements IToolStats {
     }
 
     @Override
+    public boolean isScrewdriver() {
+        return false;
+    }
+
+    @Override
     public boolean isWeapon() {
         return false;
     }

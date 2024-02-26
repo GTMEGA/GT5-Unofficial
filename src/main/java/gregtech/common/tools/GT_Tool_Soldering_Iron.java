@@ -114,6 +114,11 @@ public class GT_Tool_Soldering_Iron extends GT_Tool {
     }
 
     @Override
+    public boolean isCorrectTool(String toolClass) {
+        return toolClass.equals("soldering_iron");
+    }
+
+    @Override
     public ItemStack getBrokenItem(ItemStack aStack) {
         return null;
     }

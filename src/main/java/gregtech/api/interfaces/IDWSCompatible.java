@@ -8,16 +8,6 @@ import lombok.val;
 public interface IDWSCompatible {
 
     /**
-     * Offsets a position for doublewide.
-     *
-     * @param x Initial position
-     * @return Shifted position
-     */
-    default int applyDWSBump(final int x) {
-        return x + (GregTech_API.mDWS ? getDWSWidthBump() : 0);
-    }
-
-    /**
      * Returns the x position, shifted so that its position relative to the full gui is the same
      *
      * @param x Initial X position
@@ -33,8 +23,18 @@ public interface IDWSCompatible {
         return (int) (newWidth * ratio);
     }
 
-    int getDWSWidthBump();
-
     int baseWidth();
+
+    /**
+     * Offsets a position for doublewide.
+     *
+     * @param x Initial position
+     * @return Shifted position
+     */
+    default int applyDWSBump(final int x) {
+        return x + (GregTech_API.mDWS ? getDWSWidthBump() : 0);
+    }
+
+    int getDWSWidthBump();
 
 }

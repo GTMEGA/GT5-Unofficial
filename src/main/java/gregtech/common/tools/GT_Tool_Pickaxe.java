@@ -103,6 +103,11 @@ public class GT_Tool_Pickaxe extends GT_Tool {
     }
 
     @Override
+    public boolean isCorrectTool(String toolClass) {
+        return toolClass.equals("pickaxe");
+    }
+
+    @Override
     public ItemStack getBrokenItem(ItemStack aStack) {
         return null;
     }

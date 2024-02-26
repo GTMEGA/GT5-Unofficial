@@ -23,6 +23,7 @@ import java.util.List;
 
 import static gregtech.api.GregTech_API.sMachineFile;
 import static gregtech.api.enums.ConfigCategories.machineconfig;
+import static gregtech.api.enums.GT_Values.EU_PER_STEAM;
 import static net.minecraft.util.EnumChatFormatting.GOLD;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 
@@ -30,10 +31,11 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     public static final String LPS_FMT = "%s L/s";
     private static final String localizedDescFormat = GT_LanguageManager.addStringLocalization(
             "gt.blockmachines.boiler.solar.desc.format",
-            "Steam Power by the Sun%n" +
-                    "Produces %sL of Steam per second%n" +
-                    "Calcifies over time, reducing Steam output to %sL/s%n" +
-                    "Break and replace to descale");
+            "Pufferfish preferred power!%n" +
+                    "Produces %sL of Steam per second.%n" +
+                    "Calcifies gradually over time, eventually reducing Steam output to %sL/s.%n" +
+                    "Calcifies completely after about 30 hours." +
+                    "Break and replace to decalcify.");
     protected final Config mConfig;
     protected int basicTemperatureMod = 5; // Base Celsius gain or loss
     private int mRunTimeTicks = 0;
@@ -59,7 +61,7 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     }
 
     protected Config createConfig() {
-        return new Config(machineconfig + ".boiler.solar.bronze",1080000,40,120,45);
+        return new Config(machineconfig + ".boiler.solar.bronze",1080000,10,30,45);
     }
 
     /**
@@ -114,7 +116,7 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
                     TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_SIDE, colorModulation)};
             rTextures[3][i] = new ITexture[]{
                     TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_SIDE, colorModulation),
-                    TextureFactory.of(BlockIcons.OVERLAY_PIPE)};
+                    TextureFactory.of(BlockIcons.OVERLAY_STEAM_OUT)};
         }
         return rTextures;
     }
@@ -306,11 +308,11 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
         }
 
         public int getMinOutputPerSecond() {
-            return minOutputPerSecond;
+            return minOutputPerSecond / EU_PER_STEAM;
         }
 
         public int getMaxOutputPerSecond() {
-            return maxOutputPerSecond;
+            return maxOutputPerSecond / EU_PER_STEAM;
         }
 
         public int getCoolDownTicks() {

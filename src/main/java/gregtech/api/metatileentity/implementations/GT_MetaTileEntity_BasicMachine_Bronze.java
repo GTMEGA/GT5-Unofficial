@@ -27,7 +27,7 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZE_BOTTOM;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZE_SIDE;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZE_TOP;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_STEAM_OUT;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 /**
@@ -257,7 +257,7 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     public float getSteamDamage() {
-        return 6.0F;
+        return 2.0F;
     }
 
     @Override
@@ -302,31 +302,31 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
 
     @Override
     public ITexture[] getBottomFacingPipeActive(byte aColor) {
-        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_BOTTOM : MACHINE_BRONZE_BOTTOM, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_BOTTOM : MACHINE_BRONZE_BOTTOM, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_STEAM_OUT)};
     }
 
     @Override
     public ITexture[] getBottomFacingPipeInactive(byte aColor) {
-        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_BOTTOM : MACHINE_BRONZE_BOTTOM, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_BOTTOM : MACHINE_BRONZE_BOTTOM, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_STEAM_OUT)};
     }
 
     @Override
     public ITexture[] getTopFacingPipeActive(byte aColor) {
-        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_TOP : MACHINE_BRONZE_TOP, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_TOP : MACHINE_BRONZE_TOP, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_STEAM_OUT)};
     }
 
     @Override
     public ITexture[] getTopFacingPipeInactive(byte aColor) {
-        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_TOP : MACHINE_BRONZE_TOP, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_TOP : MACHINE_BRONZE_TOP, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_STEAM_OUT)};
     }
 
     @Override
     public ITexture[] getSideFacingPipeActive(byte aColor) {
-        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_STEAM_OUT)};
     }
 
     @Override
     public ITexture[] getSideFacingPipeInactive(byte aColor) {
-        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_STEAM_OUT)};
     }
 }

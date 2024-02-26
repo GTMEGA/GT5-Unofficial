@@ -16,6 +16,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
+import lombok.val;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
 import net.minecraft.init.Blocks;
@@ -387,7 +388,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             aSpecial = 0;
         }
         GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(true, aInputs, aOutputs, null, new FluidStack[]{Materials.Water.getFluid(Math.max(4, Math.min(1000, aDuration * aEUt / 320)))}, null, aDuration * 2, aEUt, aSpecial);
-        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(true, aInputs, aOutputs, null, new FluidStack[]{GT_ModHandler.getDistilledWater(Math.max(3, Math.min(750, aDuration * aEUt / 426)))}, null, aDuration * 2, aEUt, aSpecial);
+        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(true, aInputs, aOutputs, null, new FluidStack[]{GT_ModHandler.getDistilledWater(Math.max(2, Math.min(500, aDuration * aEUt / 426)))}, null, aDuration * 2, aEUt, aSpecial);
         GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(true, aInputs, aOutputs, null, new FluidStack[]{Materials.Lubricant.getFluid(Math.max(1, Math.min(250, aDuration * aEUt / 1280)))}, null, aDuration, aEUt, aSpecial);
         return true;
     }
@@ -1324,10 +1325,8 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 if ((aDuration = GregTech_API.sRecipeFile.get("pulveriser", aInput, aDuration)) <= 0) {
                     return false;
                 }
-                GT_Recipe tRecipe =GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutputs, null, aChances, null, null, aDuration, aEUt, 0);
-                if ((hidden) && (tRecipe != null)) {
-                    tRecipe.mHidden = true;
-                }
+                val recipe = new GT_Recipe(false,new ItemStack[]{aInput},aOutputs,null,aChances,null,null,aDuration,aEUt,0);
+                GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.addRecipe(recipe,true,false,hidden);
                 return true;
             }
         }

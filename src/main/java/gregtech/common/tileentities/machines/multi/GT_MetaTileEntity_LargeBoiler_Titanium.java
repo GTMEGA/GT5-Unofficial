@@ -21,7 +21,7 @@ public class GT_MetaTileEntity_LargeBoiler_Titanium extends GT_MetaTileEntity_La
     
     @Override
     public String getCasingMaterial(){
-    	return "Titanium";
+    	return "Aluminium";
     }
 
 	@Override
@@ -31,17 +31,17 @@ public class GT_MetaTileEntity_LargeBoiler_Titanium extends GT_MetaTileEntity_La
 
     @Override
     public Block getCasingBlock() {
-        return GregTech_API.sBlockCasings4;
+        return GregTech_API.sBlockCasings2;
     }
 
     @Override
     public byte getCasingMeta() {
-        return 2;
+        return 1;
     }
 
     @Override
     public byte getCasingTextureIndex() {
-        return 50;
+        return 17;
     }
 
     @Override
@@ -71,7 +71,7 @@ public class GT_MetaTileEntity_LargeBoiler_Titanium extends GT_MetaTileEntity_La
 
     @Override
     public int getEUt() {
-        return 800;
+        return 2048;
     }
 
     @Override

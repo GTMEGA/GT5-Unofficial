@@ -25,7 +25,7 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
         Textures.BlockIcons.casingTexturePages[0][22] = TextureFactory.of(Block.getBlockFromItem(ItemList.Casing_ULV.get(1).getItem()), 0, ForgeDirection.UNKNOWN, Dyes.MACHINE_METAL.mRGBa);
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Solid Steel Machine Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Frost Proof Machine Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Lightweight Aluminium Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Bronze Gear Box Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Steel Gear Box Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Titanium Gear Box Casing");
@@ -36,10 +36,10 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Assembler Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Pump Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Motor Machine Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Bronze Pipe Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Brass Pipe Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Steel Pipe Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Titanium Pipe Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Tungstensteel Pipe Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Aluminium Pipe Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Titanium Pipe Casing");
         ItemList.Casing_SolidSteel.set(new ItemStack(this, 1, 0));
         ItemList.Casing_FrostProof.set(new ItemStack(this, 1, 1));
         ItemList.Casing_Gearbox_Bronze.set(new ItemStack(this, 1, 2));

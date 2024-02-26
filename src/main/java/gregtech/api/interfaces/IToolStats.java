@@ -111,6 +111,11 @@ public interface IToolStats {
     boolean isWrench();
 
     /**
+     * @return If this Tool can be used as an ProjRed Screwdriver.
+     */
+    boolean isScrewdriver();
+
+    /**
      * @return If this Tool can be used as Weapon i.e. if that is the main purpose.
      */
     boolean isWeapon();
@@ -165,4 +170,8 @@ public interface IToolStats {
     boolean onItemUse(ItemStack stack, World world, int x, int y, int z, int sidehit, EntityPlayer playerEntity, float hitX, float hitY, float hitZ);
 
     void toolTip(List aList, ItemStack aStack, EntityPlayer aPlayer, IToolStats stats);
+
+    default boolean isCorrectTool(String toolClass) {
+        return false;
+    }
 }

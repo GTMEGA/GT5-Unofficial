@@ -124,6 +124,11 @@ public class GT_Tool_HardHammer extends GT_Tool {
                 Material.packedIce)
                 || GT_Recipe.GT_Recipe_Map.sHammerRecipes.containsInput(new ItemStack(aBlock, 1, aMetaData));
     }
+    @Override
+    public boolean isCorrectTool(String toolClass) {
+        return toolClass.equals("hammer") || toolClass.equals("pickaxe");
+    }
+
 
     @Override
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {

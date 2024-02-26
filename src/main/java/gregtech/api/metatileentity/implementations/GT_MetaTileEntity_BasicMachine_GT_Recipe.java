@@ -213,10 +213,10 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Cupronickel);
                             break;
                         case 3:
-                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Kanthal);
+                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Nichrome);
                             break;
                         case 4:
-                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Nichrome);
+                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Kanthal);
                             break;
                         case 5:
                             aRecipe[i] = OrePrefixes.wireGt02.get(Materials.TungstenSteel);
@@ -250,10 +250,10 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Cupronickel);
                             break;
                         case 3:
-                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Kanthal);
+                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Nichrome);
                             break;
                         case 4:
-                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Nichrome);
+                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Kanthal);
                             break;
                         case 5:
                             aRecipe[i] = OrePrefixes.wireGt04.get(Materials.TungstenSteel);

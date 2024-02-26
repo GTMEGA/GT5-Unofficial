@@ -107,7 +107,11 @@ public class GT_Tool_Drill_LV extends GT_Tool implements IAOETool {
                 Material.clay,
                 Material.glass
         );
+    }
 
+    @Override
+    public boolean isCorrectTool(String toolClass) {
+        return toolClass.equals("pickaxe") || toolClass.equals("shovel");
     }
 
     @Override

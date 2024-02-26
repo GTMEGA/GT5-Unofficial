@@ -1812,7 +1812,55 @@ public enum ItemList implements IItemContainer {
     Automation_RecipeFilter_LuV,
     Automation_RecipeFilter_ZPM,
     Automation_RecipeFilter_UV,
-    Automation_RecipeFilter_MAX;
+    Automation_RecipeFilter_MAX,
+
+    // Dynamo Power Hatches
+    DynamoPowerHatch_16A_ULV,
+    DynamoPowerHatch_16A_LV,
+    DynamoPowerHatch_16A_MV,
+    DynamoPowerHatch_16A_HV,
+    DynamoPowerHatch_16A_EV,
+    DynamoPowerHatch_16A_IV,
+    DynamoPowerHatch_16A_LuV,
+    DynamoPowerHatch_16A_ZPM,
+    DynamoPowerHatch_16A_UV,
+    DynamoPowerHatch_16A_UHV,
+
+    DynamoPowerHatch_64A_ULV,
+    DynamoPowerHatch_64A_LV,
+    DynamoPowerHatch_64A_MV,
+    DynamoPowerHatch_64A_HV,
+    DynamoPowerHatch_64A_EV,
+    DynamoPowerHatch_64A_IV,
+    DynamoPowerHatch_64A_LuV,
+    DynamoPowerHatch_64A_ZPM,
+    DynamoPowerHatch_64A_UV,
+    DynamoPowerHatch_64A_UHV,
+
+    // Energy Power Hatches
+    EnergyPowerHatch_16A_ULV,
+    EnergyPowerHatch_16A_LV,
+    EnergyPowerHatch_16A_MV,
+    EnergyPowerHatch_16A_HV,
+    EnergyPowerHatch_16A_EV,
+    EnergyPowerHatch_16A_IV,
+    EnergyPowerHatch_16A_LuV,
+    EnergyPowerHatch_16A_ZPM,
+    EnergyPowerHatch_16A_UV,
+    EnergyPowerHatch_16A_UHV,
+    EnergyPowerHatch_64A_ULV,
+    EnergyPowerHatch_64A_LV,
+    EnergyPowerHatch_64A_MV,
+    EnergyPowerHatch_64A_HV,
+    EnergyPowerHatch_64A_EV,
+    EnergyPowerHatch_64A_IV,
+    EnergyPowerHatch_64A_LuV,
+    EnergyPowerHatch_64A_ZPM,
+    EnergyPowerHatch_64A_UV,
+    EnergyPowerHatch_64A_UHV,
+
+    Solid_Waste,
+    ;
 
     public static final ItemList[]
             DYE_ONLY_ITEMS = {
@@ -1988,7 +2036,9 @@ public enum ItemList implements IItemContainer {
             sHydricSulfur,
             sIndiumConcentrate,
             sLeadZincSolution,
-            sHydrochloricAcid;
+            sHydrochloricAcid,
+            sTailings
+            ;
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;
 

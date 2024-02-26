@@ -83,7 +83,7 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] returnTextures = new ITexture[2][17][];
-        ITexture baseIcon = getOverlayIcon(), pipeIcon = TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT);
+        ITexture baseIcon = getOverlayIcon(), pipeIcon = TextureFactory.of(Textures.BlockIcons.OVERLAY_ITEM_OUT);
         for (int i = 0; i < 17; i++) {
             returnTextures[0][i] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i], baseIcon};
             returnTextures[1][i] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i], pipeIcon, baseIcon};

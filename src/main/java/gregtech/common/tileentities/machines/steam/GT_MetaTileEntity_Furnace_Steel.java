@@ -41,7 +41,7 @@ public class GT_MetaTileEntity_Furnace_Steel extends GT_MetaTileEntity_BasicMach
     public int checkRecipe() {
         if (null != (this.mOutputItems[0] = GT_ModHandler.getSmeltingOutput(getInputAt(0), true, getOutputAt(0)))) {
             this.mEUt = 8;
-            this.mMaxProgresstime = 128;
+            this.mMaxProgresstime = 48;
             return 2;
         }
         return 0;

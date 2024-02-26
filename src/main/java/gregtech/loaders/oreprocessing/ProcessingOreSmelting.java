@@ -33,8 +33,8 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                     case crushedPurified:
                     case crushedCentrifuged:
                         if (aMaterial.mDirectSmelting == aMaterial) {
-                            outputSize = 10;
-                            outputPrefix = OrePrefixes.nugget;
+                            outputSize = 1;
+                            outputPrefix = OrePrefixes.ingot;
                         } else {
                             if (GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
                                 outputSize = 6;
@@ -55,10 +55,9 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                     	    	GT_Values.RA.addPrimitiveBlastRecipe(aMaterial.getDust(2), Materials.Glass.getDust(2),          2, aMaterial.mDirectSmelting.getIngots(outputAmount), Materials.Ferrosilite.getDustTiny(7 * outputAmount),  600);
                     	    	GT_Values.RA.addPrimitiveBlastRecipe(aMaterial.getDust(2), Materials.SiliconDioxide.getDust(2), 2, aMaterial.mDirectSmelting.getIngots(outputAmount), Materials.Ferrosilite.getDust(outputAmount),          600);
                     		} else if (aMaterial == Materials.Tetrahedrite) {
-                    	    	GT_Values.RA.addPrimitiveBlastRecipe(aMaterial.getDust(2), GT_Values.NI,                        2, aMaterial.mDirectSmelting.getIngots(outputAmount), Materials.Antimony.getNuggets(3 * outputAmount),      600);
+                    	    	GT_Values.RA.addPrimitiveBlastRecipe(aMaterial.getDust(2), GT_Values.NI,                        2, aMaterial.mDirectSmelting.getIngots(outputAmount), Materials.Antimony.getIngots(outputAmount / 3),      600);
                             } else if (aMaterial == Materials.Galena) {
-                                GT_Values.RA.addPrimitiveBlastRecipe(aMaterial.getDust(2), GT_Values.NI,                        2, aMaterial.mDirectSmelting.getIngots(outputAmount), Materials.Silver.getNuggets(3 * outputAmount),        600);
-
+                                GT_Values.RA.addPrimitiveBlastRecipe(aMaterial.getDust(2), GT_Values.NI,                        2, aMaterial.mDirectSmelting.getIngots(outputAmount), Materials.Silver.getIngots(outputAmount / 3),        600);
                             }
                     	}
                     case dustImpure:

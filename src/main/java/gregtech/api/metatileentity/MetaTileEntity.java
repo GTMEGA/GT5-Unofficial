@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.api.enums.GT_Values.EU_PER_STEAM;
 import static gregtech.api.enums.GT_Values.V;
 
 /**
@@ -109,7 +110,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         final String nameMsg = String.format("Existing: '%s' cannot coexist with '%s'", otherName, thisName);
         GT_FML_LOGGER.printf(Level.ERROR, "Conflict at ID: %d", aID);
         GT_FML_LOGGER.printf(Level.ERROR, nameMsg);
-        if (GT_Values.dump_meta_entity_space) {
+        if (GT_Values.dump_meta_entity_space || true) {
             dump_meta_spaces();
         } else {
             final String msg_0 = "Change the 'MTEDefrag' option in the main config to see free space. ";
@@ -816,10 +817,10 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     @Override
     public int fill(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
         if (getBaseMetaTileEntity().hasSteamEngineUpgrade() && GT_ModHandler.isSteam(aFluid) && aFluid.amount > 1) {
-            int tSteam = (int) Math.min(Integer.MAX_VALUE, Math.min(aFluid.amount / 2, getBaseMetaTileEntity().getSteamCapacity() - getBaseMetaTileEntity().getStoredSteam()));
-            if (tSteam > 0) {
+            long tSteam = Math.min(Integer.MAX_VALUE, Math.min(((long) aFluid.amount * EU_PER_STEAM), getBaseMetaTileEntity().getSteamCapacity() - getBaseMetaTileEntity().getStoredSteam()));
+            if (tSteam >= EU_PER_STEAM) {
                 if (doFill) getBaseMetaTileEntity().increaseStoredSteam(tSteam, true);
-                return tSteam * 2;
+                return (int) (tSteam / EU_PER_STEAM);
             }
         } else {
             return fill_default(aSide, aFluid, doFill);

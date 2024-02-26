@@ -23,8 +23,8 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHea
             Textures.BlockIcons.casingTexturePages[1][i] = TextureFactory.of(this, i);
         }
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Cupronickel Coil Block");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Kanthal Coil Block");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Nichrome Coil Block");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Nichrome Coil Block");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Kanthal Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Tungstensteel Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "HSS-G Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Naquadah Coil Block");
@@ -35,8 +35,8 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHea
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Trinium Coil Block");
 
         ItemList.Casing_Coil_Cupronickel.set(new ItemStack(this, 1, 0));
-        ItemList.Casing_Coil_Kanthal.set(new ItemStack(this, 1, 1));
-        ItemList.Casing_Coil_Nichrome.set(new ItemStack(this, 1, 2));
+        ItemList.Casing_Coil_Nichrome.set(new ItemStack(this, 1, 1));
+        ItemList.Casing_Coil_Kanthal.set(new ItemStack(this, 1, 2));
         ItemList.Casing_Coil_TungstenSteel.set(new ItemStack(this, 1, 3));
         ItemList.Casing_Coil_HSSG.set(new ItemStack(this, 1, 4));
         ItemList.Casing_Coil_Naquadah.set(new ItemStack(this, 1, 5));
@@ -54,9 +54,9 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHea
             case 0:
                 return Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL.getIcon();
             case 1:
-                return Textures.BlockIcons.MACHINE_COIL_KANTHAL.getIcon();
-            case 2:
                 return Textures.BlockIcons.MACHINE_COIL_NICHROME.getIcon();
+            case 2:
+                return Textures.BlockIcons.MACHINE_COIL_KANTHAL.getIcon();
             case 3:
                 return Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL.getIcon();
             case 4:

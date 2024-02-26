@@ -17,6 +17,8 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import lombok.val;
+import lombok.var;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -48,6 +50,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     public int damageFactorLow = 5;
     public float damageFactorHigh = 0.6f;
 
+    protected long numEnergyInputAmps = 0;
+
+    protected long numEnergyOutputAmps = 0;
+
     public ArrayList<GT_MetaTileEntity_Hatch_Input> mInputHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Output> mOutputHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_InputBus> mInputBusses = new ArrayList<>();
@@ -74,6 +80,22 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 
     public static boolean isValidMetaTileEntity(MetaTileEntity aMetaTileEntity) {
         return aMetaTileEntity.getBaseMetaTileEntity() != null && aMetaTileEntity.getBaseMetaTileEntity().getMetaTileEntity() == aMetaTileEntity && !aMetaTileEntity.getBaseMetaTileEntity().isDead();
+    }
+
+    /**
+     * Caps the amount of energy that can be inputted into this machine. Set to -1 to make limitless
+     * WIP
+     * */
+    public int maxTotalAmperageInput() {
+        return 4;
+    }
+
+    /**
+     * Caps the amount of energy that can be outputted from this machine. Set to -1 to make limitless
+     * WIP
+     * */
+    public int maxTotalAmperageOutput() {
+        return 1;
     }
 
     @Override
@@ -131,6 +153,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         aNBT.setInteger("mPollution", mPollution);
         aNBT.setInteger("mRuntime", mRuntime);
 
+        /*aNBT.setLong("numEnergyInputAmps", numEnergyInputAmps);
+        aNBT.setLong("numEnergyOutputAmps", numEnergyOutputAmps);*/
+
         if (mOutputItems != null) {
             aNBT.setInteger("mOutputItemsLength", mOutputItems.length);
             for (int i = 0; i < mOutputItems.length; i++)
@@ -167,6 +192,18 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         mEfficiency = aNBT.getInteger("mEfficiency");
         mPollution = aNBT.getInteger("mPollution");
         mRuntime = aNBT.getInteger("mRuntime");
+
+        /*if (aNBT.hasKey("numEnergyInputAmps")) {
+            numEnergyInputAmps = aNBT.getLong("numEnergyInputAmps");
+        } else {
+            numEnergyInputAmps = 0;
+        }
+
+        if (aNBT.hasKey("numEnergyOutputAmps")) {
+            numEnergyOutputAmps = aNBT.getLong("numEnergyOutputAmps");
+        } else {
+            numEnergyOutputAmps = 0;
+        }*/
 
         int aOutputItemsLength = aNBT.getInteger("mOutputItemsLength");
         if (aOutputItemsLength > 0) {
@@ -222,14 +259,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (mEfficiency < 0) mEfficiency = 0;
             if (--mUpdate == 0 || --mStartUpCheck == 0) {
-                mInputHatches.clear();
-                mInputBusses.clear();
-                mOutputHatches.clear();
-                mOutputBusses.clear();
-                mDynamoHatches.clear();
-                mEnergyHatches.clear();
-                mMufflerHatches.clear();
-                mMaintenanceHatches.clear();
+                resetCachedHatchInfo();
                 mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
             }
             if (mStartUpCheck < 0) {
@@ -321,6 +351,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                 }
             }
         }
+    }
+
+    protected void resetCachedHatchInfo() {
+        mInputHatches.clear();
+        mInputBusses.clear();
+        mOutputHatches.clear();
+        mOutputBusses.clear();
+        mDynamoHatches.clear();
+        mEnergyHatches.clear();
+        mMufflerHatches.clear();
+        mMaintenanceHatches.clear();
+        numEnergyInputAmps = 0;
+        numEnergyOutputAmps = 0;
     }
 
     public boolean polluteEnvironment(int aPollutionLevel) {
@@ -431,26 +474,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         if (mRuntime++ > 1000) {
             mRuntime = 0;
             if (getBaseMetaTileEntity().getRandomNumber(6000) == 0) {
-                switch (getBaseMetaTileEntity().getRandomNumber(6)) {
-                    case 0:
-                        mWrench = false;
-                        break;
-                    case 1:
-                        mScrewdriver = false;
-                        break;
-                    case 2:
-                        mSoftHammer = false;
-                        break;
-                    case 3:
-                        mHardHammer = false;
-                        break;
-                    case 4:
-                        mSolderingTool = false;
-                        break;
-                    case 5:
-                        mCrowbar = false;
-                        break;
-                }
+                applyMaintenanceDamage();
             }
             if (mInventory[1] != null && getBaseMetaTileEntity().getRandomNumber(2) == 0 && !mInventory[1].getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.")) {
                 if (mInventory[1].getItem() instanceof GT_MetaGenerated_Tool_01) {
@@ -517,6 +541,29 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
             }
         }
         return true;
+    }
+
+    public void applyMaintenanceDamage() {
+        switch (getBaseMetaTileEntity().getRandomNumber(6)) {
+            case 0:
+                mWrench = false;
+                break;
+            case 1:
+                mScrewdriver = false;
+                break;
+            case 2:
+                mSoftHammer = false;
+                break;
+            case 3:
+                mHardHammer = false;
+                break;
+            case 4:
+                mSolderingTool = false;
+                break;
+            case 5:
+                mCrowbar = false;
+                break;
+        }
     }
 
     public void explodeMultiblock() {
@@ -590,7 +637,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                 for (int i = 0; i < ampsOnCurrentHatch; i++) {
                     aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aVoltage, false);
                 }
-                injected+=aVoltage*ampsOnCurrentHatch;
+                injected += aVoltage * ampsOnCurrentHatch;
                 if(aRemainder>0 && ampsOnCurrentHatch<aDynamo.maxAmperesOut()){
                     aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aRemainder, false);
                     injected+=aRemainder;
@@ -603,7 +650,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     public long getMaxInputVoltage() {
         long rVoltage = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
-            if (isValidMetaTileEntity(tHatch)) rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage();
+            if (isValidMetaTileEntity(tHatch)) {
+                var amps = tHatch.maxAmperesIn();
+                // Fixes 2A inputs overclocking the multi improperly, kinda janky
+                // TODO: Figure out a better approach
+                amps = amps > 2 ? amps : 1;
+                rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage() * amps;
+            }
         return rVoltage;
     }
 
@@ -907,8 +960,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+            val energyInputHatch = (GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity;
+            val inputAmperage = energyInputHatch.getBaseMetaTileEntity().getInputAmperage();
+            val maxAmps = maxTotalAmperageInput();
+            if (maxAmps >= 0 && numEnergyInputAmps + inputAmperage > maxAmps) {
+                /*System.out.printf("Too many input amps: %d > %d%n", numEnergyInputAmps + inputAmperage, maxTotalAmperageInput());
+                for (val hatch : mEnergyHatches) {
+                    System.out.printf("Hatch: %s, amps: %d%n", hatch.getClass().getName(), hatch.getBaseMetaTileEntity().getInputAmperage());
+                }*/
+                return false;
+            }
+            numEnergyInputAmps += inputAmperage;
+            energyInputHatch.updateTexture(aBaseCasingIndex);
+            return mEnergyHatches.add(energyInputHatch);
         }
         return false;
     }
@@ -918,8 +982,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
+            val energyOutputHatch = (GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity;
+            val outputAmperage = energyOutputHatch.getBaseMetaTileEntity().getOutputAmperage();
+            val maxAmps = maxTotalAmperageOutput();
+            if (maxAmps >= 0 && numEnergyOutputAmps + outputAmperage > maxAmps) {
+                /*System.out.printf("Too many output amps: %d > %d%n", numEnergyOutputAmps + outputAmperage, maxAmps);
+                for (val hatch : mDynamoHatches) {
+                    System.out.printf("Hatch: %s, amps: %d%n", hatch.getClass().getName(), hatch.getBaseMetaTileEntity().getOutputAmperage());
+                }*/
+                return false;
+            }
+            numEnergyOutputAmps += outputAmperage;
+            energyOutputHatch.updateTexture(aBaseCasingIndex);
+            return mDynamoHatches.add(energyOutputHatch);
         }
         return false;
     }

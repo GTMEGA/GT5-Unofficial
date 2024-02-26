@@ -4,7 +4,10 @@ package gregtech.common.blocks.explosives;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_Generic_Block;
+import gregtech.common.items.explosives.GT_Item_Explosive;
 import gregtech.common.items.explosives.GT_RemoteDetonator;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -20,6 +23,10 @@ public abstract class GT_Block_Explosive extends GT_Generic_Block {
     public static final int sideMask = primeMask - 1;
 
     protected final IIconContainer[] icons;
+
+    @Getter
+    @Setter
+    protected GT_Item_Explosive item;
 
     protected GT_Block_Explosive(final Class<? extends ItemBlock> aItemClass, final String aName, final IIconContainer[] icons) {
         super(aItemClass, aName, Material.tnt);
@@ -60,11 +67,9 @@ public abstract class GT_Block_Explosive extends GT_Generic_Block {
      */
     @Override
     public boolean onBlockActivated(
-            final World world, final int x, final int y, final int z, final EntityPlayer player, final int side, final float hitX, final float hitY,
-            final float hitZ
+            final World world, final int x, final int y, final int z, final EntityPlayer player, final int side, final float hitX, final float hitY, final float hitZ
                                    ) {
-        if (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof GT_RemoteDetonator || !playerActivatedMe(side, hitX, hitY, hitZ) ||
-            GT_Values.MERequiresRemote) {
+        if (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof GT_RemoteDetonator || !playerActivatedMe(side, hitX, hitY, hitZ) || GT_Values.MERequiresRemote) {
             return true;
         }
         if (!world.isRemote) {
@@ -107,11 +112,15 @@ public abstract class GT_Block_Explosive extends GT_Generic_Block {
 
     private boolean playerActivatedMe(final int side, final float hitX, final float hitY, final float hitZ) {
         float[] hits = getAppropriateHits(side, hitX, hitY, hitZ);
-        return hits[0] > 0.3f && hits[0] < 0.7f && hits[1] > 0.3f && hits[1] < 0.8f;
+        // return hits[0] > 0.3f && hits[0] < 0.7f && hits[1] > 0.3f && hits[1] < 0.8f;
+        return false;
     }
 
     private float[] getAppropriateHits(final int side, final float hitX, final float hitY, final float hitZ) {
-        final float[] result = {0.0f, 0.0f};
+        final float[] result = {
+                0.0f,
+                0.0f
+        };
         final int axis = side / 2;
         switch (axis) {
             case 0: {
@@ -153,7 +162,7 @@ public abstract class GT_Block_Explosive extends GT_Generic_Block {
         return index;
     }
 
-    protected boolean isPrimed(final int meta) {
+    public boolean isPrimed(final int meta) {
         return (meta & primeMask) != 0;
     }
 

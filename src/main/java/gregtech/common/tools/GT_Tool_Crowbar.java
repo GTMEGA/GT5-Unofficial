@@ -111,6 +111,11 @@ public class GT_Tool_Crowbar extends GT_Tool {
     }
 
     @Override
+    public boolean isCorrectTool(String toolClass) {
+        return toolClass.equals("crowbar");
+    }
+
+    @Override
     public ItemStack getBrokenItem(ItemStack aStack) {
         return null;
     }

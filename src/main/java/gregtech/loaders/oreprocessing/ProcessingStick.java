@@ -16,7 +16,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 1L), GT_ModHandler.RecipeBits.BUFFERED, new Object[]{" s ", "fPx", 'P', OrePrefixes.stick.get(aMaterial)});
         if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_WORKING)) {
-            GT_Values.RA.addLatheRecipe(aMaterial.contains(SubTag.CRYSTAL) ? GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L) : GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 3L), GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 4L), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L), (int) Math.max(aMaterial.getMass() * 5L, 1L), 16);
+            GT_Values.RA.addLatheRecipe(aMaterial.contains(SubTag.CRYSTAL) ? GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 3L) : GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 3L), GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 4L), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L), (int) Math.max(aMaterial.getMass() * 5L, 1L), 16);
             GT_Values.RA.addCutterRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 4L), null, (int) Math.max(aMaterial.getMass() * 2L, 1L), 4);
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)) {
                 GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L), GT_Proxy.tBits, new Object[]{"s", "X", 'X', OrePrefixes.stickLong.get(aMaterial)});

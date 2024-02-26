@@ -6,8 +6,10 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.common.blocks.GT_Block_Ore_Abstract;
 import gregtech.common.blocks.explosives.GT_Block_MiningExplosive;
+import gregtech.common.misc.explosions.GT_Explosion;
 import gregtech.common.misc.explosions.GT_MiningExplosion;
 import lombok.Getter;
+import lombok.NonNull;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGrass;
 import net.minecraft.block.BlockOre;
@@ -31,14 +33,18 @@ public class GT_Entity_MiningExplosive extends GT_Entity_Explosive {
         super(world, x, y, z, placedBy, metadata);
     }
 
-    protected void doExplode() {
-        final ForgeDirection side = ((GT_Block_MiningExplosive) GregTech_API.sBlockMiningExplosive).getFacing(metadata);
+    /**
+     * @return
+     */
+    @Override
+    protected @NonNull GT_Explosion createExplosion() {
+        final ForgeDirection side = GregTech_API.sBlockMiningExplosive.getFacing(metadata);
         final double xOffset, yOffset, zOffset;
         final double offset = rangeOffset();
         xOffset = offset * side.offsetX;
         yOffset = offset * side.offsetY;
         zOffset = offset * side.offsetZ;
-        new GT_MiningExplosion(worldObj, this, posX + xOffset, posY + yOffset, posZ + zOffset, GT_Values.MEExplosionPower).perform();
+        return new GT_MiningExplosion(worldObj, this, posX + xOffset, posY + yOffset, posZ + zOffset, GT_Values.MEExplosionPower);
     }
 
     /**

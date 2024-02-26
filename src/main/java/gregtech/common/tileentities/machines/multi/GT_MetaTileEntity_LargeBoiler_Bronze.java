@@ -21,7 +21,7 @@ public class GT_MetaTileEntity_LargeBoiler_Bronze extends GT_MetaTileEntity_Larg
     
     @Override
     public String getCasingMaterial(){
-    	return "Bronze";
+    	return "Brass";
     }
 
     @Override
@@ -71,7 +71,7 @@ public class GT_MetaTileEntity_LargeBoiler_Bronze extends GT_MetaTileEntity_Larg
 
     @Override
     public int getEUt() {
-        return 400;
+        return 512;
     }
 
     @Override

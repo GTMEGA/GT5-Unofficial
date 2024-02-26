@@ -102,6 +102,11 @@ public class GT_Tool_Screwdriver extends GT_Tool {
     }
 
     @Override
+    public boolean isScrewdriver() {
+        return true;
+    }
+
+    @Override
     public boolean isMiningTool() {
         return false;
     }
@@ -110,6 +115,11 @@ public class GT_Tool_Screwdriver extends GT_Tool {
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
         return GT_ToolHarvestHelper.isAppropriateTool(aBlock , aMetaData ,"screwdriver")
                 || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock ,Material.circuits);
+    }
+
+    @Override
+    public boolean isCorrectTool(String toolClass) {
+        return toolClass.equals("screwdriver");
     }
 
     @Override

@@ -118,6 +118,11 @@ public class GT_Tool_UniversalSpade extends GT_Tool {
     }
 
     @Override
+    public boolean isCorrectTool(String toolClass) {
+        return toolClass.equals("shovel") || toolClass.equals("axe")|| toolClass.equals("saw")|| toolClass.equals("sword")|| toolClass.equals("crowbar");
+    }
+
+    @Override
     public ItemStack getBrokenItem(ItemStack aStack) {
         return null;
     }

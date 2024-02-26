@@ -21,6 +21,9 @@ import gregtech.api.threads.GT_Runnable_Cable_Update;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
 import gregtech.api.world.GT_Worldgen;
+import gregtech.common.blocks.explosives.GT_Block_Explosive;
+import gregtech.common.items.GT_MEGAnet;
+import gregtech.common.items.explosives.GT_RemoteDetonator;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -269,7 +272,7 @@ public class GregTech_API {
     public static Block
             sBlockLongDistancePipes;
 
-    public static Item sMEGAnet;
+    public static GT_MEGAnet sMEGAnet;
 
     public static Block sPotentiometer;
 
@@ -317,7 +320,7 @@ public class GregTech_API {
     public static boolean sUseMachineMetal = false;
 
 
-    public static boolean mUseOnlyGoodSolderingMaterials = false;
+    public static boolean mUseOnlyGoodSolderingMaterials = true;
 
     private static final String aTextIC2Lower = MOD_ID_IC2.toLowerCase(Locale.ENGLISH);
     /**
@@ -332,9 +335,10 @@ public class GregTech_API {
             sPostloadStarted = false,
             sPostloadFinished = false;
 
-    public static Block sBlockMiningExplosive, sBlockDaisyCutter, sBlockTunEx;
+    public static GT_Block_Explosive sBlockMiningExplosive, sBlockDaisyCutter, sBlockTunEx;
 
-    public static Item sItemRemoteDetonator, sBorker;
+    public static GT_RemoteDetonator sItemRemoteDetonator;
+    public static Item sBorker;
 
     private static Class sBaseMetaTileEntityClass = null;
 
@@ -390,6 +394,8 @@ public class GregTech_API {
         sSoundList.put(219, MOD_ID.toLowerCase() + ":" + "remote_detonator_remove");
         sSoundList.put(220, MOD_ID.toLowerCase() + ":" + "remote_detonator_trigger");
         sSoundList.put(221, MOD_ID.toLowerCase() + ":" + "potentiometer_click");
+        sSoundList.put(222, MOD_ID.toLowerCase() + ":" + "macerator");
+        //Don't forget to put your sounds into sounds.json too!
     }
 
     /**

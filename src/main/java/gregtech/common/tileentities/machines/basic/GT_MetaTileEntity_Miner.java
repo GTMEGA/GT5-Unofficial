@@ -35,11 +35,11 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine {
     boolean isPickingPipes;
     boolean waitMiningPipe;
     static final int[] RADIUS = {8, 8, 16, 24, 32}; //Miner radius per tier
-    static final int[] SPEED = {160, 160, 80, 40, 20}; //Miner cycle time per tier
-    static final int[] ENERGY = {8, 8, 32, 128, 512}; //Miner energy consumption per tier
+    static final int[] SPEED = {640, 640, 320, 160, 80}; //Miner cycle time per tier
+    static final int[] ENERGY = {8, 8, 30, 120, 480}; //Miner energy consumption per tier
 
     // Fortune bonus per tier
-    static final int[] FORTUNE = {3, 6, 9, 12};
+    static final int[] FORTUNE = {1, 2, 5, 8};
 
     private int radiusConfig; //Miner configured radius
     private final ArrayList<ChunkPosition> oreBlockPositions = new ArrayList<>();
@@ -51,7 +51,8 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine {
                         "Use Screwdriver to regulate work area",
                         ENERGY[aTier] + " EU/t, " + SPEED[aTier] / 20 + " sec per block, no stuttering",
                         "Maximum work area " + (RADIUS[aTier] * 2 + 1) + "x" + (RADIUS[aTier] * 2 + 1),
-                        "Fortune bonus of " + aTier},
+                        "Collects " + (aTier + 2 * aTier) + " chunks of ore per block mined.",
+                        "Mines small and normal ores."},
                 2, 2, "Miner.png", "",
                 TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_ACTIVE")),
                 TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE")),

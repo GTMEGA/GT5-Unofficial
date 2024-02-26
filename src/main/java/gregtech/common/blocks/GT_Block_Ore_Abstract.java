@@ -1,6 +1,7 @@
 package gregtech.common.blocks;
 
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -9,6 +10,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_Renderer_Block;
@@ -42,6 +44,11 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
     protected static final Map<Materials, GT_Block_Ore_Abstract> oreMap = new HashMap<>();
     protected static final Map<Materials, GT_Block_Ore_Abstract> smallOreMap = new HashMap<>();
     private static final ITexture stone = TextureFactory.of(Blocks.stone);
+
+    private static Block chiselLimestone;
+    private static Block chiselDiorite;
+    private static Block chiselAndesite;
+
 
     protected GT_Block_Ore_Abstract(Materials oreType, String unlocalizedName) {
         super(GT_Item_Ores.class,
@@ -81,8 +88,18 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
         GT_LanguageManager.addStringLocalization(oreNameUnlocalized, oreNameLocalized);
     }
 
+    public Materials material() {
+        return oreType;
+    }
+
     public static GT_Block_Ore_Abstract getOre(Materials material, OreSize size) {
         return size == OreSize.Normal ? oreMap.get(material) : smallOreMap.get(material);
+    }
+
+    private static void populateBlockCache() {
+        chiselLimestone = GameRegistry.findBlock("chisel","limestone");
+        chiselDiorite = GameRegistry.findBlock("chisel","diorite");
+        chiselAndesite = GameRegistry.findBlock("chisel","andesite");
     }
 
     public static boolean setOreBlock(World world, int x, int y, int z, Materials material, boolean air, OreSize size) {
@@ -92,6 +109,8 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
 
         Block tBlock = world.getBlock(x, y, z);
         GT_Block_Ore_Abstract ore = getOre(material, size);
+
+        if (chiselLimestone == null) populateBlockCache();
 
         if ((tBlock != Blocks.air) || air) {
             if (!GT_Utility.isBlockReplaceableForOreGeneration(world,
@@ -103,7 +122,12 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
                                                                Blocks.netherrack,
                                                                Blocks.end_stone,
                                                                GregTech_API.sBlockGranites,
-                                                               GregTech_API.sBlockStones)) {
+                                                               GregTech_API.sBlockStones,
+                                                               chiselDiorite,
+                                                               chiselLimestone,
+                                                               chiselAndesite
+
+            )) {
                 return false;
             }
             //GT_FML_LOGGER.info(tOreBlock);
@@ -177,6 +201,13 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
             drops.add(drop);
         }
         return drops;
+    }
+
+    public ItemStack getDropsMining(World world, int x, int y, int z, int metadata, int fortune) {
+        val fortuneFactor = fortune + 1;
+        val stack = GT_OreDictUnificator.get(OrePrefixes.oreChunk, this.oreType, fortuneFactor);
+        stack.stackSize = fortuneFactor;
+        return stack;
     }
 
     @Override

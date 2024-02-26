@@ -9,6 +9,9 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
 
@@ -469,8 +472,14 @@ public class Textures {
 
         OVERLAY_LENS,
         OVERLAY_PIPE,
+
+        OVERLAY_STEAM_OUT,
         OVERLAY_PIPE_IN,
+        OVERLAY_FLUID_IN,
+        OVERLAY_FLUID_OUT,
         OVERLAY_PIPE_OUT,
+        OVERLAY_ITEM_IN,
+        OVERLAY_ITEM_OUT,
         OVERLAY_MUFFLER,
 
         OVERLAY_CONTROLLER,
@@ -507,6 +516,7 @@ public class Textures {
         OVERLAY_ENERGY_IN,
         OVERLAY_ENERGY_OUT,
 
+        //#TODO: Better energy hatch in/out icons.
         OVERLAY_ENERGY_IN_MULTI,
         OVERLAY_ENERGY_OUT_MULTI,
         OVERLAY_FRONT_LARGE_BOILER,
@@ -1152,7 +1162,29 @@ public class Textures {
         MINING_EXPLOSIVE, DAISY_CUTTER, TUNEX,
 
         AUTOMATION_RECIPEFILTER,
-        AUTOMATION_RECIPEFILTER_GLOW;
+        AUTOMATION_RECIPEFILTER_GLOW,
+
+        POWER_16,
+        POWER_64,
+        // Unique energy in textures
+        OVERLAY_ENERGY_IN_TM_ULV, OVERLAY_ENERGY_IN_TM_LV, OVERLAY_ENERGY_IN_TM_MV, OVERLAY_ENERGY_IN_TM_HV, OVERLAY_ENERGY_IN_TM_EV, OVERLAY_ENERGY_IN_TM_IV, OVERLAY_ENERGY_IN_TM_LuV, OVERLAY_ENERGY_IN_TM_ZPM, OVERLAY_ENERGY_IN_TM_UV, OVERLAY_ENERGY_IN_TM_UHV, OVERLAY_ENERGY_IN_TM_UEV, OVERLAY_ENERGY_IN_TM_UIV, OVERLAY_ENERGY_IN_TM_UMV, OVERLAY_ENERGY_IN_TM_UXV, OVERLAY_ENERGY_IN_TM_OpV, OVERLAY_ENERGY_IN_TM_MAX,
+        // Unique energy out textures
+        OVERLAY_ENERGY_OUT_TM_ULV, OVERLAY_ENERGY_OUT_TM_LV, OVERLAY_ENERGY_OUT_TM_MV, OVERLAY_ENERGY_OUT_TM_HV, OVERLAY_ENERGY_OUT_TM_EV, OVERLAY_ENERGY_OUT_TM_IV, OVERLAY_ENERGY_OUT_TM_LuV, OVERLAY_ENERGY_OUT_TM_ZPM, OVERLAY_ENERGY_OUT_TM_UV, OVERLAY_ENERGY_OUT_TM_UHV, OVERLAY_ENERGY_OUT_TM_UEV, OVERLAY_ENERGY_OUT_TM_UIV, OVERLAY_ENERGY_OUT_TM_UMV, OVERLAY_ENERGY_OUT_TM_UXV, OVERLAY_ENERGY_OUT_TM_OpV, OVERLAY_ENERGY_OUT_TM_MAX,
+        // Unique energy in multi textures
+        OVERLAYS_ENERGY_IN_MULTI_TM_ULV, OVERLAYS_ENERGY_IN_MULTI_TM_LV, OVERLAYS_ENERGY_IN_MULTI_TM_MV, OVERLAYS_ENERGY_IN_MULTI_TM_HV, OVERLAYS_ENERGY_IN_MULTI_TM_EV, OVERLAYS_ENERGY_IN_MULTI_TM_IV, OVERLAYS_ENERGY_IN_MULTI_TM_LuV, OVERLAYS_ENERGY_IN_MULTI_TM_ZPM, OVERLAYS_ENERGY_IN_MULTI_TM_UV, OVERLAYS_ENERGY_IN_MULTI_TM_UHV, OVERLAYS_ENERGY_IN_MULTI_TM_UEV, OVERLAYS_ENERGY_IN_MULTI_TM_UIV, OVERLAYS_ENERGY_IN_MULTI_TM_UMV, OVERLAYS_ENERGY_IN_MULTI_TM_UXV, OVERLAYS_ENERGY_IN_MULTI_TM_OpV, OVERLAYS_ENERGY_IN_MULTI_TM_MAX,
+        // Unique energy out multi textures
+        OVERLAYS_ENERGY_OUT_MULTI_TM_ULV, OVERLAYS_ENERGY_OUT_MULTI_TM_LV, OVERLAYS_ENERGY_OUT_MULTI_TM_MV, OVERLAYS_ENERGY_OUT_MULTI_TM_HV, OVERLAYS_ENERGY_OUT_MULTI_TM_EV, OVERLAYS_ENERGY_OUT_MULTI_TM_IV, OVERLAYS_ENERGY_OUT_MULTI_TM_LuV, OVERLAYS_ENERGY_OUT_MULTI_TM_ZPM, OVERLAYS_ENERGY_OUT_MULTI_TM_UV, OVERLAYS_ENERGY_OUT_MULTI_TM_UHV, OVERLAYS_ENERGY_OUT_MULTI_TM_UEV, OVERLAYS_ENERGY_OUT_MULTI_TM_UIV, OVERLAYS_ENERGY_OUT_MULTI_TM_UMV, OVERLAYS_ENERGY_OUT_MULTI_TM_UXV, OVERLAYS_ENERGY_OUT_MULTI_TM_OpV, OVERLAYS_ENERGY_OUT_MULTI_TM_MAX,
+        // Unique energy in power textures
+        OVERLAYS_ENERGY_IN_POWER_TM_ULV, OVERLAYS_ENERGY_IN_POWER_TM_LV, OVERLAYS_ENERGY_IN_POWER_TM_MV, OVERLAYS_ENERGY_IN_POWER_TM_HV, OVERLAYS_ENERGY_IN_POWER_TM_EV, OVERLAYS_ENERGY_IN_POWER_TM_IV, OVERLAYS_ENERGY_IN_POWER_TM_LuV, OVERLAYS_ENERGY_IN_POWER_TM_ZPM, OVERLAYS_ENERGY_IN_POWER_TM_UV, OVERLAYS_ENERGY_IN_POWER_TM_UHV, OVERLAYS_ENERGY_IN_POWER_TM_UEV, OVERLAYS_ENERGY_IN_POWER_TM_UIV, OVERLAYS_ENERGY_IN_POWER_TM_UMV, OVERLAYS_ENERGY_IN_POWER_TM_UXV, OVERLAYS_ENERGY_IN_POWER_TM_OpV, OVERLAYS_ENERGY_IN_POWER_TM_MAX,
+        // Unique energy out power textures
+        OVERLAYS_ENERGY_OUT_POWER_TM_ULV, OVERLAYS_ENERGY_OUT_POWER_TM_LV, OVERLAYS_ENERGY_OUT_POWER_TM_MV, OVERLAYS_ENERGY_OUT_POWER_TM_HV, OVERLAYS_ENERGY_OUT_POWER_TM_EV, OVERLAYS_ENERGY_OUT_POWER_TM_IV, OVERLAYS_ENERGY_OUT_POWER_TM_LuV, OVERLAYS_ENERGY_OUT_POWER_TM_ZPM, OVERLAYS_ENERGY_OUT_POWER_TM_UV, OVERLAYS_ENERGY_OUT_POWER_TM_UHV, OVERLAYS_ENERGY_OUT_POWER_TM_UEV, OVERLAYS_ENERGY_OUT_POWER_TM_UIV, OVERLAYS_ENERGY_OUT_POWER_TM_UMV, OVERLAYS_ENERGY_OUT_POWER_TM_UXV, OVERLAYS_ENERGY_OUT_POWER_TM_OpV, OVERLAYS_ENERGY_OUT_POWER_TM_MAX;
+
+        public static final Map<Long, ITexture> POWER_OVERLAYS = new HashMap<>();
+
+        static {
+            POWER_OVERLAYS.put(16L, TextureFactory.of(POWER_16));
+            POWER_OVERLAYS.put(64L, TextureFactory.of(POWER_64));
+        }
 
         /**
          * Icon for Fresh CFoam
@@ -1606,112 +1638,112 @@ public class Textures {
                 TextureFactory.of(RENDERING_ERROR)
         };
         public static ITexture[] OVERLAYS_ENERGY_IN = {
-                TextureFactory.of(OVERLAY_ENERGY_IN, new short[]{180, 180, 180, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN, new short[]{220, 220, 220, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN, new short[]{255, 100, 0, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN, new short[]{255, 255, 30, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN, new short[]{128, 128, 128, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN, new short[]{240, 240, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN, new short[]{220, 220, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN, new short[]{200, 200, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN, new short[]{180, 180, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN, new short[]{160, 160, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN, new short[]{140, 140, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN, new short[]{120, 120, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN, new short[]{100, 100, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN, new short[]{80, 80, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN, new short[]{60, 60, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN, new short[]{40, 40, 245, 0}),
+                TextureFactory.of(OVERLAY_ENERGY_IN_TM_ULV),
+                TextureFactory.of(OVERLAY_ENERGY_IN_TM_LV),
+                TextureFactory.of(OVERLAY_ENERGY_IN_TM_MV),
+                TextureFactory.of(OVERLAY_ENERGY_IN_TM_HV),
+                TextureFactory.of(OVERLAY_ENERGY_IN_TM_EV),
+                TextureFactory.of(OVERLAY_ENERGY_IN_TM_IV),
+                TextureFactory.of(OVERLAY_ENERGY_IN_TM_LuV),
+                TextureFactory.of(OVERLAY_ENERGY_IN_TM_ZPM),
+                TextureFactory.of(OVERLAY_ENERGY_IN_TM_UV),
+                TextureFactory.of(OVERLAY_ENERGY_IN_TM_UHV),
+                TextureFactory.of(OVERLAY_ENERGY_IN_TM_UEV),
+                TextureFactory.of(OVERLAY_ENERGY_IN_TM_UIV),
+                TextureFactory.of(OVERLAY_ENERGY_IN_TM_UMV),
+                TextureFactory.of(OVERLAY_ENERGY_IN_TM_UXV),
+                TextureFactory.of(OVERLAY_ENERGY_IN_TM_OpV),
+                TextureFactory.of(OVERLAY_ENERGY_IN_TM_MAX),
         };
         public static ITexture[] OVERLAYS_ENERGY_OUT = {
-                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[]{180, 180, 180, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[]{220, 220, 220, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[]{255, 100, 0, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[]{255, 255, 30, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[]{128, 128, 128, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[]{240, 240, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[]{220, 220, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[]{200, 200, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[]{180, 180, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[]{160, 160, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[]{140, 140, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[]{120, 120, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[]{100, 100, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[]{80, 80, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[]{60, 60, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT, new short[]{40, 40, 245, 0}),
+                TextureFactory.of(OVERLAY_ENERGY_OUT),
+                TextureFactory.of(OVERLAY_ENERGY_OUT),
+                TextureFactory.of(OVERLAY_ENERGY_OUT),
+                TextureFactory.of(OVERLAY_ENERGY_OUT),
+                TextureFactory.of(OVERLAY_ENERGY_OUT),
+                TextureFactory.of(OVERLAY_ENERGY_OUT),
+                TextureFactory.of(OVERLAY_ENERGY_OUT),
+                TextureFactory.of(OVERLAY_ENERGY_OUT),
+                TextureFactory.of(OVERLAY_ENERGY_OUT),
+                TextureFactory.of(OVERLAY_ENERGY_OUT),
+                TextureFactory.of(OVERLAY_ENERGY_OUT),
+                TextureFactory.of(OVERLAY_ENERGY_OUT),
+                TextureFactory.of(OVERLAY_ENERGY_OUT),
+                TextureFactory.of(OVERLAY_ENERGY_OUT),
+                TextureFactory.of(OVERLAY_ENERGY_OUT),
+                TextureFactory.of(OVERLAY_ENERGY_OUT),
         };
         public static ITexture[] OVERLAYS_ENERGY_IN_MULTI = {
-                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{180, 180, 180, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{220, 220, 220, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{255, 100, 0, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{255, 255, 30, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{128, 128, 128, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{240, 240, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{220, 220, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{200, 200, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{180, 180, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{160, 160, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{140, 140, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{120, 120, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{100, 100, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{80, 80, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{60, 60, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{40, 40, 245, 0}),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_IN_MULTI),
         };
         public static ITexture[] OVERLAYS_ENERGY_OUT_MULTI = {
-                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{180, 180, 180, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{220, 220, 220, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{255, 100, 0, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{255, 255, 30, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{128, 128, 128, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{240, 240, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{220, 220, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{200, 200, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{180, 180, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{160, 160, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{140, 140, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{120, 120, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{100, 100, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{80, 80, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{60, 60, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{40, 40, 245, 0}),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI),
         };
         public static ITexture[] OVERLAYS_ENERGY_IN_POWER = {
-                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{180, 180, 180, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{220, 220, 220, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{255, 100, 0, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{255, 255, 30, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{128, 128, 128, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{240, 240, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{220, 220, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{200, 200, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{180, 180, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{160, 160, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{140, 140, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{120, 120, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{100, 100, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{80, 80, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{60, 60, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{40, 40, 245, 0}),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_IN_POWER),
         };
         public static ITexture[] OVERLAYS_ENERGY_OUT_POWER = {
-                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{180, 180, 180, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{220, 220, 220, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{255, 100, 0, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{255, 255, 30, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{128, 128, 128, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{240, 240, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{220, 220, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{200, 200, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{180, 180, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{160, 160, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{140, 140, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{120, 120, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{100, 100, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{80, 80, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{60, 60, 245, 0}),
-                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{40, 40, 245, 0}),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER),
+                TextureFactory.of(OVERLAY_ENERGY_OUT_POWER),
         };
         public static ITexture[] LOCKERS = {
                 TextureFactory.of(OVERLAY_LOCKER_000),

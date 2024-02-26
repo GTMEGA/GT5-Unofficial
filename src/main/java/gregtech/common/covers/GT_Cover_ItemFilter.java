@@ -5,7 +5,7 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
-import gregtech.api.gui.widgets.GT_GuiIcon;
+import gregtech.api.gui.widgets.icon.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverNew;

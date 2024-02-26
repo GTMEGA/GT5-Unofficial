@@ -45,7 +45,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[ForgeDirection.VALID_DIRECTIONS.length][17][];
         ITexture tIcon = getOverlayIcon();
-        ITexture tOut = TextureFactory.of(OVERLAY_PIPE_OUT);
+        ITexture tOut = TextureFactory.of(OVERLAY_ITEM_OUT);
         ITexture tUp = TextureFactory.of(
                 TextureFactory.of(ARROW_UP),
                 TextureFactory.builder().addIcon(ARROW_UP_GLOW).glow().build());

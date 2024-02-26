@@ -18,6 +18,16 @@ public class GT_MetaTileEntity_OreDrillingPlant4 extends GT_MetaTileEntity_OreDr
     }
 
     @Override
+    protected int fortune() {
+        return 800;
+    }
+
+    @Override
+    protected int perTickFluidStackMultiplier() {
+        return 4;
+    }
+
+    @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         return createTooltip("IV");
     }
@@ -44,7 +54,7 @@ public class GT_MetaTileEntity_OreDrillingPlant4 extends GT_MetaTileEntity_OreDr
 
     @Override
     protected int getRadiusInChunks() {
-        return 9;
+        return 1;
     }
 
     @Override

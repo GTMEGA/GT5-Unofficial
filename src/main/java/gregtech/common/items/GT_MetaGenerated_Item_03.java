@@ -22,7 +22,7 @@ public class GT_MetaGenerated_Item_03
     public static GT_MetaGenerated_Item_03 INSTANCE;
 
     public GT_MetaGenerated_Item_03() {
-        super("metaitem.03", OrePrefixes.crateGtDust, OrePrefixes.crateGtIngot, OrePrefixes.crateGtGem, OrePrefixes.crateGtPlate, OrePrefixes.oreChunk);
+        super("metaitem.03", OrePrefixes.crateGtDust, OrePrefixes.crateGtIngot, OrePrefixes.crateGtGem, OrePrefixes.crateGtPlate);
         INSTANCE = this;
         int tLastID = 0;
         Object[] o = new Object[0];

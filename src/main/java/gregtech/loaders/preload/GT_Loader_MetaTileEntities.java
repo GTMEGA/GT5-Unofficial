@@ -60,13 +60,13 @@ public final class GT_Loader_MetaTileEntities implements Runnable {
     }
 
     private static void loadMiner() {
-        Machine_LV_Miner.set(new GT_MetaTileEntity_Miner(679, "basicmachine.miner.tier.01", "Ore Drilling Rig MKI", 1).getStackForm(1L));
-        Machine_MV_Miner.set(new GT_MetaTileEntity_Miner(680, "basicmachine.miner.tier.02", "Ore Drilling Rig MKII", 2).getStackForm(1L));
-        Machine_HV_Miner.set(new GT_MetaTileEntity_Miner(681, "basicmachine.miner.tier.03", "Ore Drilling Rig MKIII", 3).getStackForm(1L));
+        Machine_LV_Miner.set(new GT_MetaTileEntity_Miner(679, "basicmachine.miner.tier.01", "Depracated Miner 1", 1).getStackForm(1L));
+        Machine_MV_Miner.set(new GT_MetaTileEntity_Miner(680, "basicmachine.miner.tier.02", "Depracated Miner 2", 2).getStackForm(1L));
+        Machine_HV_Miner.set(new GT_MetaTileEntity_Miner(681, "basicmachine.miner.tier.03", "Depracated Miner 3", 3).getStackForm(1L));
 
-        addCraftingRecipe(Machine_LV_Miner.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", "WMW", "CSC", 'M', Hull_LV, 'E', Electric_Motor_LV, 'C', circuitLogic.get(LOGIC_LV), 'W', cableGt01.get(Tin), 'S', Sensor_LV});
-        addCraftingRecipe(Machine_MV_Miner.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PEP", "WMW", "CSC", 'M', Hull_MV, 'E', Electric_Motor_MV, 'P', Electric_Piston_MV, 'C',circuitLogic.get(LOGIC_MV), 'W', cableGt02.get(Copper), 'S', Sensor_MV});
-        addCraftingRecipe(Machine_HV_Miner.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"RPR", "WMW", "CSC", 'M', Hull_HV, 'E', Electric_Motor_HV, 'P', Electric_Piston_HV, 'R', Robot_Arm_HV, 'C', circuitLogic.get(LOGIC_HV), 'W', cableGt04.get(Gold), 'S', Sensor_HV});
+//        addCraftingRecipe(Machine_LV_Miner.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EEE", "WMW", "CSC", 'M', Hull_LV, 'E', Electric_Motor_LV, 'C', circuitLogic.get(LOGIC_LV), 'W', cableGt01.get(Tin), 'S', Sensor_LV});
+//        addCraftingRecipe(Machine_MV_Miner.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PEP", "WMW", "CSC", 'M', Hull_MV, 'E', Electric_Motor_MV, 'P', Electric_Piston_MV, 'C',circuitLogic.get(LOGIC_MV), 'W', cableGt02.get(Copper), 'S', Sensor_MV});
+//        addCraftingRecipe(Machine_HV_Miner.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"RPR", "WMW", "CSC", 'M', Hull_HV, 'E', Electric_Motor_HV, 'P', Electric_Piston_HV, 'R', Robot_Arm_HV, 'C', circuitLogic.get(LOGIC_HV), 'W', cableGt04.get(Gold), 'S', Sensor_HV});
     }
 
     private static void loadTeleporter() {

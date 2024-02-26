@@ -20,6 +20,7 @@ import ic2.api.reactor.IReactorComponent;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
+import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
@@ -709,10 +710,11 @@ public class GT_ModHandler {
                                     case "gt.recipe.macerator":
                                     case "gt.recipe.extractor":
                                     case "gt.recipe.compressor":
-                                        aGTRecipeMap.addRecipe(true, new ItemStack[]{GT_Utility.copyAmount((iRecipeInputRecipeOutputEntry.getKey()).getAmount(), tStack)}, (ItemStack[]) (iRecipeInputRecipeOutputEntry.getValue()).items.toArray(), null, null, null, null, 300, 2, 0);
+                                        val recipe = new GT_Recipe(false, new ItemStack[]{GT_Utility.copyAmount((iRecipeInputRecipeOutputEntry.getKey()).getAmount(), tStack)}, (iRecipeInputRecipeOutputEntry.getValue()).items.toArray(new ItemStack[0]), null, null, null, null, 300, 2, 0);
+                                        aGTRecipeMap.addRecipe(recipe,true,false,false);
                                         break;
                                     case "gt.recipe.thermalcentrifuge":
-                                        aGTRecipeMap.addRecipe(true, new ItemStack[]{GT_Utility.copyAmount((iRecipeInputRecipeOutputEntry.getKey()).getAmount(), tStack)}, (ItemStack[]) (iRecipeInputRecipeOutputEntry.getValue()).items.toArray(), null, null, null, null, 500, 48, 0);
+                                        aGTRecipeMap.addRecipe(true, new ItemStack[]{GT_Utility.copyAmount((iRecipeInputRecipeOutputEntry.getKey()).getAmount(), tStack)}, (iRecipeInputRecipeOutputEntry.getValue()).items.toArray(new ItemStack[0]), null, null, null, null, 500, 48, 0);
                                         break;
                                 }
                             } catch (Exception e) {
@@ -792,16 +794,16 @@ public class GT_ModHandler {
     public static boolean addOreWasherRecipe(ItemStack aInput, int[] aChances, int aWaterAmount, Object... aOutput) {
         if (aInput == null || aOutput == null || aOutput.length <= 0 || aOutput[0] == null) return false;
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.orewashing, aInput, true)) return false;
-        RA.addOreWasherRecipe(aInput, (ItemStack)aOutput[0], (ItemStack)aOutput[1], (ItemStack)aOutput[2], GT_ModHandler.getWater(aWaterAmount), aChances, 500, 16);
-        RA.addOreWasherRecipe(aInput, (ItemStack)aOutput[0], (ItemStack)aOutput[1], (ItemStack)aOutput[2], GT_ModHandler.getDistilledWater(aWaterAmount / 5), aChances, 300, 16);
+        RA.addOreWasherRecipe(aInput, (ItemStack)aOutput[0], (ItemStack)aOutput[1], (ItemStack)aOutput[2], GT_ModHandler.getWater((aWaterAmount * 4L) / 10), aChances, 500, 16);
+        RA.addOreWasherRecipe(aInput, (ItemStack)aOutput[0], (ItemStack)aOutput[1], (ItemStack)aOutput[2], GT_ModHandler.getDistilledWater((aWaterAmount * 3L) / 40), aChances, 250, 12);
         return true;
     }
 
     public static boolean addOreWasherRecipe(ItemStack aInput, int aWaterAmount, Object... aOutput) {
         if (aInput == null || aOutput == null || aOutput.length <= 0 || aOutput[0] == null) return false;
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.orewashing, aInput, true)) return false;
-        RA.addOreWasherRecipe(aInput, (ItemStack)aOutput[0], (ItemStack)aOutput[1], (ItemStack)aOutput[2], GT_ModHandler.getWater(aWaterAmount), 500, 16);
-        RA.addOreWasherRecipe(aInput, (ItemStack)aOutput[0], (ItemStack)aOutput[1], (ItemStack)aOutput[2], GT_ModHandler.getDistilledWater(aWaterAmount / 5), 300, 16);
+        RA.addOreWasherRecipe(aInput, (ItemStack)aOutput[0], (ItemStack)aOutput[1], (ItemStack)aOutput[2], GT_ModHandler.getWater((aWaterAmount * 4L) / 10), 500, 16);
+        RA.addOreWasherRecipe(aInput, (ItemStack)aOutput[0], (ItemStack)aOutput[1], (ItemStack)aOutput[2], GT_ModHandler.getDistilledWater((aWaterAmount * 3L) / 40), 250, 12);
         return true;
     }
 

@@ -11,6 +11,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import net.minecraftforge.fluids.FluidStack;
 
+import static gregtech.api.enums.GT_Values.EU_PER_STEAM;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaTileEntity_SteamTurbine extends GT_MetaTileEntity_BasicGenerator {
@@ -20,7 +21,7 @@ public class GT_MetaTileEntity_SteamTurbine extends GT_MetaTileEntity_BasicGener
     public GT_MetaTileEntity_SteamTurbine(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, new String[]{
                 "Converts Steam into EU",
-                "Base rate: 2L of Steam -> 1 EU"});
+                "Base rate: 1L of Steam -> 2 EU"});
         onConfigLoad();
     }
 
@@ -55,17 +56,17 @@ public class GT_MetaTileEntity_SteamTurbine extends GT_MetaTileEntity_BasicGener
         System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
         desc[mDescriptionArray.length] = "Fuel Efficiency: " + (600 / getEfficiency()) + "%";
         desc[mDescriptionArray.length + 1] = String.format("Consumes up to %sL of Steam per second",
-                (int) (4000 * (8 * Math.pow(4, mTier) + Math.pow(2, mTier)) / (600 / getEfficiency())));
+                (int) (1000 * (8 * maxAmperesOut() * Math.pow(4, mTier) + Math.pow(2, mTier)) / (600 / getEfficiency())));
         return desc;
     }
 
     @Override
     public int getCapacity() {
-        return 24000 * this.mTier;
+        return 48000 * this.mTier;
     }
 
     public void onConfigLoad() {
-        this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "SteamTurbine.efficiency.tier." + this.mTier, 6 + this.mTier);
+        this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "steam_turbine.efficiency.tier." + this.mTier, 6);
     }
 
     @Override
@@ -76,12 +77,12 @@ public class GT_MetaTileEntity_SteamTurbine extends GT_MetaTileEntity_BasicGener
     @Override
     public int getFuelValue(FluidStack aLiquid) {
         if (aLiquid == null) return 0;
-        return GT_ModHandler.isAnySteam(aLiquid) ? 3 : 0;
+        return GT_ModHandler.isAnySteam(aLiquid) ? 3 * 2 * EU_PER_STEAM : 0;
     }
 
     @Override
     public int consumedFluidPerOperation(FluidStack aLiquid) {
-        return this.mEfficiency;
+        return this.mEfficiency    ;
     }
 
     @Override
