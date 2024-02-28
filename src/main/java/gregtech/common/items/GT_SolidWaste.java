@@ -14,7 +14,7 @@ public class GT_SolidWaste extends GT_Generic_Item {
     public GT_SolidWaste() {
         super("solidwaste",
               "Solid Waste",
-              "Solid Waste Description",
+              "[Waste Material]",
               true);
     }
 
