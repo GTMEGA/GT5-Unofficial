@@ -24,9 +24,9 @@ public class GT_Entity_TunnelExplosive extends GT_Entity_Explosive {
     }
 
     public GT_Entity_TunnelExplosive(
-            final World world, final double x, final double y, final double z, final EntityLivingBase placedBy, final int metadata
+            final World world, final double x, final double y, final double z, final EntityLivingBase placedBy, final int metadata, final int fuse
                                     ) {
-        super(world, x, y, z, placedBy, metadata);
+        super(world, x, y, z, placedBy, metadata, fuse);
     }
 
     /**

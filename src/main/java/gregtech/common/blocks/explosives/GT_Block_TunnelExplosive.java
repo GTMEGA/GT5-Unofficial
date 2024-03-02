@@ -21,11 +21,12 @@ public class GT_Block_TunnelExplosive extends GT_Block_Explosive {
      * @param y
      * @param z
      * @param player
+     * @param fuse
      */
     @Override
-    protected void goBoom(final World world, final int x, final int y, final int z, final EntityPlayer player) {
+    protected void goBoom(final World world, final int x, final int y, final int z, final EntityPlayer player, final int fuse) {
         final int metadata = world.getBlockMetadata(x, y, z);
-        final GT_Entity_TunnelExplosive explosive = new GT_Entity_TunnelExplosive(world, x, y, z, player, metadata);
+        final GT_Entity_TunnelExplosive explosive = new GT_Entity_TunnelExplosive(world, x, y, z, player, metadata, fuse);
         world.spawnEntityInWorld(explosive);
         world.playSoundAtEntity(explosive, GregTech_API.sSoundList.get(214), 1.0F, 1.0F);
         world.setBlockToAir(x, y, z);

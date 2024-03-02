@@ -720,6 +720,9 @@ public class GT_Mod implements IGT_Mod {
         TERadius = GT_Values.getConfigValue(tMainConfig, meSection, "radius", TERadius, "Radius of the tunnel explosive");
         TERadiusVariation = GT_Values.getConfigValue(tMainConfig, meSection, "radiusVariation", TERadiusVariation, "Variation in the radius of the tunnel explosive");
         TEMaxRange = GT_Values.getConfigValue(tMainConfig, meSection, "TEmaxRange", TEMaxRange, "Maximum range of the tunnel explosive");
+
+
+        ExplosivesActivatedByRS = GT_Values.getConfigValue(tMainConfig, meSection, "ExplosivesActivatedByRS", ExplosivesActivatedByRS, "Whether the explosives are activated by redstone");
     }
 
     @Mod.EventHandler

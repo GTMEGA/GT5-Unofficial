@@ -29,8 +29,8 @@ public class GT_Entity_MiningExplosive extends GT_Entity_Explosive {
         super(world);
     }
 
-    public GT_Entity_MiningExplosive(final World world, final double x, final double y, final double z, final EntityLivingBase placedBy, final int metadata) {
-        super(world, x, y, z, placedBy, metadata);
+    public GT_Entity_MiningExplosive(final World world, final double x, final double y, final double z, final EntityLivingBase placedBy, final int metadata, final int fuse) {
+        super(world, x, y, z, placedBy, metadata, fuse);
     }
 
     /**
