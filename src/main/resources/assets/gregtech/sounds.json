@@ -78,6 +78,13 @@
             }
         ]
     },
+    "furnace": {
+        "category": "block",
+        "sounds": [
+            "furnace1",
+            "furnace2"
+        ]
+    },
     "potentiometer_click": {
         "category": "block",
         "sounds": [
