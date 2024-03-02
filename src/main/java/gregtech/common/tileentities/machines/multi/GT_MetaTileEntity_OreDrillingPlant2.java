@@ -19,11 +19,11 @@ public class GT_MetaTileEntity_OreDrillingPlant2 extends GT_MetaTileEntity_OreDr
 
     @Override
     protected int fortune() {
-        return 200;
+        return 600;
     }
 
     @Override
-    protected int perTickStackSize() {
+    protected int perTickFluidStackMultiplier() {
         return 2;
     }
 
