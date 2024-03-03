@@ -85,11 +85,17 @@
             "furnace2"
         ]
     },
-    "steamfurnace": {
+    "steam_furnace": {
         "category": "block",
         "sounds": [
             "steamFurnace1",
             "steamFurnace2"
+        ]
+    },
+    "steam_vent": {
+        "category": "block",
+        "sounds": [
+            "steamVent"
         ]
     },
     "potentiometer_click": {

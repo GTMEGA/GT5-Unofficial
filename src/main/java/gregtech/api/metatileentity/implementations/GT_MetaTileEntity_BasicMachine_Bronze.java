@@ -226,7 +226,7 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         super.doSound(aIndex, aX, aY, aZ);
         if (aIndex == 9) {
-            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(4), 5, 1.0F, aX, aY, aZ);
+            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(225), 5, 1.0F, aX, aY, aZ);
 
             new WorldSpawnedEventBuilder.ParticleEventBuilder()
                     .setIdentifier("largesmoke")
