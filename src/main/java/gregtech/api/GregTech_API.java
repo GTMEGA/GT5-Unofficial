@@ -396,6 +396,7 @@ public class GregTech_API {
         sSoundList.put(221, MOD_ID.toLowerCase() + ":" + "potentiometer_click");
         sSoundList.put(222, MOD_ID.toLowerCase() + ":" + "macerator");
         sSoundList.put(223, MOD_ID.toLowerCase() + ":" + "furnace");
+        sSoundList.put(224, MOD_ID.toLowerCase() + ":" + "steamfurnace");
         //Don't forget to put your sounds into sounds.json too!
     }
 

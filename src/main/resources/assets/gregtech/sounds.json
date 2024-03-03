@@ -85,6 +85,13 @@
             "furnace2"
         ]
     },
+    "steamfurnace": {
+        "category": "block",
+        "sounds": [
+            "steamFurnace1",
+            "steamFurnace2"
+        ]
+    },
     "potentiometer_click": {
         "category": "block",
         "sounds": [
