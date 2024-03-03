@@ -398,6 +398,8 @@ public class GregTech_API {
         sSoundList.put(223, MOD_ID.toLowerCase() + ":" + "furnace");
         sSoundList.put(224, MOD_ID.toLowerCase() + ":" + "steam_furnace");
         sSoundList.put(225, MOD_ID.toLowerCase() + ":" + "steam_vent");
+        sSoundList.put(226, MOD_ID.toLowerCase() + ":" + "boiler_vent");
+        sSoundList.put(227, MOD_ID.toLowerCase() + ":" + "steam_hammer");
         //Don't forget to put your sounds into sounds.json too!
     }
 

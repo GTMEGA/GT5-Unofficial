@@ -346,7 +346,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     @Override
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         if (aIndex == GT_MetaTileEntity_Boiler.SOUND_EVENT_LET_OFF_EXCESS_STEAM) {
-            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(4), 2, 1.0F, aX, aY, aZ);
+            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(226), 2, 1.0F, aX, aY, aZ);
 
             new WorldSpawnedEventBuilder.ParticleEventBuilder()
                     .setIdentifier("largesmoke")

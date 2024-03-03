@@ -52,7 +52,7 @@ public class GT_MetaTileEntity_AlloySmelter_Bronze extends GT_MetaTileEntity_Bas
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
         super.startSoundLoop(aIndex, aX, aY, aZ);
         if (aIndex == 1) {
-            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(208), 10, 1.0F, aX, aY, aZ);
+            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(224), 6, 1.0F, aX, aY, aZ);
         }
     }
 
