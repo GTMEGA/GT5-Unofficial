@@ -53,6 +53,7 @@ public class GT_Container_DevEnergySource extends GT_Container_Dev<GT_MetaTileEn
 
     protected void setEnergyTier(final int energyTier) {
         data.setTier(energyTier);
+        data.setVoltage(8L * (2L << (2 * energyTier)));
         detectAndSendChanges();
     }
 
