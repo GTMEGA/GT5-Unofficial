@@ -138,7 +138,7 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
                 this.mProcessingEnergy += (TileEntityFurnace.getItemBurnTime(this.mInventory[2])/10);
                 aBaseMetaTileEntity.decrStackSize(2, 1);
                 if (XSTR.XSTR_INSTANCE.nextInt(GT_Utility.isPartOfMaterials(this.mInventory[2],Materials.Coal) || GT_Utility.isPartOfMaterials(this.mInventory[2],Materials.Charcoal) ? 3 : GT_Utility.isPartOfMaterials(this.mInventory[2],Materials.Lignite) ? 8 : 2 ) == 0) {
-                    aBaseMetaTileEntity.addStackToSlot(3, GT_OreDictUnificator.get(OrePrefixes.dustTiny, (GT_Utility.isPartOfMaterials(this.mInventory[2],Materials.Lignite) || GT_Utility.isPartOfMaterials(this.mInventory[2],Materials.Coal)) ? Materials.DarkAsh : Materials.Ash, 1L));
+                    aBaseMetaTileEntity.addStackToSlot(3, GT_OreDictUnificator.get(OrePrefixes.dust, (GT_Utility.isPartOfMaterials(this.mInventory[2],Materials.Lignite) || GT_Utility.isPartOfMaterials(this.mInventory[2],Materials.Coal)) ? Materials.DarkAsh : Materials.Ash, 1L));
                 }
             }
         }
@@ -178,7 +178,7 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
             aBaseMetaTileEntity.decrStackSize(2, 1);
             //adds tiny pile of ash for burntime under 10k, small pile for under 100k and pile for bigger values
             if (XSTR.XSTR_INSTANCE.nextInt(2) == 0)
-                aBaseMetaTileEntity.addStackToSlot(3, GT_OreDictUnificator.get( (TileEntityFurnace.getItemBurnTime(this.mInventory[2]) >= 10000 ? TileEntityFurnace.getItemBurnTime(this.mInventory[2]) >= 100000 ? OrePrefixes.dust : OrePrefixes.dustSmall : OrePrefixes.dustTiny), Materials.Ash, 1L));
+                aBaseMetaTileEntity.addStackToSlot(3, GT_OreDictUnificator.get( (TileEntityFurnace.getItemBurnTime(this.mInventory[2]) >= 10000 ? TileEntityFurnace.getItemBurnTime(this.mInventory[2]) >= 100000 ? OrePrefixes.dust  : OrePrefixes.dust : OrePrefixes.dust), Materials.Ash, 1L));
         }
 
     }
