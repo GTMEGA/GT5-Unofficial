@@ -4,12 +4,14 @@ import codechicken.nei.api.API;
 import cpw.mods.fml.common.Loader;
 import gregtech.common.tileentities.generators.GT_MetaTileEntity_LightningRod;
 import gregtech.common.tileentities.machines.multi.*;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import static gregtech.GT_Mod.gregtechproxy;
 import static gregtech.api.enums.ItemList.*;
 import static gregtech.api.enums.Materials.*;
+import static gregtech.api.enums.OreDictNames.craftingFurnace;
 import static gregtech.api.enums.OreDictNames.craftingIronFurnace;
 import static gregtech.api.enums.OrePrefixes.*;
 import static gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED;
@@ -26,7 +28,7 @@ public final class MultiblockMachineLoader {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
         Machine_Bricked_BlastFurnace.set(new GT_MetaTileEntity_BrickedBlastFurnace(140, "multimachine.brickedblastfurnace", "Bricked Blast Furnace").getStackForm(1L));
-        addCraftingRecipe(Machine_Bricked_BlastFurnace.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"BFB", "FwF", "BFB", 'B', Casing_Firebricks, 'F', craftingIronFurnace});
+        addCraftingRecipe(Machine_Bricked_BlastFurnace.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"BFB", "FwF", "BFB", 'B', Casing_Firebricks, 'F', ItemStack(Blocks.furnace});
 
         Machine_Multi_BlastFurnace.set(new GT_MetaTileEntity_ElectricBlastFurnace(1000, "multimachine.blastfurnace", "Electric Blast Furnace").getStackForm(1L));
         Machine_Multi_ImplosionCompressor.set(new GT_MetaTileEntity_ImplosionCompressor(1001, "multimachine.implosioncompressor", "Implosion Compressor").getStackForm(1L));
@@ -73,7 +75,7 @@ public final class MultiblockMachineLoader {
         addCraftingRecipe(Machine_Multi_HeatExchanger.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Pipe_Titanium, 'C', pipeMedium.get(Titanium), 'W', Electric_Pump_EV});
 
         Charcoal_Pile.set(new GT_MetaTileEntity_Charcoal_Pit(1155, "multimachine.charcoalpile", "Charcoal Pile Igniter").getStackForm(1));
-        addCraftingRecipe(Charcoal_Pile.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EXE", "EME", " C ", 'M', Hull_Bronze_Bricks, 'E', plate.get(AnyBronze), 'C', new ItemStack(Items.flint_and_steel, 1), 'X', rotor.get(Bronze),});
+        addCraftingRecipe(Charcoal_Pile.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EXE", "EME", " C ", 'M', Hull_Bronze_Bricks, 'E', plate.get(AnyBronze), 'C', ItemStack(Items.flint_and_steel, 1), 'X', rotor.get(Bronze),});
 
         OilDrill1.set(new GT_MetaTileEntity_OilDrill1(1157, "multimachine.oildrill1", "Oil/Gas/Fluid Drilling Rig").getStackForm(1));
         OilDrill2.set(new GT_MetaTileEntity_OilDrill2(141, "multimachine.oildrill2", "Oil/Gas/Fluid Drilling Rig II").getStackForm(1));
