@@ -97,7 +97,9 @@ public class GT_Tool_Axe extends GT_Tool {
     @Override
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
      return GT_ToolHarvestHelper.isAppropriateTool(aBlock,aMetaData ,"axe")
-             || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock ,Material.wood);
+             || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock ,Material.wood)
+             || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock ,Material.leaves)
+             || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock ,Material.vine);
     }
 
     @Override
