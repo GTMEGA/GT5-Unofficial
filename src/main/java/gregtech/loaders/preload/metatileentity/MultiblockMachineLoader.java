@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import static gregtech.GT_Mod.gregtechproxy;
 import static gregtech.api.enums.ItemList.*;
 import static gregtech.api.enums.Materials.*;
+import static gregtech.api.enums.OreDictNames.craftingFurnace;
 import static gregtech.api.enums.OreDictNames.craftingIronFurnace;
 import static gregtech.api.enums.OrePrefixes.*;
 import static gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED;
@@ -26,7 +27,7 @@ public final class MultiblockMachineLoader {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
         Machine_Bricked_BlastFurnace.set(new GT_MetaTileEntity_BrickedBlastFurnace(140, "multimachine.brickedblastfurnace", "Bricked Blast Furnace").getStackForm(1L));
-        addCraftingRecipe(Machine_Bricked_BlastFurnace.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"BFB", "FwF", "BFB", 'B', Casing_Firebricks, 'F', craftingIronFurnace});
+        addCraftingRecipe(Machine_Bricked_BlastFurnace.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"BFB", "FwF", "BFB", 'B', Casing_Firebricks, 'F', craftingFurnace});
 
         Machine_Multi_BlastFurnace.set(new GT_MetaTileEntity_ElectricBlastFurnace(1000, "multimachine.blastfurnace", "Electric Blast Furnace").getStackForm(1L));
         Machine_Multi_ImplosionCompressor.set(new GT_MetaTileEntity_ImplosionCompressor(1001, "multimachine.implosioncompressor", "Implosion Compressor").getStackForm(1L));
