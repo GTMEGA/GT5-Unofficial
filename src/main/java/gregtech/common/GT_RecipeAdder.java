@@ -387,9 +387,9 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if (!GT_Mod.gregtechproxy.mEnableCleanroom && aSpecial == -200) {
             aSpecial = 0;
         }
-        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(true, aInputs, aOutputs, null, new FluidStack[]{Materials.Water.getFluid(Math.max(4, Math.min(1000, aDuration * aEUt / 320)))}, null, aDuration * 2, aEUt, aSpecial);
-        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(true, aInputs, aOutputs, null, new FluidStack[]{GT_ModHandler.getDistilledWater(Math.max(2, Math.min(500, aDuration * aEUt / 426)))}, null, aDuration * 2, aEUt, aSpecial);
-        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(true, aInputs, aOutputs, null, new FluidStack[]{Materials.Lubricant.getFluid(Math.max(1, Math.min(250, aDuration * aEUt / 1280)))}, null, aDuration, aEUt, aSpecial);
+        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(true, aInputs, aOutputs, null, new FluidStack[]{Materials.Water.getFluid(Math.max(4, Math.min(1000, aDuration * aEUt / 320)))}, null, aDuration * 4, aEUt, aSpecial);
+//        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(true, aInputs, aOutputs, null, new FluidStack[]{GT_ModHandler.getDistilledWater(Math.max(2, Math.min(500, aDuration * aEUt / 512)))}, null, aDuration * 4, aEUt, aSpecial);
+        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(true, aInputs, aOutputs, null, new FluidStack[]{Materials.Lubricant.getFluid(Math.max(4, Math.min(250, aDuration * aEUt / 1792)))}, null, aDuration, aEUt, aSpecial);
         return true;
     }
 

@@ -1718,10 +1718,10 @@ public class GT_MachineRecipeLoader implements Runnable {
                 Materials.Quartzite.getDust(9), Materials.PotassiumFeldspar.getDust(9), Materials.Marble.getDust(8),
                 Materials.Biotite.getDust(4), Materials.MetalMixture.getDust(4), Materials.Sodalite.getDust(4),
                 new int[]{10000, 10000, 10000, 10000, 7500, 5000}, 8640, 30);
-        GT_Values.RA.addCentrifugeRecipe(Materials.MetalMixture.getDust(36), GT_Values.NI, GT_Values.NF, GT_Values.NF,
-                Materials.BandedIron.getDust(9), Materials.Bauxite.getDust(9), Materials.Pyrolusite.getDust(8),
-                Materials.Barite.getDust(4), Materials.Chromite.getDust(4), Materials.Ilmenite.getDust(4),
-                new int[]{10000, 10000, 10000, 10000, 7500, 5000}, 13125, 1920);
+        GT_Values.RA.addCentrifugeRecipe(Materials.MetalMixture.getDust(11), GT_Values.NI, GT_Values.NF, GT_Values.NF,
+                Materials.BandedIron.getDust(4), Materials.Malachite.getDust(2), Materials.Pyrolusite.getDust(2),
+                Materials.Barite.getDust(1), Materials.Chromite.getDust(1), Materials.Ilmenite.getDust(1),
+                new int[]{10000, 10000, 10000, 10000, 7500, 5000}, 1200, 112);
 
         this.run3();
 

@@ -93,11 +93,11 @@ public final class HatchLoader {
 
         Hatch_Maintenance.set(new GT_MetaTileEntity_Hatch_Maintenance(90, "hatch.maintenance", "Manual Maintenance Hatch", 1).getStackForm(1L));
 
-        addCraftingRecipe(Hatch_Maintenance.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"dwx", "hMc", "fsr", 'M', Hull_LV});
-        addCraftingRecipe(Hatch_Maintenance.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"dwx", "hMC", "fsr", 'M', Hull_LV, 'C', getModItem("Railcraft", "tool.crowbar", 1L, 0)});
-        addCraftingRecipe(Hatch_Maintenance.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"dwx", "hMC", "fsr", 'M', Hull_LV, 'C', getModItem("Railcraft", "tool.crowbar.reinforced", 1L, 0)});
-        addCraftingRecipe(Hatch_Maintenance.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"dwx", "hMC", "fsr", 'M', Hull_LV, 'C', getModItem("Railcraft", "tool.crowbar.magic", 1L, 0)});
-        addCraftingRecipe(Hatch_Maintenance.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"dwx", "hMC", "fsr", 'M', Hull_LV, 'C', getModItem("Railcraft", "tool.crowbar.void", 1L, 0)});
+//        addCraftingRecipe(Hatch_Maintenance.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"dwx", "hMc", "fsr", 'M', Hull_LV});
+//        addCraftingRecipe(Hatch_Maintenance.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"dwx", "hMC", "fsr", 'M', Hull_LV, 'C', getModItem("Railcraft", "tool.crowbar", 1L, 0)});
+//        addCraftingRecipe(Hatch_Maintenance.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"dwx", "hMC", "fsr", 'M', Hull_LV, 'C', getModItem("Railcraft", "tool.crowbar.reinforced", 1L, 0)});
+//        addCraftingRecipe(Hatch_Maintenance.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"dwx", "hMC", "fsr", 'M', Hull_LV, 'C', getModItem("Railcraft", "tool.crowbar.magic", 1L, 0)});
+//        addCraftingRecipe(Hatch_Maintenance.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"dwx", "hMC", "fsr", 'M', Hull_LV, 'C', getModItem("Railcraft", "tool.crowbar.void", 1L, 0)});
 
         Hatch_AutoMaintenance.set(new GT_MetaTileEntity_Hatch_Maintenance(111, "hatch.maintenance.auto", "Auto Maintenance Hatch", 6, true).getStackForm(1L));
         Hatch_DataAccess_EV.set(new GT_MetaTileEntity_Hatch_DataAccess(145, "hatch.dataaccess", "Data Access Hatch", 4).getStackForm(1L));
