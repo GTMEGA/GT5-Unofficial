@@ -51,8 +51,8 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                     		if (!aMaterial.contains(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE)) {
                     			GT_Values.RA.addPrimitiveBlastRecipe(GT_Utility.copyAmount(2, aStack), GT_Values.NI,            2, aMaterial.mDirectSmelting.getIngots(outputAmount), GT_Values.NI,                                         600);
                     		} else if (aMaterial == Materials.Chalcopyrite) {
-                    	    	GT_Values.RA.addPrimitiveBlastRecipe(aMaterial.getDust(2), new ItemStack(Blocks.sand, 2),       2, aMaterial.mDirectSmelting.getIngots(outputAmount), Materials.Ferrosilite.getDustSmall(2 * outputAmount), 600);
-                    	    	GT_Values.RA.addPrimitiveBlastRecipe(aMaterial.getDust(2), Materials.Glass.getDust(2),          2, aMaterial.mDirectSmelting.getIngots(outputAmount), Materials.Ferrosilite.getDustTiny(7 * outputAmount),  600);
+                    	    	GT_Values.RA.addPrimitiveBlastRecipe(aMaterial.getDust(2), new ItemStack(Blocks.sand, 2),       2, aMaterial.mDirectSmelting.getIngots(outputAmount), Materials.Ferrosilite.getDust(2 * outputAmount), 600);
+                    	    	GT_Values.RA.addPrimitiveBlastRecipe(aMaterial.getDust(2), Materials.Glass.getDust(2),          2, aMaterial.mDirectSmelting.getIngots(outputAmount), Materials.Ferrosilite.getDust(7 * outputAmount),  600);
                     	    	GT_Values.RA.addPrimitiveBlastRecipe(aMaterial.getDust(2), Materials.SiliconDioxide.getDust(2), 2, aMaterial.mDirectSmelting.getIngots(outputAmount), Materials.Ferrosilite.getDust(outputAmount),          600);
                     		} else if (aMaterial == Materials.Tetrahedrite) {
                     	    	GT_Values.RA.addPrimitiveBlastRecipe(aMaterial.getDust(2), GT_Values.NI,                        2, aMaterial.mDirectSmelting.getIngots(outputAmount), Materials.Antimony.getIngots(outputAmount / 3),      600);
