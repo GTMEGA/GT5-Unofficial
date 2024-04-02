@@ -15,6 +15,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -60,8 +61,21 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_EnhancedMu
     protected int fuelRemaining = 0;
     protected boolean boostEu = false;
 
+    public static final double BOOSTED_FUEL_USAGE = 2./3;
+
+    public static final long O2_PER_TICK = 2;
+
+    public static final int LUBRICANT_TIMER = 72;
+
+    public static final int LUBRICANT_PER_HOUR = (3600 * 20) / LUBRICANT_TIMER;
+
     public GT_MetaTileEntity_DieselEngine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+    }
+
+    @Override
+    public int maxTotalAmperageOutput() {
+        return 64;
     }
 
     public GT_MetaTileEntity_DieselEngine(String aName) {
@@ -73,17 +87,18 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_EnhancedMu
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Combustion Generator")
                 .addInfo("Controller block for the Large Combustion Engine")
-                .addInfo("Supply Diesel Fuels and 1000L of Lubricant per hour to run")
-                .addInfo("Supply 40L/s of Oxygen to boost output (optional)")
-                .addInfo("Default: Produces 2048EU/t at 100% fuel efficiency")
-                .addInfo("Boosted: Produces 6144EU/t at 150% fuel efficiency")
-                .addInfo("You need to wait for it to reach 300% to output full power")
+                .addInfo(String.format("Supply Diesel Fuels and %dL of Lubricant per hour to run", LUBRICANT_PER_HOUR))
+                .addInfo(String.format("Supply %dL/s of Oxygen to boost output (optional)", O2_PER_TICK * 20))
+                .addInfo("Produces 16384 Eu/t")
+                .addInfo("Default: 100% fuel usage")
+                .addInfo(String.format("Boosted: %.1f%% fuel usage", BOOSTED_FUEL_USAGE * 100))
+//                .addInfo("You need to wait for it to reach 300% to output full power")
                 .addPollutionAmount(20 * getPollutionPerTick(null))
                 .addSeparator()
                 .beginStructureBlock(3, 3, 4, false)
                 .addController("Front center")
-                .addCasingInfo("Stable Titanium Machine Casing", 16)
-                .addOtherStructurePart("Titanium Gear Box Machine Casing", "Inner 2 blocks")
+                .addCasingInfo("Clean Stainless Steel Machine Casing", 16)
+                .addOtherStructurePart("Stainless Steel Gear Box Machine Casing", "Inner 2 blocks")
                 .addOtherStructurePart("Engine Intake Machine Casing", "8x, ring around controller")
                 .addStructureInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
                 .addDynamoHatch("Back center", 2)
@@ -131,7 +146,7 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_EnhancedMu
      * This can be further multiplied by {@link #getMaxEfficiency(ItemStack)} when boosted
      */
     protected int getNominalOutput() {
-        return 2048;
+        return 16384;
     }
 
     protected Materials getBooster() {
@@ -168,22 +183,27 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_EnhancedMu
         // fast track lookup
         if (!tFluids.isEmpty()) {
             for (FluidStack tFluid : tFluids) {
+                val nominalOutput = getNominalOutput();
                 GT_Recipe tRecipe = getFuelMap().findFuel(tFluid);
                 if (tRecipe == null) continue;
 
                 FluidStack tLiquid = tFluid.copy();
-                fuelConsumption = tLiquid.amount = boostEu ? (getBoostFactor() * getNominalOutput() / tRecipe.mSpecialValue) : (getNominalOutput() / tRecipe.mSpecialValue); //Calc fuel consumption
+                //Calc fuel consumption, 100 is to avoid weird rounding errors with better fuels
+                fuelConsumption = tLiquid.amount = (boostEu ? (int) (BOOSTED_FUEL_USAGE * (nominalOutput / tRecipe.mSpecialValue) * 100) : (nominalOutput / tRecipe.mSpecialValue * 100)) / 100;
                 //Deplete that amount
-                if (!depleteInput(tLiquid)) return false;
-                boostEu = depleteInput(getBooster().getGas(2L * getAdditiveFactor()));
+                if (!depleteInput(tLiquid)) {
+                    return false;
+                }
+                boostEu = depleteInput(getBooster().getGas(O2_PER_TICK * getAdditiveFactor()));
 
                 //Deplete Lubricant. 1000L should = 1 hour of runtime (if baseEU = 2048)
-                if ((mRuntime % 72 == 0 || mRuntime == 0) && !depleteInput(Materials.Lubricant.getFluid((boostEu ? 2L : 1L) * getAdditiveFactor())))
+                if ((mRuntime % LUBRICANT_TIMER == 0 || mRuntime == 0) && !depleteInput(Materials.Lubricant.getFluid((boostEu ? 2L : 1L) * getAdditiveFactor()))) {
                     return false;
+                }
 
                 fuelValue = tRecipe.mSpecialValue;
                 fuelRemaining = tFluid.amount; //Record available fuel
-                this.mEUt = mEfficiency < 2000 ? 0 : getNominalOutput(); //Output 0 if startup is less than 20%
+                this.mEUt = mEfficiency < 2000 ? 0 : nominalOutput; //Output 0 if startup is less than 20%
                 this.mProgresstime = 1;
                 this.mMaxProgresstime = 1;
                 this.mEfficiencyIncrease = getEfficiencyIncrease();
@@ -211,7 +231,7 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_EnhancedMu
     }
 
     public byte getCasingMeta() {
-        return 2;
+        return 1;
     }
 
     public Block getIntakeBlock() {
@@ -231,7 +251,7 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_EnhancedMu
     }
 
     public byte getCasingTextureIndex() {
-        return 50;
+        return 49;
     }
 
     private boolean addToMachineList(IGregTechTileEntity tTileEntity) {
@@ -260,7 +280,8 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_EnhancedMu
 
     @Override
     public int getMaxEfficiency(ItemStack aStack) {
-        return boostEu ? 30000 : 10000;
+//        return boostEu ? 13333 : 10000;
+        return 10000;
     }
 
     @Override

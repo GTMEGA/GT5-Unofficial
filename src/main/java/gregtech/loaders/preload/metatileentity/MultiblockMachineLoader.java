@@ -100,8 +100,8 @@ public final class MultiblockMachineLoader {
         addCraftingRecipe(Machine_Multi_Assemblyline.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "EME", "WCW", 'M', Hull_IV, 'W', Casing_Assembler, 'E', circuitLogic.get(LOGIC_IV), 'C', Robot_Arm_IV});
 
         Machine_Multi_DieselEngine.set(new GT_MetaTileEntity_DieselEngine(1171, "multimachine.dieselengine", "Combustion Engine").getStackForm(1L));
-        addCraftingRecipe(Machine_Multi_DieselEngine.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "EME", "GWG", 'M', Hull_EV, 'P', Electric_Piston_EV, 'E', Electric_Motor_EV, 'C', circuit.get(Elite), 'W', cableGt01.get(TungstenSteel), 'G', gearGt.get(Titanium)});
-        addCraftingRecipe(Casing_EngineIntake.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PhP", "RFR", "PwP", 'R', pipeMedium.get(Titanium), 'F', Casing_StableTitanium, 'P', rotor.get(Titanium)});
+        addCraftingRecipe(Machine_Multi_DieselEngine.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "EME", "GWG", 'M', Hull_HV, 'P', Electric_Piston_HV, 'E', Electric_Motor_HV, 'C', circuitLogic.get(LOGIC_HV), 'W', cableGt01.get(Platinum), 'G', gearGt.get(StainlessSteel)});
+        addCraftingRecipe(Casing_EngineIntake.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PhP", "RFR", "PwP", 'R', pipeMedium.get(StainlessSteel), 'F', Casing_CleanStainlessSteel, 'P', rotor.get(StainlessSteel)});
 
         Machine_Multi_Cleanroom.set(new GT_MetaTileEntity_Cleanroom(1172, "multimachine.cleanroom", "Cleanroom Controller").getStackForm(1));
         //If Cleanroom is enabled, add a recipe, else hide from NEI.

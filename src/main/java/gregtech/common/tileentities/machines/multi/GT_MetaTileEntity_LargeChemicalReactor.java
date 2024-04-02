@@ -68,6 +68,11 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_En
     }
 
     @Override
+    public int maxTotalAmperageInput() {
+        return 128;
+    }
+
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_LargeChemicalReactor(this.mName);
     }
