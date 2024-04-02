@@ -76,6 +76,8 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
     private int mCasingAmount;
     private int mFireboxAmount;
 
+    public static final double DIESEL_FACTOR = 0.85;
+
     public GT_MetaTileEntity_LargeBoiler(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -90,26 +92,26 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
         val                                 euPerSecond = getEUt() * 20;
         val steamPerSecond = euPerSecond / EU_PER_STEAM;
         tt.addMachineType("Boiler")
-                .addInfo("Controller block for the Large " + getCasingMaterial() + " Boiler")
-                .addInfo("Produces " + (steamPerSecond * (runtimeBoost(20) / 20f) + "L of Steam with 1 Coal at " + steamPerSecond) + "L/s")
-                .addInfo("Consumes " + steamPerSecond / STEAM_PER_WATER + "L of Water per second")
-                .addInfo("A programmed circuit in the main block throttles the boiler (-250L/s per config)")
-                .addInfo(String.format("Diesel fuels have 1/4 efficiency - Takes %.2f seconds to heat up", 500.0 / getEfficiencyIncrease()))//? check semifluid again
-                .addPollutionAmount(20 * getPollutionPerTick(null))
-                .addSeparator()
-                .beginStructureBlock(3, 5, 3, false)
-                .addController("Front bottom")
-                .addCasingInfo(getCasingMaterial() + " " + getCasingBlockType() + " Casing", 24)//?
-                .addOtherStructurePart(getCasingMaterial() + " Fire Boxes", "Bottom layer, 3 minimum")
-                .addOtherStructurePart(getCasingMaterial() + " Pipe Casing Blocks", "Inner 3 blocks")
-                .addMaintenanceHatch("Any firebox", 1)
-                .addMufflerHatch("Any firebox", 1)
-                .addInputBus("Solid fuel, Any firebox", 1)
-                .addInputHatch("Liquid fuel, Any firebox", 1)
-                .addStructureInfo("You can use either, or both")
-                .addInputHatch("Water, Any firebox", 1)
-                .addOutputHatch("Steam, any casing", 2)
-                .toolTipFinisher("Gregtech");
+          .addInfo("Controller block for the Large " + getCasingMaterial() + " Boiler")
+          .addInfo("Produces " + (steamPerSecond * (runtimeBoost(20) / 20f) + "L of Steam with 1 Coal at " + steamPerSecond) + "L/s")
+          .addInfo("Consumes " + steamPerSecond / STEAM_PER_WATER + "L of Water per second")
+          .addInfo("A programmed circuit in the main block throttles the boiler (-250L/s per config)")
+          .addInfo(String.format("Diesel fuels have %.1f%% efficiency - Takes %.2f seconds to heat up", 100 * DIESEL_FACTOR, 500.0 / getEfficiencyIncrease()))//? check semifluid again
+          .addPollutionAmount(20 * getPollutionPerTick(null))
+          .addSeparator()
+          .beginStructureBlock(3, 5, 3, false)
+          .addController("Front bottom")
+          .addCasingInfo(getCasingMaterial() + " " + getCasingBlockType() + " Casing", 24)//?
+          .addOtherStructurePart(getCasingMaterial() + " Fire Boxes", "Bottom layer, 3 minimum")
+          .addOtherStructurePart(getCasingMaterial() + " Pipe Casing Blocks", "Inner 3 blocks")
+          .addMaintenanceHatch("Any firebox", 1)
+          .addMufflerHatch("Any firebox", 1)
+          .addInputBus("Solid fuel, Any firebox", 1)
+          .addInputHatch("Liquid fuel, Any firebox", 1)
+          .addStructureInfo("You can use either, or both")
+          .addInputHatch("Water, Any firebox", 1)
+          .addOutputHatch("Steam, any casing", 2)
+          .toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -182,7 +184,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
             if (tFluid != null && tRecipe.mSpecialValue > 1) {
                 tFluid.amount = 1000;
                 if (depleteInput(tFluid)) {
-                    this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(tRecipe.mSpecialValue / 2));
+                    this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost((int) (tRecipe.mSpecialValue * DIESEL_FACTOR)));
                     this.mEUt = adjustEUtForConfig(getEUt());
                     this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease() * 4;
                     return true;
