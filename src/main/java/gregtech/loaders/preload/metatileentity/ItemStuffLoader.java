@@ -60,16 +60,16 @@ public final class ItemStuffLoader {
         Automation_Filter_UV.set(new GT_MetaTileEntity_Filter(9248, "automation.filter.tier.08", "UV Item Filter", 8).getStackForm(1L));
         Automation_Filter_MAX.set(new GT_MetaTileEntity_Filter(9249, "automation.filter.tier.09", "UHV Item Filter", 9).getStackForm(1L));
 
-        addCraftingRecipe(Automation_Filter_ULV.get(1L), bitsd, new Object[]{" F ", "CMV", " X ", 'M', Hull_ULV, 'V', Electric_Motor_LV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_Filter_LV.get(1L), bitsd, new Object[]{" F ", "CMV", " X ", 'M', Hull_LV, 'V', Conveyor_Module_LV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_Filter_MV.get(1L), bitsd, new Object[]{" F ", "CMV", " X ", 'M', Hull_MV, 'V', Conveyor_Module_MV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_Filter_HV.get(1L), bitsd, new Object[]{" F ", "CMV", " X ", 'M', Hull_HV, 'V', Conveyor_Module_HV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_Filter_EV.get(1L), bitsd, new Object[]{" F ", "CMV", " X ", 'M', Hull_EV, 'V', Conveyor_Module_EV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_Filter_IV.get(1L), bitsd, new Object[]{" F ", "CMV", " X ", 'M', Hull_IV, 'V', Conveyor_Module_IV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_Filter_LuV.get(1L), bitsd, new Object[]{" F ", "CMV", " X ", 'M', Hull_LuV, 'V', Conveyor_Module_LuV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_Filter_ZPM.get(1L), bitsd, new Object[]{" F ", "CMV", " X ", 'M', Hull_ZPM, 'V', Conveyor_Module_ZPM, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_Filter_UV.get(1L), bitsd, new Object[]{" F ", "CMV", " X ", 'M', Hull_UV, 'V', Conveyor_Module_UV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_Filter_MAX.get(1L), bitsd, new Object[]{" F ", "CMV", " X ", 'M', Hull_MAX, 'V', Conveyor_Module_UHV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_Filter_ULV.get(4L), bitsd, new Object[]{" F ", "CMV", " X ", 'M', Hull_ULV, 'V', Electric_Motor_LV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_Filter_LV.get(4L), bitsd, new Object[]{" F ", "CMV", " X ", 'M', Hull_LV, 'V', Conveyor_Module_LV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_Filter_MV.get(4L), bitsd, new Object[]{" F ", "CMV", " X ", 'M', Hull_MV, 'V', Conveyor_Module_MV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_Filter_HV.get(4L), bitsd, new Object[]{" F ", "CMV", " X ", 'M', Hull_HV, 'V', Conveyor_Module_HV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_Filter_EV.get(4L), bitsd, new Object[]{" F ", "CMV", " X ", 'M', Hull_EV, 'V', Conveyor_Module_EV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_Filter_IV.get(4L), bitsd, new Object[]{" F ", "CMV", " X ", 'M', Hull_IV, 'V', Conveyor_Module_IV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_Filter_LuV.get(4L), bitsd, new Object[]{" F ", "CMV", " X ", 'M', Hull_LuV, 'V', Conveyor_Module_LuV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_Filter_ZPM.get(4L), bitsd, new Object[]{" F ", "CMV", " X ", 'M', Hull_ZPM, 'V', Conveyor_Module_ZPM, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_Filter_UV.get(4L), bitsd, new Object[]{" F ", "CMV", " X ", 'M', Hull_UV, 'V', Conveyor_Module_UV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_Filter_MAX.get(4L), bitsd, new Object[]{" F ", "CMV", " X ", 'M', Hull_MAX, 'V', Conveyor_Module_UHV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
 
         Automation_TypeFilter_ULV.set(new GT_MetaTileEntity_TypeFilter(9250, "automation.typefilter.tier.00", "ULV Type Filter", 0).getStackForm(1L));
         Automation_TypeFilter_LV.set(new GT_MetaTileEntity_TypeFilter(9251, "automation.typefilter.tier.01", "LV Type Filter", 1).getStackForm(1L));
@@ -82,16 +82,16 @@ public final class ItemStuffLoader {
         Automation_TypeFilter_UV.set(new GT_MetaTileEntity_TypeFilter(9258, "automation.typefilter.tier.08", "UV Type Filter", 8).getStackForm(1L));
         Automation_TypeFilter_MAX.set(new GT_MetaTileEntity_TypeFilter(9259, "automation.typefilter.tier.09", "UHV Type Filter", 9).getStackForm(1L));
 
-        addCraftingRecipe(Automation_TypeFilter_ULV.get(1L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_ULV, 'V', Conveyor_Module_LV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_TypeFilter_LV.get(1L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_LV, 'V', Conveyor_Module_LV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_TypeFilter_MV.get(1L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_MV, 'V', Conveyor_Module_MV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_TypeFilter_HV.get(1L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_HV, 'V', Conveyor_Module_HV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_TypeFilter_EV.get(1L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_EV, 'V', Conveyor_Module_EV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_TypeFilter_IV.get(1L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_IV, 'V', Conveyor_Module_IV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_TypeFilter_LuV.get(1L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_LuV, 'V', Conveyor_Module_LuV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_TypeFilter_ZPM.get(1L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_ZPM, 'V', Conveyor_Module_ZPM, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_TypeFilter_UV.get(1L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_UV, 'V', Conveyor_Module_UV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_TypeFilter_MAX.get(1L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_MAX, 'V', Conveyor_Module_UHV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_TypeFilter_ULV.get(4L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_ULV, 'V', Conveyor_Module_LV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_TypeFilter_LV.get(4L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_LV, 'V', Conveyor_Module_LV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_TypeFilter_MV.get(4L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_MV, 'V', Conveyor_Module_MV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_TypeFilter_HV.get(4L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_HV, 'V', Conveyor_Module_HV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_TypeFilter_EV.get(4L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_EV, 'V', Conveyor_Module_EV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_TypeFilter_IV.get(4L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_IV, 'V', Conveyor_Module_IV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_TypeFilter_LuV.get(4L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_LuV, 'V', Conveyor_Module_LuV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_TypeFilter_ZPM.get(4L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_ZPM, 'V', Conveyor_Module_ZPM, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_TypeFilter_UV.get(4L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_UV, 'V', Conveyor_Module_UV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_TypeFilter_MAX.get(4L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_MAX, 'V', Conveyor_Module_UHV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
 
         Automation_Regulator_ULV.set(new GT_MetaTileEntity_Regulator(9270, "automation.regulator.tier.00", "ULV Regulator", 0).getStackForm(1L));
         Automation_Regulator_LV.set(new GT_MetaTileEntity_Regulator(9271, "automation.regulator.tier.01", "LV Regulator", 1).getStackForm(1L));
@@ -104,16 +104,16 @@ public final class ItemStuffLoader {
         Automation_Regulator_UV.set(new GT_MetaTileEntity_Regulator(9278, "automation.regulator.tier.08", "UV Regulator", 8).getStackForm(1L));
         Automation_Regulator_MAX.set(new GT_MetaTileEntity_Regulator(9279, "automation.regulator.tier.09", "UHV Regulator", 9).getStackForm(1L));
 
-        addCraftingRecipe(Automation_Regulator_ULV.get(1L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_ULV, 'V', Robot_Arm_LV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_Regulator_LV.get(1L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_LV, 'V', Robot_Arm_LV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_Regulator_MV.get(1L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_MV, 'V', Robot_Arm_MV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_Regulator_HV.get(1L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_HV, 'V', Robot_Arm_HV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_Regulator_EV.get(1L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_EV, 'V', Robot_Arm_EV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_Regulator_IV.get(1L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_IV, 'V', Robot_Arm_IV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_Regulator_LuV.get(1L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_LuV, 'V', Robot_Arm_LuV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_Regulator_ZPM.get(1L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_ZPM, 'V', Robot_Arm_ZPM, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_Regulator_UV.get(1L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_UV, 'V', Robot_Arm_UV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_Regulator_MAX.get(1L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_MAX, 'V', Robot_Arm_UHV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_Regulator_ULV.get(4L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_ULV, 'V', Robot_Arm_LV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_Regulator_LV.get(4L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_LV, 'V', Robot_Arm_LV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_Regulator_MV.get(4L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_MV, 'V', Robot_Arm_MV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_Regulator_HV.get(4L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_HV, 'V', Robot_Arm_HV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_Regulator_EV.get(4L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_EV, 'V', Robot_Arm_EV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_Regulator_IV.get(4L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_IV, 'V', Robot_Arm_IV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_Regulator_LuV.get(4L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_LuV, 'V', Robot_Arm_LuV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_Regulator_ZPM.get(4L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_ZPM, 'V', Robot_Arm_ZPM, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_Regulator_UV.get(4L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_UV, 'V', Robot_Arm_UV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_Regulator_MAX.get(4L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_MAX, 'V', Robot_Arm_UHV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
 
         Automation_SuperBuffer_ULV.set(new GT_MetaTileEntity_SuperBuffer(9300, "automation.superbuffer.tier.00", "ULV Super Buffer", 0).getStackForm(1L));
         Automation_SuperBuffer_LV.set(new GT_MetaTileEntity_SuperBuffer(9301, "automation.superbuffer.tier.01", "LV Super Buffer", 1).getStackForm(1L));
@@ -126,27 +126,27 @@ public final class ItemStuffLoader {
         Automation_SuperBuffer_UV.set(new GT_MetaTileEntity_SuperBuffer(9308, "automation.superbuffer.tier.08", "UV Super Buffer", 8).getStackForm(1L));
         Automation_SuperBuffer_MAX.set(new GT_MetaTileEntity_SuperBuffer(9309, "automation.superbuffer.tier.09", "UHV Super Buffer", 9).getStackForm(1L));
 
-        addCraftingRecipe(Automation_SuperBuffer_ULV.get(1L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_ULV, 'V', Conveyor_Module_LV, 'D', Tool_DataOrb});
-        addCraftingRecipe(Automation_SuperBuffer_LV.get(1L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_LV, 'V', Conveyor_Module_LV, 'D', Tool_DataOrb});
-        addCraftingRecipe(Automation_SuperBuffer_MV.get(1L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_MV, 'V', Conveyor_Module_MV, 'D', Tool_DataOrb});
-        addCraftingRecipe(Automation_SuperBuffer_HV.get(1L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_HV, 'V', Conveyor_Module_HV, 'D', Tool_DataOrb});
-        addCraftingRecipe(Automation_SuperBuffer_EV.get(1L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_EV, 'V', Conveyor_Module_EV, 'D', Tool_DataOrb});
-        addCraftingRecipe(Automation_SuperBuffer_IV.get(1L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_IV, 'V', Conveyor_Module_IV, 'D', Tool_DataOrb});
-        addCraftingRecipe(Automation_SuperBuffer_LuV.get(1L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_LuV, 'V', Conveyor_Module_LuV, 'D', Tool_DataOrb});
-        addCraftingRecipe(Automation_SuperBuffer_ZPM.get(1L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_ZPM, 'V', Conveyor_Module_ZPM, 'D', Tool_DataOrb});
-        addCraftingRecipe(Automation_SuperBuffer_UV.get(1L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_UV, 'V', Conveyor_Module_UV, 'D', Tool_DataOrb});
-        addCraftingRecipe(Automation_SuperBuffer_MAX.get(1L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_MAX, 'V', Conveyor_Module_UHV, 'D', Tool_DataOrb});
+        addCraftingRecipe(Automation_SuperBuffer_ULV.get(4L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_ULV, 'V', Conveyor_Module_LV, 'D', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_SuperBuffer_LV.get(4L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_LV, 'V', Conveyor_Module_LV, 'D', circuitLogic.get(LOGIC_LV)});
+        addCraftingRecipe(Automation_SuperBuffer_MV.get(4L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_MV, 'V', Conveyor_Module_MV, 'D', circuitLogic.get(LOGIC_MV)});
+        addCraftingRecipe(Automation_SuperBuffer_HV.get(4L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_HV, 'V', Conveyor_Module_HV, 'D', circuitLogic.get(LOGIC_HV)});
+        addCraftingRecipe(Automation_SuperBuffer_EV.get(4L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_EV, 'V', Conveyor_Module_EV, 'D', circuitLogic.get(LOGIC_EV)});
+        addCraftingRecipe(Automation_SuperBuffer_IV.get(4L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_IV, 'V', Conveyor_Module_IV, 'D', circuitLogic.get(LOGIC_IV)});
+        addCraftingRecipe(Automation_SuperBuffer_LuV.get(4L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_LuV, 'V', Conveyor_Module_LuV, 'D', circuitLogic.get(LOGIC_LUV)});
+        addCraftingRecipe(Automation_SuperBuffer_ZPM.get(4L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_ZPM, 'V', Conveyor_Module_ZPM, 'D', circuitLogic.get(LOGIC_ZPM)});
+        addCraftingRecipe(Automation_SuperBuffer_UV.get(4L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_UV, 'V', Conveyor_Module_UV, 'D', circuitLogic.get(LOGIC_UV)});
+        addCraftingRecipe(Automation_SuperBuffer_MAX.get(4L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_MAX, 'V', Conveyor_Module_UHV, 'D', circuitLogic.get(LOGIC_MAX)});
 
-        addCraftingRecipe(Automation_SuperBuffer_ULV.get(1L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_ULV, 'V', Conveyor_Module_LV, 'D', Tool_DataStick});
-        addCraftingRecipe(Automation_SuperBuffer_LV.get(1L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_LV, 'V', Conveyor_Module_LV, 'D', Tool_DataStick});
-        addCraftingRecipe(Automation_SuperBuffer_MV.get(1L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_MV, 'V', Conveyor_Module_MV, 'D', Tool_DataStick});
-        addCraftingRecipe(Automation_SuperBuffer_HV.get(1L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_HV, 'V', Conveyor_Module_HV, 'D', Tool_DataStick});
-        addCraftingRecipe(Automation_SuperBuffer_EV.get(1L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_EV, 'V', Conveyor_Module_EV, 'D', Tool_DataStick});
-        addCraftingRecipe(Automation_SuperBuffer_IV.get(1L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_IV, 'V', Conveyor_Module_IV, 'D', Tool_DataStick});
-        addCraftingRecipe(Automation_SuperBuffer_LuV.get(1L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_LuV, 'V', Conveyor_Module_LuV, 'D', Tool_DataStick});
-        addCraftingRecipe(Automation_SuperBuffer_ZPM.get(1L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_ZPM, 'V', Conveyor_Module_ZPM, 'D', Tool_DataStick});
-        addCraftingRecipe(Automation_SuperBuffer_UV.get(1L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_UV, 'V', Conveyor_Module_UV, 'D', Tool_DataStick});
-        addCraftingRecipe(Automation_SuperBuffer_MAX.get(1L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_MAX, 'V', Conveyor_Module_UHV, 'D', Tool_DataStick});
+//        addCraftingRecipe(Automation_SuperBuffer_ULV.get(4L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_ULV, 'V', Conveyor_Module_LV, 'D', Tool_DataStick});
+//        addCraftingRecipe(Automation_SuperBuffer_LV.get(4L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_LV, 'V', Conveyor_Module_LV, 'D', Tool_DataStick});
+//        addCraftingRecipe(Automation_SuperBuffer_MV.get(4L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_MV, 'V', Conveyor_Module_MV, 'D', Tool_DataStick});
+//        addCraftingRecipe(Automation_SuperBuffer_HV.get(4L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_HV, 'V', Conveyor_Module_HV, 'D', Tool_DataStick});
+//        addCraftingRecipe(Automation_SuperBuffer_EV.get(4L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_EV, 'V', Conveyor_Module_EV, 'D', Tool_DataStick});
+//        addCraftingRecipe(Automation_SuperBuffer_IV.get(4L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_IV, 'V', Conveyor_Module_IV, 'D', Tool_DataStick});
+//        addCraftingRecipe(Automation_SuperBuffer_LuV.get(4L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_LuV, 'V', Conveyor_Module_LuV, 'D', Tool_DataStick});
+//        addCraftingRecipe(Automation_SuperBuffer_ZPM.get(4L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_ZPM, 'V', Conveyor_Module_ZPM, 'D', Tool_DataStick});
+//        addCraftingRecipe(Automation_SuperBuffer_UV.get(4L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_UV, 'V', Conveyor_Module_UV, 'D', Tool_DataStick});
+//        addCraftingRecipe(Automation_SuperBuffer_MAX.get(4L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_MAX, 'V', Conveyor_Module_UHV, 'D', Tool_DataStick});
 
         Automation_ItemDistributor_ULV.set(new GT_MetaTileEntity_ItemDistributor(9320, "automation.itemdistributor.tier.00", "ULV Item Distributor", 0).getStackForm(1L));
         Automation_ItemDistributor_LV.set(new GT_MetaTileEntity_ItemDistributor(9321, "automation.itemdistributor.tier.01", "LV Item Distributor", 1).getStackForm(1L));
@@ -159,16 +159,16 @@ public final class ItemStuffLoader {
         Automation_ItemDistributor_UV.set(new GT_MetaTileEntity_ItemDistributor(9328, "automation.itemdistributor.tier.08", "UV Item Distributor", 8).getStackForm(1L));
         Automation_ItemDistributor_MAX.set(new GT_MetaTileEntity_ItemDistributor(9329, "automation.itemdistributor.tier.09", "UHV Item Distributor", 9).getStackForm(1L));
 
-        addCraftingRecipe(Automation_ItemDistributor_ULV.get(2L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_ULV, 'V', Conveyor_Module_LV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
-        addCraftingRecipe(Automation_ItemDistributor_LV.get(2L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_LV, 'V', Conveyor_Module_LV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
-        addCraftingRecipe(Automation_ItemDistributor_MV.get(2L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_MV, 'V', Conveyor_Module_MV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
-        addCraftingRecipe(Automation_ItemDistributor_HV.get(2L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_HV, 'V', Conveyor_Module_HV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
-        addCraftingRecipe(Automation_ItemDistributor_EV.get(2L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_EV, 'V', Conveyor_Module_EV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
-        addCraftingRecipe(Automation_ItemDistributor_IV.get(2L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_IV, 'V', Conveyor_Module_IV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
-        addCraftingRecipe(Automation_ItemDistributor_LuV.get(2L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_LuV, 'V', Conveyor_Module_LuV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
-        addCraftingRecipe(Automation_ItemDistributor_ZPM.get(2L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_ZPM, 'V', Conveyor_Module_ZPM, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
-        addCraftingRecipe(Automation_ItemDistributor_UV.get(2L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_UV, 'V', Conveyor_Module_UV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
-        addCraftingRecipe(Automation_ItemDistributor_MAX.get(2L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_MAX, 'V', Conveyor_Module_UHV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
+        addCraftingRecipe(Automation_ItemDistributor_ULV.get(4L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_ULV, 'V', Conveyor_Module_LV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
+        addCraftingRecipe(Automation_ItemDistributor_LV.get(4L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_LV, 'V', Conveyor_Module_LV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
+        addCraftingRecipe(Automation_ItemDistributor_MV.get(4L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_MV, 'V', Conveyor_Module_MV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
+        addCraftingRecipe(Automation_ItemDistributor_HV.get(4L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_HV, 'V', Conveyor_Module_HV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
+        addCraftingRecipe(Automation_ItemDistributor_EV.get(4L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_EV, 'V', Conveyor_Module_EV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
+        addCraftingRecipe(Automation_ItemDistributor_IV.get(4L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_IV, 'V', Conveyor_Module_IV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
+        addCraftingRecipe(Automation_ItemDistributor_LuV.get(4L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_LuV, 'V', Conveyor_Module_LuV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
+        addCraftingRecipe(Automation_ItemDistributor_ZPM.get(4L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_ZPM, 'V', Conveyor_Module_ZPM, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
+        addCraftingRecipe(Automation_ItemDistributor_UV.get(4L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_UV, 'V', Conveyor_Module_UV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
+        addCraftingRecipe(Automation_ItemDistributor_MAX.get(4L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_MAX, 'V', Conveyor_Module_UHV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
 
         Quantum_Chest_LV.set(new GT_MetaTileEntity_QuantumChest(125, "quantum.chest.tier.06", "Quantum Chest I", 6).getStackForm(1L));
         Quantum_Chest_MV.set(new GT_MetaTileEntity_QuantumChest(126, "quantum.chest.tier.07", "Quantum Chest II", 7).getStackForm(1L));
