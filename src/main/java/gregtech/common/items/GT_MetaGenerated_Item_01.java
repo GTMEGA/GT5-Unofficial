@@ -587,11 +587,15 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Steam_Valve_EV.set(addItem(623, "Steam Valve (EV)", GT_Utility.formatNumbers(163840) + PartCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 8L)));
         ItemList.Steam_Valve_IV.set(addItem(624, "Steam Valve (IV)", GT_Utility.formatNumbers(327680) + PartCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 16L)));
 
+        ItemList.MEGASteamValve.set(addItem(625, "MEGA Steam Valve", "LIMITLESS... " + PartCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)));
+
         GregTech_API.registerCover(ItemList.Steam_Valve_LV.get(1L), TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_VALVE)), new GT_Cover_SteamValve(1024));
         GregTech_API.registerCover(ItemList.Steam_Valve_MV.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_VALVE)), new GT_Cover_SteamValve(2048));
         GregTech_API.registerCover(ItemList.Steam_Valve_HV.get(1L), TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(OVERLAY_VALVE)), new GT_Cover_SteamValve(4096));
         GregTech_API.registerCover(ItemList.Steam_Valve_EV.get(1L), TextureFactory.of(MACHINE_CASINGS[4][0], TextureFactory.of(OVERLAY_VALVE)), new GT_Cover_SteamValve(8192));
         GregTech_API.registerCover(ItemList.Steam_Valve_IV.get(1L), TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_VALVE)), new GT_Cover_SteamValve(16384));
+
+        GregTech_API.registerCover(ItemList.MEGASteamValve.get(1L), TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_VALVE)), new GT_Cover_MEGA_Steam_Valve());
 
         ItemList.FluidRegulator_LV.set(addItem(tLastID = 660, "Fluid Regulator (LV)", FRText1 + GT_Utility.formatNumbers(640) + FRText2));
         ItemList.FluidRegulator_MV.set(addItem(tLastID = 661, "Fluid Regulator (MV)", FRText1 + GT_Utility.formatNumbers(2560) + FRText2));
