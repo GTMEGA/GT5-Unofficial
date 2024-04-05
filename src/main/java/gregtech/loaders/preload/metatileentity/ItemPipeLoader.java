@@ -21,7 +21,7 @@ public final class ItemPipeLoader {
         generateItemPipes(PolyvinylChloride, PolyvinylChloride.mName, "PVC", 5690, 4);
         generateItemPipes(Nickel, Nickel.mName, 5700, 1);
         generateItemPipes(Cobalt, Cobalt.mName, 5710, 2);
-        generateItemPipes(Aluminium, Aluminium.mName, 5720, 2);
+//        generateItemPipes(Aluminium, Aluminium.mName, 5720, 2);
         LOADED = true;
     }
 

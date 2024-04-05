@@ -22,20 +22,30 @@ public final class FluidPipeLoader {
 
         generateFluidPipes(Materials.Copper, Materials.Copper.mName, 5110, 24, 1000, true);
         generateFluidMultiPipes(Materials.Copper, Materials.Copper.mName, 5115, 24, 1000, true);
+        //
         generateFluidPipes(Materials.Lead, Materials.Lead.mName, 5093, 60, 500, true);
         generateFluidMultiPipes(Materials.Lead, Materials.Lead.mName, 5099, 60, 500, true);
+        //
         generateFluidPipes(Materials.Brass, Materials.Brass.mName, 5120, 120, 2000, true);
         generateFluidMultiPipes(Materials.Brass, Materials.Brass.mName, 5125, 120, 2000, true);
+        //
         generateFluidPipes(Materials.Steel, Materials.Steel.mName, 5130, 240, 2500, true);
         generateFluidMultiPipes(Materials.Steel, Materials.Steel.mName, 5135, 240, 2500, true);
+        //
         generateFluidPipes(Materials.StainlessSteel, Materials.StainlessSteel.mName, 5140, 480, 3000, true);
         generateFluidMultiPipes(Materials.StainlessSteel, Materials.StainlessSteel.mName, 5145, 480, 3000, true);
-        generateFluidPipes(Materials.Titanium, Materials.Titanium.mName, 5150, 960, 5000, true);
-        generateFluidMultiPipes(Materials.Titanium, Materials.Titanium.mName, 5155, 960, 5000, true);
-        generateFluidPipes(Materials.TungstenSteel, Materials.TungstenSteel.mName, 5160, 1920, 7500, true);
-        generateFluidMultiPipes(Materials.TungstenSteel, Materials.TungstenSteel.mName, 5270, 1920, 7500, true);
+        //
+        generateFluidPipes(Materials.Aluminium, Materials.Aluminium.mName, 5720, 960, 4000, true);
+        //
+        generateFluidPipes(Materials.Titanium, Materials.Titanium.mName, 5150, 1920, 5000, true);
+        generateFluidMultiPipes(Materials.Titanium, Materials.Titanium.mName, 5155, 1920, 5000, true);
+        //
+        generateFluidPipes(Materials.TungstenSteel, Materials.TungstenSteel.mName, 5160, 3840, 7500, true);
+        generateFluidMultiPipes(Materials.TungstenSteel, Materials.TungstenSteel.mName, 5270, 3840, 7500, true);
+        //
         generateFluidPipes(Materials.Polybenzimidazole, Materials.Polybenzimidazole.mName, "PBI", 5280, 960, 1000, true);
         generateFluidMultiPipes(Materials.Polybenzimidazole, Materials.Polybenzimidazole.mName, "PBI", 5290, 960, 1000, true);
+        //
         GT_OreDictUnificator.registerOre(OrePrefixes.pipeSmall.get(Materials.Ultimate), new GT_MetaPipeEntity_Fluid(5165, "GT_Pipe_HighPressure_Small", "Small High Pressure Fluid Pipe", 0.375F, Materials.Redstone, 4800, 1500, true).getStackForm(1L));
         GT_OreDictUnificator.registerOre(OrePrefixes.pipeMedium.get(Materials.Ultimate), new GT_MetaPipeEntity_Fluid(5166, "GT_Pipe_HighPressure", "High Pressure Fluid Pipe", 0.5F, Materials.Redstone, 7200, 1500, true).getStackForm(1L));
         GT_OreDictUnificator.registerOre(OrePrefixes.pipeLarge.get(Materials.Ultimate), new GT_MetaPipeEntity_Fluid(5167, "GT_Pipe_HighPressure_Large", "Large High Pressure Fluid Pipe", 0.75F, Materials.Redstone, 9600, 1500, true).getStackForm(1L));
