@@ -1,5 +1,8 @@
 package gregtech.api.interfaces;
 
+import gregtech.common.GT_Compat;
+import lombok.val;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -35,8 +38,9 @@ public interface ITexture {
      */
     default void startDrawingQuads(RenderBlocks aRenderer, float aNormalX, float aNormalY, float aNormalZ) {
         if (aRenderer.useInventoryTint) {
-            Tessellator.instance.startDrawingQuads();
-            Tessellator.instance.setNormal(aNormalX, aNormalY, aNormalZ);
+            val tess = GT_Compat.tessellator();
+            tess.startDrawingQuads();
+            tess.setNormal(aNormalX, aNormalY, aNormalZ);
         }
     }
 
@@ -46,7 +50,7 @@ public interface ITexture {
      */
     default void draw(RenderBlocks aRenderer) {
         if (aRenderer.useInventoryTint) {
-            Tessellator.instance.draw();
+            GT_Compat.tessellator().draw();
         }
     }
 }

@@ -1,5 +1,7 @@
 package gregtech.api.gui;
 
+import gregtech.common.GT_Compat;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
@@ -52,7 +54,7 @@ public class GT_GUIContainer extends GuiContainer {
             super.drawScreen(par1, par2, par3);
         } catch (Throwable e) {
             try {
-                Tessellator.instance.draw();
+                GT_Compat.tessellator().draw();
             } catch (Throwable f) {
                 //
             }

@@ -1,6 +1,7 @@
 package gregtech.api.gui.widgets.icon;
 
 
+import gregtech.common.GT_Compat;
 import lombok.NonNull;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
@@ -13,7 +14,7 @@ public interface IGT_GuiIcon {
         if (this == GT_GuiIcon.INVALID) {
             return;
         }
-        Tessellator tess = Tessellator.instance;
+        Tessellator tess = GT_Compat.tessellator();
         if (doDraw) {
             Minecraft.getMinecraft().renderEngine.bindTexture(getResourceLocation());
             tess.startDrawingQuads();

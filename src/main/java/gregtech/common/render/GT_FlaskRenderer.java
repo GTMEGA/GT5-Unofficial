@@ -3,6 +3,7 @@ package gregtech.common.render;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
+import gregtech.common.GT_Compat;
 import gregtech.common.items.GT_VolumetricFlask;
 import ic2.core.util.DrawUtil;
 import net.minecraft.client.Minecraft;
@@ -85,7 +86,7 @@ public final class GT_FlaskRenderer implements IItemRenderer {
         if (type.equals(ItemRenderType.INVENTORY)) {
             DrawUtil.renderIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
         } else {
-            ItemRenderer.renderItemIn2D(Tessellator.instance, icon.getMaxU(), icon.getMinV(), icon.getMinU(), icon.getMaxV(), icon.getIconWidth(), icon.getIconHeight(), 0.0625F);
+            ItemRenderer.renderItemIn2D(GT_Compat.tessellator(), icon.getMaxU(), icon.getMinV(), icon.getMinU(), icon.getMaxV(), icon.getIconWidth(), icon.getIconHeight(), 0.0625F);
         }
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_BLEND);

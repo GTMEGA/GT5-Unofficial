@@ -11,6 +11,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.LightingHelper;
+import gregtech.common.GT_Compat;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -136,7 +138,7 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceYNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
-            Tessellator.instance.setColorRGBA(255, 255, 255, 255);
+            GT_Compat.tessellator().setColorRGBA(255, 255, 255, 255);
             renderFaceYNeg(aRenderer, aX, aY, aZ, mIconContainer.getOverlayIcon(), rotation);
         }
         aRenderer.enableAO = enableAO;

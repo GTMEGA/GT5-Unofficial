@@ -13,6 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
+
+import gregtech.common.GT_Compat;
 import org.lwjgl.opengl.GL11;
 
 public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
@@ -72,7 +74,7 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                     if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                         GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     } else {
-                        ItemRenderer.renderItemIn2D(Tessellator.instance, tIcon.getMaxU(), tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(), tIcon.getIconHeight(), 0.0625F);
+                        ItemRenderer.renderItemIn2D(GT_Compat.tessellator(), tIcon.getMaxU(), tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(), tIcon.getIconHeight(), 0.0625F);
                     }
                     GL11.glColor3f(1.0F, 1.0F, 1.0F);
                 }
@@ -82,7 +84,7 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                     if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                         GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     } else {
-                        ItemRenderer.renderItemIn2D(Tessellator.instance, tOverlay.getMaxU(), tOverlay.getMinV(), tOverlay.getMinU(), tOverlay.getMaxV(), tOverlay.getIconWidth(), tOverlay.getIconHeight(), 0.0625F);
+                        ItemRenderer.renderItemIn2D(GT_Compat.tessellator(), tOverlay.getMaxU(), tOverlay.getMinV(), tOverlay.getMinU(), tOverlay.getMaxV(), tOverlay.getIconWidth(), tOverlay.getIconHeight(), 0.0625F);
                     }
                 }
             }
@@ -98,7 +100,7 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                     if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                         GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     } else {
-                        ItemRenderer.renderItemIn2D(Tessellator.instance, tIcon.getMaxU(), tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(), tIcon.getIconHeight(), 0.0625F);
+                        ItemRenderer.renderItemIn2D(GT_Compat.tessellator(), tIcon.getMaxU(), tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(), tIcon.getIconHeight(), 0.0625F);
                     }
                     GL11.glColor3f(1.0F, 1.0F, 1.0F);
                 }
@@ -108,7 +110,7 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                     if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                         GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     } else {
-                        ItemRenderer.renderItemIn2D(Tessellator.instance, tOverlay.getMaxU(), tOverlay.getMinV(), tOverlay.getMinU(), tOverlay.getMaxV(), tOverlay.getIconWidth(), tOverlay.getIconHeight(), 0.0625F);
+                        ItemRenderer.renderItemIn2D(GT_Compat.tessellator(), tOverlay.getMaxU(), tOverlay.getMinV(), tOverlay.getMinU(), tOverlay.getMaxV(), tOverlay.getIconWidth(), tOverlay.getIconHeight(), 0.0625F);
                     }
                 }
             }
@@ -130,20 +132,12 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                         if (tIcon != null) {
                             Minecraft.getMinecraft().renderEngine.bindTexture(aIcon.getTextureFile());
                             GL11.glBlendFunc(770, 771);
-                            if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
-                                GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
-                            } else {
-                                ItemRenderer.renderItemIn2D(Tessellator.instance, tIcon.getMaxU(), tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(), tIcon.getIconHeight(), 0.0625F);
-                            }
+                            GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                         }
                         if (tOverlay != null) {
                             Minecraft.getMinecraft().renderEngine.bindTexture(aIcon.getTextureFile());
                             GL11.glBlendFunc(770, 771);
-                            if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
-                                GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
-                            } else {
-                                ItemRenderer.renderItemIn2D(Tessellator.instance, tOverlay.getMaxU(), tOverlay.getMinV(), tOverlay.getMinU(), tOverlay.getMaxV(), tOverlay.getIconWidth(), tOverlay.getIconHeight(), 0.0625F);
-                            }
+                            GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                         }
                     }
                 }
@@ -165,20 +159,12 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                     if (tIcon != null) {
                         Minecraft.getMinecraft().renderEngine.bindTexture(aIcon.getTextureFile());
                         GL11.glBlendFunc(770, 771);
-                        if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
-                            GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
-                        } else {
-                            ItemRenderer.renderItemIn2D(Tessellator.instance, tIcon.getMaxU(), tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(), tIcon.getIconHeight(), 0.0625F);
-                        }
+                        GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     }
                     if (tOverlay != null) {
                         Minecraft.getMinecraft().renderEngine.bindTexture(aIcon.getTextureFile());
                         GL11.glBlendFunc(770, 771);
-                        if (aType.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
-                            GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
-                        } else {
-                            ItemRenderer.renderItemIn2D(Tessellator.instance, tOverlay.getMaxU(), tOverlay.getMinV(), tOverlay.getMinU(), tOverlay.getMaxV(), tOverlay.getIconWidth(), tOverlay.getIconHeight(), 0.0625F);
-                        }
+                        GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     }
                 }
             }

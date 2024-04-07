@@ -19,6 +19,7 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
 import gregtech.api.util.keybind.GT_KeyHandler;
+import gregtech.common.GT_Compat;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
 import gregtech.common.GT_Proxy;
@@ -180,6 +181,7 @@ public class GT_Mod implements IGT_Mod {
 
     @Mod.EventHandler
     public void onPreLoad(FMLPreInitializationEvent aEvent) {
+        GT_Compat.init();
         Locale.setDefault(Locale.ENGLISH);
         if (GregTech_API.sPreloadStarted) {
             return;

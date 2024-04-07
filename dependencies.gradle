@@ -69,6 +69,8 @@ dependencies {
     }
     compileOnly("team.chisel:chisel-mc1.7.10:2.10.1:dev")
 
+    compileOnly("com.falsepattern:falsetweaks-mc1.7.10:2.8.1:dev")
+
     compileOnly("org.projectlombok:lombok:1.18.26") {
         transitive = false
     }

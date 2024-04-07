@@ -21,6 +21,8 @@ package gregtech.api.util;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import gregtech.common.GT_Compat;
 import lombok.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.EntityRenderer;
@@ -215,7 +217,7 @@ public class LightingHelper {
      * @param hexColor the primary color
      */
     public void setupColor(int side, int hexColor) {
-        Tessellator tessellator = Tessellator.instance;
+        Tessellator tessellator = GT_Compat.tessellator();
         float lightness = hasLightnessOverride ? lightnessOverride : LIGHTNESS[side];
         float[] rgb = getRGB(hexColor);
 

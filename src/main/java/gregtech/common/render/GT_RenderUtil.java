@@ -1,5 +1,8 @@
 package gregtech.common.render;
 
+import gregtech.common.GT_Compat;
+import lombok.val;
+
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 
@@ -12,19 +15,20 @@ public class GT_RenderUtil {
         if (icon == null) {
             return;
         }
-        Tessellator.instance.startDrawingQuads();
-        Tessellator.instance.setNormal(nx, ny, nz);
+        val tess = GT_Compat.tessellator();
+        tess.startDrawingQuads();
+        tess.setNormal(nx, ny, nz);
         if (nz > 0.0F) {
-            Tessellator.instance.addVertexWithUV(xStart, yStart, z, icon.getMinU(), icon.getMinV());
-            Tessellator.instance.addVertexWithUV(xEnd, yStart, z, icon.getMaxU(), icon.getMinV());
-            Tessellator.instance.addVertexWithUV(xEnd, yEnd, z, icon.getMaxU(), icon.getMaxV());
-            Tessellator.instance.addVertexWithUV(xStart, yEnd, z, icon.getMinU(), icon.getMaxV());
+            tess.addVertexWithUV(xStart, yStart, z, icon.getMinU(), icon.getMinV());
+            tess.addVertexWithUV(xEnd, yStart, z, icon.getMaxU(), icon.getMinV());
+            tess.addVertexWithUV(xEnd, yEnd, z, icon.getMaxU(), icon.getMaxV());
+            tess.addVertexWithUV(xStart, yEnd, z, icon.getMinU(), icon.getMaxV());
         } else {
-            Tessellator.instance.addVertexWithUV(xStart, yEnd, z, icon.getMinU(), icon.getMaxV());
-            Tessellator.instance.addVertexWithUV(xEnd, yEnd, z, icon.getMaxU(), icon.getMaxV());
-            Tessellator.instance.addVertexWithUV(xEnd, yStart, z, icon.getMaxU(), icon.getMinV());
-            Tessellator.instance.addVertexWithUV(xStart, yStart, z, icon.getMinU(), icon.getMinV());
+            tess.addVertexWithUV(xStart, yEnd, z, icon.getMinU(), icon.getMaxV());
+            tess.addVertexWithUV(xEnd, yEnd, z, icon.getMaxU(), icon.getMaxV());
+            tess.addVertexWithUV(xEnd, yStart, z, icon.getMaxU(), icon.getMinV());
+            tess.addVertexWithUV(xStart, yStart, z, icon.getMinU(), icon.getMinV());
         }
-        Tessellator.instance.draw();
+        tess.draw();
     }
 }
