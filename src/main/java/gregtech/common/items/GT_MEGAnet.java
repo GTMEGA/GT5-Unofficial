@@ -18,7 +18,6 @@ import gregtech.api.net.GT_Packet_InventoryUpdate;
 import gregtech.api.net.GT_Packet_OpenGUI;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
-import gregtech.api.util.interop.BaublesInterop;
 import gregtech.common.gui.meganet.GT_MEGAnet_Container;
 import gregtech.common.gui.meganet.GT_MEGAnet_GuiContainer;
 import io.netty.buffer.ByteBuf;
@@ -44,7 +43,6 @@ import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nonnull;
 import java.util.*;
-import java.util.function.Function;
 
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles", striprefs = true)
@@ -117,6 +115,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
 
     }
 
+
     public static class MEGANetInteractionHandler {
 
         public static MEGANetInteractionHandler INSTANCE = new MEGANetInteractionHandler();
@@ -188,6 +187,12 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
             }
         }
 
+        private void doToggle(final EntityPlayer player, final GT_MEGAnet item, final boolean bauble, final int slot) {
+            final ISerializableObject toggleMessage = null;
+            //noinspection ConstantValue
+            GT_Values.NW.sendToServer(new GT_Packet_InventoryUpdate(player, item, bauble, slot, toggleMessage));
+        }
+
         public GT_MEGAnet_Container getServerGUI(final EntityPlayer player) {
             MutableInt slotIndex = new MutableInt(-1);
             MutableBoolean bauble = new MutableBoolean(false);
@@ -207,12 +212,6 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
                 return new GT_MEGAnet_GuiContainer(new GT_MEGAnet_Container(player, meganet, GregTech_API.sMEGAnet.getFilter(meganet), slotIndex.intValue(), bauble.booleanValue()));
             }
             return null;
-        }
-
-        private void doToggle(final EntityPlayer player, final GT_MEGAnet item, final boolean bauble, final int slot) {
-            final ISerializableObject toggleMessage = null;
-            //noinspection ConstantValue
-            GT_Values.NW.sendToServer(new GT_Packet_InventoryUpdate(player, item, bauble, slot, toggleMessage));
         }
 
         public void openGUI(final @NonNull EntityPlayer player) {
@@ -373,6 +372,13 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
             }
         }
 
+        private void setSetting(final int index, final ItemSetting newSetting) {
+            if (index < 0 || index >= MAX_FILTERED) {
+                return;
+            }
+            filter.set(index, newSetting);
+        }
+
         public MEGAnetFilter(final List<ItemSetting> filter, final boolean enabled, final boolean whitelist) {
             for (int i = 0; i < MAX_FILTERED; i++) {
                 this.filter.set(i, filter.get(i));
@@ -409,7 +415,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
                 return true;
             }
             var result = false;
-            for (var i = 0; i < MAX_FILTERED; i++ ) {
+            for (var i = 0; i < MAX_FILTERED; i++) {
                 if (filter.get(i).match(filteredStacks[i], stack)) {
                     result = true;
                 }
@@ -439,13 +445,6 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
         @Override
         public ItemStack getStackInSlotOnClosing(final int slotIndex) {
             return getStackInSlot(slotIndex);
-        }
-
-        public ItemSetting getSetting(final int index) {
-            if (index < 0 || index >= MAX_FILTERED) {
-                return null;
-            }
-            return filter.get(index);
         }
 
         @Override
@@ -564,6 +563,13 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
             return newFilter;
         }
 
+        public ItemSetting getSetting(final int index) {
+            if (index < 0 || index >= MAX_FILTERED) {
+                return null;
+            }
+            return filter.get(index);
+        }
+
         protected MEGAnetFilter receiveFilterUpdate(final MEGAnetFilter data) {
             enabled = data.enabled;
             whitelist = data.whitelist;
@@ -577,13 +583,6 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
                 }
             }
             return this;
-        }
-
-        private void setSetting(final int index, final ItemSetting newSetting) {
-            if (index < 0 || index >= MAX_FILTERED) {
-                return;
-            }
-            filter.set(index, newSetting);
         }
 
     }
@@ -759,7 +758,12 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
      * @param aStack  Stack
      * @param aPlayer Player holding it
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings(
+            {
+                    "unchecked",
+                    "rawtypes"
+            }
+    )
     @Override
     protected void addAdditionalToolTips(final List aList, final ItemStack aStack, final EntityPlayer aPlayer) {
         aList.add((isActive(aStack) ? EnumChatFormatting.GREEN + "Active" : EnumChatFormatting.RED + "Inactive"));
@@ -798,13 +802,6 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
         setNBT(aStack);
     }
 
-    public void setRange(final ItemStack stack, final int range) {
-        final NBTTagCompound comp = validateNBT(stack);
-        comp.setInteger("range", range);
-        stack.setTagCompound(comp);
-        setNBT(stack);
-    }
-
     public ItemStack setNBT(final @NonNull ItemStack stack) {
         final NBTTagCompound compound = validateNBT(stack);
         //
@@ -826,6 +823,13 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
         //
         stack.setTagCompound(compound);
         return stack;
+    }
+
+    public void setRange(final ItemStack stack, final int range) {
+        final NBTTagCompound comp = validateNBT(stack);
+        comp.setInteger("range", range);
+        stack.setTagCompound(comp);
+        setNBT(stack);
     }
 
     public void adjustTimer(final ItemStack stack) {
@@ -860,13 +864,24 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
         return defBool(validateNBT(stack), "enabled", true);
     }
 
+    public int heldRange(final int baseRange) {
+        return baseRange * 2;
+    }
+
+    public int getRange(final @NonNull ItemStack stack) {
+        final NBTTagCompound comp = validateNBT(stack);
+        int range = comp.getInteger("range");
+        if (range > 0) {
+            return Math.min(range, MAX_RANGE);
+        }
+        return BASE_RANGE;
+    }
+
     @SuppressWarnings("unchecked")
     protected void magnetize(final ItemStack stack, final World world, final Entity entity, final boolean currentItem) {
         final int baseRange = getRange(stack);
         final int range = currentItem ? heldRange(baseRange) : baseRange;
-        final AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(entity.posX - range, entity.posY - range, entity.posZ - range, entity.posX + range,
-                                                                       entity.posY + range, entity.posZ + range
-                                                                      );
+        final AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(entity.posX - range, entity.posY - range, entity.posZ - range, entity.posX + range, entity.posY + range, entity.posZ + range);
         world.getEntitiesWithinAABB(EntityItem.class, boundingBox).forEach(oEntity -> {
             if (oEntity instanceof EntityItem) {
                 final EntityItem itemEntity = (EntityItem) oEntity;
@@ -916,10 +931,6 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
         return itemEntity.delayBeforeCanPickup <= 0 && getFilter(stack).matchesFilter(itemEntity.getEntityItem());
     }
 
-    public int heldRange(final int baseRange) {
-        return baseRange * 2;
-    }
-
     protected int getTimer(final @NonNull ItemStack stack) {
         final NBTTagCompound comp = validateNBT(stack);
         return comp.hasKey("timer") ? Math.max(0, comp.getInteger("timer")) : 0;
@@ -935,15 +946,6 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
             return picked;
         }
         return 0L;
-    }
-
-    public int getRange(final @NonNull ItemStack stack) {
-        final NBTTagCompound comp = validateNBT(stack);
-        int range = comp.getInteger("range");
-        if (range > 0) {
-            return Math.min(range, MAX_RANGE);
-        }
-        return BASE_RANGE;
     }
 
     private boolean itemUse(final ItemStack stack, final EntityPlayer player, final World world) {
@@ -976,13 +978,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
     }
 
     private void handlePickedUp(
-            final World world,
-            final ItemStack stack,
-            final Entity entity,
-            final EntityItem itemEntity,
-            long pickupCount,
-            final EntityPlayer player,
-            final NBTTagCompound compound
+            final World world, final ItemStack stack, final Entity entity, final EntityItem itemEntity, long pickupCount, final EntityPlayer player, final NBTTagCompound compound
                                ) {
         if (pickupCount < 0) {
             pickupCount = Long.MAX_VALUE;

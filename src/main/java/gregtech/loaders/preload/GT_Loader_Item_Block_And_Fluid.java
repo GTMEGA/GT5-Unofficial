@@ -437,6 +437,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         GregTech_API.sMEGAnet = new GT_MEGAnet();
         GregTech_API.sPotentiometer = new GT_Block_Potentiometer();
+        GregTech_API.sItemSmartFilter = new GT_Item_SmartFilter();
 
 
         GT_Log.out.println("GT_Mod: Register TileEntities.");

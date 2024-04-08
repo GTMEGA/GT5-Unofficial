@@ -22,6 +22,7 @@ import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.explosives.GT_Block_Explosive;
+import gregtech.common.items.GT_Item_SmartFilter;
 import gregtech.common.items.GT_MEGAnet;
 import gregtech.common.items.explosives.GT_RemoteDetonator;
 import net.minecraft.block.Block;
@@ -275,6 +276,8 @@ public class GregTech_API {
     public static GT_MEGAnet sMEGAnet;
 
     public static Block sPotentiometer;
+
+    public static GT_Item_SmartFilter sItemSmartFilter;
 
     /**
      * Getting assigned by the Config
