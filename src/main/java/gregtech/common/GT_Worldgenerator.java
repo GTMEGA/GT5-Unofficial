@@ -1,7 +1,5 @@
 package gregtech.common;
 
-import cpw.mods.fml.common.IWorldGenerator;
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.events.GT_OreVeinLocations;
@@ -11,9 +9,13 @@ import gregtech.api.world.GT_Worldgen;
 import lombok.val;
 import lombok.var;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
+import cpw.mods.fml.common.IWorldGenerator;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,7 +35,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
     private static int endMinSize = 50;
     private static int endMaxSize = 200;
     private static boolean endAsteroids = true;
-    public static List<Runnable> mList = new ArrayList();
+    public static List<Runnable> mList = new ArrayList<>();
     public static HashSet<Long> ProcChunks = new HashSet<Long>();
     // This is probably not going to work.  Trying to create a fake orevein to put into hashtable when there will be no ores in a vein.
     public static GT_Worldgen_GT_Ore_Layer noOresInVein = new GT_Worldgen_GT_Ore_Layer( "NoOresInVein", false, 0, 255, 0, 255, 16,  false, false, false, Materials.Aluminium, Materials.Aluminium, Materials.Aluminium, Materials.Aluminium);
@@ -506,6 +508,14 @@ public class GT_Worldgenerator implements IWorldGenerator {
             Chunk tChunk = this.mWorld.getChunkFromBlockCoords(this.mX << 4, this.mZ << 4);
             if (tChunk != null) {
                 tChunk.isModified = true;
+
+                if (usedOreMix == null) {
+                    for (val player : this.mWorld.playerEntities) {
+                        val message = String.format("No orevein selected for chunk: %s", tChunk.getChunkCoordIntPair());
+
+                        ((EntityPlayer) player).addChatMessage(new ChatComponentText(message));
+                    }
+                }
 
                 GT_OreVeinLocations.recordOreVeinInChunk(tChunk, usedOreMix);
             }
