@@ -18,6 +18,8 @@ import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
+import lombok.val;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -366,11 +368,17 @@ public abstract class GT_MetaTileEntity_DrillerBase extends GT_MetaTileEntity_En
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        updateCoordinates();
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0) && checkHatches() && GT_Utility.getTier(getMaxInputVoltage()) >= getMinTier() && mMaintenanceHatches.size() == 1;
+        this.updateCoordinates();
+
+        val pieceCheck = this.checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0);
+        val hatchCheck = this.checkHatches();
+        val tierCheck = GT_Utility.getTier(getMaxInputVoltage()) >= getMinTier();
+        val hasMaintenanceHatch = this.mMaintenanceHatches.size() == 1;
+
+        return pieceCheck && hatchCheck && tierCheck && hasMaintenanceHatch;
     }
 
-    private void updateCoordinates() {
+    protected void updateCoordinates() {
         xDrill = getBaseMetaTileEntity().getXCoord();
         yDrill = getBaseMetaTileEntity().getYCoord();
         zDrill = getBaseMetaTileEntity().getZCoord();
