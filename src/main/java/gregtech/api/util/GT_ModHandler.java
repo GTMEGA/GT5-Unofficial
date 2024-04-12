@@ -13,6 +13,8 @@ import gregtech.api.interfaces.internal.IGT_CraftingRecipe;
 import gregtech.api.objects.GT_HashSet;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
+import gregtech.api.util.async.ThreadSafeBitSet;
+import gregtech.api.util.async.UrgentExecutor;
 import ic2.api.item.IBoxable;
 import ic2.api.item.IC2Items;
 import ic2.api.item.IElectricItem;
@@ -20,6 +22,7 @@ import ic2.api.reactor.IReactorComponent;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
+import lombok.SneakyThrows;
 import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
@@ -43,6 +46,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
@@ -1330,15 +1334,35 @@ public class GT_ModHandler {
 
     @SuppressWarnings("unchecked")
     public static void bulkRemoveByRecipe(List<InventoryCrafting> toRemove) {
-        ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList();
-        GT_FML_LOGGER.info("BulkRemoveByRecipe: tList: " + tList.size() + " toRemove: " + toRemove.size() );
+        ArrayList<IRecipe> recipes = (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList();
+        GT_FML_LOGGER.info("BulkRemoveByRecipe: tList: " + recipes.size() + " toRemove: " + toRemove.size() );
 
-        Set<IRecipe> tListToRemove = tList.stream().filter(tRecipe -> {
-            if ((tRecipe instanceof IGT_CraftingRecipe) && !((IGT_CraftingRecipe) tRecipe).isRemovable()) return false;
-            return toRemove.stream().anyMatch(aCrafting -> tRecipe.matches(aCrafting, DW));
-        }).collect(Collectors.toSet());
-        
-        tList.removeIf(tListToRemove::contains);
+        val removed = new ThreadSafeBitSet();
+
+        try {
+            UrgentExecutor.segmentedRun(toRemove.size(), (start, end) -> {
+                for (int i = 0; i < recipes.size(); i++) {
+                    if (removed.get(i)) continue;
+                    IRecipe recipe = recipes.get(i);
+                    if ((recipe instanceof IGT_CraftingRecipe) && !((IGT_CraftingRecipe) recipe).isRemovable()) continue;
+                    for (int j = start; j < end; j++) {
+                        val r = toRemove.get(j);
+                        if (recipe.matches(r, DW)) {
+                            removed.set(i);
+                            break;
+                        }
+                    }
+                }
+            });
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
+        val removedIDs = removed.toBitSet().stream().sorted().toArray();
+
+        for (int i = removedIDs.length - 1; i >= 0; i--) {
+            recipes.remove(removedIDs[i]);
+        }
     }
 
     public static boolean removeRecipeByOutputDelayed(ItemStack aOutput) {
@@ -1623,7 +1647,8 @@ public class GT_ModHandler {
      * Gives you a list of the Outputs from a Crafting Recipe
      * If you have multiple Mods, which add Bronze Armor for example
      */
-    public static List<ItemStack> getRecipeOutputs(List<IRecipe> aList, boolean aDeleteFromList, ItemStack... aRecipe) {
+    @SneakyThrows
+    public static List<ItemStack> getRecipeOutputs(List<IRecipe> recipes, boolean aDeleteFromList, ItemStack... aRecipe) {
         List<ItemStack> rList = new ArrayList<>();
         if (aRecipe == null || Arrays.stream(aRecipe).noneMatch(Objects::nonNull))
             return rList;
@@ -1636,46 +1661,67 @@ public class GT_ModHandler {
         for (int i = 0; i < 9 && i < aRecipe.length; i++)
             aCrafting.setInventorySlotContents(i, aRecipe[i]);
         if (!aDeleteFromList) {
-            HashSet<ItemStack> stacks = new HashSet<>();
-            aList.stream().filter(
-                    tRecipe -> {
-                        if (tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe || tRecipe instanceof IGT_CraftingRecipe)
-                            return false;
-                        try {
-                            return tRecipe.matches(aCrafting, DW);
-                        } catch (Throwable e) {
-                            e.printStackTrace(GT_Log.err);
-                            return false;
+            val outputStacks = UrgentExecutor.segmentedRunAndMerge(new HashSet<>(), recipes.size(), (start, end) -> {
+                List<ItemStack> currentResult = null;
+                for (int i = start; i < end; i++) {
+                    val recipe = recipes.get(i);
+                    if (recipe instanceof ShapelessRecipes || recipe instanceof ShapelessOreRecipe || recipe instanceof IGT_CraftingRecipe)
+                        continue;
+                    try {
+                        if (recipe.matches(aCrafting, DW)) {
+                            val output = recipe.getCraftingResult(aCrafting);
+                            if (output.stackSize == 1 && output.getMaxDamage() > 0 && output.getMaxStackSize() == 1) {
+                                if (currentResult == null)
+                                    currentResult = new ArrayList<>();
+                                currentResult.add(output);
+                            }
                         }
+                    } catch (Throwable e) {
+                        e.printStackTrace(GT_Log.err);
                     }
-            ).forEach(tRecipe -> stacks.add(tRecipe.getCraftingResult(aCrafting)));
-            rList = stacks.stream().filter(tOutput -> tOutput.stackSize == 1 && tOutput.getMaxDamage() > 0 && tOutput.getMaxStackSize() == 1).collect(Collectors.toList());
-        } else for (int i = 0; i < aList.size(); i++) {
-            boolean temp = false;
-
-            try {
-                temp = aList.get(i).matches(aCrafting, DW);
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
-            }
-            if (temp) {
-                IRecipe tRecipe = aList.get(i);
-                ItemStack tOutput = tRecipe.getCraftingResult(aCrafting);
-
-                if (tOutput == null || tOutput.stackSize <= 0) {
-                    // Seriously, who would ever do that shit?
-                    if (!GregTech_API.sPostloadFinished)
-                        throw new GT_ItsNotMyFaultException("Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
-                    continue;
                 }
-                if (tOutput.stackSize != 1) continue;
-                if (tOutput.getMaxDamage() <= 0) continue;
-                if (tOutput.getMaxStackSize() != 1) continue;
-                if (tRecipe instanceof ShapelessRecipes) continue;
-                if (tRecipe instanceof ShapelessOreRecipe) continue;
-                if (tRecipe instanceof IGT_CraftingRecipe) continue;
-                rList.add(GT_Utility.copyOrNull(tOutput));
-                aList.remove(i--);
+                return currentResult;
+            });
+            rList.addAll(outputStacks);
+        } else {
+            val removed = new ThreadSafeBitSet();
+            UrgentExecutor.segmentedRunAndMerge(rList, recipes.size(), (start, end) -> {
+                val res = new ArrayList<ItemStack>();
+                for (int i = start; i < end; i++) {
+                    boolean temp = false;
+
+                    try {
+                        temp = recipes.get(i).matches(aCrafting, DW);
+                    } catch (Throwable e) {
+                        e.printStackTrace(GT_Log.err);
+                    }
+                    if (!temp) {
+                        continue;
+                    }
+                    IRecipe tRecipe = recipes.get(i);
+                    ItemStack tOutput = tRecipe.getCraftingResult(aCrafting);
+
+                    if (tOutput == null || tOutput.stackSize <= 0) {
+                        // Seriously, who would ever do that shit?
+                        if (!GregTech_API.sPostloadFinished)
+                            throw new GT_ItsNotMyFaultException("Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
+                        continue;
+                    }
+                    if (tOutput.stackSize != 1) continue;
+                    if (tOutput.getMaxDamage() <= 0) continue;
+                    if (tOutput.getMaxStackSize() != 1) continue;
+                    if (tRecipe instanceof ShapelessRecipes) continue;
+                    if (tRecipe instanceof ShapelessOreRecipe) continue;
+                    if (tRecipe instanceof IGT_CraftingRecipe) continue;
+                    res.add(GT_Utility.copyOrNull(tOutput));
+                    removed.set(i);
+                }
+                return res;
+            });
+
+            val removeIDs = removed.toBitSet().stream().sorted().toArray();
+            for (int i = removeIDs.length - 1; i >= 0; i--) {
+                recipes.remove(removeIDs[i]);
             }
         }
         return rList;
