@@ -5,9 +5,11 @@ import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.IPacketReceivableItem;
 import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import gregtech.common.gui.smart_filter.GT_SmartFilter_Container;
+import gregtech.common.gui.smart_filter.GT_SmartFilter_GUIContainer;
+import gregtech.common.sf_logic.SF_Type;
 import lombok.val;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -24,33 +26,23 @@ import java.util.List;
 public class GT_Item_SmartFilter extends GT_Generic_Item implements IPacketReceivableItem {
 
 
-    @RequiredArgsConstructor
-    public enum SF_Type {
-        ITEM("sf_item", "Smart Item Filter", "Filters for specific items"),
-        ORE_DICT("sf_oredict", "Smart Ore Dictionary Filter", "Filters for items with specific ore dictionary entries"),
-        MOD("sf_mod", "Smart Mod Filter", "Filters for items from specific mods"),
-        MATERIAL("sf_material", "Smart Material Filter", "Filters for items with specific materials"),
-        PART_TYPE("sf_part", "Smart Part Type Filter", "Filters for items of specific part types"),
-        RECIPE("sf_recipe", "Smart Recipe Filter", "Filters for items that are used in specific machines"),
-        COMBINATION("sf_combo", "Smart Combination Filter", "Combination of other filters"),
-        INVALID("sf_invalid", "Invalid Filter", "Invalid Filter");
+    private static final IIcon[] icons = new IIcon[SF_Type.values().length];
 
-        public static String getDisplayNameFromStack(final ItemStack stack) {
-            if (stack == null || stack.getItem() == null) {
-                return INVALID.displayName;
-            }
-            val meta = stack.getItemDamage();
-            if (meta < 0 || meta >= SF_Type.values().length) {
-                return INVALID.displayName;
-            }
-            return SF_Type.values()[meta].displayName;
+    public static GT_SmartFilter_GUIContainer getClientGUIFromPlayerHand(final EntityPlayer aPlayer) {
+        val currentItem = aPlayer.getCurrentEquippedItem();
+        if (currentItem == null || !(currentItem.getItem() instanceof GT_Item_SmartFilter)) {
+            return null;
         }
-
-        private final @NonNull String unlocalizedName, displayName, tooltip;
+        return new GT_SmartFilter_GUIContainer(getServerGUIFromPlayerHand(aPlayer));
     }
 
-
-    private static final IIcon[] icons = new IIcon[SF_Type.values().length];
+    public static GT_SmartFilter_Container getServerGUIFromPlayerHand(final EntityPlayer player) {
+        val currentItem = player.getCurrentEquippedItem();
+        if (currentItem == null || !(currentItem.getItem() instanceof GT_Item_SmartFilter)) {
+            return null;
+        }
+        return new GT_SmartFilter_Container(player, currentItem);
+    }
 
     public GT_Item_SmartFilter() {
         super("smart_filter", "Smart Filter", "Allows for smart filtering of items in GT machines");
@@ -62,7 +54,7 @@ public class GT_Item_SmartFilter extends GT_Generic_Item implements IPacketRecei
     @Override
     public void registerIcons(final IIconRegister aIconRegister) {
         for (int i = 0; i < SF_Type.values().length; i++) {
-            icons[i] = aIconRegister.registerIcon(GT_Values.MOD_ID + ":iconsets/smart_filter/" + SF_Type.values()[i].unlocalizedName);
+            icons[i] = aIconRegister.registerIcon(GT_Values.MOD_ID + ":iconsets/smart_filter/" + SF_Type.values()[i].getUnlocalizedName());
         }
     }
 
@@ -84,25 +76,32 @@ public class GT_Item_SmartFilter extends GT_Generic_Item implements IPacketRecei
     protected void addAdditionalToolTips(final List aList, final ItemStack aStack, final EntityPlayer aPlayer) {
         val meta = aStack.getItemDamage();
         if (meta < 0 || meta >= SF_Type.values().length) {
-            aList.add(SF_Type.INVALID.tooltip);
+            aList.add(SF_Type.INVALID.getTooltip());
             return;
         }
-        aList.add(SF_Type.values()[meta].tooltip);
+        aList.add(SF_Type.values()[meta].getTooltip());
     }
 
     @Override
     public void onCreated(final ItemStack aStack, final World aWorld, final EntityPlayer aPlayer) {
-        setNBT(aStack);
+        validateAndSetNBT(aStack);
     }
 
-    private ItemStack setNBT(final ItemStack stack) {
+    private ItemStack validateAndSetNBT(final ItemStack stack) {
+        if (stack == null) {
+            return null;
+        }
+        if (stack.stackTagCompound == null) {
+            stack.stackTagCompound = new net.minecraft.nbt.NBTTagCompound();
+        }
+        val nbt = stack.stackTagCompound;
         return stack;
     }
 
     @Override
     public ItemStack onItemRightClick(final ItemStack stack, final World world, final EntityPlayer player) {
         itemUse(stack, player, world);
-        return setNBT(stack);
+        return validateAndSetNBT(stack);
     }
 
     @Override
@@ -119,7 +118,11 @@ public class GT_Item_SmartFilter extends GT_Generic_Item implements IPacketRecei
     }
 
     private void itemUse(final ItemStack stack, final EntityPlayer player, final World world) {
-        if (world.isRemote) {
+        if (!world.isRemote) {
+            if (player.isSneaking()) {
+                GT_Utility.sendChatToPlayer(player, "Opening GUI");
+                player.openGui(GT_Values.GT, -3, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+            }
         }
     }
 

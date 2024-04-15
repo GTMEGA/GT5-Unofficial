@@ -30,11 +30,8 @@ import gregtech.common.gui.GT_GUIContainerVolumetricFlask;
 import gregtech.common.gui.meganet.GT_MEGAnet_Container;
 import gregtech.common.gui.meganet.GT_MEGAnet_GuiContainer;
 import gregtech.common.gui.remotedetonator.GT_RemoteDetonator_Container;
-import gregtech.common.items.GT_MEGAnet;
-import gregtech.common.items.GT_MetaGenerated_Item_98;
+import gregtech.common.items.*;
 import gregtech.common.gui.GT_GUIContainer_IntegratedCircuit;
-import gregtech.common.items.GT_IntegratedCircuit_Item;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.explosives.GT_RemoteDetonator;
 import lombok.val;
 import net.minecraft.block.Block;
@@ -1682,6 +1679,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 return GT_MEGAnet.MEGANetInteractionHandler.INSTANCE.getServerGUI(aPlayer);
             } else if (aID == 2) {
                 return GT_RemoteDetonator.RemoteDetonatorInteractionHandler.INSTANCE.getServerGUI(aPlayer);
+            } else if (aID == 3) {
+                return GT_Item_SmartFilter.getServerGUIFromPlayerHand(aPlayer);
             }
         }
         if(aID>=1000){
@@ -1717,6 +1716,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 return GT_MEGAnet.MEGANetInteractionHandler.INSTANCE.getClientGUI(aPlayer);
             } else if (aID == 2) {
                 return GT_RemoteDetonator.RemoteDetonatorInteractionHandler.INSTANCE.getClientGUI(aPlayer);
+            } else if (aID == 3) {
+                return GT_Item_SmartFilter.getClientGUIFromPlayerHand(aPlayer);
             }
         }
         if(aID>=1000){
