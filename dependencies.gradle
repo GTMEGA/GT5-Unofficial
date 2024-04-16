@@ -16,7 +16,7 @@ dependencies {
     implementation("mega:structurelib-mc1.7.10:1.1.2:dev")
     implementation("codechicken:codechickencore-mc1.7.10:1.0.9-gtmega:dev")
     implementation("codechicken:codechickenlib-mc1.7.10:1.1.4-gtmega:dev")
-    implementation("codechicken:notenoughitems-mc1.7.10:2.1.5-gtmega:dev")
+    implementation("codechicken:notenoughitems-mc1.7.10:2.2.0-mega:dev")
 
     implementation("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
 
