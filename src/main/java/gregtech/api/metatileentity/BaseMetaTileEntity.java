@@ -132,68 +132,47 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public void writeToNBT(NBTTagCompound aNBT) {
-        try {
-            super.writeToNBT(aNBT);
-        } catch (Throwable e) {
-            GT_Log.err.println("Encountered CRITICAL ERROR while saving MetaTileEntity, the Chunk whould've been corrupted by now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
-            e.printStackTrace(GT_Log.err);
+        super.writeToNBT(aNBT);
+        aNBT.setInteger("mID", mID);
+        aNBT.setLong("mStoredSteam", mStoredSteam);
+        aNBT.setLong("mStoredEnergy", mStoredEnergy);
+        for (int i = 0; i < mCoverData.length; i++) {
+            if (mCoverSides[i] != 0 && mCoverData[i] != null)
+                aNBT.setTag(COVER_DATA_NBT_KEYS[i], mCoverData[i].saveDataToNBT());
         }
-        try {
-            aNBT.setInteger("mID", mID);
-            aNBT.setLong("mStoredSteam", mStoredSteam);
-            aNBT.setLong("mStoredEnergy", mStoredEnergy);
-            for (int i = 0; i < mCoverData.length; i++) {
-                if (mCoverSides[i] != 0 && mCoverData[i] != null)
-                    aNBT.setTag(COVER_DATA_NBT_KEYS[i], mCoverData[i].saveDataToNBT());
-            }
-            aNBT.setIntArray("mCoverSides", mCoverSides);
-            aNBT.setByteArray("mRedstoneSided", mSidedRedstone);
-            aNBT.setByte("mColor", mColor);
-            aNBT.setByte("mLightValue", mLightValue);
-            aNBT.setByte("mOtherUpgrades", mOtherUpgrades);
-            aNBT.setByte("mWorkData", mWorkData);
-            aNBT.setByte("mStrongRedstone", mStrongRedstone);
-            aNBT.setShort("mFacing", mFacing);
-            aNBT.setString("mOwnerName", mOwnerName);
-            aNBT.setString("mOwnerUuid", mOwnerUuid == null ? "" : mOwnerUuid.toString());
-            aNBT.setBoolean("mLockUpgrade", mLockUpgrade);
-            aNBT.setBoolean("mMuffler", mMuffler);
-            aNBT.setBoolean("mSteamConverter", mSteamConverter);
-            aNBT.setBoolean("mActive", mActive);
-            aNBT.setBoolean("mRedstone", mRedstone);
-            aNBT.setBoolean("mWorks", !mWorks);
-            aNBT.setBoolean("mInputDisabled", mInputDisabled);
-            aNBT.setBoolean("mOutputDisabled", mOutputDisabled);
-            aNBT.setTag("GT.CraftingComponents", mRecipeStuff);
-            aNBT.setInteger("nbtVersion", GT_Mod.TOTAL_VERSION);
-        } catch (Throwable e) {
-            GT_Log.err.println("Encountered CRITICAL ERROR while saving MetaTileEntity, the Chunk whould've been corrupted by now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
-            e.printStackTrace(GT_Log.err);
-        }
-        try {
-            if (hasValidMetaTileEntity()) {
-                NBTTagList tItemList = new NBTTagList();
-                for (int i = 0; i < mMetaTileEntity.getRealInventory().length; i++) {
-                    ItemStack tStack = mMetaTileEntity.getRealInventory()[i];
-                    if (tStack != null) {
-                        NBTTagCompound tTag = new NBTTagCompound();
-                        tTag.setInteger("IntSlot", i);
-                        tStack.writeToNBT(tTag);
-                        tItemList.appendTag(tTag);
-                    }
-                }
-                aNBT.setTag("Inventory", tItemList);
-
-                try {
-                    mMetaTileEntity.saveNBTData(aNBT);
-                } catch (Throwable e) {
-                    GT_Log.err.println("Encountered CRITICAL ERROR while saving MetaTileEntity, the Chunk whould've been corrupted by now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
-                    e.printStackTrace(GT_Log.err);
+        aNBT.setIntArray("mCoverSides", mCoverSides);
+        aNBT.setByteArray("mRedstoneSided", mSidedRedstone);
+        aNBT.setByte("mColor", mColor);
+        aNBT.setByte("mLightValue", mLightValue);
+        aNBT.setByte("mOtherUpgrades", mOtherUpgrades);
+        aNBT.setByte("mWorkData", mWorkData);
+        aNBT.setByte("mStrongRedstone", mStrongRedstone);
+        aNBT.setShort("mFacing", mFacing);
+        aNBT.setString("mOwnerName", mOwnerName);
+        aNBT.setString("mOwnerUuid", mOwnerUuid == null ? "" : mOwnerUuid.toString());
+        aNBT.setBoolean("mLockUpgrade", mLockUpgrade);
+        aNBT.setBoolean("mMuffler", mMuffler);
+        aNBT.setBoolean("mSteamConverter", mSteamConverter);
+        aNBT.setBoolean("mActive", mActive);
+        aNBT.setBoolean("mRedstone", mRedstone);
+        aNBT.setBoolean("mWorks", !mWorks);
+        aNBT.setBoolean("mInputDisabled", mInputDisabled);
+        aNBT.setBoolean("mOutputDisabled", mOutputDisabled);
+        aNBT.setTag("GT.CraftingComponents", mRecipeStuff);
+        aNBT.setInteger("nbtVersion", GT_Mod.TOTAL_VERSION);
+        if (hasValidMetaTileEntity()) {
+            NBTTagList tItemList = new NBTTagList();
+            for (int i = 0; i < mMetaTileEntity.getRealInventory().length; i++) {
+                ItemStack tStack = mMetaTileEntity.getRealInventory()[i];
+                if (tStack != null) {
+                    NBTTagCompound tTag = new NBTTagCompound();
+                    tTag.setInteger("IntSlot", i);
+                    tStack.writeToNBT(tTag);
+                    tItemList.appendTag(tTag);
                 }
             }
-        } catch (Throwable e) {
-            GT_Log.err.println("Encountered CRITICAL ERROR while saving MetaTileEntity, the Chunk whould've been corrupted by now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
-            e.printStackTrace(GT_Log.err);
+            aNBT.setTag("Inventory", tItemList);
+            mMetaTileEntity.saveNBTData(aNBT);
         }
     }
 
@@ -279,12 +258,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     }
                 }
 
-                try {
-                    mMetaTileEntity.loadNBTData(aNBT);
-                } catch (Throwable e) {
-                    GT_Log.err.println("Encountered Exception while loading MetaTileEntity, the Server should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
-                    e.printStackTrace(GT_Log.err);
-                }
+                mMetaTileEntity.loadNBTData(aNBT);
             }
         }
 
@@ -1534,13 +1508,15 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSoftHammerList)) {
                         if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                            if (mWorks) disableWorking();
-                            else enableWorking();
-                            {
-                                String tChat = trans("090", "Machine Processing: ") + (isAllowedToWork() ? trans("088", "Enabled") : trans("087", "Disabled"));
-                                if (getMetaTileEntity() != null && getMetaTileEntity().hasAlternativeModeText())
-                                    tChat = getMetaTileEntity().getAlternativeModeText();
-                                GT_Utility.sendChatToPlayer(aPlayer, tChat);
+                            if (mMetaTileEntity.onSoftHammerRightClick(aSide,aPlayer,aX,aY,aZ)) {
+                                if (mWorks) disableWorking();
+                                else enableWorking();
+                                {
+                                    String tChat = trans("090", "Machine Processing: ") + (isAllowedToWork() ? trans("088", "Enabled") : trans("087", "Disabled"));
+                                    if (getMetaTileEntity() != null && getMetaTileEntity().hasAlternativeModeText())
+                                        tChat = getMetaTileEntity().getAlternativeModeText();
+                                    GT_Utility.sendChatToPlayer(aPlayer, tChat);
+                                        }
                             }
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(101), 1.0F, -1, xCoord, yCoord, zCoord);
                         }
