@@ -161,8 +161,18 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     @Override
+    public boolean overwriteHandlerInfoSettings() {
+        return true;
+    }
+
+    @Override
+    public int height() {
+        return 140;
+    }
+
+    @Override
     public int recipiesPerPage() {
-        return 1;
+        return 2;
     }
 
     @Override

@@ -2,6 +2,7 @@ package gregtech.common.render;
 
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
+import gregtech.common.GT_Compat;
 import gregtech.common.items.GT_FluidDisplayItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -46,7 +47,7 @@ public class GT_FluidDisplayStackRenderer implements IItemRenderer {
 
         IIcon icon = item.getItem().getIconFromDamage(item.getItemDamage());
 
-        Tessellator tess = Tessellator.instance;
+        Tessellator tess = GT_Compat.tessellator();
         tess.startDrawingQuads();
         // draw a simple rectangle for the inventory icon
         final float x_min = icon.getMinU();

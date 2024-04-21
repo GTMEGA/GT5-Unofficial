@@ -334,7 +334,7 @@ public class GT_Client extends GT_Proxy
     private static void drawFlipMarker(Transformation transform) {
         GL11.glPushMatrix();
         transform.glApply();
-        Tessellator t = Tessellator.instance;
+        Tessellator t = GT_Compat.tessellator();
         // right shape
         GL11.glLineStipple(4, (short) 0xAAAA);
         GL11.glEnable(GL11.GL_LINE_STIPPLE);
