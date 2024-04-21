@@ -13,7 +13,7 @@ def deobfCurse(curseDep) {
 }
 
 dependencies {
-    implementation("mega:structurelib-mc1.7.10:1.1.2:dev")
+    implementation("mega:structurelib-mc1.7.10:1.2.0-mega:dev")
     implementation("codechicken:codechickencore-mc1.7.10:1.0.9-gtmega:dev")
     implementation("codechicken:codechickenlib-mc1.7.10:1.1.4-gtmega:dev")
     implementation("codechicken:notenoughitems-mc1.7.10:2.2.0-mega:dev")
