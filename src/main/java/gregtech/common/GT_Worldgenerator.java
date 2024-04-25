@@ -509,7 +509,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
             if (tChunk != null) {
                 tChunk.isModified = true;
 
-                if (usedOreMix == null) {
+                if (debugWorldGen && usedOreMix == null) {
                     for (val player : this.mWorld.playerEntities) {
                         val message = String.format("No orevein selected for chunk: %s", tChunk.getChunkCoordIntPair());
 
