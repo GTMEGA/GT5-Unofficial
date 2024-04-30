@@ -11,6 +11,7 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -26,6 +27,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -75,6 +77,8 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
     private int excessProjectedEU = 0; //Eliminate rounding errors from throttling the boiler
     private int mCasingAmount;
     private int mFireboxAmount;
+    protected int throttleTimer = 0;
+    protected FluidStack leftOverSteam;
 
     public static final double DIESEL_FACTOR = 0.85;
 
@@ -138,6 +142,10 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
     public abstract int getEUt();
 
     public abstract int getEfficiencyIncrease();
+
+    public int getThrottleMax() {
+        return 10;
+    }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
@@ -228,6 +236,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
         }
         this.mMaxProgresstime = 0;
         this.mEUt = 0;
+        this.throttleTimer = 0;
         return false;
     }
 
@@ -236,25 +245,76 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (this.mEUt > 0) {
-            if (this.mSuperEfficencyIncrease > 0)
-                mEfficiency = Math.max(0, Math.min(mEfficiency + mSuperEfficencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
-            long steamGenerated = (this.mEUt * (long) this.mEfficiency / 10000L);
-            steamGenerated = steamGenerated/ EU_PER_STEAM;
-            if (steamGenerated > 0) {
-                long amount = (steamGenerated + STEAM_PER_WATER) / STEAM_PER_WATER;
-                excessWater += (int) (amount * STEAM_PER_WATER - steamGenerated);
-                amount -= excessWater / STEAM_PER_WATER;
-                excessWater %= STEAM_PER_WATER;
-                if (depleteInput(Materials.Water.getFluid(amount)) || depleteInput(GT_ModHandler.getDistilledWater(amount))) {
-                    addOutput(GT_ModHandler.getSteam(steamGenerated));
-                } else {
-                    GT_Log.exp.println("Boiler "+this.mName+" had no Water!");
-                    explodeMultiblock();
+            int maxEff = getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000);
+            if (++throttleTimer < getThrottleMax()
+                    && mEfficiency >= maxEff
+                    && leftOverSteam != null
+                    && leftOverSteam.amount > 0) {
+                if (addOutput(leftOverSteam) || leftOverSteam.amount <= 0)
+                    leftOverSteam = null;
+                --mProgresstime;
+                return true;
+            } else {
+                leftOverSteam = null;
+                if (this.mSuperEfficencyIncrease > 0)
+                    mEfficiency = Math.max(0, Math.min(mEfficiency + mSuperEfficencyIncrease, maxEff));
+                long steamGenerated = (this.mEUt * (long) this.mEfficiency / 10000L);
+                steamGenerated = (steamGenerated/ EU_PER_STEAM);
+                if (steamGenerated > 0) {
+                    long amount = (steamGenerated + STEAM_PER_WATER) / STEAM_PER_WATER;
+                    excessWater += (int) (amount * STEAM_PER_WATER - steamGenerated);
+                    amount -= excessWater / STEAM_PER_WATER;
+                    excessWater %= STEAM_PER_WATER;
+                    if (depleteInput(Materials.Water.getFluid(amount)) || depleteInput(GT_ModHandler.getDistilledWater(amount))) {
+                        val steam = GT_ModHandler.getSteam(steamGenerated);
+                        if (addOutput(steam) || mEfficiency < maxEff) return true;
+                        leftOverSteam = steam;
+                        if (++throttleTimer > getThrottleMax()) {
+                            throttleTimer = 0;
+                        }
+                    } else {
+                        GT_Log.exp.println("Boiler "+this.mName+" had no Water!");
+                        explodeMultiblock();
+                    }
                 }
+                return true;
             }
-            return true;
         }
         return true;
+    }
+
+    @Override
+    public boolean addOutput(FluidStack aLiquid) {
+        if (aLiquid == null) return false;
+        return dumpFluidBoiler(mOutputHatches, aLiquid, false);
+    }
+
+    protected static boolean dumpFluidBoiler(List<GT_MetaTileEntity_Hatch_Output> aOutputHatches, FluidStack copiedFluidStack, boolean restrictiveHatchesOnly){
+        for (GT_MetaTileEntity_Hatch_Output tHatch : aOutputHatches) {
+            if (!isValidMetaTileEntity(tHatch) || (restrictiveHatchesOnly && tHatch.mMode == 0)) {
+                continue;
+            }
+            if (GT_ModHandler.isSteam(copiedFluidStack)) {
+                if (!tHatch.outputsSteam()) {
+                    continue;
+                }
+            } else {
+                if (!tHatch.outputsLiquids()) {
+                    continue;
+                }
+                if (tHatch.isFluidLocked() && tHatch.getLockedFluidName() != null && !tHatch.getLockedFluidName().equals(copiedFluidStack.getFluid().getName())) {
+                    continue;
+                }
+            }
+            int tAmount = tHatch.fill(copiedFluidStack, false);
+            if (tAmount >= copiedFluidStack.amount) {
+                tHatch.fill(copiedFluidStack, true);
+                return true;
+            } else if (tAmount > 0) {
+                copiedFluidStack.amount = copiedFluidStack.amount - tHatch.fill(copiedFluidStack, true);
+            }
+        }
+        return false;
     }
 
     @Override
@@ -263,6 +323,9 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
         aNBT.setInteger("excessFuel", excessFuel);
         aNBT.setInteger("excessWater", excessWater);
         aNBT.setInteger("excessProjectedEU", excessProjectedEU);
+        aNBT.setInteger("throttleTimer", throttleTimer);
+        if (leftOverSteam != null && leftOverSteam.amount > 0)
+            aNBT.setInteger("leftOverSteam", leftOverSteam.amount);
     }
 
     @Override
@@ -271,6 +334,11 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
         excessFuel = aNBT.getInteger("excessFuel");
         excessWater = aNBT.getInteger("excessWater");
         excessProjectedEU = aNBT.getInteger("excessProjectedEU");
+        throttleTimer = aNBT.getInteger("throttleTimer");
+        val steamAmount = aNBT.getInteger("leftOverSteam");
+        if (steamAmount > 0) {
+            leftOverSteam = GT_ModHandler.getSteam(steamAmount);
+        }
     }
 
     @Override
