@@ -143,7 +143,7 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.bauxite", true, 10, 80, 80, 5, 24, false, false, false, Materials.Ilmenite, Materials.Bauxite, Materials.Ilmenite, Materials.Aluminium);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.salts", true, 40, 45, 50, 2, 24, true, false, false, Materials.RockSalt, Materials.Salt, Materials.Lepidolite, Materials.Spodumene);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.redstone", true, 5, 15, 60, 2, 24, true, false, false, Materials.Redstone, Materials.Redstone, Materials.Ruby, Materials.Cinnabar);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.soapstone", true, 20, 50, 30, 2, 16, true, false, false, Materials.Soapstone, Materials.Talc, Materials.Glauconite, Materials.Gypsum);
+            //new GT_Worldgen_GT_Ore_Layer("ore.mix.soapstone", true, 20, 50, 30, 2, 16, true, false, false, Materials.Soapstone, Materials.Talc, Materials.Glauconite, Materials.Gypsum);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.nickel", true, 10, 40, 50, 2, 24, true, false, false, Materials.Garnierite, Materials.Nickel, Materials.Cobaltite, Materials.Pentlandite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.platinum", true, 40, 50, 5, 2, 16, false, false, false, Materials.Cooperite, Materials.Palladium, Materials.Platinum, Materials.Iridium);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.pitchblende", true, 30, 60, 40, 2, 16, false, false, false, Materials.Pitchblende, Materials.Pitchblende, Materials.Uraninite, Materials.Uraninite);
