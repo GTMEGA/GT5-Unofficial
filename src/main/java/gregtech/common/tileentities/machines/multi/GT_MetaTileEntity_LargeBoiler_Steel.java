@@ -81,6 +81,6 @@ public class GT_MetaTileEntity_LargeBoiler_Steel extends GT_MetaTileEntity_Large
 
     @Override
     int runtimeBoost(int mTime) {
-        return 5 * mTime * 150 / 100;
+        return mTime * 375 / 100;
     }
 }

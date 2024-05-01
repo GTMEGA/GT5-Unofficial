@@ -81,6 +81,6 @@ public class GT_MetaTileEntity_LargeBoiler_Bronze extends GT_MetaTileEntity_Larg
 
     @Override
     int runtimeBoost(int mTime) {
-        return mTime * 10;
+        return mTime * 5;
     }
 }
