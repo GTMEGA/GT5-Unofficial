@@ -328,7 +328,7 @@ public class GT_Values {
 
     public static float MERayBaseRayDist = 0.3f, MERayPowerDropRatio = 0.5f, MERayDropBump = 0.3f, MEOrePowerBoost = 3.0f, MERockResistanceDrop = 0.25f,
             MESoilPowerBoost = 1.0f, MEOtherResistanceDrop = 10.0f, MEExplosionPower = 9.0f, MEMaxEntitySize = 1f, MEOreChance = 1.0f, MESoilChance = 0.05f,
-            MERockChance = 0.025f, MEOtherChance = 0.0f, MEMaxRange = 3.0f, MEMinEntitySize = 0.95f, MEOffsetRatio = 0.75f;
+            MERockChance = 0.1f, MEOtherChance = 0.0f, MEMaxRange = 3.5f, MEMinEntitySize = 0.95f, MEOffsetRatio = 0.75f;
 
     public static float TEMaxRange = 30.0f, TERadius = 4.0f, TERadiusVariation = 1.5f;
 
