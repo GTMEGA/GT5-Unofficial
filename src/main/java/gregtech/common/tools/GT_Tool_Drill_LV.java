@@ -180,7 +180,7 @@ public class GT_Tool_Drill_LV extends GT_Tool implements IAOETool {
 
     @Override
     public int getMaxAOESize() {
-        return 3;
+        return 2;
     }
 
     static int xStart[] = {0, 0, 0, -1, -1, -2, -2};
