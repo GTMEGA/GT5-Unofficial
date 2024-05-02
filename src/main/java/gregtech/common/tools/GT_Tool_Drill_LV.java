@@ -220,7 +220,12 @@ public class GT_Tool_Drill_LV extends GT_Tool implements IAOETool {
             for (int i = 0; i < inv.mainInventory.length; i++) {
                 if (inv.mainInventory[i] == null) continue;
                 if (inv.mainInventory[i].getItem().getUnlocalizedName().toLowerCase(Locale.ENGLISH).contains("torch")) {
-                    if (placeInventoryBlock(i, world, x, y, z, sidehit, playerEntity, hitX, hitY, hitZ)) return true;
+                    if (placeInventoryBlock(i, world, x, y, z, sidehit, playerEntity, hitX, hitY, hitZ)) {
+                        if (inv.mainInventory[i].stackSize <= 0) {
+                            inv.mainInventory[i] = null;
+                        }
+                        return true;
+                    }
                 }
             }
             return false;
