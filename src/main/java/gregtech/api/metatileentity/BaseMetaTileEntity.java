@@ -521,15 +521,6 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                                             mRunningThroughTick = false;
                                             return;
                                         }
-                                        if (GregTech_API.sMachineThunderExplosions && worldObj.isThundering() && getBiome().rainfall > 0 && getRandomNumber(3) == 0) {
-                                        	try{
-                                        	    GT_Mod.instance.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");
-                                        	}catch(Exception e){
-
-                                            }
-                                            GT_Log.exp.println("Machine at: "+ this.getXCoord()+" | "+ this.getYCoord()+" | "+ this.getZCoord()+" DIMID: " +this.worldObj.provider.dimensionId + " explosion due to Thunderstorm!");
-                                            doEnergyExplosion();
-                                        }
                                     }
                                 }
                             }

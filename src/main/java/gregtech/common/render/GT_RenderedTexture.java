@@ -69,6 +69,32 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
     }
 
     @Override
+    public void renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, float offset) {
+        // TODO: Uncomment this once all addons have migrated to the new Texture API
+        //startDrawingQuads(aRenderer, 1.0f, 0.0f, 0.0f);
+        final boolean enableAO = aRenderer.enableAO;
+        LightingHelper lighting = new LightingHelper(aRenderer);
+        if (glow) {
+            if (aRenderer.useInventoryTint)
+                return; // TODO: Remove this once all addons have migrated to the new Texture API
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            aRenderer.enableAO = false;
+            lighting.setLightnessOverride(1.0F);
+            if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+        }
+        lighting.setupLightingXPos(aBlock, aX, aY, aZ).setupColor(ForgeDirection.EAST.ordinal(), mRGBa);
+        ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
+        renderFaceXPos(aRenderer, aX + (double) offset, aY, aZ, mIconContainer.getIcon(), rotation);
+        if (mIconContainer.getOverlayIcon() != null) {
+            lighting.setupColor(ForgeDirection.EAST.ordinal(), 0xffffff);
+            renderFaceXPos(aRenderer, aX + (double) offset, aY, aZ, mIconContainer.getOverlayIcon(), rotation);
+        }
+        aRenderer.enableAO = enableAO;
+        // TODO: Uncomment this once all addons have migrated to the new Texture API
+        //draw(aRenderer);
+    }
+
+    @Override
     public void renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         // TODO: Uncomment this once all addons have migrated to the new Texture API
         //startDrawingQuads(aRenderer, -1.0f, 0.0f, 0.0f);
@@ -88,6 +114,32 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         if (mIconContainer.getOverlayIcon() != null) {
             lighting.setupColor(ForgeDirection.WEST.ordinal(), 0xffffff);
             renderFaceXNeg(aRenderer, aX, aY, aZ, mIconContainer.getOverlayIcon(), rotation);
+        }
+        aRenderer.enableAO = enableAO;
+        // TODO: Uncomment this once all addons have migrated to the new Texture API
+        //draw(aRenderer);
+    }
+
+    @Override
+    public void renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, float offset) {
+        // TODO: Uncomment this once all addons have migrated to the new Texture API
+        //startDrawingQuads(aRenderer, -1.0f, 0.0f, 0.0f);
+        final boolean enableAO = aRenderer.enableAO;
+        LightingHelper lighting = new LightingHelper(aRenderer);
+        if (glow) {
+            if (aRenderer.useInventoryTint)
+                return; // TODO: Remove this once all addons have migrated to the new Texture API
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            aRenderer.enableAO = false;
+            lighting.setLightnessOverride(1.0F);
+            if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+        }
+        lighting.setupLightingXNeg(aBlock, aX, aY, aZ).setupColor(ForgeDirection.WEST.ordinal(), mRGBa);
+        ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
+        renderFaceXNeg(aRenderer, aX - (double) offset, aY, aZ, mIconContainer.getIcon(), rotation);
+        if (mIconContainer.getOverlayIcon() != null) {
+            lighting.setupColor(ForgeDirection.WEST.ordinal(), 0xffffff);
+            renderFaceXNeg(aRenderer, aX - (double) offset, aY, aZ, mIconContainer.getOverlayIcon(), rotation);
         }
         aRenderer.enableAO = enableAO;
         // TODO: Uncomment this once all addons have migrated to the new Texture API
@@ -121,6 +173,32 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
     }
 
     @Override
+    public void renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, float offset) {
+        // TODO: Uncomment this once all addons have migrated to the new Texture API
+        //startDrawingQuads(aRenderer, 0.0f, 1.0f, 0.0f);
+        final boolean enableAO = aRenderer.enableAO;
+        LightingHelper lighting = new LightingHelper(aRenderer);
+        if (glow) {
+            if (aRenderer.useInventoryTint)
+                return; // TODO: Remove this once all addons have migrated to the new Texture API
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            aRenderer.enableAO = false;
+            lighting.setLightnessOverride(1.0F);
+            if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+        }
+        lighting.setupLightingYPos(aBlock, aX, aY, aZ).setupColor(ForgeDirection.UP.ordinal(), mRGBa);
+        ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
+        renderFaceYPos(aRenderer, aX, aY + (double) offset, aZ, mIconContainer.getIcon(), rotation);
+        if (mIconContainer.getOverlayIcon() != null) {
+            lighting.setupColor(ForgeDirection.UP.ordinal(), 0xffffff);
+            renderFaceYPos(aRenderer, aX, aY + (double) offset, aZ, mIconContainer.getOverlayIcon(), rotation);
+        }
+        aRenderer.enableAO = enableAO;
+        // TODO: Uncomment this once all addons have migrated to the new Texture API
+        //draw(aRenderer);
+    }
+
+    @Override
     public void renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         // TODO: Uncomment this once all addons have migrated to the new Texture API
         //startDrawingQuads(aRenderer, 0.0f, -1.0f, 0.0f);
@@ -140,6 +218,32 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         if (mIconContainer.getOverlayIcon() != null) {
             GT_Compat.tessellator().setColorRGBA(255, 255, 255, 255);
             renderFaceYNeg(aRenderer, aX, aY, aZ, mIconContainer.getOverlayIcon(), rotation);
+        }
+        aRenderer.enableAO = enableAO;
+        // TODO: Uncomment this once all addons have migrated to the new Texture API
+        //draw(aRenderer);
+    }
+
+    @Override
+    public void renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, float offset) {
+        // TODO: Uncomment this once all addons have migrated to the new Texture API
+        //startDrawingQuads(aRenderer, 0.0f, -1.0f, 0.0f);
+        final boolean enableAO = aRenderer.enableAO;
+        LightingHelper lighting = new LightingHelper(aRenderer);
+        if (glow) {
+            if (aRenderer.useInventoryTint)
+                return; // TODO: Remove this once all addons have migrated to the new Texture API
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            aRenderer.enableAO = false;
+            lighting.setLightnessOverride(1.0F);
+            if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+        }
+        lighting.setupLightingYNeg(aBlock, aX, aY, aZ).setupColor(ForgeDirection.DOWN.ordinal(), mRGBa);
+        ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
+        renderFaceYNeg(aRenderer, aX, aY - (double) offset, aZ, mIconContainer.getIcon(), rotation);
+        if (mIconContainer.getOverlayIcon() != null) {
+            GT_Compat.tessellator().setColorRGBA(255, 255, 255, 255);
+            renderFaceYNeg(aRenderer, aX, aY - (double) offset, aZ, mIconContainer.getOverlayIcon(), rotation);
         }
         aRenderer.enableAO = enableAO;
         // TODO: Uncomment this once all addons have migrated to the new Texture API
@@ -173,6 +277,32 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
     }
 
     @Override
+    public void renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, float offset) {
+        // TODO: Uncomment this once all addons have migrated to the new Texture API
+        //startDrawingQuads(aRenderer, 0.0f, 0.0f, 1.0f);
+        final boolean enableAO = aRenderer.enableAO;
+        LightingHelper lighting = new LightingHelper(aRenderer);
+        if (glow) {
+            if (aRenderer.useInventoryTint)
+                return; // TODO: Remove this once all addons have migrated to the new Texture API
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            aRenderer.enableAO = false;
+            lighting.setLightnessOverride(1.0F);
+            if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+        }
+        lighting.setupLightingZPos(aBlock, aX, aY, aZ).setupColor(ForgeDirection.SOUTH.ordinal(), mRGBa);
+        ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
+        renderFaceZPos(aRenderer, aX, aY, aZ + (double) offset, mIconContainer.getIcon(), rotation);
+        if (mIconContainer.getOverlayIcon() != null) {
+            lighting.setupColor(ForgeDirection.SOUTH.ordinal(), 0xffffff);
+            renderFaceZPos(aRenderer, aX, aY, aZ + (double) offset, mIconContainer.getOverlayIcon(), rotation);
+        }
+        aRenderer.enableAO = enableAO;
+        // TODO: Uncomment this once all addons have migrated to the new Texture API
+        //draw(aRenderer);
+    }
+
+    @Override
     public void renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         // TODO: Uncomment this once all addons have migrated to the new Texture API
         //startDrawingQuads(aRenderer, 0.0f, 0.0f, -1.0f);
@@ -192,6 +322,32 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         if (mIconContainer.getOverlayIcon() != null) {
             lighting.setupColor(ForgeDirection.NORTH.ordinal(), 0xffffff);
             renderFaceZNeg(aRenderer, aX, aY, aZ, mIconContainer.getOverlayIcon(), rotation);
+        }
+        aRenderer.enableAO = enableAO;
+        // TODO: Uncomment this once all addons have migrated to the new Texture API
+        //draw(aRenderer);
+    }
+
+    @Override
+    public void renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, float offset) {
+        // TODO: Uncomment this once all addons have migrated to the new Texture API
+        //startDrawingQuads(aRenderer, 0.0f, 0.0f, -1.0f);
+        final boolean enableAO = aRenderer.enableAO;
+        LightingHelper lighting = new LightingHelper(aRenderer);
+        if (glow) {
+            if (aRenderer.useInventoryTint)
+                return; // TODO: Remove this once all addons have migrated to the new Texture API
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            aRenderer.enableAO = false;
+            lighting.setLightnessOverride(1.0F);
+            if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
+        }
+        lighting.setupLightingZNeg(aBlock, aX, aY, aZ).setupColor(ForgeDirection.NORTH.ordinal(), mRGBa);
+        ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
+        renderFaceZNeg(aRenderer, aX, aY, aZ - (double) offset, mIconContainer.getIcon(), rotation);
+        if (mIconContainer.getOverlayIcon() != null) {
+            lighting.setupColor(ForgeDirection.NORTH.ordinal(), 0xffffff);
+            renderFaceZNeg(aRenderer, aX, aY, aZ - (double) offset, mIconContainer.getOverlayIcon(), rotation);
         }
         aRenderer.enableAO = enableAO;
         // TODO: Uncomment this once all addons have migrated to the new Texture API
