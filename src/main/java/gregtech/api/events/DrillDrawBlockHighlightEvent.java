@@ -74,23 +74,23 @@ public class DrillDrawBlockHighlightEvent {
         val offsetZ = (float) (player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTick);
 
         GL11.glTranslatef(-offsetX, -offsetY, -offsetZ);
-        GL11.glLineWidth(2F);
-        GL11.glColor4f(1F, 1F, 1F, 1F);
+        GL11.glLineWidth(5F);
+        GL11.glColor4f(0.1F, 0.2F, 0.9F, 0.6F);
 
-        val color = Color.CYAN;
+//        val color = Color.CYAN;
         val tessellator = Tessellator.instance;
 
-        tessellator.setColorRGBA(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+        tessellator.setColorRGBA(26,32,230,153);
         tessellator.startDrawing(GL11.GL_LINES);
 
         for (val position : list) {
-            val minX = position.chunkPosX - 0.01F;
-            val minY = position.chunkPosY - 0.01F;
-            val minZ = position.chunkPosZ - 0.01F;
+            val minX = position.chunkPosX - 0.001F;
+            val minY = position.chunkPosY - 0.001F;
+            val minZ = position.chunkPosZ - 0.001F;
 
-            val maxX = minX + 1 + 0.01F;
-            val maxY = minY + 1 + 0.01F;
-            val maxZ = minZ + 1 + 0.01F;
+            val maxX = minX + 1 + 0.001F;
+            val maxY = minY + 1 + 0.008F;
+            val maxZ = minZ + 1 + 0.001F;
 
             tessellator.addVertex(maxX, minY, maxZ); tessellator.addVertex(maxX, maxY, maxZ);
             tessellator.addVertex(maxX, minY, minZ); tessellator.addVertex(maxX, minY, maxZ);
