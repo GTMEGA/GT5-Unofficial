@@ -245,7 +245,6 @@ public abstract class GT_Tool implements IToolStats {
 
     public static boolean placeInventoryBlock(int index, World world, int x, int y, int z, int sidehit, EntityPlayer playerEntity, float hitX, float hitY, float hitZ) {
         boolean used = false;
-        int hotBarSlot = playerEntity.inventory.currentItem;
         ItemStack nearbyStack = playerEntity.inventory.getStackInSlot(index);
         Item item = nearbyStack.getItem();
         if (item instanceof ItemBlock) {
@@ -263,7 +262,7 @@ public abstract class GT_Tool implements IToolStats {
             }
             used = item.onItemUse(nearbyStack, playerEntity, world, x, y, z, sidehit, hitX, hitY, hitZ);
             if (nearbyStack.stackSize < 1) {
-                playerEntity.inventory.setInventorySlotContents(hotBarSlot + 1, null);
+                playerEntity.inventory.mainInventory[index] = null;
             }
         }
         return used;
