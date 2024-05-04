@@ -19,6 +19,7 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.events.DrillDrawBlockHighlightEvent;
 import gregtech.api.interfaces.IHasFluidDisplayItem;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -56,6 +57,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.opengl.GL11;
@@ -439,6 +441,8 @@ public class GT_Client extends GT_Proxy
         new GT_DaisyCutterRenderer(); */
         new GT_FlaskRenderer();
         new GT_FluidDisplayStackRenderer();
+
+        MinecraftForge.EVENT_BUS.register(new DrillDrawBlockHighlightEvent());
     }
 
     @Override
