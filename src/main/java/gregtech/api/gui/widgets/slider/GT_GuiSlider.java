@@ -4,6 +4,7 @@ package gregtech.api.gui.widgets.slider;
 import gregtech.api.gui.GT_RichGuiContainer;
 import gregtech.api.gui.widgets.GT_GuiTooltip;
 import gregtech.api.interfaces.IGuiScreen;
+import gregtech.common.GT_Compat;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -374,7 +375,7 @@ public abstract class GT_GuiSlider extends Gui implements IGuiScreen.IGuiElement
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
         GL11.glShadeModel(GL11.GL_SMOOTH);
-        Tessellator tessellator = Tessellator.instance;
+        Tessellator tessellator = GT_Compat.tessellator();
         tessellator.startDrawingQuads();
         tessellator.setColorRGBA_F(f1, f2, f3, f);
         if (vertical) {

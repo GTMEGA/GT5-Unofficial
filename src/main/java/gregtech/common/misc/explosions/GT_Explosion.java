@@ -179,7 +179,8 @@ public abstract class GT_Explosion extends Explosion {
                     disX /= disMag;
                     disY /= disMag;
                     disZ /= disMag;
-                    blockDensity = pubWorld.getBlockDensity(expVec, entity.boundingBox);
+//                    blockDensity = pubWorld.getBlockDensity(expVec, entity.boundingBox);
+                    blockDensity = 1.0 / 2.0;
                     invDist = (1.0 - distance) * blockDensity;
                     if (!(entity instanceof EntityItem)) {
                         entity.attackEntityFrom(DamageSource.setExplosionSource(this), (float) ((int) ((invDist * invDist + invDist) / 2.0 * 8.0 * (double) explosionSize + 1.0)));

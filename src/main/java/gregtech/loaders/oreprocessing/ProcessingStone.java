@@ -30,10 +30,10 @@ public class ProcessingStone
                 GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, aStack), new ItemStack(Blocks.sand, 1, 0), null, 10, false);
                 break;
             case "Endstone":
-                GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dustImpure, Materials.Endstone, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Tungstate, 1L), 5, false);
+                GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(9L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 9L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tungstate, 1L), 1, false);
                 break;
             case "Netherrack":
-                GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dustImpure, Materials.Netherrack, 1L), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Gold, 1L), 5, false);
+                GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(9L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 9L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L), 5, false);
                 break;
             case "NetherBrick":
                 GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 1L), new ItemStack(Blocks.nether_brick_fence, 1), 100, 4);

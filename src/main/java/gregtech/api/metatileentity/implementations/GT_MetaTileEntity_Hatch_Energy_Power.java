@@ -20,7 +20,7 @@ public class GT_MetaTileEntity_Hatch_Energy_Power extends GT_MetaTileEntity_Hatc
     protected final ITexture powerTextureOverlay;
 
     public GT_MetaTileEntity_Hatch_Energy_Power(int aID, String aName, String aNameRegional, int aTier, long amps) {
-        super(aID, aName, aNameRegional, aTier, new String[]{"Energy Injector for Multiblocks", "Accepts up to " + amps + " Amps"});
+        super(aID, aName, aNameRegional, aTier, new String[]{"Energy Injector for Multiblocks", "Accepts up to " + amps + "A", "NOT compatible with all multiblocks."});
         maxAmpThroughPut = amps;
         powerTextureOverlay = Textures.BlockIcons.POWER_OVERLAYS.getOrDefault(amps, TextureFactory.of(Textures.BlockIcons.POWER_16));
     }

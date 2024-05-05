@@ -243,6 +243,31 @@ public abstract class GT_Tool implements IToolStats {
         return used;
     }
 
+    public static boolean placeInventoryBlock(int index, World world, int x, int y, int z, int sidehit, EntityPlayer playerEntity, float hitX, float hitY, float hitZ) {
+        boolean used = false;
+        ItemStack nearbyStack = playerEntity.inventory.getStackInSlot(index);
+        Item item = nearbyStack.getItem();
+        if (item instanceof ItemBlock) {
+            int posX = x;
+            int posY = y;
+            int posZ = z;
+
+            AxisAlignedBB blockBounds = AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1, posY + 1, posZ + 1);
+            AxisAlignedBB playerBounds = playerEntity.boundingBox;
+            Block blockToPlace = ((ItemBlock) item).field_150939_a;
+            if(blockToPlace.getMaterial().blocksMovement())
+            {
+                if (playerBounds.intersectsWith(blockBounds))
+                    return false;
+            }
+            used = item.onItemUse(nearbyStack, playerEntity, world, x, y, z, sidehit, hitX, hitY, hitZ);
+            if (nearbyStack.stackSize < 1) {
+                playerEntity.inventory.mainInventory[index] = null;
+            }
+        }
+        return used;
+    }
+
     @Override
     public void toolTip(List aList, ItemStack aStack, EntityPlayer aPlayer, IToolStats stats) {
     }

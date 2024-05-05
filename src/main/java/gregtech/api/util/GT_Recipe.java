@@ -11,6 +11,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Replicator;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler;
 import gregtech.nei.GT_NEI_DefaultHandler.FixedPositionedStack;
 import ic2.core.Ic2Items;
 import lombok.val;
@@ -27,7 +28,6 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 import static gregtech.api.enums.GT_Values.*;
 
@@ -1679,7 +1679,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         public GT_Recipe addDieselRecipe(GT_Recipe recipe) {
-            return addRecipe(recipe, ((double) recipe.mSpecialValue) / 40);
+            return addRecipe(recipe, ((double) recipe.mSpecialValue) / 20 * GT_MetaTileEntity_LargeBoiler.DIESEL_FACTOR);
         }
 
         public void addSolidRecipes(ItemStack... itemStacks) {

@@ -29,10 +29,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.*;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -267,6 +264,114 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
             return;
         }
         super.setBlockBoundsBasedOnState(blockAccess, aX, aY, aZ);
+    }
+
+
+    // These are exact copys of the one in Block.java
+    // in the pack this is somehow broken and overriding it here fixes it
+    // so don't remove untill fixed in the pack
+    private boolean isVecInsideYZBounds(Vec3 p_149654_1_) {
+        return p_149654_1_ == null ? false : p_149654_1_.yCoord >= this.minY && p_149654_1_.yCoord <= this.maxY && p_149654_1_.zCoord >= this.minZ && p_149654_1_.zCoord <= this.maxZ;
+    }
+
+    private boolean isVecInsideXZBounds(Vec3 p_149687_1_) {
+        return p_149687_1_ == null ? false : p_149687_1_.xCoord >= this.minX && p_149687_1_.xCoord <= this.maxX && p_149687_1_.zCoord >= this.minZ && p_149687_1_.zCoord <= this.maxZ;
+    }
+
+    private boolean isVecInsideXYBounds(Vec3 p_149661_1_) {
+        return p_149661_1_ == null ? false : p_149661_1_.xCoord >= this.minX && p_149661_1_.xCoord <= this.maxX && p_149661_1_.yCoord >= this.minY && p_149661_1_.yCoord <= this.maxY;
+    }
+
+    @Override
+    public MovingObjectPosition collisionRayTrace(World p_149731_1_, int p_149731_2_, int p_149731_3_, int p_149731_4_, Vec3 p_149731_5_, Vec3 p_149731_6_) {
+        this.setBlockBoundsBasedOnState(p_149731_1_, p_149731_2_, p_149731_3_, p_149731_4_);
+        p_149731_5_ = p_149731_5_.addVector((double)(-p_149731_2_), (double)(-p_149731_3_), (double)(-p_149731_4_));
+        p_149731_6_ = p_149731_6_.addVector((double)(-p_149731_2_), (double)(-p_149731_3_), (double)(-p_149731_4_));
+        Vec3 vec32 = p_149731_5_.getIntermediateWithXValue(p_149731_6_, this.minX);
+        Vec3 vec33 = p_149731_5_.getIntermediateWithXValue(p_149731_6_, this.maxX);
+        Vec3 vec34 = p_149731_5_.getIntermediateWithYValue(p_149731_6_, this.minY);
+        Vec3 vec35 = p_149731_5_.getIntermediateWithYValue(p_149731_6_, this.maxY);
+        Vec3 vec36 = p_149731_5_.getIntermediateWithZValue(p_149731_6_, this.minZ);
+        Vec3 vec37 = p_149731_5_.getIntermediateWithZValue(p_149731_6_, this.maxZ);
+        if (!this.isVecInsideYZBounds(vec32)) {
+            vec32 = null;
+        }
+
+        if (!this.isVecInsideYZBounds(vec33)) {
+            vec33 = null;
+        }
+
+        if (!this.isVecInsideXZBounds(vec34)) {
+            vec34 = null;
+        }
+
+        if (!this.isVecInsideXZBounds(vec35)) {
+            vec35 = null;
+        }
+
+        if (!this.isVecInsideXYBounds(vec36)) {
+            vec36 = null;
+        }
+
+        if (!this.isVecInsideXYBounds(vec37)) {
+            vec37 = null;
+        }
+
+        Vec3 vec38 = null;
+        if (vec32 != null && (vec38 == null || p_149731_5_.squareDistanceTo(vec32) < p_149731_5_.squareDistanceTo(vec38))) {
+            vec38 = vec32;
+        }
+
+        if (vec33 != null && (vec38 == null || p_149731_5_.squareDistanceTo(vec33) < p_149731_5_.squareDistanceTo(vec38))) {
+            vec38 = vec33;
+        }
+
+        if (vec34 != null && (vec38 == null || p_149731_5_.squareDistanceTo(vec34) < p_149731_5_.squareDistanceTo(vec38))) {
+            vec38 = vec34;
+        }
+
+        if (vec35 != null && (vec38 == null || p_149731_5_.squareDistanceTo(vec35) < p_149731_5_.squareDistanceTo(vec38))) {
+            vec38 = vec35;
+        }
+
+        if (vec36 != null && (vec38 == null || p_149731_5_.squareDistanceTo(vec36) < p_149731_5_.squareDistanceTo(vec38))) {
+            vec38 = vec36;
+        }
+
+        if (vec37 != null && (vec38 == null || p_149731_5_.squareDistanceTo(vec37) < p_149731_5_.squareDistanceTo(vec38))) {
+            vec38 = vec37;
+        }
+
+        if (vec38 == null) {
+            return null;
+        } else {
+            byte b0 = -1;
+            if (vec38 == vec32) {
+                b0 = 4;
+            }
+
+            if (vec38 == vec33) {
+                b0 = 5;
+            }
+
+            if (vec38 == vec34) {
+                b0 = 0;
+            }
+
+            if (vec38 == vec35) {
+                b0 = 1;
+            }
+
+            if (vec38 == vec36) {
+                b0 = 2;
+            }
+
+            if (vec38 == vec37) {
+                b0 = 3;
+            }
+
+            return new MovingObjectPosition(p_149731_2_, p_149731_3_, p_149731_4_, b0, vec38.addVector((double)p_149731_2_, (double)p_149731_3_, (double)p_149731_4_));
+        }
     }
 
     @Override

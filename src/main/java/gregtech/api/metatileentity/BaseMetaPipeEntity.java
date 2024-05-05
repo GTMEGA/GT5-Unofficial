@@ -115,52 +115,31 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public void writeToNBT(NBTTagCompound aNBT) {
-        try {
-            super.writeToNBT(aNBT);
-        } catch (Throwable e) {
-            GT_Log.err.println("Encountered CRITICAL ERROR while saving MetaTileEntity, the Chunk whould've been corrupted by now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
-            e.printStackTrace(GT_Log.err);
+        super.writeToNBT(aNBT);
+        aNBT.setInteger("mID", mID);
+        for (int i = 0; i < mCoverData.length; i++) {
+            if (mCoverSides[i] != 0 && mCoverData[i] != null)
+                aNBT.setTag(COVER_DATA_NBT_KEYS[i], mCoverData[i].saveDataToNBT());
         }
-        try {
-            aNBT.setInteger("mID", mID);
-            for (int i = 0; i < mCoverData.length; i++) {
-                if (mCoverSides[i] != 0 && mCoverData[i] != null)
-                    aNBT.setTag(COVER_DATA_NBT_KEYS[i], mCoverData[i].saveDataToNBT());
-            }
-            aNBT.setIntArray("mCoverSides", mCoverSides);
-            aNBT.setByteArray("mRedstoneSided", mSidedRedstone);
-            aNBT.setByte("mConnections", mConnections);
-            aNBT.setByte("mColor", mColor);
-            aNBT.setByte("mStrongRedstone", mStrongRedstone);
-            aNBT.setBoolean("mWorks", !mWorks);
-        } catch (Throwable e) {
-            GT_Log.err.println("Encountered CRITICAL ERROR while saving MetaTileEntity, the Chunk would've been corrupted by now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
-            e.printStackTrace(GT_Log.err);
-        }
-        try {
-            if (hasValidMetaTileEntity()) {
-                NBTTagList tItemList = new NBTTagList();
-                for (int i = 0; i < mMetaTileEntity.getRealInventory().length; i++) {
-                    ItemStack tStack = mMetaTileEntity.getRealInventory()[i];
-                    if (tStack != null) {
-                        NBTTagCompound tTag = new NBTTagCompound();
-                        tTag.setInteger("IntSlot", i);
-                        tStack.writeToNBT(tTag);
-                        tItemList.appendTag(tTag);
-                    }
-                }
-                aNBT.setTag("Inventory", tItemList);
-
-                try {
-                    mMetaTileEntity.saveNBTData(aNBT);
-                } catch (Throwable e) {
-                    GT_Log.err.println("Encountered CRITICAL ERROR while saving MetaTileEntity, the Chunk whould've been corrupted by now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
-                    e.printStackTrace(GT_Log.err);
+        aNBT.setIntArray("mCoverSides", mCoverSides);
+        aNBT.setByteArray("mRedstoneSided", mSidedRedstone);
+        aNBT.setByte("mConnections", mConnections);
+        aNBT.setByte("mColor", mColor);
+        aNBT.setByte("mStrongRedstone", mStrongRedstone);
+        aNBT.setBoolean("mWorks", !mWorks);
+        if (hasValidMetaTileEntity()) {
+            NBTTagList tItemList = new NBTTagList();
+            for (int i = 0; i < mMetaTileEntity.getRealInventory().length; i++) {
+                ItemStack tStack = mMetaTileEntity.getRealInventory()[i];
+                if (tStack != null) {
+                    NBTTagCompound tTag = new NBTTagCompound();
+                    tTag.setInteger("IntSlot", i);
+                    tStack.writeToNBT(tTag);
+                    tItemList.appendTag(tTag);
                 }
             }
-        } catch (Throwable e) {
-            GT_Log.err.println("Encountered CRITICAL ERROR while saving MetaTileEntity, the Chunk whould've been corrupted by now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
-            e.printStackTrace(GT_Log.err);
+            aNBT.setTag("Inventory", tItemList);
+            mMetaTileEntity.saveNBTData(aNBT);
         }
     }
 

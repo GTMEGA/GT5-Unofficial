@@ -9,18 +9,25 @@ import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ToolHarvestHelper;
 import gregtech.api.util.GT_Utility;
+import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.util.*;
+import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.function.BiFunction;
 
 public class GT_Tool_Drill_LV extends GT_Tool implements IAOETool {
     @Override
@@ -176,13 +183,13 @@ public class GT_Tool_Drill_LV extends GT_Tool implements IAOETool {
 
     @Override
     public int getMaxAOESize() {
-        return 3;
+        return 2;
     }
 
-    static int xStart[] = {0, 0, 0, -1, -1, -2, -2};
-    static int yStart[] = {0, 0, 0, -1, -2, -3, -4};
-    static int xLen[] = {1, 1, 2, 3, 4, 5, 6};
-    static int yLen[] = {1, 2, 2, 3, 4, 5, 6};
+    public static final int xStart[] = {0, 0, 0, -1, -1, -2, -2};
+    public static final int yStart[] = {0, 0, 0, -1, -2, -3, -4};
+    public static final int xLen[] = {1, 1, 2, 3, 4, 5, 6};
+    public static final int yLen[] = {1, 2, 2, 3, 4, 5, 6};
 
     @Override
     public float onBlockDestroyed(ItemStack stack, IToolStats stats, float damagePerBlock, float timeToTakeCenter, float digSpeed, World world, Block block, int x, int y, int z, EntityLivingBase player) {
@@ -211,7 +218,17 @@ public class GT_Tool_Drill_LV extends GT_Tool implements IAOETool {
         if (playerEntity.isSneaking()) {
             return false;
         } else {
-            return placeSideBlock(stack, world, x, y, z, sidehit, playerEntity, hitX, hitY, hitZ);
+            //place torch
+            val inv = playerEntity.inventory;
+            for (int i = 0; i < inv.mainInventory.length; i++) {
+                if (inv.mainInventory[i] == null) continue;
+                if (inv.mainInventory[i].getItem().getUnlocalizedName().toLowerCase(Locale.ENGLISH).contains("torch")) {
+                    if (placeInventoryBlock(i, world, x, y, z, sidehit, playerEntity, hitX, hitY, hitZ)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 

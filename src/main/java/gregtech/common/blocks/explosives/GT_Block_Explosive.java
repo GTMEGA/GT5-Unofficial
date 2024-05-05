@@ -8,10 +8,13 @@ import gregtech.common.items.explosives.GT_Item_Explosive;
 import gregtech.common.items.explosives.GT_RemoteDetonator;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.val;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -21,6 +24,16 @@ public abstract class GT_Block_Explosive extends GT_Generic_Block {
     public static final int primeMask = 1 << 3;
 
     public static final int sideMask = primeMask - 1;
+
+    /*
+
+    // Unused until EndlessIDs is integrated
+
+    public static final int baseMask = sideMask | primeMask;
+
+    public static final int otherMask = ((1 << 8) - 1) & ~baseMask;
+
+    */
 
     protected final IIconContainer[] icons;
 
@@ -35,11 +48,11 @@ public abstract class GT_Block_Explosive extends GT_Generic_Block {
 
     public void remoteTrigger(final World world, final int x, final int y, final int z, final EntityPlayer player) {
         if (!world.isRemote) {
-            goBoom(world, x, y, z, player);
+            goBoom(world, x, y, z, player, -1);
         }
     }
 
-    protected abstract void goBoom(final World world, final int x, final int y, final int z, final EntityPlayer player);
+    protected abstract void goBoom(final World world, final int x, final int y, final int z, final EntityPlayer player, final int fuse);
 
     /**
      * Gets the block's texture. Args: side, meta
@@ -73,7 +86,7 @@ public abstract class GT_Block_Explosive extends GT_Generic_Block {
             return true;
         }
         if (!world.isRemote) {
-            goBoom(world, x, y, z, player);
+            goBoom(world, x, y, z, player, -1);
         }
         return false;
     }
@@ -168,6 +181,40 @@ public abstract class GT_Block_Explosive extends GT_Generic_Block {
 
     public ForgeDirection getFacing(final int meta) {
         return ForgeDirection.getOrientation(meta & sideMask);
+    }
+
+    /**
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @param block
+     */
+    @Override
+    public void onNeighborBlockChange(final World world, final int x, final int y, final int z, final Block block) {
+        if (canConnectRedstone(world, x, y, z, 0)) {
+            val powered = world.isBlockIndirectlyGettingPowered(x, y, z);
+            if (powered) {
+                setPrimed(world, x, y, z, true);
+                val powerNextTo = world.getStrongestIndirectPower(x, y, z);
+//                System.out.println("Power next to: " + powerNextTo);
+                val timer = (15 - powerNextTo) * 20;
+                goBoom(world, x, y, z, null, timer);
+            }
+        }
+    }
+
+    /**
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @param side
+     * @return
+     */
+    @Override
+    public boolean canConnectRedstone(final IBlockAccess world, final int x, final int y, final int z, final int side) {
+        return GT_Values.ExplosivesActivatedByRS;
     }
 
     public void setPrimed(final World world, final int x, final int y, final int z, final boolean primed) {

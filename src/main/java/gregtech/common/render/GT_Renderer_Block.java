@@ -9,15 +9,17 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
+import gregtech.common.GT_Compat;
 import gregtech.common.blocks.GT_Block_Machines;
 import gregtech.common.blocks.GT_Block_Ore_Abstract;
 import gregtech.common.blocks.GT_Block_Potentiometer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
+
+import lombok.val;
 import org.lwjgl.opengl.GL11;
 
 import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_DOWN;
@@ -43,6 +45,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
     private static final float coverThickness = blockMax / 8.0F;
     private static final float coverInnerMin = blockMin + coverThickness;
     private static final float coverInnerMax = blockMax - coverThickness;
+    public static final float Z_FIGHTING_OFFSET = 0.0002f;
     public static GT_Renderer_Block INSTANCE;
     public final int mRenderID;
 
@@ -473,30 +476,31 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
 
             aBlock.setBlockBoundsForItemRender();
             aRenderer.setRenderBoundsFromBlock(aBlock);
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(0, -1, 0); // TODO: Remove this once all addons have migrated to the new Texture API
+            val tess = GT_Compat.tessellator();
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(0, -1, 0); // TODO: Remove this once all addons have migrated to the new Texture API
             renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, textures, true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(0, 1, 0); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(0, 1, 0); // TODO: Remove this once all addons have migrated to the new Texture API
             renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, textures, true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(0, 0, -1); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(0, 0, -1); // TODO: Remove this once all addons have migrated to the new Texture API
             renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, textures, true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(0, 0, 1); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(0, 0, 1); // TODO: Remove this once all addons have migrated to the new Texture API
             renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, textures, true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(-1, 0, 0); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(-1, 0, 0); // TODO: Remove this once all addons have migrated to the new Texture API
             renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, textures, true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(1, 0, 0); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(1, 0, 0); // TODO: Remove this once all addons have migrated to the new Texture API
             renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, textures, true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
 
         } else if (aMeta > 0
                 && (aMeta < GregTech_API.METATILEENTITIES.length)
@@ -508,30 +512,31 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             final GT_Block_Potentiometer potentiometer = (GT_Block_Potentiometer) aBlock;
             aBlock.setBlockBoundsForItemRender();
             aRenderer.setRenderBoundsFromBlock(aBlock);
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(0, -1, 0); // TODO: Remove this once all addons have migrated to the new Texture API
+            val tess = GT_Compat.tessellator();
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(0, -1, 0); // TODO: Remove this once all addons have migrated to the new Texture API
             renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, potentiometer.getInventoryTexture(aMeta), true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(0, 1, 0); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(0, 1, 0); // TODO: Remove this once all addons have migrated to the new Texture API
             renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, potentiometer.getInventoryTexture(aMeta), true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(0, 0, -1); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(0, 0, -1); // TODO: Remove this once all addons have migrated to the new Texture API
             renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, potentiometer.getInventoryTexture(aMeta), true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(0, 0, 1); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(0, 0, 1); // TODO: Remove this once all addons have migrated to the new Texture API
             renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, potentiometer.getInventoryTexture(aMeta), true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(-1, 0, 0); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(-1, 0, 0); // TODO: Remove this once all addons have migrated to the new Texture API
             renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, potentiometer.getInventoryTexture(aMeta), true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(1, 0, 0); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(1, 0, 0); // TODO: Remove this once all addons have migrated to the new Texture API
             renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, potentiometer.getInventoryTexture(aMeta), true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
         }
 
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
@@ -554,6 +559,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
 
         final IGregTechTileEntity iGregTechTileEntity = tMetaTileEntity.getBaseMetaTileEntity();
 
+        val tess = GT_Compat.tessellator();
         if ((iGregTechTileEntity instanceof IPipeRenderedTileEntity)) {
             final float tThickness = ((IPipeRenderedTileEntity) iGregTechTileEntity).getThickNess();
             final float pipeMin = (blockMax - tThickness) / 2.0F;
@@ -561,55 +567,55 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
 
             aBlock.setBlockBounds(blockMin, pipeMin, pipeMin, blockMax, pipeMax, pipeMax);
             aRenderer.setRenderBoundsFromBlock(aBlock);
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(0, -1, 0); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(0, -1, 0); // TODO: Remove this once all addons have migrated to the new Texture API
             renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) DOWN.ordinal(), (byte) (CONNECTED_WEST | CONNECTED_EAST), (byte) -1, false, false), true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(0, 1, 0); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(0, 1, 0); // TODO: Remove this once all addons have migrated to the new Texture API
             renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) UP.ordinal(), (byte) (CONNECTED_WEST | CONNECTED_EAST), (byte) -1, false, false), true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(0, 0, -1); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(0, 0, -1); // TODO: Remove this once all addons have migrated to the new Texture API
             renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) NORTH.ordinal(), (byte) (CONNECTED_WEST | CONNECTED_EAST), (byte) -1, false, false), true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(0, 0, 1); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(0, 0, 1); // TODO: Remove this once all addons have migrated to the new Texture API
             renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) SOUTH.ordinal(), (byte) (CONNECTED_WEST | CONNECTED_EAST), (byte) -1, false, false), true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(-1, 0, 0); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(-1, 0, 0); // TODO: Remove this once all addons have migrated to the new Texture API
             renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) WEST.ordinal(), (byte) (CONNECTED_WEST | CONNECTED_EAST), (byte) -1, true, false), true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(1, 0, 0); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(1, 0, 0); // TODO: Remove this once all addons have migrated to the new Texture API
             renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) EAST.ordinal(), (byte) (CONNECTED_WEST | CONNECTED_EAST), (byte) -1, true, false), true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
         } else {
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(0, -1, 0); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(0, -1, 0); // TODO: Remove this once all addons have migrated to the new Texture API
             renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) DOWN.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false), true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(0, 1, 0); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(0, 1, 0); // TODO: Remove this once all addons have migrated to the new Texture API
             renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) UP.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false), true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(0, 0, -1); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(0, 0, -1); // TODO: Remove this once all addons have migrated to the new Texture API
             renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) NORTH.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false), true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(0, 0, 1); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(0, 0, 1); // TODO: Remove this once all addons have migrated to the new Texture API
             renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) SOUTH.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false), true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(-1, 0, 0); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(-1, 0, 0); // TODO: Remove this once all addons have migrated to the new Texture API
             renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) WEST.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false), true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
-            Tessellator.instance.setNormal(1, 0, 0); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.startDrawingQuads(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.setNormal(1, 0, 0); // TODO: Remove this once all addons have migrated to the new Texture API
             renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) EAST.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false), true);
-            Tessellator.instance.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
+            tess.draw(); // TODO: Remove this once all addons have migrated to the new Texture API
         }
     }
 
@@ -645,78 +651,90 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
     public static void renderNegativeYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY - 1, aZ, 0))) return;
-            Tessellator.instance.setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY - 1 : aY, aZ));
+            GT_Compat.tessellator().setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY - 1 : aY, aZ));
         }
         if (aIcon == null) return;
+        float offset = 0;
         for (ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderYNeg(aRenderer, aBlock, aX, aY, aZ);
+                iTexture.renderYNeg(aRenderer, aBlock, aX, aY, aZ,offset);
             }
+            offset += Z_FIGHTING_OFFSET;
         }
     }
 
     public static void renderPositiveYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY + 1, aZ, 1))) return;
-            Tessellator.instance.setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY + 1 : aY, aZ));
+            GT_Compat.tessellator().setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY + 1 : aY, aZ));
         }
         if (aIcon == null) return;
+        float offset = 0;
         for (ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderYPos(aRenderer, aBlock, aX, aY, aZ);
+                iTexture.renderYPos(aRenderer, aBlock, aX, aY, aZ,offset);
             }
+            offset += Z_FIGHTING_OFFSET;
         }
     }
 
     public static void renderNegativeZFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ - 1, 2))) return;
-            Tessellator.instance.setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ - 1 : aZ));
+            GT_Compat.tessellator().setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ - 1 : aZ));
         }
         if (aIcon == null) return;
+        float offset = 0;
         for (ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderZNeg(aRenderer, aBlock, aX, aY, aZ);
+                iTexture.renderZNeg(aRenderer, aBlock, aX, aY, aZ,offset);
             }
+            offset += Z_FIGHTING_OFFSET;
         }
     }
 
     public static void renderPositiveZFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ + 1, 3))) return;
-            Tessellator.instance.setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ + 1 : aZ));
+            GT_Compat.tessellator().setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ + 1 : aZ));
         }
         if (aIcon == null) return;
+        float offset = 0;
         for (ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderZPos(aRenderer, aBlock, aX, aY, aZ);
+                iTexture.renderZPos(aRenderer, aBlock, aX, aY, aZ,offset);
             }
+            offset += Z_FIGHTING_OFFSET;
         }
     }
 
     public static void renderNegativeXFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX - 1, aY, aZ, 4))) return;
-            Tessellator.instance.setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX - 1 : aX, aY, aZ));
+            GT_Compat.tessellator().setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX - 1 : aX, aY, aZ));
         }
         if (aIcon == null) return;
+        float offset = 0;
         for (ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderXNeg(aRenderer, aBlock, aX, aY, aZ);
+                iTexture.renderXNeg(aRenderer, aBlock, aX, aY, aZ,offset);
             }
+            offset += Z_FIGHTING_OFFSET;
         }
     }
 
     public static void renderPositiveXFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX + 1, aY, aZ, 5))) return;
-            Tessellator.instance.setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX + 1 : aX, aY, aZ));
+            GT_Compat.tessellator().setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX + 1 : aX, aY, aZ));
         }
         if (aIcon == null) return;
+        float offset = 0;
         for (ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderXPos(aRenderer, aBlock, aX, aY, aZ);
+                iTexture.renderXPos(aRenderer, aBlock, aX, aY, aZ,offset);
             }
+            offset += Z_FIGHTING_OFFSET;
         }
     }
 

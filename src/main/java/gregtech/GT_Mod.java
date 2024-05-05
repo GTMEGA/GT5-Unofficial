@@ -19,6 +19,7 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
 import gregtech.api.util.keybind.GT_KeyHandler;
+import gregtech.common.GT_Compat;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
 import gregtech.common.GT_Proxy;
@@ -180,6 +181,7 @@ public class GT_Mod implements IGT_Mod {
 
     @Mod.EventHandler
     public void onPreLoad(FMLPreInitializationEvent aEvent) {
+        GT_Compat.init();
         Locale.setDefault(Locale.ENGLISH);
         if (GregTech_API.sPreloadStarted) {
             return;
@@ -723,6 +725,9 @@ public class GT_Mod implements IGT_Mod {
         TERadius = GT_Values.getConfigValue(tMainConfig, meSection, "radius", TERadius, "Radius of the tunnel explosive");
         TERadiusVariation = GT_Values.getConfigValue(tMainConfig, meSection, "radiusVariation", TERadiusVariation, "Variation in the radius of the tunnel explosive");
         TEMaxRange = GT_Values.getConfigValue(tMainConfig, meSection, "TEmaxRange", TEMaxRange, "Maximum range of the tunnel explosive");
+
+
+        ExplosivesActivatedByRS = GT_Values.getConfigValue(tMainConfig, meSection, "ExplosivesActivatedByRS", ExplosivesActivatedByRS, "Whether the explosives are activated by redstone");
     }
 
     @Mod.EventHandler

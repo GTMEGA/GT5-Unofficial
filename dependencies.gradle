@@ -13,10 +13,10 @@ def deobfCurse(curseDep) {
 }
 
 dependencies {
-    implementation("mega:structurelib-mc1.7.10:1.1.2:dev")
+    implementation("mega:structurelib-mc1.7.10:1.2.1-mega:dev")
     implementation("codechicken:codechickencore-mc1.7.10:1.0.9-gtmega:dev")
     implementation("codechicken:codechickenlib-mc1.7.10:1.1.4-gtmega:dev")
-    implementation("codechicken:notenoughitems-mc1.7.10:2.1.5-gtmega:dev")
+    implementation("codechicken:notenoughitems-mc1.7.10:2.2.0-mega:dev")
 
     implementation("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
 
@@ -68,6 +68,8 @@ dependencies {
         transitive = false
     }
     compileOnly("team.chisel:chisel-mc1.7.10:2.10.1:dev")
+
+    compileOnly("com.falsepattern:falsetweaks-mc1.7.10:2.8.1:dev")
 
     compileOnly("org.projectlombok:lombok:1.18.26") {
         transitive = false

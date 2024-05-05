@@ -55,7 +55,7 @@ public final class CasingRecipeLoader {
         addCraftingRecipe(Casing_Pipe_TungstenSteel.getOne(), RECIPE_MASK, new Object[]{"PIP", "IFI", "PIP", 'P', plate.get(material), 'F', frameGt.get(material), 'I', pipeMedium.get(material)});
         addCraftingRecipe(Casing_Gearbox_Bronze.getOne(), RECIPE_MASK, new Object[]{"PhP", "GFG", "PwP", 'P', plate.get(Bronze), 'F', frameGt.get(Bronze), 'G', gearGt.get(Bronze)});
         addCraftingRecipe(Casing_Gearbox_Steel.getOne(), RECIPE_MASK, new Object[]{"PhP", "GFG", "PwP", 'P', plate.get(Steel), 'F', frameGt.get(Steel), 'G', gearGt.get(Steel)});
-        addCraftingRecipe(Casing_Gearbox_Titanium.getOne(), RECIPE_MASK, new Object[]{"PhP", "GFG", "PwP", 'P', plate.get(Steel), 'F', frameGt.get(Titanium), 'G', gearGt.get(Titanium)});
+        addCraftingRecipe(Casing_Gearbox_Titanium.getOne(), RECIPE_MASK, new Object[]{"PhP", "GFG", "PwP", 'P', plate.get(Steel), 'F', frameGt.get(StainlessSteel), 'G', gearGt.get(StainlessSteel)});
         addCraftingRecipe(Casing_Gearbox_TungstenSteel.getOne(), RECIPE_MASK, new Object[]{"PhP", "GFG", "PwP", 'P', plate.get(Steel), 'F', frameGt.get(TungstenSteel), 'G', Robot_Arm_IV});
         addCraftingRecipe(Casing_Grate.getOne(), RECIPE_MASK, new Object[]{"PVP", "PFP", "PMP", 'P', new ItemStack(iron_bars, 1), 'F', frameGt.get(Steel), 'M', Electric_Motor_MV, 'V', rotor.get(Steel)});
         addCraftingRecipe(Casing_Assembler.getOne(), RECIPE_MASK, new Object[]{"PVP", "PFP", "PMP", 'P', circuitLogic.get(LOGIC_IV), 'F', frameGt.get(TungstenSteel), 'M', Electric_Motor_IV, 'V', circuitPower.get(PWR_LUV)});

@@ -5,6 +5,8 @@ import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.LightingHelper;
+import gregtech.common.GT_Compat;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -78,7 +80,7 @@ public class GT_RenderedTexture implements ITexture, IColorModulationContainer {
 
     @Override
     public void renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        final Tessellator tessellator = Tessellator.instance;
+        final Tessellator tessellator = GT_Compat.tessellator();
         IIcon aIcon = mIconContainer.getIcon();
 
         float minU = aIcon.getInterpolatedU((1.0D - aRenderer.renderMaxX) * 16.0D);

@@ -78,6 +78,39 @@
             }
         ]
     },
+    "furnace": {
+        "category": "block",
+        "sounds": [
+            "furnace1",
+            "furnace2"
+        ]
+    },
+    "steam_furnace": {
+        "category": "block",
+        "sounds": [
+            "steamFurnace1",
+            "steamFurnace2"
+
+        ]
+    },
+    "steam_vent": {
+        "category": "block",
+        "sounds": [
+            "steamVent"
+        ]
+    },
+    "boiler_vent": {
+        "category": "block",
+        "sounds": [
+            "boilerVent"
+        ]
+    },
+    "steam_hammer": {
+        "category": "block",
+        "sounds": [
+            "steamHammer"
+        ]
+    },
     "potentiometer_click": {
         "category": "block",
         "sounds": [

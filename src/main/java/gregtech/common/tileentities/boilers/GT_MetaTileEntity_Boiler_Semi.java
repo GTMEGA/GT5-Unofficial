@@ -24,7 +24,7 @@ public class GT_MetaTileEntity_Boiler_Semi extends GT_MetaTileEntity_Boiler {
     public static final int PRODUCTION_PER_SECOND = 320/EU_PER_STEAM;
     public static final int POLLUTION_PER_SECOND = 20;
     public static final float EFFICIENCY = 0.8f;
-    protected static Fluid creosent;
+    protected static Fluid creosote;
     protected static Fluid oil;
 
     public GT_MetaTileEntity_Boiler_Semi(int aID, String aName, String aNameRegional) {
@@ -46,15 +46,15 @@ public class GT_MetaTileEntity_Boiler_Semi extends GT_MetaTileEntity_Boiler {
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[5][17][];
         final ITexture[]
-                texBottom = {TextureFactory.of(MACHINE_STEELBRICKS_BOTTOM)},
-                texTop = {TextureFactory.of(MACHINE_STEELBRICKS_TOP), TextureFactory.of(OVERLAY_PIPE)},
-                texSide = {TextureFactory.of(MACHINE_STEELBRICKS_SIDE), TextureFactory.of(OVERLAY_PIPE)},
+                texBottom = {TextureFactory.of(MACHINE_BRONZEBRICKS_BOTTOM)},
+                texTop = {TextureFactory.of(MACHINE_BRONZEBRICKS_TOP), TextureFactory.of(OVERLAY_PIPE)},
+                texSide = {TextureFactory.of(MACHINE_BRONZEBRICKS_SIDE), TextureFactory.of(OVERLAY_FLUID_OUT)},
                 texFront = {
-                        TextureFactory.of(MACHINE_STEELBRICKS_SIDE),
+                        TextureFactory.of(MACHINE_BRONZEBRICKS_SIDE),
                         TextureFactory.of(BOILER_LAVA_FRONT),
                         TextureFactory.of(BOILER_LAVA_FRONT_GLOW)},
                 texFrontActive = {
-                        TextureFactory.of(MACHINE_STEELBRICKS_SIDE),
+                        TextureFactory.of(MACHINE_BRONZEBRICKS_SIDE),
                         TextureFactory.of(BOILER_LAVA_FRONT_ACTIVE),
                         TextureFactory.builder().addIcon(BOILER_LAVA_FRONT_ACTIVE_GLOW).glow().build()};
         for (byte i = 0; i < 17; i++) {
@@ -154,15 +154,15 @@ public class GT_MetaTileEntity_Boiler_Semi extends GT_MetaTileEntity_Boiler {
     }
 
     protected void loadFuelCache() {
-        if (creosent == null) {
-            creosent = Materials.Creosote.getFluid(1).getFluid();
+        if (creosote == null) {
+            creosote = Materials.Creosote.getFluid(1).getFluid();
             oil = Materials.Oil.getFluid(1).getFluid();
         }
     }
 
     protected boolean isValidFluid(FluidStack fluid) {
         loadFuelCache();
-        return fluid != null && (fluid.getFluid().equals(creosent) || fluid.getFluid().equals(oil));
+        return fluid != null && (fluid.getFluid().equals(creosote) || fluid.getFluid().equals(oil));
     }
 
     @Override

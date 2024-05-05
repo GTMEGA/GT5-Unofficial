@@ -19,7 +19,7 @@ public class GT_MetaTileEntity_OreDrillingPlant1 extends GT_MetaTileEntity_OreDr
 
     @Override
     protected int fortune() {
-        return 100;
+        return 500;
     }
 
     @Override

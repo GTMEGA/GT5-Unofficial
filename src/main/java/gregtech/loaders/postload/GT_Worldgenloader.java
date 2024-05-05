@@ -69,13 +69,13 @@ public class GT_Worldgenloader implements Runnable {
 
         if (GregTech_API.sWorldgenFile.get("worldgen", "doOreGeneration", true)) {
             //GT Default Small Ores
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.copper", true, 10, 60, 32, true, false, false, true, true, false, Materials.Copper);
+            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.copper", true, 30, 70, 32, true, false, false, true, true, false, Materials.Copper);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.tin", true, 10, 60, 32, true, false, false, true, true, true, Materials.Tin);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.bismuth", true, 80, 120, 8, false, true, false, true, true, false, Materials.Bismuth);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.coal", true, 40, 70, 128, true, false, false, false, false, false, Materials.Coal);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.iron", true, 10, 70, 196, true, false, false, true, true, false, Materials.Iron);
+            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.coal", true, 30, 70, 160, true, false, false, false, false, false, Materials.Coal);
+            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.iron", true, 30, 70, 196, true, false, false, true, true, false, Materials.Iron);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.lead", false, 40, 180, 16, false, false, false, true, true, true, Materials.Lead);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.zinc", true, 80, 210, 48, true, false, false, true, true, false, Materials.Zinc);
+            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.zinc", true, 30, 70, 48, true, false, false, true, true, false, Materials.Zinc);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.gold", true, 20, 120, 32, false, true, true, true, true, true, Materials.Gold);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.silver", false, 20, 60, 20, false, false, false, true, true, true, Materials.Silver);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.nickel", false, 80, 150, 8, false, false, false, true, true, true, Materials.Nickel);
@@ -134,17 +134,17 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.coal", true, 50, 80, 140, 5, 32, true, false, false, Materials.Coal, Materials.Coal, Materials.Coal, Materials.Coal);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.magnetite", true, 55, 180, 200, 6, 32, true, false, false, Materials.Magnetite, Materials.Magnetite, Materials.VanadiumMagnetite, Materials.Gold);
 //            new GT_Worldgen_GT_Ore_Layer("ore.mix.gold", true, 15, 45, 100, 2, 24, true, false, true, Materials.Magnetite, Materials.Magnetite, Materials.Gold, Materials.Iron);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.iron", true, 35, 55, 90, 3, 24, true, false, false, Materials.BrownLimonite, Materials.YellowLimonite, Materials.BandedIron, Materials.Malachite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.zinc", true, 70, 80, 150, 4, 32, true, false, true, Materials.Zinc, Materials.Tin, Materials.Cassiterite, Materials.Tin);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.tetrahedrite", true, 80, 120, 70, 3, 24, false, true, true, Materials.Tetrahedrite, Materials.Tetrahedrite, Materials.Copper, Materials.Stibnite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.iron", true, 35, 55, 90, 4, 24, true, false, false, Materials.Iron, Materials.YellowLimonite, Materials.BandedIron, Materials.Malachite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.zinc", true, 70, 80, 150, 4, 32, true, false, false, Materials.Zinc, Materials.Tin, Materials.Zinc, Materials.Cassiterite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.tetrahedrite", true, 80, 120, 70, 3, 24, false, true, false, Materials.Tetrahedrite, Materials.Tetrahedrite, Materials.Copper, Materials.Stibnite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.netherquartz", true, 40, 80, 80, 4, 24, false, true, false, Materials.NetherQuartz, Materials.NetherQuartz, Materials.NetherQuartz, Materials.Quartzite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.sulfur", true, 5, 20, 100, 4, 24, false, true, false, Materials.Sulfur, Materials.Sulfur, Materials.Pyrite, Materials.Sphalerite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.copper", true, 30, 40, 110, 4, 32, true, false, true, Materials.Chalcopyrite, Materials.Iron, Materials.Pyrite, Materials.Copper);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.copper", true, 30, 40, 100, 5, 32, true, false, false, Materials.Chalcopyrite, Materials.Copper, Materials.Pyrite, Materials.Iron);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.bauxite", true, 10, 80, 80, 5, 24, false, false, false, Materials.Ilmenite, Materials.Bauxite, Materials.Ilmenite, Materials.Aluminium);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.salts", true, 40, 45, 50, 2, 24, true, false, false, Materials.RockSalt, Materials.Salt, Materials.Lepidolite, Materials.Spodumene);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.redstone", true, 5, 15, 60, 2, 24, true, false, false, Materials.Redstone, Materials.Redstone, Materials.Ruby, Materials.Cinnabar);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.soapstone", true, 20, 50, 30, 2, 16, true, false, false, Materials.Soapstone, Materials.Talc, Materials.Glauconite, Materials.Pentlandite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.nickel", true, 10, 40, 50, 2, 24, true, false, true, Materials.Garnierite, Materials.Nickel, Materials.Cobaltite, Materials.Pentlandite);
+            //new GT_Worldgen_GT_Ore_Layer("ore.mix.soapstone", true, 20, 50, 30, 2, 16, true, false, false, Materials.Soapstone, Materials.Talc, Materials.Glauconite, Materials.Gypsum);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.nickel", true, 10, 40, 50, 2, 24, true, false, false, Materials.Garnierite, Materials.Nickel, Materials.Cobaltite, Materials.Pentlandite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.platinum", true, 40, 50, 5, 2, 16, false, false, false, Materials.Cooperite, Materials.Palladium, Materials.Platinum, Materials.Iridium);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.pitchblende", true, 30, 60, 40, 2, 16, false, false, false, Materials.Pitchblende, Materials.Pitchblende, Materials.Uraninite, Materials.Uraninite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.monazite", true, 20, 40, 30, 2, 16, false, false, false, Materials.Bastnasite, Materials.Bastnasite, Materials.Monazite, Materials.Neodymium);
@@ -158,7 +158,7 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.apatite", true, 40, 60, 45, 2, 16, true, false, false, Materials.Apatite, Materials.Apatite, Materials.TricalciumPhosphate, Materials.Pyrochlore);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.galena", true, 5, 45, 30, 2, 16, true, false, false, Materials.Galena, Materials.Galena, Materials.Silver, Materials.Lead);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.lapis", true, 5, 30, 45, 4, 16, true, false, false, Materials.Sodalite, Materials.Lapis, Materials.Calcite, Materials.Lazurite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.beryllium", true, 5, 30, 30, 2, 16, false, true, true, Materials.Beryllium, Materials.Beryllium, Materials.Emerald, Materials.Thorium);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.beryllium", true, 5, 30, 30, 2, 16, false, true, false, Materials.Beryllium, Materials.Beryllium, Materials.Emerald, Materials.Thorium);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.uranium", true, 20, 30, 20, 2, 16, false, false, false, Materials.Uraninite, Materials.Uraninite, Materials.Uranium, Materials.Uranium);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.oilsand", true, 50, 80, 50, 2, 32, true, false, false, Materials.Oilsands, Materials.Oilsands, Materials.Oilsands, Materials.Oilsands);
 
@@ -167,15 +167,15 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.terraaer", true, 5, 35, 16, 2, 16, false, false, false, Materials.InfusedEarth, Materials.InfusedAir, Materials.Amber, Materials.Cinnabar);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.perditioordo", true, 5, 35, 16, 2, 16, false, false, false, Materials.InfusedEntropy, Materials.InfusedOrder, Materials.Amber, Materials.Cinnabar);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.alunite", true, 80, 200, 80, 3, 24, true, false, false, Materials.Alunite, Materials.Vermiculite, Materials.Cassiterite, Materials.Chalcopyrite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.titaniumchrome", true, 10, 70, 16, 2, 16, false, false, false, Materials.Ilmenite, Materials.Chromite, Materials.Uvarovite, Materials.Perlite);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.titaniumchrome", true, 10, 70, 16, 2, 16, false, false, false, Materials.Ilmenite, Materials.Chromite, Materials.Uvarovite, Materials.Perlite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.mineralsand", true, 10, 25, 45, 3, 24, true, false, false, Materials.BasalticMineralSand, Materials.GraniticMineralSand, Materials.Gypsum, Materials.Kyanite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.owbauxite", true, 10, 30, 80, 4, 32, true, false, false, Materials.Bauxite, Materials.Bauxite, Materials.Bauxite, Materials.Bauxite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.garnettin", true, 50, 60, 50, 3, 24, true, false, false, Materials.CassiteriteSand, Materials.GarnetSand, Materials.Asbestos, Materials.Diatomite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.kaolinitezeolite", true, 50, 70, 60, 4, 16, false, false, false, Materials.Kaolinite, Materials.Zeolite, Materials.FullersEarth, Materials.GlauconiteSand);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.mica", true, 20, 40, 45, 4, 20, true, false, false, Materials.Kyanite, Materials.Mica, Materials.Cassiterite, Materials.Diatomite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.dolomite", true, 150, 200, 40, 4, 24, true, false, false, Materials.Dolomite, Materials.Wollastonite, Materials.Trona, Materials.Andradite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.mica", true, 20, 40, 45, 4, 20, true, false, false, Materials.Kyanite, Materials.Mica, Materials.Diatomite, Materials.Cassiterite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.dolomite", true, 150, 200, 40, 4, 24, true, false, false, Materials.Dolomite, Materials.Gypsum, Materials.Kyanite, Materials.Calcite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.TFgalena", true, 5, 35, 50, 5, 16, false, false, false, Materials.Galena, Materials.Galena, Materials.Silver, Materials.Lead);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.saltpeterelectrotine", true, 5, 45, 55, 5, 16, false, true, false, Materials.Saltpeter, Materials.Diatomite, Materials.Electrotine, Materials.Alunite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.saltpeterelectrotine", true, 5, 45, 55, 5, 16, false, true, false, Materials.Saltpeter, Materials.Electrotine, Materials.Diatomite, Materials.Saltpeter);
 
             /*
              * TODO: custom OreMixes
@@ -184,35 +184,35 @@ public class GT_Worldgenloader implements Runnable {
              */
 
             //aName, aDefault, aMinY, aMaxY, aWeight, aDensity, aSize, aOverworld, aNether, aEnd, aPrimary, aSecondary, aBetween, aSporadic
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.platinumchrome", true, 5, 30, 10, 2, 16, false, false, false, Materials.Platinum, Materials.Chrome, Materials.Cooperite, Materials.Palladium);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.iridiummytryl", true, 15, 40, 10, 2, 16, false, false, false, Materials.Nickel, Materials.Iridium, Materials.Palladium, Materials.Mithril);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.osmium", true, 5, 30, 10, 2, 16, false, false, false, Materials.Nickel, Materials.Osmium, Materials.Iridium, Materials.Nickel);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.desh", true, 5, 40, 30, 2, 16, false, false, false, Materials.Desh, Materials.Desh, Materials.Scheelite, Materials.Tungstate);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.draconium", true, 20, 40, 40, 1, 16, false, false, false, Materials.Draconium, Materials.Electrotine, Materials.Jade, Materials.Vinteum);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.quantium", true, 5, 25, 30, 3, 24, false, false, false, Materials.Quantium, Materials.Amethyst, Materials.Rutile, Materials.Ardite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.callistoice", true, 40, 60, 40, 2, 16, false, false, false, Materials.CallistoIce, Materials.Topaz, Materials.BlueTopaz, Materials.Alduorite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.mytryl", true, 10, 30, 40, 2, 16, false, false, false, Materials.Mytryl, Materials.Jasper, Materials.Ceruclase, Materials.Vulcanite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.ledox", true, 55, 65, 30, 2, 24, false, false, false, Materials.Ledox, Materials.Opal, Materials.Orichalcum, Materials.Rubracium);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.oriharukon", true, 30, 60, 40, 2, 16, false, false, false, Materials.Oriharukon, Materials.Tanzanite, Materials.Vyroxeres, Materials.Mirabilite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.blackplutonium", true, 5, 25, 40, 2, 24, false, false, false, Materials.BlackPlutonium, Materials.GarnetRed, Materials.GarnetYellow, Materials.Borax);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.infusedgold", true, 15, 40, 30, 2, 16, false, false, false, Materials.Gold, Materials.Gold, Materials.InfusedGold, Materials.Platinum);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.niobium", true, 5, 30, 60, 2, 24, false, false, false, Materials.Niobium, Materials.Yttrium, Materials.Gallium, Materials.Gallium);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.tungstenirons", true, 5, 25, 16, 2, 30, false, false, false, Materials.Tungsten, Materials.Silicon, Materials.DeepIron, Materials.ShadowIron);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.balleruranium", true, 10, 30, 60, 2, 24, false, false, false, Materials.Thorium, Materials.Uranium, Materials.Plutonium241, Materials.Uranium235);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.vanadiumgold", true, 10, 50, 60, 2, 24, false, false, false, Materials.Vanadium, Materials.Magnetite, Materials.Gold, Materials.Chrome);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.netherstar", true, 20, 60, 60, 2, 24, false, false, false, Materials.GarnetSand, Materials.NetherStar, Materials.GarnetRed, Materials.GarnetYellow);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.garnet", true, 10, 30, 40, 2, 16, false, false, false, Materials.GarnetRed, Materials.GarnetYellow, Materials.Chrysotile, Materials.Realgar);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.rareearth", true, 30, 60, 40, 2, 24, false, false, false, Materials.Cadmium, Materials.Caesium, Materials.Lanthanum, Materials.Cerium);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.richnuclear", true, 55, 120, 15, 2, 8, false, false, false, Materials.Uranium, Materials.Plutonium, Materials.Thorium, Materials.Thorium);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.heavypentele", true, 40, 60, 60, 5, 32, false, false, false, Materials.Arsenic, Materials.Bismuth, Materials.Antimony, Materials.Antimony);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.europa", true, 55, 65, 110, 4, 24, false, false, false, Materials.Magnesite, Materials.BandedIron, Materials.Sulfur, Materials.Opal);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.europacore", true, 5, 15, 5, 2, 16, false, false, false, Materials.Chrome, Materials.Tungstate, Materials.Molybdenum, Materials.Manganese);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.secondlanthanid", true, 10, 40, 10, 3, 24, false, false, false, Materials.Samarium, Materials.Neodymium, Materials.Tartarite, Materials.Tartarite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.quartzspace", true, 40, 80, 20, 3, 16, false, false, false, Materials.Quartzite, Materials.Barite, Materials.CertusQuartz, Materials.CertusQuartz);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.rutile", true, 5, 20, 15, 4, 12, false, false, false, Materials.Rutile, Materials.Titanium, Materials.Bauxite, Materials.MeteoricIron);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.naquadah", true, 10, 90, 30, 4, 32, false, false, false, Materials.Naquadah, Materials.Naquadah, Materials.Naquadah, Materials.NaquadahEnriched);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.lignite", false, 80, 210, 20, 7, 32, false, false, false, Materials.Lignite, Materials.Lignite, Materials.Lignite, Materials.Coal);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.luvtantalite", true, 20, 30, 10, 4, 16, false, false, false, Materials.Pyrolusite, Materials.Apatite, Materials.Tantalite, Materials.Pyrochlore);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.platinumchrome", true, 5, 30, 10, 2, 16, false, false, false, Materials.Platinum, Materials.Chrome, Materials.Cooperite, Materials.Palladium);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.iridiummytryl", true, 15, 40, 10, 2, 16, false, false, false, Materials.Nickel, Materials.Iridium, Materials.Palladium, Materials.Mithril);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.osmium", true, 5, 30, 10, 2, 16, false, false, false, Materials.Nickel, Materials.Osmium, Materials.Iridium, Materials.Nickel);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.desh", true, 5, 40, 30, 2, 16, false, false, false, Materials.Desh, Materials.Desh, Materials.Scheelite, Materials.Tungstate);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.draconium", true, 20, 40, 40, 1, 16, false, false, false, Materials.Draconium, Materials.Electrotine, Materials.Jade, Materials.Vinteum);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.quantium", true, 5, 25, 30, 3, 24, false, false, false, Materials.Quantium, Materials.Amethyst, Materials.Rutile, Materials.Ardite);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.callistoice", true, 40, 60, 40, 2, 16, false, false, false, Materials.CallistoIce, Materials.Topaz, Materials.BlueTopaz, Materials.Alduorite);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.mytryl", true, 10, 30, 40, 2, 16, false, false, false, Materials.Mytryl, Materials.Jasper, Materials.Ceruclase, Materials.Vulcanite);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.ledox", true, 55, 65, 30, 2, 24, false, false, false, Materials.Ledox, Materials.Opal, Materials.Orichalcum, Materials.Rubracium);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.oriharukon", true, 30, 60, 40, 2, 16, false, false, false, Materials.Oriharukon, Materials.Tanzanite, Materials.Vyroxeres, Materials.Mirabilite);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.blackplutonium", true, 5, 25, 40, 2, 24, false, false, false, Materials.BlackPlutonium, Materials.GarnetRed, Materials.GarnetYellow, Materials.Borax);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.infusedgold", true, 15, 40, 30, 2, 16, false, false, false, Materials.Gold, Materials.Gold, Materials.InfusedGold, Materials.Platinum);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.niobium", true, 5, 30, 60, 2, 24, false, false, false, Materials.Niobium, Materials.Yttrium, Materials.Gallium, Materials.Gallium);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.tungstenirons", true, 5, 25, 16, 2, 30, false, false, false, Materials.Tungsten, Materials.Silicon, Materials.DeepIron, Materials.ShadowIron);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.balleruranium", true, 10, 30, 60, 2, 24, false, false, false, Materials.Thorium, Materials.Uranium, Materials.Plutonium241, Materials.Uranium235);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.vanadiumgold", true, 10, 50, 60, 2, 24, false, false, false, Materials.Vanadium, Materials.Magnetite, Materials.Gold, Materials.Chrome);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.netherstar", true, 20, 60, 60, 2, 24, false, false, false, Materials.GarnetSand, Materials.NetherStar, Materials.GarnetRed, Materials.GarnetYellow);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.garnet", true, 10, 30, 40, 2, 16, false, false, false, Materials.GarnetRed, Materials.GarnetYellow, Materials.Chrysotile, Materials.Realgar);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.rareearth", true, 30, 60, 40, 2, 24, false, false, false, Materials.Cadmium, Materials.Caesium, Materials.Lanthanum, Materials.Cerium);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.richnuclear", true, 55, 120, 15, 2, 8, false, false, false, Materials.Uranium, Materials.Plutonium, Materials.Thorium, Materials.Thorium);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.heavypentele", true, 40, 60, 60, 5, 32, false, false, false, Materials.Arsenic, Materials.Bismuth, Materials.Antimony, Materials.Antimony);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.europa", true, 55, 65, 110, 4, 24, false, false, false, Materials.Magnesite, Materials.BandedIron, Materials.Sulfur, Materials.Opal);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.europacore", true, 5, 15, 5, 2, 16, false, false, false, Materials.Chrome, Materials.Tungstate, Materials.Molybdenum, Materials.Manganese);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.secondlanthanid", true, 10, 40, 10, 3, 24, false, false, false, Materials.Samarium, Materials.Neodymium, Materials.Tartarite, Materials.Tartarite);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.quartzspace", true, 40, 80, 20, 3, 16, false, false, false, Materials.Quartzite, Materials.Barite, Materials.CertusQuartz, Materials.CertusQuartz);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.rutile", true, 5, 20, 15, 4, 12, false, false, false, Materials.Rutile, Materials.Titanium, Materials.Bauxite, Materials.MeteoricIron);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.naquadah", true, 10, 90, 30, 4, 32, false, false, false, Materials.Naquadah, Materials.Naquadah, Materials.Naquadah, Materials.NaquadahEnriched);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.lignite", false, 80, 210, 20, 7, 32, false, false, false, Materials.Lignite, Materials.Lignite, Materials.Lignite, Materials.Coal);
+//            new GT_Worldgen_GT_Ore_Layer("ore.mix.luvtantalite", true, 20, 30, 10, 4, 16, false, false, false, Materials.Pyrolusite, Materials.Apatite, Materials.Tantalite, Materials.Pyrochlore);
         }
 
         GT_OreVeinLocations.addOreVeins(GT_Worldgen_GT_Ore_Layer.sList);

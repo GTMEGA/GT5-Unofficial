@@ -30,10 +30,9 @@ public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_Pri
     @Override
     public String[] getDescription() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Blast Furnace")
+        tt.addMachineType("Primitive Blast Furnace")
                 .addInfo("Controller Block for the Bricked Blast Furnace")
-                .addInfo("Usable for Steel and general Pyrometallurgy")
-                .addInfo("Has a useful interface, unlike other gregtech multis")
+                .addInfo("Usable for Steel and basic alloys.")
                 .addPollutionAmount(200)
                 .addSeparator()
                 .beginStructureBlock(3, 4, 3, true)

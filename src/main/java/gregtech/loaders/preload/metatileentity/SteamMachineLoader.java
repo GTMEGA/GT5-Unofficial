@@ -25,12 +25,12 @@ public final class SteamMachineLoader {
         Machine_Steel_Boiler_Lava.set(new GT_MetaTileEntity_Boiler_Lava(102, "boiler.lava", "High Pressure Lava Boiler").getStackForm(1L));
         Machine_Bronze_Boiler_Solar.set(new GT_MetaTileEntity_Boiler_Solar(105, "boiler.solar", "Brass Solar Boiler").getStackForm(1L));
         Machine_HP_Solar.set(new GT_MetaTileEntity_Boiler_Solar_Steel(114, "boiler.steel.solar", "High Pressure Solar Boiler").getStackForm(1L));
-        Machine_Steel_Boiler_SemiFluid.set(new GT_MetaTileEntity_Boiler_Semi(9333, "boiler.semi", "High Pressure SemiFluid Boiler").getStackForm(1));
+        Machine_Steel_Boiler_SemiFluid.set(new GT_MetaTileEntity_Boiler_Semi(9333, "boiler.semi", "SemiFluid Boiler").getStackForm(1));
         addCraftingRecipe(Machine_Bronze_Boiler.get(1L), RECIPE_MASK, new Object[]{"PPP", "PwP", "BFB", 'F', craftingIronFurnace, 'P', plate.get(Brass), 'B', new ItemStack(Blocks.brick_block, 1)});
         addCraftingRecipe(Machine_Steel_Boiler.get(1L), RECIPE_MASK, new Object[]{"PPP", "PwP", "BFB", 'F', craftingIronFurnace, 'P', plate.get(Steel), 'B', new ItemStack(Blocks.brick_block, 1)});
         addCraftingRecipe(Machine_Steel_Boiler_Lava.get(1L), RECIPE_MASK, new Object[]{"PPP", "PTP", "PMP", 'M', Hull_HP, 'P', plate.get(Steel), 'T', getModItem("BuildCraft|Factory", "tankBlock", 1L, 0)});
         addCraftingRecipe(Machine_Bronze_Boiler_Solar.get(1L), RECIPE_MASK, new Object[]{"GGG", "SSS", "PMP", 'M', Hull_Bronze_Bricks, 'P', pipeSmall.get(Brass), 'S', plate.get(Silver), 'G', new ItemStack(Blocks.glass, 1)});
-        addCraftingRecipe(Machine_HP_Solar.get(1L), RECIPE_MASK, new Object[]{"GGG", "SSS", "PMP", 'M', Hull_HP_Bricks, 'P', pipeSmall.get(Steel), 'S', plate.get(Silver), 'G', getModItem("IC2", "blockAlloyGlass", 1L)});
+        addCraftingRecipe(Machine_HP_Solar.get(1L), RECIPE_MASK, new Object[]{"GGG", "SSS", "PMP", 'M', Hull_HP_Bricks, 'P', pipeLarge.get(Steel), 'S', plate.get(Silver), 'G', getModItem("IC2", "blockAlloyGlass", 1L)});
 
         Machine_Bronze_BlastFurnace.set(new GT_MetaTileEntity_BronzeBlastFurnace(108, "bronzemachine.blastfurnace", "Brass Plated Blast Furnace").getStackForm(1L));
         Machine_Bronze_Furnace.set(new GT_MetaTileEntity_Furnace_Bronze(103, "bronzemachine.furnace", "Steam Furnace").getStackForm(1L));
