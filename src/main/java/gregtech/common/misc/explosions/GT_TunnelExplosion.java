@@ -1,7 +1,6 @@
 package gregtech.common.misc.explosions;
 
 
-import gregtech.api.enums.GT_Values;
 import gregtech.common.entities.explosives.GT_Entity_TunnelExplosive;
 import lombok.val;
 import net.minecraft.block.Block;
@@ -9,21 +8,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import static gregtech.common.misc.explosions.IGT_ExplosiveTier.GT_TunnelExplosiveTier;
 
-public class GT_TunnelExplosion extends GT_Explosion {
 
-    private static final double A = 1.0411961/* (1.0 + Math.sqrt(4 - 2 * Math.sqrt(2))) / 2 */, B = 0.70710678;
-
-    private static double magnitude(double a, double b) {
-        // https://majewsky.wordpress.com/2011/04/10/optimization-tricks-fast-norm/
-        // return Math.sqrt(a * a + b * b);
-        a = a > 0 ? a : -a;
-        b = b > 0 ? b : -b;
-        val c = a > b ? a : b;
-        val d = B * (a + b);
-        val e = c > d ? c : d;
-        return A * e;
-    }
+public class GT_TunnelExplosion extends GT_Explosion<GT_TunnelExplosiveTier> {
 
     private final ForgeDirection direction;
 
@@ -93,11 +81,12 @@ public class GT_TunnelExplosion extends GT_Explosion {
      */
     @Override
     protected float getDropChance(final Block block) {
+        val params = getParams();
         val material = block.getMaterial();
-        if ( material == Material.clay) {
-            return GT_Values.MEOreChance;
+        if (material == Material.clay) {
+            return (float) params.getClayChance();
         }
-        return 0.001f;
+        return (float) params.getOtherChance();
     }
 
     /**
@@ -105,7 +94,7 @@ public class GT_TunnelExplosion extends GT_Explosion {
      * @return
      */
     @Override
-    protected boolean rayValid(final GT_Explosion_PreCalculation.Ray ray) {
+    protected boolean isRayValid(final GT_Explosion_PreCalculation.Ray ray) {
         final double rayX, rayY, rayZ;
         rayX = ray.posX - explosionX;
         rayY = ray.posY - explosionY;
@@ -124,7 +113,7 @@ public class GT_TunnelExplosion extends GT_Explosion {
      * @return
      */
     /*@Override
-    protected boolean rayValid(final float power, final double rayLength, final double posX, final double posY, final double posZ, final double maxRadius) {
+    protected boolean isRayValid(final float power, final double rayLength, final double posX, final double posY, final double posZ, final double maxRadius) {
         final double rayX, rayY, rayZ;
         rayX = posX - explosionX;
         rayY = posY - explosionY;
@@ -148,9 +137,13 @@ public class GT_TunnelExplosion extends GT_Explosion {
     }
 
     @Override
-    protected double precalcRayMaxLength(GT_Explosion_PreCalculation.Ray ray) {
-        float distance = facingCorrectly(ray.aX, ray.aY, ray.aZ) ? GT_Values.TEMaxRange : GT_Values.TERadius;
-        distance += (float) (pubWorld.rand.nextDouble() * GT_Values.TERadiusVariation - GT_Values.TERadiusVariation);
+    protected double preCalculateRayMaximumLength(GT_Explosion_PreCalculation.Ray ray) {
+        val params = getParams();
+        val maxLength = params.getMaxLength();
+        val maxRadius = params.getMaxRadius();
+        val radVar = params.getRadiusVariation();
+        float distance = (float) (facingCorrectly(ray.aX, ray.aY, ray.aZ) ? maxLength : maxRadius);
+        distance += (float) (pubWorld.rand.nextDouble() * radVar - radVar);
         return distance;
     }
 
@@ -212,7 +205,9 @@ public class GT_TunnelExplosion extends GT_Explosion {
     }
 
     private double getTunnelRadius() {
-        val radius = GT_Values.TERadius + (pubWorld.rand.nextDouble() * GT_Values.TERadiusVariation) - GT_Values.TERadiusVariation;
+        val params = getParams();
+        val radV = params.getRadiusVariation();
+        val radius = params.getMaxRadius() + (pubWorld.rand.nextDouble() * radV) - radV;
         return radius * radius;
     }
 
@@ -229,6 +224,10 @@ public class GT_TunnelExplosion extends GT_Explosion {
             }
         }
         return 0;
+    }
+
+    private IGT_ExplosiveTier.GT_TunnelExplosiveTier.TunnelExplosiveParameters getParams() {
+        return getTier().getParameters();
     }
 
 }

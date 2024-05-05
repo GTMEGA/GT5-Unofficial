@@ -7,6 +7,7 @@ import gregtech.api.gui.widgets.icon.GT_GuiIcon;
 import gregtech.api.interfaces.IGuiScreen;
 import gregtech.common.blocks.explosives.GT_Block_Explosive;
 import gregtech.common.items.explosives.GT_RemoteDetonator;
+import gregtech.common.misc.explosions.IGT_ExplosiveTier;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -26,7 +27,7 @@ import java.util.Map;
 @Getter
 public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableElement {
 
-    private static final Map<GT_Block_Explosive, ItemStack> stackCache = new HashMap<>();
+    private static final Map<GT_Block_Explosive<?>, ItemStack> stackCache = new HashMap<>();
 
     private final GT_GuiScrollPanel<GT_RemoteDetonator_GuiContainer> scrollPanel;
 
@@ -262,7 +263,11 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
             GL11.glDisable(GL11.GL_LIGHTING);
         }
         if (isValidBlock()) {
-            scrollPanel.getParent().drawItemStack(stackCache.computeIfAbsent(target.getExplosiveType().getExplosive(), ItemStack::new), 0, 0, "");
+            val eT = target.getExplosiveType();
+            val tier = target.getTier();
+            val block = tier.getBlock();
+            val tmp = stackCache.computeIfAbsent(block, ItemStack::new);
+            scrollPanel.getParent().drawItemStack(tmp, 0, 0, "");
         } else {
             GT_GuiIcon.CROSS.render(0, 0, 16, 16, 0, true);
         }

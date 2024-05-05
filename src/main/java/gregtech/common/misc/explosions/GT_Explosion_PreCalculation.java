@@ -77,11 +77,12 @@ public class GT_Explosion_PreCalculation {
 
     }
 
+
     protected static final Set<GT_Explosion_PreCalculation> active = new HashSet<>();
 
-    private final @NonNull GT_Entity_Explosive explosionSource;
+    private final @NonNull GT_Entity_Explosive<?> explosionSource;
 
-    private final @NonNull GT_Explosion explosion;
+    private final @NonNull GT_Explosion<?> explosion;
 
     private final @NonNull World world;
 
@@ -114,7 +115,7 @@ public class GT_Explosion_PreCalculation {
                         val ray = new Ray(this, aX, aY, aZ);
                         ray.power = explosion.getRayPower();
                         ray.init();
-                        ray.maxLength = explosion.precalcRayMaxLength(ray/*ray.posX, ray.posY, ray.posZ, explosion.getExpRadius()*/);
+                        ray.maxLength = explosion.preCalculateRayMaximumLength(ray/*ray.posX, ray.posY, ray.posZ, explosion.getExpRadius()*/);
                         explosion.preprocessRay(ray);
                         rays.add(ray);
                     }
@@ -136,7 +137,7 @@ public class GT_Explosion_PreCalculation {
 
     private void doRayTick(final @NonNull Ray ray, final double proportionEnd) {
         ChunkPosition last = null;
-        while ((ray.canContinue = explosion.rayValid(ray)) && ray.myLength < ray.maxLength * proportionEnd) {
+        while ((ray.canContinue = explosion.isRayValid(ray)) && ray.myLength < ray.maxLength * proportionEnd) {
             val currentPosition = ray.chunkPosition;
             if (currentPosition != last && hasNotEncountered(currentPosition)) {
                 seenPositions.add(currentPosition);

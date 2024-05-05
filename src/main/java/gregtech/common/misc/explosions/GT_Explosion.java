@@ -4,12 +4,12 @@ package gregtech.common.misc.explosions;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.common.entities.explosives.GT_Entity_Explosive;
+import lombok.NonNull;
 import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentProtection;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -29,20 +29,20 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-public abstract class GT_Explosion extends Explosion {
+public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_ExplosiveTier<TierType>> extends Explosion {
 
     protected final List<ItemStack> harvested = new ArrayList<>();
 
     protected final Set<ChunkPosition> seen = new HashSet<>(), targeted = new HashSet<>();
 
-    private final GT_Entity_Explosive gtExplosive;
+    private final GT_Entity_Explosive<TierType> gtExplosive;
 
     protected int maxX, maxY, maxZ;
 
     protected World pubWorld;
 
     public GT_Explosion(
-            final World world, final GT_Entity_Explosive entity, final double x, final double y, final double z, final float power
+            final World world, final GT_Entity_Explosive<TierType> entity, final double x, final double y, final double z, final float power
                        ) {
         super(world, entity, x, y, z, power);
         this.gtExplosive = entity;
@@ -62,7 +62,8 @@ public abstract class GT_Explosion extends Explosion {
         return (int) explosionZ;
     }
 
-    public GT_Explosion perform() {
+    @SuppressWarnings("UnusedReturnValue")
+    public GT_Explosion<TierType> perform() {
         if (net.minecraftforge.event.ForgeEventFactory.onExplosionStart(this.exploder.worldObj, this)) {
             return this;
         }
@@ -103,12 +104,13 @@ public abstract class GT_Explosion extends Explosion {
     /**
      * Does the second part of the explosion (sound, particles, drop spawn)
      *
-     * @param b0
+     * @param shouldDoParticles whether or not to spawn particles
      */
     @Override
-    public void doExplosionB(final boolean b0) {
+    public void doExplosionB(final boolean shouldDoParticles) {
         playSound();
-        pubWorld.spawnParticle("hugeexplosion", explosionX, explosionY, explosionZ, 1.0, 0.0, 0.0);
+        val expParticleName = getTier().getFlavorInfo().getParticleName();
+        pubWorld.spawnParticle(expParticleName, explosionX, explosionY, explosionZ, 1.0, 0.0, 0.0);
         Set<ChunkPosition> blocksToDestroy;
         GT_Explosion_PreCalculation preCalc;
         if (gtExplosive != null && (preCalc = gtExplosive.getPreCalc()) != null) {
@@ -126,7 +128,7 @@ public abstract class GT_Explosion extends Explosion {
             block = pubWorld.getBlock(i, j, k);
             meta = pubWorld.getBlockMetadata(i, j, k);
             //
-            doParticles(b0, (float) i, (float) j, (float) k);
+            doParticles(shouldDoParticles, (float) i, (float) j, (float) k);
             if (block.getMaterial() != Material.air) {
                 if (block.canDropFromExplosion(this)) {
                     getDrops(block, i, j, k, meta);
@@ -152,16 +154,16 @@ public abstract class GT_Explosion extends Explosion {
             }
     )
     protected void doEntityStuff() {
-        final int i, j, k, i2, l, j2;
-        i = MathHelper.floor_double(this.explosionX - (double) this.explosionSize - 1.0D);
-        j = MathHelper.floor_double(this.explosionX + (double) this.explosionSize + 1.0D);
-        k = MathHelper.floor_double(this.explosionY - (double) this.explosionSize - 1.0D);
-        i2 = MathHelper.floor_double(this.explosionY + (double) this.explosionSize + 1.0D);
-        l = MathHelper.floor_double(this.explosionZ - (double) this.explosionSize - 1.0D);
-        j2 = MathHelper.floor_double(this.explosionZ + (double) this.explosionSize + 1.0D);
-        final List entities = pubWorld.getEntitiesWithinAABBExcludingEntity(this.exploder, AxisAlignedBB.getBoundingBox(i, k, l, j, i2, j2));
+        final int minXCoord, maxXCoord, minYCoord, maxYCoord, minZCoord, maxZCoord;
+        minXCoord = MathHelper.floor_double(this.explosionX - (double) this.explosionSize - 1.0D);
+        maxXCoord = MathHelper.floor_double(this.explosionX + (double) this.explosionSize + 1.0D);
+        minYCoord = MathHelper.floor_double(this.explosionY - (double) this.explosionSize - 1.0D);
+        maxYCoord = MathHelper.floor_double(this.explosionY + (double) this.explosionSize + 1.0D);
+        minZCoord = MathHelper.floor_double(this.explosionZ - (double) this.explosionSize - 1.0D);
+        maxZCoord = MathHelper.floor_double(this.explosionZ + (double) this.explosionSize + 1.0D);
+        final List entities = pubWorld.getEntitiesWithinAABBExcludingEntity(this.exploder, AxisAlignedBB.getBoundingBox(minXCoord, minYCoord, minZCoord, maxXCoord, maxYCoord, maxZCoord));
         net.minecraftforge.event.ForgeEventFactory.onExplosionDetonate(pubWorld, this, entities, explosionSize);
-        final Vec3 expVec = Vec3.createVectorHelper(explosionX, explosionY, explosionZ);
+//        final Vec3 expVec = Vec3.createVectorHelper(explosionX, explosionY, explosionZ);
         entities.forEach(oEntity -> {
             if (!(oEntity instanceof Entity)) {
                 return;
@@ -179,6 +181,8 @@ public abstract class GT_Explosion extends Explosion {
                     disX /= disMag;
                     disY /= disMag;
                     disZ /= disMag;
+                    // This line started causing unfathomable lag, so I had to disable it.
+                    // The block density function sort of adjusted the explosion based upon the terrain so this is a bit goofy without it.
 //                    blockDensity = pubWorld.getBlockDensity(expVec, entity.boundingBox);
                     blockDensity = 1.0 / 2.0;
                     invDist = (1.0 - distance) * blockDensity;
@@ -202,14 +206,19 @@ public abstract class GT_Explosion extends Explosion {
     }
 
     protected void playSound() {
-        pubWorld.playSoundEffect(explosionX, explosionY, explosionZ, GregTech_API.sSoundList.get(213), 4.0f, soundVolume());
+        val expSoundID = getTier().getFlavorInfo().getExplosionSoundID();
+        pubWorld.playSoundEffect(explosionX, explosionY, explosionZ, GregTech_API.sSoundList.get(expSoundID), 4.0f, soundVolume());
     }
 
-    protected void doParticles(final boolean p_77279_1_, final float i, final float j, final float k) {
-        if (p_77279_1_) {
-            double d0 = i + pubWorld.rand.nextFloat();
-            double d1 = j + pubWorld.rand.nextFloat();
-            double d2 = k + pubWorld.rand.nextFloat();
+    public @NonNull TierType getTier() {
+        return gtExplosive.getTier();
+    }
+
+    protected void doParticles(final boolean particleControl, final float x, final float y, final float z) {
+        if (particleControl) {
+            double d0 = x + pubWorld.rand.nextFloat();
+            double d1 = y + pubWorld.rand.nextFloat();
+            double d2 = z + pubWorld.rand.nextFloat();
             double d3 = d0 - this.explosionX;
             double d4 = d1 - this.explosionY;
             double d5 = d2 - this.explosionZ;
@@ -227,10 +236,10 @@ public abstract class GT_Explosion extends Explosion {
         }
     }
 
-    protected void getDrops(final Block block, final int i, final int j, final int k, final int meta) {
+    protected void getDrops(final Block block, final int x, final int y, final int z, final int metadata) {
         if (!pubWorld.isRemote) {
             final float chance = getDropChance(block);
-            ArrayList<ItemStack> items = block.getDrops(pubWorld, i, j, k, meta, getFortune());
+            ArrayList<ItemStack> items = block.getDrops(pubWorld, x, y, z, metadata, getFortune());
             harvested.addAll(items.stream().filter(s -> pubWorld.rand.nextFloat() < chance).collect(Collectors.toList()));
         }
     }
@@ -253,12 +262,8 @@ public abstract class GT_Explosion extends Explosion {
 
     protected abstract float getDropChance(final Block block);
 
-    protected boolean doCleverDrop() {
-        return GT_Values.MEFancyDrops;
-    }
-
     protected int getFortune() {
-        return GT_Values.MEFortune;
+        return getTier().getFortuneTier();
     }
 
     protected void spawnItem(final ItemStack stack) {
@@ -268,6 +273,10 @@ public abstract class GT_Explosion extends Explosion {
     protected void spawnItem(final ItemStack stack, final double x, final double y, final double z) {
         pubWorld.spawnEntityInWorld(new EntityItem(pubWorld, x, y, z, stack));
     }
+
+//    protected boolean doCleverDrop() {
+//        return GT_Values.MEFancyDrops;
+//    }
 
     protected boolean handlePositionPre(final ChunkPosition pos) {
         return true;
@@ -285,17 +294,20 @@ public abstract class GT_Explosion extends Explosion {
         return explosionSize * (0.7f + pubWorld.rand.nextFloat() * 0.6f);
     }
 
+    /**
+     * @return The distance a ray ought to march per iteration
+     */
     protected float getBaseRayDist() {
         return GT_Values.MERayBaseRayDist;
     }
 
-    protected abstract boolean rayValid(final GT_Explosion_PreCalculation.Ray ray);
+    protected abstract boolean isRayValid(final GT_Explosion_PreCalculation.Ray ray);
 
     protected void preprocessRay(final GT_Explosion_PreCalculation.Ray ray) {
 
     }
 
-    protected abstract double precalcRayMaxLength(final GT_Explosion_PreCalculation.Ray ray);
+    protected abstract double preCalculateRayMaximumLength(final GT_Explosion_PreCalculation.Ray ray);
 
     protected float getRayPowerDropRatio() {
         return GT_Values.MERayPowerDropRatio;

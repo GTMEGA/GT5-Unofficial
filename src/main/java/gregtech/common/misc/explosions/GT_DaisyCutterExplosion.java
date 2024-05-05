@@ -3,7 +3,7 @@ package gregtech.common.misc.explosions;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_TreeBorker;
-import gregtech.common.entities.explosives.GT_Entity_Explosive;
+import gregtech.common.entities.explosives.GT_Entity_DaisyCutterExplosive;
 import net.minecraft.block.Block;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkPosition;
@@ -11,18 +11,32 @@ import net.minecraft.world.World;
 
 import java.util.stream.Collectors;
 
+import static gregtech.common.misc.explosions.IGT_ExplosiveTier.GT_DaisyCutterTier;
 
-public class GT_DaisyCutterExplosion extends GT_Explosion {
+
+public class GT_DaisyCutterExplosion extends GT_Explosion<GT_DaisyCutterTier> {
 
     private final GT_TreeBorker borker;
 
     // private final Set<ChunkPosition> tempSet = new HashSet<>();
 
     public GT_DaisyCutterExplosion(
-            final World world, final GT_Entity_Explosive entity, final double x, final double y, final double z, final float power
+            final World world, final GT_Entity_DaisyCutterExplosive entity, final double x, final double y, final double z, final float power
                                   ) {
         super(world, entity, x, y, z, power);
-        this.borker = new GT_TreeBorker(world, MathHelper.floor_double(x), MathHelper.floor_double(y), MathHelper.floor_double(z), 3, 64, 12, -1, true);
+        int iX, iY, iZ;
+        iX = MathHelper.floor_double(x);
+        iY = MathHelper.floor_double(y);
+        iZ = MathHelper.floor_double(z);
+        this.borker = new GT_TreeBorker(world, iX, iY, iZ, getMaxScanDepth(), getMaxDistance(), -1, -1, true);
+    }
+
+    public int getMaxScanDepth() {
+        return 3;
+    }
+
+    public int getMaxDistance() {
+        return (int) getTier().getRadius();
     }
 
     /**
@@ -109,12 +123,12 @@ public class GT_DaisyCutterExplosion extends GT_Explosion {
     }
 
     @Override
-    protected boolean rayValid(GT_Explosion_PreCalculation.Ray ray) {
+    protected boolean isRayValid(GT_Explosion_PreCalculation.Ray ray) {
         return ray.myLength < ray.maxLength;
     }
 
     @Override
-    protected double precalcRayMaxLength(GT_Explosion_PreCalculation.Ray ray) {
+    protected double preCalculateRayMaximumLength(GT_Explosion_PreCalculation.Ray ray) {
         return GT_Values.MEMaxRange;
     }
 
