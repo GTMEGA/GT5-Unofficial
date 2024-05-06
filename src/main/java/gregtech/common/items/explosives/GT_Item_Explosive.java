@@ -39,7 +39,7 @@ public class GT_Item_Explosive<TierType extends Enum<TierType> & IGT_ExplosiveTi
      */
     @SuppressWarnings("unchecked")
     public GT_Item_Explosive(final Block block, final String uName) {
-        this(block, uName, block instanceof GT_Block_Explosive<?> ? ((GT_Block_Explosive<TierType>) block).getTier() : null);
+        this(block, uName, block instanceof GT_Block_Explosive<?> ? ((GT_Block_Explosive<TierType>) block).getTier().asType() : null);
 //        super(block);
 //        String elName;
 //        if (block instanceof GT_Block_Explosive<?>) {

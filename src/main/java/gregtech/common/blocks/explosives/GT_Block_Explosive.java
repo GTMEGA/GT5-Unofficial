@@ -47,7 +47,7 @@ public abstract class GT_Block_Explosive<TierType extends Enum<TierType> & IGT_E
     protected final IIconContainer[] icons;
 
     @Getter
-    protected final @NonNull TierType tier;
+    protected final @NonNull IGT_ExplosiveTier<TierType> tier;
 
     @Getter
     @Setter

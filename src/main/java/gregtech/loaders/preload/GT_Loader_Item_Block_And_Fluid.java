@@ -14,6 +14,7 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.*;
 import gregtech.common.blocks.*;
 import gregtech.common.blocks.explosives.GT_Block_DaisyCutter;
+import gregtech.common.blocks.explosives.GT_Block_FlatBomb;
 import gregtech.common.blocks.explosives.GT_Block_MiningExplosive;
 import gregtech.common.blocks.explosives.GT_Block_TunnelExplosive;
 import gregtech.common.items.*;
@@ -239,6 +240,9 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         //
         GregTech_API.sBlockTunEx = new GT_Block_TunnelExplosive(IGT_ExplosiveTier.GT_TunnelExplosiveTier.MK1);
         GregTech_API.sBlockTunEx2 = new GT_Block_TunnelExplosive(IGT_ExplosiveTier.GT_TunnelExplosiveTier.MK2);
+        //
+        GregTech_API.sBlockFlatBomb = new GT_Block_FlatBomb(IGT_ExplosiveTier.GT_FlatBombTier.MK1);
+        GregTech_API.sBlockFlatBomb2 = new GT_Block_FlatBomb(IGT_ExplosiveTier.GT_FlatBombTier.MK2);
         //
         GregTech_API.sItemRemoteDetonator = new GT_RemoteDetonator();
         GregTech_API.sBorker = new TreeBorkTester();

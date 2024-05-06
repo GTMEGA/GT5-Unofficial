@@ -155,7 +155,34 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
         }
     }
 
-//    int getLength();
+
+    @RequiredArgsConstructor
+    @Getter
+    enum GT_FlatBombTier implements IGT_ExplosiveTier<GT_FlatBombTier> {
+
+        MK1("Flat Bomb Mk 1", new ExplosiveTextureInfo("flatbomb/mk1", "FLAT_BOMB"), new ExplosiveFlavorInfo(213, 214), 24, 9.0, 0),
+        MK2("Flat Bomb Mk 2", new ExplosiveTextureInfo("flatbomb/mk2", "FLAT_BOMB"), new ExplosiveFlavorInfo(213, 214), 36, 12.0, 0);
+
+        private final @NonNull String ELName;
+
+        private final @NonNull ExplosiveTextureInfo textureInfo;
+
+        private final @NonNull ExplosiveFlavorInfo flavorInfo;
+
+        private final double radius, power;
+
+        private final int fortuneTier;
+
+        private final @NonNull AtomicReference<GT_Block_Explosive<GT_FlatBombTier>> blockReference = new AtomicReference<>();
+
+        /**
+         * @return
+         */
+        @Override
+        public @NonNull GT_FlatBombTier asType() {
+            return this;
+        }
+    }
 
 
     class ExplosiveTierUtil {
@@ -169,6 +196,8 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
                 return 1;
             } else if (tier instanceof GT_TunnelExplosiveTier) {
                 return 2;
+            } else if (tier instanceof GT_FlatBombTier) {
+                return 3;
             } else {
                 // TODO: No exceptions in production
                 throw new IllegalArgumentException("Invalid tier " + tier);
@@ -185,6 +214,9 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
                 }
                 case 2: {
                     return getTier(GT_TunnelExplosiveTier.class, tier);
+                }
+                case 3: {
+                    return getTier(GT_FlatBombTier.class, tier);
                 }
                 default: {
                     // TODO: No exceptions in production

@@ -46,7 +46,7 @@ public class GT_Block_TunnelExplosive extends GT_Block_Explosive<GT_TunnelExplos
      */
     @Override
     protected GT_Entity_Explosive<GT_TunnelExplosiveTier> createExplosive(final World world, final double x, final double y, final double z, final EntityPlayer placedBy, final int metadata, final int timer) {
-        return new GT_Entity_TunnelExplosive(world, x, y, z, placedBy, metadata, timer, this.tier);
+        return new GT_Entity_TunnelExplosive(world, x, y, z, placedBy, metadata, timer, this.tier.asType());
     }
 
 }

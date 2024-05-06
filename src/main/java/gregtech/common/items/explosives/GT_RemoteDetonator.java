@@ -9,10 +9,7 @@ import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.net.GT_Packet_OpenGUI;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.blocks.explosives.GT_Block_DaisyCutter;
-import gregtech.common.blocks.explosives.GT_Block_Explosive;
-import gregtech.common.blocks.explosives.GT_Block_MiningExplosive;
-import gregtech.common.blocks.explosives.GT_Block_TunnelExplosive;
+import gregtech.common.blocks.explosives.*;
 import gregtech.common.gui.remotedetonator.GT_RemoteDetonator_Container;
 import gregtech.common.gui.remotedetonator.GT_RemoteDetonator_GuiContainer;
 import gregtech.common.misc.explosions.IGT_ExplosiveTier;
@@ -171,6 +168,11 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
                     GT_Block_DaisyCutter.class,
                     IGT_ExplosiveTier.GT_DaisyCutterTier.class,
                     new ExplosiveColorPalette(new Color(22, 98, 22, 0xFF), new Color(15, 68, 15, 0xFF), new Color(84, 175, 84, 0xFF), new Color(107, 222, 107, 0xFF))
+            ),
+            FLAT_BOMB(
+                    GT_Block_FlatBomb.class,
+                    IGT_ExplosiveTier.GT_FlatBombTier.class,
+                    new ExplosiveColorPalette(new Color(98, 98, 98, 0xFF), new Color(137, 137, 137, 0xFF), new Color(98, 98, 98, 0xFF), new Color(137, 137, 137, 0xFF))
             );
 
 

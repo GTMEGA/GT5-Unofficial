@@ -37,8 +37,8 @@ public class GT_Block_MiningExplosive extends GT_Block_Explosive<GT_MiningExplos
      * @return
      */
     @Override
-    protected GT_Entity_Explosive<GT_MiningExplosiveTier> createExplosive(final World world, final double x, final double y, final double z, final EntityPlayer placedBy, final int metadata, final int timer) {
-        return new GT_Entity_MiningExplosive(world, x, y, z, placedBy, metadata, timer, this.tier);
+    protected GT_Entity_MiningExplosive createExplosive(final World world, final double x, final double y, final double z, final EntityPlayer placedBy, final int metadata, final int timer) {
+        return new GT_Entity_MiningExplosive(world, x, y, z, placedBy, metadata, timer, this.tier.asType());
     }
 
 }

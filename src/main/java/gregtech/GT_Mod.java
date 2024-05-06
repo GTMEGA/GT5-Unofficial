@@ -27,6 +27,7 @@ import gregtech.common.GT_RecipeAdder;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.entities.explosives.GT_Entity_DaisyCutterExplosive;
+import gregtech.common.entities.explosives.GT_Entity_FlatBomb;
 import gregtech.common.entities.explosives.GT_Entity_MiningExplosive;
 import gregtech.common.entities.explosives.GT_Entity_TunnelExplosive;
 import gregtech.common.items.GT_MEGAnet;
@@ -519,6 +520,7 @@ public class GT_Mod implements IGT_Mod {
         EntityRegistry.registerModEntity(GT_Entity_MiningExplosive.class, "GT_Entity_MiningExplosive", 3, GT_Values.GT, 160, 1, false);
         EntityRegistry.registerModEntity(GT_Entity_DaisyCutterExplosive.class, "GT_Entity_DaisyCutter", 4, GT_Values.GT, 160, 1, false);
         EntityRegistry.registerModEntity(GT_Entity_TunnelExplosive.class, "GT_Entity_TunnelExplosive", 5, GT_Values.GT, 160, 1, false);
+        EntityRegistry.registerModEntity(GT_Entity_FlatBomb.class, "GT_Entity_FlatBomb", 6, GT_Values.GT, 160, 1, false);
 
         GT_FML_LOGGER.info("preReader");
         List<String> oreTags = new ArrayList<>();
