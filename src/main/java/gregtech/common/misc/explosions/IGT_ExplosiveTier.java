@@ -47,6 +47,10 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
 
         private final @NonNull AtomicReference<GT_Block_Explosive<GT_DaisyCutterTier>> blockReference = new AtomicReference<>();
 
+        public boolean shouldUseSuffix() {
+            return ordinal() > 0;
+        }
+
         /**
          * @return
          */
@@ -92,6 +96,10 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
         final MiningExplosiveParameters parameters;
 
         private final @NonNull AtomicReference<GT_Block_Explosive<GT_MiningExplosiveTier>> blockReference = new AtomicReference<>();
+
+        public boolean shouldUseSuffix() {
+            return ordinal() > 0;
+        }
 
         /**
          * @return
@@ -141,6 +149,10 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
 
         private final @NonNull AtomicReference<GT_Block_Explosive<GT_TunnelExplosiveTier>> blockReference = new AtomicReference<>();
 
+        public boolean shouldUseSuffix() {
+            return ordinal() > 0;
+        }
+
         @Override
         public double getRadius() {
             return 0.0;
@@ -174,6 +186,10 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
         private final int fortuneTier;
 
         private final @NonNull AtomicReference<GT_Block_Explosive<GT_FlatBombTier>> blockReference = new AtomicReference<>();
+
+        public boolean shouldUseSuffix() {
+            return ordinal() > 0;
+        }
 
         /**
          * @return
@@ -346,6 +362,9 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
 
     @SuppressWarnings("unchecked")
     default @NonNull String getULSuffix(final String uName) {
+        if (!shouldUseSuffix()) {
+            return uName;
+        }
         return uName + "." + ((Enum<MyType>) this).name().toLowerCase();
     }
 
@@ -358,6 +377,8 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
     default @NonNull IIconContainer[] getIcons() {
         return getTextureInfo().getIcons();
     }
+
+    boolean shouldUseSuffix();
 
     @NonNull
     ExplosiveTextureInfo getTextureInfo();
