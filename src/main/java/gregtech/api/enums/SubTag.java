@@ -87,6 +87,10 @@ public final class SubTag implements ICondition<ISubTagContainer> {
     /**
      * This Material cannot be unificated
      */
+    public static final SubTag YES_TOOLS = getNewSubTag("YES_TOOLS");
+    /**
+     * This Material can be made into tools!!!!! !!! !  ! !   ! !  ! !   ! 1
+     */
     public static final SubTag NO_UNIFICATION = getNewSubTag("NO_UNIFICATION");
     /**
      * This Material cannot be used in any Recycler. Already listed are:

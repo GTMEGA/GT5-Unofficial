@@ -1399,7 +1399,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Pyrotheum.setHeatDamage(5.0F);
     }
 
-    //Byproducts: Ore Washer 11.1% Chance | Thermal Centrifuge 11.1% | Pulverizer 10% Chance | Chem Bath Mercury (Usually 70%)
+    //Byproducts: Ore Washer 40% Chance | Thermal Centrifuge 40% | Pulverizer 10% Chance | Chem Bath Mercury (Usually 70%)
     private static void setByProducts() {
         Mytryl.addOreByProducts(Samarium, Samarium, Zinc, Zinc);
         Rubracium.addOreByProducts(Samarium, Samarium, Samarium, Samarium);
@@ -1576,7 +1576,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void overrideChemicalFormulars() {
-        Glue.mChemicalFormula = "No Horses were harmed for the Production";
+        Glue.mChemicalFormula = "Contains traces of equine matter.";
         UUAmplifier.mChemicalFormula = "Accelerates the Mass Fabricator";
         LiveRoot.mChemicalFormula = "";
         WoodSealed.mChemicalFormula = "";
@@ -1609,7 +1609,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         RedAlloy.mChemicalFormula = "Cu(" + Redstone.mChemicalFormula + ")\u2084";
         AnyIron.mChemicalFormula = "Fe";
         AnyCopper.mChemicalFormula = "Cu";
-        ElectrumFlux.mChemicalFormula = "The formula is too long...";
+        ElectrumFlux.mChemicalFormula = "The formula would've been shown on a better monitor...";
         DeepIron.mChemicalFormula = "Sp\u2082Fe";
         Ichorium.mChemicalFormula = "IcMa";
 //      Duralumin.mChemicalFormula="Al\u2086CuMnMg";
@@ -1930,6 +1930,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 RedstoneAlloy,
                 Bedrockium);
 
+
         SubTag.FOOD.addTo(MeatRaw,
                 MeatCooked,
                 Ice,
@@ -1956,8 +1957,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         WoodSealed.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.NO_WORKING);
         Peanutwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
         LiveRoot.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.MAGICAL, SubTag.MORTAR_GRINDABLE);
-        IronWood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.MAGICAL, SubTag.MORTAR_GRINDABLE);
-        Steeleaf.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.MAGICAL, SubTag.MORTAR_GRINDABLE, SubTag.NO_SMELTING);
+        IronWood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.MAGICAL, SubTag.MORTAR_GRINDABLE, SubTag.YES_TOOLS);
+        Steeleaf.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.MAGICAL, SubTag.MORTAR_GRINDABLE, SubTag.NO_SMELTING, SubTag.YES_TOOLS);
 
         MeatRaw.add(SubTag.NO_SMASHING);
         MeatCooked.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
@@ -1974,12 +1975,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Charcoal.add(SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.MORTAR_GRINDABLE);
         Lignite.add(SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.MORTAR_GRINDABLE);
 
-        Rubber.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY, SubTag.STRETCHY);
+        Rubber.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY, SubTag.STRETCHY, SubTag.YES_TOOLS);
         StyreneButadieneRubber.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY, SubTag.STRETCHY);
-        Plastic.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY);
+        Plastic.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY, SubTag.YES_TOOLS);
         PolyvinylChloride.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY);
         Polystyrene.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY);
-        Silicone.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY, SubTag.STRETCHY);
+        Silicone.add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY, SubTag.STRETCHY, SubTag.YES_TOOLS);
 
         TNT.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
         Gunpowder.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
@@ -2018,36 +2019,45 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
         Sand.add(SubTag.NO_RECYCLING);
 
+        RoseGold.add(SubTag.YES_TOOLS);
+        BlackBronze.add(SubTag.YES_TOOLS);
+        StainlessSteel.add(SubTag.YES_TOOLS);
+        Aluminium.add(SubTag.YES_TOOLS);
+        Titanium.add(SubTag.YES_TOOLS);
+        TungstenSteel.add(SubTag.YES_TOOLS);
+        Iridium.add(SubTag.YES_TOOLS);
+        VanadiumSteel.add(SubTag.YES_TOOLS);
+
         Gold.add(SubTag.MORTAR_GRINDABLE);
         Silver.add(SubTag.MORTAR_GRINDABLE);
-        Iron.add(SubTag.MORTAR_GRINDABLE);
+        Iron.add(SubTag.MORTAR_GRINDABLE, SubTag.YES_TOOLS);
         IronMagnetic.add(SubTag.MORTAR_GRINDABLE);
         HSLA.add(SubTag.MORTAR_GRINDABLE);
-        Steel.add(SubTag.MORTAR_GRINDABLE);
+        Steel.add(SubTag.MORTAR_GRINDABLE, SubTag.YES_TOOLS);
         SteelMagnetic.add(SubTag.MORTAR_GRINDABLE);
         Zinc.add(SubTag.MORTAR_GRINDABLE);
         Antimony.add(SubTag.MORTAR_GRINDABLE);
         Copper.add(SubTag.MORTAR_GRINDABLE);
         AnnealedCopper.add(SubTag.MORTAR_GRINDABLE);
-        Bronze.add(SubTag.MORTAR_GRINDABLE);
+        Bronze.add(SubTag.MORTAR_GRINDABLE, SubTag.YES_TOOLS);
         Nickel.add(SubTag.MORTAR_GRINDABLE);
         Invar.add(SubTag.MORTAR_GRINDABLE);
-        Brass.add(SubTag.MORTAR_GRINDABLE);
-        WroughtIron.add(SubTag.MORTAR_GRINDABLE);
+        Brass.add(SubTag.MORTAR_GRINDABLE, SubTag.YES_TOOLS);
+        WroughtIron.add(SubTag.MORTAR_GRINDABLE, SubTag.YES_TOOLS);
         Electrum.add(SubTag.MORTAR_GRINDABLE);
         Clay.add(SubTag.MORTAR_GRINDABLE);
 
         Glass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING, SubTag.SMELTING_TO_FLUID);
-        Diamond.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE);
+        Diamond.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE, SubTag.YES_TOOLS);
         Emerald.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Amethyst.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Tanzanite.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Topaz.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         BlueTopaz.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Amber.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        GreenSapphire.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Sapphire.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Ruby.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        GreenSapphire.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.YES_TOOLS);
+        Sapphire.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.YES_TOOLS);
+        Ruby.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.YES_TOOLS);
         FoolsRuby.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Opal.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Olivine.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
@@ -2146,11 +2156,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
 
         Blaze.add(SubTag.MAGICAL, SubTag.SMELTING_TO_FLUID, SubTag.MORTAR_GRINDABLE, SubTag.UNBURNABLE, SubTag.BURNING);
-        FierySteel.add(SubTag.MAGICAL, SubTag.UNBURNABLE, SubTag.BURNING);
+        FierySteel.add(SubTag.MAGICAL, SubTag.UNBURNABLE, SubTag.BURNING, SubTag.YES_TOOLS);
 //      ElvenElementium         .add(SubTag.MAGICAL);
-        DarkThaumium.add(SubTag.MAGICAL);
-        Thaumium.add(SubTag.MAGICAL);
-        Void.add(SubTag.MAGICAL);
+        DarkThaumium.add(SubTag.MAGICAL, SubTag.YES_TOOLS);
+        Thaumium.add(SubTag.MAGICAL, SubTag.YES_TOOLS);
+        Void.add(SubTag.MAGICAL, SubTag.YES_TOOLS);
         Enderium.add(SubTag.MAGICAL);
         AstralSilver.add(SubTag.MAGICAL);
 //      Midasium                .add(SubTag.MAGICAL);
