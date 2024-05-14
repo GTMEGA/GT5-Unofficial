@@ -8,12 +8,15 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_Container_Regulator;
 import gregtech.common.gui.GT_GUIContainer_Regulator;
+import lombok.val;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 
 import java.util.Collections;
+import java.util.List;
 
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_REGULATOR;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_REGULATOR_GLOW;
@@ -34,7 +37,7 @@ public class GT_MetaTileEntity_Regulator
     public GT_MetaTileEntity_Regulator(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
-    
+
     public GT_MetaTileEntity_Regulator(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
@@ -103,7 +106,12 @@ public class GT_MetaTileEntity_Regulator
     public void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         for (int i = 0, tCosts; i < 9; i++) {
             if (this.mInventory[(i + 9)] != null) {
-                tCosts = GT_Utility.moveOneItemStackIntoSlot(getBaseMetaTileEntity(), getBaseMetaTileEntity().getTileEntityAtSide(getBaseMetaTileEntity().getBackFacing()), getBaseMetaTileEntity().getBackFacing(), this.mTargetSlots[i], Collections.singletonList(this.mInventory[(i + 9)]), false, (byte) this.mInventory[(i + 9)].stackSize, (byte) this.mInventory[(i + 9)].stackSize, (byte) 64, (byte) 1) * 3;
+                val filterList = Collections.singletonList(this.mInventory[(i + 9)]);
+                val baseMetaTileEntity = getBaseMetaTileEntity();
+                val backFacing = baseMetaTileEntity.getBackFacing();
+                val otherTE = baseMetaTileEntity.getTileEntityAtSide(backFacing);
+                val targetSize = (byte) this.mInventory[(i + 9)].stackSize;
+                tCosts = GT_Utility.moveOneItemStackIntoSlot(baseMetaTileEntity, otherTE, backFacing, this.mTargetSlots[i], filterList, false, targetSize, targetSize, (byte) 64, (byte) 1) * 3;
                 if (tCosts > 0) {
                     this.mSuccess = 50;
                     break;
