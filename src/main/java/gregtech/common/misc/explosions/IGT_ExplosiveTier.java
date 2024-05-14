@@ -65,8 +65,8 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
     @Getter
     enum GT_MiningExplosiveTier implements IGT_ExplosiveTier<GT_MiningExplosiveTier> {
 
-        MK1("Mining Explosive Mk 1", new ExplosiveTextureInfo("MINING_EXPLOSIVE"), new ExplosiveFlavorInfo(213, 214), 3.5, 9.0, 3, new MiningExplosiveParameters(1.0f, 1.0f, 0.05f, 0.01f, 0.001f, 2.5f, 1.5f)),
-        MK2("Mining Explosive Mk 2", new ExplosiveTextureInfo("MINING_EXPLOSIVE"), new ExplosiveFlavorInfo(213, 214), 5.0, 12.0, 4, new MiningExplosiveParameters(1.0f, 1.0f, 0.05f, 0.01f, 0.001f, 2.5f, 1.5f)),
+        MK1("Mining Explosive Mk 1", new ExplosiveTextureInfo("MINING_EXPLOSIVE"), new ExplosiveFlavorInfo(213, 214), 4.0, 9.0, 3, new MiningExplosiveParameters(0.9f, 1.0f, 0.05f, 0.05f, 0.05f, 2.5f, 1.5f)),
+        MK2("Mining Explosive Mk 2", new ExplosiveTextureInfo("MINING_EXPLOSIVE"), new ExplosiveFlavorInfo(213, 214), 5.0, 12.0, 4, new MiningExplosiveParameters(0.9f, 1.0f, 0.05f, 0.05f, 0.05f, 2.5f, 1.5f)),
         ;
 
 
