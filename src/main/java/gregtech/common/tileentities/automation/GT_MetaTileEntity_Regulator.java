@@ -104,12 +104,12 @@ public class GT_MetaTileEntity_Regulator
 
     @Override
     public void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+        val baseMetaTileEntity = getBaseMetaTileEntity();
+        val backFacing = baseMetaTileEntity.getBackFacing();
+        val otherTE = baseMetaTileEntity.getTileEntityAtSide(backFacing);
         for (int i = 0, tCosts; i < 9; i++) {
             if (this.mInventory[(i + 9)] != null) {
                 val filterList = Collections.singletonList(this.mInventory[(i + 9)]);
-                val baseMetaTileEntity = getBaseMetaTileEntity();
-                val backFacing = baseMetaTileEntity.getBackFacing();
-                val otherTE = baseMetaTileEntity.getTileEntityAtSide(backFacing);
                 val targetSize = (byte) this.mInventory[(i + 9)].stackSize;
                 tCosts = GT_Utility.moveOneItemStackIntoSlot(baseMetaTileEntity, otherTE, backFacing, this.mTargetSlots[i], filterList, false, targetSize, targetSize, (byte) 64, (byte) 1) * 3;
                 if (tCosts > 0) {
