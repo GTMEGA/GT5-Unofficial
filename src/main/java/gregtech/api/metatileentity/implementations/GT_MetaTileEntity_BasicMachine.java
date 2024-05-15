@@ -14,6 +14,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
+import lombok.val;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -960,7 +962,28 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     @Override
     public void getWailaBody(ItemStack stack, List<String> currentTip, MovingObjectPosition pos, NBTTagCompound tag, int side) {
         super.getWailaBody(stack, currentTip, pos, tag, side);
-        currentTip.add(String.format("Progress: %d s / %d s", tag.getInteger("progressSingleBlock"), tag.getInteger("maxProgressSingleBlock")));
+        if (!fancyWailaProgress(currentTip, tag)) {
+            currentTip.add(String.format("Progress: %d s / %d s", tag.getInteger("progressSingleBlock"), tag.getInteger("maxProgressSingleBlock")));
+        }
+    }
+
+    public static boolean fancyWailaProgress(List<String> currentTip, NBTTagCompound tag) {
+        if (!tag.hasKey("progressTicks"))
+            return false;
+        val progress = tag.getInteger("progressTicks");
+        val maxProgress = tag.getInteger("maxProgressTicks");
+
+        if (maxProgress > 20) {
+            if (maxProgress > 200) {
+                currentTip.add(String.format("Progress: %d s / %d s", progress / 20, maxProgress / 20));
+            } else {
+                currentTip.add(String.format("Progress: %d.%d s / %d.%d s", progress / 20, (progress % 20) / 2, maxProgress / 20, (maxProgress % 20) / 2));
+            }
+        } else {
+            currentTip.add(String.format("Progress: %d t / %d t", progress, maxProgress));
+        }
+        currentTip.add(String.format("Total duration: %d ticks", maxProgress));
+        return true;
     }
 
     @Override
@@ -970,6 +993,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         final int maxProgressSingleBlock = mMaxProgresstime / 20;
         tag.setInteger("progressSingleBlock", progressSingleBlock);
         tag.setInteger("maxProgressSingleBlock", maxProgressSingleBlock);
+        tag.setInteger("progressTicks", mProgresstime);
+        tag.setInteger("maxProgressTicks", mMaxProgresstime);
     }
 
     public ITexture[] getSideFacingActive(byte aColor) {
