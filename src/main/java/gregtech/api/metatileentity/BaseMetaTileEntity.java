@@ -723,6 +723,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         public static final byte START_SOUND_LOOP = 5;
         public static final byte STOP_SOUND_LOOP = 6;
         public static final byte CHANGE_LIGHT = 7;
+        public static final byte MISC_EVENT = 8;
     }
 
     @Override
@@ -782,6 +783,11 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     break;
                 case ClientEvents.CHANGE_LIGHT:
                     mLightValue = (byte) aValue;
+                    break;
+                case ClientEvents.MISC_EVENT:
+                    if (hasValidMetaTileEntity() && mTickTimer > 20) {
+                        mMetaTileEntity.receiveMiscEvent((byte) aValue);
+                    }
                     break;
             }
         }

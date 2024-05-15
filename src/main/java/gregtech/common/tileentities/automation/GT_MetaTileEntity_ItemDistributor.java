@@ -4,11 +4,13 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_Container_ItemDistributor;
 import gregtech.common.gui.GT_GUIContainer_ItemDistributor;
+import lombok.val;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -20,6 +22,7 @@ import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_ITEMDISTRIBUTOR_
 
 public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer {
     private byte[] itemsPerSide = new byte[6];
+    private boolean[] sidesEnabled = new boolean[6];
     private byte currentSide = 0, currentSideItemCount = 0;
 
     public GT_MetaTileEntity_ItemDistributor(int aID, String aName, String aNameRegional, int aTier) {
@@ -76,17 +79,23 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
         if (aSide == aFacing) {
             return mTextures[0][aColorIndex + 1];
         } else {
+            if (!sidesEnabled[aSide]) {
+                return mTextures[2][aColorIndex + 1];
+            }
             return mTextures[1][aColorIndex + 1];
         }
     }
 
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
-        ITexture[][][] returnTextures = new ITexture[2][17][];
-        ITexture baseIcon = getOverlayIcon(), pipeIcon = TextureFactory.of(Textures.BlockIcons.OVERLAY_ITEM_OUT);
+        ITexture[][][] returnTextures = new ITexture[3][17][];
+        ITexture baseIcon = getOverlayIcon();
+        ITexture pipeIcon = TextureFactory.of(Textures.BlockIcons.OVERLAY_ITEM_OUT);
+        ITexture outDisabledIcon = TextureFactory.of(Textures.BlockIcons.OVERLAY_OUT_DISABLED);
         for (int i = 0; i < 17; i++) {
             returnTextures[0][i] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i], baseIcon};
             returnTextures[1][i] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i], pipeIcon, baseIcon};
+            returnTextures[2][i] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i], outDisabledIcon, baseIcon};
         }
         return returnTextures;
     }
@@ -112,6 +121,9 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
         itemsPerSide = aNBT.getByteArray("mItemsPerSide");
         if (itemsPerSide.length != 6) {
             itemsPerSide = new byte[6];
+        }
+        for (int i = 0; i < 6; i++) {
+            sidesEnabled[i] = itemsPerSide[i] != 0;
         }
         currentSide = aNBT.getByte("mCurrentSide");
         currentSideItemCount = aNBT.getByte("mCurrentSideItemCount");
@@ -149,9 +161,30 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         //Adjust items per side by 1 or -1, constrained to the cyclic interval [0, 127]
-        itemsPerSide[aSide] += aPlayer.isSneaking() ? -1 : 1;
-        itemsPerSide[aSide] = (byte) ((itemsPerSide[aSide] + 128) % 128);
-        GT_Utility.sendChatToPlayer(aPlayer, trans("211", "Items per side: ") + itemsPerSide[aSide]);
+        val newPerSideValue = (byte) ((itemsPerSide[aSide] + (aPlayer.isSneaking() ? -1 : 1) + 128) % 128);
+//        itemsPerSide[aSide] += (byte) (aPlayer.isSneaking() ? -1 : 1);
+//        itemsPerSide[aSide] = (byte) ((itemsPerSide[aSide] + 128) % 128);
+        updateSideToValue(aSide, newPerSideValue);
+//        val newVal = itemsPerSide[aSide];
+//        val isSideEnabled = newVal != 0;
+//        sidesEnabled[aSide] = isSideEnabled;
+        val toSend = (aSide & 0x7) | (sidesEnabled[aSide] ? 0x8 : 0);
+        getBaseMetaTileEntity().sendBlockEvent(BaseMetaTileEntity.ClientEvents.MISC_EVENT, (byte) toSend);
+        GT_Utility.sendChatToPlayer(aPlayer, trans("211", "Items per side: ") + newPerSideValue);
+    }
+
+    @Override
+    protected void receiveMiscEvent(byte eventData) {
+        if (getBaseMetaTileEntity().isClientSide()) {
+            val aSide = eventData & 0x7;
+            val sideEnabled = (eventData & 0x8) != 0;
+            sidesEnabled[aSide] = sideEnabled;
+        }
+    }
+
+    protected void updateSideToValue(byte aSide, byte newVal) {
+        itemsPerSide[aSide] = newVal;
+        sidesEnabled[aSide] = newVal != 0;
     }
 
     @Override

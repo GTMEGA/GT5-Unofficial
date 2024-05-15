@@ -1053,4 +1053,9 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Optional.Method(modid = "appliedenergistics2")
     public void gridChanged() {}
+
+    protected void receiveMiscEvent(final byte aValue) {
+        // Do nothing
+    }
+
 }
