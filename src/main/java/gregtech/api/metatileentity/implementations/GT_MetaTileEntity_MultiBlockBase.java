@@ -1146,8 +1146,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         if (tag.getBoolean("incompleteStructure")) {
             currentTip.add(RED + "** INCOMPLETE STRUCTURE **" + RESET);
         }
-        currentTip.add((tag.getBoolean("hasProblems") ? (RED + "** HAS PROBLEMS **") : GREEN + "Running Fine") + RESET
-                + "  Efficiency: " + tag.getFloat("efficiency") + "%");
+        currentTip.add((tag.getBoolean("hasProblems") ? RED + "** HAS PROBLEMS **" : GREEN + "No Problems") + RESET + " "
+                + (tag.getBoolean("enabled") ? GREEN + "Enabled" : RED + "Disabled"));
+        if (tag.hasKey("efficiency")) {
+            currentTip.add("Efficiency: " + tag.getFloat("efficiency") + "%");
+        }
 
         if (!GT_MetaTileEntity_BasicMachine.fancyWailaProgress(currentTip, tag)) {
             currentTip.add(String.format("Progress: %d s / %d s", tag.getInteger("progress"), tag.getInteger("maxProgress")));
@@ -1158,10 +1161,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     public void getWailaNBT(NBTTagCompound tag, World world, BlockCoord pos) {
         super.getWailaNBT(tag, world, pos);
         final int problems = getIdealStatus() - getRepairStatus();
-        final float efficiency = mEfficiency / 100.0F;
+        if (mEfficiency < 10000) {
+            final float efficiency = mEfficiency / 100.0F;
+            tag.setFloat("efficiency", efficiency);
+        }
 
         tag.setBoolean("hasProblems", problems > 0);
-        tag.setFloat("efficiency", efficiency);
+        tag.setBoolean("enabled", this.getBaseMetaTileEntity().isAllowedToWork());
         tag.setInteger("progress", mProgresstime / 20);
         tag.setInteger("progressTicks", mProgresstime);
         tag.setInteger("maxProgress", mMaxProgresstime / 20);
