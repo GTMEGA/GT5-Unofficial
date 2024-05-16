@@ -43,7 +43,6 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
     // Tooltip localization keys
     private static final String
             BATTERY_SLOT_TOOLTIP = "GT5U.machines.battery_slot.tooltip",
-            BATTERY_SLOT_TOOLTIP_ALT = "GT5U.machines.battery_slot.tooltip.alternative",
             UNUSED_SLOT_TOOLTIP = "GT5U.machines.unused_slot.tooltip",
             SPECIAL_SLOT_TOOLTIP = "GT5U.machines.special_slot.tooltip",
             FLUID_INPUT_TOOLTIP = "GT5U.machines.fluid_input_slot.tooltip",
@@ -89,7 +88,7 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
         } else {
             String pTier1 = powerTierName(machine.mTier);
             batterySlotTooltipKey = BATTERY_SLOT_TOOLTIP;
-            batterySlotTooltipArgs = new String[] {pTier1, powerTierName((byte) (machine.mTier + 1))};
+            batterySlotTooltipArgs = new String[] {pTier1};
             addToolTip(new GT_GuiSlotTooltip(   container.slotFluidTransferToggle,
                                                 mTooltipCache.getData(FLUID_TRANSFER_TOOLTIP)));
             addToolTip(new GT_GuiSlotTooltip(   container.slotItemTransferToggle,
