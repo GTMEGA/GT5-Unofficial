@@ -2457,6 +2457,18 @@ public class GT_Utility {
         return false;
     }
 
+    public static int findMatchingStackInList(List<ItemStack> aStacks, ItemStack aStack) {
+        if (isStackInvalid(aStack))
+            return -1;
+        for (int i = 0, aStacksSize = aStacks.size(); i < aStacksSize; i++) {
+            ItemStack tStack = aStacks.get(i);
+            if (areStacksEqual(aStack, tStack))
+                return i;
+        }
+        return -1;
+    }
+
+
     public static class ItemNBT {
         public static void setNBT(ItemStack aStack, NBTTagCompound aNBT) {
             if (aNBT == null) {

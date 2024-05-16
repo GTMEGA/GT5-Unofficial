@@ -7,6 +7,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.gui.GT_Container_BasicMachine;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMachineCallback;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
@@ -45,7 +46,7 @@ import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
  * This is the main construct for my Basic Machines such as the Automatic Extractor
  * Extend this class to make a simple Machine
  */
-public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_BasicTank implements IMachineCallback<GT_MetaTileEntity_Cleanroom> {
+public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_BasicTank implements IMachineCallback<GT_MetaTileEntity_Cleanroom>, IConfigurationCircuitSupport {
 
     /**
      * return values for checkRecipe()
@@ -54,7 +55,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             DID_NOT_FIND_RECIPE = 0,
             FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS = 1,
             FOUND_AND_SUCCESSFULLY_USED_RECIPE = 2;
-    public static final int OTHER_SLOT_COUNT = 4;
+    public static final int OTHER_SLOT_COUNT = 5;
     public final ItemStack[] mOutputItems;
     public final int mInputSlotCount, mAmperage;
     public boolean mAllowInputFromOutputSide = false, mFluidTransfer = false, mItemTransfer = false, mHasBeenUpdated = false, mStuttering = false, mCharge = false, mDecharge = false;
@@ -211,7 +212,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return aIndex > 0 && super.isValidSlot(aIndex) && aIndex != OTHER_SLOT_COUNT + mInputSlotCount + mOutputItems.length;
+        return aIndex > 0 && super.isValidSlot(aIndex) && aIndex != getCircuitSlot() && aIndex != OTHER_SLOT_COUNT + mInputSlotCount + mOutputItems.length;
     }
 
     @Override
@@ -709,8 +710,11 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     protected ItemStack[] getAllInputs() {
-        ItemStack[] rInputs = new ItemStack[mInputSlotCount];
+        int tRealInputSlotCount = this.mInputSlotCount + (allowSelectCircuit() ? 1 : 0);
+        ItemStack[] rInputs = new ItemStack[tRealInputSlotCount];
         for (int i = 0; i < mInputSlotCount; i++) rInputs[i] = getInputAt(i);
+        if (allowSelectCircuit())
+            rInputs[mInputSlotCount] = getStackInSlot(getCircuitSlot());
         return rInputs;
     }
 
@@ -886,6 +890,43 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
      */
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return mInventory[aIndex] == null;
+    }
+
+    @Override
+    public boolean allowSelectCircuit() {
+        return false;
+    }
+
+    protected final ItemStack[] appendSelectedCircuit(ItemStack... inputs) {
+        if (allowSelectCircuit()) {
+            ItemStack circuit = getStackInSlot(getCircuitSlot());
+            if (circuit != null) {
+                ItemStack[] result = Arrays.copyOf(inputs, inputs.length + 1);
+                result[inputs.length] = circuit;
+                return result;
+            }
+        }
+        return inputs;
+    }
+
+    @Override
+    public int getCircuitSlot() {
+        return 4;
+    }
+
+    @Override
+    public int getCircuitGUISlot() {
+        return 3;
+    }
+
+    @Override
+    public int getCircuitSlotX() {
+        return 153;
+    }
+
+    @Override
+    public int getCircuitSlotY() {
+        return 63;
     }
 
     /**

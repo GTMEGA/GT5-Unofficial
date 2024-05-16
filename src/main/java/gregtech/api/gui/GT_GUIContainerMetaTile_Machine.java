@@ -3,13 +3,16 @@ package gregtech.api.gui;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
+import gregtech.api.gui.widgets.GT_GuiSlotTooltip;
 import gregtech.api.gui.widgets.GT_GuiTooltip;
 import gregtech.api.gui.widgets.GT_GuiTooltipManager;
+import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_TooltipDataCache;
@@ -28,6 +31,7 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
 
     protected GT_GuiTooltipManager mTooltipManager = new GT_GuiTooltipManager();
     protected GT_TooltipDataCache mTooltipCache = new GT_TooltipDataCache();
+    private static final String GHOST_CIRCUIT_TOOLTIP = "GT5U.machines.select_circuit.tooltip";
 
     public GT_GUIContainerMetaTile_Machine(GT_ContainerMetaTile_Machine aContainer, String aGUIbackground) {
         super(aContainer, aGUIbackground);
@@ -85,7 +89,13 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
      * Load data for and create appropriate tooltips for this machine.
      * Only called when one of regular or shift tooltips are enabled.
      */
-    protected void setupTooltips() {    }
+    protected void setupTooltips() {
+        if (mContainer.mTileEntity.getMetaTileEntity() instanceof IConfigurationCircuitSupport) {
+            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport)mContainer.mTileEntity.getMetaTileEntity();
+            if (ccs.allowSelectCircuit())
+                addToolTip(new GT_GuiSlotTooltip(mContainer.getSlot(ccs.getCircuitGUISlot()), mTooltipCache.getData(GHOST_CIRCUIT_TOOLTIP)));
+        }
+    }
     @Override
     public void drawHoveringText(List text, int x, int y, FontRenderer font) {
         super.drawHoveringText(text, x, y, font);
@@ -113,5 +123,21 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
 
     public boolean removeToolTip(GT_GuiTooltip toolTip) {
         return mTooltipManager.removeToolTip(toolTip);
+    }
+
+    @Override
+    protected void onMouseWheel(int mx, int my, int delta) {
+        if (mContainer.mTileEntity.getMetaTileEntity() instanceof IConfigurationCircuitSupport) {
+            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport)mContainer.mTileEntity.getMetaTileEntity();
+            Slot slotCircuit = mContainer.getSlot(ccs.getCircuitGUISlot());
+            if (slotCircuit != null && func_146978_c(slotCircuit.xDisplayPosition,
+                                                     slotCircuit.yDisplayPosition, 16, 16, mx, my))
+            {
+                // emulate click
+                handleMouseClick(slotCircuit, -1, ((delta > 0) ^ (GT_Mod.gregtechproxy.mCircuitScrollInverted)) ? 0 : 1, 0);
+                return;
+            }
+        }
+        super.onMouseWheel(mx, my, delta);
     }
 }

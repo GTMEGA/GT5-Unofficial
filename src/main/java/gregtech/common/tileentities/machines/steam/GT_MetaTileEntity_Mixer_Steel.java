@@ -45,4 +45,9 @@ public class GT_MetaTileEntity_Mixer_Steel extends GT_MetaTileEntity_Template_St
     public GT_Recipe.GT_Recipe_Map getRecipeList() {
         return GT_Recipe.GT_Recipe_Map.sMixerRecipes;
     }
+
+    @Override
+    public boolean allowSelectCircuit() {
+        return true;
+    }
 }

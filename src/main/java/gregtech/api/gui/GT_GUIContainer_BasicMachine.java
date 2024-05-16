@@ -1,5 +1,6 @@
 package gregtech.api.gui;
 
+import codechicken.nei.guihook.IContainerTooltipHandler;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.widgets.GT_GuiSlotTooltip;
 import gregtech.api.gui.widgets.GT_GuiSmartTooltip;
@@ -8,11 +9,17 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_Bronze;
 import gregtech.api.util.GT_Recipe;
 
+import gregtech.common.items.GT_IntegratedCircuit_Item;
+import lombok.val;
+
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
+import net.minecraft.item.ItemStack;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
@@ -35,7 +42,6 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
 
     // Tooltip localization keys
     private static final String
-            GHOST_CIRCUIT_TOOLTIP = "GT5U.machines.select_circuit.tooltip",
             BATTERY_SLOT_TOOLTIP = "GT5U.machines.battery_slot.tooltip",
             BATTERY_SLOT_TOOLTIP_ALT = "GT5U.machines.battery_slot.tooltip.alternative",
             UNUSED_SLOT_TOOLTIP = "GT5U.machines.unused_slot.tooltip",
@@ -65,6 +71,7 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
      */
     @Override
     protected void setupTooltips() {
+        super.setupTooltips();
         GT_MetaTileEntity_BasicMachine machine = getMachine();
         GT_Recipe.GT_Recipe_Map recipes = machine.getRecipeList();
         GT_Container_BasicMachine container = getContainer();
@@ -81,13 +88,8 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
             }, mTooltipCache.getData(STALLED_VENT_TOOLTIP)));
         } else {
             String pTier1 = powerTierName(machine.mTier);
-            if (machine.mTier == GT_Values.VN.length - 1) {
-                batterySlotTooltipKey = BATTERY_SLOT_TOOLTIP_ALT;
-                batterySlotTooltipArgs = new String[] {pTier1};
-            } else {
-                batterySlotTooltipKey = BATTERY_SLOT_TOOLTIP;
-                batterySlotTooltipArgs = new String[] {pTier1, powerTierName((byte) (machine.mTier + 1))};
-            }
+            batterySlotTooltipKey = BATTERY_SLOT_TOOLTIP;
+            batterySlotTooltipArgs = new String[] {pTier1, powerTierName((byte) (machine.mTier + 1))};
             addToolTip(new GT_GuiSlotTooltip(   container.slotFluidTransferToggle,
                                                 mTooltipCache.getData(FLUID_TRANSFER_TOOLTIP)));
             addToolTip(new GT_GuiSlotTooltip(   container.slotItemTransferToggle,
@@ -134,14 +136,14 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
-        if (mContainer != null) {
+        if (getContainer() != null) {
             if (!getMachine().isSteampowered()){
-                if (((GT_Container_BasicMachine) mContainer).mFluidTransfer)
+                if (getContainer().mFluidTransfer)
                     drawTexturedModalRect(x + 7, y + 62, 176, 18, 18, 18);
-                if (((GT_Container_BasicMachine) mContainer).mItemTransfer)
+                if (getContainer().mItemTransfer)
                     drawTexturedModalRect(x + 25, y + 62, 176, 36, 18, 18);
             }
-            if (((GT_Container_BasicMachine) mContainer).mStuttering)
+            if (getContainer().mStuttering)
                 drawTexturedModalRect(x + 79, y + 44, 176, 54, 18, 18);
 
             if (mContainer.mMaxProgressTime > 0) {

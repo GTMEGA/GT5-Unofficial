@@ -27,16 +27,13 @@ import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.gui.GT_ContainerVolumetricFlask;
 import gregtech.common.gui.GT_Container_IntegratedCircuit;
 import gregtech.common.gui.GT_GUIContainerVolumetricFlask;
-import gregtech.common.gui.meganet.GT_MEGAnet_Container;
-import gregtech.common.gui.meganet.GT_MEGAnet_GuiContainer;
-import gregtech.common.gui.remotedetonator.GT_RemoteDetonator_Container;
 import gregtech.common.items.GT_MEGAnet;
 import gregtech.common.items.GT_MetaGenerated_Item_98;
 import gregtech.common.gui.GT_GUIContainer_IntegratedCircuit;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.explosives.GT_RemoteDetonator;
-import lombok.val;
+
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -81,8 +78,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import org.apache.commons.lang3.mutable.MutableBoolean;
-import org.apache.commons.lang3.mutable.MutableInt;
+
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.io.File;
@@ -256,6 +252,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
      * How verbose should tooltips be when LSHIFT is held? 0: disabled, 1: one-line, 2: normal, 3+: extended
      */
     public int mTooltipShiftVerbosity = 3;
+
+    public boolean mCircuitScrollInverted = false;
 
     public static final int GUI_ID_COVER_SIDE_BASE = 10; // Takes GUI ID 10 - 15
 

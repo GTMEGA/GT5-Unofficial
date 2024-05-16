@@ -32,6 +32,10 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item {
 
         ItemList.Circuit_Integrated.set(this);
 
+        for (int i = 1; i <= 24; i++) {
+            GregTech_API.registerConfigurationCircuit(new ItemStack(this, 0, i));
+        }
+
 
 //        GT_ModHandler.addShapelessCraftingRecipe(ItemList.Circuit_Integrated.getWithDamage(1L, 0L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{OrePrefixes.circuit.get(Materials.Basic)});
 //        long bits = GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE;
@@ -85,8 +89,12 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item {
     @Override
     public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
-        aList.add(GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".configuration", "Configuration: ") + getConfigurationString(getDamage(aStack)));
+        aList.add(getConfigurationTooltip(aStack));
         aList.add(GT_LanguageManager.addStringLocalization("integrated.circuit.tooltip","Right click or SHIFT + scroll to change configuration"));
+    }
+
+    public String getConfigurationTooltip(ItemStack aStack) {
+        return GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".configuration", "Configuration: ") + getConfigurationString(getDamage(aStack));
     }
 
     @Override

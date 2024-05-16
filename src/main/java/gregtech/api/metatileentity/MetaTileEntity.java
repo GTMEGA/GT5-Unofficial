@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity.ClientEvents;
@@ -742,7 +743,15 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     @Override
     public void setInventorySlotContents(int aIndex, ItemStack aStack) {
         markDirty();
-        if (aIndex >= 0 && aIndex < mInventory.length) mInventory[aIndex] = aStack;
+        if (this instanceof IConfigurationCircuitSupport) {
+            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport)this;
+            if (ccs.allowSelectCircuit() && aIndex == ccs.getCircuitSlot() && aStack != null) {
+                mInventory[aIndex] = GT_Utility.copyAmount(0, aStack);
+                return;
+            }
+        }
+        if (aIndex >= 0 && aIndex < mInventory.length)
+            mInventory[aIndex] = aStack;
     }
 
     @Override

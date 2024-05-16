@@ -111,4 +111,12 @@ public class GT_GuiTooltip {
     public List<String> getToolTipText() {
         return this.displayedText;
     }
+
+    public Rectangle getBounds() {
+        return bounds;
+    }
+
+    public boolean isDelayed() {
+        return true;
+    }
 }

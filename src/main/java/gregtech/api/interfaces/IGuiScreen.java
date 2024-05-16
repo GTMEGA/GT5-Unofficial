@@ -23,6 +23,7 @@ public interface IGuiScreen {
         }
 
         void onInit();
+        default void onRemoved() {}
 
         void draw(int mouseX, int mouseY, float parTicks);
 

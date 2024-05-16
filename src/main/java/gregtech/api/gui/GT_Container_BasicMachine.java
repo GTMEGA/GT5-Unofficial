@@ -2,6 +2,8 @@ package gregtech.api.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import codechicken.nei.guihook.IContainerTooltipHandler;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
@@ -13,6 +15,8 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+
+import java.util.List;
 
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.OTHER_SLOT_COUNT;
 
@@ -48,11 +52,13 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
         addSlotToContainer(slotItemTransferToggle = new GT_Slot_Holo(mTileEntity, 0, 26, 63, false, true, 1));
         slotItemTransferToggle.setEnabled(!machine.isSteampowered());
         addSlotToContainer(slotFluidOutput = new GT_Slot_Render(mTileEntity, 2, 107, 63));
-        slotFluidOutput.setEnabled(recipes != null ? recipes.hasFluidOutputs() : false);
+        slotFluidOutput.setEnabled(recipes != null && recipes.hasFluidOutputs());
+        // add circuit slot here to have it in fixed position
+        addCircuitSlot();
 
-        int tStartIndex = ((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).getInputSlot();
+        int tStartIndex = machine.getInputSlot();
 
-        switch (((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mInputSlotCount) {
+        switch (machine.mInputSlotCount) {
             case 0:
                 break;
             case 1:
@@ -120,9 +126,9 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
                 break;
         }
 
-        tStartIndex = ((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).getOutputSlot();
+        tStartIndex = machine.getOutputSlot();
 
-        switch (((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mOutputItems.length) {
+        switch (machine.mOutputItems.length) {
             case 0:
                 break;
             case 1:
@@ -274,12 +280,12 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
 
     @Override
     public int getSlotStartIndex() {
-        return 3;
+        return 4;
     }
 
     @Override
     public int getShiftClickStartIndex() {
-        return 3;
+        return 4;
     }
 
     @Override

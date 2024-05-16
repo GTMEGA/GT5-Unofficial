@@ -44,7 +44,7 @@ public class GT_TooltipDataCache {
      * @param args arguments for string formatting (prefer using positional arguments)
      * @return The tooltip data the user asked for
      */
-    private TooltipData getUncachedTooltipData(String key, Object... args) {
+    public TooltipData getUncachedTooltipData(String key, Object... args) {
         List<String> lines = getAllLines(key, args);
         int normalLines = lines.size();
         if (Math.max(GT_Mod.gregtechproxy.mTooltipVerbosity, GT_Mod.gregtechproxy.mTooltipShiftVerbosity) >= 3) {

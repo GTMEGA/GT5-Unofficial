@@ -1,23 +1,46 @@
 package gregtech.api.gui.widgets;
 
+import codechicken.lib.gui.GuiDraw;
 import gregtech.api.gui.widgets.icon.GT_GuiIcon;
 import gregtech.api.interfaces.IGuiScreen;
+import gregtech.api.util.GT_UtilityClient;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import java.awt.*;
+import java.util.List;
 
 public class GT_GuiFakeItemButton implements IGT_GuiButton {
 
-    private final GT_GuiIcon bgIcon;
+    private GT_GuiIcon bgIcon;
     private ItemStack item;
     private IGuiScreen gui;
-    private int x0, y0, xPosition, yPosition;
-    private int width, height;
+    private int xPosition, yPosition;
+    private java.util.List<String> itemTooltips;
+    private final GT_GuiTooltip tooltip = new GT_GuiTooltip(null) {
+        @Override
+        public List<String> getToolTipText() {
+            return itemTooltips;
+        }
+
+        @Override
+        public boolean isDelayed() {
+            return false;
+        }
+
+        @Override
+        public Rectangle getBounds() {
+            return GT_GuiFakeItemButton.this.getBounds();
+        }
+    };
+    private final Rectangle rectangle;
+    private boolean mimicSlot;
 
     @Accessors(chain = true)
     @Getter
@@ -28,32 +51,65 @@ public class GT_GuiFakeItemButton implements IGT_GuiButton {
     @Setter
     private int updateCooldown = 0;
 
-    private GT_GuiTooltip tooltip = null;
-
     public GT_GuiFakeItemButton(IGuiScreen gui, int x, int y, GT_GuiIcon bgIcon) {
         this.gui = gui;
-        this.x0 = x;
-        this.y0 = y;
         this.bgIcon = bgIcon;
         item = null;
-        width = 18;
-        height = 18;
+        rectangle  = new Rectangle(x, y, 18, 18);
         gui.addElement(this);
     }
 
     public GT_GuiFakeItemButton setItem(ItemStack i) {
         item = i;
+        if (getMimicSlot())
+            updateTooltip();
         return this;
+    }
+
+    private void updateTooltip() {
+        itemTooltips = item == null ? null :  GT_UtilityClient.getTooltip(item, true);
     }
 
     public ItemStack getItem(){
         return item;
     }
 
+    public GT_GuiFakeItemButton setMimicSlot(boolean mimicSlot) {
+        if (mimicSlot != this.mimicSlot) {
+            if (mimicSlot) {
+                updateTooltip();
+                gui.addToolTip(tooltip);
+            } else {
+                gui.removeToolTip(tooltip);
+            }
+            this.mimicSlot = mimicSlot;
+        }
+        return this;
+    }
+
+    public boolean getMimicSlot() {
+        return mimicSlot;
+    }
+
+    public GT_GuiIcon getBgIcon() {
+        return bgIcon;
+    }
+
+    public GT_GuiFakeItemButton setBgIcon(GT_GuiIcon bgIcon) {
+        this.bgIcon = bgIcon;
+        return this;
+    }
+
     @Override
     public void onInit() {
-        xPosition = x0 + gui.getGuiLeft();
-        yPosition = y0 + gui.getGuiTop();
+        xPosition = rectangle.x + gui.getGuiLeft();
+        yPosition = rectangle.y + gui.getGuiTop();
+    }
+
+    @Override
+    public void onRemoved() {
+        if (mimicSlot)
+            gui.removeToolTip(tooltip);
     }
 
     @Override
@@ -67,8 +123,27 @@ public class GT_GuiFakeItemButton implements IGT_GuiButton {
             bgIcon.render(xPosition-1, yPosition-1, 18, 18,0,true);
         }
 
-        if (item != null)
+        if (item != null) {
+            if (item.getItem() instanceof ItemBlock) {
+                GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+                GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            }
             gui.getItemRenderer().renderItemAndEffectIntoGUI(gui.getFontRenderer(), Minecraft.getMinecraft().getTextureManager(), item, xPosition, yPosition);
+            if (item.getItem() instanceof ItemBlock) {
+                GL11.glPopAttrib();
+            }
+        }
+
+
+        if (getMimicSlot())
+            if (getBounds().contains(mouseX - gui.getGuiLeft(), mouseY - gui.getGuiTop())) {
+                GL11.glDisable(GL11.GL_LIGHTING);
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
+                GL11.glColorMask(true, true, true, false);
+                GuiDraw.drawGradientRect(xPosition, yPosition, 16, 16, 0x80ffffff, 0x80ffffff);
+                GL11.glColorMask(true, true, true, true);
+                // no glEnable, state will be recovered by glPopAttrib
+            }
 
         GL11.glPopAttrib();
     }
@@ -87,11 +162,6 @@ public class GT_GuiFakeItemButton implements IGT_GuiButton {
      */
     @Override
     public IGuiScreen.IGuiElement setTooltipText(final String... text) {
-        if (tooltip == null) {
-            this.tooltip = new GT_GuiTooltip(getBounds(), text);
-        } else {
-            this.tooltip.setToolTipText(text);
-        }
         return this;
     }
 
@@ -107,6 +177,22 @@ public class GT_GuiFakeItemButton implements IGT_GuiButton {
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(x0, y0, width, height);
+        return rectangle;
+    }
+
+    public void setX(int x) {
+        rectangle.x = x;
+    }
+
+    public void setY(int y) {
+        rectangle.y = y;
+    }
+
+    public void setWidth(int width) {
+        rectangle.width = width;
+    }
+
+    public void setHeight(int height) {
+        rectangle.height = height;
     }
 }

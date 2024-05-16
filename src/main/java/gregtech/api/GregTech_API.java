@@ -165,6 +165,10 @@ public class GregTech_API {
             sHeatHazmatList = new GT_HashSet<>(),
             sRadioHazmatList = new GT_HashSet<>(),
             sElectroHazmatList = new GT_HashSet<>();
+
+    private static final List<ItemStack> sRealConfigurationList = new ArrayList<>();
+    private static final List<ItemStack> sConfigurationList = Collections.unmodifiableList(sRealConfigurationList);
+
     /**
      * The List of Dimensions, which are Whitelisted for the Teleporter. This list should not contain other Planets.
      * Mystcraft Dimensions and other Dimensional Things should be allowed.
@@ -717,6 +721,32 @@ public class GregTech_API {
             e.printStackTrace(GT_Log.err);
             throw new RuntimeException(e);
         }
+    }
+
+
+    /**
+     * Register a new ItemStack as configuration circuits.
+     * Duplicates or invalid stacks will be silently ignored.
+     */
+    public static void registerConfigurationCircuit(ItemStack aStack) {
+        if (GT_Utility.isStackInvalid(aStack))
+            return;
+        for (ItemStack tRegistered : sRealConfigurationList)
+            if (GT_Utility.areStacksEqual(tRegistered, aStack))
+                return;
+        sRealConfigurationList.add(GT_Utility.copyAmount(0, aStack));
+    }
+
+    /**
+     * Get a list of Configuration circuits. All of these stacks will have a stack size of 0.
+     * Use {@link #registerConfigurationCircuit(ItemStack)} to add to this list.
+     *
+     * @return An unmodifiable view of actual list.
+     * It will reflect the changes to the underlying list as new circuits are registered.
+     * DO NOT MODIFY THE ItemStacks!
+     */
+    public static List<ItemStack> getConfigurationCircuitList() {
+        return sConfigurationList;
     }
 
     public static void registerCover(ItemStack aStack, ITexture aCover, GT_CoverBehavior aBehavior) {

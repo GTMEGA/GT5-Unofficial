@@ -128,7 +128,7 @@ import static gregtech.api.enums.GT_Values.*;
 public class GT_Mod implements IGT_Mod {
 
     @Deprecated // Keep for use in BaseMetaTileEntity
-    public static final int VERSION = 509, SUBVERSION = 40;
+    public static final int VERSION = 509, SUBVERSION = 41;
     @Deprecated
     public static final int TOTAL_VERSION = calculateTotalGTVersion(VERSION, SUBVERSION);
     public static final int REQUIRED_IC2 = 624;
@@ -377,6 +377,7 @@ public class GT_Mod implements IGT_Mod {
         gregtechproxy.mRenderIndicatorsOnHatch = GregTech_API.sClientDataFile.get("render", "RenderIndicatorsOnHatch", true);
         gregtechproxy.mTooltipVerbosity = GregTech_API.sClientDataFile.get("interface", "TooltipVerbosity", 2);
         gregtechproxy.mTooltipShiftVerbosity = GregTech_API.sClientDataFile.get("interface", "TooltipShiftVerbosity", 3);
+        gregtechproxy.mCircuitScrollInverted = GregTech_API.sClientDataFile.get("interface", "CircuitScrollInverted", false);
 
         gregtechproxy.mMaxEqualEntitiesAtOneSpot = tMainConfig.get(aTextGeneral, "MaxEqualEntitiesAtOneSpot", 3).getInt(3);
         gregtechproxy.mSkeletonsShootGTArrows = tMainConfig.get(aTextGeneral, "SkeletonsShootGTArrows", 16).getInt(16);
