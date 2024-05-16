@@ -136,26 +136,26 @@ public class GT_Utility {
 
         // 1 is the magic index to get the cobblestone block.
         // See: GT_Block_Stones.java, GT_Block_Granites.java
-        Function<Materials, Supplier<ItemStack>> materialToCobble =
-                m -> Suppliers.memoize(() -> GT_OreDictUnificator.getOres(OrePrefixes.stone, m).get(1))::get;
-        sOreToCobble.put(
-                OrePrefixes.oreBlackgranite,
-                materialToCobble.apply(Materials.GraniteBlack));
-        sOreToCobble.put(
-                OrePrefixes.oreRedgranite,
-                materialToCobble.apply(Materials.GraniteRed));
-        sOreToCobble.put(
-                OrePrefixes.oreMarble,
-                materialToCobble.apply(Materials.Marble));
-        sOreToCobble.put(
-                OrePrefixes.oreBasalt,
-                materialToCobble.apply(Materials.Basalt));
-        sOreToCobble.put(
-                OrePrefixes.oreNetherrack,
-                () -> new ItemStack(Blocks.netherrack));
-        sOreToCobble.put(
-                OrePrefixes.oreEndstone,
-                () -> new ItemStack(Blocks.end_stone));
+//        Function<Materials, Supplier<ItemStack>> materialToCobble =
+//                m -> Suppliers.memoize(() -> GT_OreDictUnificator.getOres(OrePrefixes.stone, m).get(1))::get;
+//        sOreToCobble.put(
+//                OrePrefixes.oreBlackgranite,
+//                materialToCobble.apply(Materials.GraniteBlack));
+//        sOreToCobble.put(
+//                OrePrefixes.oreRedgranite,
+//                materialToCobble.apply(Materials.GraniteRed));
+//        sOreToCobble.put(
+//                OrePrefixes.oreMarble,
+//                materialToCobble.apply(Materials.Marble));
+//        sOreToCobble.put(
+//                OrePrefixes.oreBasalt,
+//                materialToCobble.apply(Materials.Basalt));
+//        sOreToCobble.put(
+//                OrePrefixes.oreNetherrack,
+//                () -> new ItemStack(Blocks.netherrack));
+//        sOreToCobble.put(
+//                OrePrefixes.oreEndstone,
+//                () -> new ItemStack(Blocks.end_stone));
 
         // TODO: Figure out how to do this
         // GT_LanguageManager.addStringLocalization("death.attack.Houston", "$s was smote by Houston for violating the laws of physics.");

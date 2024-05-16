@@ -15,7 +15,7 @@ public class GT_Loader_OreProcessing
         new ProcessingBolt();
         new ProcessingCell();
         new ProcessingCrate();
-        new ProcessingCircuit();
+//        new ProcessingCircuit();
         new ProcessingCompressed();
         new ProcessingCrafting();
         new ProcessingCrop();

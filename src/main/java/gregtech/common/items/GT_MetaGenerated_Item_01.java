@@ -754,33 +754,23 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GT_ModHandler.addCraftingRecipe(ItemList.Field_Generator_EV.get(1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"WCW", "CGC", "WCW", 'G', OrePrefixes.gem.get(Materials.NetherStar), 'C',  circuitLogic.get(LOGIC_LUV), 'W', OrePrefixes.plateDouble.get(Materials.HSSG)});
         GT_ModHandler.addCraftingRecipe(ItemList.Field_Generator_IV.get(1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"WCW", "CGC", "WCW", 'G', ItemList.QuantumStar.get(1L), 'C',  circuitLogic.get(LOGIC_ZPM), 'W', OrePrefixes.plateTriple.get(Materials.HSSS)});
 
-        ItemList.Circuit_Primitive.set(addItem(tLastID = 700, "Vacuum Tube", "A very simple Circuit", OrePrefixes.circuit.get(Materials.Primitive), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_Parts_Vacuum_Tube.set(ItemList.Circuit_Primitive.get(1));
-        ItemList.Circuit_Basic.set(addItem(tLastID = 701, "Integrated Logic Circuit", "A Basic Circuit", OrePrefixes.circuit.get(Materials.Basic), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_Good.set(addItem(tLastID = 702, "Good Electronic Circuit", "A Good Circuit", OrePrefixes.circuit.get(Materials.Good), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_Advanced.set(addItem(tLastID = 703, "Processor Assembly", "An Advanced Circuit", OrePrefixes.circuit.get(Materials.Advanced), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_Computer.set(ItemList.Circuit_Advanced.get(1));
-        ItemList.Circuit_Data.set(addItem(tLastID = 704, "Workstation", "An Extreme Circuit", OrePrefixes.circuit.get(Materials.Data), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_Elite.set(addItem(tLastID = 705, "Mainframe", "An Elite Circuit", OrePrefixes.circuit.get(Materials.Elite), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_Master.set(addItem(tLastID = 706, "Nanoprocessor Mainframe", "A Master Circuit", OrePrefixes.circuit.get(Materials.Master), SubTag.NO_UNIFICATION));
         ItemList.Tool_DataOrb.set(addItem(tLastID = 707, "Data Orb", "A High Capacity Data Storage", SubTag.NO_UNIFICATION, new Behaviour_DataOrb()));
-
-        //ItemList.Circuit_Ultimate.set(ItemList.Tool_DataOrb.get(1L, new Object[0]));
         GT_ModHandler.addShapelessCraftingRecipe(ItemList.Tool_DataOrb.get(1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ItemList.Tool_DataOrb.get(1L)});
+
         ItemList.Tool_DataStick.set(addItem(tLastID = 708, "Data Stick", "A Low Capacity Data Storage", SubTag.NO_UNIFICATION, new Behaviour_DataStick()));
         GT_ModHandler.addShapelessCraftingRecipe(ItemList.Tool_DataStick.get(1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ItemList.Tool_DataStick.get(1L)});
 
-        ItemList.Circuit_Board_Basic.set(addItem(tLastID = 710, "Coated Circuit Board", "Deprecated")); ItemList.Circuit_Board_Coated.set(ItemList.Circuit_Board_Basic.get(1));
-        ItemList.Circuit_Board_Advanced.set(addItem(tLastID = 711, "Epoxy Circuit Board", "Deprecated")); ItemList.Circuit_Board_Epoxy.set(ItemList.Circuit_Board_Advanced.get(1));
-        ItemList.Circuit_Board_Elite.set(addItem(tLastID = 712, "Multilayer Fiber-Reinforced Circuit Board", "Deprecated")); ItemList.Circuit_Board_Multifiberglass.set(ItemList.Circuit_Board_Elite.get(1));
-        ItemList.Circuit_Parts_Crystal_Chip_Elite.set(addItem(tLastID = 713, "Engraved Crystal Chip", "Deprecated"));
-        ItemList.Circuit_Parts_Crystal_Chip_Master.set(addItem(tLastID = 714, "Engraved Lapotron Chip", "Deprecated"));
-        ItemList.Circuit_Parts_Advanced.set(addItem(tLastID = 715, "Diode", "Deprecated")); ItemList.Circuit_Parts_Diode.set(ItemList.Circuit_Parts_Advanced.get(1));
-        ItemList.Circuit_Parts_Wiring_Basic.set(addItem(tLastID = 716, "Resistor", "Deprecated")); ItemList.Circuit_Parts_Resistor.set(ItemList.Circuit_Parts_Wiring_Basic.get(1));
-        ItemList.Circuit_Parts_Wiring_Advanced.set(addItem(tLastID = 717, "Transistor", "Deprecated")); ItemList.Circuit_Parts_Transistor.set(ItemList.Circuit_Parts_Wiring_Advanced.get(1));
-        ItemList.Circuit_Parts_Wiring_Elite.set(addItem(tLastID = 718, "Capacitor", "Deprecated")); ItemList.Circuit_Parts_Capacitor.set(ItemList.Circuit_Parts_Wiring_Elite.get(1));
-        ItemList.Empty_Board_Basic.set(addItem(tLastID = 719, "Phenolic Circuit Board", "Deprecated")); ItemList.Circuit_Board_Phenolic.set(ItemList.Empty_Board_Basic.get(1));
-        ItemList.Empty_Board_Elite.set(addItem(tLastID = 720, "Fiber-Reinforced Circuit Board", "Deprecated")); ItemList.Circuit_Board_Fiberglass.set(ItemList.Empty_Board_Elite.get(1));
+//        ItemList.Circuit_Board_Basic.set(addItem(tLastID = 710, "Coated Circuit Board", "Deprecated")); ItemList.Circuit_Board_Coated.set(ItemList.Circuit_Board_Basic.get(1));
+//        ItemList.Circuit_Board_Advanced.set(addItem(tLastID = 711, "Epoxy Circuit Board", "Deprecated")); ItemList.Circuit_Board_Epoxy.set(ItemList.Circuit_Board_Advanced.get(1));
+//        ItemList.Circuit_Board_Elite.set(addItem(tLastID = 712, "Multilayer Fiber-Reinforced Circuit Board", "Deprecated")); ItemList.Circuit_Board_Multifiberglass.set(ItemList.Circuit_Board_Elite.get(1));
+//        ItemList.Circuit_Parts_Crystal_Chip_Elite.set(addItem(tLastID = 713, "Engraved Crystal Chip", "Deprecated"));
+//        ItemList.Circuit_Parts_Crystal_Chip_Master.set(addItem(tLastID = 714, "Engraved Lapotron Chip", "Deprecated"));
+//        ItemList.Circuit_Parts_Advanced.set(addItem(tLastID = 715, "Diode", "Deprecated")); ItemList.Circuit_Parts_Diode.set(ItemList.Circuit_Parts_Advanced.get(1));
+//        ItemList.Circuit_Parts_Wiring_Basic.set(addItem(tLastID = 716, "Resistor", "Deprecated")); ItemList.Circuit_Parts_Resistor.set(ItemList.Circuit_Parts_Wiring_Basic.get(1));
+//        ItemList.Circuit_Parts_Wiring_Advanced.set(addItem(tLastID = 717, "Transistor", "Deprecated")); ItemList.Circuit_Parts_Transistor.set(ItemList.Circuit_Parts_Wiring_Advanced.get(1));
+//        ItemList.Circuit_Parts_Wiring_Elite.set(addItem(tLastID = 718, "Capacitor", "Deprecated")); ItemList.Circuit_Parts_Capacitor.set(ItemList.Circuit_Parts_Wiring_Elite.get(1));
+//        ItemList.Empty_Board_Basic.set(addItem(tLastID = 719, "Phenolic Circuit Board", "Deprecated")); ItemList.Circuit_Board_Phenolic.set(ItemList.Empty_Board_Basic.get(1));
+//        ItemList.Empty_Board_Elite.set(addItem(tLastID = 720, "Fiber-Reinforced Circuit Board", "Deprecated")); ItemList.Circuit_Board_Fiberglass.set(ItemList.Empty_Board_Elite.get(1));
 
         ItemList.Component_Sawblade_Diamond.set(addItem(tLastID = 721, "Diamond Sawblade", "", new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERDITIO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L), OreDictNames.craftingDiamondBlade));
         ItemList.Component_Grinder_Diamond.set(addItem(tLastID = 722, "Diamond Grinding Head", "", new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERDITIO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 6L), OreDictNames.craftingGrinder));

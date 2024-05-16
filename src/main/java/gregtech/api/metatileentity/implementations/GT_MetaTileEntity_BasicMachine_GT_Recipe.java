@@ -89,14 +89,6 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
         //TODO: CHECK
         if (aRecipe != null) {
             for (int i = 3; i < aRecipe.length; i++) {
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT) {
-                    aRecipe[i] = Tier.ELECTRIC[this.mTier].mManagingObject;
-                    continue;
-                }
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT) {
-                    aRecipe[i] = Tier.ELECTRIC[this.mTier].mBetterManagingObject;
-                    continue;
-                }
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL) {
                     aRecipe[i] = Tier.ELECTRIC[this.mTier].mHullObject;
                     continue;
@@ -118,21 +110,8 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 3:
                             aRecipe[i] = new ItemStack(Blocks.glass, 1, W);
                             break;
-                        case 4:
-                        case 5:
-                        case 6:
-                        case 7:
-                        case 8:
-                            if (Loader.isModLoaded("bartworks")) {//todo remove via provider pattern on all enums?
-                                aRecipe[i] = "blockGlass"+VN[aTier];
-                                break;
-                            }
                         default:
-                            if (Loader.isModLoaded("bartworks")) {//todo remove via provider pattern on all enums?
-                                aRecipe[i] = "blockGlass"+VN[8];
-                            } else {
-                                aRecipe[i] = Ic2Items.reinforcedGlass;
-                            }
+                            aRecipe[i] = Ic2Items.reinforcedGlass;
                             break;
                     }
                     continue;
@@ -936,5 +915,5 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
         return !this.mSharedTank;
     }
 
-    public enum X {PUMP, WIRE, WIRE4, HULL, PIPE, GLASS, PLATE, MOTOR, ROTOR, SENSOR, PISTON, CIRCUIT, EMITTER, CONVEYOR, ROBOT_ARM, COIL_HEATING, COIL_ELECTRIC, STICK_MAGNETIC, STICK_DISTILLATION, BETTER_CIRCUIT, FIELD_GENERATOR, COIL_HEATING_DOUBLE, STICK_ELECTROMAGNETIC}
+    public enum X {PUMP, WIRE, WIRE4, HULL, PIPE, GLASS, PLATE, MOTOR, ROTOR, SENSOR, PISTON, EMITTER, CONVEYOR, ROBOT_ARM, COIL_HEATING, COIL_ELECTRIC, STICK_MAGNETIC, STICK_DISTILLATION, FIELD_GENERATOR, COIL_HEATING_DOUBLE, STICK_ELECTROMAGNETIC}
 }

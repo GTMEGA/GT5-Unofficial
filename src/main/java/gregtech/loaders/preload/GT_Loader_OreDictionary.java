@@ -205,8 +205,8 @@ public class GT_Loader_OreDictionary implements Runnable {
         GT_OreDictUnificator.registerOre(OreDictNames.craftingBook, new ItemStack(Items.written_book, 1, 32767));
         GT_OreDictUnificator.registerOre(OreDictNames.craftingBook, new ItemStack(Items.enchanted_book, 1, 32767));
 
-        GT_OreDictUnificator.registerOre(OrePrefixes.circuit, Materials.Basic, GT_ModHandler.getIC2Item("electronicCircuit", 1L));
-        GT_OreDictUnificator.registerOre(OrePrefixes.circuit, Materials.Advanced, GT_ModHandler.getIC2Item("advancedCircuit", 1L));
+//        GT_OreDictUnificator.registerOre(OrePrefixes.circuit, Materials.Basic, GT_ModHandler.getIC2Item("electronicCircuit", 1L));
+//        GT_OreDictUnificator.registerOre(OrePrefixes.circuit, Materials.Advanced, GT_ModHandler.getIC2Item("advancedCircuit", 1L));
 
         GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Copper, GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 0));
         GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Tin, GT_ModHandler.getModItem("IC2","itemCasing", 1L, 1));
