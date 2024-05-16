@@ -944,8 +944,10 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public void setInventorySlotContents(int aIndex, ItemStack aStack) {
         mInventoryChanged = true;
-        if (canAccessData())
+        if (canAccessData()) {
+            markDirty();
             mMetaTileEntity.setInventorySlotContents(aIndex, worldObj.isRemote ? aStack : GT_OreDictUnificator.setStack(true, aStack));
+        }
     }
 
     @Override
@@ -2227,6 +2229,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         aStack = GT_OreDictUnificator.get(aStack);
         if (GT_Utility.areStacksEqual(tStack, aStack) && tStack.stackSize + aStack.stackSize <= Math.min(aStack.getMaxStackSize(), getInventoryStackLimit())) {
             tStack.stackSize += aStack.stackSize;
+            markDirty();
             return true;
         }
         return false;

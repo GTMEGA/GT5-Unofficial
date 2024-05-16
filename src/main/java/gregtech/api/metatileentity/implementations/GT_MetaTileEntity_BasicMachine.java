@@ -382,6 +382,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public FluidStack setDrainableStack(FluidStack aFluid) {
+        markDirty();
         mFluidOut = aFluid;
         return mFluidOut;
     }
@@ -483,6 +484,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             boolean tSucceeded = false;
 
             if (mMaxProgresstime > 0 && (mProgresstime >= 0 || aBaseMetaTileEntity.isAllowedToWork())) {
+                markDirty();
                 aBaseMetaTileEntity.setActive(true);
                 if (mProgresstime < 0 || drainEnergyForProcess(mEUt)) {
                     if (++mProgresstime >= mMaxProgresstime) {

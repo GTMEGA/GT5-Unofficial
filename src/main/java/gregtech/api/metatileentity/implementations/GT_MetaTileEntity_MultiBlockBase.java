@@ -294,6 +294,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                     if (getRepairStatus() > 0) {
                         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) {
                             if (onRunningTick(mInventory[1])) {
+                                markDirty();
                                 if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) {
                                     stopMachine();
                                 }
@@ -329,7 +330,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                             if (aTick % 100 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified()) {
 
                                 if (aBaseMetaTileEntity.isAllowedToWork()) {
-                                    checkRecipe(mInventory[1]);
+                                    if (checkRecipe(mInventory[1])) {
+                                        markDirty();
+                                    }
                                 }
                                 if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
                             }
