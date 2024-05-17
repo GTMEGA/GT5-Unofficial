@@ -14,9 +14,8 @@ def deobfCurse(curseDep) {
 
 dependencies {
     implementation("mega:structurelib-mc1.7.10:1.2.1-mega:dev")
-    implementation("codechicken:codechickencore-mc1.7.10:1.0.9-gtmega:dev")
-    implementation("codechicken:codechickenlib-mc1.7.10:1.1.4-gtmega:dev")
-    implementation("codechicken:notenoughitems-mc1.7.10:2.2.0-mega:dev")
+    implementation("codechicken:codechickencore-mc1.7.10:1.4.0-mega:dev")
+    implementation("codechicken:notenoughitems-mc1.7.10:2.3.0-mega:dev")
 
     implementation("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
 
@@ -24,14 +23,9 @@ dependencies {
         transitive = false
     }
 
-    // ProjectRed Core 4.7.0pre12.95
-    compileOnly(deobfCurse("projectred-core-228702:2280728"))
-
-    // MRTJPCore 1.1.0.33-universal
-    compileOnly(deobfCurse("mrtjpcore-229002:2279413"))
-
-    // ForgeMultipart 1.2.0.345
-    compileOnly(deobfCurse("multipart-229323:2242993"))
+    compileOnly("mega:projectred-mc1.7.10:5.0.0-mega:dev") {
+        transitive = false
+    }
 
     //EnderCore 0.2.0.39_beta
     compileOnly(deobfCurse("endercore-231868:2331048"))  // TODO: use in-house version
