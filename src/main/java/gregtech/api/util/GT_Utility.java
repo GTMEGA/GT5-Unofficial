@@ -7,31 +7,17 @@ import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.damagesources.GT_DamageSources.DamageSourceHotItem;
 import gregtech.api.enchants.Enchantment_Radioactivity;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.Textures;
-import gregtech.api.enums.ToolDictNames;
+import gregtech.api.enums.*;
 import gregtech.api.events.BlockScanningEvent;
 import gregtech.api.interfaces.IBlockContainer;
 import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.IBasicEnergyContainer;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.interfaces.tileentity.IUpgradableMachine;
+import gregtech.api.interfaces.tileentity.*;
 import gregtech.api.items.GT_EnergyArmor_Item;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -54,7 +40,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityItem;
@@ -76,7 +61,6 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.*;
@@ -91,13 +75,8 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidContainerItem;
-import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableInt;
@@ -109,24 +88,13 @@ import java.lang.reflect.Method;
 import java.text.NumberFormat;
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.GT_Mod.gregtechproxy;
-import static gregtech.api.enums.GT_Values.D1;
-import static gregtech.api.enums.GT_Values.DW;
-import static gregtech.api.enums.GT_Values.E;
-import static gregtech.api.enums.GT_Values.GT;
-import static gregtech.api.enums.GT_Values.L;
-import static gregtech.api.enums.GT_Values.M;
-import static gregtech.api.enums.GT_Values.NW;
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.GT_Values.W;
+import static gregtech.api.enums.GT_Values.*;
 import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
 
 /**
@@ -334,26 +302,10 @@ public class GT_Utility {
     }
 
     public static boolean getPotion(EntityLivingBase aPlayer, int aPotionIndex) {
-        try {
-            Field tPotionHashmap = null;
-
-            Field[] var3 = EntityLiving.class.getDeclaredFields();
-            int var4 = var3.length;
-
-            for (Field var6 : var3) {
-                if (var6.getType() == HashMap.class) {
-                    tPotionHashmap = var6;
-                    tPotionHashmap.setAccessible(true);
-                    break;
-                }
-            }
-
-            if (tPotionHashmap != null)
-                return ((HashMap) tPotionHashmap.get(aPlayer)).get(aPotionIndex) != null;
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GT_Log.err);
-        }
-        return false;
+        val activePotions = (Map<Integer, PotionEffect>) aPlayer.activePotionsMap;
+        if (activePotions == null)
+            return false;
+        return activePotions.get(aPotionIndex) != null;
     }
 
     public static String getClassName(Object aObject) {
@@ -362,24 +314,9 @@ public class GT_Utility {
     }
 
     public static void removePotion(EntityLivingBase aPlayer, int aPotionIndex) {
-        try {
-            Field tPotionHashmap = null;
-
-            Field[] var3 = EntityLiving.class.getDeclaredFields();
-            int var4 = var3.length;
-
-            for (Field var6 : var3) {
-                if (var6.getType() == HashMap.class) {
-                    tPotionHashmap = var6;
-                    tPotionHashmap.setAccessible(true);
-                    break;
-                }
-            }
-
-            if (tPotionHashmap != null) ((HashMap) tPotionHashmap.get(aPlayer)).remove(aPotionIndex);
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GT_Log.err);
-        }
+        val activePotions = (Map<Integer, PotionEffect>) aPlayer.activePotionsMap;
+        if (activePotions != null)
+            activePotions.remove(aPotionIndex);
     }
 
     public static boolean getFullInvisibility(EntityPlayer aPlayer) {
