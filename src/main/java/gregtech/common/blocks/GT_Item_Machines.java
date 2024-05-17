@@ -15,6 +15,7 @@ import gregtech.api.util.GT_ItsNotMyFaultException;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
+import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -206,6 +207,10 @@ public class GT_Item_Machines extends ItemBlock {
             return false;
         }
         if (aWorld.getBlock(aX, aY, aZ) == this.field_150939_a) {
+            val te = aWorld.getTileEntity(aX, aY, aZ);
+            if (te instanceof IGregTechTileEntity) {
+                if (((IGregTechTileEntity) te).getMetaTileEntity() == null) throw new RuntimeException("Newly Initialised meta tile is null and not fully initialised damage value "+tDamage);
+            }
             this.field_150939_a.onBlockPlacedBy(aWorld, aX, aY, aZ, aPlayer, aStack);
             this.field_150939_a.onPostBlockPlaced(aWorld, aX, aY, aZ, tDamage);
         }
