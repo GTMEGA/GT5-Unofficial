@@ -63,6 +63,7 @@ public enum ItemList implements IItemContainer {
     RC_Bed_Wood,
     RC_Bed_Stone,
     RC_Rebar,
+    IC2_Advanced_Alloy,
     IC2_Item_Casing_Tin,
     IC2_Item_Casing_Copper,
     IC2_Item_Casing_Iron,
@@ -844,8 +845,6 @@ public enum ItemList implements IItemContainer {
     Casing_StableTitanium,
     Casing_Firebox_Titanium,
     Casing_MiningNeutronium,
-    Casing_MiningBlackPlutonium,
-    Casing_Advanced_Rhodium_Palladium,
     Casing_Advanced_Iridium,
     Casing_Magical,
 
@@ -1861,7 +1860,7 @@ public enum ItemList implements IItemContainer {
 
     Solid_Waste,
 
-    MEGASteamValve
+    MEGASteamValve,
     ;
 
     public static final ItemList[]

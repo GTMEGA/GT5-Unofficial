@@ -30,10 +30,8 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
         ItemList.Casing_Chemically_Inert.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Pipe_Polytetrafluoroethylene.set(new ItemStack(this, 1, 1));
         ItemList.Casing_MiningNeutronium.set(new ItemStack(this, 1, 2));
-        ItemList.Casing_MiningBlackPlutonium.set(new ItemStack(this, 1, 3));
         ItemList.Casing_ExtremeEngineIntake.set(new ItemStack(this, 1, 4));
         ItemList.Casing_AdvancedRadiationProof.set(new ItemStack(this, 1, 5));
-        ItemList.Casing_Advanced_Rhodium_Palladium.set(new ItemStack(this, 1, 6));
         ItemList.Casing_Advanced_Iridium.set(new ItemStack(this, 1, 7));
         ItemList.Casing_Magical.set(new ItemStack(this, 1, 8));
     }

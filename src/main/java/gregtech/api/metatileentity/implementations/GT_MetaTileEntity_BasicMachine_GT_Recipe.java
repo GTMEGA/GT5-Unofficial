@@ -167,16 +167,16 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.TungstenSteel);
                             break;
                         case 6:
-                            aRecipe[i] = OrePrefixes.pipeSmall.get(Materials.Ultimate);
+                            aRecipe[i] = OrePrefixes.pipeSmall.get(Materials.DraconiumAwakened);
                             break;
                         case 7:
-                            aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Ultimate);
+                            aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.DraconiumAwakened);
                             break;
                         case 8:
-                            aRecipe[i] = OrePrefixes.pipeLarge.get(Materials.Ultimate);
+                            aRecipe[i] = OrePrefixes.pipeLarge.get(Materials.DraconiumAwakened);
                             break;
                         default:
-                            aRecipe[i] = OrePrefixes.pipeHuge.get(Materials.Ultimate);
+                            aRecipe[i] = OrePrefixes.pipeHuge.get(Materials.DraconiumAwakened);
                             break;
                     }
                     continue;

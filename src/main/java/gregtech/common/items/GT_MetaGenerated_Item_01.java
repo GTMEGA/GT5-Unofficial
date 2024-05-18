@@ -479,13 +479,13 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GT_Values.RA.addCannerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 32L), ItemList.Battery_Hull_HV.get(1L), ItemList.Battery_RE_HV_Lithium.get(1L), null, 1600, 2);
         GT_Values.RA.addCannerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 32L), ItemList.Battery_Hull_HV.get(1L), ItemList.Battery_RE_HV_Sodium.get(1L), null, 1600, 2);
 
-        ItemList.Energy_LapotronicOrb.set(addItem(tLastID = 597, "Lapotronic Energy Orb", "Reusable battery", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L), OrePrefixes.battery.get(Materials.Ultimate)));
+        ItemList.Energy_LapotronicOrb.set(addItem(tLastID = 597, "Lapotronic Energy Orb", "Reusable battery", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L)));
         setElectricStats(32000 + tLastID, 100000000L, GT_Values.V[5], 5L, -3L, true);
 
         ItemList.ZPM.set(addItem(tLastID = 598, "Zero Point Module", "Single use battery", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
         setElectricStats(32000 + tLastID, 2000000000000L, GT_Values.V[7], 7L, -2L, true);
 
-        ItemList.Energy_LapotronicOrb2.set(addItem(tLastID = 599, "Lapotronic Energy Orb Cluster", "Reusable battery", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L), OrePrefixes.battery.get(Materials.Ultimate)));
+        ItemList.Energy_LapotronicOrb2.set(addItem(tLastID = 599, "Lapotronic Energy Orb Cluster", "Reusable battery", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L)));
         setElectricStats(32000 + tLastID, 1000000000L, GT_Values.V[6], 6L, -3L, true);
 
         ItemList.ZPM2.set(addItem(tLastID = 605, "Ultimate Battery", "Fill this to win minecraft", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
@@ -494,7 +494,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.ZPM3.set(addItem(tLastID = 609, "Really Ultimate Battery", "Fill this to be way older", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
         setElectricStats(32000 + tLastID, Long.MAX_VALUE, GT_Values.V[12], 12L, -3L, true);
 
-        ItemList.Energy_Module.set(addItem(tLastID = 736, "Energy Module", "Reusable battery", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L), OrePrefixes.battery.get(Materials.Ultimate)));
+        ItemList.Energy_Module.set(addItem(tLastID = 736, "Energy Module", "Reusable battery", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L)));
         setElectricStats(32000 + tLastID, 10000000000L, GT_Values.V[7], 7L, -3L, true);
 
         ItemList.Energy_Cluster.set(addItem(tLastID = 737, "Energy Cluster", "Reusable battery", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
@@ -818,16 +818,16 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         GT_ModHandler.addCraftingRecipe(ItemList.Cover_Screen.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"ACA", "PPP", "ALA", 'A', OrePrefixes.plate.get(Steel), 'L', OrePrefixes.dust.get(Materials.Glowstone), 'C', circuitPower.get(PWR_LV), 'P', OrePrefixes.plate.get(Materials.Glass)});
 
-//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L), ItemList.Cover_Drain.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Shutter.get(1L), 200, 64);
-//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L), ItemList.Cover_Drain.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Shutter.get(1L), 800, 16);
-//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L), ItemList.Cover_Drain.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Shutter.get(1L), 400, 30);
-//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L), new ItemStack(Blocks.iron_bars, 2), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Drain.get(1L), 200, 64);
-//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2L), new ItemStack(Blocks.iron_bars, 2), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Drain.get(1L), 800, 16);
-//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 2L), new ItemStack(Blocks.iron_bars, 2), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Drain.get(1L), 400, 30);
-//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L), new ItemStack(Blocks.crafting_table, 1), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Crafting.get(1L), 200, 64);
-//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L), new ItemStack(Blocks.crafting_table, 1), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Crafting.get(1L), 800, 16);
-//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L), new ItemStack(Blocks.crafting_table, 1), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Crafting.get(1L), 800, 16);
-//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Cover_Shutter.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 2), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.FluidFilter.get(1L), 800, 4);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L), ItemList.Cover_Drain.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Shutter.get(1L), 200, 64);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L), ItemList.Cover_Drain.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Shutter.get(1L), 800, 16);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L), ItemList.Cover_Drain.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Shutter.get(1L), 400, 30);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L), new ItemStack(Blocks.iron_bars, 2), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Drain.get(1L), 200, 64);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2L), new ItemStack(Blocks.iron_bars, 2), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Drain.get(1L), 800, 16);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 2L), new ItemStack(Blocks.iron_bars, 2), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Drain.get(1L), 400, 30);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L), new ItemStack(Blocks.crafting_table, 1), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Crafting.get(1L), 200, 64);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L), new ItemStack(Blocks.crafting_table, 1), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Crafting.get(1L), 800, 16);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L), new ItemStack(Blocks.crafting_table, 1), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Crafting.get(1L), 800, 16);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Cover_Shutter.get(1L), GT_OreDictUnificator.get(circuitLogic, LOGIC_LV, 1), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.FluidFilter.get(1L), 800, 4);
 
         GregTech_API.registerCover(ItemList.Cover_Screen.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(TextureFactory.of(OVERLAY_SCREEN), TextureFactory.builder().addIcon(OVERLAY_SCREEN_GLOW).glow().build())), new GT_Cover_Screen());
         GregTech_API.registerCover(ItemList.Cover_Crafting.get(1L), TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_CRAFTING)), new GT_Cover_Crafting());

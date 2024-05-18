@@ -104,20 +104,13 @@ public class GT_Worldgenloader implements Runnable {
             //TODO: Custom Small Ores
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.titanium", true, 10, 180, 32, false, false, false, Materials.Titanium);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.tungsten", true, 10, 120, 16, false, false, false, Materials.Tungsten);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.meteoriciron", true, 50, 70, 8, false, false, false, Materials.MeteoricIron);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.firestone", true, 5, 15, 2, false, false, false, Materials.Firestone);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.neutronium", true, 5, 15, 8, false, false, false, Materials.Neutronium);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.chromite", true, 20, 40, 8, false, false, false, Materials.Chromite);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.tungstate", true, 20, 40, 8, false, false, false, Materials.Tungstate);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.naquadah", true, 5, 25, 8, false, false, false, Materials.Naquadah);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.quantium", true, 5, 25, 6, false, false, false, Materials.Quantium);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.mythril", true, 5, 25, 6, false, false, false, Materials.Mytryl);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.ledox", true, 40, 60, 4, false, false, false, Materials.Ledox);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.oriharukon", true, 20, 40, 6, false, false, false, Materials.Oriharukon);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.draconium", true, 5, 15, 4, false, false, false, Materials.Draconium);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.awdraconium", true, 5, 15, 2, false, false, false, Materials.DraconiumAwakened);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.desh", true, 10, 30, 6, false, false, false, Materials.Desh);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.blackplutonium", true, 25, 45, 6, false, false, false, Materials.BlackPlutonium);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.infinitycatalyst", true, 40, 80, 6, false, false, false, Materials.InfinityCatalyst);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.infinity", true, 2, 40, 2, false, false, false, Materials.Infinity);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.bedrockium", true, 5, 25, 6, false, false, false, Materials.Bedrockium);
