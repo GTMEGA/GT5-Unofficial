@@ -1220,7 +1220,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void setMultipliers() {
-        Amber.setOreMultiplier(2).setSmeltingMultiplier(2);
         InfusedAir.setOreMultiplier(2).setSmeltingMultiplier(2);
         InfusedFire.setOreMultiplier(2).setSmeltingMultiplier(2);
         InfusedEarth.setOreMultiplier(2).setSmeltingMultiplier(2);
@@ -1239,15 +1238,16 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         CertusQuartz.setOreMultiplier(2).setSmeltingMultiplier(2);
         TricalciumPhosphate.setOreMultiplier(3).setSmeltingMultiplier(3);
         Saltpeter.setOreMultiplier(4).setSmeltingMultiplier(4);
-        Apatite.setOreMultiplier(4).setSmeltingMultiplier(4).setByProductMultiplier(2);
+        Apatite.setOreMultiplier(2).setSmeltingMultiplier(2);
         Electrotine.setOreMultiplier(5).setSmeltingMultiplier(5);
         Teslatite.setOreMultiplier(5).setSmeltingMultiplier(5);
-        Redstone.setOreMultiplier(5).setSmeltingMultiplier(5);
+        Redstone.setOreMultiplier(3).setSmeltingMultiplier(3);
         Glowstone.setOreMultiplier(5).setSmeltingMultiplier(5);
-        Lapis.setOreMultiplier(6).setSmeltingMultiplier(6).setByProductMultiplier(4);
-        Sodalite.setOreMultiplier(6).setSmeltingMultiplier(6).setByProductMultiplier(4);
-        Lazurite.setOreMultiplier(6).setSmeltingMultiplier(6).setByProductMultiplier(4);
+        Sodalite.setOreMultiplier(2).setSmeltingMultiplier(2).setByProductMultiplier(2);
+        Lazurite.setOreMultiplier(2).setSmeltingMultiplier(2).setByProductMultiplier(2);
         Monazite.setOreMultiplier(8).setSmeltingMultiplier(8).setByProductMultiplier(2);
+        Tetrahedrite.setOreMultiplier(2);
+        Pyrite.setOreMultiplier(2);
     }
 
     private static void setEnchantmentKnockbackTools() {
@@ -1435,17 +1435,17 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Uranium.addOreByProducts(Lead, Uranium235, Thorium);
         Scheelite.addOreByProducts(Manganese, Molybdenum, Calcium);
         Tungstate.addOreByProducts(Manganese, Silver, Lithium);
-        Bauxite.addOreByProducts(Grossular, Rutile, Gallium);
+        Bauxite.addOreByProducts(Rutile, Rutile, Gallium);
         QuartzSand.addOreByProducts(CertusQuartz, Quartzite, Barite);
         Redstone.addOreByProducts(Cinnabar, RareEarth, Glowstone);
         Monazite.addOreByProducts(Thorium, Neodymium, RareEarth);
-        Forcicium.addOreByProducts(Thorium, Neodymium, RareEarth);
-        Forcillium.addOreByProducts(Thorium, Neodymium, RareEarth);
-        Malachite.addOreByProducts(Copper, BrownLimonite, Calcite);
-        YellowLimonite.addOreByProducts(Nickel, BrownLimonite, Cobalt);
+//        Forcicium.addOreByProducts(Thorium, Neodymium, RareEarth);
+//        Forcillium.addOreByProducts(Thorium, Neodymium, RareEarth);
+        Malachite.addOreByProducts(Copper, Malachite, Calcite);
+        YellowLimonite.addOreByProducts(Nickel, YellowLimonite, Cobalt);
         Lepidolite.addOreByProducts(Lithium, Caesium);
         Andradite.addOreByProducts(GarnetYellow, Iron);
-        Pyrolusite.addOreByProducts(Manganese, Tantalite, Niobium).add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
+        Pyrolusite.addOreByProducts(Tantalite, Manganese, Niobium).add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
         TricalciumPhosphate.addOreByProducts(Apatite, Phosphate, Pyrochlore);
         Apatite.addOreByProducts(TricalciumPhosphate, Phosphate, Pyrochlore);
         Pyrochlore.addOreByProducts(Apatite, Calcite, Niobium);
@@ -1470,7 +1470,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Electrotine.addOreByProducts(Redstone, Electrum);
         Bronze.addOreByProducts(Copper, Tin);
         Brass.addOreByProducts(Copper, Zinc);
-        Coal.addOreByProducts(Lignite, Thorium);
+        Coal.addOreByProducts(Coal, Thorium);
         Ilmenite.addOreByProducts(Iron, Rutile);
         Manganese.addOreByProducts(Chrome, Iron);
         Sapphire.addOreByProducts(Sapphire, Sapphire);
@@ -1482,7 +1482,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Chromite.addOreByProducts(Iron, Magnesium);
         Tetrahedrite.addOreByProducts(Antimony, Zinc);
         GarnetSand.addOreByProducts(GarnetRed, GarnetYellow);
-        Magnetite.addOreByProducts(Iron, Gold);
+        Magnetite.addOreByProducts(Iron, Gold, Gold);
         GraniticMineralSand.addOreByProducts(GraniteBlack, Magnetite);
         BasalticMineralSand.addOreByProducts(Basalt, Magnetite);
         Basalt.addOreByProducts(Olivine, DarkAsh);
