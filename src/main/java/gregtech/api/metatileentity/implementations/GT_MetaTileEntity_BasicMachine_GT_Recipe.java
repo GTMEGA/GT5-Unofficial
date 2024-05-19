@@ -13,6 +13,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -638,36 +639,37 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                     switch (this.mTier) {
                         case 0:
                         case 1:
-                            aRecipe[i] = GT_OreDictUnificator.get(Materials.PWR_LV, 1L);
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_LV, 1L);
                             break;
                         case 2:
-                            aRecipe[i] = GT_OreDictUnificator.get(Materials.PWR_MV, 1L);
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_MV, 1L);
                             break;
                         case 3:
-                            aRecipe[i] = GT_OreDictUnificator.get(Materials.PWR_HV, 1L);
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_HV, 1L);
                             break;
                         case 4:
-                            aRecipe[i] = GT_OreDictUnificator.get(Materials.PWR_EV, 1L);
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_EV, 1L);
                             break;
                         case 5:
-                            aRecipe[i] = GT_OreDictUnificator.get(Materials.PWR_IV, 1L);
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_IV, 1L);
                             break;
                         case 6:
-                            aRecipe[i] = GT_OreDictUnificator.get(Materials.PWR_LUV, 1L);
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_LUV, 1L);
                             break;
                         case 7:
-                            aRecipe[i] = GT_OreDictUnificator.get(Materials.PWR_ZPM, 1L);
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_ZPM, 1L);
                             break;
                         case 8:
-                            aRecipe[i] = GT_OreDictUnificator.get(Materials.PWR_UV, 1L);
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_UV, 1L);
                             break;
                         case 9:
-                            aRecipe[i] = GT_OreDictUnificator.get(Materials.PWR_UHV, 1L);
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_UHV, 1L);
                             break;
                         default:
-                            aRecipe[i] = GT_OreDictUnificator.get(Materials.PWR_UEV, 1L);
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_UEV, 1L);
                             break;
                     }
+                    GT_Log.err.println(aRecipe[i].toString());
                     continue;
                 }
 
@@ -675,34 +677,34 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                     switch (this.mTier) {
                         case 0:
                         case 1:
-                            aRecipe[i] = GT_OreDictUnificator.get(Materials.LOGIC_LV, 1L);
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_LV, 1L);
                             break;
                         case 2:
-                            aRecipe[i] = GT_OreDictUnificator.get(Materials.LOGIC_MV, 1L);
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_MV, 1L);
                             break;
                         case 3:
-                            aRecipe[i] = GT_OreDictUnificator.get(Materials.LOGIC_HV, 1L);
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_HV, 1L);
                             break;
                         case 4:
-                            aRecipe[i] = GT_OreDictUnificator.get(Materials.LOGIC_EV, 1L);
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_EV, 1L);
                             break;
                         case 5:
-                            aRecipe[i] = GT_OreDictUnificator.get(Materials.LOGIC_IV, 1L);
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_IV, 1L);
                             break;
                         case 6:
-                            aRecipe[i] = GT_OreDictUnificator.get(Materials.LOGIC_LUV, 1L);
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_LUV, 1L);
                             break;
                         case 7:
-                            aRecipe[i] = GT_OreDictUnificator.get(Materials.LOGIC_ZPM, 1L);
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_ZPM, 1L);
                             break;
                         case 8:
-                            aRecipe[i] = GT_OreDictUnificator.get(Materials.LOGIC_UV, 1L);
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_UV, 1L);
                             break;
                         case 9:
-                            aRecipe[i] = GT_OreDictUnificator.get(Materials.LOGIC_UHV, 1L);
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_UHV, 1L);
                             break;
                         default:
-                            aRecipe[i] = GT_OreDictUnificator.get(Materials.LOGIC_UEV, 1L);
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_UEV, 1L);
                             break;
                     }
                     continue;
