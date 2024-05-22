@@ -147,16 +147,15 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
         super.startSoundLoop(aIndex, aX, aY, aZ);
         if (aIndex == 1 && GT_Utility.isStringValid(this.mSound)) GT_Utility.doSoundAtClient(this.mSound, 100, 1.0F, aX, aY, aZ);
     }
+
     @Override
-    public void startProcess() {
-        BaseMetaTileEntity myMetaTileEntity = ((BaseMetaTileEntity) this.getBaseMetaTileEntity());
-        // Added to throttle sounds. To reduce lag, this is on the server side so BlockUpdate packets aren't sent.
-        if (myMetaTileEntity.mTickTimer > (myMetaTileEntity.mLastSoundTick+ticksBetweenSounds)) {
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (mMaxProgresstime > 0 && mProgresstime == 0) {
             if (GT_Utility.isStringValid(this.mSound)) this.sendLoopStart((byte) 1);
-            // Does not have overflow protection, but they are longs.
-            myMetaTileEntity.mLastSoundTick = myMetaTileEntity.mTickTimer;
         }
+        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
+
     private void prospectOils(ArrayList<String> aOils) {
 
         int xChunk = (getBaseMetaTileEntity().getXCoord() >> 7) << 3; // oil field aligned chunk coords
