@@ -4,6 +4,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.ItemData;
@@ -26,18 +27,20 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static gregtech.api.enums.GT_Values.ticksBetweenSounds;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
 
 
 public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_BasicMachine {
     boolean ready = false;
+    private String mSound;
     int radius;
     int step;
     int cX;
     int cZ;
 
-    public GT_MetaTileEntity_AdvSeismicProspector(int aID, String aName, String aNameRegional, int aTier, int aRadius, int aStep) {
+    public GT_MetaTileEntity_AdvSeismicProspector(int aID, String aName, String aNameRegional, int aTier, String aSound, int aRadius, int aStep) {
         super(aID, aName, aNameRegional, aTier, 1, // amperage
                 "",
                 1, // input slot count
@@ -68,6 +71,7 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
               TextureFactory.of(
                       TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER),
                       TextureFactory.builder().addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_GLOW).glow().build()));
+        this.mSound = aSound;
         radius = aRadius;
         step = aStep;
     }
@@ -75,23 +79,18 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
     @Override
     public String[] getDescription() {
         return new String[]{
-        		"Place, activate with explosives",
-                 "2 Powderbarrels, "
-                     + "4 Glyceryl Trinitrate, "
-                     + "16 TNT, or "
-                     + "8 ITNT", 
-                "Use Data Stick, Scan Data Stick, Print Data Stick, Bind Pages into Book",
-                "Ore prospecting area = " 
-                    + radius*2
-                    + "x"
-                    + radius*2
-                    + " ONLY blocks below prospector",
-                "Oil prospecting area 3x3 oilfields, each is 8x8 chunks"};
+        		"Place, then activate with explosive compound.",
+                "Uses 12 Explosive Compound per tier.",
+                "Ore prospecting radius in chunks: "
+                    + radius*2/16,
+                ", centered on nearest vein.",
+                "Once finished, r-click to add new ore data to your map."};
     }
 
     protected GT_MetaTileEntity_AdvSeismicProspector(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-            String aGUIName, String aNEIName, int aRadius, int aStep) {
+            String aGUIName, String aNEIName, String aSound, int aRadius, int aStep) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
+        this.mSound = aSound;
         radius = aRadius;
         step = aStep;
     }
@@ -99,7 +98,7 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_AdvSeismicProspector(this.mName, this.mTier, this.mDescriptionArray, this.mTextures,
-                this.mGUIName, this.mNEIName, this.radius, this.step);
+                this.mGUIName, this.mNEIName, mSound,  this.radius, this.step);
     }
 
     @Override
@@ -113,7 +112,7 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
                     || GT_Utility.consumeItems(aPlayer, aStack, ItemList.Block_Powderbarrel.getItem(), 2) )) {
 
                 this.ready = true;
-                this.mMaxProgresstime = (aPlayer.capabilities.isCreativeMode ? 20 : 800);
+                this.mMaxProgresstime = (aPlayer.capabilities.isCreativeMode ? 20 : 100);
 
             } else if (ready && mMaxProgresstime == 0
                     && aStack != null && aStack.stackSize == 1
@@ -143,7 +142,21 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
 
         return true;
     }
-
+    @Override
+    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
+        super.startSoundLoop(aIndex, aX, aY, aZ);
+        if (aIndex == 1 && GT_Utility.isStringValid(this.mSound)) GT_Utility.doSoundAtClient(this.mSound, 100, 1.0F, aX, aY, aZ);
+    }
+    @Override
+    public void startProcess() {
+        BaseMetaTileEntity myMetaTileEntity = ((BaseMetaTileEntity) this.getBaseMetaTileEntity());
+        // Added to throttle sounds. To reduce lag, this is on the server side so BlockUpdate packets aren't sent.
+        if (myMetaTileEntity.mTickTimer > (myMetaTileEntity.mLastSoundTick+ticksBetweenSounds)) {
+            if (GT_Utility.isStringValid(this.mSound)) this.sendLoopStart((byte) 1);
+            // Does not have overflow protection, but they are longs.
+            myMetaTileEntity.mLastSoundTick = myMetaTileEntity.mTickTimer;
+        }
+    }
     private void prospectOils(ArrayList<String> aOils) {
 
         int xChunk = (getBaseMetaTileEntity().getXCoord() >> 7) << 3; // oil field aligned chunk coords
