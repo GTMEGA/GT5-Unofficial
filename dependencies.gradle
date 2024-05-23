@@ -35,13 +35,8 @@ dependencies {
     //RailCraft 9.12.2.1
     compileOnly(deobfCurse("railcraft-51195:2458987"))  // TODO: use in-house version
 
-    compileOnly(deobf("https://mvn.falsepattern.com/releases/mirror/mirror/micdoodle/GalacticraftCore-1.7-3.0.12.504.jar"))  // TODO: use in-house version
-
     //AppleCore 3.1.1
     compileOnly(deobfCurse("applecore-224472:2530879"))  // TODO: use in-house version
-
-    //TiCon 1.8.8
-    compileOnly(deobfCurse("tconstruct-74072:2264246"))  // TODO: use in-house version
 
     compileOnly("gtmega:ae2-mc1.7.10:rv3-beta.58-gtmega:dev") {
         transitive = false
