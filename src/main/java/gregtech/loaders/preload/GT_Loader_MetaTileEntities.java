@@ -98,10 +98,10 @@ public final class GT_Loader_MetaTileEntities implements Runnable {
         Seismic_Prospector_MV.set(new GT_MetaTileEntity_SeismicProspector(2100, "basicmachine.seismicprospector.02", "Seismic Prospector MV", 2).getStackForm(1));
         Seismic_Prospector_HV.set(new GT_MetaTileEntity_SeismicProspector(2101, "basicmachine.seismicprospector.03", "Seismic Prospector HV", 3).getStackForm(1));
 
-        Seismic_Prospector_Adv_LV.set(new GT_MetaTileEntity_AdvSeismicProspector(2102, "basicmachine.seismicprospector.07", "Advanced Seismic Prospector LV", 1, sSoundList.get(Integer.valueOf(222)), 6 * 16 / 2, 2).getStackForm(1));
-        Seismic_Prospector_Adv_MV.set(new GT_MetaTileEntity_AdvSeismicProspector(2103, "basicmachine.seismicprospector.06", "Advanced Seismic Prospector MV", 2, sSoundList.get(Integer.valueOf(222)), 8 * 16 / 2, 2).getStackForm(1));
-        Seismic_Prospector_Adv_HV.set(new GT_MetaTileEntity_AdvSeismicProspector(2104, "basicmachine.seismicprospector.05", "Advanced Seismic Prospector HV", 3, sSoundList.get(Integer.valueOf(222)), 10 * 16 / 2, 2).getStackForm(1));
-        Seismic_Prospector_Adv_EV.set(new GT_MetaTileEntity_AdvSeismicProspector(1173, "basicmachine.seismicprospector.04", "Advanced Seismic Prospector EV", 4, sSoundList.get(Integer.valueOf(222)), 11 * 16 / 2, 2).getStackForm(1));
+        Seismic_Prospector_Adv_LV.set(new GT_MetaTileEntity_AdvSeismicProspector(2102, "basicmachine.seismicprospector.07", "Advanced Seismic Prospector LV", 1, sSoundList.get(Integer.valueOf(228)), 9 * 16 / 2, 2).getStackForm(1));
+        Seismic_Prospector_Adv_MV.set(new GT_MetaTileEntity_AdvSeismicProspector(2103, "basicmachine.seismicprospector.06", "Advanced Seismic Prospector MV", 2, sSoundList.get(Integer.valueOf(228)), 17 * 16 / 2, 2).getStackForm(1));
+        Seismic_Prospector_Adv_HV.set(new GT_MetaTileEntity_AdvSeismicProspector(2104, "basicmachine.seismicprospector.05", "Advanced Seismic Prospector HV", 3, sSoundList.get(Integer.valueOf(228)), 25 * 16 / 2, 2).getStackForm(1));
+        Seismic_Prospector_Adv_EV.set(new GT_MetaTileEntity_AdvSeismicProspector(1173, "basicmachine.seismicprospector.04", "Advanced Seismic Prospector EV", 4, sSoundList.get(Integer.valueOf(228)), 27 * 16 / 2, 2).getStackForm(1));
         addShapelessCraftingRecipe(Seismic_Prospector_Adv_LV.get(1L), RECIPE_MASK, new Object[]{Seismic_Prospector_LV});
         addShapelessCraftingRecipe(Seismic_Prospector_Adv_MV.get(1L), RECIPE_MASK, new Object[]{Seismic_Prospector_MV});
         addShapelessCraftingRecipe(Seismic_Prospector_Adv_HV.get(1L), RECIPE_MASK, new Object[]{Seismic_Prospector_HV});

@@ -114,6 +114,12 @@
             "steamHammer"
         ]
     },
+    "seismic": {
+        "category": "block",
+        "sounds": [
+            "seismic"
+        ]
+    },
     "potentiometer_click": {
         "category": "block",
         "sounds": [
