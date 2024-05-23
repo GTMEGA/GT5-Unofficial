@@ -9,9 +9,10 @@ import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.net.GT_Packet_OpenGUI;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.blocks.explosives.GT_Block_Explosive;
+import gregtech.common.blocks.explosives.*;
 import gregtech.common.gui.remotedetonator.GT_RemoteDetonator_Container;
 import gregtech.common.gui.remotedetonator.GT_RemoteDetonator_GuiContainer;
+import gregtech.common.misc.explosions.IGT_ExplosiveTier;
 import io.netty.buffer.ByteBuf;
 import lombok.*;
 import net.minecraft.entity.Entity;
@@ -153,9 +154,26 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         @Getter
         @RequiredArgsConstructor
         public enum ExplosiveType {
-            MINING(GregTech_API.sBlockMiningExplosive, new ExplosiveColorPalette(new Color(187, 102, 41, 0xFF), new Color(133, 69, 22, 0xFF), new Color(98, 98, 98, 0xFF), new Color(138, 137, 137, 0xFF))),
-            TUNNEL(GregTech_API.sBlockTunEx, new ExplosiveColorPalette(new Color(133, 84, 10, 0xFF), new Color(80, 40, 4, 0xFF), new Color(124, 124, 124, 0xFF), new Color(89, 89, 89, 0xFF))),
-            DAISY_CUTTER(GregTech_API.sBlockDaisyCutter, new ExplosiveColorPalette(new Color(22, 98, 22, 0xFF), new Color(15, 68, 15, 0xFF), new Color(84, 175, 84, 0xFF), new Color(107, 222, 107, 0xFF)));
+            MINING(
+                    GT_Block_MiningExplosive.class,
+                    IGT_ExplosiveTier.GT_MiningExplosiveTier.class,
+                    new ExplosiveColorPalette(new Color(187, 102, 41, 0xFF), new Color(133, 69, 22, 0xFF), new Color(98, 98, 98, 0xFF), new Color(138, 137, 137, 0xFF))
+            ),
+            TUNNEL(
+                    GT_Block_TunnelExplosive.class,
+                    IGT_ExplosiveTier.GT_TunnelExplosiveTier.class,
+                    new ExplosiveColorPalette(new Color(133, 84, 10, 0xFF), new Color(80, 40, 4, 0xFF), new Color(124, 124, 124, 0xFF), new Color(89, 89, 89, 0xFF))
+            ),
+            DAISY_CUTTER(
+                    GT_Block_DaisyCutter.class,
+                    IGT_ExplosiveTier.GT_DaisyCutterTier.class,
+                    new ExplosiveColorPalette(new Color(22, 98, 22, 0xFF), new Color(15, 68, 15, 0xFF), new Color(84, 175, 84, 0xFF), new Color(107, 222, 107, 0xFF))
+            ),
+            FLAT_BOMB(
+                    GT_Block_FlatBomb.class,
+                    IGT_ExplosiveTier.GT_FlatBombTier.class,
+                    new ExplosiveColorPalette(new Color(98, 98, 98, 0xFF), new Color(137, 137, 137, 0xFF), new Color(98, 98, 98, 0xFF), new Color(137, 137, 137, 0xFF))
+            );
 
 
             @RequiredArgsConstructor
@@ -173,16 +191,18 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
 
             }
 
-            public static ExplosiveType getType(final GT_Block_Explosive explosive) {
+            public static ExplosiveType getType(final GT_Block_Explosive<?> explosive) {
                 for (val type : values()) {
-                    if (type.getExplosive().equals(explosive)) {
+                    if (type.getExplosive().equals(explosive.getClass())) {
                         return type;
                     }
                 }
                 return null;
             }
 
-            private final GT_Block_Explosive explosive;
+            private final Class<? extends GT_Block_Explosive<?>> explosive;
+
+            private final Class<?> tier;
 
             private final ExplosiveColorPalette palette;
 
@@ -205,6 +225,11 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
             private ExplosiveType explosiveType;
 
             @ToString.Include
+            @EqualsAndHashCode.Exclude
+            @Setter
+            private IGT_ExplosiveTier<?> tier;
+
+            @ToString.Include
             private int x = -1, y = -1, z = -1;
 
             @EqualsAndHashCode.Exclude
@@ -214,11 +239,11 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
             private boolean valid = false;
 
             public Target(final int x, final int y, final int z) {
-                this(-1, null, x, y, z, false, false);
+                this(-1, null, null, x, y, z, false, false);
             }
 
-            public Target(final int index, final ExplosiveType explosive, final int x, final int y, final int z) {
-                this(index, explosive, x, y, z, false, true);
+            public Target(final int index, final ExplosiveType explosive, final IGT_ExplosiveTier<?> tier, final int x, final int y, final int z) {
+                this(index, explosive, tier, x, y, z, false, true);
             }
 
             @NonNull
@@ -226,6 +251,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
                 setValid(compound.hasKey("index") && compound.hasKey("x") && compound.hasKey("y") && compound.hasKey("z"));
                 setIndex(compound.getInteger("index"));
                 setExplosiveType(ExplosiveType.values()[compound.getInteger("type")]);
+                setTier(IGT_ExplosiveTier.ExplosiveTierUtil.getTier(compound.getInteger("expType"), compound.getInteger("tier")));
                 setX(compound.getInteger("x"));
                 setY(compound.getInteger("y"));
                 setZ(compound.getInteger("z"));
@@ -244,6 +270,8 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
             protected NBTTagCompound writeToNBT(final @NonNull NBTTagCompound nbtTagCompound) {
                 nbtTagCompound.setInteger("index", index);
                 nbtTagCompound.setInteger("type", explosiveType.ordinal());
+                nbtTagCompound.setInteger("expType", IGT_ExplosiveTier.ExplosiveTierUtil.getIndexFromTier(tier));
+                nbtTagCompound.setInteger("tier", tier.getTier());
                 nbtTagCompound.setInteger("x", x);
                 nbtTagCompound.setInteger("y", y);
                 nbtTagCompound.setInteger("z", z);
@@ -255,7 +283,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
                 val block = world.getBlock(x, y, z);
                 val metadata = world.getBlockMetadata(x, y, z);
                 if (block instanceof GT_Block_Explosive && !world.isRemote) {
-                    val explosive = (GT_Block_Explosive) block;
+                    val explosive = (GT_Block_Explosive<?>) block;
                     if (explosive.isPrimed(metadata)) {
                         explosive.remoteTrigger(world, x, y, z, player);
                     }
@@ -396,9 +424,9 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
             return targets.values().stream().anyMatch(target -> target.canDetonate(world, x, y, z));
         }
 
-        public void addTarget(final ExplosiveType type, final int x, final int y, final int z) {
+        public void addTarget(final ExplosiveType type, final IGT_ExplosiveTier<?> tier, final int x, final int y, final int z) {
             val nextIndex = getNextIndex(maxTarget);
-            addTarget(new Target(nextIndex, type, x, y, z));
+            addTarget(new Target(nextIndex, type, tier, x, y, z));
         }
 
         public void removeTarget(final int x, final int y, final int z) {
@@ -509,7 +537,10 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         @Nonnull
         @Override
         public ISerializableObject readFromPacket(final ByteArrayDataInput aBuf, final EntityPlayerMP aPlayer) {
-            return new RemoteDetonatorArmedUpdate(new RemoteDetonationTargetList.Target(-1, RemoteDetonationTargetList.ExplosiveType.values()[aBuf.readInt()], aBuf.readInt(), aBuf.readInt(), aBuf.readInt()), aBuf.readBoolean());
+            val type = RemoteDetonationTargetList.ExplosiveType.values()[aBuf.readInt()];
+//            val tierType = /* (Class<? extends Enum<?> & IGT_ExplosiveTier<?>>) */type.getTier();
+            val expTier = IGT_ExplosiveTier.ExplosiveTierUtil.getTier(aBuf.readInt(), aBuf.readInt());
+            return new RemoteDetonatorArmedUpdate(new RemoteDetonationTargetList.Target(-1, type, expTier, aBuf.readInt(), aBuf.readInt(), aBuf.readInt()), aBuf.readBoolean());
         }
 
     }
@@ -589,6 +620,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         return stack.getTagCompound();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onPacketReceived(final World world, final EntityPlayer player, final ItemStack stack, final ISerializableObject data) {
         if (data instanceof RemoteDetonatorDelayUpdate) {
@@ -600,7 +632,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
             val target = ((RemoteDetonatorArmedUpdate) data).getTarget();
             val armed = ((RemoteDetonatorArmedUpdate) data).isArmed();
             if (armed) {
-                remoteDetonationTargetList.addTarget(target.getExplosiveType(), target.getX(), target.getY(), target.getZ());
+                remoteDetonationTargetList.addTarget(target.getExplosiveType(), target.getTier(), target.getX(), target.getY(), target.getZ());
             } else {
                 remoteDetonationTargetList.removeTarget(target.getX(), target.getY(), target.getZ());
             }
@@ -719,7 +751,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         validDim = remoteDetonationTargetList.validDimension(player);
         if (contains && validDim && target instanceof GT_Block_Explosive) {
             remoteDetonationTargetList.removeTarget(x, y, z);
-            ((GT_Block_Explosive) target).setPrimed(aWorld, x, y, z, false);
+            ((GT_Block_Explosive<?>) target).setPrimed(aWorld, x, y, z, false);
             aWorld.playSoundEffect(x, y, z, GregTech_API.sSoundList.get(219), 4.0f, aWorld.rand.nextFloat() + 1.0f);
             sendChat(aWorld, player, String.format("Removed target (%d %d %d)", x, y, z));
         } else if (!validDim) {
@@ -731,8 +763,10 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         val target = aWorld.getBlock(x, y, z);
         if (target instanceof GT_Block_Explosive) {
             if (remoteDetonationTargetList.validDimension(player)) {
-                remoteDetonationTargetList.addTarget(RemoteDetonationTargetList.ExplosiveType.getType((GT_Block_Explosive) target), x, y, z);
-                ((GT_Block_Explosive) target).setPrimed(aWorld, x, y, z, true);
+                val expTarget = (GT_Block_Explosive<?>) target;
+                val tierInfo = expTarget.getTier();
+                remoteDetonationTargetList.addTarget(RemoteDetonationTargetList.ExplosiveType.getType(expTarget), tierInfo, x, y, z);
+                expTarget.setPrimed(aWorld, x, y, z, true);
                 aWorld.playSoundEffect(x, y, z, GregTech_API.sSoundList.get(218), 4.0f, aWorld.rand.nextFloat() + 1.0f);
                 sendChat(aWorld, player, String.format("Added target (%d %d %d)", x, y, z));
             } else {

@@ -21,9 +21,10 @@ import gregtech.api.threads.GT_Runnable_Cable_Update;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
 import gregtech.api.world.GT_Worldgen;
-import gregtech.common.blocks.explosives.GT_Block_Explosive;
+import gregtech.common.blocks.explosives.*;
 import gregtech.common.items.GT_MEGAnet;
 import gregtech.common.items.explosives.GT_RemoteDetonator;
+import lombok.NonNull;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -164,6 +165,10 @@ public class GregTech_API {
             sHeatHazmatList = new GT_HashSet<>(),
             sRadioHazmatList = new GT_HashSet<>(),
             sElectroHazmatList = new GT_HashSet<>();
+
+    private static final List<ItemStack> sRealConfigurationList = new ArrayList<>();
+    private static final List<ItemStack> sConfigurationList = Collections.unmodifiableList(sRealConfigurationList);
+
     /**
      * The List of Dimensions, which are Whitelisted for the Teleporter. This list should not contain other Planets.
      * Mystcraft Dimensions and other Dimensional Things should be allowed.
@@ -335,12 +340,34 @@ public class GregTech_API {
             sPostloadStarted = false,
             sPostloadFinished = false;
 
-    public static GT_Block_Explosive sBlockMiningExplosive, sBlockDaisyCutter, sBlockTunEx;
+    public static GT_Block_MiningExplosive sBlockMiningExplosive, sBlockMiningExplosive2;
+
+    public static GT_Block_TunnelExplosive sBlockTunEx, sBlockTunEx2;
+
+    public static GT_Block_DaisyCutter sBlockDaisyCutter, sBlockDaisyCutter2;
+
+    public static GT_Block_FlatBomb sBlockFlatBomb, sBlockFlatBomb2;
 
     public static GT_RemoteDetonator sItemRemoteDetonator;
     public static Item sBorker;
 
     private static Class sBaseMetaTileEntityClass = null;
+
+    public static void addIC2SoundToList(final int index, final @NonNull String name) {
+        addSoundToList(index, name, aTextIC2Lower);
+    }
+
+    public static void addSoundToList(final int index, final @NonNull String name, final String prefix) {
+        sSoundList.put(index, prefix + ":" + name);
+    }
+
+    public static void addGTSoundToList(final int index, final @NonNull String name) {
+        addSoundToList(index, name, MOD_ID.toLowerCase());
+    }
+
+    public static void addSoundToList(final int index, final @NonNull String name) {
+        sSoundList.put(index, name);
+    }
 
     /**
      * Adds Biomes to the Biome Lists for World Generation
@@ -352,54 +379,104 @@ public class GregTech_API {
         //sDimensionalList.add(56);
         //sDimensionalList.add(55);
 
-        sSoundList.put(0, "random.break");
-        sSoundList.put(1, "random.anvil_use");
-        sSoundList.put(2, "random.anvil_break");
-        sSoundList.put(3, "random.click");
-        sSoundList.put(4, "random.fizz");
-        sSoundList.put(5, "random.explode");
-        sSoundList.put(6, "fire.ignite");
+//        sSoundList.put(0, "random.break");
+//        sSoundList.put(1, "random.anvil_use");
+//        sSoundList.put(2, "random.anvil_break");
+//        sSoundList.put(3, "random.click");
+//        sSoundList.put(4, "random.fizz");
+//        sSoundList.put(5, "random.explode");
+//        sSoundList.put(6, "fire.ignite");
 
-        sSoundList.put(100, aTextIC2Lower + ":" + "tools.Wrench");
-        sSoundList.put(101, aTextIC2Lower + ":" + "tools.RubberTrampoline");
-        sSoundList.put(102, aTextIC2Lower + ":" + "tools.Painter");
-        sSoundList.put(103, aTextIC2Lower + ":" + "tools.BatteryUse");
-        sSoundList.put(104, aTextIC2Lower + ":" + "tools.chainsaw.ChainsawUseOne");
-        sSoundList.put(105, aTextIC2Lower + ":" + "tools.chainsaw.ChainsawUseTwo");
-        sSoundList.put(106, aTextIC2Lower + ":" + "tools.drill.DrillSoft");
-        sSoundList.put(107, aTextIC2Lower + ":" + "tools.drill.DrillHard");
-        sSoundList.put(108, aTextIC2Lower + ":" + "tools.ODScanner");
-        sSoundList.put(109, aTextIC2Lower + ":" + "tools.InsulationCutters");
+        addSoundToList(0, "random.break");
+        addSoundToList(1, "random.anvil_use");
+        addSoundToList(2, "random.anvil_break");
+        addSoundToList(3, "random.click");
+        addSoundToList(4, "random.fizz");
+        addSoundToList(5, "random.explode");
+        addSoundToList(6, "fire.ignite");
 
-        sSoundList.put(200, aTextIC2Lower + ":" + "machines.ExtractorOp");
-        sSoundList.put(201, aTextIC2Lower + ":" + "machines.MaceratorOp");
-        sSoundList.put(202, aTextIC2Lower + ":" + "machines.InductionLoop");
-        sSoundList.put(203, aTextIC2Lower + ":" + "machines.CompressorOp");
-        sSoundList.put(204, aTextIC2Lower + ":" + "machines.RecyclerOp");
-        sSoundList.put(205, aTextIC2Lower + ":" + "machines.MinerOp");
-        sSoundList.put(206, aTextIC2Lower + ":" + "machines.PumpOp");
-        sSoundList.put(207, aTextIC2Lower + ":" + "machines.ElectroFurnaceLoop");
-        sSoundList.put(208, aTextIC2Lower + ":" + "machines.InductionLoop");
-        sSoundList.put(209, aTextIC2Lower + ":" + "machines.MachineOverload");
-        sSoundList.put(210, aTextIC2Lower + ":" + "machines.InterruptOne");
-        sSoundList.put(211, aTextIC2Lower + ":" + "machines.KaChing");
-        sSoundList.put(212, aTextIC2Lower + ":" + "machines.MagnetizerLoop");
+//        sSoundList.put(100, aTextIC2Lower + ":" + "tools.Wrench");
+//        sSoundList.put(101, aTextIC2Lower + ":" + "tools.RubberTrampoline");
+//        sSoundList.put(102, aTextIC2Lower + ":" + "tools.Painter");
+//        sSoundList.put(103, aTextIC2Lower + ":" + "tools.BatteryUse");
+//        sSoundList.put(104, aTextIC2Lower + ":" + "tools.chainsaw.ChainsawUseOne");
+//        sSoundList.put(105, aTextIC2Lower + ":" + "tools.chainsaw.ChainsawUseTwo");
+//        sSoundList.put(106, aTextIC2Lower + ":" + "tools.drill.DrillSoft");
+//        sSoundList.put(107, aTextIC2Lower + ":" + "tools.drill.DrillHard");
+//        sSoundList.put(108, aTextIC2Lower + ":" + "tools.ODScanner");
+//        sSoundList.put(109, aTextIC2Lower + ":" + "tools.InsulationCutters");
+//
+//        sSoundList.put(200, aTextIC2Lower + ":" + "machines.ExtractorOp");
+//        sSoundList.put(201, aTextIC2Lower + ":" + "machines.MaceratorOp");
+//        sSoundList.put(202, aTextIC2Lower + ":" + "machines.InductionLoop");
+//        sSoundList.put(203, aTextIC2Lower + ":" + "machines.CompressorOp");
+//        sSoundList.put(204, aTextIC2Lower + ":" + "machines.RecyclerOp");
+//        sSoundList.put(205, aTextIC2Lower + ":" + "machines.MinerOp");
+//        sSoundList.put(206, aTextIC2Lower + ":" + "machines.PumpOp");
+//        sSoundList.put(207, aTextIC2Lower + ":" + "machines.ElectroFurnaceLoop");
+//        sSoundList.put(208, aTextIC2Lower + ":" + "machines.InductionLoop");
+//        sSoundList.put(209, aTextIC2Lower + ":" + "machines.MachineOverload");
+//        sSoundList.put(210, aTextIC2Lower + ":" + "machines.InterruptOne");
+//        sSoundList.put(211, aTextIC2Lower + ":" + "machines.KaChing");
+//        sSoundList.put(212, aTextIC2Lower + ":" + "machines.MagnetizerLoop");
+        addIC2SoundToList(100, "tools.Wrench");
+        addIC2SoundToList(101, "tools.RubberTrampoline");
+        addIC2SoundToList(102, "tools.Painter");
+        addIC2SoundToList(103, "tools.BatteryUse");
+        addIC2SoundToList(104, "tools.chainsaw.ChainsawUseOne");
+        addIC2SoundToList(105, "tools.chainsaw.ChainsawUseTwo");
+        addIC2SoundToList(106, "tools.drill.DrillSoft");
+        addIC2SoundToList(107, "tools.drill.DrillHard");
+        addIC2SoundToList(108, "tools.ODScanner");
+        addIC2SoundToList(109, "tools.InsulationCutters");
+
+        addIC2SoundToList(200, "machines.ExtractorOp");
+        addIC2SoundToList(201, "machines.MaceratorOp");
+        addIC2SoundToList(202, "machines.InductionLoop");
+        addIC2SoundToList(203, "machines.CompressorOp");
+        addIC2SoundToList(204, "machines.RecyclerOp");
+        addIC2SoundToList(205, "machines.MinerOp");
+        addIC2SoundToList(206, "machines.PumpOp");
+        addIC2SoundToList(207, "machines.ElectroFurnaceLoop");
+        addIC2SoundToList(208, "machines.InductionLoop");
+        addIC2SoundToList(209, "machines.MachineOverload");
+        addIC2SoundToList(210, "machines.InterruptOne");
+        addIC2SoundToList(211, "machines.KaChing");
+        addIC2SoundToList(212, "machines.MagnetizerLoop");
+
         //
-        sSoundList.put(213, MOD_ID.toLowerCase() + ":" + "mining_explosives_explosion");
-        sSoundList.put(214, MOD_ID.toLowerCase() + ":" + "mining_explosives_trigger");
-        sSoundList.put(215, MOD_ID.toLowerCase() + ":" + "meganet_pickup");
-        sSoundList.put(216, MOD_ID.toLowerCase() + ":" + "meganet_active");
-        sSoundList.put(217, MOD_ID.toLowerCase() + ":" + "meganet_inactive");
-        sSoundList.put(218, MOD_ID.toLowerCase() + ":" + "remote_detonator_add");
-        sSoundList.put(219, MOD_ID.toLowerCase() + ":" + "remote_detonator_remove");
-        sSoundList.put(220, MOD_ID.toLowerCase() + ":" + "remote_detonator_trigger");
-        sSoundList.put(221, MOD_ID.toLowerCase() + ":" + "potentiometer_click");
-        sSoundList.put(222, MOD_ID.toLowerCase() + ":" + "macerator");
-        sSoundList.put(223, MOD_ID.toLowerCase() + ":" + "furnace");
-        sSoundList.put(224, MOD_ID.toLowerCase() + ":" + "steam_furnace");
-        sSoundList.put(225, MOD_ID.toLowerCase() + ":" + "steam_vent");
-        sSoundList.put(226, MOD_ID.toLowerCase() + ":" + "boiler_vent");
-        sSoundList.put(227, MOD_ID.toLowerCase() + ":" + "steam_hammer");
+//        sSoundList.put(213, MOD_ID.toLowerCase() + ":" + "mining_explosives_explosion");
+//        sSoundList.put(214, MOD_ID.toLowerCase() + ":" + "mining_explosives_trigger");
+//        sSoundList.put(215, MOD_ID.toLowerCase() + ":" + "meganet_pickup");
+//        sSoundList.put(216, MOD_ID.toLowerCase() + ":" + "meganet_active");
+//        sSoundList.put(217, MOD_ID.toLowerCase() + ":" + "meganet_inactive");
+//        sSoundList.put(218, MOD_ID.toLowerCase() + ":" + "remote_detonator_add");
+//        sSoundList.put(219, MOD_ID.toLowerCase() + ":" + "remote_detonator_remove");
+//        sSoundList.put(220, MOD_ID.toLowerCase() + ":" + "remote_detonator_trigger");
+//        sSoundList.put(221, MOD_ID.toLowerCase() + ":" + "potentiometer_click");
+//        sSoundList.put(222, MOD_ID.toLowerCase() + ":" + "macerator");
+//        sSoundList.put(223, MOD_ID.toLowerCase() + ":" + "furnace");
+//        sSoundList.put(224, MOD_ID.toLowerCase() + ":" + "steam_furnace");
+//        sSoundList.put(225, MOD_ID.toLowerCase() + ":" + "steam_vent");
+//        sSoundList.put(226, MOD_ID.toLowerCase() + ":" + "boiler_vent");
+//        sSoundList.put(227, MOD_ID.toLowerCase() + ":" + "steam_hammer");
+        addGTSoundToList(213, "mining_explosives_explosion");
+        addGTSoundToList(214, "mining_explosives_trigger");
+        addGTSoundToList(215, "meganet_pickup");
+        addGTSoundToList(216, "meganet_active");
+        addGTSoundToList(217, "meganet_inactive");
+        addGTSoundToList(218, "remote_detonator_add");
+        addGTSoundToList(219, "remote_detonator_remove");
+        addGTSoundToList(220, "remote_detonator_trigger");
+        addGTSoundToList(221, "potentiometer_click");
+        addGTSoundToList(222, "macerator");
+        addGTSoundToList(223, "furnace");
+        addGTSoundToList(224, "steam_furnace");
+        addGTSoundToList(225, "steam_vent");
+        addGTSoundToList(226, "boiler_vent");
+        addGTSoundToList(227, "steam_hammer");
+        addGTSoundToList(228, "seismic");
+
         //Don't forget to put your sounds into sounds.json too!
     }
 
@@ -645,6 +722,32 @@ public class GregTech_API {
             e.printStackTrace(GT_Log.err);
             throw new RuntimeException(e);
         }
+    }
+
+
+    /**
+     * Register a new ItemStack as configuration circuits.
+     * Duplicates or invalid stacks will be silently ignored.
+     */
+    public static void registerConfigurationCircuit(ItemStack aStack) {
+        if (GT_Utility.isStackInvalid(aStack))
+            return;
+        for (ItemStack tRegistered : sRealConfigurationList)
+            if (GT_Utility.areStacksEqual(tRegistered, aStack))
+                return;
+        sRealConfigurationList.add(GT_Utility.copyAmount(0, aStack));
+    }
+
+    /**
+     * Get a list of Configuration circuits. All of these stacks will have a stack size of 0.
+     * Use {@link #registerConfigurationCircuit(ItemStack)} to add to this list.
+     *
+     * @return An unmodifiable view of actual list.
+     * It will reflect the changes to the underlying list as new circuits are registered.
+     * DO NOT MODIFY THE ItemStacks!
+     */
+    public static List<ItemStack> getConfigurationCircuitList() {
+        return sConfigurationList;
     }
 
     public static void registerCover(ItemStack aStack, ITexture aCover, GT_CoverBehavior aBehavior) {

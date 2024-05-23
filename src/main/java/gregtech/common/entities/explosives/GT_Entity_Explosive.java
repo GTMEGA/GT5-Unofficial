@@ -6,6 +6,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.common.blocks.explosives.GT_Block_Explosive;
 import gregtech.common.misc.explosions.GT_Explosion;
 import gregtech.common.misc.explosions.GT_Explosion_PreCalculation;
+import gregtech.common.misc.explosions.IGT_ExplosiveTier;
 import io.netty.buffer.ByteBuf;
 import lombok.Getter;
 import lombok.NonNull;
@@ -21,40 +22,25 @@ import static gregtech.GT_Mod.GT_FML_LOGGER;
 
 
 @Getter
-public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEntityAdditionalSpawnData {
-
-    private GT_Explosion_PreCalculation preCalc;
+public abstract class GT_Entity_Explosive<TierType extends Enum<TierType> & IGT_ExplosiveTier<TierType>> extends EntityTNTPrimed implements IEntityAdditionalSpawnData {
 
     protected int metadata;
 
     protected double realX, realY, realZ;
 
-    protected GT_Explosion explosion;
+    protected GT_Explosion<TierType> explosion;
 
     protected int initialFuse;
+
+    protected TierType tier;
+
+    private GT_Explosion_PreCalculation preCalc;
 
     public GT_Entity_Explosive(final World world) {
         super(world);
     }
 
-    /* public GT_Entity_Explosive(final World world, final double x, final double y, final double z, final EntityLivingBase placedBy, final int metadata) {
-         *//* super(world, x + 0.5, y + 0.5, z + 0.5, placedBy);
-        this.setSize();
-        this.realX = this.posX;
-        this.realY = this.posY;
-        this.realZ = this.posZ;
-        this.motionX = 0.0;
-        this.motionY = 0.0;
-        this.motionZ = 0.0;
-        this.fuse = GT_Values.MEFuse;
-        this.metadata = metadata;
-        this.explosion = createExplosion();
-        this.preCalc = new GT_Explosion_PreCalculation(this, this.explosion, world, explosion.getX(), explosion.getY(), explosion.getZ(), this.fuse);
-        preCalc.initialize(); *//*
-        this(world, x, y, z, placedBy, metadata, GT_Values.MEFuse);
-    } */
-
-    public GT_Entity_Explosive(final World world, final double x, final double y, final double z, final EntityLivingBase placedBy, final int metadata, final int timer) {
+    public GT_Entity_Explosive(final World world, final double x, final double y, final double z, final EntityLivingBase placedBy, final int metadata, final int timer, final @NonNull TierType tier) {
         super(world, x + 0.5, y + 0.5, z + 0.5, placedBy);
         this.setSize();
         this.realX = this.posX;
@@ -66,19 +52,39 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
         this.fuse = timer >= 0 ? timer : GT_Values.MEFuse;
         this.initialFuse = this.fuse;
         this.metadata = metadata;
+        this.tier = tier;
 //        System.out.printf("%d%n", this.fuse);
         this.explosion = createExplosion();
         this.preCalc = new GT_Explosion_PreCalculation(this, this.explosion, world, explosion.getX(), explosion.getY(), explosion.getZ(), this.fuse);
         preCalc.initialize();
     }
 
-    @NonNull
-    protected abstract GT_Explosion createExplosion();
+    /* public GT_Entity_Explosive(final World world, final double x, final double y, final double z, final EntityLivingBase placedBy, final int metadata) {
+     */
+    /* super(world, x + 0.5, y + 0.5, z + 0.5, placedBy);
+        this.setSize();
+        this.realX = this.posX;
+        this.realY = this.posY;
+        this.realZ = this.posZ;
+        this.motionX = 0.0;
+        this.motionY = 0.0;
+        this.motionZ = 0.0;
+        this.fuse = GT_Values.MEFuse;
+        this.metadata = metadata;
+        this.explosion = createExplosion();
+        this.preCalc = new GT_Explosion_PreCalculation(this, this.explosion, world, explosion.getX(), explosion.getY(), explosion.getZ(), this.fuse);
+        preCalc.initialize(); */
+    /*
+        this(world, x, y, z, placedBy, metadata, GT_Values.MEFuse);
+    } */
 
     protected void setSize() {
         final float newSize = getNewSize();
         this.setSize(newSize, newSize);
     }
+
+    @NonNull
+    protected abstract GT_Explosion<TierType> createExplosion();
 
     private float getNewSize() {
         return 0.5f + ((float) (fuse - this.initialFuse)) / (this.initialFuse + 1);
@@ -134,6 +140,7 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
         compound.setDouble("rX", realX);
         compound.setDouble("rY", realY);
         compound.setDouble("rZ", realZ);
+        compound.setInteger("tier", tier.getTier());
     }
 
     /**
@@ -149,7 +156,14 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
         this.realX = compound.getDouble("rX");
         this.realY = compound.getDouble("rY");
         this.realZ = compound.getDouble("rZ");
+        this.tier = getTierFromIndex(compound.getInteger("tier"));
     }
+
+    protected @NonNull TierType getTierFromIndex(final int tierIndex) {
+        return IGT_ExplosiveTier.ExplosiveTierUtil.getTier(getTierClass(), tierIndex);
+    }
+
+    public abstract Class<TierType> getTierClass();
 
     protected void doExplode() {
         if (explosion != null) {
@@ -217,6 +231,7 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
         buffer.writeDouble(realX);
         buffer.writeDouble(realY);
         buffer.writeDouble(realZ);
+        buffer.writeInt(tier.getTier());
     }
 
     /**
@@ -232,9 +247,12 @@ public abstract class GT_Entity_Explosive extends EntityTNTPrimed implements IEn
         this.realX = additionalData.readDouble();
         this.realY = additionalData.readDouble();
         this.realZ = additionalData.readDouble();
+        this.tier = getTierFromIndex(additionalData.readInt());
     }
 
-    public abstract Block getBlockToRenderAs();
+    public Block getBlockToRenderAs() {
+        return tier.getBlock();
+    }
 
     public abstract ResourceLocation getEntityTexture();
 

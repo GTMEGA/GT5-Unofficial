@@ -2,8 +2,11 @@
     "mining_explosives_explosion": {
         "category": "block",
         "sounds": [
-            "mining_explosives_explosion",
-            "mining_explosives_explosion_2"
+            {
+                "name": "mining_explosives_explosion",
+                "name": "mining_explosives_explosion_2",
+                "stream": true
+            }
         ]
     },
     "mining_explosives_trigger": {
@@ -109,6 +112,12 @@
         "category": "block",
         "sounds": [
             "steamHammer"
+        ]
+    },
+    "seismic": {
+        "category": "block",
+        "sounds": [
+            "seismic"
         ]
     },
     "potentiometer_click": {

@@ -21,7 +21,7 @@ public class GT_GuiTooltipManager {
     private final List<GT_GuiTooltip> tips = new ArrayList<>();
 
     public void addToolTip(GT_GuiTooltip tip) {
-        if (!tips.contains(tip)) tips.add(tip);
+        if (tip != null && !tips.contains(tip)) tips.add(tip);
     }
 
     public boolean removeToolTip(GT_GuiTooltip tip) {
@@ -29,23 +29,24 @@ public class GT_GuiTooltipManager {
     }
 
     public final void onTick(GT_IToolTipRenderer render, int mouseX, int mouseY) {
-        if ((Math.abs(mouseX-lastMouseX) < 2 ) && (Math.abs(mouseY-lastMouseY) < 2 ))
+        if ((Math.abs(mouseX-lastMouseX) < 2 ) && (Math.abs(mouseY-lastMouseY) < 2 )) {
             mouseStopped = Math.min(mouseStopped+1, 50);
-        else
+        } else {
             mouseStopped = 0;
+        }
 
         lastMouseX = mouseX;
         lastMouseY = mouseY;
 
-        if (mouseStopped > DELAY) {
-            mouseX -= render.getGuiLeft();
-            mouseY -= render.getGuiTop();
-            for (GT_GuiTooltip tip : tips) {
-                if (tip != null && tip.enabled && tip.bounds.contains(mouseX, mouseY)) {
-                    tip.updateText();
-                    drawTooltip(tip, mouseX, mouseY, render);
-                    break;
-                }
+        mouseX -= render.getGuiLeft();
+        mouseY -= render.getGuiTop();
+        for (GT_GuiTooltip tip : tips) {
+            // Give the tooltip the opportunity to decide whether they should be enabled
+            tip.onTick();
+            if (tip.enabled && (!tip.isDelayed() || mouseStopped > DELAY) && tip.getBounds().contains(mouseX, mouseY)) {
+                tip.updateText();
+                drawTooltip(tip, mouseX, mouseY, render);
+                break;
             }
         }
     }

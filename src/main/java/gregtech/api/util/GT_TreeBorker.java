@@ -21,38 +21,23 @@ public class GT_TreeBorker {
 
     /**
      * World
-     * */
+     */
     private final /* @NonNull */ World world;
 
     /**
      * Initial position the borker starts from
-     * */
+     */
     private final int initialX, initialY, initialZ;
 
     /**
      * How far from a given plant block it will scan, negative means unlimited
-     * */
+     */
     private final int scanRadius;
 
     /**
      * Maximum radius of borking, negative means unlimited
-     * */
+     */
     private final int maxDistance;
-
-    /**
-     * Maximum spread from a given block, negative means unlimited
-     * */
-    @Builder.Default
-    private int maxSpread = -1;
-
-    /**
-     * Maximum total blocks it will process, negative means unlimited
-     * */
-    @Builder.Default
-    private int maxScannable = -1;
-
-    @Builder.Default
-    private boolean allowLeaves = true;
 
     private final Queue<int[]> positions = new ArrayDeque<>();
 
@@ -64,6 +49,22 @@ public class GT_TreeBorker {
 
     private final int i = 0;
 
+    /**
+     * Maximum spread from a given block, negative means unlimited
+     */
+    @Builder.Default
+    private int maxSpread = -1;
+
+    /**
+     * Maximum total blocks it will process, negative means unlimited
+     */
+    @Builder.Default
+    private int maxScannable = -1;
+
+    @Builder.Default
+    private boolean allowLeaves = true;
+
+    @SuppressWarnings("UnusedReturnValue")
     @NonNull
     public GT_TreeBorker borkTrees(final int sX, final int sY, final int sZ) {
         if (hasSeen(sX, sY, sZ) || !isValidBlock(sX, sY, sZ)) {
@@ -74,7 +75,11 @@ public class GT_TreeBorker {
         final Queue<int[]> posQueue = new ArrayDeque<>();
         int count = 0;
         longQueue.add(getLongFromCoords(sX, sY, sZ));
-        posQueue.add(new int[]{sX, sY, sZ});
+        posQueue.add(new int[]{
+                sX,
+                sY,
+                sZ
+        });
         while (!longQueue.isEmpty() && !posQueue.isEmpty()) {
             if (maxScannable > 0 && positions.size() > maxScannable) {
                 break;
@@ -97,7 +102,7 @@ public class GT_TreeBorker {
             }
             count += 1;
             positions.add(coords);
-            addNewPositions(longQueue, posQueue, curCoord, coords);
+            addNewPositions(longQueue, posQueue, coords);
         }
 //        System.out.printf("Borked %d positions%n", count);
         return this;
@@ -111,18 +116,11 @@ public class GT_TreeBorker {
         return world.getBlockMetadata(x, y, z);
     }
 
-    public double magnitude(final int x, final int y, final int z) {
-        return Math.sqrt(x * x + y * y + z * z);
-    }
-
     public boolean isValidBlock(final @NonNull Block block, final int metadata, final int x, final int y, final int z) {
         if (block == Blocks.air || block == Blocks.bedrock) {
             return false;
         }
-        return blocksValid.computeIfAbsent(block,
-                                           b -> isWood(b, blockItemStackMap.computeIfAbsent(b, b0 -> new ItemStack(b0, 1, metadata)), metadata, x, y, z) ||
-                                                isPlant(b)
-                                          );
+        return blocksValid.computeIfAbsent(block, b -> isWood(b, blockItemStackMap.computeIfAbsent(b, b0 -> new ItemStack(b0, 1, metadata)), metadata, x, y, z) || isPlant(b));
     }
 
     public boolean isValidBlock(final int x, final int y, final int z) {
@@ -130,8 +128,9 @@ public class GT_TreeBorker {
     }
 
     public boolean isPlant(final Block block) {
-        return allowLeaves && ((block.getMaterial() == Material.leaves) || (block.getMaterial() == Material.vine) || (block.getMaterial() == Material.plants) ||
-               (block.getMaterial() == Material.gourd));
+        return allowLeaves && (
+                (block.getMaterial() == Material.leaves) || (block.getMaterial() == Material.vine) || (block.getMaterial() == Material.plants) || (block.getMaterial() == Material.gourd) || (block.getMaterial() == Material.cactus)
+        );
     }
 
     public ChunkPosition getChunkPosition(final int[] coords) {
@@ -158,7 +157,7 @@ public class GT_TreeBorker {
         return (rX * (1L << 32L)) + (rY * (1L << 16L)) + rZ;
     }
 
-    protected void addNewPositions(final Queue<Long> coordQueue, final Queue<int[]> posQueue, final long coord, final int[] coords) {
+    protected void addNewPositions(final Queue<Long> coordQueue, final Queue<int[]> posQueue, final int[] coords) {
         final int iX, iY, iZ;
         iX = coords[0];
         iY = coords[1];
@@ -171,7 +170,11 @@ public class GT_TreeBorker {
                         continue;
                     }
                     coordQueue.add(getLongFromCoords(x, y, z));
-                    posQueue.add(new int[]{x, y, z});
+                    posQueue.add(new int[]{
+                            x,
+                            y,
+                            z
+                    });
                 }
             }
         }
@@ -188,12 +191,16 @@ public class GT_TreeBorker {
         return outsideMaxRange(coords) || outsideSearchRange(coords, x, y, z);
     }
 
+    private boolean outsideMaxRange(final int[] coords) {
+        return maxDistance > 0 && magnitude(coords[0] - initialX, coords[1] - initialY, coords[2] - initialZ) > maxDistance;
+    }
+
     private boolean outsideSearchRange(final int[] coords, final int x, final int y, final int z) {
         return maxSpread > 0 && magnitude(coords[0] - x, coords[1] - y, coords[2] - z) > maxSpread;
     }
 
-    private boolean outsideMaxRange(final int[] coords) {
-        return maxDistance > 0 && magnitude(coords[0] - initialX, coords[1] - initialY, coords[2] - initialZ) > maxDistance;
+    public double magnitude(final int x, final int y, final int z) {
+        return Math.sqrt(x * x + y * y + z * z);
     }
 
 }

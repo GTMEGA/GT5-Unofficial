@@ -2,12 +2,19 @@ package gregtech.api.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Utility;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
+import net.minecraft.item.ItemStack;
+
+import java.util.List;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -60,6 +67,19 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
         } else {
             aInventoryPlayer.player.openContainer = aInventoryPlayer.player.inventoryContainer;
         }
+    }
+    protected void addCircuitSlot() {
+        if (mTileEntity.getMetaTileEntity() instanceof IConfigurationCircuitSupport) {
+            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport)mTileEntity.getMetaTileEntity();
+            GT_Slot_Render slotCircuit = new GT_Slot_Render(mTileEntity, ccs.getCircuitSlot(), ccs.getCircuitSlotX(), ccs.getCircuitSlotY());
+            addSlotToContainer(slotCircuit);
+            slotCircuit.setEnabled(ccs.allowSelectCircuit());
+        }
+    }
+
+    @Override
+    public void addSlots(InventoryPlayer aInventoryPlayer) {
+        addCircuitSlot();
     }
 
     public IMetaTileEntity getMetaTileEntity() {
@@ -205,5 +225,40 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
 
     public String trans(String aKey, String aEnglish) {
         return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish, false);
+    }
+
+    @Override
+    public ItemStack slotClick(int aSlotNumber, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
+        if (mTileEntity.getMetaTileEntity() instanceof IConfigurationCircuitSupport) {
+            IMetaTileEntity machine = mTileEntity.getMetaTileEntity();
+            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport)machine;
+            if (ccs.allowSelectCircuit() && aSlotNumber == ccs.getCircuitGUISlot() && aMouseclick < 2) {
+                ItemStack newCircuit;
+                if (aShifthold == 1) {
+                    // clear
+                    newCircuit = null;
+                } else {
+                    ItemStack cursorStack = aPlayer.inventory.getItemStack();
+                    List<ItemStack> tCircuits = ccs.getConfigurationCircuits();
+                    int index = GT_Utility.findMatchingStackInList(tCircuits, cursorStack);
+                    if (index < 0) {
+                        int curIndex = GT_Utility.findMatchingStackInList(tCircuits, machine.getStackInSlot(ccs.getCircuitSlot())) + 1;
+                        if (aMouseclick == 0) {
+                            curIndex += 1;
+                        } else {
+                            curIndex -= 1;
+                        }
+                        curIndex = Math.floorMod(curIndex, tCircuits.size() + 1) - 1;
+                        newCircuit = curIndex < 0 ? null : tCircuits.get(curIndex);
+                    } else {
+                        // set to whatever it is
+                        newCircuit = tCircuits.get(index);
+                    }
+                }
+                mTileEntity.setInventorySlotContents(ccs.getCircuitSlot(), newCircuit);
+                return newCircuit;
+            }
+        }
+        return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
     }
 }

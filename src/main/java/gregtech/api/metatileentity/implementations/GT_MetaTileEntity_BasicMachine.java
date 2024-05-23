@@ -7,6 +7,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.gui.GT_Container_BasicMachine;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMachineCallback;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
@@ -14,6 +15,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
+import lombok.val;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -43,7 +46,7 @@ import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
  * This is the main construct for my Basic Machines such as the Automatic Extractor
  * Extend this class to make a simple Machine
  */
-public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_BasicTank implements IMachineCallback<GT_MetaTileEntity_Cleanroom> {
+public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_BasicTank implements IMachineCallback<GT_MetaTileEntity_Cleanroom>, IConfigurationCircuitSupport {
 
     /**
      * return values for checkRecipe()
@@ -52,7 +55,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             DID_NOT_FIND_RECIPE = 0,
             FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS = 1,
             FOUND_AND_SUCCESSFULLY_USED_RECIPE = 2;
-    public static final int OTHER_SLOT_COUNT = 4;
+    public static final int OTHER_SLOT_COUNT = 5;
     public final ItemStack[] mOutputItems;
     public final int mInputSlotCount, mAmperage;
     public boolean mAllowInputFromOutputSide = false, mFluidTransfer = false, mItemTransfer = false, mHasBeenUpdated = false, mStuttering = false, mCharge = false, mDecharge = false;
@@ -209,7 +212,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return aIndex > 0 && super.isValidSlot(aIndex) && aIndex != OTHER_SLOT_COUNT + mInputSlotCount + mOutputItems.length;
+        return aIndex > 0 && super.isValidSlot(aIndex) && aIndex != getCircuitSlot() && aIndex != OTHER_SLOT_COUNT + mInputSlotCount + mOutputItems.length;
     }
 
     @Override
@@ -380,6 +383,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public FluidStack setDrainableStack(FluidStack aFluid) {
+        markDirty();
         mFluidOut = aFluid;
         return mFluidOut;
     }
@@ -481,6 +485,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             boolean tSucceeded = false;
 
             if (mMaxProgresstime > 0 && (mProgresstime >= 0 || aBaseMetaTileEntity.isAllowedToWork())) {
+                markDirty();
                 aBaseMetaTileEntity.setActive(true);
                 if (mProgresstime < 0 || drainEnergyForProcess(mEUt)) {
                     if (++mProgresstime >= mMaxProgresstime) {
@@ -578,6 +583,13 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 }
             }
         }
+
+        // Only using mNeedsSteamVenting right now and assigning it to 64 to space in the range for more single block
+        // machine problems.
+        // Value | Class                                 | Field
+        // 1     | GT_MetaTileEntity_BasicMachine        | mStuttering
+        // 64    | GT_MetaTileEntity_BasicMachine_Bronze | mNeedsSteamVenting
+        aBaseMetaTileEntity.setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127));// | (mStuttering ? 1 : 0));
     }
 
     protected void doDisplayThings() {
@@ -698,8 +710,11 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     protected ItemStack[] getAllInputs() {
-        ItemStack[] rInputs = new ItemStack[mInputSlotCount];
+        int tRealInputSlotCount = this.mInputSlotCount + (allowSelectCircuit() ? 1 : 0);
+        ItemStack[] rInputs = new ItemStack[tRealInputSlotCount];
         for (int i = 0; i < mInputSlotCount; i++) rInputs[i] = getInputAt(i);
+        if (allowSelectCircuit())
+            rInputs[mInputSlotCount] = getStackInSlot(getCircuitSlot());
         return rInputs;
     }
 
@@ -877,6 +892,43 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         return mInventory[aIndex] == null;
     }
 
+    @Override
+    public boolean allowSelectCircuit() {
+        return false;
+    }
+
+    protected final ItemStack[] appendSelectedCircuit(ItemStack... inputs) {
+        if (allowSelectCircuit()) {
+            ItemStack circuit = getStackInSlot(getCircuitSlot());
+            if (circuit != null) {
+                ItemStack[] result = Arrays.copyOf(inputs, inputs.length + 1);
+                result[inputs.length] = circuit;
+                return result;
+            }
+        }
+        return inputs;
+    }
+
+    @Override
+    public int getCircuitSlot() {
+        return 4;
+    }
+
+    @Override
+    public int getCircuitGUISlot() {
+        return 3;
+    }
+
+    @Override
+    public int getCircuitSlotX() {
+        return 153;
+    }
+
+    @Override
+    public int getCircuitSlotY() {
+        return 63;
+    }
+
     /**
      * @return the Recipe List which is used for this Machine, this is a useful Default Handler
      */
@@ -960,7 +1012,28 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     @Override
     public void getWailaBody(ItemStack stack, List<String> currentTip, MovingObjectPosition pos, NBTTagCompound tag, int side) {
         super.getWailaBody(stack, currentTip, pos, tag, side);
-        currentTip.add(String.format("Progress: %d s / %d s", tag.getInteger("progressSingleBlock"), tag.getInteger("maxProgressSingleBlock")));
+        if (!fancyWailaProgress(currentTip, tag)) {
+            currentTip.add(String.format("Progress: %d s / %d s", tag.getInteger("progressSingleBlock"), tag.getInteger("maxProgressSingleBlock")));
+        }
+    }
+
+    public static boolean fancyWailaProgress(List<String> currentTip, NBTTagCompound tag) {
+        if (!tag.hasKey("progressTicks"))
+            return false;
+        val progress = tag.getInteger("progressTicks");
+        val maxProgress = tag.getInteger("maxProgressTicks");
+
+        if (maxProgress > 20) {
+            if (maxProgress > 200) {
+                currentTip.add(String.format("Progress: %d s / %d s", progress / 20, maxProgress / 20));
+            } else {
+                currentTip.add(String.format("Progress: %d.%d s / %d.%d s", progress / 20, (progress % 20) / 2, maxProgress / 20, (maxProgress % 20) / 2));
+            }
+        } else {
+            currentTip.add(String.format("Progress: %d t / %d t", progress, maxProgress));
+        }
+        currentTip.add(String.format("Total duration: %d ticks", maxProgress));
+        return true;
     }
 
     @Override
@@ -970,6 +1043,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         final int maxProgressSingleBlock = mMaxProgresstime / 20;
         tag.setInteger("progressSingleBlock", progressSingleBlock);
         tag.setInteger("maxProgressSingleBlock", maxProgressSingleBlock);
+        tag.setInteger("progressTicks", mProgresstime);
+        tag.setInteger("maxProgressTicks", mMaxProgresstime);
     }
 
     public ITexture[] getSideFacingActive(byte aColor) {

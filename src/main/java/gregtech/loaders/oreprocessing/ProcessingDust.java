@@ -146,52 +146,52 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4L, aStack), 16, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 3L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 8L));
                 }
                 break;
-            case dustPure: case dustImpure:case dustRefined:
-                Materials tByProduct = (Materials) GT_Utility.selectItemInList(aPrefix == OrePrefixes.dustRefined ? 2 : aPrefix == OrePrefixes.dustPure ? 1 : 0, aMaterial, aMaterial.mOreByProducts);
-
-                if (aPrefix == OrePrefixes.dustPure) {
-                    if (aMaterial.contains(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD))
-                        GT_Values.RA.addElectromagneticSeparatorRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L), new int[]{7500, 2500, 1000}, 100, 24);
-                    if (aMaterial.contains(SubTag.ELECTROMAGNETIC_SEPERATION_IRON))
-                        GT_Values.RA.addElectromagneticSeparatorRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L), new int[]{7500, 2500, 1000}, 100, 24);
-                    if (aMaterial.contains(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)) {
-                        GT_Values.RA.addElectromagneticSeparatorRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neodymium, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neodymium, 1L), new int[]{7500, 2500, 1000}, 100, 24);
-                    }
-                }
-                if (aMaterial.contains(SubTag.CRYSTALLISABLE)) {
-                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1), Materials.Water.getFluid(200L), GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 9000, 2000, 24, false);
-                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(2), gregtech.api.util.GT_ModHandler.getDistilledWater(100L), GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 9500, 1500, 24, false);
-                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(3), Materials.Void.getMolten(36L), GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 10000, 1200, 24, false);
-                }
-
-                ItemStack tImpureStack = GT_OreDictUnificator.get(OrePrefixes.dustTiny, tByProduct, GT_OreDictUnificator.get(OrePrefixes.nugget, tByProduct, 1L), 1L);
-                if (tImpureStack == null) {
-                    tImpureStack = GT_OreDictUnificator.get(OrePrefixes.dustSmall, tByProduct, 1L);
-                    if (tImpureStack == null) {
-                        tImpureStack = GT_OreDictUnificator.get(OrePrefixes.dust, tByProduct, GT_OreDictUnificator.get(OrePrefixes.gem, tByProduct, 1L), 1L);
-                        if (tImpureStack == null) {
-                            tImpureStack = GT_OreDictUnificator.get(OrePrefixes.cell, tByProduct, 1L);
-                            if (tImpureStack == null) {
-                                GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), 0, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), null, null, null, null, null, (int) Math.max(1L, aMaterial.getMass()));
-                            } else {
-                                FluidStack tFluid = GT_Utility.getFluidForFilledItem(tImpureStack, true);
-                                if (tFluid == null) {
-                                    GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(9L, aStack), 1, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 9L), tImpureStack, null, null, null, null, (int) Math.max(1L, aMaterial.getMass() * 72L));
-                                } else {
-                                    tFluid.amount /= 10;
-                                    GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), null, null, tFluid, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), null, null, null, null, null, null, (int) Math.max(1L, aMaterial.getMass() * 8L), 5);
-                                }
-                            }
-                        } else {
-                            GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(9L, aStack), 0, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 9L), tImpureStack, null, null, null, null, (int) Math.max(1L, aMaterial.getMass() * 72L));
-                        }
-                    } else {
-                        GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(2L, aStack), 0, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 2L), tImpureStack, null, null, null, null, (int) Math.max(1L, aMaterial.getMass() * 16L));
-                    }
-                } else {
-                    GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), null, null, null, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, tByProduct, GT_OreDictUnificator.get(OrePrefixes.nugget, tByProduct, 1L), 1L), null, null, null, null, new int[]{10000, 1111}, (int) Math.max(1L, aMaterial.getMass() * 8L), 5);
-                }
-                break;
+//            case dustPure: case dustImpure:case dustRefined:
+//                Materials tByProduct = (Materials) GT_Utility.selectItemInList(aPrefix == OrePrefixes.dustRefined ? 2 : aPrefix == OrePrefixes.dustPure ? 1 : 0, aMaterial, aMaterial.mOreByProducts);
+//
+//                if (aPrefix == OrePrefixes.dustPure) {
+//                    if (aMaterial.contains(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD))
+//                        GT_Values.RA.addElectromagneticSeparatorRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L), new int[]{7500, 2500, 1000}, 100, 24);
+//                    if (aMaterial.contains(SubTag.ELECTROMAGNETIC_SEPERATION_IRON))
+//                        GT_Values.RA.addElectromagneticSeparatorRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L), new int[]{7500, 2500, 1000}, 100, 24);
+//                    if (aMaterial.contains(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)) {
+//                        GT_Values.RA.addElectromagneticSeparatorRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neodymium, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neodymium, 1L), new int[]{7500, 2500, 1000}, 100, 24);
+//                    }
+//                }
+//                if (aMaterial.contains(SubTag.CRYSTALLISABLE)) {
+//                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1), Materials.Water.getFluid(200L), GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 9000, 2000, 24, false);
+//                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(2), gregtech.api.util.GT_ModHandler.getDistilledWater(100L), GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 9500, 1500, 24, false);
+//                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(3), Materials.Void.getMolten(36L), GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 10000, 1200, 24, false);
+//                }
+//
+//                ItemStack tImpureStack = GT_OreDictUnificator.get(OrePrefixes.dustTiny, tByProduct, GT_OreDictUnificator.get(OrePrefixes.nugget, tByProduct, 1L), 1L);
+//                if (tImpureStack == null) {
+//                    tImpureStack = GT_OreDictUnificator.get(OrePrefixes.dustSmall, tByProduct, 1L);
+//                    if (tImpureStack == null) {
+//                        tImpureStack = GT_OreDictUnificator.get(OrePrefixes.dust, tByProduct, GT_OreDictUnificator.get(OrePrefixes.gem, tByProduct, 1L), 1L);
+//                        if (tImpureStack == null) {
+//                            tImpureStack = GT_OreDictUnificator.get(OrePrefixes.cell, tByProduct, 1L);
+//                            if (tImpureStack == null) {
+//                                GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), 0, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), null, null, null, null, null, (int) Math.max(1L, aMaterial.getMass()));
+//                            } else {
+//                                FluidStack tFluid = GT_Utility.getFluidForFilledItem(tImpureStack, true);
+//                                if (tFluid == null) {
+//                                    GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(9L, aStack), 1, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 9L), tImpureStack, null, null, null, null, (int) Math.max(1L, aMaterial.getMass() * 72L));
+//                                } else {
+//                                    tFluid.amount /= 10;
+//                                    GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), null, null, tFluid, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), null, null, null, null, null, null, (int) Math.max(1L, aMaterial.getMass() * 8L), 5);
+//                                }
+//                            }
+//                        } else {
+//                            GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(9L, aStack), 0, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 9L), tImpureStack, null, null, null, null, (int) Math.max(1L, aMaterial.getMass() * 72L));
+//                        }
+//                    } else {
+//                        GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(2L, aStack), 0, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 2L), tImpureStack, null, null, null, null, (int) Math.max(1L, aMaterial.getMass() * 16L));
+//                    }
+//                } else {
+//                    GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), null, null, null, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, tByProduct, GT_OreDictUnificator.get(OrePrefixes.nugget, tByProduct, 1L), 1L), null, null, null, null, new int[]{10000, 1111}, (int) Math.max(1L, aMaterial.getMass() * 8L), 5);
+//                }
+//                break;
             case dustSmall:
                 GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(4L, aStack), ItemList.Schematic_Dust.get(0L), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), 20, 4);
                 if (!aMaterial.mBlastFurnaceRequired) {

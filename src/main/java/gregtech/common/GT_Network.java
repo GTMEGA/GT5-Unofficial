@@ -33,7 +33,6 @@ import static gregtech.GT_Mod.GT_FML_LOGGER;
 public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet> implements IGT_NetworkHandler {
     private final EnumMap<Side, FMLEmbeddedChannel> mChannel;
 
-
     @Getter
     public enum PacketEnum {
         TILE_ENTITY(new GT_Packet_TileEntity()),
@@ -49,7 +48,9 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
         TILE_ENTITY_COVER_NEW(new GT_Packet_TileEntityCoverNew()),
         TILE_ENTITY_GUI(new GT_Packet_TileEntityGUI()),
         INVENTORY_UPDATE(new GT_Packet_InventoryUpdate()),
-        OPEN_GUI(new GT_Packet_OpenGUI());
+        OPEN_GUI(new GT_Packet_OpenGUI()),
+        GT_PACKET_SET_FILTER_SLOT(new GT_Packet_SetFilterSlot()),
+        ;
 
         private final GT_Packet_New packet;
 

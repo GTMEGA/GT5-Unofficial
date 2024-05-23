@@ -27,6 +27,7 @@ import gregtech.common.GT_RecipeAdder;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.entities.explosives.GT_Entity_DaisyCutterExplosive;
+import gregtech.common.entities.explosives.GT_Entity_FlatBomb;
 import gregtech.common.entities.explosives.GT_Entity_MiningExplosive;
 import gregtech.common.entities.explosives.GT_Entity_TunnelExplosive;
 import gregtech.common.items.GT_MEGAnet;
@@ -127,7 +128,7 @@ import static gregtech.api.enums.GT_Values.*;
 public class GT_Mod implements IGT_Mod {
 
     @Deprecated // Keep for use in BaseMetaTileEntity
-    public static final int VERSION = 509, SUBVERSION = 40;
+    public static final int VERSION = 509, SUBVERSION = 41;
     @Deprecated
     public static final int TOTAL_VERSION = calculateTotalGTVersion(VERSION, SUBVERSION);
     public static final int REQUIRED_IC2 = 624;
@@ -374,6 +375,9 @@ public class GT_Mod implements IGT_Mod {
         gregtechproxy.mRenderGlowTextures = GregTech_API.sClientDataFile.get("render", "GlowTextures", true);
         gregtechproxy.mRenderFlippedMachinesFlipped = GregTech_API.sClientDataFile.get("render", "RenderFlippedMachinesFlipped", true);
         gregtechproxy.mRenderIndicatorsOnHatch = GregTech_API.sClientDataFile.get("render", "RenderIndicatorsOnHatch", true);
+        gregtechproxy.mTooltipVerbosity = GregTech_API.sClientDataFile.get("interface", "TooltipVerbosity", 2);
+        gregtechproxy.mTooltipShiftVerbosity = GregTech_API.sClientDataFile.get("interface", "TooltipShiftVerbosity", 3);
+        gregtechproxy.mCircuitScrollInverted = GregTech_API.sClientDataFile.get("interface", "CircuitScrollInverted", false);
 
         gregtechproxy.mMaxEqualEntitiesAtOneSpot = tMainConfig.get(aTextGeneral, "MaxEqualEntitiesAtOneSpot", 3).getInt(3);
         gregtechproxy.mSkeletonsShootGTArrows = tMainConfig.get(aTextGeneral, "SkeletonsShootGTArrows", 16).getInt(16);
@@ -519,6 +523,7 @@ public class GT_Mod implements IGT_Mod {
         EntityRegistry.registerModEntity(GT_Entity_MiningExplosive.class, "GT_Entity_MiningExplosive", 3, GT_Values.GT, 160, 1, false);
         EntityRegistry.registerModEntity(GT_Entity_DaisyCutterExplosive.class, "GT_Entity_DaisyCutter", 4, GT_Values.GT, 160, 1, false);
         EntityRegistry.registerModEntity(GT_Entity_TunnelExplosive.class, "GT_Entity_TunnelExplosive", 5, GT_Values.GT, 160, 1, false);
+        EntityRegistry.registerModEntity(GT_Entity_FlatBomb.class, "GT_Entity_FlatBomb", 6, GT_Values.GT, 160, 1, false);
 
         GT_FML_LOGGER.info("preReader");
         List<String> oreTags = new ArrayList<>();

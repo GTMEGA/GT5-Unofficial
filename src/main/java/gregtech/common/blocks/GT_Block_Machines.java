@@ -686,6 +686,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
             return;
         }
         IGregTechTileEntity iGregTechTileEntity = (IGregTechTileEntity) tTileEntity;
+        if (iGregTechTileEntity.getMetaTileEntity() == null) return;
         if (aPlayer == null) {
             iGregTechTileEntity.setFrontFacing((byte) ForgeDirection.UP.ordinal());
             return;

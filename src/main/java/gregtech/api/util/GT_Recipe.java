@@ -723,6 +723,16 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public final String mUniqueIdentifier;
 
         /**
+         * Whether this recipe map contains any fluid outputs.
+         */
+        private boolean mHasFluidOutputs = false;
+
+        /**
+         * Whether this recipe map contains special slot inputs.
+         */
+        private boolean mUsesSpecialSlot = false;
+
+        /**
          * Initialises a new type of Recipe Handler.
          *
          * @param aRecipeList                a List you specify as Recipe List. Usually just an ArrayList with a pre-initialised Size.
@@ -822,6 +832,12 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             }
             mRecipeList.add(aRecipe);
             addToFluidMap(aRecipe);
+            if (aRecipe.mFluidOutputs.length != 0) {
+                this.mHasFluidOutputs = true;
+            }
+            if (aRecipe.mSpecialItems != null) {
+                this.mUsesSpecialSlot = true;
+            }
             return addToItemMap(aRecipe);
         }
 
@@ -964,6 +980,27 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     mRecipeFluidNameMap.add(aFluid.getFluid().getName());
                 }
             return aRecipe;
+        }
+
+        /**
+         * Whether this recipe map contains any fluid outputs.
+         */
+        public boolean hasFluidOutputs() {
+            return mHasFluidOutputs;
+        }
+
+        /**
+         * Whether this recipe map contains any fluid inputs.
+         */
+        public boolean hasFluidInputs() {
+            return !mRecipeFluidNameMap.isEmpty();
+        }
+
+        /**
+         * Whether this recipe map contains special slot inputs.
+         */
+        public boolean usesSpecialSlot() {
+            return mUsesSpecialSlot;
         }
     }
 
