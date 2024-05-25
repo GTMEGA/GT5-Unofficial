@@ -23,7 +23,7 @@ import team.chisel.client.render.player;
 public class GT_Tool_Pickaxe extends GT_Tool {
     @Override
     public int getToolDamagePerBlockBreak() {
-        return GT_Mod.gregtechproxy.mHardRock ? 9 : 20;
+        return GT_Mod.gregtechproxy.mHardRock ? 20 : 40;
     }
 
     @Override
