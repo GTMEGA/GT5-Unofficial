@@ -21,12 +21,12 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
     private final int mMaxStacks;
 
     public GT_Cover_Conveyor(int aTickRate) {
-        this.mTickRate = aTickRate;
+        this.mTickRate = Math.max(1,aTickRate/4);
         this.mMaxStacks = 1;
     }
 
     public GT_Cover_Conveyor(int aTickRate, int maxStacks) {
-        this.mTickRate = aTickRate;
+        this.mTickRate = Math.max(1,aTickRate/4);
         this.mMaxStacks = maxStacks;
     }
 
@@ -48,7 +48,14 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
         byte fromSide = aCoverVariable % 2 != 0 ? GT_Utility.getOppositeSide(aSide) : aSide,
                toSide = aCoverVariable % 2 == 0 ? GT_Utility.getOppositeSide(aSide) : aSide;
 
-        moveMultipleItemStacks(fromEntity, toEntity, fromSide , toSide, null, false, (byte) 64, (byte) 1, (byte) 64, (byte) 1,this.mMaxStacks);
+
+        int speedReduction = Math.min(4,mTickRate);
+
+        int maxStacks = this.mMaxStacks/speedReduction;
+        maxStacks += (this.mMaxStacks%speedReduction > 0) ? 1 : 0;
+        int maxStackSize = Math.min(16 * this.mMaxStacks,64);
+
+        moveMultipleItemStacks(fromEntity, toEntity, fromSide , toSide, null, false, (byte) 64, (byte) 1, (byte) maxStackSize, (byte) 1,maxStacks);
 
         return aCoverVariable;
     }
