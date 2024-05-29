@@ -33,9 +33,9 @@ public final class MultiblockMachineLoader {
         Machine_Multi_ImplosionCompressor.set(new GT_MetaTileEntity_ImplosionCompressor(1001, "multimachine.implosioncompressor", "Implosion Compressor").getStackForm(1L));
         Machine_Multi_VacuumFreezer.set(new GT_MetaTileEntity_VacuumFreezer(1002, "multimachine.vacuumfreezer", "Vacuum Freezer").getStackForm(1L));
         Machine_Multi_Furnace.set(new GT_MetaTileEntity_MultiFurnace(1003, "multimachine.multifurnace", "Multi Smelter").getStackForm(1L));
-        addCraftingRecipe(Machine_Multi_BlastFurnace.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"FFF", "YMY", "WCW", 'M', Casing_HeatProof, 'F', Machine_LV_E_Furnace, 'C', circuitLogic.get(LOGIC_LV), 'Y', circuitPower.get(PWR_LV), 'W', cableGt01.get(Tin)});
-        addCraftingRecipe(Machine_Multi_VacuumFreezer.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PPP", "CMC", "WCW", 'M', Casing_FrostProof, 'P', Electric_Pump_HV, 'C', circuitPower.get(PWR_HV), 'W', cableGt01.get(Gold)});
-        addCraftingRecipe(Machine_Multi_ImplosionCompressor.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"OOO", "CMC", "WCW", 'M', Casing_SolidSteel, 'O', reinforcedStone, 'C', circuitLogic.get(LOGIC_HV), 'W', cableGt01.get(Gold)});
+//        addCraftingRecipe(Machine_Multi_BlastFurnace.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"FFF", "YMY", "WCW", 'M', Casing_HeatProof, 'F', Machine_LV_E_Furnace, 'C', circuitLogic.get(LOGIC_LV), 'Y', circuitPower.get(PWR_LV), 'W', cableGt01.get(Tin)});
+//        addCraftingRecipe(Machine_Multi_VacuumFreezer.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PPP", "CMC", "WCW", 'M', Casing_FrostProof, 'P', Electric_Pump_HV, 'C', circuitPower.get(PWR_HV), 'W', cableGt01.get(Gold)});
+//        addCraftingRecipe(Machine_Multi_ImplosionCompressor.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"OOO", "CMC", "WCW", 'M', Casing_SolidSteel, 'O', reinforcedStone, 'C', circuitLogic.get(LOGIC_HV), 'W', cableGt01.get(Gold)});
         addCraftingRecipe(Machine_Multi_Furnace.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"FFF", "CMC", "WCW", 'M', Casing_HeatProof, 'F', Machine_LV_E_Furnace, 'C', circuitPower.get(PWR_MV), 'W', cableGt01.get(AnnealedCopper)});
 
         Machine_Multi_LargeBoiler_Bronze.set(new GT_MetaTileEntity_LargeBoiler_Bronze(1020, "multimachine.boiler.bronze", "Large Brass Boiler").getStackForm(1L));
@@ -44,8 +44,8 @@ public final class MultiblockMachineLoader {
         Machine_Multi_LargeBoiler_TungstenSteel.set(new GT_MetaTileEntity_LargeBoiler_TungstenSteel(1023, "multimachine.boiler.tungstensteel", "Large Titanium Boiler").getStackForm(1L));
         addCraftingRecipe(Machine_Multi_LargeBoiler_Bronze.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Firebox_Bronze, 'C', circuitPower.get(PWR_LV), 'W', cableGt01.get(Tin)});
         addCraftingRecipe(Machine_Multi_LargeBoiler_Steel.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Firebox_Steel, 'C', circuitPower.get(PWR_MV), 'W', cableGt01.get(AnyCopper)});
-        addCraftingRecipe(Machine_Multi_LargeBoiler_Titanium.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Firebox_Titanium, 'C', circuitPower.get(PWR_HV), 'W', cableGt01.get(Gold)});
-        addCraftingRecipe(Machine_Multi_LargeBoiler_TungstenSteel.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Firebox_TungstenSteel, 'C', circuitPower.get(PWR_EV), 'W', cableGt01.get(Aluminium)});
+//        addCraftingRecipe(Machine_Multi_LargeBoiler_Titanium.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Firebox_Titanium, 'C', circuitPower.get(PWR_HV), 'W', cableGt01.get(Gold)});
+//        addCraftingRecipe(Machine_Multi_LargeBoiler_TungstenSteel.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "CMC", "WCW", 'M', Casing_Firebox_TungstenSteel, 'C', circuitPower.get(PWR_EV), 'W', cableGt01.get(Aluminium)});
 
         FusionComputer_LuV.set(new GT_MetaTileEntity_FusionComputer1(1193, "fusioncomputer.tier.06", "Fusion Control Computer MKI").getStackForm(1L));
         FusionComputer_ZPMV.set(new GT_MetaTileEntity_FusionComputer2(1194, "fusioncomputer.tier.07", "Fusion Control Computer MKII").getStackForm(1L));
