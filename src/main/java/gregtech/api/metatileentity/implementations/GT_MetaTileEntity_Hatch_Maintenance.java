@@ -2,12 +2,10 @@ package gregtech.api.metatileentity.implementations;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.CachedForgeItem;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
@@ -28,6 +26,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DUCTTAPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MAINTENANCE;
 
 public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch {
+    CachedForgeItem maintanceKit = new CachedForgeItem("htx","maintenance_kit",0,1);
     public boolean mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false, mSolderingTool = false, mCrowbar = false, mAuto;
 
     public GT_MetaTileEntity_Hatch_Maintenance(int aID, String aName, String aNameRegional, int aTier) {
@@ -158,7 +157,7 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     }
 
     public boolean isRecipeInputEqual(boolean aDecreaseStacksizeBySuccess) {
-        ItemStack[] mInputs= {ItemList.Duct_Tape.get(1)};
+        ItemStack[] mInputs= {maintanceKit.getItemNoCopy()};
 
         int amt;
 
