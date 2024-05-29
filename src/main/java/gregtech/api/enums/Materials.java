@@ -967,7 +967,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public boolean
             mUnificatable,
             mBlastFurnaceRequired = false,
-            mAutoGenerateBlastFurnaceRecipes = true,
+            mAutoGenerateBlastFurnaceRecipes = false,
             mTransparent = false,
             mHasParentMod = true,
             mHasPlasma = false,

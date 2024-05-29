@@ -158,7 +158,7 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     }
 
     public boolean isRecipeInputEqual(boolean aDecreaseStacksizeBySuccess) {
-        ItemStack[] mInputs= {ItemList.Maintenance_Kit.get(1)};
+        ItemStack[] mInputs= {ItemList.Duct_Tape.get(1)};
 
         int amt;
 
