@@ -1,7 +1,6 @@
 package gregtech.api.items;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.util.GT_ModHandler;
 import net.minecraft.item.ItemStack;
 
 public class CachedForgeItem {
