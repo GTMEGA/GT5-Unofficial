@@ -238,13 +238,8 @@ public class ItemComb extends Item {
 		addProcessGT(CombType.SULFUR, new Materials[] {Materials.Sulfur, Materials.Pyrite, Materials.Sphalerite}, Voltage.LV);
 		addProcessGT(CombType.GALLIUM, new Materials[] {Materials.Gallium, Materials.Niobium}, Voltage.LV);
 		addProcessGT(CombType.ARSENIC, new Materials[] {Materials.Arsenic, Materials.Bismuth, Materials.Antimony}, Voltage.LV);
-		if (ProcessingModSupport.aEnableGCMarsMats) {
-			addProcessGT(CombType.IRON, new Materials[] {Materials.Iron, Materials.Magnetite, Materials.BrownLimonite, Materials.YellowLimonite, Materials.VanadiumMagnetite, Materials.BandedIron, Materials.Pyrite, Materials.MeteoricIron}, Voltage.LV);
-			addProcessGT(CombType.STEEL, new Materials[] {Materials.Iron, Materials.Magnetite, Materials.YellowLimonite, Materials.BrownLimonite, Materials.VanadiumMagnetite, Materials.BandedIron, Materials.Pyrite, Materials.MeteoricIron, Materials.Molybdenite, Materials.Molybdenum}, Voltage.LV);
-		}else {
-			addProcessGT(CombType.IRON, new Materials[] {Materials.Iron, Materials.Magnetite, Materials.BrownLimonite, Materials.YellowLimonite, Materials.VanadiumMagnetite, Materials.BandedIron, Materials.Pyrite}, Voltage.LV);
-			addProcessGT(CombType.STEEL, new Materials[] {Materials.Iron, Materials.Magnetite, Materials.YellowLimonite, Materials.BrownLimonite, Materials.VanadiumMagnetite, Materials.BandedIron, Materials.Pyrite, Materials.Molybdenite, Materials.Molybdenum}, Voltage.LV);
-		}
+		addProcessGT(CombType.IRON, new Materials[] {Materials.Iron, Materials.Magnetite, Materials.BrownLimonite, Materials.YellowLimonite, Materials.VanadiumMagnetite, Materials.BandedIron, Materials.Pyrite}, Voltage.LV);
+		addProcessGT(CombType.STEEL, new Materials[] {Materials.Iron, Materials.Magnetite, Materials.YellowLimonite, Materials.BrownLimonite, Materials.VanadiumMagnetite, Materials.BandedIron, Materials.Pyrite, Materials.Molybdenite, Materials.Molybdenum}, Voltage.LV);
 		addChemicalProcess(CombType.STEEL, Materials.BrownLimonite, Materials.YellowLimonite, Voltage.LV);
 		addChemicalProcess(CombType.STEEL, Materials.YellowLimonite, Materials.BrownLimonite, Voltage.LV);
 		if(GT_Mod.gregtechproxy.mNerfedCombs) {
@@ -260,13 +255,9 @@ public class ItemComb extends Item {
 			addCentrifugeToMaterial(CombType.COPPER, new Materials[] {Materials.Copper, Materials.Tetrahedrite, Materials.Chalcopyrite, Materials.Malachite, Materials.Pyrite, Materials.Stibnite}, new int[] {100 * 100, 85 * 100, 95 * 100, 80 * 100, 75 * 100, 65 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
 			addCentrifugeToMaterial(CombType.TIN, new Materials[] {Materials.Tin, Materials.Cassiterite, Materials.CassiteriteSand}, new int[] {100 * 100, 85 * 100, 65 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
 			addCentrifugeToMaterial(CombType.LEAD, new Materials[] {Materials.Lead, Materials.Galena}, new int[] {100 * 100, 75 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			if (ProcessingModSupport.aEnableGCMarsMats) {
-				addCentrifugeToMaterial(CombType.IRON, new Materials[] {Materials.Iron, Materials.Magnetite, Materials.BrownLimonite, Materials.YellowLimonite, Materials.VanadiumMagnetite, Materials.MeteoricIron}, new int[] {100 * 100, 90 * 100, 85 * 100, 85 * 100, 80 * 100, 75 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-				addCentrifugeToMaterial(CombType.LEAD, new Materials[] {Materials.Steel, Materials.Magnetite, Materials.VanadiumMagnetite, Materials.Molybdenite, Materials.Molybdenum, Materials.MeteoricIron }, new int[] {100 * 100, 90 * 100, 80 * 100, 65 * 100, 65 * 100, 75 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			}else {
-				addCentrifugeToMaterial(CombType.IRON, new Materials[] {Materials.Iron, Materials.Magnetite, Materials.BrownLimonite, Materials.YellowLimonite, Materials.VanadiumMagnetite, Materials.BandedIron}, new int[] {100 * 100, 90 * 100, 85 * 100, 85 * 100, 80 * 100, 85 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-				addCentrifugeToMaterial(CombType.STEEL, new Materials[] {Materials.Steel, Materials.Magnetite, Materials.VanadiumMagnetite, Materials.BandedIron, Materials.Molybdenite, Materials.Molybdenum }, new int[] {100 * 100, 90 * 100, 80 * 100, 85 * 100, 65 * 100, 65 * 100 }, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			}
+
+			addCentrifugeToMaterial(CombType.IRON, new Materials[] {Materials.Iron, Materials.Magnetite, Materials.BrownLimonite, Materials.YellowLimonite, Materials.VanadiumMagnetite, Materials.BandedIron}, new int[] {100 * 100, 90 * 100, 85 * 100, 85 * 100, 80 * 100, 85 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
+			addCentrifugeToMaterial(CombType.STEEL, new Materials[] {Materials.Steel, Materials.Magnetite, Materials.VanadiumMagnetite, Materials.BandedIron, Materials.Molybdenite, Materials.Molybdenum }, new int[] {100 * 100, 90 * 100, 80 * 100, 85 * 100, 65 * 100, 65 * 100 }, new int[] {}, Voltage.ULV, NI, 30 * 100);
 			addCentrifugeToMaterial(CombType.NICKEL, new Materials[] {Materials.Nickel, Materials.Garnierite, Materials.Pentlandite, Materials.Cobaltite, Materials.Wulfenite, Materials.Powellite}, new int[] {100 * 100, 85 * 100, 85 * 100, 80 * 100, 75 * 100, 75 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
 			addCentrifugeToMaterial(CombType.ZINC, new Materials[] {Materials.Zinc, Materials.Sphalerite, Materials.Sulfur}, new int[] {100 * 100, 80 * 100, 75 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
 			addCentrifugeToMaterial(CombType.SILVER, new Materials[] {Materials.Silver, Materials.Galena}, new int[] {100 * 100, 80 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
@@ -360,45 +351,11 @@ public class ItemComb extends Item {
 
 		//Space Line
 		addCentrifugeToItemStack(CombType.SPACE, new ItemStack[] { ItemList.FR_Wax.get(1L), ItemList.FR_RefractoryWax.get(1L), GT_Bees.drop.getStackForType(DropType.OXYGEN), GT_ModHandler.getModItem(MOD_ID_DC, "item.CoinSpace", 1L, 0)}, new int[]{50 * 100, 30 * 100, 15 * 100, 5 * 100}, Voltage.HV);
-		addProcessGT(CombType.METEORICIRON, new Materials[] {Materials.MeteoricIron, Materials.Iron}, Voltage.HV);
-		addProcessGT(CombType.DESH, new Materials[] {Materials.Desh, Materials.Titanium}, Voltage.EV);
-		addProcessGT(CombType.LEDOX, new Materials[] {Materials.Ledox, Materials.CallistoIce, Materials.Lead}, Voltage.EV);
-		addProcessGT(CombType.CALLISTOICE, new Materials[] {Materials.CallistoIce, Materials.Ledox, Materials.Lead}, Voltage.IV);
-		addProcessGT(CombType.MYTRYL, new Materials[] {Materials.Mytryl, Materials.Mithril}, Voltage.IV);
-		addProcessGT(CombType.QUANTIUM, new Materials[] {Materials.Quantium, Materials.Osmium}, Voltage.IV);
-		addProcessGT(CombType.ORIHARUKON, new Materials[] {Materials.Oriharukon, Materials.Lead}, Voltage.IV);
-		addProcessGT(CombType.MYSTERIOUSCRYSTAL, new Materials[] {Materials.MysteriousCrystal, Materials.Emerald}, Voltage.LUV);
-		addCentrifugeToMaterial(CombType.MYSTERIOUSCRYSTAL, new Materials[] {Materials.MysteriousCrystal, Materials.Emerald}, new int[] {(GT_Mod.gregtechproxy.mNerfedCombs ? 10 : 40) * 100, (GT_Mod.gregtechproxy.mNerfedCombs ? 15 : 50) * 100}, new int[] {}, Voltage.LUV, 512, NI, 50 * 100);
-		addProcessGT(CombType.BLACKPLUTONIUM, new Materials[] {Materials.BlackPlutonium, Materials.Plutonium}, Voltage.LUV);
+
 		addProcessGT(CombType.TRINIUM, new Materials[] {Materials.Trinium, Materials.Iridium}, Voltage.ZPM);
 		if(!GT_Mod.gregtechproxy.mNerfedCombs) {
-			addCentrifugeToMaterial(CombType.METEORICIRON, new Materials[] {Materials.MeteoricIron, Materials.Iron}, new int[] {85 * 100, 100 * 100}, new int[] {}, Voltage.HV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.DESH, new Materials[] {Materials.Desh, Materials.Titanium}, new int[] {75 * 100, 50 * 100}, new int[] {}, Voltage.EV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.LEDOX, new Materials[] {Materials.Ledox, Materials.CallistoIce, Materials.Lead}, new int[] {65 * 100, 55 * 100, 85 *100}, new int[] {}, Voltage.EV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.CALLISTOICE, new Materials[] {Materials.CallistoIce, Materials.Ledox, Materials.Lead}, new int[] {65 * 100, 75 * 100, 100 *100}, new int[] {}, Voltage.IV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.MYTRYL, new Materials[] {Materials.Mytryl, Materials.Mithril}, new int[] {55 * 100, 50 * 100}, new int[] {}, Voltage.IV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.QUANTIUM, new Materials[] {Materials.Quantium, Materials.Osmium}, new int[] {50 * 100, 60 * 100}, new int[] {}, Voltage.IV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.ORIHARUKON, new Materials[] {Materials.Oriharukon, Materials.Lead}, new int[] {50 * 100, 75 * 100}, new int[] {}, Voltage.IV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.BLACKPLUTONIUM, new Materials[] {Materials.BlackPlutonium, Materials.Plutonium}, new int[] {25 * 100, 50 * 100}, new int[] {}, Voltage.LUV, NI, 30 * 100);
 			addCentrifugeToMaterial(CombType.TRINIUM, new Materials[] {Materials.Trinium, Materials.Iridium}, new int[] {35 * 100, 45 * 100}, new int[] {}, Voltage.ZPM, NI, 30 * 100);
 		}
-
-		//Planet Line
-		addCentrifugeToItemStack(CombType.MOON, new ItemStack[] {ItemList.FR_Wax.get(1L), GT_ModHandler.getModItem(MOD_ID_DC, "item.MoonStoneDust", 1L, 0)}, new int[]{50 * 100, 30 * 100 }, Voltage.MV, 300);
-		addCentrifugeToItemStack(CombType.MARS, new ItemStack[] {ItemList.FR_Wax.get(1L), GT_ModHandler.getModItem(MOD_ID_DC, "item.MarsStoneDust", 1L, 0)}, new int[]{50 * 100, 30 * 100 }, Voltage.HV, 300);
-		addCentrifugeToItemStack(CombType.JUPITER, new ItemStack[] { GT_ModHandler.getModItem(MOD_ID_DC, "item.IoStoneDust", 1L, 0), GT_ModHandler.getModItem(MOD_ID_DC, "item.EuropaIceDust", 1L, 0), GT_ModHandler.getModItem(MOD_ID_DC, "item.EuropaStoneDust", 1L, 0), GT_ModHandler.getModItem(MOD_ID_DC, "item.GanymedeStoneDust", 1L, 0), GT_ModHandler.getModItem(MOD_ID_DC, "item.CallistoStoneDust", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.CallistoIce, 1L), ItemList.FR_Wax.get(1L)}, new int[]{30 * 100, 30 * 100, 30 * 100, 30 * 100, 30 * 100, 5 * 100, 50 * 100 }, Voltage.HV, 300);
-		addCentrifugeToItemStack(CombType.MERCURY, new ItemStack[] {ItemList.FR_Wax.get(1L), GT_ModHandler.getModItem(MOD_ID_DC, "item.MercuryCoreDust", 1L, 0), GT_ModHandler.getModItem(MOD_ID_DC, "item.MercuryStoneDust", 1L, 0)}, new int[]{50 * 100, 30 * 100, 30 * 100 }, Voltage.EV, 300);
-		addCentrifugeToItemStack(CombType.VENUS, new ItemStack[] {ItemList.FR_Wax.get(1L), GT_ModHandler.getModItem(MOD_ID_DC, "item.VenusStoneDust", 1L, 0)}, new int[]{50 * 100, 30 * 100 }, Voltage.EV, 300);
-		addCentrifugeToItemStack(CombType.SATURN, new ItemStack[] {ItemList.FR_Wax.get(1L), GT_ModHandler.getModItem(MOD_ID_DC, "item.EnceladusStoneDust", 1L, 0), GT_ModHandler.getModItem(MOD_ID_DC, "item.TitanStoneDust", 1L, 0)}, new int[]{50 * 100, 30 * 100, 30 * 100 }, Voltage.IV, 300);
-		addCentrifugeToItemStack(CombType.URANUS, new ItemStack[] {ItemList.FR_Wax.get(1L), GT_ModHandler.getModItem(MOD_ID_DC, "item.MirandaStoneDust", 1L, 0), GT_ModHandler.getModItem(MOD_ID_DC, "item.OberonStoneDust", 1L, 0)}, new int[]{50 * 100, 30 * 100, 30 * 100 }, Voltage.IV, 300);
-		addCentrifugeToItemStack(CombType.NEPTUN, new ItemStack[] {ItemList.FR_Wax.get(1L), GT_ModHandler.getModItem(MOD_ID_DC, "item.ProteusStoneDust", 1L, 0), GT_ModHandler.getModItem(MOD_ID_DC, "item.TritonStoneDust", 1L, 0)}, new int[]{50 * 100, 30 * 100, 30 * 100 }, Voltage.IV, 300);
-		addCentrifugeToItemStack(CombType.PLUTO, new ItemStack[] {ItemList.FR_Wax.get(1L), GT_ModHandler.getModItem(MOD_ID_DC, "item.PlutoStoneDust", 1L, 0), GT_ModHandler.getModItem(MOD_ID_DC, "item.PlutoIceDust", 1L, 0)}, new int[]{50 * 100, 30 * 100, 30 * 100 }, Voltage.LUV, 300);
-		addCentrifugeToItemStack(CombType.HAUMEA, new ItemStack[] {ItemList.FR_Wax.get(1L), GT_ModHandler.getModItem(MOD_ID_DC, "item.HaumeaStoneDust", 1L, 0)}, new int[]{50 * 100, 30 * 100 }, Voltage.LUV, 300);
-		addCentrifugeToItemStack(CombType.MAKEMAKE, new ItemStack[] {ItemList.FR_Wax.get(1L), GT_ModHandler.getModItem(MOD_ID_DC, "item.MakeMakeStoneDust", 1L, 0)}, new int[]{50 * 100, 30 * 100 }, Voltage.LUV, 300);
-		addCentrifugeToItemStack(CombType.CENTAURI, new ItemStack[] {ItemList.FR_Wax.get(1L), GT_ModHandler.getModItem(MOD_ID_DC, "item.CentauriASurfaceDust", 1L, 0), GT_ModHandler.getModItem(MOD_ID_DC, "item.CentauriAStoneDust", 1L, 0)}, new int[]{50 * 100, 30 * 100, 30 * 100 }, Voltage.ZPM, 300);
-		addCentrifugeToItemStack(CombType.TCETI, new ItemStack[] {ItemList.FR_Wax.get(1L), GT_ModHandler.getModItem(MOD_ID_DC, "item.TCetiEStoneDust", 1L, 0)}, new int[]{50 * 100, 30 * 100 }, Voltage.ZPM, 300);
-		addCentrifugeToItemStack(CombType.BARNARDA, new ItemStack[] {ItemList.FR_Wax.get(1L), GT_ModHandler.getModItem(MOD_ID_DC, "item.BarnardaEStoneDust", 1L, 0), GT_ModHandler.getModItem(MOD_ID_DC, "item.BarnardaFStoneDust", 1L, 0)}, new int[]{50 * 100, 30 * 100, 30 * 100 }, Voltage.ZPM, 300);
-		addCentrifugeToItemStack(CombType.VEGA, new ItemStack[] {ItemList.FR_Wax.get(1L), GT_ModHandler.getModItem(MOD_ID_DC, "item.VegaBStoneDust", 1L, 0)}, new int[]{50 * 100, 30 * 100 }, Voltage.ZPM, 300);
 
 		//Infinity Line
 		addCentrifugeToMaterial(CombType.COSMICNEUTRONIUM, new Materials[] {Materials.CosmicNeutronium, Materials.Neutronium}, new int[] {(int) (0.5 * 100), 1 * 100}, new int[] {}, Voltage.UHV, 12000, NI, 50 * 100);

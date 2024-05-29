@@ -418,6 +418,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         ItemList.IC2_Fuel_Can_Empty.set(GT_ModHandler.getIC2Item("fuelCan", 1L, GT_ModHandler.getIC2Item("fuelCanEmpty", 1L, GT_ModHandler.getIC2Item("emptyFuelCan", 1L))));
         ItemList.IC2_Fuel_Can_Filled.set(GT_ModHandler.getIC2Item("filledFuelCan", 1L));
         ItemList.IC2_Mixed_Metal_Ingot.set(GT_ModHandler.getIC2Item("mixedMetalIngot", 1L));
+        ItemList.IC2_Advanced_Alloy.set(GT_ModHandler.getIC2Item("advancedAlloy", 1L));
         ItemList.IC2_Fertilizer.set(GT_ModHandler.getIC2Item("fertilizer", 1L));
         ItemList.IC2_CoffeeBeans.set(GT_ModHandler.getIC2Item("coffeeBeans", 1L));
         ItemList.IC2_CoffeePowder.set(GT_ModHandler.getIC2Item("coffeePowder", 1L));
@@ -456,8 +457,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
         ItemList.Credit_Iron.set(GT_ModHandler.getIC2Item("coin", 1L));
 
-        ItemList.Circuit_Basic.set(GT_ModHandler.getIC2Item("electronicCircuit", 1L));
-        ItemList.Circuit_Advanced.set(GT_ModHandler.getIC2Item("advancedCircuit", 1L));
+//        ItemList.Circuit_Basic.set(GT_ModHandler.getIC2Item("electronicCircuit", 1L));
+//        ItemList.Circuit_Advanced.set(GT_ModHandler.getIC2Item("advancedCircuit", 1L));
 
         ItemList.Upgrade_Overclocker.set(GT_ModHandler.getIC2Item("overclockerUpgrade", 1L));
         ItemList.Upgrade_Battery.set(GT_ModHandler.getIC2Item("energyStorageUpgrade", 1L));

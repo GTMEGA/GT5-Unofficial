@@ -231,7 +231,6 @@ public enum OrePrefixes {
 	 */
     batterySingleuse("Single Use Batteries", "", "", false, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
     battery("Reusable Batteries", "", "", false, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced by Calclavia
-    circuit("Circuits", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced by Calclavia
     circuitLogic("LOGICCircuits", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced by HTX. "sledgehammer approach"
     circuitPower("PWRCircuits", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced by HTX. "scalpel approach"
     chipset("Chipsets", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced by Buildcraft
@@ -763,7 +762,7 @@ public enum OrePrefixes {
                         aMaterial == Materials.Europium || aMaterial == Materials.Americium || aMaterial == Materials.RedAlloy || aMaterial == Materials.SolderingAlloy || aMaterial == Materials.BatteryAlloy ||
                         aMaterial == Materials.AnnealedCopper || aMaterial == Materials.Firestone || aMaterial == Materials.VanadiumGallium || aMaterial == Materials.YttriumBariumCuprate ||
                         aMaterial == Materials.NiobiumTitanium || aMaterial == Materials.CertusQuartz || aMaterial == Materials.NetherQuartz || aMaterial == Materials.Lazurite || aMaterial == Materials.Lapis ||
-                        aMaterial == Materials.Paper || aMaterial == Materials.Jasper || aMaterial == Materials.Dilithium || aMaterial == Materials.Forcicium || aMaterial == Materials.Forcillium ||
+                        aMaterial == Materials.Paper || aMaterial == Materials.Jasper ||
                         aMaterial == Materials.EnderPearl || aMaterial == Materials.EnderEye || aMaterial == Materials.Glass || aMaterial == Materials.Copper || aMaterial == Materials.Tin || aMaterial == Materials.Redstone ||
                         aMaterial == Materials.Sodalite || aMaterial == Materials.Gallium || aMaterial == Materials.GalliumArsenide || aMaterial == Materials.IndiumGalliumPhosphide))
                     plate.mDisabledItems.add(aMaterial);
