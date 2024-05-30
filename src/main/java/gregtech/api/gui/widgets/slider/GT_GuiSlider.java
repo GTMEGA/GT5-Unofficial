@@ -336,6 +336,7 @@ public abstract class GT_GuiSlider extends Gui implements IGuiScreen.IGuiElement
 
     public void onMousePressed(final int mouseX, final int mouseY, final int clickType) {
         if (clickType == 0 && inBounds(mouseX, mouseY, clickType)) {
+            gui.updateLastInteracted(this);
             handleMouse(mouseX, mouseY);
         } else {
             disableDragged();
@@ -349,6 +350,10 @@ public abstract class GT_GuiSlider extends Gui implements IGuiScreen.IGuiElement
         val = Math.max(val, min);
         val = Math.min(val, max);
         return val;
+    }
+
+    public int getIntValue() {
+        return (int) getValue();
     }
 
     public void setValue(final double value) {

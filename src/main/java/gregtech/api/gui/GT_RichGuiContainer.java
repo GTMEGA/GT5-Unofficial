@@ -10,6 +10,7 @@ import gregtech.api.interfaces.IGuiScreen;
 import gregtech.api.util.interop.NEIInterop;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.val;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -44,6 +45,10 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
     protected final List<GT_GuiSlider> sliders = new ArrayList<>();
 
     protected final List<IGT_GuiSubWindow> subWindows = new ArrayList<>();
+
+    @Getter
+    @Setter
+    protected IGuiElement lastInteracted = null;
 
     protected final RenderItem itemRenderer = new RenderItem();
 
@@ -260,12 +265,29 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
      */
     @Override
     protected void mouseClicked(final int rawMX, final int rawMY, final int clickType) {
+        lastInteracted = null;
         super.mouseClicked(rawMX, rawMY, clickType);
         final int mouseX = getMouseX(rawMX);
         final int mouseY = getMouseY(rawMY);
         sliders.stream().filter(element -> element.inBounds(rawMX, rawMY, clickType)).forEach(slider -> slider.onMousePressed(rawMX, rawMY, clickType));
         textBoxes.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType)).forEach(this::setFocusedTextBox);
         subWindows.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType)).forEach(element -> element.receiveClick(mouseX, mouseY, clickType));
+    }
+
+    /**
+     * @param element
+     */
+    @Override
+    public void updateLastInteracted(final IGuiElement element) {
+        setLastInteracted(element);
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public IGuiElement getLastInteractedElement() {
+        return lastInteracted;
     }
 
     /**
@@ -317,6 +339,9 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
     protected void setFocusedTextBox(GT_GuiIntegerTextBox boxToFocus) {
         for (GT_GuiIntegerTextBox textBox : textBoxes) {
             textBox.setFocused(textBox.equals(boxToFocus) && textBox.isEnabled());
+            if (textBox.isFocused()) {
+                setLastInteracted(textBox);
+            }
         }
     }
 

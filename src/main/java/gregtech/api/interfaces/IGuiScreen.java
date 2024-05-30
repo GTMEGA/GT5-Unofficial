@@ -1,6 +1,7 @@
 package gregtech.api.interfaces;
 
 
+import gregtech.api.gui.GT_RichGuiContainer;
 import gregtech.api.gui.widgets.GT_GuiTooltip;
 import lombok.val;
 import net.minecraft.client.Minecraft;
@@ -65,6 +66,7 @@ public interface IGuiScreen {
         IGuiElement setOnUpdateBehavior(IGT_GuiHook hook);
 
         default void onClick(IGuiScreen screen, int mouseX, int mouseY, final int clickType) {
+            screen.updateLastInteracted(this);
             final IGT_GuiHook hook = getOnClickBehavior();
             if (hook != null) {
                 hook.action(screen, this, mouseX, mouseY, clickType);
@@ -77,6 +79,18 @@ public interface IGuiScreen {
 
         Rectangle getBounds();
 
+        default boolean isLastInteracted(IGuiScreen screen) {
+            return screen.getLastInteractedElement() == this;
+        }
+
+    }
+
+    default void updateLastInteracted(IGuiElement element) {
+
+    }
+
+    default IGuiElement getLastInteractedElement() {
+        return null;
     }
 
     void addToolTip(GT_GuiTooltip toolTip);
