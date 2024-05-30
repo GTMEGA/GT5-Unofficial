@@ -1,6 +1,7 @@
 package gregtech.api.gui.widgets.slider;
 
 
+import gregtech.api.gui.GT_RichGuiContainer;
 import gregtech.api.interfaces.IGuiScreen;
 import lombok.val;
 
@@ -15,6 +16,24 @@ public class GT_GuiSlider_Vertical extends GT_GuiSlider {
         super(gui, id, x, y, width, height, min, max, current, subdivisions);
         setSliderWidthFuzzy(BASE_FUZZ_WIDTH);
         setSliderHeightFuzzy(BASE_FUZZ_HEIGHT);
+    }
+
+    /**
+     *
+     */
+    @Override
+    protected void drawSliderSubdivisions() {
+        val numSubdivisions = getSubdivisions();
+        val barRad = barRadius();
+        val pseudoTop = y + height * barRad;
+        val pseudoHeight = height * (1 - barRad);
+        val sliderVal = (int) getValue();
+        for (int i = 0; i < numSubdivisions; i++) {
+            val pseudoPos = pseudoTop + pseudoHeight * i / numSubdivisions;
+            val barPos = (int) pseudoPos;
+            val colorToUse = i == sliderVal ? getSubDivisionActiveColor() : getSubDivisionInactiveColor();
+            drawRect(x, barPos, x + width, barPos + 1, GT_RichGuiContainer.colorToARGB(colorToUse));
+        }
     }
 
     /**

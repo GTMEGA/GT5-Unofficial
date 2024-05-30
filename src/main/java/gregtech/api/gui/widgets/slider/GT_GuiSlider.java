@@ -57,9 +57,17 @@ public abstract class GT_GuiSlider extends Gui implements IGuiScreen.IGuiElement
 
     protected final int y;
 
-    private final Color sliderDraggedColor = new Color(43, 43, 80, 0xFF);
+    @Setter
+    private Color sliderDraggedColor = new Color(43, 43, 80, 0xFF);
 
-    private final Color sliderNormalColor = new Color(0x3F, 0x3F, 0xFF, 0x7F);
+    @Setter
+    private Color sliderNormalColor = new Color(0x3F, 0x3F, 0xFF, 0x7F);
+
+    @Setter
+    private Color subDivisionActiveColor = new Color(0xFF, 0xFF, 0xFF, 0x7F);
+
+    @Setter
+    private Color subDivisionInactiveColor = new Color(0x0F, 0x0F, 0x7F, 0x3F);
 
     protected double min;
 
@@ -438,7 +446,12 @@ public abstract class GT_GuiSlider extends Gui implements IGuiScreen.IGuiElement
         val midColorBase = GT_RichGuiContainer.colorToARGB(midColor);
         val midColor = midColorBase ^ hoverModifier;
         drawSliderBackground(edgeColor, midColor);
+        if (getSubdivisions() > 0) {
+            drawSliderSubdivisions();
+        }
     }
+
+    protected abstract void drawSliderSubdivisions();
 
     protected abstract void drawInfo(int mouseX, int mouseY, float parTicks);
 
