@@ -99,7 +99,12 @@ public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine
             return;
         }
         if (box.id == 3) {
-            i = Math.max(0, Math.min(i, V[getSource().getData().getTier()]));
+            val curTier = getSource().getData().getTier();
+            if (i > V[curTier] && curTier < 15) {
+                getSource().setEnergyTier(getTierForVoltage(i));
+            } else {
+                i = Math.max(0, Math.min(i, V[curTier]));
+            }
             getSource().setVoltage(i);
         }
         if (box.id == 4) {
@@ -109,6 +114,15 @@ public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine
         box.setUpdateCooldown(COOLDOWN);
         boxOnUpdate(box, String.valueOf(i));
         sendUpdateToServer();
+    }
+
+    protected int getTierForVoltage(final long voltage) {
+        for (int i = 0; i < V.length; i++) {
+            if (V[i] >= voltage) {
+                return i;
+            }
+        }
+        return 15;
     }
 
     public GT_Container_DevEnergySource getSource() {
@@ -251,7 +265,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine
     }
 
     private void voltSliderOnChange(final GT_GuiSlider slider) {
-        if (!slider.isDragged()) {
+        if (!slider.isDragged() && slider.isLastInteracted(this)) {
             slider.setValue(getSource().getData().getTier());
         }
     }
