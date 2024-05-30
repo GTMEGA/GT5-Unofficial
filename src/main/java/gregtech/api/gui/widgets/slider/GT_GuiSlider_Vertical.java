@@ -7,10 +7,14 @@ import lombok.val;
 
 public class GT_GuiSlider_Vertical extends GT_GuiSlider {
 
+    public static final double BASE_FUZZ_WIDTH = 0.5;
+
+    public static final double BASE_FUZZ_HEIGHT = 0.3;
+
     public GT_GuiSlider_Vertical(final IGuiScreen gui, final int id, final int x, final int y, final int width, final int height, final double min, final double max, final double current, final int subdivisions) {
         super(gui, id, x, y, width, height, min, max, current, subdivisions);
-        setSliderWidthFuzzy(0.5);
-        setSliderHeightFuzzy(0.1);
+        setSliderWidthFuzzy(BASE_FUZZ_WIDTH);
+        setSliderHeightFuzzy(BASE_FUZZ_HEIGHT);
     }
 
     /**

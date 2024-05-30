@@ -11,13 +11,15 @@ import lombok.val;
 @Getter
 public class GT_GuiSlider_Horizontal extends GT_GuiSlider {
 
+    public static final double BASE_FUZZ_WIDTH = 0.3, BASE_FUZZ_HEIGHT = 0.5;
+
 
     public GT_GuiSlider_Horizontal(
             final IGuiScreen gui, final int id, final int x, final int y, final int width, final int height, double min, double max, final double current, final int subdivisions
                                   ) {
         super(gui, id, x, y, width, height, min, max, current, subdivisions);
-        setSliderWidthFuzzy(0.1);
-        setSliderHeightFuzzy(0.5);
+        setSliderWidthFuzzy(BASE_FUZZ_WIDTH);
+        setSliderHeightFuzzy(BASE_FUZZ_HEIGHT);
     }
 
     @Override

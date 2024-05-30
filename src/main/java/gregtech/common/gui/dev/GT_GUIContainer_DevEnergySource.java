@@ -22,7 +22,7 @@ import static gregtech.api.enums.GT_Values.VN;
 
 public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine {
 
-    public static final int COOLDOWN = 30;
+    public static final int COOLDOWN = 50;
 
     public static final Color TEXT_COLOR = new Color(0x30, 0x30, 0xFF, 0xFF);
 
@@ -238,6 +238,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine
 
     private void addVoltTierSlider() {
         val voltTierSlider = new GT_GuiSlider_Horizontal(this, 0, elementLeft(), vSliderY(), 128, 8, 0.0, 15.0, getSource().getData().getTier(), 16);
+        voltTierSlider.setIgnoreYForCheck(true);
         voltTierSlider.setTextHandler(slider -> String.format("Tier: %s", VN[(int) slider.getValue()]));
         voltTierSlider.setOnChange(this::voltSliderOnChange);
         voltTierSlider.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> voltTierSliderOnClick(voltTierSlider));
