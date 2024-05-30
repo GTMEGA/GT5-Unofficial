@@ -54,9 +54,6 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
         super(GT_Item_Ores.class,
               unlocalizedName,
               Material.rock);
-        setHardness(16F);
-        setResistance(10F);
-        this.useNeighborBrightness = false;
         this.setStepSound(soundTypeStone);
         this.setCreativeTab(GregTech_API.TAB_GREGTECH_ORES);
         this.oreType = oreType;
@@ -229,9 +226,10 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
 
     @Override
     public float getBlockHardness(World world, int x, int y, int z) {
-        return 1.0F;
+        return 3.0F;
     }
 
+    public boolean useNeighborBrightness = false;
     @Override
     public int getHarvestLevel(int metadata) {
         return 0;
