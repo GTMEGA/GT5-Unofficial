@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations.dev;
 
 
 import com.google.common.io.ByteArrayDataInput;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.RSControlMode;
 import gregtech.api.interfaces.IAdvancedGUIEntity;
 import gregtech.api.interfaces.IRedstoneSensitive;
@@ -29,6 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 
@@ -262,14 +264,6 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     public void loadNBTData(NBTTagCompound aNBT) {
         internalData = new GUIData();
         internalData.loadDataFromNBT(aNBT.getCompoundTag("dev"));
-        /*
-        NBTTagCompound devNBT = aNBT.getCompoundTag("dev");
-        this.enabled = devNBT.getBoolean("enabled");
-        this.voltage = devNBT.getLong("voltage");
-        this.amperage = devNBT.getInteger("amps");
-        this.rsMode = RSControlMode.loadFromNBTData(devNBT);
-        this.energyTier = devNBT.getInteger("tier");
-        */
         processRS();
     }
 
@@ -335,9 +329,12 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     @Override
     public void processRS() {
         val te = getBaseMetaTileEntity();
-        internalData.setRsActive(getRedstoneMode().checkPredicate(getMaxRSValue()));
-        te.getWorld().scheduleBlockUpdate(te.getXCoord(), te.getYCoord(), te.getZCoord(), te.getBlockOffset(0, 0, 0), 3);
-        getBaseMetaTileEntity().issueClientUpdate();
+        internalData.setRsActive(checkMaxRS());
+        val world = te.getWorld();
+        if (world != null) {
+            world.scheduleBlockUpdate(te.getXCoord(), te.getYCoord(), te.getZCoord(), GregTech_API.sBlockMachines, 3);
+        }
+        te.issueClientUpdate();
     }
 
     @Override

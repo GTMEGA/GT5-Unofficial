@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations.dev;
 
 
 import com.google.common.io.ByteArrayDataInput;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.RSControlMode;
 import gregtech.api.interfaces.IAdvancedGUIEntity;
 import gregtech.api.interfaces.IRedstoneSensitive;
@@ -27,6 +28,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 
@@ -591,9 +593,12 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
     @Override
     public void processRS() {
         val te = getBaseMetaTileEntity();
-        internalData.setRsActive(getRedstoneMode().checkPredicate(getMaxRSValue()));
-        te.getWorld().scheduleBlockUpdate(te.getXCoord(), te.getYCoord(), te.getZCoord(), te.getBlockOffset(0, 0, 0), 3);
-        getBaseMetaTileEntity().issueClientUpdate();
+        internalData.setRsActive(checkMaxRS());
+        final World world = te.getWorld();
+        if (world != null) {
+            world.scheduleBlockUpdate(te.getXCoord(), te.getYCoord(), te.getZCoord(), GregTech_API.sBlockMachines, 3);
+        }
+        te.issueClientUpdate();
     }
 
     @Override

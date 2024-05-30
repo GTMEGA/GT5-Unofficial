@@ -248,14 +248,7 @@ public abstract class GT_GuiSlider extends Gui implements IGuiScreen.IGuiElement
      */
     @Override
     public boolean inBounds(final int mouseX, final int mouseY, final int clickType) {
-        /* val sliderLeft = getX() - width * sliderWidthFuzzy / 2;
-        val sliderRight = sliderLeft + width + width * sliderWidthFuzzy;
-        val sliderTop = getY() - height * sliderHeightFuzzy / 2;
-        val sliderBottom = sliderTop + height + height * sliderHeightFuzzy;
-        return this.inside = mouseX > sliderLeft && mouseX < sliderRight && mouseY > sliderTop && mouseY < sliderBottom; */
-        val bounds = getBounds();
-        val contained = bounds.contains(mouseX, mouseY);
-        return contained;
+        return getBounds().contains(mouseX, mouseY);
     }
 
     /**
