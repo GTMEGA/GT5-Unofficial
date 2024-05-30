@@ -105,10 +105,14 @@ public class GT_Container extends Container {
             for (var colIndex = 0; colIndex < nSlotsInRow && total < numSlots; colIndex++) {
                 val slotIndex = colIndex + rowIndex * nSlotsInRow;
                 val x = xOffset + colIndex * xSlotSpacing;
-                addSlotToContainer(new Slot(aInventoryPlayer, slotIndex, x, y));
+                addSlotToContainer(createPlayerSlot(aInventoryPlayer, slotIndex, x, y));
                 total += 1;
             }
         }
+    }
+
+    protected Slot createPlayerSlot(final InventoryPlayer aInventoryPlayer, final int slotIndex, final int x, final int y) {
+        return new Slot(aInventoryPlayer, slotIndex, x, y);
     }
 
     protected int getNumRows() {

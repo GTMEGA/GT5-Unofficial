@@ -3,6 +3,8 @@ package gregtech.common.gui.dev;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
+import gregtech.api.gui.GT_Slot_Wrapper_Icon;
+import gregtech.api.gui.widgets.icon.GT_GuiIcon;
 import gregtech.api.interfaces.IAdvancedGUIEntity;
 import gregtech.api.interfaces.IDWSCompatible;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -11,6 +13,7 @@ import gregtech.api.net.GT_Packet_TileEntityGUI;
 import gregtech.api.util.IAdvancedTEData;
 import lombok.Getter;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 import org.apache.logging.log4j.Level;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
@@ -47,6 +50,7 @@ public abstract class GT_Container_Dev<MachineType extends MetaTileEntity & IAdv
     /**
      *
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
@@ -71,6 +75,19 @@ public abstract class GT_Container_Dev<MachineType extends MetaTileEntity & IAdv
 
     public MachineType getSource() {
         return machine;
+    }
+
+    /**
+     * @param aInventoryPlayer
+     * @param slotIndex
+     * @param x
+     * @param y
+     *
+     * @return
+     */
+    @Override
+    protected Slot createPlayerSlot(final InventoryPlayer aInventoryPlayer, final int slotIndex, final int x, final int y) {
+        return new GT_Slot_Wrapper_Icon(super.createPlayerSlot(aInventoryPlayer, slotIndex, x, y), GT_GuiIcon.PLAYER_INV_SLOT, GT_GuiIcon.PLAYER_INV_SLOT_HIGHLIGHT);
     }
 
     protected void sendPacket() {

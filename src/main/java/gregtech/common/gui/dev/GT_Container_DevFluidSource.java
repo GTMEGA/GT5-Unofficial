@@ -4,6 +4,8 @@ package gregtech.common.gui.dev;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.RSControlMode;
 import gregtech.api.gui.GT_Slot_Holo;
+import gregtech.api.gui.GT_Slot_Wrapper_Icon;
+import gregtech.api.gui.widgets.icon.GT_GuiIcon;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.dev.GT_MetaTileEntity_DevFluidSource;
 import gregtech.api.util.GT_Utility;
@@ -34,7 +36,7 @@ public class GT_Container_DevFluidSource extends GT_Container_Dev<GT_MetaTileEnt
     public void addSlots(final InventoryPlayer aPlayerInventory) {
         val slotX = getGuiWidth() / 2 - (GregTech_API.mDWS ? 96 : 64) - 20;
         val slotY = 25;
-        addSlotToContainer(new GT_Slot_Holo(mMetaTileEntity, 0, slotX, slotY, false, true, 1));
+        addSlotToContainer(new GT_Slot_Wrapper_Icon(new GT_Slot_Holo(mMetaTileEntity, 0, slotX, slotY, false, true, 1), GT_GuiIcon.INV_SLOT_INPUT, GT_GuiIcon.PLAYER_INV_SLOT_HIGHLIGHT));
     }
 
     /**
