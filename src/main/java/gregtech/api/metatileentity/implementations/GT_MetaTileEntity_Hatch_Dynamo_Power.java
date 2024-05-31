@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -31,6 +32,14 @@ public class GT_MetaTileEntity_Hatch_Dynamo_Power extends GT_MetaTileEntity_Hatc
         super(aName, aTier, aDescription, aTextures);
         maxAmpThroughPut = amps;
         powerTextureOverlay = Textures.BlockIcons.POWER_OVERLAYS.getOrDefault(amps, TextureFactory.of(Textures.BlockIcons.POWER_16));
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public long maxEUOutput() {
+        return GT_Values.V[mTier] * maxAmpThroughPut;
     }
 
     @Override

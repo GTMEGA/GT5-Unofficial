@@ -12,6 +12,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.util.HashMap;
 import java.util.Map;
 
+import static gregtech.api.enums.GT_Values.V;
+
 @Getter
 public class GT_MetaTileEntity_Hatch_Energy_Power extends GT_MetaTileEntity_Hatch_Energy {
 
@@ -35,6 +37,14 @@ public class GT_MetaTileEntity_Hatch_Energy_Power extends GT_MetaTileEntity_Hatc
         super(aName, aTier, aDescription, aTextures);
         maxAmpThroughPut = amps;
         powerTextureOverlay = Textures.BlockIcons.POWER_OVERLAYS.getOrDefault(amps, TextureFactory.of(Textures.BlockIcons.POWER_16));
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public long maxEUInput() {
+        return V[mTier] * maxAmpThroughPut;
     }
 
     @Override
