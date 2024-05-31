@@ -642,8 +642,10 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
 
     public void refreshOutput() {
         if (hasItem()) {
-            mInventory[slotManualOutput] = GT_Utility.copyAmount(64, getStored());
-            mInventory[slotOutput]       = GT_Utility.copyAmount(getAmount(), getStored());
+            val stored = getStored();
+            val maxStackSize = stored.getMaxStackSize();
+            mInventory[slotManualOutput] = GT_Utility.copyAmount(maxStackSize, stored);
+            mInventory[slotOutput]       = GT_Utility.copyAmount(getAmount(), stored);
         } else {
             mInventory[slotManualOutput] = null;
             mInventory[slotOutput]       = null;
