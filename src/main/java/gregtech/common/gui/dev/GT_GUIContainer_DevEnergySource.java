@@ -289,12 +289,18 @@ public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine
     }
 
     private void voltSliderScroll(final GT_GuiSlider slider) {
+        val minMotion = 1;
         val dWheel = Mouse.getDWheel();
-        if (dWheel == 0/* || !slider.isLastInteracted(this)*/) {
+        val absDWheel = Math.abs(dWheel);
+        if (absDWheel < minMotion) {
             return;
         }
-        val wheelModifier = dWheel * 0.00075;
-        slider.setValue(slider.getValue() + wheelModifier * slider.getRange());
+        val current = slider.getValue();
+        if (dWheel > 0) {
+            slider.setValue(current + 1);
+        } else {
+            slider.setValue(current - 1);
+        }
         setTierFromSlider(slider);
     }
 
