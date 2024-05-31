@@ -23,7 +23,7 @@ public class GT_Slot_Wrapper_Icon extends GT_Slot_Wrapper {
 //        System.out.println("Coordinates bg: " + xDisplayPosition + ", " + yDisplayPosition);
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, 0.0F, 32.0F);
-        bgIcon.render(xDisplayPosition, yDisplayPosition, 16, 16, 0, true);
+        bgIcon.render(xDisplayPosition-1, yDisplayPosition-1, 18, 18, 0, true);
         GL11.glPopMatrix();
     }
 
