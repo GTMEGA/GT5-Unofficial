@@ -212,7 +212,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine
     }
 
     private void addButtons() {
-        val activityCheck = new GT_GuiIconCheckButton(this, 0, elementLeft(), topButtonRowY(), GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Enable Activity", "Disable Activity");
+        val activityCheck = new GT_GuiIconCheckButton(this, 0, elementLeft(), topButtonRowY(), GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS, "Disable Activity", "Enable Activity");
         activityCheck.setChecked(!getSource().getData().isEnabled());
         activityCheck.setOnUpdateBehavior((screen, button, mouseX, mouseY, clickType) -> activityCheckboxOnUpdate(activityCheck));
         activityCheck.setOnClickBehavior((screen, button, mouseX, mouseY, clickType) -> activityCheckboxOnClick(activityCheck));
