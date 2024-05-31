@@ -576,8 +576,9 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
     }
 
     public void drawBackground() {
-        short[] color = Dyes.MACHINE_METAL.getRGBA();
-        GL11.glColor3ub((byte) color[0], (byte) color[1], (byte) color[2]);
+        //You're coloring a.... static texture... which has its own color data... quit it!
+//        short[] color = Dyes.MACHINE_METAL.getRGBA();
+//        GL11.glColor3ub((byte) color[0], (byte) color[1], (byte) color[2]);
         final ResourceLocation bg = getGUIBackground();
         this.mc.renderEngine.bindTexture(bg);
         final int x, y;
