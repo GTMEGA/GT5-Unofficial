@@ -34,6 +34,14 @@ public class GT_Container_DevEnergySource extends GT_Container_Dev<GT_MetaTileEn
      * @return
      */
     @Override
+    public int baseWidth() {
+        return 0;
+    }
+
+    /**
+     * @return
+     */
+    @Override
     public int getDWSWidthBump() {
         return 0;
     }
@@ -42,8 +50,8 @@ public class GT_Container_DevEnergySource extends GT_Container_Dev<GT_MetaTileEn
      * @return
      */
     @Override
-    public int baseWidth() {
-        return 0;
+    public boolean shouldReceiveLiveServerUpdates() {
+        return false;
     }
 
     protected void setMode(final RSControlMode mode) {

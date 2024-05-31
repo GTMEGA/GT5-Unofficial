@@ -26,11 +26,9 @@ import static gregtech.api.enums.GT_Values.VN;
 
 public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine {
 
-    public static final int COOLDOWN = 50;
+    public static final int COOLDOWN = 1;
 
     public static final Color TEXT_COLOR = new Color(0x30, 0x30, 0xFF, 0xFF);
-
-    public static final Color ERROR_COLOR = new Color(144, 8, 8, 0xFF);
 
     private static int vTBoxY() {
         return vSliderY() + 20;
@@ -83,6 +81,25 @@ public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine
     }
 
     /**
+     * @param mouseX
+     * @param mouseY
+     * @param lastClick
+     * @param timeSinceLastClick
+     */
+    @Override
+    protected void handleClickOutsideUI(final int mouseX, final int mouseY, final int lastClick, final long timeSinceLastClick) {
+//        sendPacketToServer();
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void onScreenClosed() {
+        sendPacketToServer();
+    }
+
+    /**
      * Given textbox's value might have changed.
      *
      * @param box
@@ -125,10 +142,6 @@ public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine
         return 15;
     }
 
-    public GT_Container_DevEnergySource getSource() {
-        return (GT_Container_DevEnergySource) mContainer;
-    }
-
     private static void boxOnUpdate(final GT_GuiIntegerTextBox aBox, final String source) {
         aBox.setText(source);
     }
@@ -138,7 +151,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine
      */
     @Override
     public void sendUpdateToServer() {
-        getSource().sendPacket();
+//        sendPacketToServer();
     }
 
     /**
@@ -164,11 +177,14 @@ public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine
         var volt = getSource().getData().getVoltage();
         drawString(String.format("%d Eu/t(%s)", volt, VN[GT_Utility.getTier(volt)]), left, vTBoxY(), TEXT_COLOR);
         drawString("Amperage", left, aTBoxY(), TEXT_COLOR);
-        /*if (!getSource().getData().canRun()) {
-            drawString(getSource().getDisabledStatus(), elementLeft(), (int) (topButtonRowY() + buttonSize() * 1.5f), ERROR_COLOR);
-        } else {
-            drawString("Running", elementLeft(), (int) (topButtonRowY() + buttonSize() * 1.5f), TEXT_COLOR);
-        }*/
+    }
+
+    private void sendPacketToServer() {
+        getSource().sendPacket();
+    }
+
+    public GT_Container_DevEnergySource getSource() {
+        return (GT_Container_DevEnergySource) mContainer;
     }
 
     public String getTierString() {
@@ -179,6 +195,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine
     public boolean hasDWSAlternativeBackground() {
         return false;
     }
+
 
     private void updateButtonBackground(final GT_GuiIconButton button, final boolean error) {
         val highlightIcon = error ? GT_GuiIcon.BUTTON_HIGHLIGHT : GT_GuiIcon.BUTTON_ERROR_HIGHLIGHT;
@@ -256,6 +273,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine
 
     private void addVoltTierSlider() {
         val voltTierSlider = new GT_GuiSlider_Horizontal(this, 0, elementLeft(), vSliderY(), 128, 8, 0.0, 15.0, getSource().getData().getTier(), 16);
+        voltTierSlider.setMidColor(voltTierSlider.getEdgeColor());
         voltTierSlider.setIgnoreYForCheck(true);
         voltTierSlider.setTextHandler(slider -> String.format("Tier: %s", VN[(int) slider.getValue()]));
         voltTierSlider.setOnChange(this::voltSliderOnChange);
@@ -272,7 +290,7 @@ public class GT_GUIContainer_DevEnergySource extends GT_RichGuiContainer_Machine
 
     private void voltSliderScroll(final GT_GuiSlider slider) {
         val dWheel = Mouse.getDWheel();
-        if (dWheel == 0 || !slider.isLastInteracted(this)) {
+        if (dWheel == 0/* || !slider.isLastInteracted(this)*/) {
             return;
         }
         val wheelModifier = dWheel * 0.00075;

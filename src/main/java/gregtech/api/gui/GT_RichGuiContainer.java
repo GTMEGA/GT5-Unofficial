@@ -271,6 +271,7 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
         final int mouseY = getMouseY(rawMY);
         sliders.stream().filter(element -> element.inBounds(rawMX, rawMY, clickType)).forEach(slider -> slider.onMousePressed(rawMX, rawMY, clickType));
         textBoxes.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType)).forEach(this::setFocusedTextBox);
+        textBoxes.stream().filter(element -> !element.inBounds(mouseX, mouseY, clickType)).forEach(this::applyTextBox);
         subWindows.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType)).forEach(element -> element.receiveClick(mouseX, mouseY, clickType));
     }
 
@@ -304,6 +305,13 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
         super.mouseClickMove(mouseX, mouseY, lastClick, timeSinceLastClick);
         sliders.stream().filter(element -> element.inBounds(mouseX, mouseY, lastClick)).forEach(slider -> slider.onMouseDragged(mouseX, mouseY, lastClick));
         subWindows.stream().filter(element -> element.inBounds(mouseX, mouseY, lastClick)).forEach(element -> element.receiveDrag(mouseX, mouseY, lastClick));
+        if (!isMouseInsideGUI(mouseX, mouseY)) {
+            handleClickOutsideUI(mouseX, mouseY, lastClick, timeSinceLastClick);
+        }
+    }
+
+    protected void handleClickOutsideUI(final int mouseX, final int mouseY, final int lastClick, final long timeSinceLastClick) {
+
     }
 
     /**
@@ -338,9 +346,12 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
      */
     protected void setFocusedTextBox(GT_GuiIntegerTextBox boxToFocus) {
         for (GT_GuiIntegerTextBox textBox : textBoxes) {
+            val wasFocused = textBox.isFocused();
             textBox.setFocused(textBox.equals(boxToFocus) && textBox.isEnabled());
             if (textBox.isFocused()) {
                 setLastInteracted(textBox);
+            } else if (wasFocused && !textBox.isFocused()) {
+                applyTextBox(textBox);
             }
         }
     }
@@ -358,6 +369,10 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
         super.mouseMovedOrUp(mouseX, mouseY, clickState);
         sliders.forEach(slider -> slider.onMouseReleased(mouseX, mouseY, clickState));
         subWindows.forEach(element -> element.receiveMouseMovement(mouseX, mouseY, clickState));
+    }
+
+    public boolean isMouseInsideGUI(final int mouseX, final int mouseY) {
+        return mouseX >= guiLeft && mouseX <= guiLeft + guiWidth && mouseY >= guiTop && mouseY <= guiTop + guiHeight;
     }
 
     /**
@@ -440,9 +455,14 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
 
     }
 
-    public void closeScreen() {
+    public final void closeScreen() {
+        onScreenClosed();
         this.mc.displayGuiScreen(null);
         this.mc.setIngameFocus();
+    }
+
+    public void onScreenClosed() {
+
     }
 
     /**

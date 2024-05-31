@@ -33,16 +33,16 @@ public abstract class GT_Container_Dev<MachineType extends MetaTileEntity & IAdv
                            ) {
         super(aInventoryPlayer, aTileEntity);
         MachineType tempMachine = null;
-        DataType tempData = null;
+        DataType    tempData    = null;
         try {
             tempMachine = machineKlass.cast(getMetaTileEntity());
-            tempData = dataKlass.cast(tempMachine.getTEGUIData());
-            valid = true;
+            tempData    = dataKlass.cast(tempMachine.getTEGUIData());
+            valid       = true;
         } catch (ClassCastException e) {
             GT_FML_LOGGER.printf(Level.ERROR, "Could not cast container properly, please scream at me");
             // throw new RuntimeException(e);
         }
-        data = tempData;
+        data    = tempData;
         machine = tempMachine;
         detectAndSendChanges();
     }
@@ -70,7 +70,13 @@ public abstract class GT_Container_Dev<MachineType extends MetaTileEntity & IAdv
         if (mTileEntity == null || this.data == null) {
             return;
         }
-        this.data.receiveChange(changeID, data);
+        if (shouldReceiveLiveServerUpdates()) {
+            this.data.receiveChange(changeID, data);
+        }
+    }
+
+    public boolean shouldReceiveLiveServerUpdates() {
+        return true;
     }
 
     public MachineType getSource() {

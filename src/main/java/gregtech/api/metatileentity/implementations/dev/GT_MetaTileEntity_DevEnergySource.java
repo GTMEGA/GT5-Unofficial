@@ -11,8 +11,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.IAdvancedTEData;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.IAdvancedTEData;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.dev.GT_Container_DevEnergySource;
 import gregtech.common.gui.dev.GT_GUIContainer_DevEnergySource;
@@ -30,12 +30,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 
 import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 
@@ -88,10 +86,10 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         }
 
         /**
-         * Write data to given ByteBuf The data saved this way is intended to be stored for short amount of time over
-         * network. DO NOT store it to disks.
+         * Write data to given ByteBuf The data saved this way is intended to be stored for short amount of time over network. DO NOT store it to disks.
          *
-         * @param aBuf Buffer to write into
+         * @param aBuf
+         *         Buffer to write into
          */
         @Override
         public void writeToByteBuf(final ByteBuf aBuf) {
@@ -143,11 +141,12 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         }
 
         /**
-         * Read data from given parameter and return this. The data read this way is intended to be stored for short
-         * amount of time over network.
+         * Read data from given parameter and return this. The data read this way is intended to be stored for short amount of time over network.
          *
-         * @param aBuf    Buffer
-         * @param aPlayer Player, unused
+         * @param aBuf
+         *         Buffer
+         * @param aPlayer
+         *         Player, unused
          */
         @Nonnull
         @Override
@@ -216,24 +215,22 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     }
 
 
-    private final byte[] rsValues = {0, 0, 0, 0, 0, 0};
+    private final byte[] rsValues = {
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+    };
 
     private GUIData internalData = new GUIData();
-
-    /* private int energyTier = 0;
-
-    private long voltage = 0;
-
-    private int amperage = 0;
-
-    private boolean enabled = true;
-
-    private RSControlMode rsMode = RSControlMode.IGNORE; */
 
 
     public GT_MetaTileEntity_DevEnergySource(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 15, 0, new String[]{
-                "Draws unlimited energy from quirks of the quantum foam", "You ARE supposed to have this, aren't you?"
+                "Draws unlimited energy from quirks of the quantum foam",
+                "You ARE supposed to have this, aren't you?"
         });
     }
 
@@ -248,15 +245,6 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        /*
-        NBTTagCompound devNBT = new NBTTagCompound();
-        devNBT.setBoolean("enabled", isEnabled());
-        devNBT.setLong("voltage", getVoltage());
-        devNBT.setInteger("amps", getAmperage());
-        getRedstoneMode().saveNBTData(devNBT);
-        devNBT.setInteger("tier", getEnergyTier());
-        aNBT.setTag("dev", devNBT);
-        */
         aNBT.setTag("dev", internalData.saveDataToNBT());
     }
 
@@ -282,9 +270,17 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
             IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone
                                 ) {
         boolean caresAboutRS = internalData.mode != RSControlMode.IGNORE;
-        int rsBump = 2 * (caresAboutRS ? (internalData.rsActive ? 2 : 1) : 0);
-        int facingBump = aSide == aFacing ? 0 : 1;
+        int     rsBump       = 2 * (caresAboutRS ? (internalData.rsActive ? 2 : 1) : 0);
+        int     facingBump   = aSide == aFacing ? 0 : 1;
         return mTextures[facingBump + rsBump][aColorIndex + 1];
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public boolean canDrop() {
+        return false;
     }
 
     /**
@@ -417,29 +413,10 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         return 1L;
     }
 
-    /**
-     * @return
-     */
-    @Override
-    public boolean canDrop() {
-        return false;
-    }
-
     @Override
     public void markDirty() {
         super.markDirty();
         getBaseMetaTileEntity().markDirty();
-    }
-
-    @Override
-    public boolean renderInWorld(final IBlockAccess aWorld, final int aX, final int aY, final int aZ, final Block aBlock, final RenderBlocks aRenderer) {
-        val te = getBaseMetaTileEntity();
-        byte facing = te.getFrontFacing();
-        for (byte side = 0; side < 6; side++) {
-            val tex = getTexture(te, side, facing, te.getColorization(), te.isActive(), true);
-            GT_Renderer_Block.renderFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tex, true, side);
-        }
-        return true;
     }
 
     @Override
@@ -452,24 +429,60 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
         return new GT_GUIContainer_DevEnergySource(aPlayerInventory, aBaseMetaTileEntity);
     }
 
+    @Override
+    public boolean renderInWorld(final IBlockAccess aWorld, final int aX, final int aY, final int aZ, final Block aBlock, final RenderBlocks aRenderer) {
+        val  te     = getBaseMetaTileEntity();
+        byte facing = te.getFrontFacing();
+        for (byte side = 0; side < 6; side++) {
+            val tex = getTexture(te, side, facing, te.getColorization(), te.isActive(), true);
+            GT_Renderer_Block.renderFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tex, true, side);
+        }
+        return true;
+    }
+
     public boolean canRun() {
         return internalData.canRun();
     }
 
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
-        ITexture[][][] rTextures = new ITexture[6][17][];
-        val pipe = TextureFactory.of(OVERLAYS_ENERGY_OUT);
-        val energySource = TextureFactory.of(OVERLAY_DEV_ENERGY_SOURCE);
-        val rsInactive = TextureFactory.of(OVERLAY_RS_INACTIVE);
-        val rsActive = TextureFactory.of(OVERLAY_RS_ACTIVE);
+        ITexture[][][] rTextures    = new ITexture[6][17][];
+        val            pipe         = TextureFactory.of(OVERLAYS_ENERGY_OUT);
+        val            energySource = TextureFactory.of(OVERLAY_DEV_ENERGY_SOURCE);
+        val            rsInactive   = TextureFactory.of(OVERLAY_RS_INACTIVE);
+        val            rsActive     = TextureFactory.of(OVERLAY_RS_ACTIVE);
         for (int i = 0; i < rTextures[0].length; i++) {
-            rTextures[0][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], energySource, pipe};
-            rTextures[1][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], energySource};
-            rTextures[2][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], rsInactive, energySource, pipe};
-            rTextures[3][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], rsInactive, energySource};
-            rTextures[4][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], rsActive, energySource, pipe};
-            rTextures[5][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], rsActive, energySource};
+            rTextures[0][i] = new ITexture[]{
+                    MACHINE_CASINGS[mTier][i],
+                    energySource,
+                    pipe
+            };
+            rTextures[1][i] = new ITexture[]{
+                    MACHINE_CASINGS[mTier][i],
+                    energySource
+            };
+            rTextures[2][i] = new ITexture[]{
+                    MACHINE_CASINGS[mTier][i],
+                    rsInactive,
+                    energySource,
+                    pipe
+            };
+            rTextures[3][i] = new ITexture[]{
+                    MACHINE_CASINGS[mTier][i],
+                    rsInactive,
+                    energySource
+            };
+            rTextures[4][i] = new ITexture[]{
+                    MACHINE_CASINGS[mTier][i],
+                    rsActive,
+                    energySource,
+                    pipe
+            };
+            rTextures[5][i] = new ITexture[]{
+                    MACHINE_CASINGS[mTier][i],
+                    rsActive,
+                    energySource
+            };
         }
         return rTextures;
     }
@@ -477,7 +490,8 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     /**
      * Receive and accept the packet
      *
-     * @param data data to read from
+     * @param data
+     *         data to read from
      */
     @Override
     public void receiveGuiData(final ISerializableObject data) {
@@ -491,7 +505,8 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     /**
      * Decodes the packet, machine type specific
      *
-     * @param aData Packet to decipher
+     * @param aData
+     *         Packet to decipher
      */
     @Override
     public ISerializableObject decodePacket(final ByteArrayDataInput aData) {

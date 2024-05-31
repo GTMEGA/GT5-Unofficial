@@ -109,8 +109,8 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
 //            itemPerTick = devNBT.getInteger("iPerTick");
 //            itemPerSecond = devNBT.getInteger("iPerSecond");
 //            perTick = devNBT.getBoolean("perTick");
-            rate = devNBT.getInteger("rate");
-            frequency = devNBT.getInteger("frequency");
+            rate         = devNBT.getInteger("rate");
+            frequency    = devNBT.getInteger("frequency");
             redstoneMode = RSControlMode.loadFromNBTData(devNBT);
         }
 
@@ -248,7 +248,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
             mInventory[2] = ItemStack.loadItemStackFromNBT(devNBT.getCompoundTag("item"));
         }
         internalData.loadDataFromNBT(devNBT);
-        tCount = devNBT.getInteger("tick");
+        tCount  = devNBT.getInteger("tick");
         tPeriod = devNBT.getInteger("period");
     }
 
@@ -283,21 +283,26 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
     /**
      * Icon of the Texture. If this returns null then it falls back to getTextureIndex.
      *
-     * @param aBaseMetaTileEntity base entity
-     * @param aSide               is the Side of the Block
-     * @param aFacing             is the direction the Block is facing (or a Bitmask of all Connections in case of Pipes)
-     * @param aColorIndex         The Minecraft Color the Block is having
-     * @param aActive             if the Machine is currently active (use this instead of calling mBaseMetaTileEntity.mActive!!!). Note: In case of Pipes this means if this Side
-     *                            is connected to something or not.
-     * @param aRedstone           if the Machine is currently outputting a RedstoneSignal (use this instead of calling mBaseMetaTileEntity.mRedstone!!!)
+     * @param aBaseMetaTileEntity
+     *         base entity
+     * @param aSide
+     *         is the Side of the Block
+     * @param aFacing
+     *         is the direction the Block is facing (or a Bitmask of all Connections in case of Pipes)
+     * @param aColorIndex
+     *         The Minecraft Color the Block is having
+     * @param aActive
+     *         if the Machine is currently active (use this instead of calling mBaseMetaTileEntity.mActive!!!). Note: In case of Pipes this means if this Side is connected to something or not.
+     * @param aRedstone
+     *         if the Machine is currently outputting a RedstoneSignal (use this instead of calling mBaseMetaTileEntity.mRedstone!!!)
      */
     @Override
     public ITexture[] getTexture(
             final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone
                                 ) {
         boolean caresAboutRS = internalData.redstoneMode != RSControlMode.IGNORE;
-        int rsBump = 2 * (caresAboutRS ? (internalData.rsActive ? 2 : 1) : 0);
-        int facingBump = aSide == aFacing ? 0 : 1;
+        int     rsBump       = 2 * (caresAboutRS ? (internalData.rsActive ? 2 : 1) : 0);
+        int     facingBump   = aSide == aFacing ? 0 : 1;
         return mTextures[facingBump + rsBump][aColorIndex + 1];
     }
 
@@ -340,6 +345,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
      * @param aX
      * @param aY
      * @param aZ
+     *
      * @return
      */
     @Override
@@ -379,6 +385,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
 
     /**
      * @param aFacing
+     *
      * @return
      */
     @Override
@@ -388,6 +395,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
 
     /**
      * @param aPlayer
+     *
      * @return
      */
     @Override
@@ -410,6 +418,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
 
     /**
      * @param aIndex
+     *
      * @return
      */
     @Override
@@ -427,6 +436,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
     /**
      * @param aIndex
      * @param aStack
+     *
      * @return
      */
     @Override
@@ -436,6 +446,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
 
     /**
      * @param aSide
+     *
      * @return
      */
     @Override
@@ -459,6 +470,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
      * @param aID
      * @param aPlayerInventory
      * @param aBaseMetaTileEntity
+     *
      * @return
      */
     @Override
@@ -470,6 +482,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
      * @param aID
      * @param aPlayerInventory
      * @param aBaseMetaTileEntity
+     *
      * @return
      */
     @Override
@@ -480,15 +493,16 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
     /**
      * Used Client Side to get a Texture Set for this Block. Called after setting the Tier and the Description so that those two are accessible.
      *
-     * @param aTextures is the optional Array you can give to the Constructor.
+     * @param aTextures
+     *         is the optional Array you can give to the Constructor.
      */
     @Override
     public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
-        ITexture[][][] rTextures = new ITexture[6][17][];
-        val pipe = TextureFactory.of(OVERLAY_ITEM_OUT);
-        val itemSource = TextureFactory.of(OVERLAY_DEV_ITEM_SOURCE);
-        val rsInactive = TextureFactory.of(OVERLAY_RS_INACTIVE);
-        val rsActive = TextureFactory.of(OVERLAY_RS_ACTIVE);
+        ITexture[][][] rTextures  = new ITexture[6][17][];
+        val            pipe       = TextureFactory.of(OVERLAY_ITEM_OUT);
+        val            itemSource = TextureFactory.of(OVERLAY_DEV_ITEM_SOURCE);
+        val            rsInactive = TextureFactory.of(OVERLAY_RS_INACTIVE);
+        val            rsActive   = TextureFactory.of(OVERLAY_RS_ACTIVE);
         for (int i = 0; i < rTextures[0].length; i++) {
             rTextures[0][i] = new ITexture[]{
                     MACHINE_CASINGS[mTier][i],
@@ -570,6 +584,26 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
         this.tCount = this.tCount % internalData.getFrequency();
     }
 
+    /**
+     * Decodes the packet, machine type specific
+     *
+     * @param aData
+     */
+    @Override
+    public ISerializableObject decodePacket(final ByteArrayDataInput aData) {
+        return new GUIData().readFromPacket(aData, null);
+    }
+
+    @Override
+    public ISerializableObject getTEGUIData() {
+        return internalData;
+    }
+
+    @Override
+    public void onNeighborChange(final int x, final int y, final int z) {
+        processRS();
+    }
+
     @Override
     public RSControlMode getRedstoneMode() {
         return internalData.getRedstoneMode();
@@ -606,33 +640,13 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
         return true;
     }
 
-    /**
-     * Decodes the packet, machine type specific
-     *
-     * @param aData
-     */
-    @Override
-    public ISerializableObject decodePacket(final ByteArrayDataInput aData) {
-        return new GUIData().readFromPacket(aData, null);
-    }
-
-    @Override
-    public ISerializableObject getTEGUIData() {
-        return internalData;
-    }
-
-    @Override
-    public void onNeighborChange(final int x, final int y, final int z) {
-        processRS();
-    }
-
     public void refreshOutput() {
         if (hasItem()) {
             mInventory[slotManualOutput] = GT_Utility.copyAmount(64, getStored());
-            mInventory[slotOutput] = GT_Utility.copyAmount(getAmount(), getStored());
+            mInventory[slotOutput]       = GT_Utility.copyAmount(getAmount(), getStored());
         } else {
             mInventory[slotManualOutput] = null;
-            mInventory[slotOutput] = null;
+            mInventory[slotOutput]       = null;
         }
     }
 
@@ -641,7 +655,7 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
             return;
         }
         final byte sideInputtedInto = aBaseMetaTileEntity.getBackFacing();
-        int[] targetSlots = null;
+        int[]      targetSlots      = null;
         if (atSide instanceof ISidedInventory) {
             targetSlots = ((ISidedInventory) atSide).getAccessibleSlotsFromSide(sideInputtedInto);
         }

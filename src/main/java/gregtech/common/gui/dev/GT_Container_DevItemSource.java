@@ -27,22 +27,6 @@ public class GT_Container_DevItemSource extends GT_Container_Dev<GT_MetaTileEnti
     }
 
     /**
-     * @return
-     */
-    @Override
-    public int getDWSWidthBump() {
-        return 82;
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public int baseWidth() {
-        return 256;
-    }
-
-    /**
      * To add the Slots to your GUI
      *
      * @param aPlayerInventory
@@ -55,6 +39,38 @@ public class GT_Container_DevItemSource extends GT_Container_Dev<GT_MetaTileEnti
 
     public int slotX() {
         return 40;
+    }
+
+    /**
+     * @param aSlotIndex
+     * @param aMouseclick
+     * @param aShifthold
+     * @param aPlayer
+     *
+     * @return
+     */
+    @Override
+    public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold, final EntityPlayer aPlayer) {
+        if (aSlotIndex < 1) {
+            return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
+        }
+        val slotClicked = (Slot) inventorySlots.get(aSlotIndex);
+        if (slotClicked != null) {
+            if (!(mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_DevItemSource)) {
+                return null;
+            }
+            if (aSlotIndex == 1) {
+                val currentStack = aPlayer.inventory.getItemStack();
+                ((GT_MetaTileEntity_DevItemSource) mTileEntity.getMetaTileEntity()).clearItem();
+                if (currentStack != null) {
+                    ((GT_MetaTileEntity_DevItemSource) mTileEntity.getMetaTileEntity()).setStored(currentStack);
+                    slotClicked.putStack(GT_Utility.copyAmount(1, currentStack.copy()));
+                } else {
+                    slotClicked.putStack(null);
+                }
+            }
+        }
+        return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
     }
 
     /**
@@ -90,34 +106,19 @@ public class GT_Container_DevItemSource extends GT_Container_Dev<GT_MetaTileEnti
     }
 
     /**
-     * @param aSlotIndex
-     * @param aMouseclick
-     * @param aShifthold
-     * @param aPlayer
      * @return
      */
     @Override
-    public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold, final EntityPlayer aPlayer) {
-        if (aSlotIndex < 1) {
-            return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
-        }
-        val slotClicked = (Slot) inventorySlots.get(aSlotIndex);
-        if (slotClicked != null) {
-            if (!(mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_DevItemSource)) {
-                return null;
-            }
-            if (aSlotIndex == 1) {
-                val currentStack = aPlayer.inventory.getItemStack();
-                ((GT_MetaTileEntity_DevItemSource) mTileEntity.getMetaTileEntity()).clearItem();
-                if (currentStack != null) {
-                    ((GT_MetaTileEntity_DevItemSource) mTileEntity.getMetaTileEntity()).setStored(currentStack);
-                    slotClicked.putStack(GT_Utility.copyAmount(1, currentStack.copy()));
-                } else {
-                    slotClicked.putStack(null);
-                }
-            }
-        }
-        return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
+    public int baseWidth() {
+        return 256;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public int getDWSWidthBump() {
+        return 82;
     }
 
     public boolean toggleActive() {
@@ -143,6 +144,14 @@ public class GT_Container_DevItemSource extends GT_Container_Dev<GT_MetaTileEnti
         super.updateProgressBar(changeID, data);
     }
 
+    /**
+     * @return
+     */
+    @Override
+    public boolean shouldReceiveLiveServerUpdates() {
+        return false;
+    }
+
     protected void setRedstoneMode(final RSControlMode redstoneMode) {
         data.setRedstoneMode(redstoneMode);
         detectAndSendChanges();
@@ -159,13 +168,13 @@ public class GT_Container_DevItemSource extends GT_Container_Dev<GT_MetaTileEnti
         detectAndSendChanges();
     }
 
-    void setFrequency(final int frequency) {
-        data.setFrequency(frequency);
+    void setRate(final int rate) {
+        data.setRate(rate);
         detectAndSendChanges();
     }
 
-    void setRate(final int rate) {
-        data.setRate(rate);
+    void setFrequency(final int frequency) {
+        data.setFrequency(frequency);
         detectAndSendChanges();
     }
 

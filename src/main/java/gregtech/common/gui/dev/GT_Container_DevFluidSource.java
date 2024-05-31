@@ -30,7 +30,8 @@ public class GT_Container_DevFluidSource extends GT_Container_Dev<GT_MetaTileEnt
     /**
      * To add the Slots to your GUI
      *
-     * @param aPlayerInventory the Inventory of the Player
+     * @param aPlayerInventory
+     *         the Inventory of the Player
      */
     @Override
     public void addSlots(final InventoryPlayer aPlayerInventory) {
@@ -53,6 +54,49 @@ public class GT_Container_DevFluidSource extends GT_Container_Dev<GT_MetaTileEnt
     @Override
     public int getDWSWidthBump() {
         return 82;
+    }
+
+    /**
+     * @param aSlotIndex
+     * @param aMouseclick
+     * @param aShifthold
+     * @param aPlayer
+     *
+     * @return
+     */
+    @Override
+    public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold, final EntityPlayer aPlayer) {
+        if (aSlotIndex < 0) {
+            return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
+        }
+        val slotClicked = (Slot) inventorySlots.get(aSlotIndex);
+        if (slotClicked != null) {
+            if (!(mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_DevFluidSource)) {
+                return null;
+            }
+            if (aSlotIndex == 0) {
+                val stackInHand = aPlayer.inventory.getItemStack();
+                val itemInHand  = stackInHand == null ? null : stackInHand.getItem();
+                if (stackInHand == null || itemInHand == null) {
+                    machine.setDrainableStack(null);
+                } else {
+                    val fluidStackInHand = getFluidFromItem(stackInHand);
+                    if (fluidStackInHand != null) {
+                        val copy = fluidStackInHand.copy();
+                        copy.amount = Integer.MAX_VALUE;
+                        machine.setDrainableStack(copy);
+                    }
+                }
+
+            }
+        }
+        return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
+    }
+
+    private static FluidStack getFluidFromItem(final ItemStack stack) {
+        // TODO: Figure out which of these is preferable or if both might be. Works for now but idk. API fucky.
+        // return FluidContainerRegistry.getFluidForFilledItem(stackInHand);
+        return GT_Utility.getFluidForFilledItem(stack, true);
     }
 
     /**
@@ -88,45 +132,11 @@ public class GT_Container_DevFluidSource extends GT_Container_Dev<GT_MetaTileEnt
     }
 
     /**
-     * @param aSlotIndex
-     * @param aMouseclick
-     * @param aShifthold
-     * @param aPlayer
      * @return
      */
     @Override
-    public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold, final EntityPlayer aPlayer) {
-        if (aSlotIndex < 0) {
-            return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
-        }
-        val slotClicked = (Slot) inventorySlots.get(aSlotIndex);
-        if (slotClicked != null) {
-            if (!(mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_DevFluidSource)) {
-                return null;
-            }
-            if (aSlotIndex == 0) {
-                val stackInHand = aPlayer.inventory.getItemStack();
-                val itemInHand = stackInHand == null ? null : stackInHand.getItem();
-                if (stackInHand == null || itemInHand == null) {
-                    machine.setDrainableStack(null);
-                } else {
-                    val fluidStackInHand = getFluidFromItem(stackInHand);
-                    if (fluidStackInHand != null) {
-                        val copy = fluidStackInHand.copy();
-                        copy.amount = Integer.MAX_VALUE;
-                        machine.setDrainableStack(copy);
-                    }
-                }
-
-            }
-        }
-        return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
-    }
-
-    private static FluidStack getFluidFromItem(final ItemStack stack) {
-        // TODO: Figure out which of these is preferable or if both might be. Works for now but idk. API fucky.
-        // return FluidContainerRegistry.getFluidForFilledItem(stackInHand);
-        return GT_Utility.getFluidForFilledItem(stack, true);
+    public boolean shouldReceiveLiveServerUpdates() {
+        return false;
     }
 
     protected void setMode(final RSControlMode mode) {

@@ -32,4 +32,8 @@ public interface IAdvancedGUIEntity extends IMetaTileEntity {
 
     void onNeighborChange(final int x, final int y, final int z);
 
+    default boolean shouldServerReceiveLiveUpdates() {
+        return true;
+    }
+
 }
