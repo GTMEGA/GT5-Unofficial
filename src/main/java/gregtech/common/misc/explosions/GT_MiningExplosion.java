@@ -23,7 +23,7 @@ public class GT_MiningExplosion extends GT_Explosion<GT_MiningExplosiveTier> {
 
     @Override
     protected float getDropChance(final Block block) {
-        val params = getTier().getParameters();
+        val params   = getTier().getParameters();
         val material = block.getMaterial();
         if (material == Material.clay) {
             return params.getClayChance();

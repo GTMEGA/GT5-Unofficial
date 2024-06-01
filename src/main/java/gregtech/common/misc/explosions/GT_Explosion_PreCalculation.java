@@ -60,11 +60,11 @@ public class GT_Explosion_PreCalculation {
             val x = aX * distance;
             val y = aY * distance;
             val z = aZ * distance;
-            posX = (x + parent.sourceX);
-            posY = (y + parent.sourceY);
-            posZ = (z + parent.sourceZ);
+            posX          = (x + parent.sourceX);
+            posY          = (y + parent.sourceY);
+            posZ          = (z + parent.sourceZ);
             chunkPosition = new ChunkPosition(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ));
-            myLength = Math.sqrt(x * x + y * y + z * z);
+            myLength      = Math.sqrt(x * x + y * y + z * z);
             this.parent.explosion.processRay(this);
         }
 
@@ -105,9 +105,9 @@ public class GT_Explosion_PreCalculation {
             for (int j = 0; j < maxRaysY; j++) {
                 for (int k = 0; k < maxRaysZ; k++) {
                     if (i == 0 || i == maxRaysX - 1 || j == 0 || j == maxRaysY - 1 || k == 0 || k == maxRaysZ - 1) {
-                        var aX = i / (double) (maxRaysX - 1) * 2.0 - 1.0;
-                        var aY = j / (double) (maxRaysY - 1) * 2.0 - 1.0;
-                        var aZ = k / (double) (maxRaysZ - 1) * 2.0 - 1.0;
+                        var aX        = i / (double) (maxRaysX - 1) * 2.0 - 1.0;
+                        var aY        = j / (double) (maxRaysY - 1) * 2.0 - 1.0;
+                        var aZ        = k / (double) (maxRaysZ - 1) * 2.0 - 1.0;
                         val magnitude = Math.sqrt(aX * aX + aY * aY + aZ * aZ);
                         aX /= magnitude;
                         aY /= magnitude;
@@ -141,10 +141,10 @@ public class GT_Explosion_PreCalculation {
             val currentPosition = ray.chunkPosition;
             if (currentPosition != last && hasNotEncountered(currentPosition)) {
                 seenPositions.add(currentPosition);
-                val x = currentPosition.chunkPosX;
-                val y = currentPosition.chunkPosY;
-                val z = currentPosition.chunkPosZ;
-                val block = world.getBlock(x, y, z);
+                val x        = currentPosition.chunkPosX;
+                val y        = currentPosition.chunkPosY;
+                val z        = currentPosition.chunkPosZ;
+                val block    = world.getBlock(x, y, z);
                 val metadata = world.getBlockMetadata(x, y, z);
                 if (explosion.canDamage(block, metadata, x, y, z)) {
                     if (!block.isAir(world, x, y, z)) {

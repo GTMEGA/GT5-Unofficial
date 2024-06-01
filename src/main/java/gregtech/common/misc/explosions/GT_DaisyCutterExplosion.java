@@ -25,9 +25,9 @@ public class GT_DaisyCutterExplosion extends GT_Explosion<GT_DaisyCutterTier> {
                                   ) {
         super(world, entity, x, y, z, power);
         int iX, iY, iZ;
-        iX = MathHelper.floor_double(x);
-        iY = MathHelper.floor_double(y);
-        iZ = MathHelper.floor_double(z);
+        iX          = MathHelper.floor_double(x);
+        iY          = MathHelper.floor_double(y);
+        iZ          = MathHelper.floor_double(z);
         this.borker = new GT_TreeBorker(world, iX, iY, iZ, getMaxScanDepth(), getMaxDistance(), -1, -1, true);
     }
 
@@ -80,6 +80,7 @@ public class GT_DaisyCutterExplosion extends GT_Explosion<GT_DaisyCutterTier> {
 
     /**
      * @param block
+     *
      * @return
      */
     @Override
@@ -89,6 +90,7 @@ public class GT_DaisyCutterExplosion extends GT_Explosion<GT_DaisyCutterTier> {
 
     /**
      * @param pos
+     *
      * @return
      */
     @Override
@@ -99,6 +101,7 @@ public class GT_DaisyCutterExplosion extends GT_Explosion<GT_DaisyCutterTier> {
 
     /**
      * @param pos
+     *
      * @return
      */
     @Override
@@ -146,6 +149,7 @@ public class GT_DaisyCutterExplosion extends GT_Explosion<GT_DaisyCutterTier> {
      * @param x
      * @param y
      * @param z
+     *
      * @return
      */
     @Override
@@ -169,7 +173,7 @@ public class GT_DaisyCutterExplosion extends GT_Explosion<GT_DaisyCutterTier> {
      */
     @Override
     protected void handleChunkPosition(final ChunkPosition pos) {
-        final int r = 8;
+        final int r  = 8;
         final int bX = pos.chunkPosX, bY = pos.chunkPosY, bZ = pos.chunkPosZ;
         for (int x = bX - r; x <= bX + r; x++) {
             for (int y = bY - r; y <= bY + r; y++) {

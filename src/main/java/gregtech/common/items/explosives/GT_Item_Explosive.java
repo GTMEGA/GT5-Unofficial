@@ -34,8 +34,10 @@ public class GT_Item_Explosive<TierType extends Enum<TierType> & IGT_ExplosiveTi
     } */
 
     /**
-     * @param block The block this item is associated with
-     * @param uName The unlocalized name of this item
+     * @param block
+     *         The block this item is associated with
+     * @param uName
+     *         The unlocalized name of this item
      */
     @SuppressWarnings("unchecked")
     public GT_Item_Explosive(final Block block, final String uName) {
@@ -60,14 +62,17 @@ public class GT_Item_Explosive<TierType extends Enum<TierType> & IGT_ExplosiveTi
     }
 
     /**
-     * @param block The block this item is associated with
-     * @param uName The unlocalized name of this item
-     * @param tier  The tier of this explosive, note that 0 will be represented as 1 in the name
+     * @param block
+     *         The block this item is associated with
+     * @param uName
+     *         The unlocalized name of this item
+     * @param tier
+     *         The tier of this explosive, note that 0 will be represented as 1 in the name
      */
     @SuppressWarnings("unchecked")
     public GT_Item_Explosive(final Block block, final String uName, final TierType tier) {
         super(block);
-        this.tier = tier;
+        this.tier  = tier;
         this.mName = tier != null ? tier.getULName(uName) : block.getUnlocalizedName();
         if (block instanceof GT_Block_Explosive<?>) {
             ((GT_Block_Explosive<TierType>) block).setItem(this);
@@ -89,8 +94,7 @@ public class GT_Item_Explosive<TierType extends Enum<TierType> & IGT_ExplosiveTi
     }
 
     /**
-     * Returns the unlocalized name of this item. This version accepts an ItemStack so different stacks can have
-     * different names based on their damage or NBT.
+     * Returns the unlocalized name of this item. This version accepts an ItemStack so different stacks can have different names based on their damage or NBT.
      *
      * @param stack
      */

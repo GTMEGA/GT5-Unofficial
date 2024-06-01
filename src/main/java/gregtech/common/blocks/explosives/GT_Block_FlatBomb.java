@@ -6,7 +6,6 @@ import gregtech.common.entities.explosives.GT_Entity_FlatBomb;
 import gregtech.common.items.explosives.GT_Item_FlatBomb;
 import lombok.NonNull;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.world.World;
 
 import static gregtech.common.misc.explosions.IGT_ExplosiveTier.GT_FlatBombTier;
@@ -25,6 +24,7 @@ public class GT_Block_FlatBomb extends GT_Block_Explosive<GT_FlatBombTier> {
      * @param placedBy
      * @param metadata
      * @param timer
+     *
      * @return
      */
     @Override

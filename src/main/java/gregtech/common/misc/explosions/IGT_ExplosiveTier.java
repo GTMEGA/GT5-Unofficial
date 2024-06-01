@@ -31,11 +31,9 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
         }
 
 
-        private @NonNull
-        final String ELName;
+        private @NonNull final String ELName;
 
-        private @NonNull
-        final ExplosiveTextureInfo textureInfo;
+        private @NonNull final ExplosiveTextureInfo textureInfo;
 
         private final @NonNull IGT_ExplosiveTier.ExplosiveFlavorInfo flavorInfo;
 
@@ -79,11 +77,9 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
         }
 
 
-        private @NonNull
-        final String ELName;
+        private @NonNull final String ELName;
 
-        private @NonNull
-        final ExplosiveTextureInfo textureInfo;
+        private @NonNull final ExplosiveTextureInfo textureInfo;
 
         private final @NonNull IGT_ExplosiveTier.ExplosiveFlavorInfo flavorInfo;
 
@@ -92,8 +88,7 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
 
         private final int fortuneTier;
 
-        private @NonNull
-        final MiningExplosiveParameters parameters;
+        private @NonNull final MiningExplosiveParameters parameters;
 
         private final @NonNull AtomicReference<GT_Block_Explosive<GT_MiningExplosiveTier>> blockReference = new AtomicReference<>();
 
@@ -132,11 +127,9 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
         }
 
 
-        private @NonNull
-        final String ELName;
+        private @NonNull final String ELName;
 
-        private @NonNull
-        final ExplosiveTextureInfo textureInfo;
+        private @NonNull final ExplosiveTextureInfo textureInfo;
 
         private final @NonNull IGT_ExplosiveTier.ExplosiveFlavorInfo flavorInfo;
 
@@ -149,13 +142,13 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
 
         private final @NonNull AtomicReference<GT_Block_Explosive<GT_TunnelExplosiveTier>> blockReference = new AtomicReference<>();
 
-        public boolean shouldUseSuffix() {
-            return ordinal() > 0;
-        }
-
         @Override
         public double getRadius() {
             return 0.0;
+        }
+
+        public boolean shouldUseSuffix() {
+            return ordinal() > 0;
         }
 
         /**
@@ -172,8 +165,20 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
     @Getter
     enum GT_FlatBombTier implements IGT_ExplosiveTier<GT_FlatBombTier> {
 
-        MK1("Flat Bomb Mk 1", new ExplosiveTextureInfo("flatbomb/mk1", "FLAT_BOMB"), new ExplosiveFlavorInfo(213, 214), 24, 9.0, 0),
-        MK2("Flat Bomb Mk 2", new ExplosiveTextureInfo("flatbomb/mk2", "FLAT_BOMB"), new ExplosiveFlavorInfo(213, 214), 36, 12.0, 0);
+        MK1("Flat Bomb Mk 1", new ExplosiveTextureInfo("flatbomb/mk1", "FLAT_BOMB"), new ExplosiveFlavorInfo(213, 214), 9.0, 0, new FlatBombParameters(4, 8, 1.5, 1.0, 0.001)),
+        MK2("Flat Bomb Mk 2", new ExplosiveTextureInfo("flatbomb/mk2", "FLAT_BOMB"), new ExplosiveFlavorInfo(213, 214), 12.0, 0, new FlatBombParameters(6, 12, 2.5, 1.0, 0.001));
+
+        @Getter
+        @RequiredArgsConstructor
+        public static class FlatBombParameters {
+
+            private final double maxDepth, maxRadius;
+
+            private final double depthVariation;
+
+            private final double clayChance, otherChance;
+
+        }
 
         private final @NonNull String ELName;
 
@@ -181,11 +186,21 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
 
         private final @NonNull ExplosiveFlavorInfo flavorInfo;
 
-        private final double radius, power;
+        private final double power;
 
         private final int fortuneTier;
 
+        private final FlatBombParameters parameters;
+
         private final @NonNull AtomicReference<GT_Block_Explosive<GT_FlatBombTier>> blockReference = new AtomicReference<>();
+
+        /**
+         * @return The radius of the explosion
+         */
+        @Override
+        public double getRadius() {
+            return getParameters().getMaxRadius();
+        }
 
         public boolean shouldUseSuffix() {
             return ordinal() > 0;
@@ -253,8 +268,11 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
         /**
          * Allows nesting of folders in the icon directory
          *
-         * @param subPath    The sub path of the icon
-         * @param pathSuffix The suffix of the icon
+         * @param subPath
+         *         The sub path of the icon
+         * @param pathSuffix
+         *         The suffix of the icon
+         *
          * @return The icon container
          */
         public static IIconContainer wrapCustomIcon(final @NonNull String subPath, final @NonNull String pathSuffix) {
@@ -264,7 +282,9 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
         /**
          * Wraps a custom icon with the explosive path
          *
-         * @param pathSuffix The suffix of the icon
+         * @param pathSuffix
+         *         The suffix of the icon
+         *
          * @return The icon container
          */
         public static IIconContainer wrapCustomIcon(final @NonNull String pathSuffix) {
@@ -368,6 +388,8 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
         return uName + "." + ((Enum<MyType>) this).name().toLowerCase();
     }
 
+    boolean shouldUseSuffix();
+
     /**
      * @return The localized name.
      */
@@ -377,8 +399,6 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
     default @NonNull IIconContainer[] getIcons() {
         return getTextureInfo().getIcons();
     }
-
-    boolean shouldUseSuffix();
 
     @NonNull
     ExplosiveTextureInfo getTextureInfo();

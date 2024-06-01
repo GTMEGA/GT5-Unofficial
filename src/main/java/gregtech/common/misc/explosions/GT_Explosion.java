@@ -46,8 +46,8 @@ public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_Explosi
                        ) {
         super(world, entity, x, y, z, power);
         this.gtExplosive = entity;
-        this.pubWorld = world;
-        this.isSmoking = true;
+        this.pubWorld    = world;
+        this.isSmoking   = true;
     }
 
     public int getX() {
@@ -104,14 +104,15 @@ public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_Explosi
     /**
      * Does the second part of the explosion (sound, particles, drop spawn)
      *
-     * @param shouldDoParticles whether or not to spawn particles
+     * @param shouldDoParticles
+     *         whether or not to spawn particles
      */
     @Override
     public void doExplosionB(final boolean shouldDoParticles) {
         playSound();
         val expParticleName = getTier().getFlavorInfo().getParticleName();
         pubWorld.spawnParticle(expParticleName, explosionX, explosionY, explosionZ, 1.0, 0.0, 0.0);
-        Set<ChunkPosition> blocksToDestroy;
+        Set<ChunkPosition>          blocksToDestroy;
         GT_Explosion_PreCalculation preCalc;
         if (gtExplosive != null && (preCalc = gtExplosive.getPreCalc()) != null) {
             // It was literally just the s ven
@@ -120,13 +121,13 @@ public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_Explosi
             blocksToDestroy = targeted;
         }
         for (ChunkPosition position : blocksToDestroy) {
-            int i, j, k, meta;
+            int   i, j, k, meta;
             Block block;
-            i = position.chunkPosX;
-            j = position.chunkPosY;
-            k = position.chunkPosZ;
+            i     = position.chunkPosX;
+            j     = position.chunkPosY;
+            k     = position.chunkPosZ;
             block = pubWorld.getBlock(i, j, k);
-            meta = pubWorld.getBlockMetadata(i, j, k);
+            meta  = pubWorld.getBlockMetadata(i, j, k);
             //
             doParticles(shouldDoParticles, (float) i, (float) j, (float) k);
             if (block.getMaterial() != Material.air) {
@@ -168,13 +169,13 @@ public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_Explosi
             if (!(oEntity instanceof Entity)) {
                 return;
             }
-            final Entity entity = (Entity) oEntity;
+            final Entity entity   = (Entity) oEntity;
             final double distance = entity.getDistance(explosionX, explosionY, explosionZ) / ((double) explosionSize);
             if (distance <= 1.0) {
                 double disX, disY, disZ, disMag;
-                disX = entity.posX - explosionX;
-                disY = entity.getEyeHeight() - explosionY;
-                disZ = entity.posZ - explosionZ;
+                disX   = entity.posX - explosionX;
+                disY   = entity.getEyeHeight() - explosionY;
+                disZ   = entity.posZ - explosionZ;
                 disMag = magnitude(disX, disY, disZ);
                 if (disMag != 0.0) {
                     double blockDensity, invDist;
@@ -185,7 +186,7 @@ public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_Explosi
                     // The block density function sort of adjusted the explosion based upon the terrain so this is a bit goofy without it.
 //                    blockDensity = pubWorld.getBlockDensity(expVec, entity.boundingBox);
                     blockDensity = 1.0 / 2.0;
-                    invDist = (1.0 - distance) * blockDensity;
+                    invDist      = (1.0 - distance) * blockDensity;
                     if (!(entity instanceof EntityItem)) {
                         entity.attackEntityFrom(DamageSource.setExplosionSource(this), (float) ((int) ((invDist * invDist + invDist) / 2.0 * 8.0 * (double) explosionSize + 1.0)));
                     }
@@ -238,8 +239,8 @@ public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_Explosi
 
     protected void getDrops(final Block block, final int x, final int y, final int z, final int metadata) {
         if (!pubWorld.isRemote) {
-            final float chance = getDropChance(block);
-            ArrayList<ItemStack> items = block.getDrops(pubWorld, x, y, z, metadata, getFortune());
+            final float          chance = getDropChance(block);
+            ArrayList<ItemStack> items  = block.getDrops(pubWorld, x, y, z, metadata, getFortune());
             harvested.addAll(items.stream().filter(s -> pubWorld.rand.nextFloat() < chance).collect(Collectors.toList()));
         }
     }

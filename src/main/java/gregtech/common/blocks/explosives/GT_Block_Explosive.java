@@ -70,8 +70,8 @@ public abstract class GT_Block_Explosive<TierType extends Enum<TierType> & IGT_E
     }
 
     protected void goBoom(final World world, final int x, final int y, final int z, final EntityPlayer player, final int fuse) {
-        val tier = getTier();
-        final int metadata = world.getBlockMetadata(x, y, z);
+        val                                 tier      = getTier();
+        final int                           metadata  = world.getBlockMetadata(x, y, z);
         final GT_Entity_Explosive<TierType> explosive = createExplosive(world, x, y, z, player, metadata, fuse);
         world.spawnEntityInWorld(explosive);
         world.playSoundAtEntity(explosive, GregTech_API.sSoundList.get(tier.getFlavorInfo().getFuseSoundID()), 1.0f, 1.0f);
@@ -92,10 +92,10 @@ public abstract class GT_Block_Explosive<TierType extends Enum<TierType> & IGT_E
     }
 
     protected int getIconIndex(final int side, final int meta) {
-        final boolean activated = isPrimed(meta);
+        final boolean        activated    = isPrimed(meta);
         final ForgeDirection sideRendered = ForgeDirection.getOrientation(side);
-        final ForgeDirection sideFacing = getFacing(meta).getOpposite();
-        int index = 0;
+        final ForgeDirection sideFacing   = getFacing(meta).getOpposite();
+        int                  index        = 0;
         if (sideRendered == sideFacing) {
             if (activated) {
                 index = 3;
@@ -183,6 +183,7 @@ public abstract class GT_Block_Explosive<TierType extends Enum<TierType> & IGT_E
      * @param y
      * @param z
      * @param side
+     *
      * @return
      */
     @Override
@@ -191,10 +192,10 @@ public abstract class GT_Block_Explosive<TierType extends Enum<TierType> & IGT_E
     }
 
     /**
-     * Queries the class of tool required to harvest this block, if null is returned
-     * we assume that anything can harvest this block.
+     * Queries the class of tool required to harvest this block, if null is returned we assume that anything can harvest this block.
      *
      * @param metadata
+     *
      * @return
      */
     @Override

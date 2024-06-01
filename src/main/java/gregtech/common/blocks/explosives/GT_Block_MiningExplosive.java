@@ -1,7 +1,6 @@
 package gregtech.common.blocks.explosives;
 
 
-import gregtech.common.entities.explosives.GT_Entity_Explosive;
 import gregtech.common.entities.explosives.GT_Entity_MiningExplosive;
 import gregtech.common.items.explosives.GT_Item_MiningExplosive;
 import lombok.NonNull;
@@ -34,6 +33,7 @@ public class GT_Block_MiningExplosive extends GT_Block_Explosive<GT_MiningExplos
      * @param placedBy
      * @param metadata
      * @param timer
+     *
      * @return
      */
     @Override

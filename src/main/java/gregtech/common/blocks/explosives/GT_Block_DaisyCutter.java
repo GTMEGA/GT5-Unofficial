@@ -42,6 +42,7 @@ public class GT_Block_DaisyCutter extends GT_Block_Explosive<GT_DaisyCutterTier>
      * @param placedBy
      * @param metadata
      * @param timer
+     *
      * @return
      */
     @Override

@@ -69,9 +69,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         }
 
         /**
-         * Write data to given ByteBuf
-         * The data saved this way is intended to be stored for short amount of time over network.
-         * DO NOT store it to disks.
+         * Write data to given ByteBuf The data saved this way is intended to be stored for short amount of time over network. DO NOT store it to disks.
          *
          * @param aBuf
          */
@@ -91,8 +89,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         }
 
         /**
-         * Read data from given parameter and return this.
-         * The data read this way is intended to be stored for short amount of time over network.
+         * Read data from given parameter and return this. The data read this way is intended to be stored for short amount of time over network.
          *
          * @param aBuf
          * @param aPlayer
@@ -119,8 +116,8 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         }
 
         public GT_RemoteDetonator_Container getServerGUI(final EntityPlayer player) {
-            val slotIndex = new MutableInt(-1);
-            val bauble = new MutableBoolean(false);
+            val slotIndex       = new MutableInt(-1);
+            val bauble          = new MutableBoolean(false);
             val remoteDetonator = GT_RemoteDetonator.RemoteDetonatorInteractionHandler.INSTANCE.getPlayerRemoteDetonator(player, slotIndex, bauble);
             if (remoteDetonator != null) {
                 return new GT_RemoteDetonator_Container(player, remoteDetonator, slotIndex.intValue(), bauble.booleanValue());
@@ -133,8 +130,8 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         }
 
         public GT_RemoteDetonator_GuiContainer getClientGUI(final EntityPlayer player) {
-            val slotIndex = new MutableInt(-1);
-            val bauble = new MutableBoolean(false);
+            val slotIndex       = new MutableInt(-1);
+            val bauble          = new MutableBoolean(false);
             val remoteDetonator = GT_RemoteDetonator.RemoteDetonatorInteractionHandler.INSTANCE.getPlayerRemoteDetonator(player, slotIndex, bauble);
             if (remoteDetonator != null) {
                 return new GT_RemoteDetonator_GuiContainer(new GT_RemoteDetonator_Container(player, remoteDetonator, slotIndex.intValue(), bauble.booleanValue()));
@@ -280,7 +277,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
             }
 
             protected void trigger(final @NonNull World world, final @NonNull EntityPlayer player) {
-                val block = world.getBlock(x, y, z);
+                val block    = world.getBlock(x, y, z);
                 val metadata = world.getBlockMetadata(x, y, z);
                 if (block instanceof GT_Block_Explosive && !world.isRemote) {
                     val explosive = (GT_Block_Explosive<?>) block;
@@ -503,9 +500,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         }
 
         /**
-         * Write data to given ByteBuf
-         * The data saved this way is intended to be stored for short amount of time over network.
-         * DO NOT store it to disks.
+         * Write data to given ByteBuf The data saved this way is intended to be stored for short amount of time over network. DO NOT store it to disks.
          *
          * @param aBuf
          */
@@ -528,8 +523,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         }
 
         /**
-         * Read data from given parameter and return this.
-         * The data read this way is intended to be stored for short amount of time over network.
+         * Read data from given parameter and return this. The data read this way is intended to be stored for short amount of time over network.
          *
          * @param aBuf
          * @param aPlayer
@@ -553,11 +547,17 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
     }
 
     /**
-     * @param aWorld  The world
-     * @param aX      The X Position
-     * @param aY      The X Position
-     * @param aZ      The X Position
-     * @param aPlayer The Player that is wielding the item
+     * @param aWorld
+     *         The world
+     * @param aX
+     *         The X Position
+     * @param aY
+     *         The X Position
+     * @param aZ
+     *         The X Position
+     * @param aPlayer
+     *         The Player that is wielding the item
+     *
      * @return
      */
     @Override
@@ -578,7 +578,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
     )
     @Override
     protected void addAdditionalToolTips(final List aList, final ItemStack aStack, final EntityPlayer aPlayer) {
-        val compound = validateNBT(aStack);
+        val compound                   = validateNBT(aStack);
         val remoteDetonationTargetList = RemoteDetonationTargetList.readFromNBT(compound, aPlayer);
         aList.add("Can prime and detonate multiple gregtech explosives sequentially.");
         aList.add("Has a transmission range of 256 blocks.");
@@ -607,7 +607,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
      */
     @Override
     public void onCreated(final ItemStack aStack, final World aWorld, final EntityPlayer aPlayer) {
-        val compound = validateNBT(aStack);
+        val compound                   = validateNBT(aStack);
         val remoteDetonationTargetList = RemoteDetonationTargetList.readFromNBT(compound, aPlayer);
         aStack.setTagCompound(remoteDetonationTargetList.writeToNBT(compound));
     }
@@ -629,8 +629,8 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
             stack.setTagCompound(remoteDetonationTargetList.writeToNBT(new NBTTagCompound()));
         } else if (data instanceof RemoteDetonatorArmedUpdate) {
             val remoteDetonationTargetList = getRemoteDetonationTargetList(stack, player);
-            val target = ((RemoteDetonatorArmedUpdate) data).getTarget();
-            val armed = ((RemoteDetonatorArmedUpdate) data).isArmed();
+            val target                     = ((RemoteDetonatorArmedUpdate) data).getTarget();
+            val armed                      = ((RemoteDetonatorArmedUpdate) data).isArmed();
             if (armed) {
                 remoteDetonationTargetList.addTarget(target.getExplosiveType(), target.getTier(), target.getX(), target.getY(), target.getZ());
             } else {
@@ -685,7 +685,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
     @Override
     public void onUpdate(final ItemStack stack, final World world, final Entity entity, final int slotIndex, final boolean current) {
         if (entity instanceof EntityPlayer) {
-            val compound = validateNBT(stack);
+            val compound                   = validateNBT(stack);
             val remoteDetonationTargetList = RemoteDetonationTargetList.readFromNBT(compound, (EntityPlayer) entity);
             remoteDetonationTargetList.tick(world, (EntityPlayer) entity, (int) entity.posX, (int) entity.posY, (int) entity.posZ);
             stack.setTagCompound(remoteDetonationTargetList.writeToNBT(compound));
@@ -695,16 +695,24 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
     /**
      * This is called when the item is used, before the block is activated.
      *
-     * @param stack  The Item Stack
-     * @param player The Player that used the item
-     * @param world  The Current World
-     * @param x      Target X Position
-     * @param y      Target Y Position
-     * @param z      Target Z Position
-     * @param side   The side of the target hit
+     * @param stack
+     *         The Item Stack
+     * @param player
+     *         The Player that used the item
+     * @param world
+     *         The Current World
+     * @param x
+     *         Target X Position
+     * @param y
+     *         Target Y Position
+     * @param z
+     *         Target Z Position
+     * @param side
+     *         The side of the target hit
      * @param hitX
      * @param hitY
      * @param hitZ
+     *
      * @return Return true to prevent any further processing.
      */
     @Override
@@ -746,7 +754,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
 
     public void removeTarget(final @NonNull World aWorld, final @NonNull EntityPlayer player, final @NonNull RemoteDetonationTargetList remoteDetonationTargetList, final int x, final int y, final int z) {
         final boolean contains, validDim;
-        val target = aWorld.getBlock(x, y, z);
+        val           target = aWorld.getBlock(x, y, z);
         contains = remoteDetonationTargetList.containsTarget(x, y, z);
         validDim = remoteDetonationTargetList.validDimension(player);
         if (contains && validDim && target instanceof GT_Block_Explosive) {
@@ -764,7 +772,7 @@ public class GT_RemoteDetonator extends GT_Generic_Item implements IPacketReceiv
         if (target instanceof GT_Block_Explosive) {
             if (remoteDetonationTargetList.validDimension(player)) {
                 val expTarget = (GT_Block_Explosive<?>) target;
-                val tierInfo = expTarget.getTier();
+                val tierInfo  = expTarget.getTier();
                 remoteDetonationTargetList.addTarget(RemoteDetonationTargetList.ExplosiveType.getType(expTarget), tierInfo, x, y, z);
                 expTarget.setPrimed(aWorld, x, y, z, true);
                 aWorld.playSoundEffect(x, y, z, GregTech_API.sSoundList.get(218), 4.0f, aWorld.rand.nextFloat() + 1.0f);

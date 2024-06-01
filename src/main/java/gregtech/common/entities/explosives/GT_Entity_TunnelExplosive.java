@@ -1,7 +1,6 @@
 package gregtech.common.entities.explosives;
 
 
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.common.blocks.explosives.GT_Block_Explosive;
 import gregtech.common.misc.explosions.GT_TunnelExplosion;
@@ -35,11 +34,11 @@ public class GT_Entity_TunnelExplosive extends GT_Entity_Explosive<GT_TunnelExpl
     @Override
     protected @NonNull GT_TunnelExplosion createExplosion() {
         final ForgeDirection side = GT_Block_Explosive.getFacing(metadata);
-        final double xOff, yOff, zOff;
+        final double         xOff, yOff, zOff;
         xOff = side.offsetX;
         yOff = side.offsetY;
         zOff = side.offsetZ;
-        return new GT_TunnelExplosion(worldObj, this, posX + xOff, posY + yOff, posZ + zOff, GT_Values.MEExplosionPower, side);
+        return new GT_TunnelExplosion(worldObj, this, posX + xOff, posY + yOff, posZ + zOff, (float) tier.getPower(), side);
     }
 
     /**
@@ -57,6 +56,7 @@ public class GT_Entity_TunnelExplosive extends GT_Entity_Explosive<GT_TunnelExpl
      * @param y
      * @param z
      * @param block
+     *
      * @return
      */
     @Override

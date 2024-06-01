@@ -32,7 +32,7 @@ public class GT_Item_MiningExplosive extends GT_Item_Explosive<GT_MiningExplosiv
     @SuppressWarnings("unchecked")
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer player, final List lore, final boolean b0) {
-        val tier = getTier();
+        val tier  = getTier();
         val tParm = tier.getParameters();
         final String[] lines = {
                 "An extraordinary explosive for extracting ore from the world.",

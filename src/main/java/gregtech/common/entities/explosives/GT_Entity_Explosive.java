@@ -43,19 +43,19 @@ public abstract class GT_Entity_Explosive<TierType extends Enum<TierType> & IGT_
     public GT_Entity_Explosive(final World world, final double x, final double y, final double z, final EntityLivingBase placedBy, final int metadata, final int timer, final @NonNull TierType tier) {
         super(world, x + 0.5, y + 0.5, z + 0.5, placedBy);
         this.setSize();
-        this.realX = this.posX;
-        this.realY = this.posY;
-        this.realZ = this.posZ;
-        this.motionX = 0.0;
-        this.motionY = 0.0;
-        this.motionZ = 0.0;
-        this.fuse = timer >= 0 ? timer : GT_Values.MEFuse;
+        this.realX       = this.posX;
+        this.realY       = this.posY;
+        this.realZ       = this.posZ;
+        this.motionX     = 0.0;
+        this.motionY     = 0.0;
+        this.motionZ     = 0.0;
+        this.fuse        = timer >= 0 ? timer : GT_Values.MEFuse;
         this.initialFuse = this.fuse;
-        this.metadata = metadata;
-        this.tier = tier;
+        this.metadata    = metadata;
+        this.tier        = tier;
 //        System.out.printf("%d%n", this.fuse);
         this.explosion = createExplosion();
-        this.preCalc = new GT_Explosion_PreCalculation(this, this.explosion, world, explosion.getX(), explosion.getY(), explosion.getZ(), this.fuse);
+        this.preCalc   = new GT_Explosion_PreCalculation(this, this.explosion, world, explosion.getX(), explosion.getY(), explosion.getZ(), this.fuse);
         preCalc.initialize();
     }
 
@@ -152,11 +152,11 @@ public abstract class GT_Entity_Explosive<TierType extends Enum<TierType> & IGT_
     protected void readEntityFromNBT(final NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         this.initialFuse = compound.getInteger("initialFuse");
-        this.metadata = compound.getInteger("meta");
-        this.realX = compound.getDouble("rX");
-        this.realY = compound.getDouble("rY");
-        this.realZ = compound.getDouble("rZ");
-        this.tier = getTierFromIndex(compound.getInteger("tier"));
+        this.metadata    = compound.getInteger("meta");
+        this.realX       = compound.getDouble("rX");
+        this.realY       = compound.getDouble("rY");
+        this.realZ       = compound.getDouble("rZ");
+        this.tier        = getTierFromIndex(compound.getInteger("tier"));
     }
 
     protected @NonNull TierType getTierFromIndex(final int tierIndex) {
@@ -180,6 +180,7 @@ public abstract class GT_Entity_Explosive<TierType extends Enum<TierType> & IGT_
      * @param y
      * @param z
      * @param block
+     *
      * @return
      */
     @Override
@@ -197,6 +198,7 @@ public abstract class GT_Entity_Explosive<TierType extends Enum<TierType> & IGT_
      * @param z
      * @param block
      * @param power
+     *
      * @return
      */
     @Override
@@ -219,10 +221,10 @@ public abstract class GT_Entity_Explosive<TierType extends Enum<TierType> & IGT_
     }
 
     /**
-     * Called by the server when constructing the spawn packet.
-     * Data should be added to the provided stream.
+     * Called by the server when constructing the spawn packet. Data should be added to the provided stream.
      *
-     * @param buffer The packet data stream
+     * @param buffer
+     *         The packet data stream
      */
     @Override
     public void writeSpawnData(final ByteBuf buffer) {
@@ -235,19 +237,18 @@ public abstract class GT_Entity_Explosive<TierType extends Enum<TierType> & IGT_
     }
 
     /**
-     * Called by the client when it receives a Entity spawn packet.
-     * Data should be read out of the stream in the same way as it was written.
+     * Called by the client when it receives a Entity spawn packet. Data should be read out of the stream in the same way as it was written.
      *
      * @param additionalData
      */
     @Override
     public void readSpawnData(final ByteBuf additionalData) {
-        this.fuse = additionalData.readInt();
+        this.fuse     = additionalData.readInt();
         this.metadata = additionalData.readInt();
-        this.realX = additionalData.readDouble();
-        this.realY = additionalData.readDouble();
-        this.realZ = additionalData.readDouble();
-        this.tier = getTierFromIndex(additionalData.readInt());
+        this.realX    = additionalData.readDouble();
+        this.realY    = additionalData.readDouble();
+        this.realZ    = additionalData.readDouble();
+        this.tier     = getTierFromIndex(additionalData.readInt());
     }
 
     public Block getBlockToRenderAs() {

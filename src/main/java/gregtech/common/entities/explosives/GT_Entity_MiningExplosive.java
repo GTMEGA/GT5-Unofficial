@@ -38,9 +38,9 @@ public class GT_Entity_MiningExplosive extends GT_Entity_Explosive<GT_MiningExpl
      */
     @Override
     protected @NonNull GT_MiningExplosion createExplosion() {
-        final ForgeDirection side = GT_Block_Explosive.getFacing(metadata);
-        final double xOffset, yOffset, zOffset;
-        final double offset = rangeOffset();
+        final ForgeDirection side   = GT_Block_Explosive.getFacing(metadata);
+        final double         xOffset, yOffset, zOffset;
+        final double         offset = rangeOffset();
         xOffset = offset * side.offsetX;
         yOffset = offset * side.offsetY;
         zOffset = offset * side.offsetZ;
@@ -62,6 +62,7 @@ public class GT_Entity_MiningExplosive extends GT_Entity_Explosive<GT_MiningExpl
      * @param y
      * @param z
      * @param block
+     *
      * @return
      */
     @Override
@@ -72,7 +73,7 @@ public class GT_Entity_MiningExplosive extends GT_Entity_Explosive<GT_MiningExpl
             return -GT_Values.MEOrePowerBoost;
         }
         final Material material = block.getMaterial();
-        final float base = defaultBlockResistance(explosion, world, x, y, z, block);
+        final float    base     = defaultBlockResistance(explosion, world, x, y, z, block);
         if (material == Material.rock) {
             return base * GT_Values.MERockResistanceDrop;
         } else if (material == Material.ground || material == Material.sand || material == Material.clay || block instanceof BlockGrass) {

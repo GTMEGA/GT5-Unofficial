@@ -30,12 +30,12 @@ public class GT_Item_TunnelExplosive extends GT_Item_Explosive<GT_TunnelExplosiv
     @SuppressWarnings("unchecked")
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer player, final List lore, final boolean b0) {
-        val tier = getTier();
+        val tier  = getTier();
         val tParm = tier.getParameters();
         final String[] lines = new String[]{
                 "Produces a powerful blast in the placed direction,",
                 String.format("Has a maximum length of %.1f blocks and a radius of %.1f blocks", tParm.getMaxLength(), tParm.getMaxRadius()),
-                "crating a small tunnel. Destroys most items, with clay being an exception.",
+                "creating a small tunnel. Destroys most items, with clay being an exception.",
                 "Prime with a Remote Detonator",
                 "Packs a pretty mean punch, so take",
                 String.format("cover or you'll be mist in %d seconds!", GT_Values.MEFuse / 20)
