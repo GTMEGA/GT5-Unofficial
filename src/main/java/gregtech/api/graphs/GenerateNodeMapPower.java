@@ -21,9 +21,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.function.Consumer;
 
 // node map generator for power distribution
 public class GenerateNodeMapPower extends GenerateNodeMap {
+    public static Consumer<BaseMetaPipeEntity> POWER_GENERATION = GenerateNodeMapPower::new;
+
     public GenerateNodeMapPower(BaseMetaPipeEntity aTileEntity) {
         generateNode(aTileEntity, null, 1, null, -1, new ArrayList<>(), new HashSet<>());
     }

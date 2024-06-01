@@ -68,6 +68,7 @@ import java.util.UUID;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.NW;
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.graphs.GenerateNodeMapPower.POWER_GENERATION;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 /**
@@ -1159,10 +1160,10 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     if (TE instanceof BaseMetaPipeEntity) {
                         Node node = ((BaseMetaPipeEntity) TE).getNode();
                         if (node == null) {
-                            new GenerateNodeMapPower((BaseMetaPipeEntity) TE);
+                            POWER_GENERATION.accept((BaseMetaPipeEntity) TE);
                         } else if (node.mCreationTime != time) {
                             GenerateNodeMap.clearNodeMap(node,-1);
-                            new GenerateNodeMapPower((BaseMetaPipeEntity) TE);
+                            POWER_GENERATION.accept((BaseMetaPipeEntity) TE);
                         }
                     }
                 }
