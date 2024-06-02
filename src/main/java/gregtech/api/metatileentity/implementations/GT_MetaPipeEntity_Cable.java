@@ -192,7 +192,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
                     tToPower[tPlace++] = consumer;
                 }
             }
-            return PowerNodes.powerNode(tNode,null,new NodeList(tToPower),(int)aVoltage,(int)aAmperage);
+            return PowerNodes.POWER_NODE.power(tNode,null,new NodeList(tToPower),(int)aVoltage,(int)aAmperage);
         }
         return 0;
     }
