@@ -18,16 +18,26 @@ import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
 public class GT_Cover_Conveyor extends GT_CoverBehavior {
     public final int mTickRate;
-    private final int mMaxStacks;
+    private final int maxItems;
 
     public GT_Cover_Conveyor(int aTickRate) {
         this.mTickRate = Math.max(1,aTickRate/4);
-        this.mMaxStacks = 1;
+        this.maxItems = 1;
     }
 
     public GT_Cover_Conveyor(int aTickRate, int maxStacks) {
-        this.mTickRate = Math.max(1,aTickRate/4);
-        this.mMaxStacks = maxStacks;
+        if (aTickRate >= 4) {
+            aTickRate /= 4;
+            maxStacks *= 16;
+        } else if (aTickRate >= 2) {
+            aTickRate /= 2;
+            maxStacks *= 32;
+        } else {
+            maxStacks *= 64;
+        }
+
+        this.mTickRate = Math.max(1,aTickRate);
+        this.maxItems = maxStacks;
     }
 
     @Override
@@ -49,13 +59,12 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
                toSide = aCoverVariable % 2 == 0 ? GT_Utility.getOppositeSide(aSide) : aSide;
 
 
-        int speedReduction = Math.min(4,mTickRate);
+        int stacks = maxItems/64;
+        if (stacks == 0) stacks = 1;
 
-        int maxStacks = this.mMaxStacks/speedReduction;
-        maxStacks += (this.mMaxStacks%speedReduction > 0) ? 1 : 0;
-        int maxStackSize = Math.min(16 * this.mMaxStacks,64);
+        int perStack = Math.min(maxItems, 64);
 
-        moveMultipleItemStacks(fromEntity, toEntity, fromSide , toSide, null, false, (byte) 64, (byte) 1, (byte) maxStackSize, (byte) 1,maxStacks);
+        moveMultipleItemStacks(fromEntity, toEntity, fromSide , toSide, null, false, (byte) 64, (byte) 1, (byte) perStack, (byte) 1,stacks);
 
         return aCoverVariable;
     }
