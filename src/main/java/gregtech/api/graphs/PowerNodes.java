@@ -125,7 +125,7 @@ public class PowerNodes {
             tVoltLoss += tSelfPath.getLoss();
             tSelfPath.applyVoltage(aVoltage, false);
         }
-        tPath.applyVoltage(aVoltage - tVoltLoss, true);
+        tPath.applyVoltage(aVoltage - tVoltLoss, false);
         tVoltLoss += tPath.getLoss();
         long tAmps = powerNode(aNextNode, aCurrentNode, aConsumers, aVoltage - tVoltLoss, aMaxAmps);
         tPath.addAmps(tAmps);
