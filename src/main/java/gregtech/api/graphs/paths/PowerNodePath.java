@@ -8,13 +8,13 @@ import net.minecraft.server.MinecraftServer;
 // path for cables
 // all calculations like amp and voltage happens here
 public class PowerNodePath extends NodePath {
-    long mMaxAmps;
-    long mAmps = 0;
-    long mLoss;
-    long mVoltage = 0;
-    long mMaxVoltage;
-    int mTick = 0;
-    boolean mCountUp = true;
+    protected long mMaxAmps;
+    protected long mAmps = 0;
+    protected long mLoss;
+    protected long mVoltage = 0;
+    protected long mMaxVoltage;
+    protected int mTick = 0;
+    protected boolean mCountUp = true;
 
 
     public PowerNodePath(MetaPipeEntity[] aCables) {
