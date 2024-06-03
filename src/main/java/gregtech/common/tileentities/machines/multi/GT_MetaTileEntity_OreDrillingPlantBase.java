@@ -505,7 +505,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         .addInfo("Harvests massive amounts of ore slurry over a long period of time.")
         .addInfo(EnumChatFormatting.YELLOW + "Slurry contents are determined by the nearest ore vein" + EnumChatFormatting.RESET)
         .addInfo("Consumes " + drillingFluidConsumption() + "L" + " of Drilling Fluid per operation")
-        .addInfo("Ore to slurry yield: " + EnumChatFormatting.YELLOW + fortune() +"0%" + EnumChatFormatting.RESET)
+        .addInfo("Ore to slurry yield: " + EnumChatFormatting.YELLOW + fortune() +"00%" + EnumChatFormatting.RESET)
 		.addSeparator()
 		.beginStructureBlock(3, 7, 3, false)
 		.addController("Front bottom")
