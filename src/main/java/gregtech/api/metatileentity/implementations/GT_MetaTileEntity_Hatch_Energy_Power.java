@@ -44,7 +44,7 @@ public class GT_MetaTileEntity_Hatch_Energy_Power extends GT_MetaTileEntity_Hatc
      */
     @Override
     public long maxEUInput() {
-        return V[mTier] * maxAmpThroughPut;
+        return V[mTier];
     }
 
     @Override

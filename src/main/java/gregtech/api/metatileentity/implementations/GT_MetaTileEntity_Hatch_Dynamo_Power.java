@@ -39,7 +39,7 @@ public class GT_MetaTileEntity_Hatch_Dynamo_Power extends GT_MetaTileEntity_Hatc
      */
     @Override
     public long maxEUOutput() {
-        return GT_Values.V[mTier] * maxAmpThroughPut;
+        return GT_Values.V[mTier];
     }
 
     @Override
