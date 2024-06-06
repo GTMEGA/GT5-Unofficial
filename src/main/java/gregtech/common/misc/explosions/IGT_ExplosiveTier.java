@@ -289,9 +289,6 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
         list.add("Prime with a Remote Detonator to explode!");
         list.add("Packs a pretty mean punch, so take");
         list.add(String.format("cover or you'll be mist in %d seconds!", GT_Values.MEFuse / 20));
-        if (isMagic()) {
-            list.add(EnumChatFormatting.DARK_RED + "Unstable" + EnumChatFormatting.RESET);
-        }
     }
 
     boolean isMagic();

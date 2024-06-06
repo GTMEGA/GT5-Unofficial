@@ -19,9 +19,9 @@ import java.util.concurrent.atomic.AtomicReference;
 public
 enum GT_FlatBombTier implements IGT_ExplosiveTier<GT_FlatBombTier> {
 
-    MK1("Flat Bomb Mk 1", ExplosiveTextureInfo.getNew("mk1"), ExplosiveFlavorInfo.builder().build(), FlatBombParameters.get(4, 8).build()),
-    MK2("Flat Bomb Mk 2", ExplosiveTextureInfo.getNew("mk2"), ExplosiveFlavorInfo.builder().build(), FlatBombParameters.get(8, 12).build()),
-    MK3("Flat Bomb Mk 3", ExplosiveTextureInfo.getNew("mk3"), ExplosiveFlavorInfo.builder().build(), FlatBombParameters.get(12, 16).magic(true).build()),
+    MK1("Flat Bomb Mk 1", ExplosiveTextureInfo.getNew("mk1"), ExplosiveFlavorInfo.builder().build(), FlatBombParameters.get(4, 10).build()),
+    MK2("Flat Bomb Mk 2", ExplosiveTextureInfo.getNew("mk2"), ExplosiveFlavorInfo.builder().build(), FlatBombParameters.get(6, 16).build()),
+    MK3("Flat Bomb Mk 3", ExplosiveTextureInfo.getNew("mk3"), ExplosiveFlavorInfo.builder().build(), FlatBombParameters.get(6, 20).magic(true).build()),
     ;
 
     @Getter
