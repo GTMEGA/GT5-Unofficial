@@ -26,14 +26,11 @@ import gregtech.common.GT_Proxy;
 import gregtech.common.GT_RecipeAdder;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
-import gregtech.common.entities.explosives.GT_Entity_DaisyCutterExplosive;
-import gregtech.common.entities.explosives.GT_Entity_FlatBomb;
-import gregtech.common.entities.explosives.GT_Entity_MiningExplosive;
-import gregtech.common.entities.explosives.GT_Entity_TunnelExplosive;
 import gregtech.common.items.GT_MEGAnet;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
-import gregtech.common.items.explosives.GT_RemoteDetonator;
+import gregtech.common.misc.explosions.GT_Explosion_Info;
+import gregtech.common.misc.explosions.detonator_util.RemoteDetonatorInteractionHandler;
 import gregtech.common.misc.GT_Command;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Massfabricator;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineBase;
@@ -520,10 +517,7 @@ public class GT_Mod implements IGT_Mod {
         EntityRegistry.registerModEntity(GT_Entity_Arrow.class, "GT_Entity_Arrow", 1, GT_Values.GT, 160, 1, true);
         EntityRegistry.registerModEntity(GT_Entity_Arrow_Potion.class, "GT_Entity_Arrow_Potion", 2, GT_Values.GT, 160, 1, true);
 
-        EntityRegistry.registerModEntity(GT_Entity_MiningExplosive.class, "GT_Entity_MiningExplosive", 3, GT_Values.GT, 160, 1, false);
-        EntityRegistry.registerModEntity(GT_Entity_DaisyCutterExplosive.class, "GT_Entity_DaisyCutter", 4, GT_Values.GT, 160, 1, false);
-        EntityRegistry.registerModEntity(GT_Entity_TunnelExplosive.class, "GT_Entity_TunnelExplosive", 5, GT_Values.GT, 160, 1, false);
-        EntityRegistry.registerModEntity(GT_Entity_FlatBomb.class, "GT_Entity_FlatBomb", 6, GT_Values.GT, 160, 1, false);
+        registerExplosiveEntities();
 
         GT_FML_LOGGER.info("preReader");
         List<String> oreTags = new ArrayList<>();
@@ -699,6 +693,10 @@ public class GT_Mod implements IGT_Mod {
             GT_Assemblyline_Server.fillMap(aEvent);
     }
 
+    private static void registerExplosiveEntities() {
+        GT_Explosion_Info.registerEntities();
+    }
+
     private static void explosiveConfig(Configuration tMainConfig) {
         // Mining explosive config
         final String meSection = "mining_explosives";
@@ -788,7 +786,7 @@ public class GT_Mod implements IGT_Mod {
     private static void initKeybinds(final FMLInitializationEvent aEvent) {
         new GT_KeyHandler("key.meganet.toggle", "Toggle MEGAnet", GT_MEGAnet.MEGANetInteractionHandler.INSTANCE::togglePlayerMeganet);
         new GT_KeyHandler("key.meganet.gui", "Open MEGAnet Menu", GT_MEGAnet.MEGANetInteractionHandler.INSTANCE::openGUI);
-        new GT_KeyHandler("key.remote_detonator.gui", "Open Remote Detonator Menu", GT_RemoteDetonator.RemoteDetonatorInteractionHandler.INSTANCE::openGUI);
+        new GT_KeyHandler("key.remote_detonator.gui", "Open Remote Detonator Menu", RemoteDetonatorInteractionHandler.INSTANCE::openGUI);
     }
 
     @Mod.EventHandler

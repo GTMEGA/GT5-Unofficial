@@ -21,9 +21,8 @@ import gregtech.api.threads.GT_Runnable_Cable_Update;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
 import gregtech.api.world.GT_Worldgen;
-import gregtech.common.blocks.explosives.*;
 import gregtech.common.items.GT_MEGAnet;
-import gregtech.common.items.explosives.GT_RemoteDetonator;
+import gregtech.common.items.GT_Item_RemoteDetonator;
 import lombok.NonNull;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -340,16 +339,8 @@ public class GregTech_API {
             sPostloadStarted = false,
             sPostloadFinished = false;
 
-    public static GT_Block_MiningExplosive sBlockMiningExplosive, sBlockMiningExplosive2;
-
-    public static GT_Block_TunnelExplosive sBlockTunEx, sBlockTunEx2;
-
-    public static GT_Block_DaisyCutter sBlockDaisyCutter, sBlockDaisyCutter2;
-
-    public static GT_Block_FlatBomb sBlockFlatBomb, sBlockFlatBomb2;
-
-    public static GT_RemoteDetonator sItemRemoteDetonator;
-    public static Item sBorker;
+    public static GT_Item_RemoteDetonator sItemRemoteDetonator;
+    public static Item                    sBorker;
 
     private static Class sBaseMetaTileEntityClass = null;
 

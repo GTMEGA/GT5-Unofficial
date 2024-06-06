@@ -5,7 +5,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
-import gregtech.common.entities.explosives.GT_Entity_Explosive;
+import gregtech.common.entities.GT_Entity_Explosive;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -53,7 +53,10 @@ public class GT_ExplosiveRenderer extends Render {
      */
     @Override
     protected ResourceLocation getEntityTexture(final Entity entity) {
-        return ((GT_Entity_Explosive) entity).getEntityTexture();
+        if (!(entity instanceof GT_Entity_Explosive)) {
+            return null;
+        }
+        return ((GT_Entity_Explosive) entity).getTier().getEntityTexture();
     }
 
     public void doRender(final GT_Entity_Explosive entity, final double x, final double y, final double z, final float f0, final float someTimer) {

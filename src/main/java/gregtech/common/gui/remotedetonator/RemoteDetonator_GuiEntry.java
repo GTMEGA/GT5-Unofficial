@@ -5,9 +5,8 @@ import gregtech.api.gui.widgets.GT_GuiScrollPanel;
 import gregtech.api.gui.widgets.GT_GuiTooltip;
 import gregtech.api.gui.widgets.icon.GT_GuiIcon;
 import gregtech.api.interfaces.IGuiScreen;
-import gregtech.common.blocks.explosives.GT_Block_Explosive;
-import gregtech.common.items.explosives.GT_RemoteDetonator;
-import gregtech.common.misc.explosions.IGT_ExplosiveTier;
+import gregtech.common.blocks.GT_Block_Explosive;
+import gregtech.common.misc.explosions.detonator_util.RemoteDetonationTargetList;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -15,7 +14,6 @@ import lombok.experimental.Accessors;
 import lombok.val;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.item.ItemStack;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -31,10 +29,10 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
 
     private final GT_GuiScrollPanel<GT_RemoteDetonator_GuiContainer> scrollPanel;
 
-    private final GT_RemoteDetonator.RemoteDetonationTargetList targetList;
+    private final RemoteDetonationTargetList targetList;
 
     @ToString.Include
-    private final GT_RemoteDetonator.RemoteDetonationTargetList.Target target;
+    private final RemoteDetonationTargetList.Target target;
 
     private final Color baseTextColor = new Color(119, 119, 119, 255);
 
@@ -72,7 +70,7 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
     @Setter
     private boolean zebra;
 
-    public RemoteDetonator_GuiEntry(final GT_GuiScrollPanel<GT_RemoteDetonator_GuiContainer> scrollPanel, final GT_RemoteDetonator.RemoteDetonationTargetList targetList, final GT_RemoteDetonator.RemoteDetonationTargetList.Target target) {
+    public RemoteDetonator_GuiEntry(final GT_GuiScrollPanel<GT_RemoteDetonator_GuiContainer> scrollPanel, final RemoteDetonationTargetList targetList, final RemoteDetonationTargetList.Target target) {
         this.scrollPanel = scrollPanel;
         this.targetList = targetList;
         this.target = target;
@@ -135,7 +133,7 @@ public class RemoteDetonator_GuiEntry implements GT_GuiScrollPanel.IScrollableEl
     }
 
     /**
-     * Go to {@link GT_RemoteDetonator.RemoteDetonationTargetList.ExplosiveType} To change colors
+     * Go to {@link RemoteDetonationTargetList.ExplosiveType} To change colors
      *
      * @param mouseX
      * @param mouseY

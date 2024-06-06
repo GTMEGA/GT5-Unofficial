@@ -3,7 +3,8 @@ package gregtech.common.misc.explosions;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
-import gregtech.common.entities.explosives.GT_Entity_Explosive;
+import gregtech.common.entities.GT_Entity_Explosive;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.val;
 import net.minecraft.block.Block;
@@ -29,20 +30,21 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
+@Getter
 public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_ExplosiveTier<TierType>> extends Explosion {
 
     protected final List<ItemStack> harvested = new ArrayList<>();
 
     protected final Set<ChunkPosition> seen = new HashSet<>(), targeted = new HashSet<>();
 
-    private final GT_Entity_Explosive<TierType> gtExplosive;
+    private final GT_Entity_Explosive gtExplosive;
 
     protected int maxX, maxY, maxZ;
 
     protected World pubWorld;
 
     public GT_Explosion(
-            final World world, final GT_Entity_Explosive<TierType> entity, final double x, final double y, final double z, final float power
+            final World world, final GT_Entity_Explosive entity, final double x, final double y, final double z, final float power
                        ) {
         super(world, entity, x, y, z, power);
         this.gtExplosive = entity;
@@ -129,7 +131,9 @@ public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_Explosi
             block = pubWorld.getBlock(i, j, k);
             meta  = pubWorld.getBlockMetadata(i, j, k);
             //
-            doParticles(shouldDoParticles, (float) i, (float) j, (float) k);
+            if (shouldDoParticles) {
+                doParticles(i, j, k);
+            }
             if (block.getMaterial() != Material.air) {
                 if (block.canDropFromExplosion(this)) {
                     getDrops(block, i, j, k, meta);
@@ -211,30 +215,29 @@ public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_Explosi
         pubWorld.playSoundEffect(explosionX, explosionY, explosionZ, GregTech_API.sSoundList.get(expSoundID), 4.0f, soundVolume());
     }
 
+    @SuppressWarnings("unchecked")
     public @NonNull TierType getTier() {
-        return gtExplosive.getTier();
+        return (TierType) gtExplosive.getTier();
     }
 
-    protected void doParticles(final boolean particleControl, final float x, final float y, final float z) {
-        if (particleControl) {
-            double d0 = x + pubWorld.rand.nextFloat();
-            double d1 = y + pubWorld.rand.nextFloat();
-            double d2 = z + pubWorld.rand.nextFloat();
-            double d3 = d0 - this.explosionX;
-            double d4 = d1 - this.explosionY;
-            double d5 = d2 - this.explosionZ;
-            double d6 = MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
-            d3 /= d6;
-            d4 /= d6;
-            d5 /= d6;
-            double d7 = 0.5D / (d6 / (double) this.explosionSize + 0.1D);
-            d7 *= pubWorld.rand.nextFloat() * pubWorld.rand.nextFloat() + 0.3F;
-            d3 *= d7;
-            d4 *= d7;
-            d5 *= d7;
-            pubWorld.spawnParticle("explode", (d0 + this.explosionX) / 2.0D, (d1 + this.explosionY) / 2.0D, (d2 + this.explosionZ) / 2.0D, d3, d4, d5);
-            pubWorld.spawnParticle("smoke", d0, d1, d2, d3, d4, d5);
-        }
+    protected void doParticles(final float x, final float y, final float z) {
+        double d0 = x + pubWorld.rand.nextFloat();
+        double d1 = y + pubWorld.rand.nextFloat();
+        double d2 = z + pubWorld.rand.nextFloat();
+        double d3 = d0 - this.explosionX;
+        double d4 = d1 - this.explosionY;
+        double d5 = d2 - this.explosionZ;
+        double d6 = MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
+        d3 /= d6;
+        d4 /= d6;
+        d5 /= d6;
+        double d7 = 0.5D / (d6 / (double) this.explosionSize + 0.1D);
+        d7 *= pubWorld.rand.nextFloat() * pubWorld.rand.nextFloat() + 0.3F;
+        d3 *= d7;
+        d4 *= d7;
+        d5 *= d7;
+        pubWorld.spawnParticle("explode", (d0 + this.explosionX) / 2.0D, (d1 + this.explosionY) / 2.0D, (d2 + this.explosionZ) / 2.0D, d3, d4, d5);
+        pubWorld.spawnParticle("smoke", d0, d1, d2, d3, d4, d5);
     }
 
     protected void getDrops(final Block block, final int x, final int y, final int z, final int metadata) {
@@ -275,9 +278,9 @@ public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_Explosi
         pubWorld.spawnEntityInWorld(new EntityItem(pubWorld, x, y, z, stack));
     }
 
-//    protected boolean doCleverDrop() {
-//        return GT_Values.MEFancyDrops;
-//    }
+    public float getBlockResistance(final int x, final int y, final int z, final Block block) {
+        return getGtExplosive().defaultBlockResistance(this, pubWorld, x, y, z, block);
+    }
 
     protected boolean handlePositionPre(final ChunkPosition pos) {
         return true;

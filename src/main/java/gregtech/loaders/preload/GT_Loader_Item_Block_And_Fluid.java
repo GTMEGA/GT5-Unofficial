@@ -13,14 +13,10 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.*;
 import gregtech.common.blocks.*;
-import gregtech.common.blocks.explosives.GT_Block_DaisyCutter;
-import gregtech.common.blocks.explosives.GT_Block_FlatBomb;
-import gregtech.common.blocks.explosives.GT_Block_MiningExplosive;
-import gregtech.common.blocks.explosives.GT_Block_TunnelExplosive;
 import gregtech.common.items.*;
-import gregtech.common.items.explosives.GT_RemoteDetonator;
+import gregtech.common.items.GT_Item_RemoteDetonator;
 import gregtech.common.items.TreeBorkTester;
-import gregtech.common.misc.explosions.IGT_ExplosiveTier;
+import gregtech.common.misc.explosions.GT_Explosion_Info;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -227,25 +223,14 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockLongDistancePipes = new GT_Block_LongDistancePipe();
         GregTech_API.sBlockConcretes = new GT_Block_Concretes();
         GregTech_API.sBlockStones = new GT_Block_Stones();
-//        GregTech_API.sBlockOres1 = new GT_Block_Ores();
         GregTech_API.sBlockOres1 = Blocks.stone;
         GT_Block_Ore_Abstract.registerOres();
 
         //
-        GregTech_API.sBlockMiningExplosive = new GT_Block_MiningExplosive(IGT_ExplosiveTier.GT_MiningExplosiveTier.MK1);
-        GregTech_API.sBlockMiningExplosive2 = new GT_Block_MiningExplosive(IGT_ExplosiveTier.GT_MiningExplosiveTier.MK2);
-        //
-        GregTech_API.sBlockDaisyCutter = new GT_Block_DaisyCutter(IGT_ExplosiveTier.GT_DaisyCutterTier.MK1);
-        GregTech_API.sBlockDaisyCutter2 = new GT_Block_DaisyCutter(IGT_ExplosiveTier.GT_DaisyCutterTier.MK2);
-        //
-        GregTech_API.sBlockTunEx = new GT_Block_TunnelExplosive(IGT_ExplosiveTier.GT_TunnelExplosiveTier.MK1);
-        GregTech_API.sBlockTunEx2 = new GT_Block_TunnelExplosive(IGT_ExplosiveTier.GT_TunnelExplosiveTier.MK2);
-        //
-        GregTech_API.sBlockFlatBomb = new GT_Block_FlatBomb(IGT_ExplosiveTier.GT_FlatBombTier.MK1);
-        GregTech_API.sBlockFlatBomb2 = new GT_Block_FlatBomb(IGT_ExplosiveTier.GT_FlatBombTier.MK2);
-        //
-        GregTech_API.sItemRemoteDetonator = new GT_RemoteDetonator();
+        GT_Explosion_Info.registerBlocksAndItems();
+        GregTech_API.sItemRemoteDetonator = new GT_Item_RemoteDetonator();
         GregTech_API.sBorker = new TreeBorkTester();
+        //
 
         GregTech_API.sBlockMetal1 = new GT_Block_Metal("gt.blockmetal1", new Materials[]{
                 Materials.Adamantium,

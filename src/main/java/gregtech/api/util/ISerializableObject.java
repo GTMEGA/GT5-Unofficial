@@ -94,24 +94,22 @@ public interface ISerializableObject {
     }
 
     /**
-     * Reverse engineered and adapted {@link cpw.mods.fml.common.network.ByteBufUtils#readItemStack(ByteBuf)}
-     * Given buffer must contain a serialized ItemStack in minecraft encoding
+     * Reverse engineered and adapted {@link cpw.mods.fml.common.network.ByteBufUtils#readItemStack(ByteBuf)} Given buffer must contain a serialized ItemStack in minecraft encoding
      */
     static ItemStack readItemStackFromGreggyByteBuf(ByteArrayDataInput aBuf) {
         ItemStack stack = null;
-        short id = aBuf.readShort();
+        short     id    = aBuf.readShort();
         if (id >= 0) {
-            byte size = aBuf.readByte();
+            byte  size = aBuf.readByte();
             short meta = aBuf.readShort();
-            stack = new ItemStack(Item.getItemById(id), size, meta);
+            stack                  = new ItemStack(Item.getItemById(id), size, meta);
             stack.stackTagCompound = readCompoundTagFromGreggyByteBuf(aBuf);
         }
         return stack;
     }
 
     /**
-     * Reverse engineered and adapted {@link cpw.mods.fml.common.network.ByteBufUtils#readTag(ByteBuf)}
-     * Given buffer must contain a serialized NBTTagCompound in minecraft encoding
+     * Reverse engineered and adapted {@link cpw.mods.fml.common.network.ByteBufUtils#readTag(ByteBuf)} Given buffer must contain a serialized NBTTagCompound in minecraft encoding
      */
     static NBTTagCompound readCompoundTagFromGreggyByteBuf(ByteArrayDataInput aBuf) {
         short size = aBuf.readShort();
@@ -132,21 +130,22 @@ public interface ISerializableObject {
     ISerializableObject copy();
 
     @Nonnull
-    NBTBase saveDataToNBT();
+    default NBTBase saveDataToNBT() {
+        return new NBTTagCompound();
+    }
 
     /**
-     * Write data to given ByteBuf
-     * The data saved this way is intended to be stored for short amount of time over network.
-     * DO NOT store it to disks.
+     * Write data to given ByteBuf The data saved this way is intended to be stored for short amount of time over network. DO NOT store it to disks.
      */
     // the NBT is an unfortunate piece of tech. everything uses it but its API is not as efficient as could be
     void writeToByteBuf(ByteBuf aBuf);
 
-    void loadDataFromNBT(NBTBase aNBT);
+    default void loadDataFromNBT(NBTBase aNBT) {
+
+    }
 
     /**
-     * Read data from given parameter and return this.
-     * The data read this way is intended to be stored for short amount of time over network.
+     * Read data from given parameter and return this. The data read this way is intended to be stored for short amount of time over network.
      */
     // the NBT is an unfortunate piece of tech. everything uses it but its API is not as efficient as could be
     @Nonnull
@@ -167,7 +166,7 @@ public interface ISerializableObject {
     default String readString(ByteArrayDataInput buffer) {
         // TODO: Check safety
         StringBuilder temp = new StringBuilder();
-        int l = buffer.readInt();
+        int           l    = buffer.readInt();
         if (l == 0) {
             return null;
         }

@@ -2,7 +2,8 @@ package gregtech.common.gui.remotedetonator;
 
 
 import gregtech.api.GregTech_API;
-import gregtech.common.items.explosives.GT_RemoteDetonator;
+import gregtech.common.items.GT_Item_RemoteDetonator;
+import gregtech.common.misc.explosions.detonator_util.RemoteDetonationTargetList;
 import lombok.Getter;
 import lombok.NonNull;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,13 +15,13 @@ import net.minecraft.world.World;
 @Getter
 public class GT_RemoteDetonator_Container extends Container {
 
-    public static final GT_RemoteDetonator REMOTE_DETONATOR = GregTech_API.sItemRemoteDetonator;
+    public static final GT_Item_RemoteDetonator REMOTE_DETONATOR = GregTech_API.sItemRemoteDetonator;
 
     private final EntityPlayer owner;
 
     private final ItemStack stack;
 
-    private final GT_RemoteDetonator.RemoteDetonationTargetList targetList;
+    private final RemoteDetonationTargetList targetList;
 
     private final int slotIndex;
 

@@ -8,8 +8,10 @@ import gregtech.api.gui.widgets.GT_GuiScrollPanel;
 import gregtech.api.gui.widgets.slider.GT_GuiSlider_Vertical;
 import gregtech.api.net.GT_Packet_InventoryUpdate;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.explosives.GT_Block_Explosive;
-import gregtech.common.items.explosives.GT_RemoteDetonator;
+import gregtech.common.blocks.GT_Block_Explosive;
+import gregtech.common.misc.explosions.detonator_util.RemoteDetonationTargetList;
+import gregtech.common.misc.explosions.detonator_util.RemoteDetonatorArmedUpdate;
+import gregtech.common.misc.explosions.detonator_util.RemoteDetonatorDelayUpdate;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
@@ -131,9 +133,9 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
         }
     }
 
-    private void sendArmedUpdate(final GT_RemoteDetonator.RemoteDetonationTargetList.Target target, final boolean armed) {
+    private void sendArmedUpdate(final RemoteDetonationTargetList.Target target, final boolean armed) {
         GT_Values.NW.sendToServer(new GT_Packet_InventoryUpdate(remoteDetonatorContainer.getOwner(), GT_RemoteDetonator_Container.REMOTE_DETONATOR, remoteDetonatorContainer.isBauble(), remoteDetonatorContainer.getSlotIndex(),
-                                                                new GT_RemoteDetonator.RemoteDetonatorArmedUpdate(target, armed)
+                                                                new RemoteDetonatorArmedUpdate(target, armed)
         ));
     }
 
@@ -192,7 +194,7 @@ public class GT_RemoteDetonator_GuiContainer extends GT_RichGuiContainer {
 
     private void sendDelayUpdate(final int value) {
         GT_Values.NW.sendToServer(new GT_Packet_InventoryUpdate(remoteDetonatorContainer.getOwner(), GT_RemoteDetonator_Container.REMOTE_DETONATOR, remoteDetonatorContainer.isBauble(), remoteDetonatorContainer.getSlotIndex(),
-                                                                new GT_RemoteDetonator.RemoteDetonatorDelayUpdate(value)
+                                                                new RemoteDetonatorDelayUpdate(value)
         ));
     }
 

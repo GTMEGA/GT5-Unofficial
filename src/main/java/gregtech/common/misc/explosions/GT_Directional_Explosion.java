@@ -1,17 +1,23 @@
 package gregtech.common.misc.explosions;
 
-import gregtech.common.entities.explosives.GT_Entity_Explosive;
+import gregtech.common.entities.GT_Entity_Explosive;
+import lombok.Setter;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+@Setter
 public abstract class GT_Directional_Explosion<TierType extends Enum<TierType> & IGT_ExplosiveTier<TierType>> extends GT_Explosion<TierType> {
 
-    protected final ForgeDirection direction;
+    protected ForgeDirection direction;
 
-    protected final int axisIndex;
+    protected int axisIndex;
 
-    public GT_Directional_Explosion(final World world, final GT_Entity_Explosive<TierType> entity, final double x, final double y, final double z, final float power, final ForgeDirection side) {
+    public GT_Directional_Explosion(final World world, final GT_Entity_Explosive entity, final double x, final double y, final double z, final float power, final ForgeDirection side) {
         super(world, entity, x, y, z, power);
+        initAxes(side);
+    }
+
+    public void initAxes(final ForgeDirection side) {
         this.direction = side;
         this.axisIndex = getAxisIndex();
     }
@@ -46,6 +52,29 @@ public abstract class GT_Directional_Explosion<TierType extends Enum<TierType> &
         return 0;
     }
 
-    protected abstract boolean facingCorrectly(double rayX, double rayY, double rayZ);
+    protected boolean facingCorrectly(final double rayX, final double rayY, final double rayZ) {
+        final double check, checkAgainst;
+        switch (axisIndex) {
+            case 0: {
+                check        = direction.offsetX;
+                checkAgainst = rayX;
+                break;
+            }
+            case 1: {
+                check        = direction.offsetY;
+                checkAgainst = rayY;
+                break;
+            }
+            case 2: {
+                check        = direction.offsetZ;
+                checkAgainst = rayZ;
+                break;
+            }
+            default: {
+                return false;
+            }
+        }
+        return check * checkAgainst > 0;
+    }
 
 }

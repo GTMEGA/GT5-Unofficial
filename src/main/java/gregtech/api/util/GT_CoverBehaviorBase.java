@@ -244,7 +244,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
     // endregion
 
-    // region impl
+    // region logic
 
     protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return true;
