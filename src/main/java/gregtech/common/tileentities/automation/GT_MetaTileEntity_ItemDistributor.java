@@ -90,11 +90,12 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] returnTextures = new ITexture[3][17][];
         ITexture baseIcon = getOverlayIcon();
-        ITexture pipeIcon = TextureFactory.of(Textures.BlockIcons.OVERLAY_ITEM_OUT);
+        ITexture inIcon = TextureFactory.of(Textures.BlockIcons.OVERLAY_ITEM_IN);
+        ITexture outIcon = TextureFactory.of(Textures.BlockIcons.OVERLAY_ITEM_OUT);
         ITexture outDisabledIcon = TextureFactory.of(Textures.BlockIcons.OVERLAY_OUT_DISABLED);
         for (int i = 0; i < 17; i++) {
-            returnTextures[0][i] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i], baseIcon};
-            returnTextures[1][i] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i], pipeIcon, baseIcon};
+            returnTextures[0][i] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i], inIcon, baseIcon};
+            returnTextures[1][i] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i], outIcon, baseIcon};
             returnTextures[2][i] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i], outDisabledIcon, baseIcon};
         }
         return returnTextures;
@@ -147,7 +148,7 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
         movedItems = GT_Utility.moveOneItemStack(aBaseMetaTileEntity, adjacentTileEntity, currentSide,
                 GT_Utility.getOppositeSide(currentSide), null, false, (byte) 64, (byte) 1,
                 (byte) (itemsPerSide[currentSide] - currentSideItemCount), (byte) 1);
-        currentSideItemCount += movedItems;
+        currentSideItemCount += (byte) movedItems;
         if (currentSideItemCount >= itemsPerSide[currentSide]) {
             currentSide = (byte) ((currentSide + 1) % 6);
             currentSideItemCount = 0;
@@ -160,14 +161,8 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        //Adjust items per side by 1 or -1, constrained to the cyclic interval [0, 127]
         val newPerSideValue = (byte) ((itemsPerSide[aSide] + (aPlayer.isSneaking() ? -1 : 1) + 128) % 128);
-//        itemsPerSide[aSide] += (byte) (aPlayer.isSneaking() ? -1 : 1);
-//        itemsPerSide[aSide] = (byte) ((itemsPerSide[aSide] + 128) % 128);
         updateSideToValue(aSide, newPerSideValue);
-//        val newVal = itemsPerSide[aSide];
-//        val isSideEnabled = newVal != 0;
-//        sidesEnabled[aSide] = isSideEnabled;
         val toSend = (aSide & 0x7) | (sidesEnabled[aSide] ? 0x8 : 0);
         getBaseMetaTileEntity().sendBlockEvent(BaseMetaTileEntity.ClientEvents.MISC_EVENT, (byte) toSend);
         GT_Utility.sendChatToPlayer(aPlayer, trans("211", "Items per side: ") + newPerSideValue);
