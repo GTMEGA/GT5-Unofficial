@@ -68,7 +68,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
 
     @Override
     public int getHarvestLevel(int aMeta) {
-        return aMeta % 4;
+        return Math.min(aMeta % 4, 2);
     }
 
     @Override

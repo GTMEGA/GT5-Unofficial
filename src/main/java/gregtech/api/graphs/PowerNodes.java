@@ -21,6 +21,7 @@ import gregtech.api.graphs.paths.PowerNodePath;
  *
  */
 public class PowerNodes {
+    public static IPower POWER_NODE = PowerNodes::powerNode;
     // check if the looked for node is next to or get the next node that is closer to it
     static public long powerNode(Node aCurrentNode, Node aPreviousNode, NodeList aConsumers, long aVoltage, long aMaxAmps) {
         long tAmpsUsed = 0;
@@ -72,6 +73,10 @@ public class PowerNodes {
         return tAmpsUsed;
     }
 
+    public interface IPower {
+        long power(Node aCurrentNode, Node aPreviousNode, NodeList aConsumers, long aVoltage, long aMaxAmps);
+    }
+
     // checking if target node is next to it or has a higher value then current node value
     // these functions are different to either go down or up the stack
     protected static long powerNodeAbove(Node aCurrentNode, Node aPreviousNode, NodeList aConsumers, long aVoltage, long aMaxAmps) {
@@ -120,7 +125,7 @@ public class PowerNodes {
             tVoltLoss += tSelfPath.getLoss();
             tSelfPath.applyVoltage(aVoltage, false);
         }
-        tPath.applyVoltage(aVoltage - tVoltLoss, true);
+        tPath.applyVoltage(aVoltage - tVoltLoss, false);
         tVoltLoss += tPath.getLoss();
         long tAmps = powerNode(aNextNode, aCurrentNode, aConsumers, aVoltage - tVoltLoss, aMaxAmps);
         tPath.addAmps(tAmps);

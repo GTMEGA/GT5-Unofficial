@@ -279,50 +279,50 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Aluminium, 1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Aluminium, 2L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.ThermosCan_Empty.get(1L), 800, 1);
 
-        ItemList.Large_Fluid_Cell_Steel.set(addItem(tLastID = 405, "Large Steel Fluid Cell", "", new ItemData(Materials.Steel, OrePrefixes.plateDouble.mMaterialAmount * 4L, new MaterialStack(Materials.Bronze, OrePrefixes.ring.mMaterialAmount * 4L)), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 2L)));
-        setFluidContainerStats(32000 + tLastID, 8000L, 64L);
+//        ItemList.Large_Fluid_Cell_Steel.set(addItem(tLastID = 405, "Large Steel Fluid Cell", "", new ItemData(Materials.Steel, OrePrefixes.plateDouble.mMaterialAmount * 4L, new MaterialStack(Materials.Bronze, OrePrefixes.ring.mMaterialAmount * 4L)), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 2L)));
+//        setFluidContainerStats(32000 + tLastID, 8000L, 64L);
+//
+//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Steel, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.AnyBronze, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Large_Fluid_Cell_Steel.get(1L), 200, 30);
+//
+//        ItemList.Large_Fluid_Cell_TungstenSteel.set(addItem(tLastID = 406, "Large Tungstensteel Fluid Cell", "", new ItemData(Materials.TungstenSteel, OrePrefixes.plateDouble.mMaterialAmount * 4L, new MaterialStack(Materials.Platinum, OrePrefixes.ring.mMaterialAmount * 4L)), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 9L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 7L)));
+//        setFluidContainerStats(32000 + tLastID, 512000L, 32L);
+//
+//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenSteel, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Platinum, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Large_Fluid_Cell_TungstenSteel.get(1L), 200, 480);
+//
+//        ItemList.Large_Fluid_Cell_Aluminium.set(addItem(tLastID = 407, "Large Aluminium Fluid Cell", "", new ItemData(Materials.Aluminium, OrePrefixes.plateDouble.mMaterialAmount * 4L, new MaterialStack(Materials.Silver, OrePrefixes.ring.mMaterialAmount * 4L)), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L)));
+//        setFluidContainerStats(32000 + tLastID, 64000L, 64L);
+//
+//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Aluminium, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Silver, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Large_Fluid_Cell_Aluminium.get(1L), 200, 120);
+//
+//        ItemList.Large_Fluid_Cell_StainlessSteel.set(addItem(tLastID = 408, "Large Stainless Steel Fluid Cell", "", new ItemData(Materials.StainlessSteel, OrePrefixes.plateDouble.mMaterialAmount * 4L, new MaterialStack(Materials.Electrum, OrePrefixes.ring.mMaterialAmount * 4L)), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 6L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 3L)));
+//        setFluidContainerStats(32000 + tLastID, 32000L, 64L);
+//
+//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.StainlessSteel, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Electrum, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Large_Fluid_Cell_StainlessSteel.get(1L), 200, 64);
+//
+//        ItemList.Large_Fluid_Cell_Titanium.set(addItem(tLastID = 409, "Large Titanium Fluid Cell", "", new ItemData(Materials.Titanium, OrePrefixes.plateDouble.mMaterialAmount * 4L, new MaterialStack(Materials.RoseGold, OrePrefixes.ring.mMaterialAmount * 4L)), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 7L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 5L)));
+//        setFluidContainerStats(32000 + tLastID, 128000L, 64L);
+//
+//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Titanium, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.RoseGold, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Large_Fluid_Cell_Titanium.get(1L), 200, 256);
+//
+//        ItemList.Large_Fluid_Cell_Chrome.set(addItem(tLastID = 410, "Large Chrome Fluid Cell", "", new ItemData(Materials.Chrome, OrePrefixes.plateDouble.mMaterialAmount * 4L, new MaterialStack(Materials.Palladium, OrePrefixes.ring.mMaterialAmount * 4L)), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 6L)));
+//        setFluidContainerStats(32000 + tLastID, 2048000L, 8L);
+//
+//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Chrome, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Palladium, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Large_Fluid_Cell_Chrome.get(1L), 200, 1024);
+//
+//        ItemList.Large_Fluid_Cell_Iridium.set(addItem(tLastID = 411, "Large Iridium Fluid Cell", "", new ItemData(Materials.Iridium, OrePrefixes.plateDouble.mMaterialAmount * 4L, new MaterialStack(Materials.Naquadah, OrePrefixes.ring.mMaterialAmount * 4L)), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 10L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 8L)));
+//        setFluidContainerStats(32000 + tLastID, 8192000L, 2L);
+//
+//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iridium, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Naquadah, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Large_Fluid_Cell_Iridium.get(1L), 200, 1920);
+//
+//        ItemList.Large_Fluid_Cell_Osmium.set(addItem(tLastID = 412, "Large Osmium Fluid Cell", "", new ItemData(Materials.Osmium, OrePrefixes.plateDouble.mMaterialAmount * 4L, new MaterialStack(Materials.ElectrumFlux, OrePrefixes.ring.mMaterialAmount * 4L)), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 11L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 9L)));
+//        setFluidContainerStats(32000 + tLastID, 32768000L, 1L);
+//
+//        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmium, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.ElectrumFlux, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Large_Fluid_Cell_Osmium.get(1L), 200, 4096);
+//
+//        ItemList.Large_Fluid_Cell_Neutronium.set(addItem(tLastID = 413, "Large Neutronium Fluid Cell", "", new ItemData(Materials.Neutronium, OrePrefixes.plateDouble.mMaterialAmount * 4L, new MaterialStack(Materials.Draconium, OrePrefixes.ring.mMaterialAmount * 4L)), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 12L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 10L)));
+//        setFluidContainerStats(32000 + tLastID, 131072000L, 1L);
 
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Steel, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.AnyBronze, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Large_Fluid_Cell_Steel.get(1L), 200, 30);
-
-        ItemList.Large_Fluid_Cell_TungstenSteel.set(addItem(tLastID = 406, "Large Tungstensteel Fluid Cell", "", new ItemData(Materials.TungstenSteel, OrePrefixes.plateDouble.mMaterialAmount * 4L, new MaterialStack(Materials.Platinum, OrePrefixes.ring.mMaterialAmount * 4L)), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 9L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 7L)));
-        setFluidContainerStats(32000 + tLastID, 512000L, 32L);
-
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenSteel, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Platinum, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Large_Fluid_Cell_TungstenSteel.get(1L), 200, 480);
-
-        ItemList.Large_Fluid_Cell_Aluminium.set(addItem(tLastID = 407, "Large Aluminium Fluid Cell", "", new ItemData(Materials.Aluminium, OrePrefixes.plateDouble.mMaterialAmount * 4L, new MaterialStack(Materials.Silver, OrePrefixes.ring.mMaterialAmount * 4L)), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L)));
-        setFluidContainerStats(32000 + tLastID, 64000L, 64L);
-
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Aluminium, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Silver, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Large_Fluid_Cell_Aluminium.get(1L), 200, 120);
-
-        ItemList.Large_Fluid_Cell_StainlessSteel.set(addItem(tLastID = 408, "Large Stainless Steel Fluid Cell", "", new ItemData(Materials.StainlessSteel, OrePrefixes.plateDouble.mMaterialAmount * 4L, new MaterialStack(Materials.Electrum, OrePrefixes.ring.mMaterialAmount * 4L)), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 6L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 3L)));
-        setFluidContainerStats(32000 + tLastID, 32000L, 64L);
-
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.StainlessSteel, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Electrum, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Large_Fluid_Cell_StainlessSteel.get(1L), 200, 64);
-
-        ItemList.Large_Fluid_Cell_Titanium.set(addItem(tLastID = 409, "Large Titanium Fluid Cell", "", new ItemData(Materials.Titanium, OrePrefixes.plateDouble.mMaterialAmount * 4L, new MaterialStack(Materials.RoseGold, OrePrefixes.ring.mMaterialAmount * 4L)), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 7L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 5L)));
-        setFluidContainerStats(32000 + tLastID, 128000L, 64L);
-
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Titanium, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.RoseGold, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Large_Fluid_Cell_Titanium.get(1L), 200, 256);
-
-        ItemList.Large_Fluid_Cell_Chrome.set(addItem(tLastID = 410, "Large Chrome Fluid Cell", "", new ItemData(Materials.Chrome, OrePrefixes.plateDouble.mMaterialAmount * 4L, new MaterialStack(Materials.Palladium, OrePrefixes.ring.mMaterialAmount * 4L)), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 6L)));
-        setFluidContainerStats(32000 + tLastID, 2048000L, 8L);
-
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Chrome, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Palladium, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Large_Fluid_Cell_Chrome.get(1L), 200, 1024);
-
-        ItemList.Large_Fluid_Cell_Iridium.set(addItem(tLastID = 411, "Large Iridium Fluid Cell", "", new ItemData(Materials.Iridium, OrePrefixes.plateDouble.mMaterialAmount * 4L, new MaterialStack(Materials.Naquadah, OrePrefixes.ring.mMaterialAmount * 4L)), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 10L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 8L)));
-        setFluidContainerStats(32000 + tLastID, 8192000L, 2L);
-
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iridium, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Naquadah, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Large_Fluid_Cell_Iridium.get(1L), 200, 1920);
-
-        ItemList.Large_Fluid_Cell_Osmium.set(addItem(tLastID = 412, "Large Osmium Fluid Cell", "", new ItemData(Materials.Osmium, OrePrefixes.plateDouble.mMaterialAmount * 4L, new MaterialStack(Materials.ElectrumFlux, OrePrefixes.ring.mMaterialAmount * 4L)), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 11L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 9L)));
-        setFluidContainerStats(32000 + tLastID, 32768000L, 1L);
-
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmium, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.ElectrumFlux, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Large_Fluid_Cell_Osmium.get(1L), 200, 4096);
-
-        ItemList.Large_Fluid_Cell_Neutronium.set(addItem(tLastID = 413, "Large Neutronium Fluid Cell", "", new ItemData(Materials.Neutronium, OrePrefixes.plateDouble.mMaterialAmount * 4L, new MaterialStack(Materials.Draconium, OrePrefixes.ring.mMaterialAmount * 4L)), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 12L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 10L)));
-        setFluidContainerStats(32000 + tLastID, 131072000L, 1L);
-
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Draconium, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Large_Fluid_Cell_Neutronium.get(1L), 200, 7680);
+        //GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Draconium, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Large_Fluid_Cell_Neutronium.get(1L), 200, 7680);
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
             ItemList.SPRAY_CAN_DYES[i].set(addItem(tLastID = 430 + 2 * i, "Spray Can (" + Dyes.get(i).mName + ")", "Full", new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 4L)));
             ItemList.SPRAY_CAN_DYES_USED[i].set(addItem(tLastID + 1, "Spray Can (" + Dyes.get(i).mName + ")", "Used", new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 3L), SubTag.INVISIBLE));
@@ -622,14 +622,14 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.ItemFilter_Import.set(addItem(271,"Item Filter Cover (Import)", "Right click with an item to set filter (Only supports Import Mode)"));
         GregTech_API.registerCover(ItemList.ItemFilter_Import.get(1L), TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_CONVEYOR)), new GT_Cover_ItemFilter(false));
 
-        ItemList.Conveyor_Module_LV.set(addItem(630, "Conveyor Module (LV)", "Moves 1 stack every 10 seconds.", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L)));
-        ItemList.Conveyor_Module_MV.set(addItem(631, "Conveyor Module (MV)", "Moves 2 stacks every 5 seconds.", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 2L)));
-        ItemList.Conveyor_Module_HV.set(addItem(632, "Conveyor Module (HV)", "Moves 2 stacks every second.", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 4L)));
-        ItemList.Conveyor_Module_EV.set(addItem(633, "Conveyor Module (EV)", "Moves 4 stacks every second.", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 8L)));
-        ItemList.Conveyor_Module_IV.set(addItem(634, "Conveyor Module (IV)", "Moves 8 stacks every second.", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 16L)));
-        ItemList.Conveyor_Module_LuV.set(addItem(635, "Conveyor Module (LuV)", "Moves 8 stacks every quarter second.", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 32L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 32L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 32L)));
-        ItemList.Conveyor_Module_ZPM.set(addItem(636, "Conveyor Module (ZPM)", "Moves 12 stacks every quarter second.", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 64L)));
-        ItemList.Conveyor_Module_UV.set(addItem(637, "Conveyor Module (UV)", "Moves 16 stacks every quarter second.", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 128L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 128L)));
+        ItemList.Conveyor_Module_LV.set(addItem(630, "Conveyor Module (LV)", "Moves 16 items every 2.5 seconds.", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L)));
+        ItemList.Conveyor_Module_MV.set(addItem(631, "Conveyor Module (MV)", "Moves 32 items every 1.25 seconds.", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 2L)));
+        ItemList.Conveyor_Module_HV.set(addItem(632, "Conveyor Module (HV)", "Moves 32 items 2 times per second.", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 4L)));
+        ItemList.Conveyor_Module_EV.set(addItem(633, "Conveyor Module (EV)", "Moves 1 stacks 4 times second.", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 8L)));
+        ItemList.Conveyor_Module_IV.set(addItem(634, "Conveyor Module (IV)", "Moves 2 stacks 4 times second.", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 16L)));
+        ItemList.Conveyor_Module_LuV.set(addItem(635, "Conveyor Module (LuV)", "Moves 2 stacks every tick.", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 32L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 32L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 32L)));
+        ItemList.Conveyor_Module_ZPM.set(addItem(636, "Conveyor Module (ZPM)", "Moves 3 stacks every tick.", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 64L)));
+        ItemList.Conveyor_Module_UV.set(addItem(637, "Conveyor Module (UV)", "Moves 4 stacks every tick.", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 128L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 128L)));
         ItemList.Conveyor_Module_UHV.set(addItem(638, "Conveyor Module (UHV)", "Moves 16 stacks 20 times per second.", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 256L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 256L)));
         ItemList.Conveyor_Module_UEV.set(addItem(639, "Conveyor Module (UEV)", "Moves 32 stacks 20 times per second.", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L)));
         ItemList.Conveyor_Module_UIV.set(addItem(32, "Conveyor Module (UIV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L)));

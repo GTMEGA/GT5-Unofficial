@@ -30,7 +30,7 @@ public abstract class GT_Slot_Wrapper extends Slot {
      * @param p_75210_2_
      */
     @Override
-    protected void onCrafting(final ItemStack p_75210_1_, final int p_75210_2_) {
+    public void onCrafting(final ItemStack p_75210_1_, final int p_75210_2_) {
 //        wrappedSlot.onCrafting(p_75210_1_, p_75210_2_);
     }
 
@@ -38,7 +38,7 @@ public abstract class GT_Slot_Wrapper extends Slot {
      * @param p_75208_1_
      */
     @Override
-    protected void onCrafting(final ItemStack p_75208_1_) {
+    public void onCrafting(final ItemStack p_75208_1_) {
 //        wrappedSlot.onCrafting(p_75208_1_);
     }
 
