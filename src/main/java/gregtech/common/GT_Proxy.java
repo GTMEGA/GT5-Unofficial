@@ -1952,8 +1952,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     }
 
     public void registerUnificationEntries() {
-        GregTech_API.sUnification.mConfig.save();
-        GregTech_API.sUnification.mConfig.load();
+        GregTech_API.sUnification.save();
+        GregTech_API.sUnification.load();
         GT_OreDictUnificator.resetUnificationEntries();
         for (OreDictEventContainer tOre : this.mEvents) {
             if ((!(tOre.mEvent.Ore.getItem() instanceof GT_MetaGenerated_Item)) && (tOre.mPrefix != null) && (tOre.mPrefix.mIsUnificatable) && (tOre.mMaterial != null)) {
@@ -2015,7 +2015,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             }
         }
         GregTech_API.sUnificationEntriesRegistered = true;
-        GregTech_API.sUnification.mConfig.save();
+        GregTech_API.sUnification.save();
         GT_Recipe.reInit();
     }
 

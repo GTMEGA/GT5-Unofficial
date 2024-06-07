@@ -285,22 +285,14 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
                       int aDefaultMinOutputPerSecond,
                       int aDefaultMaxOutputPerSecond,
                       int aDefaultCoolDownTicks) {
-            calcificationTicks = get(aCategory,"CalcificationTicks", aDefaultCalcificationTicks,
+            calcificationTicks = sMachineFile.get(aCategory,"CalcificationTicks", aDefaultCalcificationTicks,
                     "Number of run-time ticks before boiler starts calcification.",
                     "100% calcification and minimal output will be reached at 2 times this.");
-            minOutputPerSecond = get(aCategory,"MinOutputPerSecond", aDefaultMinOutputPerSecond);
-            maxOutputPerSecond = get(aCategory,"MaxOutputPerSecond", aDefaultMaxOutputPerSecond);
-            coolDownTicks = get(aCategory,"CoolDownTicks", aDefaultCoolDownTicks, "Number of ticks it takes to lose 1°C.");
+            minOutputPerSecond = sMachineFile.get(aCategory,"MinOutputPerSecond", aDefaultMinOutputPerSecond);
+            maxOutputPerSecond = sMachineFile.get(aCategory,"MaxOutputPerSecond", aDefaultMaxOutputPerSecond);
+            coolDownTicks = sMachineFile.get(aCategory,"CoolDownTicks", aDefaultCoolDownTicks, "Number of ticks it takes to lose 1°C.");
             // After which min output is reached.
             maxRuntimeTicks = (getMaxOutputPerSecond() - getMinOutputPerSecond()) * getCalcificationTicks() / getMaxOutputPerSecond() + getCalcificationTicks();
-        }
-
-        protected int get(final String aCategory, final String aKey, final int aDefaultValue, final String... aComments) {
-            final StringBuilder tCommentBuilder = new StringBuilder();
-            for (String tComment: aComments)
-                tCommentBuilder.append(tComment).append('\n');
-            tCommentBuilder.append("Default: ").append(aDefaultValue);
-            return sMachineFile.mConfig.get(aCategory, aKey, aDefaultValue, tCommentBuilder.toString()).getInt();
         }
 
         public int getCalcificationTicks() {
