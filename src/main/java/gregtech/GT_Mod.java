@@ -68,6 +68,8 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -209,7 +211,10 @@ public class GT_Mod implements IGT_Mod {
         GT_Config.sConfigFileIDs.save();
 
         // THIS CONFIG IS MARKED AS SHTEWPID!! IT WILL NOT LOAD!!
-        GregTech_API.sRecipeFile = new GT_Config(new Configuration(new File(new File(aEvent.getModConfigurationDirectory(), "GregTech"), "Recipes.cfg")), true);
+        val recipeFile = new File(new File(aEvent.getModConfigurationDirectory(), "GregTech"), "Recipes.cfg");
+        if (recipeFile.exists())
+            recipeFile.delete();
+        GregTech_API.sRecipeFile = new GT_Config(new Configuration(recipeFile), true);
 
 
         GregTech_API.sMachineFile = new GT_Config(new Configuration(new File(new File(aEvent.getModConfigurationDirectory(), "GregTech"), "MachineStats.cfg")));
