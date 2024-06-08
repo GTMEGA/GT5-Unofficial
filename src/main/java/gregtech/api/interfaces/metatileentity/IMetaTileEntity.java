@@ -147,6 +147,13 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ);
 
     /**
+     * When a Player right-clicks the Facing with a hammer.
+     */
+    default boolean onHammerToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        return false;
+    }
+
+    /**
      * Called right before this Machine explodes
      */
     void onExplosion();
@@ -433,6 +440,14 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 
     default boolean canDrop() {
         return true;
+    }
+
+    default boolean canReceiveImmediateEvents() {
+        return false;
+    }
+
+    default void acceptPerpendicular(int perpendicularFacing) {
+
     }
 
 }

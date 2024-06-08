@@ -16,6 +16,7 @@ import gregtech.api.util.GT_BaseCrop;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_Renderer_Block;
+import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -450,7 +451,8 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
                     !GT_Utility.isStackInList(tCurrentItem, GregTech_API.sScrewdriverList) &&
                     !GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWrenchList) &&
                     !GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWireCutterList) &&
-                    !GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList)
+                    !GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList) &&
+                    !GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSoftHammerList)
             ) return false;
         }
         if ((tTileEntity instanceof IGregTechTileEntity)) {
@@ -686,7 +688,8 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
             return;
         }
         IGregTechTileEntity iGregTechTileEntity = (IGregTechTileEntity) tTileEntity;
-        if (iGregTechTileEntity.getMetaTileEntity() == null) return;
+        val                 metaTileEntity      = iGregTechTileEntity.getMetaTileEntity();
+        if (metaTileEntity == null) return;
         if (aPlayer == null) {
             iGregTechTileEntity.setFrontFacing((byte) ForgeDirection.UP.ordinal());
             return;
@@ -694,13 +697,16 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         int yawQuadrant = MathHelper.floor_double(aPlayer.rotationYaw * 4.0F / 360.0F + 0.5D) & 0x3;
         int pitch = Math.round(aPlayer.rotationPitch);
         if (pitch >= 65 && iGregTechTileEntity.isValidFacing((byte) ForgeDirection.UP.ordinal())) {
+            metaTileEntity.acceptPerpendicular(yawQuadrant + 2);
             iGregTechTileEntity.setFrontFacing((byte) ForgeDirection.UP.ordinal());
             return;
         }
         if (pitch <= -65 && iGregTechTileEntity.isValidFacing((byte) ForgeDirection.DOWN.ordinal())) {
+            metaTileEntity.acceptPerpendicular(yawQuadrant + 2);
             iGregTechTileEntity.setFrontFacing((byte) ForgeDirection.DOWN.ordinal());
             return;
         }
+        metaTileEntity.acceptPerpendicular(1);
         switch (yawQuadrant) {
             case 0:
                 iGregTechTileEntity.setFrontFacing((byte) ForgeDirection.NORTH.ordinal());

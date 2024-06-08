@@ -786,7 +786,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     mLightValue = (byte) aValue;
                     break;
                 case ClientEvents.MISC_EVENT:
-                    if (hasValidMetaTileEntity() && mTickTimer > 20) {
+                    if (hasValidMetaTileEntity() && (mTickTimer > 20 || mMetaTileEntity.canReceiveImmediateEvents())) {
                         mMetaTileEntity.receiveMiscEvent((byte) aValue);
                     }
                     break;
@@ -1497,7 +1497,11 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     }
 
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sHardHammerList)) {
-                        if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
+                        byte tSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
+                        if (mMetaTileEntity.onHammerToolRightClick(aSide, tSide, aPlayer, aX, aY, aZ)) {
+                            // Handled internally
+                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(1), 1.0F, -1, xCoord, yCoord, zCoord);
+                        } else if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                             mInputDisabled = !mInputDisabled;
                             if (mInputDisabled) mOutputDisabled = !mOutputDisabled;
                             GT_Utility.sendChatToPlayer(aPlayer, trans("086","Auto-Input: ") + (mInputDisabled ? trans("087","Disabled") : trans("088","Enabled") + trans("089","  Auto-Output: ") + (mOutputDisabled ? trans("087","Disabled") : trans("088","Enabled"))));

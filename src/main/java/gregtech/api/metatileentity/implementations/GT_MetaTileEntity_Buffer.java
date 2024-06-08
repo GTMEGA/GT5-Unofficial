@@ -277,16 +277,13 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
             mSuccess--;
             updateSlots();
             moveItems(aBaseMetaTileEntity, aTimer);
-            for(byte b = 0;b<6;b++)
-            	aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b,bInvert ? (byte)15 : (byte)0);
+            updateBufferRS(aBaseMetaTileEntity, bInvert ? (byte) 15 : (byte) 0);
             if (bRedstoneIfFull) {
-                for(byte b = 0;b<6;b++)
-                    aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b,bInvert ? (byte)0 : (byte)15);
+                updateBufferRS(aBaseMetaTileEntity, bInvert ? (byte) 0 : (byte) 15);
                 for (int i = 0; i < mInventory.length; i++)
                     if (isValidSlot(i)) {
                         if (mInventory[i] == null) {
-                            for(byte b = 0;b<6;b++)
-                                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b,bInvert ? (byte)15 : (byte)0);
+                            updateBufferRS(aBaseMetaTileEntity, bInvert ? (byte) 15 : (byte) 0);
                             break;
                         }
                     }
@@ -294,10 +291,15 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         }
     }
 
+    private void updateBufferRS(final IGregTechTileEntity aBaseMetaTileEntity, final byte bInvert) {
+        for (byte b = 0; b < 6; b++) {
+            aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b, bInvert);
+        }
+    }
+
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-    	for(byte b = 0;b<6;b++)
-            aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b,(byte)0);
+        updateBufferRS(aBaseMetaTileEntity, (byte) 0);
     }
 
     protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
@@ -306,10 +308,36 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
 
     protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer, int stacks) {
             int tCost;
-            if (bStockingMode)
-                tCost = GT_Utility.moveMultipleItemStacks(aBaseMetaTileEntity, aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()), aBaseMetaTileEntity.getBackFacing(), aBaseMetaTileEntity.getFrontFacing(), null, false, mTargetStackSize == 0 ? 64 : (byte) mTargetStackSize, mTargetStackSize == 0 ? 1 : (byte) mTargetStackSize, (byte) 64, (byte) 1, stacks);
-            else
-                tCost = GT_Utility.moveMultipleItemStacks(aBaseMetaTileEntity, aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()), aBaseMetaTileEntity.getBackFacing(), aBaseMetaTileEntity.getFrontFacing(), null, false, (byte) 64, (byte) 1, mTargetStackSize == 0 ? 64 : (byte) mTargetStackSize, mTargetStackSize == 0 ? 1 : (byte) mTargetStackSize, stacks);
+            if (bStockingMode) {
+                tCost = GT_Utility.moveMultipleItemStacks(
+                        aBaseMetaTileEntity,
+                        aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()),
+                        aBaseMetaTileEntity.getBackFacing(),
+                        aBaseMetaTileEntity.getFrontFacing(),
+                        null,
+                        false,
+                        mTargetStackSize == 0 ? 64 : (byte) mTargetStackSize,
+                        mTargetStackSize == 0 ? 1 : (byte) mTargetStackSize,
+                        (byte) 64,
+                        (byte) 1,
+                        stacks
+                                                         );
+            }
+            else {
+                tCost = GT_Utility.moveMultipleItemStacks(
+                        aBaseMetaTileEntity,
+                        aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()),
+                        aBaseMetaTileEntity.getBackFacing(),
+                        aBaseMetaTileEntity.getFrontFacing(),
+                        null,
+                        false,
+                        (byte) 64,
+                        (byte) 1,
+                        mTargetStackSize == 0 ? 64 : (byte) mTargetStackSize,
+                        mTargetStackSize == 0 ? 1 : (byte) mTargetStackSize,
+                        stacks
+                                                         );
+            }
 
             if (tCost > 0 || aBaseMetaTileEntity.hasInventoryBeenModified()) {
                 mSuccess = 50;
