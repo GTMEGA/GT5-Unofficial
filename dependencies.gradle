@@ -72,5 +72,7 @@ dependencies {
 
     compileOnly("org.jetbrains:annotations:24.1.0")
 
-    implementation("com.azanor.baubles:Baubles:1.7.10-1.0.1.10:deobf")
+    compileOnly("com.azanor.baubles:Baubles:1.7.10-1.0.1.10:deobf") {
+        transitive = false
+    }
 }
