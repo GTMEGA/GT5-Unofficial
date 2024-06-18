@@ -62,6 +62,7 @@ enum GT_FlatBombTier implements IGT_ExplosiveTier<GT_FlatBombTier> {
     private final @NonNull AtomicReference<GT_Block_Explosive<GT_FlatBombTier>> blockReference = new AtomicReference<>();
 
     @Override
+    //TODO: Make this not mine any blocks beneath itself.
     public float getBlockResistance(final GT_Explosion<?> explosion, final World world, final int x, final int y, final int z, final Block block) {
         val base = explosion.getBlockResistance(x, y, z, block);
         if (base > 10) {
