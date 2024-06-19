@@ -134,12 +134,12 @@ public class GT_Values {
 
     public static final String[] TIER_COLORS =
             new String[]{
-                    EnumChatFormatting.RED.toString(), EnumChatFormatting.GRAY.toString(), EnumChatFormatting.AQUA.toString(),
-                    EnumChatFormatting.GOLD.toString(), EnumChatFormatting.DARK_PURPLE.toString(), EnumChatFormatting.DARK_BLUE.toString(),
+                    EnumChatFormatting.RED.toString(), EnumChatFormatting.DARK_GRAY.toString(), EnumChatFormatting.GRAY.toString(),
+                    EnumChatFormatting.AQUA.toString(), EnumChatFormatting.YELLOW.toString(), EnumChatFormatting.DARK_PURPLE.toString(),
                     EnumChatFormatting.LIGHT_PURPLE.toString(), EnumChatFormatting.WHITE.toString(), EnumChatFormatting.DARK_AQUA.toString(),
                     EnumChatFormatting.DARK_RED.toString(), EnumChatFormatting.GREEN.toString(), EnumChatFormatting.DARK_GREEN.toString(),
                     EnumChatFormatting.YELLOW.toString(), EnumChatFormatting.UNDERLINE.toString(), EnumChatFormatting.BOLD.toString(),
-                    EnumChatFormatting.OBFUSCATED.toString()};
+                    EnumChatFormatting.DARK_BLUE.toString()};
 
     /**
      * This way it is possible to have a Call Hierarchy of NullPointers in ItemStack based Functions, and also because most of the time I don't know what kind of Data Type the "null" stands for
