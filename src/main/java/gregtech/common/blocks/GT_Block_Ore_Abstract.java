@@ -246,6 +246,6 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
 
     @Override
     public int getExpDrop(IBlockAccess world, int metadata, int fortune) {
-        return 100;
+        return 1;
     }
 }
