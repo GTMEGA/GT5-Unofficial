@@ -340,6 +340,8 @@ public class GT_Values {
 
     public static int PAMapChangeDamageChance = 2;
 
+    public static float MachineExplosionPower = 1.0f;
+
     public static boolean getConfigValue(final Configuration config, final String category, final String key, final boolean defValue, final String comment) {
         return config.get(category, key, defValue, comment).getBoolean(defValue);
     }
