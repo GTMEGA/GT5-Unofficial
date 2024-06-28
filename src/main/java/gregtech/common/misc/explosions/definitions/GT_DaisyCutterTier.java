@@ -71,8 +71,8 @@ enum GT_DaisyCutterTier implements IGT_ExplosiveTier<GT_DaisyCutterTier> {
         val params = getParameters();
         val lines = new String[]{
                 "An explosive, developed by a bygone civilization, which blows away only foliage",
-                "to make room for industrial progress. Destroys most items.",
-                String.format("Has a range of %.1f blocks", params.getRadius()),
+                "to make room for industrial bigger-ing. Destroys most items.",
+                String.format("Has a radius of %.1f blocks", params.getRadius() / 2),
                 };
         Collections.addAll(list, lines);
     }
