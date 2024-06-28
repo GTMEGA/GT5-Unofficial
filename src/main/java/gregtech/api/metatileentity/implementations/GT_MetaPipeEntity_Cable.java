@@ -33,6 +33,7 @@ import ic2.api.energy.tile.IEnergySink;
 import ic2.api.energy.tile.IEnergySource;
 import ic2.api.energy.tile.IEnergyTile;
 import ic2.api.reactor.IReactorChamber;
+import lombok.val;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -338,10 +339,11 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
 
     @Override
     public String[] getDescription() {
+        val tier = GT_Utility.getTier(mVoltage);
         return new String[]{
-                "Max Voltage: %%%" + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mVoltage) + " (" + VN[GT_Utility.getTier(mVoltage)] + ")" + EnumChatFormatting.GRAY,
+                "Max Voltage: %%%" + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mVoltage) + " (" + VN[tier] + ")" + EnumChatFormatting.GRAY,
                 "Max Amperage: %%%" + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(mAmperage) + EnumChatFormatting.GRAY,
-                "Loss/Meter/Ampere: %%%" + EnumChatFormatting.RED + GT_Utility.formatNumbers(mCableLossPerMeter) + EnumChatFormatting.GRAY + "%%% EU-Volt"
+                "Loss/Meter/Ampere: %%%" + EnumChatFormatting.RED + GT_Utility.formatNumbers((mCableLossPerMeter/(32f/(1<<tier)))) + EnumChatFormatting.GRAY + "%%% EU-Volt"
         };
     }
 
