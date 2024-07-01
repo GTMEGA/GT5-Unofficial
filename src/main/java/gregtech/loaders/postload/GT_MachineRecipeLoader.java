@@ -1459,8 +1459,8 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack(Blocks.sandstone, 1, 1), GT_Utility.getIntegratedCircuit(1), new ItemStack(Blocks.sandstone, 1, 0), 50, 4);
         GT_Values.RA.addAssemblerRecipe(new ItemStack(Blocks.sandstone, 1, 2), GT_Utility.getIntegratedCircuit(1), new ItemStack(Blocks.sandstone, 1, 0), 50, 4);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 8L), GT_Utility.getIntegratedCircuit(8), GT_ModHandler.getIC2Item("machine", 1L), 25, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 8L), GT_Utility.getIntegratedCircuit(8), ItemList.Casing_ULV.get(1L), 25, 16);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 8L), GT_Utility.getIntegratedCircuit(8), ItemList.Casing_LV.get(1L), 50, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 6L), GT_Utility.getIntegratedCircuit(6), ItemList.Casing_ULV.get(1L), 25, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 6L), GT_Utility.getIntegratedCircuit(6), ItemList.Casing_LV.get(1L), 50, 16);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, StainlessSteel, 16L), GT_Utility.getIntegratedCircuit(8), ItemList.Casing_MV.get(1L), 50, 16);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Aluminium, 32L), GT_Utility.getIntegratedCircuit(8), ItemList.Casing_HV.get(1L), 50, 16);
         //TODO: Once we're ready for EV machines, we can add new recipes for these.

@@ -404,6 +404,8 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP) {
                     switch (this.mTier) {
                         case 0:
+                            aRecipe[i] = ItemList.Electric_Pump_ULV;
+                            break;
                         case 1:
                             aRecipe[i] = ItemList.Electric_Pump_LV;
                             break;
@@ -546,6 +548,8 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR) {
                     switch (this.mTier) {
                         case 0:
+                            aRecipe[i] = ItemList.Conveyor_Module_ULV;
+                            break;
                         case 1:
                             aRecipe[i] = ItemList.Conveyor_Module_LV;
                             break;

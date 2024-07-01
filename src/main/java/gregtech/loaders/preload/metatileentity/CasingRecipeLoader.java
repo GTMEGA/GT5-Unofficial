@@ -21,8 +21,8 @@ public final class CasingRecipeLoader {
     public static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
-        addCraftingRecipe(Casing_ULV.getOne(), RECIPE_MASK, new Object[]{"PPP", "PwP", "PPP", 'P', plate.get(Tin)});
-        addCraftingRecipe(Casing_LV.getOne(), RECIPE_MASK, new Object[]{"PPP", "PwP", "PPP", 'P', plate.get(Steel)});
+        addCraftingRecipe(Casing_ULV.getOne(), RECIPE_MASK, new Object[]{"PhP", "PwP", "PdP", 'P', plate.get(Tin)});
+        addCraftingRecipe(Casing_LV.getOne(), RECIPE_MASK, new Object[]{"PhP", "PwP", "PdP", 'P', plate.get(Steel)});
         addCraftingRecipe(Casing_MV.getOne(), RECIPE_MASK, new Object[]{"PPP", "PwP", "PPP", 'P', plateDouble.get(StainlessSteel)});
         addCraftingRecipe(Casing_HV.getOne(), RECIPE_MASK, new Object[]{"PPP", "PwP", "PPP", 'P', plateQuadruple.get(Aluminium)});
 //        addCraftingRecipe(Casing_EV.getOne(), RECIPE_MASK, new Object[]{"PPP", "PwP", "PPP", 'P', plate.get(Titanium)});
