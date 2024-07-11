@@ -80,10 +80,8 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
     public String[] getDescription() {
         return new String[]{
         		"Place, then activate with explosive compound.",
-                "Uses 12 Explosive Compound per tier.",
-                "Ore prospecting radius in chunks: "
-                    + radius*2/16,
-                ", centered on nearest vein.",
+                "Uses " + (16 * mTier) + " Explosive Compound per operation.",
+                "Ore prospecting radius in chunks: " + radius*2/16 + ", centered on nearest vein.",
                 "Once finished, r-click to add new ore data to your map."};
     }
 

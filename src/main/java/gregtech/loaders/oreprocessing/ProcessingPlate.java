@@ -472,15 +472,15 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         GT_ModHandler.removeRecipeByOutputDelayed(aStack);
 
-        if (aMaterial.mStandardMoltenFluid != null) {
-
-            RA.addFluidSolidifierRecipe(
-                    ItemList.Shape_Mold_Casing.get(0L),
-                    aMaterial.getMolten(L / 2),
-                    GT_OreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 1L),
-                    16, 8);
-
-        }
+//        if (aMaterial.mStandardMoltenFluid != null) {
+//
+//            RA.addFluidSolidifierRecipe(
+//                    ItemList.Shape_Mold_Casing.get(0L),
+//                    aMaterial.getMolten(L / 2),
+//                    GT_OreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 1L),
+//                    16, 8);
+//
+//        }
 
         if (aMaterial.mUnificatable &&
                 aMaterial.mMaterialInto == aMaterial &&
@@ -505,23 +505,23 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         }
 
-        RA.addAlloySmelterRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 2L),
-                ItemList.Shape_Mold_Casing.get(0L), GT_Utility.copyAmount(3L, aStack), 128, 15);
-
-        RA.addCutterRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 2L),
-                NI,
-                (int) Math.max(aMaterial.getMass(), 1L),
-                16);
-
-        RA.addExtruderRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
-                ItemList.Shape_Extruder_Casing.get(0L),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 2L),
-                (int) Math.max(aMaterial.getMass(), 1L),
-                45);
+//        RA.addAlloySmelterRecipe(
+//                GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 2L),
+//                ItemList.Shape_Mold_Casing.get(0L), GT_Utility.copyAmount(3L, aStack), 128, 15);
+//
+//        RA.addCutterRecipe(
+//                GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L),
+//                GT_OreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 2L),
+//                NI,
+//                (int) Math.max(aMaterial.getMass(), 1L),
+//                16);
+//
+//        RA.addExtruderRecipe(
+//                GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
+//                ItemList.Shape_Extruder_Casing.get(0L),
+//                GT_OreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 2L),
+//                (int) Math.max(aMaterial.getMass(), 1L),
+//                45);
 
         GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
 

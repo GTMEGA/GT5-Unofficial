@@ -33,7 +33,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 }
                 if (aMaterial.mStandardMoltenFluid != null) {
                     if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
-                        GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(0L), aMaterial.getMolten(144L), GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L), 32, 8);
+                        GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(0L), aMaterial.getMolten(144L), GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L), 10, 8);
                     }
                 }
                 GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
