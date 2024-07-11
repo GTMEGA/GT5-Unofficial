@@ -343,7 +343,8 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         return new String[]{
                 "Max Voltage: %%%" + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mVoltage) + " (" + VN[tier] + ")" + EnumChatFormatting.GRAY,
                 "Max Amperage: %%%" + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(mAmperage) + EnumChatFormatting.GRAY,
-                "Loss/Meter/Ampere: %%%" + EnumChatFormatting.RED + GT_Utility.formatNumbers((mCableLossPerMeter/(32f/(1<<tier)))) + EnumChatFormatting.GRAY + "%%% EU-Volt"
+                "Loss per meter: %%%" + EnumChatFormatting.RED + GT_Utility.formatNumbers((mCableLossPerMeter/(32f/(1<<tier)))) + EnumChatFormatting.GRAY + "%%% EU-Volt",
+                "Loss rounds up to nearest whole number."
         };
     }
 
