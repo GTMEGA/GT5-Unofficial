@@ -342,8 +342,9 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         val tier = GT_Utility.getTier(mVoltage);
         return new String[]{
                 "Max Voltage: %%%" + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mVoltage) + " (" + VN[tier] + ")" + EnumChatFormatting.GRAY,
-                "Max Amperage: %%%" + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(mAmperage) + EnumChatFormatting.GRAY,
-                "Loss per meter: %%%" + EnumChatFormatting.RED + GT_Utility.formatNumbers((mCableLossPerMeter/(32f/(1<<tier)))) + EnumChatFormatting.GRAY + "%%% EU-Volt",
+                "Working Amperage: %%%" + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(mAmperage) + EnumChatFormatting.GRAY,
+                "Max Inrush Amperage: %%%"+ EnumChatFormatting.GOLD + GT_Utility.formatNumbers((mAmperage * 2)) + EnumChatFormatting.GRAY + " for 8 seconds.",
+                "Loss per cable: %%%" + EnumChatFormatting.RED + GT_Utility.formatNumbers((mCableLossPerMeter/(32f/(1<<tier)))) + EnumChatFormatting.GRAY + "%%% EU-Volt",
                 "Loss rounds up to nearest whole number."
         };
     }
