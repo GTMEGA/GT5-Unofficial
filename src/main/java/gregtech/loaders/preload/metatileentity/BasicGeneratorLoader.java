@@ -38,9 +38,9 @@ public final class BasicGeneratorLoader {
         Generator_Steam_Turbine_MV.set(new GT_MetaTileEntity_SteamTurbine(1121, "basicgenerator.steamturbine.tier.02", "Advanced Steam Turbine", 2).getStackForm(1L));
         Generator_Steam_Turbine_HV.set(new GT_MetaTileEntity_SteamTurbine(1122, "basicgenerator.steamturbine.tier.03", "Advanced Steam Turbine II", 3).getStackForm(1L));
 
-        addCraftingRecipe(Generator_Steam_Turbine_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "RMR", "EWE", 'M', Hull_LV, 'E', Electric_Motor_LV, 'R', rotor.get(Tin), 'C', circuitPower.get(PWR_LV), 'W', cableGt01.get(Tin), 'P', pipeMedium.get(Brass)});
-        addCraftingRecipe(Generator_Steam_Turbine_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "RMR", "EWE", 'M', Hull_MV, 'E', Electric_Motor_MV, 'R', rotor.get(Brass), 'C', circuitPower.get(PWR_MV), 'W', cableGt01.get(AnyCopper), 'P', pipeMedium.get(Steel)});
-        addCraftingRecipe(Generator_Steam_Turbine_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "RMR", "EWE", 'M', Hull_HV, 'E', Electric_Motor_HV, 'R', rotor.get(Steel), 'C', circuitPower.get(PWR_HV), 'W', cableGt01.get(Gold), 'P', pipeMedium.get(StainlessSteel)});
+        addCraftingRecipe(Generator_Steam_Turbine_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "RMR", "WEL", 'M', Hull_LV, 'E', Electric_Motor_LV, 'R', rotor.get(Tin), 'C', circuitPower.get(PWR_LV), 'W', circuitLogic.get(LOGIC_LV), 'L', cableGt01.get(Tin), 'P', pipeMedium.get(Brass)});
+        addCraftingRecipe(Generator_Steam_Turbine_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "RMR", "WEL", 'M', Hull_MV, 'E', Electric_Motor_MV, 'R', rotor.get(Brass), 'C', circuitPower.get(PWR_MV), 'W',circuitLogic.get(LOGIC_MV), 'L', cableGt01.get(AnyCopper), 'P', pipeMedium.get(Steel)});
+        addCraftingRecipe(Generator_Steam_Turbine_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "RMR", "WEL", 'M', Hull_HV, 'E', Electric_Motor_HV, 'R', rotor.get(Steel), 'C', circuitPower.get(PWR_HV), 'W',circuitLogic.get(LOGIC_HV), 'L', cableGt01.get(Gold), 'P', pipeMedium.get(StainlessSteel)});
 
         Generator_Naquadah_Mark_I.set(new GT_MetaTileEntity_NaquadahReactor(1190, "basicgenerator.naquadah.tier.04", new String[]{"Requires Enriched Naquadah Bolts"}, "Naquadah Reactor Mark I", 4).getStackForm(1L));
         Generator_Naquadah_Mark_II.set(new GT_MetaTileEntity_NaquadahReactor(1191, "basicgenerator.naquadah.tier.05", new String[]{"Requires Enriched Naquadah Rods"}, "Naquadah Reactor Mark II", 5).getStackForm(1L));
