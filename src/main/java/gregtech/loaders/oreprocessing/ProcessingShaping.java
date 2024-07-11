@@ -85,7 +85,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                 //GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(4L, new Object[]{aStack}), ItemList.Shape_Extruder_Gear.get(0L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial.mSmeltInto, tAmount), (int) Math.max(aMaterialMass * 5L * tAmount, tAmount), 8 * tVoltageMultiplier);
 
                 GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Plate.get(0L), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial.mSmeltInto, tAmount), (int) Math.max(aMaterialMass * 2L * tAmount, tAmount), 2 * tVoltageMultiplier);
-                GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(4L, aStack), ItemList.Shape_Mold_Gear_Small.get(0L), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial.mSmeltInto, tAmount), (int) Math.max(aMaterialMass * 10L * tAmount, tAmount), 2 * tVoltageMultiplier);
+                GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(3L, aStack), ItemList.Shape_Mold_Gear_Small.get(0L), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial.mSmeltInto, tAmount), (int) Math.max(aMaterialMass * 10L * tAmount, tAmount), 2 * tVoltageMultiplier);
                 switch (aMaterial.mSmeltInto.mName) {
                     case "Glass":
                         GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Bottle.get(0L), new ItemStack(Items.glass_bottle, 1), tAmount * 32, 16);
