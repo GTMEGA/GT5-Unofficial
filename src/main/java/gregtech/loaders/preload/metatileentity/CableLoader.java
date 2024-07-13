@@ -59,18 +59,18 @@ public final class CableLoader {
         makeWires(Graphene, 1600, 1,2048, 16L, V[4], false, true);
 
         makeWires(Osmium, 1620, 8192, 8192, 14L, V[5], true, false);
-        makeWires(Platinum, 1640, 8192, 8192, 14L, V[5], true, false);
+        makeWires(Platinum, 1640, 4, 8, 14L, V[5], true, false);
         makeWires(TungstenSteel, 1660, 8192, 8192, 6L, V[5], true, false);
         makeWires(Tungsten, 1680, 8192, 8192, 4L, V[5], true, false);
 
         makeWires(HSSG, 1700, 8192, 8192, 4L, V[6], true, false);
         makeWires(NiobiumTitanium, 1720, 8192, 8192, 12L, V[6], true, false);
-        makeWires(VanadiumGallium, 1740, 8192, 8192, 12L, V[6], true, false);
+        makeWires(VanadiumGallium, 1740, 16, 32, 12L, V[6], true, false);
         makeWires(YttriumBariumCuprate, 1760, 8192, 8192, 8L, V[6], true, false);
 
-        makeWires(Naquadah, 1780, 8192, 8192, 8L, V[7], true, false);
+        makeWires(Naquadah, 1780, 32, 64, 8L, V[7], true, false);
 
-        makeWires(NaquadahAlloy, 1800, 8192, 8192, 6L, V[8], true, false);
+        makeWires(NaquadahAlloy, 1800, 128, 256, 6L, V[8], true, false);
         makeWires(Duranium, 1820, 8192, 8192, 1L, V[8], true, false);
 
         makeWires(SuperconductorUHV, 2020, 69420L, 69420L, 8L, V[9], false, true);
