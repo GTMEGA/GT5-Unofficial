@@ -223,11 +223,11 @@ public final class BasicMachineLoader {
         Machine_EV_Massfab.set(new GT_MetaTileEntity_Massfabricator(464, "basicmachine.massfab.tier.04", "Advanced Mass Fabricator III", 4).getStackForm(1L));
         Machine_IV_Massfab.set(new GT_MetaTileEntity_Massfabricator(465, "basicmachine.massfab.tier.05", "Advanced Mass Fabricator IV", 5).getStackForm(1L));
 
-        addCraftingRecipe(Machine_LV_Massfab.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CFC", "WMW", "CFC", 'M', Hull_LV, 'F', Field_Generator_LV, 'C', circuitLogic.get(LOGIC_MV), 'W', cableGt04.get(Tin)});
-        addCraftingRecipe(Machine_MV_Massfab.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CFC", "WMW", "CFC", 'M', Hull_MV, 'F', Field_Generator_MV, 'C', circuitLogic.get(LOGIC_HV), 'W', cableGt04.get(AnyCopper)});
-        addCraftingRecipe(Machine_HV_Massfab.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CFC", "WMW", "CFC", 'M', Hull_HV, 'F', Field_Generator_HV, 'C', circuitLogic.get(LOGIC_EV), 'W', cableGt04.get(Gold)});
-        addCraftingRecipe(Machine_EV_Massfab.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CFC", "WMW", "CFC", 'M', Hull_EV, 'F', Field_Generator_EV, 'C', circuitLogic.get(LOGIC_IV), 'W', cableGt04.get(Aluminium)});
-        addCraftingRecipe(Machine_IV_Massfab.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CFC", "WMW", "CFC", 'M', Hull_IV, 'F', Field_Generator_IV, 'C', circuitLogic.get(LOGIC_LUV), 'W', cableGt04.get(Tungsten)});
+//        addCraftingRecipe(Machine_LV_Massfab.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CFC", "WMW", "CFC", 'M', Hull_LV, 'F', Field_Generator_LV, 'C', circuitLogic.get(LOGIC_MV), 'W', cableGt04.get(Tin)});
+//        addCraftingRecipe(Machine_MV_Massfab.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CFC", "WMW", "CFC", 'M', Hull_MV, 'F', Field_Generator_MV, 'C', circuitLogic.get(LOGIC_HV), 'W', cableGt04.get(AnyCopper)});
+//        addCraftingRecipe(Machine_HV_Massfab.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CFC", "WMW", "CFC", 'M', Hull_HV, 'F', Field_Generator_HV, 'C', circuitLogic.get(LOGIC_EV), 'W', cableGt04.get(Gold)});
+//        addCraftingRecipe(Machine_EV_Massfab.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CFC", "WMW", "CFC", 'M', Hull_EV, 'F', Field_Generator_EV, 'C', circuitLogic.get(LOGIC_IV), 'W', cableGt04.get(Aluminium)});
+//        addCraftingRecipe(Machine_IV_Massfab.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CFC", "WMW", "CFC", 'M', Hull_IV, 'F', Field_Generator_IV, 'C', circuitLogic.get(LOGIC_LUV), 'W', cableGt04.get(Tungsten)});
 
         Machine_LV_Amplifab.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(471, "basicmachine.amplifab.tier.01", "Basic Amplifabricator", 1, "Extracting UU Amplifier", sAmplifiers, 1, 1, 1000, 0, 1, "Amplifabricator.png", sSoundList.get(Integer.valueOf(200)), false, false, 0, "AMPLIFAB", new Object[]{"WPW", "PMP", "CPC", 'M', HULL, 'P', PUMP, 'C', circuitPower.get(PWR_MV), 'W', WIRE4}).getStackForm(1L));
         Machine_MV_Amplifab.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(472, "basicmachine.amplifab.tier.02", "Advanced Amplifabricator", 2, "Extracting UU Amplifier", sAmplifiers, 1, 1, 1000, 0, 1, "Amplifabricator.png", sSoundList.get(Integer.valueOf(200)), false, false, 0, "AMPLIFAB", new Object[]{"WPW", "PMP", "CPC", 'M', HULL, 'P', PUMP, 'C', circuitPower.get(PWR_HV), 'W', WIRE4}).getStackForm(1L));
@@ -241,11 +241,11 @@ public final class BasicMachineLoader {
         Machine_EV_Replicator.set(new GT_MetaTileEntity_Replicator(484, "basicmachine.replicator.tier.04", "Advanced Replicator III", 4).getStackForm(1L));
         Machine_IV_Replicator.set(new GT_MetaTileEntity_Replicator(485, "basicmachine.replicator.tier.05", "Advanced Replicator IV", 5).getStackForm(1L));
 
-        addCraftingRecipe(Machine_LV_Replicator.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EFE", "CMC", "EWE", 'M', Hull_LV, 'F', Field_Generator_LV, 'E', Emitter_LV, 'C', circuitPower.get(PWR_MV), 'W', cableGt04.get(Tin)});
-        addCraftingRecipe(Machine_MV_Replicator.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EFE", "CMC", "EWE", 'M', Hull_MV, 'F', Field_Generator_MV, 'E', Emitter_MV, 'C', circuitPower.get(PWR_HV), 'W', cableGt04.get(AnyCopper)});
-        addCraftingRecipe(Machine_HV_Replicator.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EFE", "CMC", "EWE", 'M', Hull_HV, 'F', Field_Generator_HV, 'E', Emitter_HV, 'C', circuitPower.get(PWR_EV), 'W', cableGt04.get(Gold)});
-        addCraftingRecipe(Machine_EV_Replicator.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EFE", "CMC", "EWE", 'M', Hull_EV, 'F', Field_Generator_EV, 'E', Emitter_EV, 'C', circuitPower.get(PWR_IV), 'W', cableGt04.get(Aluminium)});
-        addCraftingRecipe(Machine_IV_Replicator.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EFE", "CMC", "EWE", 'M', Hull_IV, 'F', Field_Generator_IV, 'E', Emitter_IV, 'C', circuitPower.get(PWR_LUV), 'W', cableGt04.get(Tungsten)});
+//        addCraftingRecipe(Machine_LV_Replicator.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EFE", "CMC", "EWE", 'M', Hull_LV, 'F', Field_Generator_LV, 'E', Emitter_LV, 'C', circuitPower.get(PWR_MV), 'W', cableGt04.get(Tin)});
+//        addCraftingRecipe(Machine_MV_Replicator.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EFE", "CMC", "EWE", 'M', Hull_MV, 'F', Field_Generator_MV, 'E', Emitter_MV, 'C', circuitPower.get(PWR_HV), 'W', cableGt04.get(AnyCopper)});
+//        addCraftingRecipe(Machine_HV_Replicator.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EFE", "CMC", "EWE", 'M', Hull_HV, 'F', Field_Generator_HV, 'E', Emitter_HV, 'C', circuitPower.get(PWR_EV), 'W', cableGt04.get(Gold)});
+//        addCraftingRecipe(Machine_EV_Replicator.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EFE", "CMC", "EWE", 'M', Hull_EV, 'F', Field_Generator_EV, 'E', Emitter_EV, 'C', circuitPower.get(PWR_IV), 'W', cableGt04.get(Aluminium)});
+//        addCraftingRecipe(Machine_IV_Replicator.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"EFE", "CMC", "EWE", 'M', Hull_IV, 'F', Field_Generator_IV, 'E', Emitter_IV, 'C', circuitPower.get(PWR_LUV), 'W', cableGt04.get(Tungsten)});
 
         Machine_LV_Brewery.set(new GT_MetaTileEntity_PotionBrewer(491, "basicmachine.brewery.tier.01", "Basic Brewery", 1).getStackForm(1L));
         Machine_MV_Brewery.set(new GT_MetaTileEntity_PotionBrewer(492, "basicmachine.brewery.tier.02", "Advanced Brewery", 2).getStackForm(1L));

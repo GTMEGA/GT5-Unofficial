@@ -91,7 +91,7 @@ public final class MultiblockMachineLoader {
         OreDrill4.set(new GT_MetaTileEntity_OreDrillingPlant4(1179, "multimachine.oredrill4", "Ore Drilling Rig MKIV").getStackForm(1));
 
         PyrolyseOven.set(new GT_MetaTileEntity_PyrolyseOven(1159, "multimachine.pyro", "Pyrolyse Oven").getStackForm(1));
-        addCraftingRecipe(PyrolyseOven.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WEP", "EME", "WCP", 'M', Hull_LV, 'W', Electric_Piston_LV, 'P', wireGt04.get(Cupronickel), 'E', circuitPower.get(PWR_LV), 'C', Electric_Pump_LV});
+        addCraftingRecipe(PyrolyseOven.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WEP", "EME", "WCP", 'M', Hull_LV, 'W', Electric_Piston_LV, 'P', wireGt08.get(Cupronickel), 'E', circuitPower.get(PWR_LV), 'C', Electric_Pump_LV});
 
         OilCracker.set(new GT_MetaTileEntity_OilCracker(1160, "multimachine.cracker", "Oil Cracking Unit").getStackForm(1));
         addCraftingRecipe(OilCracker.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WCW", "EME", "WCW", 'M', Hull_MV, 'W', Casing_Coil_Cupronickel, 'E', circuitPower.get(PWR_MV), 'C', Electric_Pump_MV});
