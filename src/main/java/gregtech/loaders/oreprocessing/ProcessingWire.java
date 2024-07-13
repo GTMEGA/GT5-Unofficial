@@ -97,8 +97,8 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 correspondingCable = OrePrefixes.cableGt16;
                 correspondingWire = OrePrefixes.wireGt16;
 //                GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 16L), new Object[]{aOreDictName});
-                GT_ModHandler.addShapelessCraftingRecipe(GT_Utility.copyAmount(1L, aStack), new Object[]{OrePrefixes.wireGt08.get(aMaterial),OrePrefixes.wireGt08.get(aMaterial),OrePrefixes.wireGt08.get(aMaterial),OrePrefixes.wireGt08.get(aMaterial),OrePrefixes.wireGt08.get(aMaterial), OrePrefixes.wireGt08.get(aMaterial), OrePrefixes.wireGt08.get(aMaterial), OrePrefixes.wireGt08.get(aMaterial)});
-                GT_Values.RA.addAssemblerRecipe(GT_Utility.getIntegratedCircuit(16), GT_OreDictUnificator.get(OrePrefixes.wireGt08, aMaterial, 8L),GT_OreDictUnificator.get(correspondingWire, aMaterial, 1L), 300, 24);
+//                GT_ModHandler.addShapelessCraftingRecipe(GT_Utility.copyAmount(1L, aStack), new Object[]{OrePrefixes.wireGt08.get(aMaterial),OrePrefixes.wireGt08.get(aMaterial),OrePrefixes.wireGt08.get(aMaterial),OrePrefixes.wireGt08.get(aMaterial),OrePrefixes.wireGt08.get(aMaterial), OrePrefixes.wireGt08.get(aMaterial), OrePrefixes.wireGt08.get(aMaterial), OrePrefixes.wireGt08.get(aMaterial)});
+                GT_Values.RA.addAssemblerRecipe(GT_Utility.getIntegratedCircuit(16), GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 64L),GT_OreDictUnificator.get(correspondingWire, aMaterial, 1L), 300, 24);
                 //                GT_ModHandler.addShapelessCraftingRecipe(GT_Utility.copyAmount(1L, aStack), new Object[]{OrePrefixes.wireGt12.get(aMaterial), OrePrefixes.wireGt04.get(aMaterial)});
                 if (GT_Mod.gregtechproxy.mAE2Integration) {
                     AE2addNewAttunement(aStack);
