@@ -334,31 +334,31 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_ELECTRIC) {
                     switch (this.mTier) {
                         case 0:
-                            aRecipe[i] = OrePrefixes.wireGt01.get(Materials.Lead);
+                            aRecipe[i] = ItemList.ULV_Coil;
                             break;
                         case 1:
-                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Tin);
+                            aRecipe[i] = ItemList.LV_Coil;
                             break;
                         case 2:
-                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.AnyCopper);
+                            aRecipe[i] = ItemList.MV_Coil;
                             break;
                         case 3:
-                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.AnyCopper);
+                            aRecipe[i] = ItemList.HV_Coil;
                             break;
                         case 4:
-                            aRecipe[i] = OrePrefixes.wireGt08.get(Materials.AnnealedCopper);
+                            aRecipe[i] = ItemList.EV_Coil;
                             break;
                         case 5:
-                            aRecipe[i] = OrePrefixes.wireGt16.get(Materials.AnnealedCopper);
+                            aRecipe[i] = ItemList.IV_Coil;
                             break;
                         case 6:
-                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.YttriumBariumCuprate);
+                            aRecipe[i] = ItemList.LuV_Coil;
                             break;
                         case 7:
-                            aRecipe[i] = OrePrefixes.wireGt08.get(Materials.Iridium);
+                            aRecipe[i] = ItemList.UV_Coil;
                             break;
                         default:
-                            aRecipe[i] = OrePrefixes.wireGt16.get(Materials.Osmium);
+                            aRecipe[i] = ItemList.UHV_Coil;
                             break;
                     }
                     continue;

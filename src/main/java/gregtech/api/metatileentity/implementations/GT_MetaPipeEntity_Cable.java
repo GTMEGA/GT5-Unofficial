@@ -340,7 +340,9 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     @Override
     public String[] getDescription() {
         if (mCanShock) {
-            return new String[]{};
+            return new String[]{
+                    "[Intermediate Material]"
+            };
         }
         val tier = GT_Utility.getTier(mVoltage);
         return new String[]{
