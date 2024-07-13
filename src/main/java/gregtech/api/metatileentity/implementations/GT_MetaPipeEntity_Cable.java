@@ -339,6 +339,9 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
 
     @Override
     public String[] getDescription() {
+        if (mCanShock) {
+            return new String[]{};
+        }
         val tier = GT_Utility.getTier(mVoltage);
         return new String[]{
                 "Max Voltage: %%%" + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mVoltage) + " (" + VN[tier] + ")" + EnumChatFormatting.GRAY,
