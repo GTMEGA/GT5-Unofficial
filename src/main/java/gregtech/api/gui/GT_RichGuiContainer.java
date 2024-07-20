@@ -238,7 +238,7 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
     private void addElements() {
         for (IGuiElement element : elements) {
             if (element instanceof GuiButton) {
-                buttonList.add(element);
+                buttonList.add((GuiButton) element);
             }
             if (element instanceof GT_GuiIntegerTextBox) {
                 textBoxes.add((GT_GuiIntegerTextBox) element);

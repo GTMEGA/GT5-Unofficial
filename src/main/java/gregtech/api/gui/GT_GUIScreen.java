@@ -52,7 +52,7 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 
 		for (IGuiElement element : elements) {
 			if (element instanceof GuiButton)
-				buttonList.add(element);
+				buttonList.add((GuiButton) element);
 			if (element instanceof GT_GuiIntegerTextBox)
 				textBoxes.add((GT_GuiIntegerTextBox) element);
 		}

@@ -2,6 +2,7 @@ package gregtech.loaders.preload.metatileentity;
 
 import codechicken.nei.api.API;
 import gregtech.GT_Mod;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
@@ -122,6 +123,8 @@ public final class CableLoader {
 
     private static void hideRegister(OrePrefixes aPrefix, Object aMaterial, ItemStack aStack) {
         registerOre(aPrefix,aMaterial,aStack);
-        API.hideItem(aStack);
+        if (GregTech_API.mNEI) {
+            API.hideItem(aStack);
+        }
     }
 }

@@ -199,7 +199,7 @@ public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_Explosi
                     entity.motionY += (disY * enchantProtection) * 30 * disMag;
                     entity.motionZ += (disZ * enchantProtection) * 20 * disMag;
                     if (entity instanceof EntityPlayer) {
-                        func_77277_b().put(entity, Vec3.createVectorHelper(disX * invDist, disY * invDist, disZ * invDist));
+                        func_77277_b().put((EntityPlayer) entity, Vec3.createVectorHelper(disX * invDist, disY * invDist, disZ * invDist));
                     }
                 }
             }
