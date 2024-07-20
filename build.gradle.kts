@@ -27,6 +27,7 @@ minecraft_fp {
         maven {
             repoUrl = "https://mvn.falsepattern.com/gtmega_releases/"
             repoName = "mega"
+            artifact = "gt5u-mc1.7.10"
         }
     }
 }
