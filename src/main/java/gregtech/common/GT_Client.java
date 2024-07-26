@@ -192,8 +192,8 @@ public class GT_Client extends GT_Proxy
         Rotation.sideRotations[tSideHit].glApply();
         // draw grid
         GL11.glTranslated(0.0D, -0.501D, 0.0D);
-        GL11.glLineWidth(2.0F);
-        GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.5F);
+        GL11.glLineWidth(4.0F);
+        GL11.glColor4f(0.0F, 1.0F, 0.0F, 0.5F);
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex3d(+.50D, .0D, -.25D);
         GL11.glVertex3d(-.50D, .0D, -.25D);

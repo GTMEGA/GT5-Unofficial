@@ -117,7 +117,7 @@ public final class CableLoader {
             hideRegister(cableGt04, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 8, aTextCable1 + aMaterial.mName.toLowerCase() + ".04", "Deprecated " + name + aTextCable2, 0.1F, aMaterial, aLossInsulated, 1L * aAmperage, aVoltage, true, false).getStackForm(1L));
             registerOre(cableGt08, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 9, aTextCable1 + aMaterial.mName.toLowerCase() + ".08", "Heavy " + name + aTextCable2, 0.625F, aMaterial, aLossInsulated, 8L * aAmperage, aVoltage, true, false).getStackForm(1L));
             hideRegister(cableGt12, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 10, aTextCable1 + aMaterial.mName.toLowerCase() + ".12", "Deprecated " + name + aTextCable2, 0.1F, aMaterial, aLossInsulated, 8L * aAmperage, aVoltage, true, false).getStackForm(1L));
-            hideRegister(cableGt16, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 11, aTextCable1 + aMaterial.mName.toLowerCase() + ".16", "Mega " + name + aTextCable2, 1.0F, aMaterial, aLossInsulated, 32L * aAmperage, aVoltage, true, false).getStackForm(1L));
+            hideRegister(cableGt16, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 11, aTextCable1 + aMaterial.mName.toLowerCase() + ".16", "Mega " + name + aTextCable2, 0.9375F, aMaterial, aLossInsulated, 32L * aAmperage, aVoltage, true, false).getStackForm(1L));
         }
     }
 

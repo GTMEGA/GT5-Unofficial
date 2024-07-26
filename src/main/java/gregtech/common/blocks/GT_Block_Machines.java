@@ -456,7 +456,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
             ) return false;
         }
         if ((tTileEntity instanceof IGregTechTileEntity)) {
-            if (((IGregTechTileEntity) tTileEntity).getTimer() < 1L) {
+            if (((IGregTechTileEntity) tTileEntity).getTimer() < 5L) {
                 return false;
             }
             if ((!aWorld.isRemote) && !((IGregTechTileEntity) tTileEntity).isUseableByPlayer(aPlayer)) {
