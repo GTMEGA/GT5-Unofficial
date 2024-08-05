@@ -239,12 +239,13 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
         try {
             val isDirectional = GT_Directional_Explosion.class.isAssignableFrom(explosionClass);
             val power         = getPower();
+            val of = offsetFactor();
             if (isDirectional) {
                 val side        = GT_Block_Explosive.getFacing(entity.getMetadata());
                 val constructor = explosionClass.getConstructor(World.class, entityClass, double.class, double.class, double.class, float.class, ForgeDirection.class);
-                val x           = entity.posX + side.offsetX;
-                val y           = entity.posY + side.offsetY;
-                val z           = entity.posZ + side.offsetZ;
+                val x           = entity.posX + side.offsetX * of;
+                val y           = entity.posY + side.offsetY * of;
+                val z           = entity.posZ + side.offsetZ * of;
                 return constructor.newInstance(entity.worldObj, entity, x, y, z, power, side);
             }
             val constructor = explosionClass.getConstructor(World.class, entityClass, double.class, double.class, double.class, float.class);
@@ -253,6 +254,10 @@ public interface IGT_ExplosiveTier<MyType extends Enum<MyType> & IGT_ExplosiveTi
             GT_FML_LOGGER.error(String.format("Failed to create explosive entity for %s", getELName()), e);
         }
         return null;
+    }
+
+    default int offsetFactor() {
+        return 1;
     }
 
     Class<? extends GT_Explosion<MyType>> getExplosionClass();

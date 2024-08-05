@@ -1,5 +1,6 @@
 package gregtech.common.misc.explosions.definitions;
 
+
 import gregtech.api.enums.Textures;
 import gregtech.common.blocks.GT_Block_Explosive;
 import gregtech.common.misc.explosions.GT_Explosion;
@@ -14,15 +15,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+
 @RequiredArgsConstructor
 @Getter
-public
-enum GT_FlatBombTier implements IGT_ExplosiveTier<GT_FlatBombTier> {
+public enum GT_FlatBombTier implements IGT_ExplosiveTier<GT_FlatBombTier> {
 
     MK1("Flat Bomb Mk 1", ExplosiveTextureInfo.getNew("mk1"), ExplosiveFlavorInfo.builder().build(), FlatBombParameters.get(4, 10).build()),
     MK2("Flat Bomb Mk 2", ExplosiveTextureInfo.getNew("mk2"), ExplosiveFlavorInfo.builder().build(), FlatBombParameters.get(6, 16).build()),
     MK3("Flat Bomb Mk 3", ExplosiveTextureInfo.getNew("mk3"), ExplosiveFlavorInfo.builder().build(), FlatBombParameters.get(6, 20).magic(true).build()),
     ;
+
 
     @Getter
     @Setter
@@ -35,19 +37,18 @@ enum GT_FlatBombTier implements IGT_ExplosiveTier<GT_FlatBombTier> {
 
         private final double maxDepth, maxRadius;
 
-        @Builder.Default
-        private double depthVariation = 1.5;
+        @Builder.Default private double depthVariation = 1.5;
 
-        @Builder.Default
-        private double clayChance = 1.0;
+        @Builder.Default private double clayChance = 1.0;
 
-        @Builder.Default
-        private double otherChance = 0.001;
+        @Builder.Default private double otherChance = 0.001;
 
-        @Builder.Default
-        private boolean magic = false;
+        @Builder.Default private boolean magic = false;
+
+        @Builder.Default private int offset = 0;
 
     }
+
 
     private final @NonNull String ELName;
 
@@ -62,6 +63,11 @@ enum GT_FlatBombTier implements IGT_ExplosiveTier<GT_FlatBombTier> {
     private final @NonNull AtomicReference<GT_Block_Explosive<GT_FlatBombTier>> blockReference = new AtomicReference<>();
 
     @Override
+    public int offsetFactor() {
+        return getParameters().getOffset();
+    }
+
+    @Override
     //TODO: Make this not mine any blocks beneath itself.
     public float getBlockResistance(final GT_Explosion<?> explosion, final World world, final int x, final int y, final int z, final Block block) {
         val base = explosion.getBlockResistance(x, y, z, block);
@@ -70,6 +76,7 @@ enum GT_FlatBombTier implements IGT_ExplosiveTier<GT_FlatBombTier> {
         }
         return 0;
     }
+
 
     @Override
     public ResourceLocation getEntityTexture() {
