@@ -868,7 +868,7 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
                                                                        entity.posY + range, entity.posZ + range
                                                                       );
         world.getEntitiesWithinAABB(EntityItem.class, boundingBox).forEach(oEntity -> {
-            if (oEntity instanceof EntityItem) {
+                if (oEntity instanceof EntityItem) {
                 final EntityItem itemEntity = (EntityItem) oEntity;
                 if (canPickup(stack, itemEntity)) {
                     pickup(world, stack, entity, itemEntity);
@@ -894,7 +894,9 @@ public class GT_MEGAnet extends GT_Generic_Item implements IBauble, IPacketRecei
         }
         final EntityPlayer player = (EntityPlayer) entity;
         final NBTTagCompound compound = validateNBT(stack);
-        itemEntity.setPosition(player.posX, player.eyeHeight, player.posZ);
+        //makes items teleport to player when inventory is full
+        //this breaks the item in strange ways where voiding can happen
+        //itemEntity.setPosition(player.posX, player.eyeHeight, player.posZ);
         itemEntity.motionX = 0;
         itemEntity.motionY = 0;
         itemEntity.motionZ = 0;
