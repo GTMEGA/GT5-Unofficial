@@ -213,7 +213,7 @@ public class GT_Item_RemoteDetonator extends GT_Generic_Item implements IPacketR
 
     public void trigger(final @NonNull World aWorld, final @NonNull EntityPlayer player, final @NonNull RemoteDetonationTargetList remoteDetonationTargetList, final int x, final int y, final int z) {
         if (remoteDetonationTargetList.validDimension(player)) {
-            aWorld.playSoundEffect(x, y, z, GregTech_API.sSoundList.get(220), 8.0f, aWorld.rand.nextFloat() + 1.0f);
+            aWorld.playSoundEffect(x, y, z, GregTech_API.sSoundList.get(220), 2.0f, aWorld.rand.nextFloat() + 1.0f);
             remoteDetonationTargetList.trigger(aWorld, player);
         } else {
             sendChat(aWorld, player, "Nothing to detonate!");
@@ -228,7 +228,7 @@ public class GT_Item_RemoteDetonator extends GT_Generic_Item implements IPacketR
         if (contains && validDim && target instanceof GT_Block_Explosive) {
             remoteDetonationTargetList.removeTarget(x, y, z);
             ((GT_Block_Explosive<?>) target).setPrimed(aWorld, x, y, z, false);
-            aWorld.playSoundEffect(x, y, z, GregTech_API.sSoundList.get(219), 4.0f, aWorld.rand.nextFloat() + 1.0f);
+            aWorld.playSoundEffect(x, y, z, GregTech_API.sSoundList.get(219), 2.0f, aWorld.rand.nextFloat() + 1.0f);
             sendChat(aWorld, player, String.format("Removed target (%d %d %d)", x, y, z));
         } else if (!validDim) {
             sendChat(aWorld, player, "Out of range!");
@@ -243,7 +243,7 @@ public class GT_Item_RemoteDetonator extends GT_Generic_Item implements IPacketR
                 val tierInfo  = expTarget.getTier();
                 remoteDetonationTargetList.addTarget(RemoteDetonationTargetList.ExplosiveType.getType(expTarget), tierInfo, x, y, z);
                 expTarget.setPrimed(aWorld, x, y, z, true);
-                aWorld.playSoundEffect(x, y, z, GregTech_API.sSoundList.get(218), 4.0f, aWorld.rand.nextFloat() + 1.0f);
+                aWorld.playSoundEffect(x, y, z, GregTech_API.sSoundList.get(218), 2.0f, aWorld.rand.nextFloat() + 1.0f);
                 sendChat(aWorld, player, String.format("Added target (%d %d %d)", x, y, z));
             } else {
                 sendChat(aWorld, player, "Unable to add target, do you have them in multiple dimensions?");
