@@ -138,7 +138,7 @@ public class GT_RecipeRegistrator {
             return;
         if (GT_Utility.areStacksEqual(new ItemStack(Items.clay_ball),aStack) || GT_Utility.areStacksEqual(new ItemStack(Blocks.clay),aStack)) return;
         registerReverseMacerating(GT_Utility.copyAmount(1, aStack), aData, aData.mPrefix == null);
-        registerReverseSmelting(GT_Utility.copyAmount(1, aStack), aData.mMaterial.mMaterial, aData.mMaterial.mAmount, true);
+//        registerReverseSmelting(GT_Utility.copyAmount(1, aStack), aData.mMaterial.mMaterial, aData.mMaterial.mAmount, true);
         registerReverseFluidSmelting(GT_Utility.copyAmount(1, aStack), aData.mMaterial.mMaterial, aData.mMaterial.mAmount, aData.getByProduct(0));
         registerReverseArcSmelting(GT_Utility.copyAmount(1, aStack), aData);
     }
@@ -161,24 +161,24 @@ public class GT_RecipeRegistrator {
         RA.addFluidSmelterRecipe(GT_Utility.copyAmount(1, aStack), aByproduct == null ? null : aByproduct.mMaterial.contains(SubTag.NO_SMELTING) || !aByproduct.mMaterial.contains(SubTag.METAL) ? aByproduct.mMaterial.contains(SubTag.FLAMMABLE) ? GT_OreDictUnificator.getDust(Materials.Ash, aByproduct.mAmount / 2) : aByproduct.mMaterial.contains(SubTag.UNBURNABLE) ? GT_OreDictUnificator.getDustOrIngot(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount) : null : GT_OreDictUnificator.getIngotOrDust(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount), aMaterial.mSmeltInto.getMolten((L * aMaterialAmount) / (M * aStack.stackSize)), 10000, (int) Math.max(1, (24 * aMaterialAmount) / M), Math.max(8, (int) Math.sqrt(aMaterial.mSmeltInto.mStandardMoltenFluid.getTemperature()/2)), tHide);
     }
 
-    /**
-     * @param aStack             the stack to be recycled.
-     * @param aMaterial          the Material.
-     * @param aMaterialAmount    the amount of it in Material Units.
-     * @param aAllowAlloySmelter if it is allowed to be recycled inside the Alloy Smelter.
-     */
-    public static void registerReverseSmelting(ItemStack aStack, Materials aMaterial, long aMaterialAmount, boolean aAllowAlloySmelter) {
-        if (aStack == null || aMaterial == null || aMaterialAmount <= 0 || aMaterial.contains(SubTag.NO_SMELTING) || (aMaterialAmount > M && aMaterial.contains(SubTag.METAL)))
-            return;
-        aMaterialAmount /= aStack.stackSize;
-        if(aMaterial==Materials.Naquadah||aMaterial==Materials.NaquadahEnriched)return;
-
-        boolean tHide = (aMaterial != Materials.Iron)&&(GT_Mod.gregtechproxy.mHideRecyclingRecipes);
-        if (aAllowAlloySmelter)
-            GT_ModHandler.addSmeltingAndAlloySmeltingRecipe(GT_Utility.copyAmount(1, aStack), GT_OreDictUnificator.getIngot(aMaterial.mSmeltInto, aMaterialAmount),tHide);
-        else
-            GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, aStack), GT_OreDictUnificator.getIngot(aMaterial.mSmeltInto, aMaterialAmount));
-    }
+//    /**
+//     * @param aStack             the stack to be recycled.
+//     * @param aMaterial          the Material.
+//     * @param aMaterialAmount    the amount of it in Material Units.
+//     * @param aAllowAlloySmelter if it is allowed to be recycled inside the Alloy Smelter.
+//     */
+//    public static void registerReverseSmelting(ItemStack aStack, Materials aMaterial, long aMaterialAmount, boolean aAllowAlloySmelter) {
+//        if (aStack == null || aMaterial == null || aMaterialAmount <= 0 || aMaterial.contains(SubTag.NO_SMELTING) || (aMaterialAmount > M && aMaterial.contains(SubTag.METAL)))
+//            return;
+//        aMaterialAmount /= aStack.stackSize;
+//        if(aMaterial==Materials.Naquadah||aMaterial==Materials.NaquadahEnriched)return;
+//
+//        boolean tHide = (aMaterial != Materials.Iron)&&(GT_Mod.gregtechproxy.mHideRecyclingRecipes);
+//        if (aAllowAlloySmelter)
+//            GT_ModHandler.addSmeltingAndAlloySmeltingRecipe(GT_Utility.copyAmount(1, aStack), GT_OreDictUnificator.getIngot(aMaterial.mSmeltInto, aMaterialAmount),tHide);
+//        else
+//            GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, aStack), GT_OreDictUnificator.getIngot(aMaterial.mSmeltInto, aMaterialAmount));
+//    }
 
     public static void registerReverseArcSmelting(ItemStack aStack, Materials aMaterial, long aMaterialAmount, MaterialStack aByProduct01, MaterialStack aByProduct02, MaterialStack aByProduct03) {
         //registerReverseArcSmelting(aStack, new ItemData(aMaterial == null ? null : new MaterialStack(aMaterial, aMaterialAmount), aByProduct01, aByProduct02, aByProduct03));

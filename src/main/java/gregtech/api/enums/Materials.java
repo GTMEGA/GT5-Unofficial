@@ -1437,7 +1437,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Tungstate.addOreByProducts(Manganese, Silver, Lithium);
         Bauxite.addOreByProducts(Rutile, Rutile, Gallium);
         QuartzSand.addOreByProducts(CertusQuartz, Quartzite, Barite);
-        Redstone.addOreByProducts(Cinnabar, RareEarth, Glowstone);
+        Redstone.addOreByProducts(Cinnabar, Ruby, Glowstone);
         Monazite.addOreByProducts(Thorium, Neodymium, RareEarth);
 //        Forcicium.addOreByProducts(Thorium, Neodymium, RareEarth);
 //        Forcillium.addOreByProducts(Thorium, Neodymium, RareEarth);
