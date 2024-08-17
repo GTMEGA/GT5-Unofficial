@@ -109,20 +109,20 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.coal", true, 50, 80, 140, 5, 32, true, false, false, Materials.Coal, Materials.Coal, Materials.Coal, Materials.Coal);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.magnetite", true, 55, 70, 200, 6, 32, true, false, false, Materials.Magnetite, Materials.VanadiumMagnetite, Materials.Magnetite, Materials.Magnetite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.zinc", true, 70, 80, 150, 4, 32, true, false, false, Materials.Zinc, Materials.Tin, Materials.Zinc, Materials.Cassiterite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.copper", true, 30, 40, 100, 5, 32, true, false, false, Materials.Chalcopyrite, Materials.Copper, Materials.Pyrite, Materials.Iron);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.copper", true, 30, 40, 100, 5, 32, true, false, false, Materials.Copper, Materials.Chalcopyrite, Materials.Pyrite, Materials.Iron);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.owbauxite", true, 10, 30, 80, 4, 32, true, false, false, Materials.Bauxite, Materials.Bauxite, Materials.Bauxite, Materials.Bauxite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.salts", true, 40, 45, 50, 2, 24, true, false, false, Materials.RockSalt, Materials.Salt, Materials.Lepidolite, Materials.Spodumene);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.salts", true, 40, 45, 50, 2, 24, true, false, false, Materials.Salt, Materials.RockSalt, Materials.Lepidolite, Materials.Spodumene);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.redstone", true, 5, 15, 60, 2, 24, true, false, false, Materials.Redstone, Materials.Redstone, Materials.Ruby, Materials.Cinnabar);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.nickel", true, 10, 40, 50, 2, 24, true, false, false, Materials.Garnierite, Materials.Nickel, Materials.Cobaltite, Materials.Pentlandite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.manganese", true, 20, 30, 30, 2, 16, true, true, false, Materials.Grossular, Materials.Spessartine, Materials.Tantalite, Materials.Pyrolusite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.diamond", true, 5, 20, 40, 2, 20, true, false, false, Materials.Graphite, Materials.Graphite, Materials.Diamond, Materials.Diamond);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.apatite", true, 40, 60, 35, 2, 16, true, false, false, Materials.Apatite, Materials.Apatite, Materials.TricalciumPhosphate, Materials.Pyrochlore);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.nickel", true, 10, 40, 50, 2, 24, true, false, false, Materials.Nickel, Materials.Garnierite, Materials.Cobaltite, Materials.Pentlandite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.manganese", true, 20, 30, 30, 2, 16, true, true, false, Materials.Spessartine, Materials.Spessartine, Materials.Tantalite, Materials.Pyrolusite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.diamond", true, 5, 20, 40, 2, 20, true, false, false, Materials.Diamond, Materials.Graphite, Materials.Graphite, Materials.Diamond);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.apatite", true, 40, 60, 40, 2, 16, true, false, false, Materials.Apatite, Materials.Apatite, Materials.TricalciumPhosphate, Materials.Pyrochlore);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.galena", true, 5, 45, 30, 2, 16, true, false, false, Materials.Lead, Materials.Silver, Materials.Galena, Materials.Galena);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.lapis", true, 5, 30, 45, 4, 16, true, false, false, Materials.Lapis, Materials.Calcite, Materials.Calcite, Materials.Lapis);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.oilsand", true, 50, 80, 50, 2, 32, true, false, false, Materials.Oilsands, Materials.Oilsands, Materials.Oilsands, Materials.Oilsands);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.alunite", true, 80, 200, 80, 3, 24, true, false, false, Materials.Alunite, Materials.Kyanite, Materials.Cassiterite, Materials.Chalcopyrite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.garnet", true, 50, 60, 50, 3, 24, true, false, false, Materials.GarnetSand, Materials.Asbestos, Materials.Asbestos, Materials.GarnetRed);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.mica", true, 20, 40, 45, 4, 20, true, false, false, Materials.Kyanite, Materials.Mica, Materials.Kyanite, Materials.Cassiterite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.garnet", true, 50, 60, 45, 3, 24, true, false, false, Materials.GarnetSand, Materials.Asbestos, Materials.Asbestos, Materials.GarnetRed);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.mica", true, 20, 40, 45, 4, 24, true, false, false, Materials.Kyanite, Materials.Mica, Materials.Kyanite, Materials.Cassiterite);
 
             //Twilight Forest-Only Veins
             new GT_Worldgen_GT_Ore_Layer("ore.mix.sapphire", true, 10, 40, 60, 2, 16, false, false, false, Materials.Almandine, Materials.Pyrope, Materials.Sapphire, Materials.GreenSapphire);
@@ -132,7 +132,7 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.perditioordo", true, 5, 35, 16, 2, 16, false, false, false, Materials.InfusedEntropy, Materials.InfusedOrder, Materials.Amber, Materials.Cinnabar);
 
             //Nether-Only Veins
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.saltpeterelectrotine", true, 5, 45, 55, 5, 16, false, true, false, Materials.Saltpeter, Materials.Electrotine, Materials.Saltpeter, Materials.Sphalerite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.saltpeterelectrotine", true, 5, 45, 55, 5, 16, false, true, false, Materials.Electrotine, Materials.Saltpeter, Materials.Saltpeter, Materials.Sphalerite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.beryllium", true, 5, 30, 30, 2, 16, false, true, false, Materials.Beryllium, Materials.Beryllium, Materials.Emerald, Materials.Thorium);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.tetrahedrite", true, 90, 120, 70, 4, 24, false, true, false, Materials.Tetrahedrite, Materials.Tetrahedrite, Materials.Stibnite, Materials.Sphalerite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.quartz", true, 90, 120, 70, 6, 24, false, true, false, Materials.NetherQuartz, Materials.CertusQuartz, Materials.NetherQuartz, Materials.Barite);
