@@ -107,7 +107,7 @@ public class GT_Worldgenloader implements Runnable {
             //Unlocalized name, Enabled by defaut, Min Y Spawn Height (7-242), Max Y Spawn Height (14-249), Relative Spawn Weight (1-x), Vein Density (1-10), Size (Appx. Diameter (8-32)), Spawn in Overworld?, Spawn in Nether?, Spawn in End?, Primary (Top ore layer), Secondary (Bottom ore layer), Between (Middle Ore Layer), Sporadic (Randomly placed in vein)
             //Ore veins are 7 blocks tall, Primary, Between, and Secondary overlap by 1 block. Sporadic Spawns anywhere.
             new GT_Worldgen_GT_Ore_Layer("ore.mix.coal", true, 50, 80, 140, 5, 32, true, false, false, Materials.Coal, Materials.Coal, Materials.Coal, Materials.Coal);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.magnetite", true, 55, 70, 200, 6, 32, true, false, false, Materials.Magnetite, Materials.VanadiumMagnetite, Materials.Magnetite, Materials.Magnetite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.magnetite", true, 55, 70, 200, 6, 32, true, false, false, Materials.Magnetite, Materials.Magnetite, Materials.VanadiumMagnetite, Materials.Magnetite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.zinc", true, 70, 80, 150, 4, 32, true, false, false, Materials.Zinc, Materials.Tin, Materials.Zinc, Materials.Cassiterite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.copper", true, 30, 40, 100, 5, 32, true, false, false, Materials.Copper, Materials.Chalcopyrite, Materials.Pyrite, Materials.Iron);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.owbauxite", true, 10, 30, 80, 4, 32, true, false, false, Materials.Bauxite, Materials.Bauxite, Materials.Bauxite, Materials.Bauxite);
