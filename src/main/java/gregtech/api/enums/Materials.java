@@ -867,7 +867,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public boolean
             mUnificatable,
             mBlastFurnaceRequired = false,
-            mAutoGenerateBlastFurnaceRecipes = true,
+            mAutoGenerateBlastFurnaceRecipes = false,
             mTransparent = false,
             mHasParentMod = true,
             mHasPlasma = false,
@@ -1333,7 +1333,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Tungstate.addOreByProducts(Manganese, Silver, Lithium);
         Bauxite.addOreByProducts(Rutile, Rutile, Gallium);
         QuartzSand.addOreByProducts(CertusQuartz, Quartzite, Barite);
-        Redstone.addOreByProducts(Cinnabar, RareEarth, Glowstone);
+        Redstone.addOreByProducts(Cinnabar, Ruby, Glowstone);
         Monazite.addOreByProducts(Thorium, Neodymium, RareEarth);
         Malachite.addOreByProducts(Copper, BrownLimonite, Calcite);
         YellowLimonite.addOreByProducts(Nickel, BrownLimonite, Cobalt);

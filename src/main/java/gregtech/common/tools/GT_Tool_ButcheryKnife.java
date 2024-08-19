@@ -35,7 +35,7 @@ public class GT_Tool_ButcheryKnife extends GT_Tool {
 
     @Override
     public float getBaseDamage() {
-        return 3.0F;
+        return 4.0F;
     }
 
     @Override

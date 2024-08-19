@@ -3,16 +3,25 @@ package gregtech.api.events;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import com.falsepattern.falsetweaks.Compat;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.tools.GT_Tool_Drill_LV;
 import lombok.val;
 import lombok.var;
 import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -71,15 +80,37 @@ public class DrillDrawBlockHighlightEvent {
             return;
         val aoe = drillType.getAOE(nbtTag);
 
-        val aabbList = getBlockBoundsInRange(side,
-                                             GT_Tool_Drill_LV.xStart[aoe],
-                                             GT_Tool_Drill_LV.yStart[aoe],
-                                             GT_Tool_Drill_LV.xLen[aoe],
-                                             GT_Tool_Drill_LV.yLen[aoe],
-                                             posX,
-                                             posY,
-                                             posZ,
-                                             player);
+        val blockPositions = drillType.getBlocksInAOERange(side,
+                                                           posX,
+                                                           posY,
+                                                           posZ,
+                                                           player.worldObj,
+                                                           GT_Tool_Drill_LV.xStart[aoe],
+                                                           GT_Tool_Drill_LV.yStart[aoe],
+                                                           GT_Tool_Drill_LV.xLen[aoe],
+                                                           GT_Tool_Drill_LV.yLen[aoe],
+                                                           player);
+
+        val aabbList = new ArrayList<AxisAlignedBB>();
+
+        for (val blockPosition : blockPositions) {
+            val x = blockPosition.chunkPosX;
+            val y = blockPosition.chunkPosY;
+            val z = blockPosition.chunkPosZ;
+
+            val block = player.worldObj.getBlock(x, y, z);
+
+            if (block == null || block.isAir(player.worldObj, x, y, z)) {
+                continue;
+            }
+
+            block.setBlockBoundsBasedOnState(player.worldObj, x, y, z);
+
+            val aabb = block.getSelectedBoundingBoxFromPool(player.worldObj, x, y, z)
+                            .expand(LINE_OFFSET, LINE_OFFSET, LINE_OFFSET);
+
+            aabbList.add(aabb);
+        }
 
         GL11.glPushMatrix();
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
@@ -99,176 +130,5 @@ public class DrillDrawBlockHighlightEvent {
         }
         GL11.glPopAttrib();
         GL11.glPopMatrix();
-    }
-
-    // copy pasted from IAOETool.breakBlockAround
-    //
-    // edited to be cooling
-    //
-    private static List<AxisAlignedBB> getBlockBoundsInRange(int side,
-                                                             int negWidth,
-                                                             int negHeight,
-                                                             int posWidth,
-                                                             int posHeight,
-                                                             int centerX,
-                                                             int centerY,
-                                                             int centerZ,
-                                                             EntityPlayer player) {
-        val world = player.worldObj;
-        if (world == null)
-            return Collections.emptyList();
-
-        val aabbList = new ArrayList<AxisAlignedBB>();
-
-        val downUp = side < 2;
-        val northSouth = side < 4;
-        val rotation = player.rotationYawHead < 0 ? 360F + player.rotationYawHead : player.rotationYawHead;
-
-        BiFunction<Integer, Integer, Boolean> xCheck = (value, len) -> value < len;
-        BiFunction<Integer, Integer, Boolean> yCheck = (value, len) -> value > len;
-
-        var xIterate = 1;
-        var yIterate = -1;
-
-        if (downUp) {
-            val north = rotation > 135 && rotation < 225;// 180
-            //boolean east = rotation >= 225 && rotation <= 315;//270
-            val west = rotation >= 45 && rotation <= 135;// 90
-            val south = rotation < 45 || rotation > 315;//0
-
-            //x = north-south
-            //y = east-west
-
-            if (south) {
-                int tempX = posWidth;
-                posWidth = posHeight;
-                posHeight = tempX;
-                //invert Y direction
-                posHeight *= -1;
-                posHeight -= negHeight;
-                negHeight *= -1;
-                //invert X direction when looking down
-                if (side == 0) {
-                    posWidth += negWidth;
-                } else {
-                    xCheck = (value, len) -> value > len;
-                    posWidth *= -1;
-                    posWidth -= negWidth;
-                    xIterate = -1;
-                    negWidth *= -1;
-                }
-            } else if (west) {
-                //invert X direction
-                xCheck = (value, len) -> value > len;
-                posWidth *= -1;
-                posWidth -= negWidth;
-                xIterate = -1;
-                negWidth *= -1;
-                //invert Y direction when looking up
-                if (side == 0) {
-                    posHeight *= -1;
-                    posHeight -= negHeight;
-                    negHeight *= -1;
-                } else {
-                    yCheck = (value, len) -> value < len;
-                    yIterate = 1;
-                    posHeight += negHeight;
-                }
-            } else if (north) {
-                int tempX = posWidth;
-                posWidth = posHeight;
-                posHeight = tempX;
-                //dont invert Y direction
-                yCheck = (value, len) -> value < len;
-                yIterate = 1;
-                posHeight += negHeight;
-
-                //invert X direction when looking UP
-                if (side == 0) {
-                    xCheck = (value, len) -> value > len;
-                    posWidth *= -1;
-                    posWidth -= negWidth;
-                    xIterate = -1;
-                    negWidth *= -1;
-                } else {
-                    posWidth += negWidth;
-                }
-            } else {
-                //dont invert X direction
-                posWidth += negWidth;
-
-                //invert Y direction when looking DOWN
-                if (side == 0) {
-                    yCheck = (value, len) -> value < len;
-                    yIterate = 1;
-                    posHeight += negHeight;
-                } else {
-                    posHeight *= -1;
-                    posHeight -= negHeight;
-                    negHeight *= -1;
-                }
-            }
-        } else {
-            posHeight *= -1;
-            posHeight -= negHeight;
-            negHeight *= -1;
-            if (northSouth) {
-                if (side == 2) {
-                    posWidth *= -1;
-                    posWidth -= negWidth;
-                    xIterate = -1;
-                    negWidth *= -1;
-                    xCheck = (value, len) -> value > len;
-                } else {
-                    posWidth += negWidth;
-                }
-            } else {
-                if (side == 5) {
-                    posWidth *= -1;
-                    posWidth -= negWidth;
-                    xIterate = -1;
-                    negWidth *= -1;
-                    xCheck = (value, len) -> value > len;
-                } else {
-                    posWidth += negWidth;
-                }
-            }
-        }
-
-        for (var offsetY = negHeight; yCheck.apply(offsetY, posHeight); offsetY += yIterate) {
-            for (var offsetX = negWidth; xCheck.apply(offsetX, posWidth); offsetX += xIterate) {
-                if (offsetY == 0 && offsetX == 0)
-                    continue;
-
-                final int posX;
-                final int posY;
-                final int posZ;
-                if (downUp) {
-                    //im to lazy to fix this
-                    posX = centerX + offsetY;
-                    posY = centerY;
-                    posZ = centerZ + offsetX;
-                } else if (northSouth) {
-                    posX = centerX + offsetX;
-                    posY = centerY + offsetY;
-                    posZ = centerZ;
-                } else {
-                    posX = centerX;
-                    posY = centerY + offsetY;
-                    posZ = centerZ + offsetX;
-                }
-
-                val block = world.getBlock(posX, posY, posZ);
-                if (block == null || block.isAir(world, posX, posY, posZ))
-                    continue;
-
-                block.setBlockBoundsBasedOnState(world, posX, posY, posZ);
-                val aabb = block.getSelectedBoundingBoxFromPool(world, posX, posY, posZ)
-                                .expand(LINE_OFFSET, LINE_OFFSET, LINE_OFFSET);
-                aabbList.add(aabb);
-            }
-        }
-
-        return aabbList;
     }
 }

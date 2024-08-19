@@ -9,6 +9,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
+import lombok.val;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -62,7 +63,10 @@ public class GT_Packet_TileEntityGUI extends GT_Packet_New {
         TileEntity tile = world.getTileEntity(mX, mY, mZ);
         if (tile instanceof IGregTechTileEntity && ((IGregTechTileEntity) tile).getMetaTileEntity() instanceof IAdvancedGUIEntity) {
             if (data != null) {
-                ((IAdvancedGUIEntity) (((IGregTechTileEntity) tile).getMetaTileEntity())).receiveGuiData(this.data);
+                val mte = (IAdvancedGUIEntity) (((IGregTechTileEntity) tile).getMetaTileEntity());
+                if (mte.shouldServerReceiveLiveUpdates()) {
+                    mte.receiveGuiData(this.data);
+                }
             } else {
                 GT_Log.err.println("Got bad gui packet :/");
             }

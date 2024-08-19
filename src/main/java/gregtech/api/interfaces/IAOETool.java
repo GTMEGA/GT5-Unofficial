@@ -1,16 +1,26 @@
 package gregtech.api.interfaces;
 
+import lombok.val;
+import lombok.var;
+
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.S23PacketBlockChange;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.BlockEvent;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiFunction;
 
 public interface IAOETool {
@@ -35,152 +45,124 @@ public interface IAOETool {
         return statNbt.getInteger("AOE");
     }
 
-    default float breakBlockAround(int side, int xStartPos, int yStartPos, int xLength, int yLenghth, IToolStats stats, ItemStack stack, World world, int x, int y, int z,
-                                   EntityPlayerMP player, float damgePerBlock, float timeToTakeCenter, float digSpeed) {
+    default List<ChunkPosition> getBlocksInAOERange(int side,
+                                                    int x,
+                                                    int y,
+                                                    int z,
+                                                    IBlockAccess world,
+                                                    int xOffset,
+                                                    int yOffset,
+                                                    int xRange,
+                                                    int yRange,
+                                                    EntityPlayer player) {
+        val blocksToMine = new ArrayList<ChunkPosition>();
+
+        if (world == null) {
+            return blocksToMine;
+        }
+
+        val f3Facing = MathHelper.floor_double((double)(player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+
+        var playerLookDirection = ForgeDirection.UNKNOWN;
+        switch (f3Facing) {
+            case 0:
+                playerLookDirection = ForgeDirection.SOUTH;
+                break;
+            case 1:
+                playerLookDirection = ForgeDirection.WEST;
+                break;
+            case 2:
+                playerLookDirection = ForgeDirection.NORTH;
+                break;
+            case 3:
+                playerLookDirection = ForgeDirection.EAST;
+                break;
+        }
+
+        val blockFace = ForgeDirection.getOrientation(side);
+
+        var yAxis = ForgeDirection.UNKNOWN;
+        switch (blockFace) {
+            case UP:
+                yAxis = playerLookDirection.getOpposite();
+                break;
+            case DOWN:
+                yAxis = playerLookDirection;
+                break;
+            case SOUTH:
+            case WEST:
+            case NORTH:
+            case EAST:
+                yAxis = ForgeDirection.DOWN;
+                break;
+        }
+
+        val xAxis = blockFace.getRotation(yAxis);
+
+        var startPosition = new ChunkPosition(x + xAxis.offsetX * xOffset + yAxis.offsetX * yOffset,
+                                              y + xAxis.offsetY * xOffset + yAxis.offsetY * yOffset,
+                                              z + xAxis.offsetZ * xOffset + yAxis.offsetZ * yOffset);
+
+        for (var dX = 0; dX < xRange; dX++) {
+            for (var dY = 0; dY < yRange; dY++) {
+                val position = new ChunkPosition(startPosition.chunkPosX + xAxis.offsetX * dX + yAxis.offsetX * dY,
+                                                 startPosition.chunkPosY + xAxis.offsetY * dX + yAxis.offsetY * dY,
+                                                 startPosition.chunkPosZ + xAxis.offsetZ * dX + yAxis.offsetZ * dY);
+
+                if (world.isAirBlock(position.chunkPosX, position.chunkPosY, position.chunkPosZ)) {
+                    continue;
+                }
+
+                blocksToMine.add(position);
+            }
+        }
+
+        return blocksToMine;
+    }
+
+    default float breakBlockAround(int side,
+                                   int xStartPos,
+                                   int yStartPos,
+                                   int xLength,
+                                   int yLenghth,
+                                   IToolStats stats,
+                                   ItemStack stack,
+                                   World world,
+                                   int x,
+                                   int y,
+                                   int z,
+                                   EntityPlayerMP player,
+                                   float damgePerBlock,
+                                   float timeToTakeCenter,
+                                   float digSpeed) {
         int harvestLevel = stack.getItem().getHarvestLevel(stack, "");
 
-        int DX;
-        int DY;
-        int DZ;
-        boolean downUp = side < 2;
-        boolean northSouth = side < 4;
-        float rotation = player.rotationYawHead < 0 ? 360f + player.rotationYawHead : player.rotationYawHead;
+        val blocksToMine = this.getBlocksInAOERange(side, x, y, z, world, xStartPos, yStartPos, xLength, yLenghth, player);
 
-        BiFunction<Integer, Integer, Boolean> xCheck = (value, len) -> value < len;
-        BiFunction<Integer, Integer, Boolean> yCheck = (value, len) -> value > len;
+        var tooldamage = 0F;
 
-        int xIterate = 1;
-        int yIterate = -1;
+        for (val blockPosition : blocksToMine) {
+            val block = world.getBlock(blockPosition.chunkPosX, blockPosition.chunkPosY, blockPosition.chunkPosZ);
+            val hardness = block.getBlockHardness(world, blockPosition.chunkPosX, blockPosition.chunkPosY, blockPosition.chunkPosZ);
 
-        if (downUp) {
-            boolean north = rotation > 135 && rotation < 225;// 180
-            //boolean east = rotation >= 225 && rotation <= 315;//270
-            boolean west = rotation >= 45 && rotation <= 135;// 90
-            boolean south = rotation < 45 || rotation > 315;//0
+            val brokeBlock = this.breakBlock(stack,
+                                             stats,
+                                             harvestLevel,
+                                             hardness,
+                                             timeToTakeCenter,
+                                             digSpeed,
+                                             world,
+                                             blockPosition.chunkPosX,
+                                             blockPosition.chunkPosY,
+                                             blockPosition.chunkPosZ,
+                                             player,
+                                             block);
 
-            //x = north-south
-            //y = east-west
-
-            if (south) {
-                int tempX = xLength;
-                xLength = yLenghth;
-                yLenghth = tempX;
-                //invert Y direction
-                yLenghth *= -1;
-                yLenghth -= yStartPos;
-                yStartPos *= -1;
-                //invert X direction when looking down
-                if (side == 0) {
-                    xLength += xStartPos;
-                } else {
-                    xCheck = (value, len) -> value > len;
-                    xLength *= -1;
-                    xLength -= xStartPos;
-                    xIterate = -1;
-                    xStartPos *= -1;
-                }
-            } else if (west) {
-                //invert X direction
-                xCheck = (value, len) -> value > len;
-                xLength *= -1;
-                xLength -= xStartPos;
-                xIterate = -1;
-                xStartPos *= -1;
-                //invert Y direction when looking up
-                if (side == 0) {
-                    yLenghth *= -1;
-                    yLenghth -= yStartPos;
-                    yStartPos *= -1;
-                } else {
-                    yCheck = (value, len) -> value < len;
-                    yIterate = 1;
-                    yLenghth += yStartPos;
-                }
-            } else if (north) {
-                int tempX = xLength;
-                xLength = yLenghth;
-                yLenghth = tempX;
-                //dont invert Y direction
-                yCheck = (value, len) -> value < len;
-                yIterate = 1;
-                yLenghth += yStartPos;
-
-                //invert X direction when looking UP
-                if (side == 0) {
-                    xCheck = (value, len) -> value > len;
-                    xLength *= -1;
-                    xLength -= xStartPos;
-                    xIterate = -1;
-                    xStartPos *= -1;
-                } else {
-                    xLength += xStartPos;
-                }
-            } else {
-                //dont invert X direction
-                xLength += xStartPos;
-
-                //invert Y direction when looking DOWN
-                if (side == 0) {
-                    yCheck = (value, len) -> value < len;
-                    yIterate = 1;
-                    yLenghth += yStartPos;
-                } else {
-                    yLenghth *= -1;
-                    yLenghth -= yStartPos;
-                    yStartPos *= -1;
-                }
-            }
-        } else {
-            yLenghth *= -1;
-            yLenghth -= yStartPos;
-            yStartPos *= -1;
-            if (northSouth) {
-                if (side == 2) {
-                    xLength *= -1;
-                    xLength -= xStartPos;
-                    xIterate = -1;
-                    xStartPos *= -1;
-                    xCheck = (value, len) -> value > len;
-                } else {
-                    xLength += xStartPos;
-                }
-            } else {
-                if (side == 5) {
-                    xLength *= -1;
-                    xLength -= xStartPos;
-                    xIterate = -1;
-                    xStartPos *= -1;
-                    xCheck = (value, len) -> value > len;
-                } else {
-                    xLength += xStartPos;
-                }
+            if (brokeBlock) {
+                tooldamage += hardness * damgePerBlock;
             }
         }
-        float tooldamage = 0;
-        for (int Y = yStartPos; yCheck.apply(Y, yLenghth); Y += yIterate) {
-            for (int X = xStartPos; xCheck.apply(X, xLength); X += xIterate) {
-                if (Y != 0 || X != 0) {
-                    if (downUp) {
-                        //im to lazy to fix this
-                        DX = x + Y;
-                        DY = y;
-                        DZ = z + X;
-                    } else if (northSouth) {
-                        DX = x + X;
-                        DY = y + Y;
-                        DZ = z;
-                    } else {
-                        DX = x;
-                        DY = y + Y;
-                        DZ = z + X;
-                    }
-                    Block block = world.getBlock(DX, DY, DZ);
-                    float blockHardness = block.getBlockHardness(world, DX, DY, DZ);
-                    if (breakBlock(stack, stats, harvestLevel, blockHardness, timeToTakeCenter, digSpeed, world, DX, DY, DZ, player, block))
-                        tooldamage += blockHardness * damgePerBlock;
-                }
-            }
-        }
+
         return tooldamage;
     }
 

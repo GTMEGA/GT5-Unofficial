@@ -42,10 +42,9 @@ public class GT_MEGAnet_GuiContainer extends GT_RichGuiContainer {
     }
 
     @Override
-    public void closeScreen() {
+    public void onScreenClosed() {
         meganetContainer.sendSettingUpdate();
         meganetContainer.sendFilterUpdate();
-        super.closeScreen();
     }
 
     @Override

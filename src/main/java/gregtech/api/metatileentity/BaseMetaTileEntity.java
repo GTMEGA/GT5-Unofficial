@@ -68,6 +68,7 @@ import java.util.UUID;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.NW;
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.graphs.GenerateNodeMapPower.POWER_GENERATION;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 /**
@@ -785,7 +786,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     mLightValue = (byte) aValue;
                     break;
                 case ClientEvents.MISC_EVENT:
-                    if (hasValidMetaTileEntity() && mTickTimer > 20) {
+                    if (hasValidMetaTileEntity() && (mTickTimer > 20 || mMetaTileEntity.canReceiveImmediateEvents())) {
                         mMetaTileEntity.receiveMiscEvent((byte) aValue);
                     }
                     break;
@@ -975,7 +976,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer aPlayer) {
-        return canAccessData() && playerOwnsThis(aPlayer, false) && mTickTimer > 1 && getTileEntityOffset(0, 0, 0) == this && aPlayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64 && mMetaTileEntity.isAccessAllowed(aPlayer);
+        return canAccessData() && playerOwnsThis(aPlayer, false) && mTickTimer > 4 && getTileEntityOffset(0, 0, 0) == this && aPlayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64 && mMetaTileEntity.isAccessAllowed(aPlayer);
     }
 
     @Override
@@ -1159,10 +1160,10 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     if (TE instanceof BaseMetaPipeEntity) {
                         Node node = ((BaseMetaPipeEntity) TE).getNode();
                         if (node == null) {
-                            new GenerateNodeMapPower((BaseMetaPipeEntity) TE);
+                            POWER_GENERATION.accept((BaseMetaPipeEntity) TE);
                         } else if (node.mCreationTime != time) {
                             GenerateNodeMap.clearNodeMap(node,-1);
-                            new GenerateNodeMapPower((BaseMetaPipeEntity) TE);
+                            POWER_GENERATION.accept((BaseMetaPipeEntity) TE);
                         }
                     }
                 }
@@ -1496,7 +1497,11 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     }
 
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sHardHammerList)) {
-                        if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
+                        byte tSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
+                        if (mMetaTileEntity.onHammerToolRightClick(aSide, tSide, aPlayer, aX, aY, aZ)) {
+                            // Handled internally
+                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(1), 1.0F, -1, xCoord, yCoord, zCoord);
+                        } else if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                             mInputDisabled = !mInputDisabled;
                             if (mInputDisabled) mOutputDisabled = !mOutputDisabled;
                             GT_Utility.sendChatToPlayer(aPlayer, trans("086","Auto-Input: ") + (mInputDisabled ? trans("087","Disabled") : trans("088","Enabled") + trans("089","  Auto-Output: ") + (mOutputDisabled ? trans("087","Disabled") : trans("088","Enabled"))));

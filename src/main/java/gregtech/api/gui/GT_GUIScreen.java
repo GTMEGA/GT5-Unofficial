@@ -14,6 +14,7 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -51,7 +52,7 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 
 		for (IGuiElement element : elements) {
 			if (element instanceof GuiButton)
-				buttonList.add(element);
+				buttonList.add((GuiButton) element);
 			if (element instanceof GT_GuiIntegerTextBox)
 				textBoxes.add((GT_GuiIntegerTextBox) element);
 		}
@@ -200,7 +201,7 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 			return;
 		}
 
-		if (key == 28 && focusedTextBox != null) { // enter
+		if ((key == Keyboard.KEY_RETURN || key == Keyboard.KEY_NUMPADENTER) && focusedTextBox != null) { // enter
 			applyTextBox(focusedTextBox);
 			setFocusedTextBox(null);
 			return;

@@ -96,12 +96,11 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
         val                                 euPerSecond = getEUt() * 20;
         val steamPerSecond = euPerSecond / EU_PER_STEAM;
         tt.addMachineType("Boiler")
-          .addInfo("Controller block for the Large " + getCasingMaterial() + " Boiler")
           .addInfo("Produces " + (steamPerSecond * (runtimeBoost(20) / 20f) + "L of Steam with 1 Coal at " + steamPerSecond) + "L/s")
-          .addInfo("Consumes " + steamPerSecond / STEAM_PER_WATER + "L of Water per second")
-          .addInfo("A programmed circuit in the main block throttles the boiler (-250L/s per config)")
+          .addInfo("Consumes " + steamPerSecond / STEAM_PER_WATER + "L of water per second.")
+          .addInfo("Throttles fuel consumption to 10% if there is nowhere for steam to go.")
+          .addInfo("A programmed circuit in the controller can throttle the boiler (-250L/s per config)")
           .addInfo(String.format("Diesel fuels have %.1f%% efficiency - Takes %.2f seconds to heat up", 100 * DIESEL_FACTOR, 500.0 / getEfficiencyIncrease()))//? check semifluid again
-          .addPollutionAmount(20 * getPollutionPerTick(null))
           .addSeparator()
           .beginStructureBlock(3, 5, 3, false)
           .addController("Front bottom")
@@ -114,8 +113,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
           .addInputHatch("Liquid fuel, Any firebox", 1)
           .addStructureInfo("You can use either, or both")
           .addInputHatch("Water, Any firebox", 1)
-          .addOutputHatch("Steam, any casing", 2)
-          .toolTipFinisher("Gregtech");
+          .addOutputHatch("Steam, any casing", 2);
         return tt;
     }
 

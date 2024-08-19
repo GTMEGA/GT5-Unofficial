@@ -6,20 +6,12 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-class UrgentAsyncTaskExecutor implements AutoCloseable{
+class UrgentAsyncTaskExecutor {
     private final AtomicBoolean awake = new AtomicBoolean(false);
-    private final AtomicBoolean alive = new AtomicBoolean(true);
+    private final AtomicBoolean alive = new AtomicBoolean(false);
     private final Semaphore S = new Semaphore(1);
     private final TinyTransferQueue<FutureTask<?>> tasks = new TinyTransferQueue<>(S);
-    private final WorkerThread theThread = new WorkerThread();
-    {
-        theThread.start();
-    }
-
-    @Override
-    public void close() {
-        alive.set(false);
-    }
+    private WorkerThread theThread;
 
     private class WorkerThread extends Thread {
         WorkerThread() {
@@ -28,48 +20,63 @@ class UrgentAsyncTaskExecutor implements AutoCloseable{
 
         @Override
         public void run() {
-            while (alive.get()) {
-                while (!S.tryAcquire())
-                    Thread.yield();
-                boolean acquired = true;
-                try {
-                    while (!awake.get()) {
-                        S.release();
-                        acquired = false;
-                        if (!alive.get())
-                            return;
-                        try {
-                            Thread.sleep(1);
-                        } catch (InterruptedException ignored) {
-                        }
-                        while (!S.tryAcquire())
-                            Thread.yield();
-                        acquired = true;
-                    }
-                    long lastWorkTime = System.currentTimeMillis();
-                    while (!tasks.isEmpty() || System.currentTimeMillis() - lastWorkTime < 100) {
-                        S.release();
-                        acquired = false;
-                        FutureTask<?> task1;
-                        task1 = tasks.remove(100);
-                        if (task1 == null) {
+            while (!S.tryAcquire())
+                Thread.yield();
+            boolean acquired = true;
+            long lastWorkTime = System.currentTimeMillis();
+            try {
+                alive:
+                while (alive.get()) {
+                    try {
+                        while (!awake.get()) {
+                            if (System.currentTimeMillis() - lastWorkTime > 10_000) {
+                                alive.getAndSet(false);
+                                theThread = null;
+                                break alive;
+                            }
+                            S.release();
+                            acquired = false;
+                            if (!alive.get())
+                                return;
+                            try {
+                                Thread.sleep(1);
+                            } catch (InterruptedException ignored) {
+                            }
                             while (!S.tryAcquire())
                                 Thread.yield();
                             acquired = true;
-                            continue;
                         }
-
-                        task1.run();
                         lastWorkTime = System.currentTimeMillis();
-                        while (!S.tryAcquire())
-                            Thread.yield();
+                        while (!tasks.isEmpty() || System.currentTimeMillis() - lastWorkTime < 100) {
+                            S.release();
+                            acquired = false;
+                            FutureTask<?> task1;
+                            task1 = tasks.remove(100);
+                            if (task1 == null) {
+                                while (!S.tryAcquire())
+                                    Thread.yield();
+                                acquired = true;
+                                continue;
+                            }
+
+                            task1.run();
+                            lastWorkTime = System.currentTimeMillis();
+                            while (!S.tryAcquire())
+                                Thread.yield();
+                            acquired = true;
+                        }
+                        awake.set(false);
+                    } finally {
+                        if (!acquired)
+                            while (!S.tryAcquire())
+                                Thread.yield();
                         acquired = true;
                     }
-                    awake.set(false);
-                } finally {
-                    if (acquired)
-                        S.release();
                 }
+            } finally {
+                if (acquired)
+                    S.release();
+                acquired = false;
             }
         }
     }
@@ -79,6 +86,10 @@ class UrgentAsyncTaskExecutor implements AutoCloseable{
             Thread.yield();
         try {
             tasks.insert(future);
+            if (!alive.getAndSet(true)) {
+                theThread = new WorkerThread();
+                theThread.start();
+            }
             if (!awake.getAndSet(true)) {
                 theThread.interrupt();
             }

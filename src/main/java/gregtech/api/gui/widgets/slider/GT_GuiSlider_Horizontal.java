@@ -1,23 +1,46 @@
 package gregtech.api.gui.widgets.slider;
 
 
+import gregtech.api.gui.GT_RichGuiContainer;
 import gregtech.api.interfaces.IGuiScreen;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
+
+import java.awt.*;
 
 
 @Setter
 @Getter
 public class GT_GuiSlider_Horizontal extends GT_GuiSlider {
 
+    public static final double BASE_FUZZ_WIDTH = 0.3, BASE_FUZZ_HEIGHT = 0.5;
+
 
     public GT_GuiSlider_Horizontal(
             final IGuiScreen gui, final int id, final int x, final int y, final int width, final int height, double min, double max, final double current, final int subdivisions
                                   ) {
         super(gui, id, x, y, width, height, min, max, current, subdivisions);
-        setSliderWidthFuzzy(0.1);
-        setSliderHeightFuzzy(0.5);
+        setSliderWidthFuzzy(BASE_FUZZ_WIDTH);
+        setSliderHeightFuzzy(BASE_FUZZ_HEIGHT);
+    }
+
+    /**
+     *
+     */
+    @Override
+    protected void drawSliderSubdivisions() {
+        val numSubdivisions = getSubdivisions();
+        val barRad = barRadius();
+        val pseudoLeft = x + width * barRad;
+        val pseudoWidth = width * (1 - barRad);
+        val sliderVal = (int) getValue();
+        for (int i = 0; i < numSubdivisions; i++) {
+            val pseudoPos = pseudoLeft + pseudoWidth * i / numSubdivisions;
+            val barPos = (int) pseudoPos;
+            val colorToUse = i == sliderVal ? getSubDivisionActiveColor() : getSubDivisionInactiveColor();
+            drawRect(barPos, y, barPos + 1, y + height, GT_RichGuiContainer.colorToARGB(colorToUse));
+        }
     }
 
     @Override

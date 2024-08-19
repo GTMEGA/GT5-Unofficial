@@ -13,6 +13,7 @@ import lombok.var;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -56,9 +57,17 @@ public abstract class GT_GuiSlider extends Gui implements IGuiScreen.IGuiElement
 
     protected final int y;
 
-    private final Color sliderDraggedColor = new Color(43, 43, 80, 0xFF);
+    @Setter
+    private Color sliderDraggedColor = new Color(43, 43, 80, 0xFF);
 
-    private final Color sliderNormalColor = new Color(0x3F, 0x3F, 0xFF, 0x7F);
+    @Setter
+    private Color sliderNormalColor = new Color(0x3F, 0x3F, 0xFF, 0x7F);
+
+    @Setter
+    private Color subDivisionActiveColor = new Color(0xFF, 0xFF, 0xFF, 0x7F);
+
+    @Setter
+    private Color subDivisionInactiveColor = new Color(0x0F, 0x0F, 0x7F, 0x3F);
 
     protected double min;
 
@@ -86,6 +95,9 @@ public abstract class GT_GuiSlider extends Gui implements IGuiScreen.IGuiElement
     protected boolean showNumbers = true;
 
     protected boolean inside = false;
+
+    @Setter
+    protected boolean ignoreYForCheck = false, ignoreXForCheck = false;
 
     @Setter
     private Color edgeColor = new Color(0x30, 0x30, 0xFF, 0xFF);
@@ -248,14 +260,17 @@ public abstract class GT_GuiSlider extends Gui implements IGuiScreen.IGuiElement
      */
     @Override
     public boolean inBounds(final int mouseX, final int mouseY, final int clickType) {
-        /* val sliderLeft = getX() - width * sliderWidthFuzzy / 2;
-        val sliderRight = sliderLeft + width + width * sliderWidthFuzzy;
-        val sliderTop = getY() - height * sliderHeightFuzzy / 2;
-        val sliderBottom = sliderTop + height + height * sliderHeightFuzzy;
-        return this.inside = mouseX > sliderLeft && mouseX < sliderRight && mouseY > sliderTop && mouseY < sliderBottom; */
         val bounds = getBounds();
-        val contained = bounds.contains(mouseX, mouseY);
-        return contained;
+        val stupidBigNumber = 100000;
+        if (ignoreXForCheck && isDragged) {
+            bounds.x = 0;
+            bounds.width = stupidBigNumber;
+        }
+        if (ignoreYForCheck && isDragged) {
+            bounds.y = 0;
+            bounds.height = stupidBigNumber;
+        }
+        return bounds.contains(mouseX, mouseY);
     }
 
     /**
@@ -294,7 +309,9 @@ public abstract class GT_GuiSlider extends Gui implements IGuiScreen.IGuiElement
     public Rectangle getBounds() {
         val sliderLeft = (int) (getX() + gui.getGuiLeft() - width * sliderWidthFuzzy / 2);
         val sliderTop = (int) (getY() + gui.getGuiTop() - height * sliderHeightFuzzy / 2);
-        return new Rectangle(sliderLeft, sliderTop, (int) (width * (1 + sliderWidthFuzzy)), (int) (height * (1 + sliderHeightFuzzy)));
+        val sliderRight = (int) (width * (1 + sliderWidthFuzzy));
+        val sliderBottom = (int) (height * (1 + sliderHeightFuzzy));
+        return new Rectangle(sliderLeft, sliderTop, sliderRight, sliderBottom);
     }
 
     public void onMouseDragged(final int mouseX, final int mouseY, final int lastClick) {
@@ -307,15 +324,22 @@ public abstract class GT_GuiSlider extends Gui implements IGuiScreen.IGuiElement
             if (this.onChange != null) {
                 this.onChange.hook(this);
             }
-            this.isDragged = false;
+            disableDragged();
+        }
+    }
+
+    public void disableDragged() {
+        if (isDragged) {
+            isDragged = false;
         }
     }
 
     public void onMousePressed(final int mouseX, final int mouseY, final int clickType) {
         if (clickType == 0 && inBounds(mouseX, mouseY, clickType)) {
+            gui.updateLastInteracted(this);
             handleMouse(mouseX, mouseY);
         } else {
-            this.isDragged = false;
+            disableDragged();
             updateSlider();
         }
         onClick(this.gui, mouseX, mouseY, clickType);
@@ -328,14 +352,18 @@ public abstract class GT_GuiSlider extends Gui implements IGuiScreen.IGuiElement
         return val;
     }
 
+    public int getIntValue() {
+        return (int) getValue();
+    }
+
     public void setValue(final double value) {
         val range = this.max - this.min;
         this.current = range != 0 ? (value - this.min) / range : this.min;
     }
 
     public void onMouseReleased(final int mouseX, final int mouseY, final int clickState) {
-        if (clickState == 1) {
-            this.isDragged = false;
+        if (!Mouse.getEventButtonState() && clickState == 0) {
+            disableDragged();
             lockSliderToSubdivisions();
         }
     }
@@ -411,13 +439,24 @@ public abstract class GT_GuiSlider extends Gui implements IGuiScreen.IGuiElement
     }
 
     protected void drawBackground(final int mouseX, final int mouseY, final float parTicks) {
+        val prevIgnoreX = ignoreXForCheck;
+        val prevIgnoreY = ignoreYForCheck;
+        ignoreXForCheck = false;
+        ignoreYForCheck = false;
         val hoverModifier = this.inBounds(mouseX, mouseY, 0) ? this.hoverModifier : 0;
+        ignoreXForCheck = prevIgnoreX;
+        ignoreYForCheck = prevIgnoreY;
         val edgeColorBase = GT_RichGuiContainer.colorToARGB(edgeColor);
         val edgeColor = edgeColorBase ^ hoverModifier;
         val midColorBase = GT_RichGuiContainer.colorToARGB(midColor);
         val midColor = midColorBase ^ hoverModifier;
         drawSliderBackground(edgeColor, midColor);
+        if (getSubdivisions() > 0) {
+            drawSliderSubdivisions();
+        }
     }
+
+    protected abstract void drawSliderSubdivisions();
 
     protected abstract void drawInfo(int mouseX, int mouseY, float parTicks);
 

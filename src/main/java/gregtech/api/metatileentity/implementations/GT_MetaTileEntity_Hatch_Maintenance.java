@@ -11,6 +11,7 @@ import gregtech.api.gui.GT_GUIContainer_2by2;
 import gregtech.api.gui.GT_GUIContainer_MaintenanceHatch;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.CachedForgeItem;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
@@ -31,15 +32,16 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DUCTTAPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MAINTENANCE;
 
 public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch {
+    CachedForgeItem maintanceKit = new CachedForgeItem("htx","item.maintenance_kit",0,1);
     public boolean mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false, mSolderingTool = false, mCrowbar = false, mAuto;
 
     public GT_MetaTileEntity_Hatch_Maintenance(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, "For maintaining Multiblocks");
+        super(aID, aName, aNameRegional, aTier, 1, "For maintaining Multiblocks manually.");
         mAuto = false;
     }
 
     public GT_MetaTileEntity_Hatch_Maintenance(int aID, String aName, String aNameRegional, int aTier, boolean aAuto) {
-        super(aID, aName, aNameRegional, aTier, 4, "For automatically maintaining Multiblocks");
+        super(aID, aName, aNameRegional, aTier, 4, "For automatically maintaining Multiblocks.");
         mAuto = aAuto;
     }
 
@@ -58,14 +60,12 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
         if (mAuto) {
             String[] desc = new String[mDescriptionArray.length + 3];
             System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-            desc[mDescriptionArray.length] = "4 Ducttape, 2 Lubricant Cells";
-            desc[mDescriptionArray.length + 1] = "4 Steel Screws, 2 Adv Circuits";
-            desc[mDescriptionArray.length + 2] = "For each autorepair";
+            desc[mDescriptionArray.length] = "Consumes 1 Maintenance Kit per repair.";
             return desc;
         } else {
             String[] desc = new String[mDescriptionArray.length + 1];
             System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-            desc[mDescriptionArray.length] = "Cannot be shared between Multiblocks!";
+            desc[mDescriptionArray.length] = "Cannot be shared between machines.";
             return desc;
         }
     }
@@ -134,13 +134,13 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        if (mAuto) return new GT_Container_2by2(aPlayerInventory, aBaseMetaTileEntity);
+        if (mAuto) return new GT_Container_1by1(aPlayerInventory, aBaseMetaTileEntity);
         return new GT_Container_MaintenanceHatch(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        if (mAuto) return new GT_GUIContainer_2by2(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
+        if (mAuto) return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
         return new GT_GUIContainer_MaintenanceHatch(aPlayerInventory, aBaseMetaTileEntity);
     }
 
@@ -163,10 +163,7 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     }
 
     public boolean isRecipeInputEqual(boolean aDecreaseStacksizeBySuccess) {
-        ItemStack[] mInputs= { ItemList.Duct_Tape.get(4),
-                               GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 2),
-                               GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 4),
-                               GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_HV, 2)};
+        ItemStack[] mInputs= {maintanceKit.getItemNoCopy()};
 
         int amt;
 
@@ -218,15 +215,15 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
 
     public void onToolClick(ItemStack aStack, EntityLivingBase aPlayer) {
         if (aStack == null || aPlayer == null) return;
-        if (GT_Utility.isStackInList(aStack, GregTech_API.sWrenchList) && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer))
+        if (GT_Utility.isStackInList(aStack, GregTech_API.sWrenchList) && GT_ModHandler.damageOrDechargeItem(aStack, 100, 1000, aPlayer))
             mWrench = true;
-        if (GT_Utility.isStackInList(aStack, GregTech_API.sScrewdriverList) && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer))
+        if (GT_Utility.isStackInList(aStack, GregTech_API.sScrewdriverList) && GT_ModHandler.damageOrDechargeItem(aStack, 100, 1000, aPlayer))
             mScrewdriver = true;
-        if (GT_Utility.isStackInList(aStack, GregTech_API.sSoftHammerList) && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer))
+        if (GT_Utility.isStackInList(aStack, GregTech_API.sSoftHammerList) && GT_ModHandler.damageOrDechargeItem(aStack, 100, 1000, aPlayer))
             mSoftHammer = true;
-        if (GT_Utility.isStackInList(aStack, GregTech_API.sHardHammerList) && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer))
+        if (GT_Utility.isStackInList(aStack, GregTech_API.sHardHammerList) && GT_ModHandler.damageOrDechargeItem(aStack, 100, 1000, aPlayer))
             mHardHammer = true;
-        if (GT_Utility.isStackInList(aStack, GregTech_API.sCrowbarList) && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer))
+        if (GT_Utility.isStackInList(aStack, GregTech_API.sCrowbarList) && GT_ModHandler.damageOrDechargeItem(aStack, 100, 1000, aPlayer))
             mCrowbar = true;
         if (GT_ModHandler.useSolderingIron(aStack, aPlayer)) mSolderingTool = true;
         if (GT_OreDictUnificator.isItemStackInstanceOf(aStack, "craftingDuctTape")) {

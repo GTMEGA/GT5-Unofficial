@@ -3,6 +3,8 @@ package gregtech.common.gui.dev;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
+import gregtech.api.gui.GT_Slot_Wrapper_Icon;
+import gregtech.api.gui.widgets.icon.GT_GuiIcon;
 import gregtech.api.interfaces.IAdvancedGUIEntity;
 import gregtech.api.interfaces.IDWSCompatible;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -11,6 +13,7 @@ import gregtech.api.net.GT_Packet_TileEntityGUI;
 import gregtech.api.util.IAdvancedTEData;
 import lombok.Getter;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 import org.apache.logging.log4j.Level;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
@@ -30,16 +33,16 @@ public abstract class GT_Container_Dev<MachineType extends MetaTileEntity & IAdv
                            ) {
         super(aInventoryPlayer, aTileEntity);
         MachineType tempMachine = null;
-        DataType tempData = null;
+        DataType    tempData    = null;
         try {
             tempMachine = machineKlass.cast(getMetaTileEntity());
-            tempData = dataKlass.cast(tempMachine.getTEGUIData());
-            valid = true;
+            tempData    = dataKlass.cast(tempMachine.getTEGUIData());
+            valid       = true;
         } catch (ClassCastException e) {
             GT_FML_LOGGER.printf(Level.ERROR, "Could not cast container properly, please scream at me");
             // throw new RuntimeException(e);
         }
-        data = tempData;
+        data    = tempData;
         machine = tempMachine;
         detectAndSendChanges();
     }
@@ -47,6 +50,7 @@ public abstract class GT_Container_Dev<MachineType extends MetaTileEntity & IAdv
     /**
      *
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
@@ -66,11 +70,30 @@ public abstract class GT_Container_Dev<MachineType extends MetaTileEntity & IAdv
         if (mTileEntity == null || this.data == null) {
             return;
         }
-        this.data.receiveChange(changeID, data);
+        if (shouldReceiveLiveServerUpdates()) {
+            this.data.receiveChange(changeID, data);
+        }
+    }
+
+    public boolean shouldReceiveLiveServerUpdates() {
+        return true;
     }
 
     public MachineType getSource() {
         return machine;
+    }
+
+    /**
+     * @param aInventoryPlayer
+     * @param slotIndex
+     * @param x
+     * @param y
+     *
+     * @return
+     */
+    @Override
+    protected Slot createPlayerSlot(final InventoryPlayer aInventoryPlayer, final int slotIndex, final int x, final int y) {
+        return new GT_Slot_Wrapper_Icon(super.createPlayerSlot(aInventoryPlayer, slotIndex, x, y), GT_GuiIcon.PLAYER_INV_SLOT, GT_GuiIcon.PLAYER_INV_SLOT_HIGHLIGHT);
     }
 
     protected void sendPacket() {

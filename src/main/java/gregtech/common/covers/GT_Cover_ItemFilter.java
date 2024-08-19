@@ -226,6 +226,7 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
             this.coverVariable = aCoverVariable;
 
             btnMode = new GT_GuiIconCheckButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.WHITELIST, GT_GuiIcon.BLACKLIST, trans("125", "Whitelist Mode"), trans("124", "Blacklist Mode"));
+            btnMode.setChecked(coverVariable.mWhitelist);
 
             itemFilterButtons = new GT_GuiFakeItemButton(this, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.SLOT_GRAY);
             itemFilterButtons.setMimicSlot(true);
@@ -246,10 +247,8 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
         @Override
         public void buttonClicked(GuiButton btn) {
             if (btn == btnMode) {
-                if (coverVariable.mWhitelist != btnMode.isChecked()) {
-                    coverVariable.mWhitelist = btnMode.isChecked();
-                    GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
-                }
+                coverVariable.mWhitelist = btnMode.toggle();
+                GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
             }
             updateButtons();
         }

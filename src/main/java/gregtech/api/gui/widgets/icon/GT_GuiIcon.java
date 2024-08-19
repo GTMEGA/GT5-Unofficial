@@ -81,6 +81,13 @@ public enum GT_GuiIcon implements IGT_GuiIcon {
     // Mega Buttons
     MEGA_EXPLOSION(Atlas.MEGA_BUTTONS, 0, 0, 32, 32),
 
+    // Slots
+    PLAYER_INV_SLOT(Atlas.SLOTS, 0, 0),
+    PLAYER_INV_SLOT_HIGHLIGHT(Atlas.SLOTS, 32, 0),
+    INV_SLOT_INPUT(Atlas.SLOTS, 64, 0),
+    INV_SLOT_OUTPUT(Atlas.SLOTS, 96, 0),
+
+    //
     INVALID();
 
 
@@ -91,7 +98,8 @@ public enum GT_GuiIcon implements IGT_GuiIcon {
         MEGA_BUTTONS("textures/gui/GuiMegaButtons.png"),
         COVERS("textures/gui/GuiCover.png"),
         TIERS("textures/gui/TierIcons.png"),
-        MATH("textures/gui/Math.png");
+        MATH("textures/gui/Math.png"),
+        SLOTS("textures/gui/SlotIcons.png");
 
         static {
             Arrays.stream(values()).forEach(atlas -> atlas.resourceLocations.put(atlas.ordinal(), new ResourceLocation(atlas.modID, atlas.resourcePath)));
@@ -105,6 +113,10 @@ public enum GT_GuiIcon implements IGT_GuiIcon {
 
         Atlas(String resourcePath) {
             this("gregtech", resourcePath, 256, 256);
+        }
+
+        Atlas(String resourcePath, int atlasWidth, int atlasHeight) {
+            this("gregtech", resourcePath, atlasWidth, atlasHeight);
         }
 
         public ResourceLocation getResourceLocation() {
@@ -129,12 +141,12 @@ public enum GT_GuiIcon implements IGT_GuiIcon {
     }
 
     GT_GuiIcon(Atlas atlas, int x, int y, int width, int height, GT_GuiIcon overlay) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        this.x       = x;
+        this.y       = y;
+        this.width   = width;
+        this.height  = height;
         this.overlay = overlay;
-        this.atlas = atlas;
+        this.atlas   = atlas;
     }
 
     GT_GuiIcon(Atlas atlas, int x, int y) {

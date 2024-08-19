@@ -19,10 +19,11 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
         switch (aPrefix) {
             case gearGt:
                 GT_ModHandler.removeRecipeByOutputDelayed(aStack);
-                if (aMaterial.mStandardMoltenFluid != null)
-                    if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
-                        GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Gear.get(0L), aMaterial.getMolten(576L), GT_OreDictUnificator.get(aPrefix, aMaterial, 1L), 128, 8);
-                    }
+//                if (aMaterial.mStandardMoltenFluid != null)
+//                    if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
+//                        //GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Gear.get(0L), aMaterial.getMolten(576L), GT_OreDictUnificator.get(aPrefix, aMaterial, 1L), 128, 8);
+//                        GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 6L), ItemList.Shape_Mold_Gear.get(0), GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L), 140, 24);
+//                    }
                 if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial) && !aMaterial.contains(SubTag.NO_WORKING)) {
                     switch (aMaterial.mName) {
                         case "Wood":
@@ -39,7 +40,8 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
             case gearGtSmall:
                 if (aMaterial.mStandardMoltenFluid != null)
                     if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
-                        GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Gear_Small.get(0L), aMaterial.getMolten(144L), GT_Utility.copyAmount(1L, aStack), 16, 8);
+                        //GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Gear_Small.get(0L), aMaterial.getMolten(144L), GT_Utility.copyAmount(1L, aStack), 16, 8);
+                        GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 2L), ItemList.Shape_Mold_Gear_Small.get(0), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L), 140, 24);
                     }
                     if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial) && !aMaterial.contains(SubTag.NO_WORKING)) {
                     switch (aMaterial.mName) {

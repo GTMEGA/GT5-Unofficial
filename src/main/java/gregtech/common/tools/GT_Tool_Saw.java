@@ -33,7 +33,7 @@ public class GT_Tool_Saw extends GT_Tool {
 
     @Override
     public int getToolDamagePerContainerCraft() {
-        return 200;
+        return 100;
     }
 
     @Override

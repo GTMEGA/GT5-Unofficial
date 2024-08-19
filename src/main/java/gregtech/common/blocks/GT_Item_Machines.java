@@ -167,6 +167,16 @@ public class GT_Item_Machines extends ItemBlock {
     }
 
     @Override
+    public boolean onItemUse(ItemStack aStack, EntityPlayer p_77648_2_, World p_77648_3_, int p_77648_4_, int p_77648_5_, int p_77648_6_, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
+        short tDamage = (short) getDamage(aStack);
+        val metaType = GregTech_API.METATILEENTITIES[tDamage];
+        if (metaType instanceof GT_MetaPipeEntity_Cable) {
+            if (((GT_MetaPipeEntity_Cable) metaType).mCanShock) return false;
+        }
+        return super.onItemUse(aStack, p_77648_2_, p_77648_3_, p_77648_4_, p_77648_5_, p_77648_6_, p_77648_7_, p_77648_8_, p_77648_9_, p_77648_10_);
+    }
+
+    @Override
     public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side, float hitX, float hitY, float hitZ, int aMeta) {
         short tDamage = (short) getDamage(aStack);
         if (tDamage > 0) {
@@ -183,6 +193,7 @@ public class GT_Item_Machines extends ItemBlock {
             if (aWorld.getBlockMetadata(aX, aY, aZ) != tMetaData) {
                 throw new GT_ItsNotMyFaultException("Failed to set the MetaValue of the Block even though World.setBlock returned true. It COULD be MCPC/Bukkit causing that. In case you really have that installed, don't report this Bug to me, I don't know how to fix it.");
             }
+
             IGregTechTileEntity tTileEntity = (IGregTechTileEntity) aWorld.getTileEntity(aX, aY, aZ);
             if (tTileEntity != null) {
                 tTileEntity.setInitialValuesAsNBT(tTileEntity.isServerSide() ? aStack.getTagCompound() : null, tDamage);

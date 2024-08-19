@@ -10,6 +10,7 @@ import gregtech.api.interfaces.IGuiScreen;
 import gregtech.api.util.interop.NEIInterop;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.val;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -17,6 +18,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
@@ -43,6 +45,10 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
     protected final List<GT_GuiSlider> sliders = new ArrayList<>();
 
     protected final List<IGT_GuiSubWindow> subWindows = new ArrayList<>();
+
+    @Getter
+    @Setter
+    protected IGuiElement lastInteracted = null;
 
     protected final RenderItem itemRenderer = new RenderItem();
 
@@ -232,7 +238,7 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
     private void addElements() {
         for (IGuiElement element : elements) {
             if (element instanceof GuiButton) {
-                buttonList.add(element);
+                buttonList.add((GuiButton) element);
             }
             if (element instanceof GT_GuiIntegerTextBox) {
                 textBoxes.add((GT_GuiIntegerTextBox) element);
@@ -259,12 +265,30 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
      */
     @Override
     protected void mouseClicked(final int rawMX, final int rawMY, final int clickType) {
+        lastInteracted = null;
         super.mouseClicked(rawMX, rawMY, clickType);
         final int mouseX = getMouseX(rawMX);
         final int mouseY = getMouseY(rawMY);
         sliders.stream().filter(element -> element.inBounds(rawMX, rawMY, clickType)).forEach(slider -> slider.onMousePressed(rawMX, rawMY, clickType));
         textBoxes.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType)).forEach(this::setFocusedTextBox);
+        textBoxes.stream().filter(element -> !element.inBounds(mouseX, mouseY, clickType)).forEach(this::applyTextBox);
         subWindows.stream().filter(element -> element.inBounds(mouseX, mouseY, clickType)).forEach(element -> element.receiveClick(mouseX, mouseY, clickType));
+    }
+
+    /**
+     * @param element
+     */
+    @Override
+    public void updateLastInteracted(final IGuiElement element) {
+        setLastInteracted(element);
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public IGuiElement getLastInteractedElement() {
+        return lastInteracted;
     }
 
     /**
@@ -281,6 +305,13 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
         super.mouseClickMove(mouseX, mouseY, lastClick, timeSinceLastClick);
         sliders.stream().filter(element -> element.inBounds(mouseX, mouseY, lastClick)).forEach(slider -> slider.onMouseDragged(mouseX, mouseY, lastClick));
         subWindows.stream().filter(element -> element.inBounds(mouseX, mouseY, lastClick)).forEach(element -> element.receiveDrag(mouseX, mouseY, lastClick));
+        if (!isMouseInsideGUI(mouseX, mouseY)) {
+            handleClickOutsideUI(mouseX, mouseY, lastClick, timeSinceLastClick);
+        }
+    }
+
+    protected void handleClickOutsideUI(final int mouseX, final int mouseY, final int lastClick, final long timeSinceLastClick) {
+
     }
 
     /**
@@ -315,7 +346,13 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
      */
     protected void setFocusedTextBox(GT_GuiIntegerTextBox boxToFocus) {
         for (GT_GuiIntegerTextBox textBox : textBoxes) {
+            val wasFocused = textBox.isFocused();
             textBox.setFocused(textBox.equals(boxToFocus) && textBox.isEnabled());
+            if (textBox.isFocused()) {
+                setLastInteracted(textBox);
+            } else if (wasFocused && !textBox.isFocused()) {
+                applyTextBox(textBox);
+            }
         }
     }
 
@@ -332,6 +369,10 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
         super.mouseMovedOrUp(mouseX, mouseY, clickState);
         sliders.forEach(slider -> slider.onMouseReleased(mouseX, mouseY, clickState));
         subWindows.forEach(element -> element.receiveMouseMovement(mouseX, mouseY, clickState));
+    }
+
+    public boolean isMouseInsideGUI(final int mouseX, final int mouseY) {
+        return mouseX >= guiLeft && mouseX <= guiLeft + guiWidth && mouseY >= guiTop && mouseY <= guiTop + guiHeight;
     }
 
     /**
@@ -414,9 +455,14 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
 
     }
 
-    public void closeScreen() {
+    public final void closeScreen() {
+        onScreenClosed();
         this.mc.displayGuiScreen(null);
         this.mc.setIngameFocus();
+    }
+
+    public void onScreenClosed() {
+
     }
 
     /**
@@ -530,8 +576,9 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
     }
 
     public void drawBackground() {
-        short[] color = Dyes.MACHINE_METAL.getRGBA();
-        GL11.glColor3ub((byte) color[0], (byte) color[1], (byte) color[2]);
+        //You're coloring a.... static texture... which has its own color data... quit it!
+//        short[] color = Dyes.MACHINE_METAL.getRGBA();
+//        GL11.glColor3ub((byte) color[0], (byte) color[1], (byte) color[2]);
         final ResourceLocation bg = getGUIBackground();
         this.mc.renderEngine.bindTexture(bg);
         final int x, y;
@@ -713,14 +760,21 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
         final int x, y;
         x = slot.xDisplayPosition;
         y = slot.yDisplayPosition;
-        GL11.glColorMask(true, true, true, false);
-        val backgroundGradientStart = colorToARGB(new Color(0x00, 0x00, 0x00, 0x3F));
-        val backgroundGradientEnd = colorToARGB(new Color(0x00, 0x00, 0x00, 0x0F));
-        drawGradientRect(x - 1, y - 1, x + 17, y + 17, backgroundGradientStart, backgroundGradientEnd);
-        val foregroundGradientStart = colorToARGB(new Color(0x0F, 0x0F, 0xFF, 0xAF));
-        val foregroundGradientEnd = colorToARGB(new Color(0x00, 0x00, 0x40, 0x1F));
-        drawGradientRect(x, y, x + 16, y + 16, foregroundGradientStart, foregroundGradientEnd);
-        GL11.glColorMask(true, true, true, true);
+        if (slot instanceof GT_Slot_Wrapper_Icon) {
+            ((GT_Slot_Wrapper_Icon) slot).renderBackgroundIcon();
+        } else if (slot.getBackgroundIconTexture() == TextureMap.locationItemsTexture) {
+            GL11.glColorMask(true, true, true, false);
+            val backgroundGradientStart = colorToARGB(new Color(0x00, 0x00, 0x00, 0x3F));
+            val backgroundGradientEnd = colorToARGB(new Color(0x00, 0x00, 0x00, 0x0F));
+            drawGradientRect(x - 1, y - 1, x + 17, y + 17, backgroundGradientStart, backgroundGradientEnd);
+            val foregroundGradientStart = colorToARGB(new Color(0x0F, 0x0F, 0xFF, 0xAF));
+            val foregroundGradientEnd = colorToARGB(new Color(0x00, 0x00, 0x40, 0x1F));
+            drawGradientRect(x, y, x + 16, y + 16, foregroundGradientStart, foregroundGradientEnd);
+            GL11.glColorMask(true, true, true, true);
+        } else {
+            val bgIcon = slot.getBackgroundIconIndex();
+            drawTexturedModelRectFromIcon(x, y, bgIcon, 16, 16);
+        }
     }
 
     protected boolean isSlotEnabled(final Slot slot, final int mouseX, final int mouseY) {
@@ -732,19 +786,23 @@ public abstract class GT_RichGuiContainer extends GT_GUIContainer implements GT_
     }
 
     protected void renderSlotHighlight(final Slot slot) {
-        final int x = slot.xDisplayPosition;
-        final int y = slot.yDisplayPosition;
-        GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glColorMask(true, true, true, false);
-        val highlightGradientStart = colorToARGB(new Color(0xFF, 0xFF, 0xFF, 0x80));
-        val highlightGradientEnd = colorToARGB(new Color(0xAF, 0xAF, 0xFF, 0x80));
-        drawGradientRect(x, y, x + 16, y + 16, highlightGradientStart, highlightGradientEnd);
-        GL11.glColorMask(true, true, true, true);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glPopMatrix();
+        if (slot instanceof GT_Slot_Wrapper_Icon) {
+            ((GT_Slot_Wrapper_Icon) slot).renderHighlightIcon();
+        } else {
+            final int x = slot.xDisplayPosition;
+            final int y = slot.yDisplayPosition;
+            GL11.glPushMatrix();
+            GL11.glDisable(GL11.GL_LIGHTING);
+            GL11.glDisable(GL11.GL_DEPTH_TEST);
+//            GL11.glColorMask(true, true, true, false);
+            val highlightGradientStart = colorToARGB(new Color(0xFF, 0xFF, 0xFF, 0x80));
+            val highlightGradientEnd   = colorToARGB(new Color(0xAF, 0xAF, 0xFF, 0x80));
+            drawGradientRect(x, y, x + 16, y + 16, highlightGradientStart, highlightGradientEnd);
+//            GL11.glColorMask(true, true, true, true);
+            GL11.glEnable(GL11.GL_LIGHTING);
+            GL11.glEnable(GL11.GL_DEPTH_TEST);
+            GL11.glPopMatrix();
+        }
     }
 
 }

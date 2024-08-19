@@ -8,6 +8,7 @@ import gregtech.api.render.TextureFactory;
 public class GT_Block_Ore extends GT_Block_Ore_Abstract {
     protected GT_Block_Ore(Materials oreType) {
         super(oreType, String.join(".", "gt.blockore", oreType.mName));
+        this.setStepSound(soundTypeStone);
     }
 
     @Override

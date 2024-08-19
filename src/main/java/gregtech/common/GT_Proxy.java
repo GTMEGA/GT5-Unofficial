@@ -32,8 +32,8 @@ import gregtech.common.items.GT_MetaGenerated_Item_98;
 import gregtech.common.gui.GT_GUIContainer_IntegratedCircuit;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gregtech.common.items.explosives.GT_RemoteDetonator;
 
+import gregtech.common.misc.explosions.detonator_util.RemoteDetonatorInteractionHandler;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -1690,7 +1690,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             if (aID == 1) {
                 return GT_MEGAnet.MEGANetInteractionHandler.INSTANCE.getServerGUI(aPlayer);
             } else if (aID == 2) {
-                return GT_RemoteDetonator.RemoteDetonatorInteractionHandler.INSTANCE.getServerGUI(aPlayer);
+                return RemoteDetonatorInteractionHandler.INSTANCE.getServerGUI(aPlayer);
             }
         }
         if(aID>=1000){
@@ -1725,7 +1725,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             if (aID == 1) {
                 return GT_MEGAnet.MEGANetInteractionHandler.INSTANCE.getClientGUI(aPlayer);
             } else if (aID == 2) {
-                return GT_RemoteDetonator.RemoteDetonatorInteractionHandler.INSTANCE.getClientGUI(aPlayer);
+                return RemoteDetonatorInteractionHandler.INSTANCE.getClientGUI(aPlayer);
             }
         }
         if(aID>=1000){
@@ -1953,8 +1953,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     }
 
     public void registerUnificationEntries() {
-        GregTech_API.sUnification.mConfig.save();
-        GregTech_API.sUnification.mConfig.load();
+        GregTech_API.sUnification.save();
+        GregTech_API.sUnification.load();
         GT_OreDictUnificator.resetUnificationEntries();
         for (OreDictEventContainer tOre : this.mEvents) {
             if ((!(tOre.mEvent.Ore.getItem() instanceof GT_MetaGenerated_Item)) && (tOre.mPrefix != null) && (tOre.mPrefix.mIsUnificatable) && (tOre.mMaterial != null)) {
@@ -2016,7 +2016,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             }
         }
         GregTech_API.sUnificationEntriesRegistered = true;
-        GregTech_API.sUnification.mConfig.save();
+        GregTech_API.sUnification.save();
         GT_Recipe.reInit();
     }
 

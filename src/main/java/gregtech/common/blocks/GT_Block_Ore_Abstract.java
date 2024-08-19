@@ -10,7 +10,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_Renderer_Block;
@@ -54,13 +53,10 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
         super(GT_Item_Ores.class,
               unlocalizedName,
               Material.rock);
-        setHardness(16F);
-        setResistance(10F);
-        this.useNeighborBrightness = false;
         this.setStepSound(soundTypeStone);
         this.setCreativeTab(GregTech_API.TAB_GREGTECH_ORES);
         this.oreType = oreType;
-        this.textures = new ITexture[] { stone, getOreTexture(this.oreType) };
+        this.textures = new ITexture[]{stone, getOreTexture(this.oreType)};
     }
 
     public static void registerOres() {
@@ -99,9 +95,9 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
     }
 
     private static void populateBlockCache() {
-        chiselLimestone = GameRegistry.findBlock("chisel","limestone");
-        chiselDiorite = GameRegistry.findBlock("chisel","diorite");
-        chiselAndesite = GameRegistry.findBlock("chisel","andesite");
+        chiselLimestone = GameRegistry.findBlock("chisel", "limestone");
+        chiselDiorite = GameRegistry.findBlock("chisel", "diorite");
+        chiselAndesite = GameRegistry.findBlock("chisel", "andesite");
     }
 
     public static boolean setOreBlock(World world, int x, int y, int z, Materials material, boolean air, OreSize size) {
@@ -198,7 +194,7 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
         val fortuneFactor = fortune + 1;
         val numStacks = Math.max(1, fortuneFactor / 64);
         var stackAmount = fortuneFactor;
-        for (int i = 0; i <= numStacks && stackAmount > 0; i++, stackAmount = fortuneFactor - i * 64){
+        for (int i = 0; i <= numStacks && stackAmount > 0; i++, stackAmount = fortuneFactor - i * 64) {
             val drop = GT_OreDictUnificator.get(OrePrefixes.oreChunk, this.oreType, Math.min(64L, stackAmount));
             drops.add(drop);
         }
@@ -229,9 +225,10 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
 
     @Override
     public float getBlockHardness(World world, int x, int y, int z) {
-        return 1.0F;
+        return 3.0F;
     }
 
+    public boolean useNeighborBrightness = false;
     @Override
     public int getHarvestLevel(int metadata) {
         return 0;
@@ -245,5 +242,10 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
     @Override
     public IIcon getIcon(int side, int meta) {
         return Blocks.stone.getIcon(0, 0);
+    }
+
+    @Override
+    public int getExpDrop(IBlockAccess world, int metadata, int fortune) {
+        return 1 + fortune;
     }
 }

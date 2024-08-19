@@ -8,6 +8,10 @@ public interface IRedstoneSensitive {
 
     RSControlMode getRedstoneMode();
 
+    default boolean checkMaxRS() {
+        return getRedstoneMode().checkPredicate(getMaxRSValue());
+    }
+
     default byte getMaxRSValue() {
         byte max = 0;
         for (byte i = 0; i < getRSValues().length; i++) {

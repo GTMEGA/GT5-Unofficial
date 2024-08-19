@@ -34,16 +34,16 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
         boolean aSpecialRecipeReq = aMaterial.contains(SubTag.YES_TOOLS) && !(aMaterial.contains(SubTag.BOUNCY) || aMaterial.contains(SubTag.STRETCHY));
         boolean aNoWorking = aMaterial.contains(SubTag.NO_WORKING);
         switch (aPrefix) {
-            case toolHeadArrow:
-                if (aMaterial.mStandardMoltenFluid != null)
-                    if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
-                        GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Arrow.get(0L), aMaterial.getMolten(36L), GT_Utility.copyAmount(1L, aStack), 16, 4);
-                    }
-                if (aSpecialRecipeReq) {
-                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.toolHeadArrow, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"Xf", 'X', OrePrefixes.gemChipped.get(aMaterial)});
-                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.toolHeadArrow, aMaterial, 3L), GT_Proxy.tBits, new Object[]{(aMaterial.contains(SubTag.WOOD) ? 115 : 'x') + "Pf", 'P', OrePrefixes.plate.get(aMaterial)});
-                }
-                break;
+//            case toolHeadArrow:
+//                if (aMaterial.mStandardMoltenFluid != null)
+//                    if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
+//                        GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Arrow.get(0L), aMaterial.getMolten(36L), GT_Utility.copyAmount(1L, aStack), 16, 4);
+//                    }
+//                if (aSpecialRecipeReq) {
+//                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.toolHeadArrow, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"Xf", 'X', OrePrefixes.gemChipped.get(aMaterial)});
+//                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.toolHeadArrow, aMaterial, 3L), GT_Proxy.tBits, new Object[]{(aMaterial.contains(SubTag.WOOD) ? 115 : 'x') + "Pf", 'P', OrePrefixes.plate.get(aMaterial)});
+//                }
+//                break;
             case toolHeadAxe:
                 if (aSpecialRecipeReq) {
                     GT_ModHandler.addShapelessCraftingRecipe(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.AXE, 1, aMaterial, aMaterial.mHandleMaterial, null), new Object[]{aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});

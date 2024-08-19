@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations.dev;
 
 
 import com.google.common.io.ByteArrayDataInput;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.RSControlMode;
 import gregtech.api.interfaces.IAdvancedGUIEntity;
 import gregtech.api.interfaces.IRedstoneSensitive;
@@ -25,9 +26,9 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
@@ -236,11 +237,6 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
 //        }
     }
 
-    @Override
-    public boolean receiveRSClientUpdates() {
-        return true;
-    }
-
     /**
      * Decodes the packet, machine type specific
      *
@@ -304,13 +300,23 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     @Override
     public void processRS() {
         val te = getBaseMetaTileEntity();
-        internalData.setRsActive(getRedstoneMode().checkPredicate(getMaxRSValue()));
-        te.getWorld().scheduleBlockUpdate(te.getXCoord(), te.getYCoord(), te.getZCoord(), te.getBlockOffset(0, 0, 0), 3);
-        getBaseMetaTileEntity().issueClientUpdate();
+        internalData.setRsActive(checkMaxRS());
+        final World world = te.getWorld();
+        if (world != null) {
+            world.scheduleBlockUpdate(te.getXCoord(), te.getYCoord(), te.getZCoord(), GregTech_API.sBlockMachines, 3);
+        }
+        te.issueClientUpdate();
+    }
+
+    @Override
+    public boolean receiveRSClientUpdates() {
+        return true;
     }
 
     /**
-     * @param aTileEntity is just because the internal Variable "mBaseMetaTileEntity" is set after this Call.
+     * @param aTileEntity
+     *         is just because the internal Variable "mBaseMetaTileEntity" is set after this Call.
+     *
      * @return a newly created and ready MetaTileEntity
      */
     @Override
@@ -322,13 +328,16 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
      * Icon of the Texture. If this returns null then it falls back to getTextureIndex.
      *
      * @param aBaseMetaTileEntity
-     * @param aSide               is the Side of the Block
-     * @param aFacing             is the direction the Block is facing (or a Bitmask of all Connections in case of Pipes)
-     * @param aColorIndex         The Minecraft Color the Block is having
-     * @param aActive             if the Machine is currently active (use this instead of calling mBaseMetaTileEntity.mActive!!!). Note: In case of Pipes
-     *                            this means if this Side
-     *                            is connected to something or not.
-     * @param aRedstone           if the Machine is currently outputting a RedstoneSignal (use this instead of calling mBaseMetaTileEntity.mRedstone!!!)
+     * @param aSide
+     *         is the Side of the Block
+     * @param aFacing
+     *         is the direction the Block is facing (or a Bitmask of all Connections in case of Pipes)
+     * @param aColorIndex
+     *         The Minecraft Color the Block is having
+     * @param aActive
+     *         if the Machine is currently active (use this instead of calling mBaseMetaTileEntity.mActive!!!). Note: In case of Pipes this means if this Side is connected to something or not.
+     * @param aRedstone
+     *         if the Machine is currently outputting a RedstoneSignal (use this instead of calling mBaseMetaTileEntity.mRedstone!!!)
      */
     @Override
     public ITexture[] getTexture(
@@ -340,9 +349,17 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
             final boolean aRedstone
                                 ) {
         boolean caresAboutRS = internalData.mode != RSControlMode.IGNORE;
-        int rsBump = 2 * (caresAboutRS ? (internalData.rsActive ? 2 : 1) : 0);
-        int facingBump = aSide == aFacing ? 0 : 1;
+        int     rsBump       = 2 * (caresAboutRS ? (internalData.rsActive ? 2 : 1) : 0);
+        int     facingBump   = aSide == aFacing ? 0 : 1;
         return mTextures[facingBump + rsBump][aColorIndex + 1];
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public boolean canDrop() {
+        return false;
     }
 
     @Override
@@ -362,10 +379,6 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
         devNBT.setInteger("tick", tCount);
 //        devNBT.setInteger("period", tPeriod);
         aNBT.setTag("dev", devNBT);
-    }
-
-    public boolean hasFluid() {
-        return mFluid != null;
     }
 
     /**
@@ -417,9 +430,22 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     }
 
     /**
+     * @param aFluid
+     *
+     * @return
+     */
+    @Override
+    public FluidStack setDrainableStack(final FluidStack aFluid) {
+        val result = super.setDrainableStack(aFluid);
+        markDirty();
+        return result;
+    }
+
+    /**
      * @param aID
      * @param aPlayerInventory
      * @param aBaseMetaTileEntity
+     *
      * @return
      */
     @Override
@@ -431,6 +457,7 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
      * @param aID
      * @param aPlayerInventory
      * @param aBaseMetaTileEntity
+     *
      * @return
      */
     @Override
@@ -442,6 +469,10 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     public void updateFluidDisplayItem() {
         super.updateFluidDisplayItem();
         mInventory[inputSlot] = GT_Utility.getFluidDisplayStack(getFluid(), false, true);
+    }
+
+    public boolean hasFluid() {
+        return mFluid != null;
     }
 
     @Override
@@ -503,21 +534,10 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
         return tCount == 0;
     }
 
-    /**
-     * @param aFluid
-     * @return
-     */
-    @Override
-    public FluidStack setDrainableStack(final FluidStack aFluid) {
-        val result =  super.setDrainableStack(aFluid);
-        markDirty();
-        return result;
-    }
-
     private void doFluidPush(final IGregTechTileEntity aBaseMetaTileEntity) {
         IFluidHandler atSide = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
         if (atSide != null) {
-            byte front = aBaseMetaTileEntity.getFrontFacing(), back = aBaseMetaTileEntity.getBackFacing();
+            byte       front      = aBaseMetaTileEntity.getFrontFacing(), back = aBaseMetaTileEntity.getBackFacing();
             FluidStack simDrained = aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(front), getRate(), false);
             if (simDrained != null) {
                 int simFilledAmount = atSide.fill(ForgeDirection.getOrientation(back), simDrained, false);
@@ -530,6 +550,11 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
         }
     }
 
+    private void tickForward() {
+        this.tCount += 1;
+        adjustCount();
+    }
+
     public int getRate() {
 //        if (internalData.isPerTick()) {
 //            return internalData.rPT;
@@ -537,11 +562,6 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
 //            return internalData.rPS;
 //        }
         return internalData.rate;
-    }
-
-    private void tickForward() {
-        this.tCount += 1;
-        adjustCount();
     }
 
     private void adjustCount() {
@@ -552,8 +572,7 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     }
 
     /**
-     * a Player rightclicks the Machine
-     * Sneaky rightclicks are not getting passed to this!
+     * a Player rightclicks the Machine Sneaky rightclicks are not getting passed to this!
      *
      * @param aBaseMetaTileEntity
      * @param aPlayer
@@ -569,6 +588,7 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
 
     /**
      * @param aFacing
+     *
      * @return
      */
     @Override
@@ -578,19 +598,12 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
 
     /**
      * @param aPlayer
+     *
      * @return
      */
     @Override
     public boolean isAccessAllowed(final EntityPlayer aPlayer) {
         return GT_Utility.validatePlayerCanDoFancyStuff(aPlayer, true);
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public boolean canDrop() {
-        return false;
     }
 
     @Override
@@ -601,6 +614,7 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     /**
      * @param aSide
      * @param aFluid
+     *
      * @return
      */
     @Override
@@ -609,9 +623,13 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     }
 
     /**
-     * @param aSide    Orientation the fluid is drained to.
-     * @param maxDrain Maximum amount of fluid to drain.
-     * @param doDrain  If false, drain will only be simulated.
+     * @param aSide
+     *         Orientation the fluid is drained to.
+     * @param maxDrain
+     *         Maximum amount of fluid to drain.
+     * @param doDrain
+     *         If false, drain will only be simulated.
+     *
      * @return
      */
     @Override
@@ -631,22 +649,48 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
     /**
      * Used Client Side to get a Texture Set for this Block. Called after setting the Tier and the Description so that those two are accessible.
      *
-     * @param aTextures is the optional Array you can give to the Constructor.
+     * @param aTextures
+     *         is the optional Array you can give to the Constructor.
      */
     @Override
     public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
-        ITexture[][][] rTextures = new ITexture[6][17][];
-        val pipe = TextureFactory.of(OVERLAY_FLUID_OUT);
-        val fluidSource = TextureFactory.of(OVERLAY_DEV_FLUID_SOURCE);
-        val rsInactive = TextureFactory.of(OVERLAY_RS_INACTIVE);
-        val rsActive = TextureFactory.of(OVERLAY_RS_ACTIVE);
+        ITexture[][][] rTextures   = new ITexture[6][17][];
+        val            pipe        = TextureFactory.of(OVERLAY_FLUID_OUT);
+        val            fluidSource = TextureFactory.of(OVERLAY_DEV_FLUID_SOURCE);
+        val            rsInactive  = TextureFactory.of(OVERLAY_RS_INACTIVE);
+        val            rsActive    = TextureFactory.of(OVERLAY_RS_ACTIVE);
         for (int i = 0; i < rTextures[0].length; i++) {
-            rTextures[0][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], fluidSource, pipe};
-            rTextures[1][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], fluidSource};
-            rTextures[2][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], rsInactive, fluidSource, pipe};
-            rTextures[3][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], rsInactive, fluidSource};
-            rTextures[4][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], rsActive, fluidSource, pipe};
-            rTextures[5][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], rsActive, fluidSource};
+            rTextures[0][i] = new ITexture[]{
+                    MACHINE_CASINGS[mTier][i],
+                    fluidSource,
+                    pipe
+            };
+            rTextures[1][i] = new ITexture[]{
+                    MACHINE_CASINGS[mTier][i],
+                    fluidSource
+            };
+            rTextures[2][i] = new ITexture[]{
+                    MACHINE_CASINGS[mTier][i],
+                    rsInactive,
+                    fluidSource,
+                    pipe
+            };
+            rTextures[3][i] = new ITexture[]{
+                    MACHINE_CASINGS[mTier][i],
+                    rsInactive,
+                    fluidSource
+            };
+            rTextures[4][i] = new ITexture[]{
+                    MACHINE_CASINGS[mTier][i],
+                    rsActive,
+                    fluidSource,
+                    pipe
+            };
+            rTextures[5][i] = new ITexture[]{
+                    MACHINE_CASINGS[mTier][i],
+                    rsActive,
+                    fluidSource
+            };
         }
         return rTextures;
     }

@@ -186,10 +186,10 @@ public class GT_Tool_Drill_LV extends GT_Tool implements IAOETool {
         return 2;
     }
 
-    public static final int xStart[] = {0, 0, 0, -1, -1, -2, -2};
-    public static final int yStart[] = {0, 0, 0, -1, -2, -3, -4};
-    public static final int xLen[] = {1, 1, 2, 3, 4, 5, 6};
-    public static final int yLen[] = {1, 2, 2, 3, 4, 5, 6};
+    public static final int xStart[] = {  0,  0,  0, -1, -1, -2, -2 };
+    public static final int yStart[] = {  0,  0,  0, -1, -2, -3, -4 };
+    public static final int xLen[]   = {  1,  1,  2,  3,  4,  5,  6 };
+    public static final int yLen[]   = {  1,  2,  2,  3,  4,  5,  6 };
 
     @Override
     public float onBlockDestroyed(ItemStack stack, IToolStats stats, float damagePerBlock, float timeToTakeCenter, float digSpeed, World world, Block block, int x, int y, int z, EntityLivingBase player) {
