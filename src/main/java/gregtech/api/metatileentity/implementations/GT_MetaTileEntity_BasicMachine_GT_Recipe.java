@@ -13,7 +13,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
@@ -89,14 +91,6 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
         //TODO: CHECK
         if (aRecipe != null) {
             for (int i = 3; i < aRecipe.length; i++) {
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT) {
-                    aRecipe[i] = Tier.ELECTRIC[this.mTier].mManagingObject;
-                    continue;
-                }
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT) {
-                    aRecipe[i] = Tier.ELECTRIC[this.mTier].mBetterManagingObject;
-                    continue;
-                }
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL) {
                     aRecipe[i] = Tier.ELECTRIC[this.mTier].mHullObject;
                     continue;
@@ -118,21 +112,8 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 3:
                             aRecipe[i] = new ItemStack(Blocks.glass, 1, W);
                             break;
-                        case 4:
-                        case 5:
-                        case 6:
-                        case 7:
-                        case 8:
-                            if (Loader.isModLoaded("bartworks")) {//todo remove via provider pattern on all enums?
-                                aRecipe[i] = "blockGlass"+VN[aTier];
-                                break;
-                            }
                         default:
-                            if (Loader.isModLoaded("bartworks")) {//todo remove via provider pattern on all enums?
-                                aRecipe[i] = "blockGlass"+VN[8];
-                            } else {
-                                aRecipe[i] = Ic2Items.reinforcedGlass;
-                            }
+                            aRecipe[i] = Ic2Items.reinforcedGlass;
                             break;
                     }
                     continue;
@@ -188,16 +169,16 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.TungstenSteel);
                             break;
                         case 6:
-                            aRecipe[i] = OrePrefixes.pipeSmall.get(Materials.Ultimate);
+                            aRecipe[i] = OrePrefixes.pipeSmall.get(Materials.Infinity);
                             break;
                         case 7:
-                            aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Ultimate);
+                            aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Infinity);
                             break;
                         case 8:
-                            aRecipe[i] = OrePrefixes.pipeLarge.get(Materials.Ultimate);
+                            aRecipe[i] = OrePrefixes.pipeLarge.get(Materials.Infinity);
                             break;
                         default:
-                            aRecipe[i] = OrePrefixes.pipeHuge.get(Materials.Ultimate);
+                            aRecipe[i] = OrePrefixes.pipeHuge.get(Materials.Infinity);
                             break;
                     }
                     continue;
@@ -658,54 +639,80 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                     continue;
                 }
 
-//                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PWRCIRCUIT) {
-//                    switch (this.mTier) {
-//                        case 0:
-//                        case 1:
-//                            aRecipe[i] = ItemList.LV_PWR;
-//                            break;
-//                        case 2:
-//                            aRecipe[i] = ItemList.MV_PWR;
-//                            break;
-//                        case 3:
-//                            aRecipe[i] = ItemList.HV_PWR;
-//                            break;
-//                        case 4:
-//                            aRecipe[i] = ItemList.EV_PWR;
-//                            break;
-//                        case 5:
-//                            aRecipe[i] = ItemList.IV_PWR;
-//                            break;
-//                        case 6:
-//                            aRecipe[i] = ItemList.LUV_PWR;
-//                            break;
-//                        case 7:
-//                            aRecipe[i] = ItemList.UV_PWR;
-//                            break;
-//                        case 8:
-//                            aRecipe[i] = ItemList.UHV_PWR;
-//                            break;
-//                        case 9:
-//                            aRecipe[i] = ItemList.UEV_PWR;
-//                            break;
-//                        case 10:
-//                            aRecipe[i] = ItemList.UIV_PWR;
-//                            break;
-//                        case 11:
-//                            aRecipe[i] = ItemList.UMV_PWR;
-//                            break;
-//                        case 12:
-//                            aRecipe[i] = ItemList.UXV_PWR;
-//                            break;
-//                        case 13:
-//                            aRecipe[i] = ItemList.OPV_PWR;
-//                            break;
-//                        default:
-//                            aRecipe[i] = ItemList.MAX_PWR;
-//                            break;
-//                    }
-//                    continue;
-//                }
+                if (aRecipe[i] == X.CIRCUIT_POWER) {
+                    switch (this.mTier) {
+                        case 0:
+                        case 1:
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_LV, 1L);
+                            break;
+                        case 2:
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_MV, 1L);
+                            break;
+                        case 3:
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_HV, 1L);
+                            break;
+                        case 4:
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_EV, 1L);
+                            break;
+                        case 5:
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_IV, 1L);
+                            break;
+                        case 6:
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_LUV, 1L);
+                            break;
+                        case 7:
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_ZPM, 1L);
+                            break;
+                        case 8:
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_UV, 1L);
+                            break;
+                        case 9:
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_UHV, 1L);
+                            break;
+                        default:
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_UEV, 1L);
+                            break;
+                    }
+                    GT_Log.err.println(aRecipe[i].toString());
+                    continue;
+                }
+
+                if (aRecipe[i] == X.CIRCUIT_LOGIC) {
+                    switch (this.mTier) {
+                        case 0:
+                        case 1:
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_LV, 1L);
+                            break;
+                        case 2:
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_MV, 1L);
+                            break;
+                        case 3:
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_HV, 1L);
+                            break;
+                        case 4:
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_EV, 1L);
+                            break;
+                        case 5:
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_IV, 1L);
+                            break;
+                        case 6:
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_LUV, 1L);
+                            break;
+                        case 7:
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_ZPM, 1L);
+                            break;
+                        case 8:
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_UV, 1L);
+                            break;
+                        case 9:
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_UHV, 1L);
+                            break;
+                        default:
+                            aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitLogic, Materials.LOGIC_UEV, 1L);
+                            break;
+                    }
+                    continue;
+                }
 
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.FIELD_GENERATOR) {
                     switch (this.mTier) {
@@ -940,5 +947,5 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
         return !this.mSharedTank;
     }
 
-    public enum X {PUMP, WIRE, WIRE4, HULL, PIPE, GLASS, PLATE, MOTOR, ROTOR, SENSOR, PISTON, CIRCUIT, EMITTER, CONVEYOR, ROBOT_ARM, COIL_HEATING, COIL_ELECTRIC, STICK_MAGNETIC, STICK_DISTILLATION, BETTER_CIRCUIT, FIELD_GENERATOR, COIL_HEATING_DOUBLE, STICK_ELECTROMAGNETIC}
+    public enum X {PUMP, WIRE, WIRE4, HULL, PIPE, GLASS, PLATE, MOTOR, ROTOR, SENSOR, PISTON, EMITTER, CONVEYOR, ROBOT_ARM, COIL_HEATING, COIL_ELECTRIC, STICK_MAGNETIC, STICK_DISTILLATION, FIELD_GENERATOR, COIL_HEATING_DOUBLE, STICK_ELECTROMAGNETIC, CIRCUIT_POWER, CIRCUIT_LOGIC}
 }

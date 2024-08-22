@@ -539,8 +539,9 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         final GT_CoverBehaviorBase<?> coverBehavior = baseMetaTile.getCoverBehaviorAtSideNew(aSide);
         final IGregTechTileEntity gTileEntity = (tTileEntity instanceof IGregTechTileEntity) ? (IGregTechTileEntity) tTileEntity : null;
 
-        if (coverBehavior instanceof GT_Cover_Drain || (GregTech_API.mTConstruct && isTConstructFaucet(tTileEntity)))
+        if (coverBehavior instanceof GT_Cover_Drain) {
             return true;
+        }
 
         final IFluidHandler fTileEntity = (tTileEntity instanceof IFluidHandler) ? (IFluidHandler) tTileEntity : null;
 
@@ -554,12 +555,6 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
             }
         }
         return false;
-    }
-
-    @Optional.Method(modid = "TConstruct")
-    private boolean isTConstructFaucet(TileEntity tTileEntity) {
-        // Tinker Construct Faucets return a null tank info, so check the class
-        return tTileEntity instanceof tconstruct.smeltery.logic.FaucetLogic;
     }
 
     @Optional.Method(modid = "Translocator")

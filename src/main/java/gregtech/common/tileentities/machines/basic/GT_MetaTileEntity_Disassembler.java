@@ -368,9 +368,9 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
             output[i] = GT_OreDictUnificator.get(data.mPrefix, toRpl.get(), input.stackSize);
             return;
         }
-        if (data.mPrefix == OrePrefixes.circuit) {
-            handleCircuits(first, output, input, i);
-        }
+//        if (data.mPrefix == OrePrefixes.circuit) {
+//            handleCircuits(first, output, input, i);
+//        }
     }
 
     private static void handleInputStacks(Set<ItemStack[]> inputsStacks, AtomicReference<? super Materials> toRpl, ItemData data, Materials first, int i){
@@ -444,30 +444,6 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
         } else if (Materials.AnnealedCopper.equals(data.mMaterial.mMaterial)) {
             toRpl.set(Materials.Copper);
         }
-    }
-
-    @SuppressWarnings("deprecation")
-    private static void handleCircuits(Materials first, ItemStack[] output, ItemStack input, int i){
-        if (first.equals(Materials.Primitive))
-            output[i] = ItemList.NandChip.get(input.stackSize);
-        else if (first.equals(Materials.Basic))
-            output[i] = ItemList.Circuit_Microprocessor.get(input.stackSize);
-        else if (first.equals(Materials.Good))
-            output[i] = ItemList.Circuit_Good.get(input.stackSize);
-        else if (first.equals(Materials.Advanced))
-            output[i] = ItemList.Circuit_Advanced.get(input.stackSize);
-        else if (first.equals(Materials.Data))
-            output[i] = ItemList.Circuit_Data.get(input.stackSize);
-        else if (first.equals(Materials.Master))
-            output[i] = ItemList.Circuit_Master.get(input.stackSize);
-        else if (first.equals(Materials.Ultimate))
-            output[i] = ItemList.Circuit_Quantummainframe.get(input.stackSize);
-        else if (first.equals(Materials.Superconductor))
-            output[i] = ItemList.Circuit_Crystalmainframe.get(input.stackSize);
-        else if (first.equals(Materials.Infinite))
-            output[i] = ItemList.Circuit_Wetwaremainframe.get(input.stackSize);
-        else if (first.equals(Materials.Bio))
-            output[i] = ItemList.Circuit_Biomainframe.get(input.stackSize);
     }
 
     static class DissassembleReference {

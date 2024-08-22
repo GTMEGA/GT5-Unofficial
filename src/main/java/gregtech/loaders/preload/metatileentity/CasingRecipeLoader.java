@@ -42,7 +42,6 @@ public final class CasingRecipeLoader {
         addCraftingRecipe(Casing_RobustTungstenSteel.getOne(), RECIPE_MASK, new Object[]{"PhP", "PFP", "PwP", 'P', plate.get(TungstenSteel), 'F', frameGt.get(TungstenSteel)});
         addCraftingRecipe(Casing_MiningOsmiridium.getOne(), RECIPE_MASK, new Object[]{"PhP", "PFP", "PwP", 'P', plate.get(Osmiridium), 'F', frameGt.get(Osmiridium)});
         addCraftingRecipe(Casing_MiningNeutronium.getOne(), RECIPE_MASK, new Object[]{"PhP", "PFP", "PwP", 'P', plate.get(Neutronium), 'F', frameGt.get(Neutronium)});
-        addCraftingRecipe(Casing_MiningBlackPlutonium.getOne(), RECIPE_MASK, new Object[]{"PhP", "PFP", "PwP", 'P', plate.get(BlackPlutonium), 'F', frameGt.get(BlackPlutonium)});
         addCraftingRecipe(Casing_Turbine.getOne(), RECIPE_MASK, new Object[]{"PhP", "PFP", "PwP", 'P', plate.get(Magnalium), 'F', frameGt.get(BlueSteel)});
         addCraftingRecipe(Casing_Turbine1.getOne(), RECIPE_MASK, new Object[]{"PhP", "PFP", "PwP", 'P', plate.get(StainlessSteel), 'F', Casing_Turbine});
         addCraftingRecipe(Casing_Turbine2.getOne(), RECIPE_MASK, new Object[]{"PhP", "PFP", "PwP", 'P', plate.get(Titanium), 'F', Casing_Turbine});

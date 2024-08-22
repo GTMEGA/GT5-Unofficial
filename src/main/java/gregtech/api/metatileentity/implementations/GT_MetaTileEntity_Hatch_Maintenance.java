@@ -2,7 +2,13 @@ package gregtech.api.metatileentity.implementations;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.gui.*;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.gui.GT_Container_2by2;
+import gregtech.api.gui.GT_Container_MaintenanceHatch;
+import gregtech.api.gui.GT_GUIContainer_2by2;
+import gregtech.api.gui.GT_GUIContainer_MaintenanceHatch;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.CachedForgeItem;
