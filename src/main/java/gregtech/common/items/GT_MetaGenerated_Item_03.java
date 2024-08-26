@@ -27,7 +27,7 @@ public class GT_MetaGenerated_Item_03
         int tLastID = 0;
         Object[] o = new Object[0];
 
-        ItemList.Circuit_Parts_PetriDish.set(addItem(tLastID = 22, "Petri Dish", "For cultivating cells", o));
+//        ItemList.Circuit_Parts_PetriDish.set(addItem(tLastID = 22, "Petri Dish", "For cultivating cells", o));
 
         val registerCircuitEvent = new RegisterCircuitEvent();
         EVENT_BUS.post(registerCircuitEvent);

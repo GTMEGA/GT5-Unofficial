@@ -1573,8 +1573,6 @@ public enum ItemList implements IItemContainer {
     OilCracker,
     Crop_Drop_UUMBerry,
     Crop_Drop_UUABerry,
-//    Empty_Board_Basic,
-//    Empty_Board_Elite,
 
     Battery_Charger_4by4_ULV,
     Battery_Charger_4by4_LV,
@@ -1649,8 +1647,6 @@ public enum ItemList implements IItemContainer {
     Hatch_AutoMaintenance,
     Machine_Multi_Cleanroom,
 
-    Circuit_Parts_PetriDish,
-
     Circuit_Silicon_Ingot,
     Circuit_Silicon_Ingot2,
     Circuit_Silicon_Ingot3,
@@ -1666,7 +1662,6 @@ public enum ItemList implements IItemContainer {
     Machine_ZPM_CircuitAssembler,
     Machine_UV_CircuitAssembler,
 
-    Circuit_Integrated_Good,
     Machine_IV_LightningRod,
     Machine_HV_LightningRod,
     Machine_EV_LightningRod,
