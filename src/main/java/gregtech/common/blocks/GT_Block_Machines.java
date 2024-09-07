@@ -34,6 +34,7 @@ import net.minecraft.util.*;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
@@ -79,9 +80,21 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
 
     @Override
     public void onNeighborChange(IBlockAccess aWorld, int aX, int aY, int aZ, int aTileX, int aTileY, int aTileZ) {
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof BaseTileEntity)) {
-            ((BaseTileEntity) tTileEntity).onAdjacentBlockChange(aTileX, aTileY, aTileZ);
+        //was causing a recursion on world load so if a World object get a TE and not create a new one to stop recursion
+        if (aWorld instanceof World) {
+            Chunk chunk = ((World) aWorld).getChunkFromChunkCoords(aX >> 4, aZ >> 4);
+            if (chunk != null) {
+                val te = chunk.getTileEntityUnsafe(aX & 15, aY, aZ & 15);
+                if (te == null) return;
+                if ((te instanceof BaseTileEntity)) {
+                    ((BaseTileEntity) te).onAdjacentBlockChange(aTileX, aTileY, aTileZ);
+                }
+            }
+        } else {
+            TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+            if ((tTileEntity instanceof BaseTileEntity)) {
+                ((BaseTileEntity) tTileEntity).onAdjacentBlockChange(aTileX, aTileY, aTileZ);
+            }
         }
     }
 
