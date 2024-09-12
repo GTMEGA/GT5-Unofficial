@@ -2198,11 +2198,6 @@ public class GT_Utility {
                 tList.add(EnumChatFormatting.GOLD + trans("201", "Nothing") + EnumChatFormatting.RESET + ": " + EnumChatFormatting.YELLOW + '0' + EnumChatFormatting.RESET + " L");
         }
 //      if(aPlayer.capabilities.isCreativeMode){
-        if (GT_Pollution.hasPollution(currentChunk)) {
-            tList.add(trans("202", "Pollution in Chunk: ") + EnumChatFormatting.RED + formatNumbers(GT_Pollution.getPollution(currentChunk)) + EnumChatFormatting.RESET + trans("203", " gibbl"));
-        } else {
-            tList.add(EnumChatFormatting.GREEN + trans("204", "No Pollution in Chunk! HAYO!") + EnumChatFormatting.RESET);
-        }
 
         try {
             if (tBlock instanceof IDebugableBlock) {

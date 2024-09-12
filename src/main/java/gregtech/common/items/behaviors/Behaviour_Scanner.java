@@ -22,9 +22,14 @@ public class Behaviour_Scanner extends Behaviour_None {
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         NBTTagCompound tNBT = aStack.getTagCompound();
-        if (((aPlayer instanceof EntityPlayerMP)) && (aItem.canUse(aStack, 5000.0D))) {
+        if (tNBT == null) {
+            tNBT = new NBTTagCompound();
+            aStack.setTagCompound(tNBT);
+        }
+        if (((aPlayer instanceof EntityPlayerMP))) {
             ArrayList<String> tList = new ArrayList();
-            if (aItem.use(aStack, GT_Utility.getCoordinateScan(tList, aPlayer, aWorld, 1, aX, aY, aZ, aSide, hitX, hitY, hitZ), aPlayer)) {
+            GT_Utility.getCoordinateScan(tList, aPlayer, aWorld, 1, aX, aY, aZ, aSide, hitX, hitY, hitZ);
+            if (!tList.isEmpty()) {
                 int tList_sS=tList.size();
                 tNBT.setInteger("dataLinesCount",tList_sS);
                 for (int i = 0; i < tList_sS; i++) {

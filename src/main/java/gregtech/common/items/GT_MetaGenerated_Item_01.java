@@ -848,7 +848,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Tool_Cheat.set(addItem(tLastID = 761, "Debug Scanner", "Also an Infinite Energy Source", Behaviour_Scanner.INSTANCE, new TC_Aspects.TC_AspectStack(TC_Aspects.NEBRISUM, 64L)));
         setElectricStats(32000 + tLastID, -2000000000L, 1000000000L, -1L, -3L, false);
         ItemList.Tool_Scanner.set(addItem(tLastID = 762, "Portable Scanner", "Tricorder", Behaviour_Scanner.INSTANCE, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 6L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 6L)));
-        setElectricStats(32000 + tLastID, 100000L, GT_Values.V[1], 1L, -1L, false);
+        //setElectricStats(32000 + tLastID, 100000L, GT_Values.V[1], 1L, -1L, false);
         GT_ModHandler.addCraftingRecipe(ItemList.Tool_Scanner.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"EPR", "CSC", "PBP", 'C', circuitLogic.get(LOGIC_LV), 'P', OrePrefixes.plate.get(Steel), 'E', ItemList.Emitter_LV, 'R', ItemList.Sensor_LV, 'S', ItemList.Cover_Screen, 'B', ItemList.Battery_RE_LV_Lithium});
         ItemList.NC_SensorKit.set(addItem(tLastID = 763, "GregTech Sensor Kit", "", new Behaviour_SensorKit()));
         ItemList.Duct_Tape.set(addItem(tLastID = 764, "Duct Tape", "If you can't fix it with this, use more of it!", new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), OreDictNames.craftingDuctTape));
