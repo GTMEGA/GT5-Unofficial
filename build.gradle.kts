@@ -94,7 +94,7 @@ dependencies {
     compileOnly(deobfCurse("applecore-224472:2530879"))
 
     //TiCon 1.8.8
-    compileOnly(deobfCurse("tconstruct-74072:2264246"))
+//    compileOnly(deobfCurse("tconstruct-74072:2264246"))
 
     compileOnly("com.enderio:EnderIO:1.7.10-2.3.0.417_beta:dev") {
         excludeDeps()

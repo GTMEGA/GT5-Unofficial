@@ -86,10 +86,10 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.STICKY), 0.05f);
                 beeSpecies.setHumidity(DAMP);
                 beeSpecies.setTemperature(EnumTemperature.NORMAL);
-                if (Loader.isModLoaded("TConstruct")) {
+                /*if (Loader.isModLoaded("TConstruct")) {
                     beeSpecies.addProduct(GT_ModHandler.getModItem("TConstruct", "strangeFood", 1, 0), 0.10f);
                     beeSpecies.addSpecialty(GT_ModHandler.getModItem("TConstruct", "slime.gel", 1, 2), 0.01f);
-                }
+                }*/
             },
             template -> {
                 AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.MUSHROOMS);
@@ -100,8 +100,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             },
             dis -> {
                 IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Marshy"), CLAY, 7);
-                if (Loader.isModLoaded("TConstruct"))
-                    tMutation.requireResource(GameRegistry.findBlock("TConstruct", "slime.gel"), 1);
+                /*if (Loader.isModLoaded("TConstruct"))
+                    tMutation.requireResource(GameRegistry.findBlock("TConstruct", "slime.gel"), 1);*/
             }
     ),
     PEAT(GT_BranchDefinition.ORGANIC, "Peat", true, new Color(0x906237), new Color(0x58300B),
@@ -2537,8 +2537,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
             dis -> {
                 IBeeMutationCustom tMutation = dis.registerMutation(NEUTRONIUM, DOB, 7, 10);
-                if (Loader.isModLoaded("Avaritia"))
-                    tMutation.requireResource(GameRegistry.findBlock("Avaritia", "Resource_Block"), 0);
+                /*if (Loader.isModLoaded("Avaritia"))
+                    tMutation.requireResource(GameRegistry.findBlock("Avaritia", "Resource_Block"), 0);*/
             }
     ),
     INFINITYCATALYST(GT_BranchDefinition.PLANET, "InfinityCatalyst", false, new Color(0xFFFFFF), new Color(0xFFFFFF),
@@ -2555,8 +2555,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             },
             dis -> {
                 IMutationCustom tMutation = dis.registerMutation(DOB, COSMICNEUTRONIUM, 3, 10).setIsSecret();
-                if (Loader.isModLoaded("Avaritia"))
-                    tMutation.requireResource(GameRegistry.findBlock("Avaritia", "Resource_Block"), 1);
+                /*if (Loader.isModLoaded("Avaritia"))
+                    tMutation.requireResource(GameRegistry.findBlock("Avaritia", "Resource_Block"), 1);*/
             }
     ),
     INFINITY(GT_BranchDefinition.PLANET, "Infinity", false, new Color(0xFFFFFF), new Color(0xFFFFFF),
@@ -2570,8 +2570,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
             dis -> {
                 IBeeMutationCustom tMutation = dis.registerMutation(INFINITYCATALYST, COSMICNEUTRONIUM, 1, 100);
-                if (Loader.isModLoaded("avaritiaddons"))
-                    tMutation.requireResource(GameRegistry.findBlock("avaritiaddons", "InfinityChest"), 0);
+                /*if (Loader.isModLoaded("avaritiaddons"))
+                    tMutation.requireResource(GameRegistry.findBlock("avaritiaddons", "InfinityChest"), 0);*/
             }
     ),
     ;

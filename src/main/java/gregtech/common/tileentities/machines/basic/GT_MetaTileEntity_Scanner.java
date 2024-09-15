@@ -189,7 +189,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                     return 2;
                 }
 
-                if ((aStack.getItem().getUnlocalizedName().contains("Schematic") || aStack.getItem().getUnlocalizedName().contains("schematic")) && !aStack.getItem().getUnlocalizedName().contains("Schematics")) {
+                /*if ((aStack.getItem().getUnlocalizedName().contains("Schematic") || aStack.getItem().getUnlocalizedName().contains("schematic")) && !aStack.getItem().getUnlocalizedName().contains("Schematics")) {
                     if (mTier < 3)
                         return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                     String sTier = "";
@@ -222,7 +222,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                     if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                         return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                     return 2;
-                }
+                }*/
 
             }
             if (getSpecialSlot() == null && ItemList.Tool_DataStick.isStackEqual(aStack, false, true)) {

@@ -987,7 +987,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_ModHandler.addExtractionRecipe(GT_ModHandler.getIC2Item("rubberSapling", 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1L));
         GT_ModHandler.addExtractionRecipe(GT_ModHandler.getIC2Item("rubberLeaves", 16L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1L));
         GT_ModHandler.addExtractionRecipe(ItemList.Cell_Air.get(1L), ItemList.Cell_Empty.get(1L));
-        if (Loader.isModLoaded(GT_MachineRecipeLoader.aTextEBXL)) {
+        /*if (Loader.isModLoaded(GT_MachineRecipeLoader.aTextEBXL)) {
             GT_ModHandler.addExtractionRecipe(GT_ModHandler.getModItem(GT_MachineRecipeLoader.aTextEBXL, "waterplant1", 1, 0), new ItemStack(Items.dye, 4, 2));
             GT_ModHandler.addExtractionRecipe(GT_ModHandler.getModItem(GT_MachineRecipeLoader.aTextEBXL, "vines", 1, 0), new ItemStack(Items.dye, 4, 1));
             GT_ModHandler.addExtractionRecipe(GT_ModHandler.getModItem(GT_MachineRecipeLoader.aTextEBXL, "flower3", 1, 11), new ItemStack(Items.dye, 4, 11));
@@ -1039,7 +1039,7 @@ public class GT_MachineRecipeLoader implements Runnable {
             GT_ModHandler.addCompressionRecipe(GT_ModHandler.getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 3), ItemList.IC2_Plantball.get(1));
             GT_ModHandler.addCompressionRecipe(GT_ModHandler.getModItem(GT_MachineRecipeLoader.aTextEBXL, "saplings_2", 4, 4), ItemList.IC2_Plantball.get(1));
 
-        }
+        }*/
         //GT_ModHandler.addCompressionRecipe(GT_ModHandler.getModItem("miscutils", "blockRainforestOakSapling", 8, 0), ItemList.IC2_Plantball.get(1));
 
         GT_ModHandler.addCompressionRecipe(ItemList.IC2_Compressed_Coal_Chunk.get(1L), ItemList.IC2_Industrial_Diamond.get(1L));
@@ -1326,7 +1326,7 @@ public class GT_MachineRecipeLoader implements Runnable {
             GT_Values.RA.addCutterRecipe(new ItemStack(Blocks.stained_glass, 3, i), new ItemStack(Blocks.stained_glass_pane, 8, i), GT_Values.NI, 50, 8);
         }
         GT_Values.RA.addCutterRecipe(new ItemStack(Blocks.glass, 3, 0), new ItemStack(Blocks.glass_pane, 8, 0), GT_Values.NI, 50, 8);
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("TConstruct", "GlassBlock", 3L, 0), GT_ModHandler.getModItem("TConstruct", "GlassPane", 8L, 0), GT_Values.NI, 50, 8);
+//        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("TConstruct", "GlassBlock", 3L, 0), GT_ModHandler.getModItem("TConstruct", "GlassPane", 8L, 0), GT_Values.NI, 50, 8);
         GT_Values.RA.addCutterRecipe(new ItemStack(Blocks.stone, 1, 0), new ItemStack(Blocks.stone_slab, 2, 0), GT_Values.NI, 25, 8);
         GT_Values.RA.addCutterRecipe(new ItemStack(Blocks.sandstone, 1, 0), new ItemStack(Blocks.stone_slab, 2, 1), GT_Values.NI, 25, 8);
         GT_Values.RA.addCutterRecipe(new ItemStack(Blocks.cobblestone, 1, 0), new ItemStack(Blocks.stone_slab, 2, 3), GT_Values.NI, 25, 8);
@@ -1396,7 +1396,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         GT_Values.RA.addLatheRecipe(new ItemStack(Blocks.wooden_slab, 1, GT_Values.W), new ItemStack(Items.bowl,1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1), 50, 8);
         GT_Values.RA.addLatheRecipe(GT_ModHandler.getModItem(GT_MachineRecipeLoader.aTextForestry, "slabs", 1L, GT_Values.W), new ItemStack(Items.bowl,1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1), 50, 8);
-        GT_Values.RA.addLatheRecipe(GT_ModHandler.getModItem(GT_MachineRecipeLoader.aTextEBXL, "woodslab", 1L, GT_Values.W), new ItemStack(Items.bowl,1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1), 50, 8);
+//        GT_Values.RA.addLatheRecipe(GT_ModHandler.getModItem(GT_MachineRecipeLoader.aTextEBXL, "woodslab", 1L, GT_Values.W), new ItemStack(Items.bowl,1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1), 50, 8);
 
         GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Cupronickel, 1L), ItemList.Shape_Mold_Credit.get(0L), ItemList.Credit_Greg_Cupronickel.get(4L), 100, 16);
        // GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Brass, 1L), ItemList.Shape_Mold_Credit.get(0L), ItemList.Coin_Doge.get(4L), 100, 16);

@@ -1019,6 +1019,7 @@ public class GT_Mod implements IGT_Mod {
         GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Orb to overwrite")}, new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Copy of the Orb")}, ItemList.Tool_DataOrb.getWithName(0L, "Orb to copy"), null, null, 512, 30, 0);
         GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Stick to overwrite")}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Copy of the Stick")}, ItemList.Tool_DataStick.getWithName(0L, "Stick to copy"), null, null, 128, 30, 0);
         GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Raw Prospection Data")}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Analyzed Prospection Data")}, null, null, null, 1000, 30, 0);
+        /*
         if (Loader.isModLoaded("GalacticraftCore")) {
             GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{GT_ModHandler.getModItem("GalacticraftCore", "item.schematic", 1, Short.MAX_VALUE).setStackDisplayName("Any Schematic")}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Scanned Schematic")}, ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"), null, null, 36000, 480, 0);
             if (Loader.isModLoaded("GalacticraftMars"))
@@ -1029,6 +1030,7 @@ public class GT_Mod implements IGT_Mod {
                 }
             }
         }
+        */
         Materials.getMaterialsMap().values().stream().forEach(tMaterial -> {
             if ((tMaterial.mElement != null) && (!tMaterial.mElement.mIsIsotope) && (tMaterial != Materials.Magic) && (tMaterial.getMass() > 0L)) {
                 ItemStack tOutput = ItemList.Tool_DataOrb.get(1L);

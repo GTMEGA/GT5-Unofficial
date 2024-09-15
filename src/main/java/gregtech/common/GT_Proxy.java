@@ -539,7 +539,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextForestry, "frameImpregnated", 1L, 32767));
         GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextForestry, "frameProven", 1L, 32767));
         GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(aTextForestry, "waxCast", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("GalacticraftCore", "item.sensorGlasses", 1L, 32767));
+//        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("GalacticraftCore", "item.sensorGlasses", 1L, 32767));
         GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem("IC2NuclearControl", "ItemToolThermometer", 1L, 32767));
 
         RecipeSorter.register("gregtech:shaped", GT_Shaped_Recipe.class, RecipeSorter.Category.SHAPED, "after:minecraft:shaped before:minecraft:shapeless");
@@ -555,10 +555,10 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         GT_OreDictUnificator.registerOre("cropChilipepper", GT_ModHandler.getModItem("magicalcrops", "magicalcrops_CropProduce", 1L, 2));
         GT_OreDictUnificator.registerOre("cropTomato", GT_ModHandler.getModItem("magicalcrops", "magicalcrops_CropProduce", 1L, 8));
         GT_OreDictUnificator.registerOre("cropGrape", GT_ModHandler.getModItem("magicalcrops", "magicalcrops_CropProduce", 1L, 4));
-        GT_OreDictUnificator.registerOre("cropTea", GT_ModHandler.getModItem("ganyssurface", "teaLeaves", 1L, 0));
+//        GT_OreDictUnificator.registerOre("cropTea", GT_ModHandler.getModItem("ganyssurface", "teaLeaves", 1L, 0));
 
         // Clay buckets, which don't get registered until Iguana Tweaks pre-init
-        if (Loader.isModLoaded("IguanaTweaksTConstruct")) {
+        /*if (Loader.isModLoaded("IguanaTweaksTConstruct")) {
             OrePrefixes.bucketClay.mContainerItem = GT_ModHandler.getModItem("IguanaTweaksTConstruct", "clayBucketFired", 1L, 0);
             GT_OreDictUnificator.set(OrePrefixes.bucketClay, Materials.Empty, GT_ModHandler.getModItem("IguanaTweaksTConstruct", "clayBucketFired", 1L, 0));
             GT_OreDictUnificator.set(OrePrefixes.bucketClay, Materials.Water, GT_ModHandler.getModItem("IguanaTweaksTConstruct", "clayBucketWater", 1L, 0));
@@ -570,7 +570,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                             Materials.Milk.getFluid(1000L),
                             GT_OreDictUnificator.get(OrePrefixes.bucketClay, Materials.Milk, 1L),
                             GT_OreDictUnificator.get(OrePrefixes.bucketClay, Materials.Empty, 1L)));
-        }
+        }*/
 
         // IC2 Hazmat
         addFullHazmatToIC2Item("hazmatHelmet");
