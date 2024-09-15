@@ -88,7 +88,7 @@ dependencies {
     compileOnly(deobfCurse("railcraft-51195:2458987"))
 
     //micdoodle8.com went down
-    compileOnly(rfg.deobf("mirror.micdoodle:GalacticraftCore:1.7-3.0.12.504"))
+//    compileOnly(rfg.deobf("mirror.micdoodle:GalacticraftCore:1.7-3.0.12.504"))
 
     //AppleCore 3.1.1
     compileOnly(deobfCurse("applecore-224472:2530879"))
