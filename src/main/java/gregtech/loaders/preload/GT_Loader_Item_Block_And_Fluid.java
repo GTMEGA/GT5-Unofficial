@@ -34,6 +34,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         Materials.Water.mFluid = (Materials.Ice.mFluid = GT_ModHandler.getWater(1000L).getFluid());
         Materials.Lava.mFluid = GT_ModHandler.getLava(1000L).getFluid();
 
+        /*
         GT_Log.out.println("GT_Mod: Register Books.");
 
         GT_Utility.getWrittenBook("Manual_Printer", "Printer Manual V2.0", "Gregorius Techneticies", new String[]{
@@ -64,6 +65,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 "Long time exposure to Microwaves can cause Cancer, but we doubt Steve lives long enough to die because of that.",
                 "Do not insert any Metals. It might result in an Explosion.", "Do not dry Animals with it. It will result in a Hot Dog, no matter which Animal you put into it.",
                 "Do not insert inflammable Objects. The Oven will catch on Fire.", "Do not insert Explosives such as Eggs. Just don't."});
+                */
 
         GT_Log.out.println("GT_Mod: Register Items.");
 
