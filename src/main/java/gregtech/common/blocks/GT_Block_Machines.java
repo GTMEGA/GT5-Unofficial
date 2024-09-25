@@ -62,9 +62,6 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
 
     @Override
     public String getHarvestTool(int aMeta) {
-        if (aMeta >= 8 && aMeta <= 11) {
-            return "cutter";
-        }
         return "wrench";
     }
 
