@@ -101,25 +101,6 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "OreDrillingPlant.png");
     }
 
-    @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-        if (aPlayer.isSneaking()) {
-            if (chunkRadiusConfig > 0) {
-                chunkRadiusConfig--;
-            }
-            if (chunkRadiusConfig == 0)
-                chunkRadiusConfig = getRadiusInChunks();
-        } else {
-            if (chunkRadiusConfig <= getRadiusInChunks()) {
-                chunkRadiusConfig++;
-            }
-            if (chunkRadiusConfig > getRadiusInChunks())
-                chunkRadiusConfig = 1;
-        }
-        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.machines.workareaset") + " " + (chunkRadiusConfig << 4) + " " + StatCollector.translateToLocal("GT5U.machines.radius"));
-    }
-
     abstract protected int fortune();
 
     abstract protected int perTickFluidStackMultiplier();
@@ -172,7 +153,29 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         return processOreList();
     }
 
+    @Override
+    public boolean checkRecipe(ItemStack aStack) {
+        if (isOutputFull()) {
+            addFluidOutputs(mOutputFluids);
+        }
+        return super.checkRecipe(aStack);
+    }
+
+    protected boolean isOutputFull() {
+        if (mOutputFluids != null) {
+            for (int i = 0; i < mOutputFluids.length; i++) {
+                if (mOutputFluids[i] != null) return true;
+            }
+        }
+        return false;
+    }
+
     private boolean processOreList() {
+        if (isOutputFull()) {
+            mMaxProgresstime = 0;
+            mEUt = 0;
+            return false;
+        }
         int amountTransferred = 0;
 
         if (this.currentOreSlurry != null && this.currentOreSlurry.amount != 0) {
@@ -253,6 +256,14 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
 
         if (this.currentOreSlurry.amount == 0) {
             this.currentOreSlurry = null;
+        }
+    }
+
+    protected void addFluidOutputs(FluidStack[] mOutputFluids2) {
+        for (int i = 0; i < mOutputFluids2.length; i++) {
+            if (mOutputFluids2[i] == null) continue;
+            if (!addOutput(mOutputFluids2[i])) continue;
+            mOutputFluids2[i] = null;
         }
     }
 
@@ -498,10 +509,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         //TODO: Non auto-generated tooltips...
 		tt.addMachineType("Miner")
 		.addInfo("Controller Block for the Ore Drilling Rig MK" + (tierSuffix != null ? tierSuffix : ""))
-		.addInfo("Use a Screwdriver to configure block radius")
-		.addInfo("Maximum radius is " + (getRadiusInChunks() << 4) + " blocks")
-		.addInfo("Use Soldering iron to turn off chunk mode")
-		.addInfo("In chunk mode, working area center is the chunk corner nearest to the drill")
+		.addInfo("Mines from the closest ore chunk")
         .addInfo("Harvests massive amounts of ore slurry over a long period of time.")
         .addInfo(EnumChatFormatting.YELLOW + "Slurry contents are determined by the nearest ore vein" + EnumChatFormatting.RESET)
         .addInfo("Consumes " + drillingFluidConsumption() + "L" + " of Drilling Fluid per operation")
