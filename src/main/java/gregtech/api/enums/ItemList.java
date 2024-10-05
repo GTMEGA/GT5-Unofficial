@@ -540,6 +540,7 @@ public enum ItemList implements IItemContainer {
     Battery_SU_HV_SulfuricAcid,
     Battery_SU_HV_Mercury,
     Battery_RE_ULV_Tantalum,
+    Battery_RE_ULV_Redstone,
     Battery_RE_LV_Cadmium,
     Battery_RE_LV_Lithium,
     Battery_RE_LV_Sodium,
