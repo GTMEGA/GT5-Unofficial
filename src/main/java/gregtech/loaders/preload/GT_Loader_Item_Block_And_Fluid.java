@@ -254,19 +254,19 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
             GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_1.get(1),
                                                      5000,
-                                                     GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 2L),
+                                                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1L),
                                                      GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L),
                                                      GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L)
                                                     );
             GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_2.get(1),
                                                      5000,
-                                                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1L),
+                                                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 2L),
                                                      GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L),
                                                      GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L)
                                                     );
             GT_ModHandler.addThermalCentrifugeRecipe(ItemList.Depleted_Thorium_4.get(1),
                                                      5000,
-                                                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 2L),
+                                                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 4L),
                                                      GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 4L),
                                                      GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L)
                                                     );
