@@ -192,31 +192,31 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
 //                    GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), null, null, null, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, tByProduct, GT_OreDictUnificator.get(OrePrefixes.nugget, tByProduct, 1L), 1L), null, null, null, null, new int[]{10000, 1111}, (int) Math.max(1L, aMaterial.getMass() * 8L), 5);
 //                }
 //                break;
-            case dustSmall:
-                GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(4L, aStack), ItemList.Schematic_Dust.get(0L), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), 20, 4);
-                if (!aMaterial.mBlastFurnaceRequired) {
-                    GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
-                    if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
-                        GT_RecipeRegistrator.registerReverseArcSmelting(GT_Utility.copyAmount(1L, aStack), aMaterial, aPrefix.mMaterialAmount, null, null, null);
-                    }
-                }
-                break;
-            case dustTiny:
-                GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(9L, aStack), ItemList.Schematic_Dust.get(0L), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), 20, 4);
-                if (!aMaterial.mBlastFurnaceRequired) {
-                    GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
-                    if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
-                        GT_RecipeRegistrator.registerReverseArcSmelting(GT_Utility.copyAmount(1L, aStack), aMaterial, aPrefix.mMaterialAmount, null, null, null);
-                    }
-                }
-                if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_SMELTING)) {
-                    if (aMaterial.mBlastFurnaceRequired) {
-                        GT_ModHandler.removeFurnaceSmelting(aStack);
-                    }
-                }
-                break;
-		default:
-			break;
+//            case dustSmall:
+//                GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(4L, aStack), ItemList.Schematic_Dust.get(0L), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), 20, 4);
+//                if (!aMaterial.mBlastFurnaceRequired) {
+//                    GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
+//                    if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
+//                        GT_RecipeRegistrator.registerReverseArcSmelting(GT_Utility.copyAmount(1L, aStack), aMaterial, aPrefix.mMaterialAmount, null, null, null);
+//                    }
+//                }
+//                break;
+//            case dustTiny:
+//                GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(9L, aStack), ItemList.Schematic_Dust.get(0L), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L), 20, 4);
+//                if (!aMaterial.mBlastFurnaceRequired) {
+//                    GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
+//                    if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
+//                        GT_RecipeRegistrator.registerReverseArcSmelting(GT_Utility.copyAmount(1L, aStack), aMaterial, aPrefix.mMaterialAmount, null, null, null);
+//                    }
+//                }
+//                if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_SMELTING)) {
+//                    if (aMaterial.mBlastFurnaceRequired) {
+//                        GT_ModHandler.removeFurnaceSmelting(aStack);
+//                    }
+//                }
+//                break;
+//		default:
+//			break;
         }
     }
 }
