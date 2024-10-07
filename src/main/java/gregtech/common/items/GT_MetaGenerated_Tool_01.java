@@ -29,7 +29,7 @@ public class GT_MetaGenerated_Tool_01  extends GT_MetaGenerated_Tool {
     public static final short WIRECUTTER = 26;
     public static final short SCOOP = 28;
     public static final short BRANCHCUTTER = 30;
-    public static final short UNIVERSALSPADE = 32;
+//    public static final short UNIVERSALSPADE = 32;
     public static final short KNIFE = 34;
     public static final short BUTCHERYKNIFE = 36;
     @Deprecated
@@ -81,12 +81,11 @@ public class GT_MetaGenerated_Tool_01  extends GT_MetaGenerated_Tool {
         GregTech_API.registerTool(addTool(WRENCH, "Wrench", "Hold Leftclick to dismantle Machines.", new GT_Tool_Wrench(), ToolDictNames.craftingToolWrench, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L)), GregTech_API.sWrenchList);
         addTool(FILE, "File", "", new GT_Tool_File(), ToolDictNames.craftingToolFile, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L));
         GregTech_API.registerTool(addTool(CROWBAR, "Crowbar", "Dismounts Covers and Rotates Rails.", new GT_Tool_Crowbar(), ToolDictNames.craftingToolCrowbar, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 2L)), GregTech_API.sCrowbarList);
-        GregTech_API.registerTool(addTool(SCREWDRIVER, "Screwdriver", "Adjusts Covers and Machines.", new GT_Tool_Screwdriver(), ToolDictNames.craftingToolScrewdriver, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L)), GregTech_API.sScrewdriverList);
+        GregTech_API.registerTool(addTool(SCREWDRIVER, "Screwdriver", "Multi-Driver Adjusts Covers and Machines.", new GT_Tool_Screwdriver(), ToolDictNames.craftingToolScrewdriver, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L)), GregTech_API.sScrewdriverList);
         addTool(MORTAR, "Mortar", "", new GT_Tool_Mortar(), ToolDictNames.craftingToolMortar, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERDITIO, 2L));
         GregTech_API.registerTool(addTool(WIRECUTTER, "Wire Cutter", "", new GT_Tool_WireCutter(), ToolDictNames.craftingToolWireCutter, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L)), GregTech_API.sWireCutterList);
         addTool(SCOOP, "Scoop", "", new GT_Tool_Scoop(), ToolDictNames.craftingToolScoop, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.BESTIA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.PANNUS, 2L));
         addTool(BRANCHCUTTER, "Branch Cutter", "", new GT_Tool_BranchCutter(), ToolDictNames.craftingToolBranchCutter, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 2L));
-        GregTech_API.registerTool(addTool(UNIVERSALSPADE, "Universal Spade", "", new GT_Tool_UniversalSpade(), ToolDictNames.craftingToolBlade, ToolDictNames.craftingToolShovel, ToolDictNames.craftingToolCrowbar, ToolDictNames.craftingToolSaw, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 1L)), GregTech_API.sCrowbarList);
         addTool(KNIFE, "Knife", "", new GT_Tool_Knife(), ToolDictNames.craftingToolBlade, ToolDictNames.craftingToolKnife, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.CORPUS, 2L));
         addTool(BUTCHERYKNIFE, "Butchery Knife", "Has a slow Attack Rate", new GT_Tool_ButcheryKnife(), ToolDictNames.craftingToolBlade, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.CORPUS, 4L));
 

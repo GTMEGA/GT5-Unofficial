@@ -23,7 +23,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
         OrePrefixes.toolHeadSense.add(this);
         OrePrefixes.toolHeadShovel.add(this);
         OrePrefixes.toolHeadSword.add(this);
-        OrePrefixes.toolHeadUniversalSpade.add(this);
         OrePrefixes.toolHeadWrench.add(this);
         OrePrefixes.toolHeadHammer.add(this);
         OrePrefixes.turbineBlade.add(this);
@@ -165,13 +164,13 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, aMaterial, 1L), GT_Proxy.tBits, new Object[]{" G", "fG", 'G', OrePrefixes.gem.get(aMaterial)});
                 }
                 break;
-            case toolHeadUniversalSpade:
-                if (aSpecialRecipeReq) {
-                    GT_ModHandler.addShapelessCraftingRecipe(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.UNIVERSALSPADE, 1, aMaterial, aMaterial, null), new Object[]{aOreDictName, OrePrefixes.stick.get(aMaterial), OrePrefixes.screw.get(aMaterial), ToolDictNames.craftingToolScrewdriver});
-                    GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.toolHeadUniversalSpade, aMaterial, 1L), GT_Utility.getIntegratedCircuit(11)}, GT_Values.NF, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.UNIVERSALSPADE, 1, aMaterial, aMaterial.mHandleMaterial, null), 200, 120);
-                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.toolHeadUniversalSpade, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"fX", 'X', OrePrefixes.toolHeadShovel.get(aMaterial)});
-                }
-                break;
+//            case toolHeadUniversalSpade:
+//                if (aSpecialRecipeReq) {
+//                    GT_ModHandler.addShapelessCraftingRecipe(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.UNIVERSALSPADE, 1, aMaterial, aMaterial, null), new Object[]{aOreDictName, OrePrefixes.stick.get(aMaterial), OrePrefixes.screw.get(aMaterial), ToolDictNames.craftingToolScrewdriver});
+//                    GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.toolHeadUniversalSpade, aMaterial, 1L), GT_Utility.getIntegratedCircuit(11)}, GT_Values.NF, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.UNIVERSALSPADE, 1, aMaterial, aMaterial.mHandleMaterial, null), 200, 120);
+//                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.toolHeadUniversalSpade, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"fX", 'X', OrePrefixes.toolHeadShovel.get(aMaterial)});
+//                }
+//                break;
             case toolHeadWrench:
                 if (aSpecialRecipeReq && !aNoWorking) {
                     GT_ModHandler.addCraftingRecipe(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.WRENCH_LV, 1, aMaterial, Materials.Steel, new long[]{100000L, 32L, 1L, -1L}), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"SXd", "GMG", "PBP", 'X', aOreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.get(Materials.Steel), 'P', OrePrefixes.plate.get(Materials.Steel), 'G', OrePrefixes.gearGtSmall.get(Materials.Steel), 'B', ItemList.Battery_RE_LV_Lithium.get(1L)});

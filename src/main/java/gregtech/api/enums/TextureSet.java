@@ -95,7 +95,6 @@ public class TextureSet {
         mTextures[40] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + "/toolHeadDrill");
         mTextures[41] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + "/toolHeadChainsaw");
         mTextures[42] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + "/toolHeadWrench");
-        mTextures[43] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + "/toolHeadUniversalSpade");
         mTextures[44] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + "/toolHeadSense");
         mTextures[45] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + "/toolHeadPlow");
         mTextures[46] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + "/toolHeadArrow");

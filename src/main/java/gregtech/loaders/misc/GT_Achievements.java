@@ -70,7 +70,6 @@ public final class GT_Achievements {
         registerAchievement("hammertime", 3, 7, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.JACKHAMMER, 1, Materials.TungstenSteel, Materials.TungstenSteel, null), "highpowerdrill", false);
         registerAchievement("repair", 4, 5, ItemList.Machine_HV_Disassembler.get(1), "highpowerdrill", false);
 
-        registerAchievement("unitool", -2, 4, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.UNIVERSALSPADE, 1, Materials.Steel, Materials.Iron, null), "tools", false);
         registerAchievement("recycling", -4, 4, ItemList.Machine_LV_ArcFurnace.get(1), "unitool", false);
 
         registerAchievement("crushed", 0, 6, GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Tin, 1L), "tools", false);
