@@ -109,6 +109,10 @@ public class Textures {
         INSULATION_MEDIUM_PLUS,
         INSULATION_LARGE,
         INSULATION_HUGE,
+        CABLE_GLOW_FULL,
+        CABLE_GLOW_LARGE,
+        CABLE_GLOW_MEDIUM,
+        CABLE_GLOW_SMALL,
         CFOAM_FRESH,
 
         CFOAM_HARDENED,
