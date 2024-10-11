@@ -2712,7 +2712,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                                         new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 64L)))
                         });
             }
-        addBusAndHatchRecipes();
 	}
 
 	/**
