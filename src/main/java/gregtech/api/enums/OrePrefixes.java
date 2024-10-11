@@ -118,6 +118,7 @@ public enum OrePrefixes {
     toolHeadSword("Sword Blades", "", " Sword Blade", true, true, false, false, false, false, true, true, false, false, B[6], M * 2, 16, 32), // consisting out of 2 Ingots.
     toolHeadPickaxe("Pickaxe Heads", "", " Pickaxe Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 3, 16, 33), // consisting out of 3 Ingots.
     toolHeadShovel("Shovel Heads", "", " Shovel Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 1, 16, 34), // consisting out of 1 Ingots.
+    toolHeadUniversalSpade("Universal Spade Heads", "", " Universal Spade Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 1, 16, 43), // consisting out of 1 Ingots.
     toolHeadAxe("Axe Heads", "", " Axe Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 3, 16, 35), // consisting out of 3 Ingots.
     toolHeadHoe("Hoe Heads", "", " Hoe Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 2, 16, 36), // consisting out of 2 Ingots.
     toolHeadSense("Sense Blades", "", " Sense Blade", true, true, false, false, false, false, true, true, false, false, B[6], M * 3, 16, 44), // consisting out of 3 Ingots.
@@ -620,7 +621,7 @@ public enum OrePrefixes {
                                                                                             OrePrefixes.toolHeadDrill,
                                                                                             OrePrefixes.toolHeadChainsaw,
                                                                                             OrePrefixes.toolHeadWrench,
-//                                                                                            OrePrefixes.toolHeadUniversalSpade,
+                                                                                            OrePrefixes.toolHeadUniversalSpade,
                                                                                             OrePrefixes.toolHeadSense,
                                                                                             OrePrefixes.toolHeadPlow,
                                                                                             OrePrefixes.toolHeadArrow,
