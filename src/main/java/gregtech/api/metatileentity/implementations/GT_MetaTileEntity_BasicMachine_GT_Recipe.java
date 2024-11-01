@@ -673,7 +673,6 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             aRecipe[i] = GT_OreDictUnificator.get(OrePrefixes.circuitPower, Materials.PWR_UEV, 1L);
                             break;
                     }
-                    GT_Log.err.println(aRecipe[i].toString());
                     continue;
                 }
 
