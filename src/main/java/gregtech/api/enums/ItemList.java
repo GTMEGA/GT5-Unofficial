@@ -1926,7 +1926,7 @@ public enum ItemList implements IItemContainer {
             ;
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;
-    public boolean dontCrashOnEmpty = false;
+    public static boolean crashOnEmpty = true;
 
     @Override
     public IItemContainer set(Item aItem) {
@@ -1947,8 +1947,11 @@ public enum ItemList implements IItemContainer {
 
     @Override
     public Item getItem() {
-        if (mHasNotBeenSet)
-            throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
+        if (mHasNotBeenSet){
+            if (crashOnEmpty) {
+                throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
+            }
+        }
         if (GT_Utility.isStackInvalid(mStack))
             return null;
         return mStack.getItem();
@@ -1956,8 +1959,11 @@ public enum ItemList implements IItemContainer {
 
     @Override
     public Block getBlock() {
-        if (mHasNotBeenSet)
-            throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
+        if (mHasNotBeenSet){
+            if (crashOnEmpty) {
+                throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
+            }
+        }
         return GT_Utility.getBlockFromItem(getItem());
     }
 
@@ -1981,7 +1987,7 @@ public enum ItemList implements IItemContainer {
     @Override
     public ItemStack get(long aAmount, Object... aReplacements) {
         if (mHasNotBeenSet) {
-            if (dontCrashOnEmpty) {
+            if (crashOnEmpty) {
                 throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
             }
         }
@@ -1993,7 +1999,7 @@ public enum ItemList implements IItemContainer {
     @Override
     public ItemStack getWildcard(long aAmount, Object... aReplacements) {
         if (mHasNotBeenSet) {
-            if (dontCrashOnEmpty) {
+            if (crashOnEmpty) {
                 throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
             }
         }
@@ -2005,7 +2011,7 @@ public enum ItemList implements IItemContainer {
     @Override
     public ItemStack getUndamaged(long aAmount, Object... aReplacements) {
         if (mHasNotBeenSet) {
-            if (dontCrashOnEmpty) {
+            if (crashOnEmpty) {
                 throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
             }
         }
@@ -2017,7 +2023,7 @@ public enum ItemList implements IItemContainer {
     @Override
     public ItemStack getAlmostBroken(long aAmount, Object... aReplacements) {
         if (mHasNotBeenSet) {
-            if (dontCrashOnEmpty) {
+            if (crashOnEmpty) {
                 throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
             }
         }
@@ -2063,7 +2069,7 @@ public enum ItemList implements IItemContainer {
     @Override
     public ItemStack getWithDamage(long aAmount, long aMetaValue, Object... aReplacements) {
         if (mHasNotBeenSet) {
-            if (dontCrashOnEmpty) {
+            if (crashOnEmpty) {
                 throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
             }
         }
@@ -2075,7 +2081,7 @@ public enum ItemList implements IItemContainer {
     @Override
     public IItemContainer registerOre(Object... aOreNames) {
         if (mHasNotBeenSet) {
-            if (dontCrashOnEmpty) {
+            if (crashOnEmpty) {
                 throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
             }
         }
@@ -2087,7 +2093,7 @@ public enum ItemList implements IItemContainer {
     @Override
     public IItemContainer registerWildcardAsOre(Object... aOreNames) {
         if (mHasNotBeenSet) {
-            if (dontCrashOnEmpty) {
+            if (crashOnEmpty) {
                 throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
             }
         }
