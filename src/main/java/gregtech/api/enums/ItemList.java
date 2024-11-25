@@ -1926,6 +1926,7 @@ public enum ItemList implements IItemContainer {
             ;
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;
+    public boolean dontCrashOnEmpty = false;
 
     @Override
     public IItemContainer set(Item aItem) {
@@ -1979,8 +1980,11 @@ public enum ItemList implements IItemContainer {
 
     @Override
     public ItemStack get(long aAmount, Object... aReplacements) {
-        if (mHasNotBeenSet)
-            throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
+        if (mHasNotBeenSet) {
+            if (dontCrashOnEmpty) {
+                throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
+            }
+        }
         if (GT_Utility.isStackInvalid(mStack))
             return GT_Utility.copyAmount(aAmount, aReplacements);
         return GT_Utility.copyAmount(aAmount, GT_OreDictUnificator.get(mStack));
@@ -1988,8 +1992,11 @@ public enum ItemList implements IItemContainer {
 
     @Override
     public ItemStack getWildcard(long aAmount, Object... aReplacements) {
-        if (mHasNotBeenSet)
-            throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
+        if (mHasNotBeenSet) {
+            if (dontCrashOnEmpty) {
+                throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
+            }
+        }
         if (GT_Utility.isStackInvalid(mStack))
             return GT_Utility.copyAmount(aAmount, aReplacements);
         return GT_Utility.copyAmountAndMetaData(aAmount, W, GT_OreDictUnificator.get(mStack));
@@ -1997,8 +2004,11 @@ public enum ItemList implements IItemContainer {
 
     @Override
     public ItemStack getUndamaged(long aAmount, Object... aReplacements) {
-        if (mHasNotBeenSet)
-            throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
+        if (mHasNotBeenSet) {
+            if (dontCrashOnEmpty) {
+                throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
+            }
+        }
         if (GT_Utility.isStackInvalid(mStack))
             return GT_Utility.copyAmount(aAmount, aReplacements);
         return GT_Utility.copyAmountAndMetaData(aAmount, 0, GT_OreDictUnificator.get(mStack));
@@ -2006,8 +2016,11 @@ public enum ItemList implements IItemContainer {
 
     @Override
     public ItemStack getAlmostBroken(long aAmount, Object... aReplacements) {
-        if (mHasNotBeenSet)
-            throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
+        if (mHasNotBeenSet) {
+            if (dontCrashOnEmpty) {
+                throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
+            }
+        }
         if (GT_Utility.isStackInvalid(mStack))
             return GT_Utility.copyAmount(aAmount, aReplacements);
         return GT_Utility.copyAmountAndMetaData(aAmount, mStack.getMaxDamage() - 1, GT_OreDictUnificator.get(mStack));
@@ -2049,8 +2062,11 @@ public enum ItemList implements IItemContainer {
 
     @Override
     public ItemStack getWithDamage(long aAmount, long aMetaValue, Object... aReplacements) {
-        if (mHasNotBeenSet)
-            throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
+        if (mHasNotBeenSet) {
+            if (dontCrashOnEmpty) {
+                throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
+            }
+        }
         if (GT_Utility.isStackInvalid(mStack))
             return GT_Utility.copyAmount(aAmount, aReplacements);
         return GT_Utility.copyAmountAndMetaData(aAmount, aMetaValue, GT_OreDictUnificator.get(mStack));
@@ -2058,8 +2074,11 @@ public enum ItemList implements IItemContainer {
 
     @Override
     public IItemContainer registerOre(Object... aOreNames) {
-        if (mHasNotBeenSet)
-            throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
+        if (mHasNotBeenSet) {
+            if (dontCrashOnEmpty) {
+                throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
+            }
+        }
         for (Object tOreName : aOreNames)
             GT_OreDictUnificator.registerOre(tOreName, get(1));
         return this;
@@ -2067,8 +2086,11 @@ public enum ItemList implements IItemContainer {
 
     @Override
     public IItemContainer registerWildcardAsOre(Object... aOreNames) {
-        if (mHasNotBeenSet)
-            throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
+        if (mHasNotBeenSet) {
+            if (dontCrashOnEmpty) {
+                throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
+            }
+        }
         for (Object tOreName : aOreNames)
             GT_OreDictUnificator.registerOre(tOreName, getWildcard(1));
         return this;
