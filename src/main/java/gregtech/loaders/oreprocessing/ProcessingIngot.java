@@ -12,10 +12,10 @@ import net.minecraft.item.ItemStack;
 public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegistrator {
     public ProcessingIngot() {
         OrePrefixes.ingot.add(this);
-//        OrePrefixes.ingotDouble.add(this);
-//        OrePrefixes.ingotTriple.add(this);
-//        OrePrefixes.ingotQuadruple.add(this);
-//        OrePrefixes.ingotQuintuple.add(this);
+        OrePrefixes.ingotDouble.add(this);
+        OrePrefixes.ingotTriple.add(this);
+        OrePrefixes.ingotQuadruple.add(this);
+        OrePrefixes.ingotQuintuple.add(this);
         OrePrefixes.ingotHot.add(this);
     }
 
