@@ -27,7 +27,7 @@ public final class MultiblockMachineLoader {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
         Machine_Bricked_BlastFurnace.set(new GT_MetaTileEntity_BrickedBlastFurnace(140, "multimachine.brickedblastfurnace", "Bricked Blast Furnace").getStackForm(1L));
-        addCraftingRecipe(Machine_Bricked_BlastFurnace.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"BFB", "FwF", "BFB", 'B', Casing_Firebricks, 'F', craftingFurnace});
+        //addCraftingRecipe(Machine_Bricked_BlastFurnace.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"BFB", "FwF", "BFB", 'B', Casing_Firebricks, 'F', craftingFurnace});
 
         Machine_Multi_BlastFurnace.set(new GT_MetaTileEntity_ElectricBlastFurnace(1000, "multimachine.blastfurnace", "Electric Blast Furnace").getStackForm(1L));
         Machine_Multi_ImplosionCompressor.set(new GT_MetaTileEntity_ImplosionCompressor(1001, "multimachine.implosioncompressor", "Implosion Compressor").getStackForm(1L));
