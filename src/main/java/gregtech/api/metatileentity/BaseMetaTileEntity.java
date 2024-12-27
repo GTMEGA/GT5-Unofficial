@@ -102,7 +102,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     private String mOwnerName = "";
     private UUID mOwnerUuid = GT_Utility.defaultUuid;
     private NBTTagCompound mRecipeStuff = new NBTTagCompound();
-    private int cableUpdateDelay = 30;
+    private int cableUpdateDelay = 0;
 
     public boolean mWasShutdown = false;
 
@@ -586,7 +586,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                 case 15:
                     tCode++;
                     if (aSideServer) {
-                        if (mTickTimer > 20 && cableUpdateDelay == 0) {
+                        if (mTickTimer > 5 && cableUpdateDelay == 0) {
                             generatePowerNodes();
                             cableUpdateDelay--;
                         } else {
