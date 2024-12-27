@@ -102,7 +102,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     private String mOwnerName = "";
     private UUID mOwnerUuid = GT_Utility.defaultUuid;
     private NBTTagCompound mRecipeStuff = new NBTTagCompound();
-    private int cableUpdateDelay = 0;
+    private int cableUpdateDelay = 10;
 
     public boolean mWasShutdown = false;
 
