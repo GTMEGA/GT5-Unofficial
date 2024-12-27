@@ -32,7 +32,7 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item {
 
         ItemList.Circuit_Integrated.set(this);
 
-        for (int i = 1; i <= 24; i++) {
+        for (int i = 0; i <= 24; i++) {
             GregTech_API.registerConfigurationCircuit(new ItemStack(this, 0, i));
         }
 
