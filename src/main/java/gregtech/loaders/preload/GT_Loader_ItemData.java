@@ -79,8 +79,8 @@ public class GT_Loader_ItemData implements Runnable {
         GT_OreDictUnificator.addItemData(ItemList.IC2_Food_Can_Empty.get(1L), new ItemData(Materials.Tin, 1814400L));
         GT_OreDictUnificator.addItemData(ItemList.IC2_Fuel_Rod_Empty.get(1L), new ItemData(Materials.Iron, 3628800L));
         GT_OreDictUnificator.addItemData(ItemList.IC2_Fuel_Can_Empty.get(1L), new ItemData(Materials.Tin, 25401600L));
-        GT_OreDictUnificator.addItemData(new ItemStack(Blocks.light_weighted_pressure_plate, 1, 32767), new ItemData(Materials.Gold, 7257600L));
-        GT_OreDictUnificator.addItemData(new ItemStack(Blocks.heavy_weighted_pressure_plate, 1, 32767), new ItemData(Materials.Iron, 7257600L));
+//        GT_OreDictUnificator.addItemData(new ItemStack(Blocks.light_weighted_pressure_plate, 1, 32767), new ItemData(Materials.Gold, 7257600L));
+//        GT_OreDictUnificator.addItemData(new ItemStack(Blocks.heavy_weighted_pressure_plate, 1, 32767), new ItemData(Materials.Iron, 7257600L));
         GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("Railcraft", "tile.railcraft.anvil", 1L, 0), new ItemData(Materials.Steel, 108864000L));
         GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("Railcraft", "tile.railcraft.anvil", 1L, 1), new ItemData(Materials.Steel, 72576000L));
         GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("Railcraft", "tile.railcraft.anvil", 1L, 2), new ItemData(Materials.Steel, 36288000L));
@@ -142,10 +142,10 @@ public class GT_Loader_ItemData implements Runnable {
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.cobblestone, 1, 32767), new ItemData(Materials.Stone, 3628800L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.mossy_cobblestone, 1, 32767), new ItemData(Materials.Stone, 3628800L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.stone_button, 1, 32767), new ItemData(Materials.Stone, 3628800L));
-        GT_OreDictUnificator.addItemData(new ItemStack(Blocks.stone_pressure_plate, 1, 32767), new ItemData(Materials.Stone, 7257600L));
+//        GT_OreDictUnificator.addItemData(new ItemStack(Blocks.stone_pressure_plate, 1, 32767), new ItemData(Materials.Stone, 7257600L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.ladder, 1, 32767), new ItemData(Materials.Wood, 3628800L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.wooden_button, 1, 32767), new ItemData(Materials.Wood, 3628800L));
-        GT_OreDictUnificator.addItemData(new ItemStack(Blocks.wooden_pressure_plate, 1, 32767), new ItemData(Materials.Wood, 7257600L));
+//        GT_OreDictUnificator.addItemData(new ItemStack(Blocks.wooden_pressure_plate, 1, 32767), new ItemData(Materials.Wood, 7257600L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.fence, 1, 32767), new ItemData(Materials.Wood, 5443200L));
         GT_OreDictUnificator.addItemData(new ItemStack(Items.bowl, 1, 32767), new ItemData(Materials.Wood, 3628800L));
         GT_OreDictUnificator.addItemData(new ItemStack(Items.sign, 1, 32767), new ItemData(Materials.Wood, 7257600L));

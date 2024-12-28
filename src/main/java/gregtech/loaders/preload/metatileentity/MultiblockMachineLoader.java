@@ -65,8 +65,8 @@ public final class MultiblockMachineLoader {
         LargeHPSteamTurbine.set(new GT_MetaTileEntity_LargeTurbine_HPSteam(1152, "multimachine.largehpturbine", "Deprecated HP Steam Turbine").getStackForm(1L));
         LargePlasmaTurbine.set(new GT_MetaTileEntity_LargeTurbine_Plasma(1153, "multimachine.largeplasmaturbine", "Deprecated Plasma Generator").getStackForm(1L));
 
-        addCraftingRecipe(LargeSteamTurbine.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "PMP", "BPB", 'M', Hull_HV, 'B', pipeLarge.get(Steel), 'C', circuitPower.get(PWR_MV), 'P', gearGt.get(Steel)});
-        addCraftingRecipe(LargeGasTurbine.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "PMP", "BPB", 'M', Hull_EV, 'B', pipeLarge.get(StainlessSteel), 'C', circuitLogic.get(LOGIC_EV), 'P', gearGt.get(StainlessSteel)});
+        addCraftingRecipe(LargeSteamTurbine.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "PMP", "BPB", 'M', Hull_HV, 'B', pipeLarge.get(Steel), 'C', circuitPower.get(PWR_MV), 'P', gearGtSmall.get(Steel)});
+        addCraftingRecipe(LargeGasTurbine.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "PMP", "BPB", 'M', Hull_EV, 'B', pipeLarge.get(StainlessSteel), 'C', circuitLogic.get(LOGIC_EV), 'P', gearGtSmall.get(StainlessSteel)});
         //GT_ModHandler.addCraftingRecipe(ItemList.LargeHPSteamTurbine.get(1L), bitsd, new Object[]{"CPC", aTextPlateMotor, "BPB", 'M', ItemList.Hull_IV, 'B', OrePrefixes.pipeLarge.get(Materials.Titanium), 'C', OrePrefixes.circuit.get(Materials.Elite), 'P', OrePrefixes.gearGt.get(Materials.Titanium)});
         //GT_ModHandler.addCraftingRecipe(ItemList.LargePlasmaTurbine.get(1L), bitsd, new Object[]{"CPC", aTextPlateMotor, "BPB", 'M', ItemList.Hull_UV, 'B', OrePrefixes.pipeHuge.get(Materials.TungstenSteel), 'C', OrePrefixes.circuit.get(Materials.Master), 'P', OrePrefixes.gearGt.get(Materials.TungstenSteel)});
 

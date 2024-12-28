@@ -22,9 +22,9 @@ public final class BasicGeneratorLoader {
         Generator_Diesel_MV.set(new GT_MetaTileEntity_DieselGenerator(1111, "basicgenerator.diesel.tier.02", "Tiny Combustion Generator MKII", 2).getStackForm(1L));
         Generator_Diesel_HV.set(new GT_MetaTileEntity_DieselGenerator(1112, "basicgenerator.diesel.tier.03", "Tiny Combustion Generator MKIII", 3).getStackForm(1L));
 
-        addCraftingRecipe(Generator_Diesel_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "EME", "GWG", 'M', Hull_LV, 'P', Electric_Piston_LV, 'E', Electric_Motor_LV, 'C', circuitPower.get(PWR_LV), 'W', cableGt01.get(Tin), 'G', gearGt.get(Steel)});
-        addCraftingRecipe(Generator_Diesel_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "EME", "GWG", 'M', Hull_MV, 'P', Electric_Piston_MV, 'E', Electric_Motor_MV, 'C', circuitPower.get(PWR_MV), 'W', cableGt01.get(AnyCopper), 'G', gearGt.get(StainlessSteel)});
-        addCraftingRecipe(Generator_Diesel_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "EME", "GWG", 'M', Hull_HV, 'P', Electric_Piston_HV, 'E', Electric_Motor_HV, 'C', circuitPower.get(PWR_HV), 'W', cableGt01.get(Gold), 'G', gearGt.get(Aluminium)});
+        addCraftingRecipe(Generator_Diesel_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "EME", "GWG", 'M', Hull_LV, 'P', Electric_Piston_LV, 'E', Electric_Motor_LV, 'C', circuitPower.get(PWR_LV), 'W', cableGt01.get(Tin), 'G', gearGtSmall.get(Steel)});
+        addCraftingRecipe(Generator_Diesel_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "EME", "GWG", 'M', Hull_MV, 'P', Electric_Piston_MV, 'E', Electric_Motor_MV, 'C', circuitPower.get(PWR_MV), 'W', cableGt01.get(AnyCopper), 'G', gearGtSmall.get(StainlessSteel)});
+        addCraftingRecipe(Generator_Diesel_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PCP", "EME", "GWG", 'M', Hull_HV, 'P', Electric_Piston_HV, 'E', Electric_Motor_HV, 'C', circuitPower.get(PWR_HV), 'W', cableGt01.get(Gold), 'G', gearGtSmall.get(Aluminium)});
 
         Generator_Gas_Turbine_LV.set(new GT_MetaTileEntity_GasTurbine(1115, "basicgenerator.gasturbine.tier.01", "Tiny Gas Turbine MKI", 1).getStackForm(1L));
         Generator_Gas_Turbine_MV.set(new GT_MetaTileEntity_GasTurbine(1116, "basicgenerator.gasturbine.tier.02", "Tiny Gas Turbine MKII", 2).getStackForm(1L));
