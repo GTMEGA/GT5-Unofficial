@@ -25,7 +25,7 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
             default:
                 GT_Values.RA.addLatheRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L), 1200, 120);
                 GT_Values.RA.addLatheRecipe(GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 2L), 2400, 30);
-                GregTech_API.registerCover(aStack, TextureFactory.of(Textures.BlockIcons.MACHINE_CASINGS[2][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_LENS, aMaterial.mRGBa, false)), new gregtech.common.covers.GT_Cover_Lens(aMaterial.mColor.mIndex));
+//                GregTech_API.registerCover(aStack, TextureFactory.of(Textures.BlockIcons.MACHINE_CASINGS[2][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_LENS, aMaterial.mRGBa, false)), new gregtech.common.covers.GT_Cover_Lens(aMaterial.mColor.mIndex));
         }
     }
 }

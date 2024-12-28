@@ -92,7 +92,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
     private void registerPlate(final Materials aMaterial, final ItemStack aStack, final boolean aNoSmashing) {
 
-        registerCover(aMaterial, aStack);
+//        registerCover(aMaterial, aStack);
 
         GT_ModHandler.removeRecipeByOutputDelayed(aStack);
         GT_ModHandler.removeRecipeDelayed(aStack);
@@ -206,7 +206,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                                      final boolean aNoSmashing,
                                      final long aMaterialMass) {
 
-        registerCover(aMaterial, aStack);
+//        registerCover(aMaterial, aStack);
 
         GT_ModHandler.removeRecipeByOutputDelayed(aStack);
 
@@ -268,7 +268,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                                      final boolean aNoSmashing,
                                      final long aMaterialMass) {
 
-        registerCover(aMaterial, aStack);
+//        registerCover(aMaterial, aStack);
 
         GT_ModHandler.removeRecipeByOutputDelayed(aStack);
 
@@ -336,7 +336,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                                         final long aMaterialMass,
                                         final boolean aNoWorking) {
 
-        registerCover(aMaterial, aStack);
+//        registerCover(aMaterial, aStack);
 
         GT_ModHandler.removeRecipeByOutputDelayed(aStack);
 
@@ -396,7 +396,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                                         final boolean aNoSmashing,
                                         final long aMaterialMass) {
 
-        registerCover(aMaterial, aStack);
+//        registerCover(aMaterial, aStack);
 
         GT_ModHandler.removeRecipeByOutputDelayed(aStack);
 
@@ -450,7 +450,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                                     final boolean aNoSmashing,
                                     final long aMaterialMass) {
 
-        registerCover(aMaterial, aStack);
+//        registerCover(aMaterial, aStack);
 
         GT_ModHandler.removeRecipeByOutputDelayed(aStack);
 
@@ -584,30 +584,30 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
     }
 
-    private void registerCover(final Materials aMaterial, final ItemStack aStack) {
-
-        // Get ItemStack of Block matching Materials
-        ItemStack tStack = NI;
-        // Try different prefixes to use same smooth stones as older GT5U
-        for (OrePrefixes orePrefix : new OrePrefixes[]{
-                OrePrefixes.block, OrePrefixes.block_, OrePrefixes.stoneSmooth, OrePrefixes.stone}) {
-            if ((tStack = GT_OreDictUnificator.get(orePrefix, aMaterial, 1)) != NI) break;
-        }
-
-        // Register the cover
-        GregTech_API.registerCover(
-                aStack,
-                // If there is an ItemStack of Block for Materials
-                tStack == NI ?
-                        // Use Materials mRGBa dyed blocs/materialicons/MATERIALSET/block1 icons
-                        TextureFactory.builder()
-                                .addIcon(aMaterial.mIconSet.mTextures[TextureSet.INDEX_block1])
-                                .setRGBA(aMaterial.mRGBa)
-                                .stdOrient().build() :
-                        // or copy Block texture
-                        TextureFactory.of(Block.getBlockFromItem(tStack.getItem()), tStack.getItemDamage()),
-                null);
-
-    }
+//    private void registerCover(final Materials aMaterial, final ItemStack aStack) {
+//
+//        // Get ItemStack of Block matching Materials
+//        ItemStack tStack = NI;
+//        // Try different prefixes to use same smooth stones as older GT5U
+//        for (OrePrefixes orePrefix : new OrePrefixes[]{
+//                OrePrefixes.block, OrePrefixes.block_, OrePrefixes.stoneSmooth, OrePrefixes.stone}) {
+//            if ((tStack = GT_OreDictUnificator.get(orePrefix, aMaterial, 1)) != NI) break;
+//        }
+//
+//        // Register the cover
+//        GregTech_API.registerCover(
+//                aStack,
+//                // If there is an ItemStack of Block for Materials
+//                tStack == NI ?
+//                        // Use Materials mRGBa dyed blocs/materialicons/MATERIALSET/block1 icons
+//                        TextureFactory.builder()
+//                                .addIcon(aMaterial.mIconSet.mTextures[TextureSet.INDEX_block1])
+//                                .setRGBA(aMaterial.mRGBa)
+//                                .stdOrient().build() :
+//                        // or copy Block texture
+//                        TextureFactory.of(Block.getBlockFromItem(tStack.getItem()), tStack.getItemDamage()),
+//                null);
+//
+//    }
 
 }

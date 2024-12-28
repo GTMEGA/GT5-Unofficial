@@ -33,15 +33,15 @@ public final class PowerStuffLoader {
         Transformer_ZPM_LuV.set(new GT_MetaTileEntity_Transformer(26, "transformer.tier.06", "LuV Transformer", 6, "ZPM -> LuV (Use Soft Mallet to invert)").getStackForm(1L));
         Transformer_UV_ZPM.set(new GT_MetaTileEntity_Transformer(27, "transformer.tier.07", "ZPM Transformer", 7, "UV -> ZPM (Use Soft Mallet to invert)").getStackForm(1L));
         Transformer_MAX_UV.set(new GT_MetaTileEntity_Transformer(28, "transformer.tier.08", "UV Transformer", 8, "UHV -> UV (Use Soft Mallet to invert)").getStackForm(1L));
-        addCraftingRecipe(Transformer_LV_ULV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{" BB", "CM ", " BB", 'M', Hull_ULV, 'C', cableGt01.get(Tin), 'B', cableGt01.get(RedAlloy)});
-        addCraftingRecipe(Transformer_MV_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{" BB", "CM ", " BB", 'M', Hull_LV, 'C', cableGt01.get(AnyCopper), 'B', cableGt01.get(Tin)});
-        addCraftingRecipe(Transformer_HV_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"KBB", "CM ", "KBB", 'M', Hull_MV, 'C', cableGt01.get(Gold), 'B', cableGt01.get(AnyCopper), 'K', circuitPower.get(PWR_LV)});
-        addCraftingRecipe(Transformer_EV_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"KBB", "CM ", "KBB", 'M', Hull_HV, 'C', cableGt01.get(Aluminium), 'B', cableGt01.get(Gold), 'K', circuitPower.get(PWR_MV)});
-        addCraftingRecipe(Transformer_IV_EV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"KBB", "CM ", "KBB", 'M', Hull_EV, 'C', cableGt01.get(Tungsten), 'B', cableGt01.get(Aluminium), 'K', circuitPower.get(PWR_HV)});
-        addCraftingRecipe(Transformer_LuV_IV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"KBB", "CM ", "KBB", 'M', Hull_IV, 'C', cableGt01.get(VanadiumGallium), 'B', cableGt01.get(Tungsten), 'K', circuitPower.get(PWR_EV)});
-        addCraftingRecipe(Transformer_ZPM_LuV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"KBB", "CM ", "KBB", 'M', Hull_LuV, 'C', cableGt01.get(Naquadah), 'B', cableGt01.get(VanadiumGallium), 'K', circuitPower.get(PWR_IV)});
-        addCraftingRecipe(Transformer_UV_ZPM.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"KBB", "CM ", "KBB", 'M', Hull_ZPM, 'C', cableGt01.get(NaquadahAlloy), 'B', cableGt01.get(Naquadah), 'K', circuitPower.get(PWR_LUV)});
-        addCraftingRecipe(Transformer_MAX_UV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"KBB", "CM ", "KBB", 'M', Hull_UV, 'C', wireGt01.get(Bedrockium), 'B', cableGt01.get(NaquadahAlloy), 'K', circuitPower.get(PWR_ZPM)});
+//        addCraftingRecipe(Transformer_LV_ULV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{" BB", "CM ", " BB", 'M', Hull_ULV, 'C', cableGt01.get(Tin), 'B', cableGt01.get(RedAlloy)});
+//        addCraftingRecipe(Transformer_MV_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{" BB", "CM ", " BB", 'M', Hull_LV, 'C', cableGt01.get(AnyCopper), 'B', cableGt01.get(Tin)});
+//        addCraftingRecipe(Transformer_HV_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"KBB", "CM ", "KBB", 'M', Hull_MV, 'C', cableGt01.get(Gold), 'B', cableGt01.get(AnyCopper), 'K', circuitPower.get(PWR_LV)});
+//        addCraftingRecipe(Transformer_EV_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"KBB", "CM ", "KBB", 'M', Hull_HV, 'C', cableGt01.get(Aluminium), 'B', cableGt01.get(Gold), 'K', circuitPower.get(PWR_MV)});
+//        addCraftingRecipe(Transformer_IV_EV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"KBB", "CM ", "KBB", 'M', Hull_EV, 'C', cableGt01.get(Tungsten), 'B', cableGt01.get(Aluminium), 'K', circuitPower.get(PWR_HV)});
+//        addCraftingRecipe(Transformer_LuV_IV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"KBB", "CM ", "KBB", 'M', Hull_IV, 'C', cableGt01.get(VanadiumGallium), 'B', cableGt01.get(Tungsten), 'K', circuitPower.get(PWR_EV)});
+//        addCraftingRecipe(Transformer_ZPM_LuV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"KBB", "CM ", "KBB", 'M', Hull_LuV, 'C', cableGt01.get(Naquadah), 'B', cableGt01.get(VanadiumGallium), 'K', circuitPower.get(PWR_IV)});
+//        addCraftingRecipe(Transformer_UV_ZPM.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"KBB", "CM ", "KBB", 'M', Hull_ZPM, 'C', cableGt01.get(NaquadahAlloy), 'B', cableGt01.get(Naquadah), 'K', circuitPower.get(PWR_LUV)});
+//        addCraftingRecipe(Transformer_MAX_UV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"KBB", "CM ", "KBB", 'M', Hull_UV, 'C', wireGt01.get(Bedrockium), 'B', cableGt01.get(NaquadahAlloy), 'K', circuitPower.get(PWR_ZPM)});
 
 //        Battery_Buffer_1by1_ULV.set(new GT_MetaTileEntity_BasicBatteryBuffer(160, "batterybuffer.01.tier.00", "ULV Battery Buffer", 0, "", 1).getStackForm(1L));
 //        Battery_Buffer_1by1_LV.set(new GT_MetaTileEntity_BasicBatteryBuffer(161, "batterybuffer.01.tier.01", "LV Battery Buffer", 1, "", 1).getStackForm(1L));

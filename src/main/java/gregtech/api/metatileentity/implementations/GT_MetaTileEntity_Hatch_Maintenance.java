@@ -224,12 +224,13 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
             mScrewdriver = true;
         if (GT_Utility.isStackInList(aStack, GregTech_API.sSoftHammerList) && GT_ModHandler.damageOrDechargeItem(aStack, 100, 1000, aPlayer))
             mSoftHammer = true;
-        if (GT_Utility.isStackInList(aStack, GregTech_API.sHardHammerList) && GT_ModHandler.damageOrDechargeItem(aStack, 100, 1000, aPlayer))
+        if (GT_Utility.isStackInList(aStack, GregTech_API.sHardHammerList) && GT_ModHandler.damageOrDechargeItem(aStack, 50, 1000, aPlayer))
             mHardHammer = true;
-        if (GT_Utility.isStackInList(aStack, GregTech_API.sCrowbarList) && GT_ModHandler.damageOrDechargeItem(aStack, 100, 1000, aPlayer))
+        if (GT_Utility.isStackInList(aStack, GregTech_API.sCrowbarList) && GT_ModHandler.damageOrDechargeItem(aStack, 50, 1000, aPlayer))
             mCrowbar = true;
         if (GT_ModHandler.useSolderingIron(aStack, aPlayer)) mSolderingTool = true;
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aStack, "craftingDuctTape")) {
+
+        if (GT_OreDictUnificator.isItemStackInstanceOf(aStack, "item.maintenance_kit")) {
             mWrench = mScrewdriver = mSoftHammer = mHardHammer = mCrowbar = mSolderingTool = true;
             getBaseMetaTileEntity().setActive(false);
             aStack.stackSize--;
