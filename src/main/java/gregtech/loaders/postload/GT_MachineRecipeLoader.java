@@ -1645,10 +1645,10 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 4L, 45), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.BasalticMineralSand, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Olivine, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Basalt, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Flint, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RareEarth, 1L), new int[]{2000, 2000, 2000, 2000, 2000, 2000}, 64, 20);
 
         //Ash centrifuge recipes
-        GT_Values.RA.addCentrifugeRecipe(Materials.Ash.getDust(36), GT_Values.NI, GT_Values.NF, GT_Values.NF,
-                Materials.Quicklime.getDust(18), Materials.Potash.getDust(9), Materials.Magnesia.getDust(9),
-                Materials.PhosphorousPentoxide.getDust(4), Materials.SodaAsh.getDust(4), Materials.BandedIron.getDust(4), new int[]
-                        {6400, 6000, 500, 5000, 2500, 10000}, 6000, 30);
+//        GT_Values.RA.addCentrifugeRecipe(Materials.Ash.getDust(36), GT_Values.NI, GT_Values.NF, GT_Values.NF,
+//                Materials.Quicklime.getDust(18), Materials.Potash.getDust(9), Materials.Magnesia.getDust(9),
+//                Materials.PhosphorousPentoxide.getDust(4), Materials.SodaAsh.getDust(4), Materials.BandedIron.getDust(4), new int[]
+//                        {6400, 6000, 500, 5000, 2500, 10000}, 6000, 30);
         //Stone Dust and Metal Mixture centrifuge recipes
         GT_Values.RA.addCentrifugeRecipe(Materials.Stone.getDust(36), GT_Values.NI, GT_Values.NF, GT_Values.NF,
                 Materials.Quartzite.getDust(9), Materials.PotassiumFeldspar.getDust(9), Materials.Marble.getDust(8),
