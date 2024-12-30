@@ -461,8 +461,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
                             if (mMetaTileEntity.isEnetOutput() || mMetaTileEntity.isEnetInput()) {
                                 for (byte i = 0; i < 6; i++) {
-                                    boolean
-                                            temp = isEnergyInputSide(i);
+                                    boolean temp = isEnergyInputSide(i);
                                     if (temp != mActiveEUInputs[i]) {
                                         mActiveEUInputs[i] = temp;
                                     }

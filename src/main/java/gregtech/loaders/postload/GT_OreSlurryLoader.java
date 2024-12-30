@@ -2,6 +2,7 @@ package gregtech.loaders.postload;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -9,6 +10,7 @@ import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gregtech.common.fluids.GT_OreSlurry;
 import lombok.val;
 import lombok.var;
+import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import net.minecraft.item.ItemStack;
@@ -20,11 +22,20 @@ public class GT_OreSlurryLoader implements Runnable {
     public void run() {
         for (val oreMix : GT_Worldgen_GT_Ore_Layer.sList) {
             val slurry = new GT_OreSlurry(oreMix);
-
             this.registerSlurryRecipes(slurry);
-
             GT_OreSlurry.slurries.put(oreMix, slurry);
         }
+    }
+
+    private void addSet(ArrayList<Pair<Materials,Integer>> set,Materials mat,int chance) {
+        if (mat == null) return;
+        for (val material : set) {
+            if (material.getLeft().equals(mat)) {
+                material.setValue(material.getValue()+chance);
+                return;
+            }
+        }
+        set.add(new MutablePair<>(mat, chance));
     }
 
     private void registerSlurryRecipes(GT_OreSlurry slurry) {
@@ -33,31 +44,29 @@ public class GT_OreSlurryLoader implements Runnable {
         val between = slurry.oreLayer.mBetween;
         val sporadic = slurry.oreLayer.mSporadic;
 
-        for (int i = 1; i < 16; i++) {
-            val usePrimary   = primary   != null && (i & 0b00000001) > 0;
-            val useSecondary = secondary != null && (i & 0b00000010) > 0;
-            val useBetween   = between   != null && (i & 0b00000100) > 0;
-            val useSporadic  = sporadic  != null && (i & 0b00001000) > 0;
+        ArrayList<Pair<Materials,Integer>> permutations = new ArrayList<>();
+        addSet(permutations, primary,4000);
+        addSet(permutations, secondary,3000);
+        addSet(permutations, between,2000);
+        addSet(permutations, sporadic,1000);
+
+        for (int i = 1; i < Math.pow(2,permutations.size()); i++) {
 
             val itemOutputsAndChances = new ArrayList<Pair<ItemStack, Integer>>();
-
-            if (usePrimary) {
-                val pair = Pair.of(GT_OreDictUnificator.get(OrePrefixes.oreChunk, primary,1), 4000);
+            if (i%2 == 1) {
+                val pair = Pair.of(GT_OreDictUnificator.get(OrePrefixes.oreChunk, permutations.get(0).getKey(),1), permutations.get(0).getValue());
                 itemOutputsAndChances.add(pair);
             }
-
-            if (useSecondary) {
-                val pair = Pair.of(GT_OreDictUnificator.get(OrePrefixes.oreChunk, secondary, 1), 3000);
+            if (i%4 > 1) {
+                val pair = Pair.of(GT_OreDictUnificator.get(OrePrefixes.oreChunk, permutations.get(1).getKey(),1), permutations.get(1).getValue());
                 itemOutputsAndChances.add(pair);
             }
-
-            if (useBetween) {
-                val pair = Pair.of(GT_OreDictUnificator.get(OrePrefixes.oreChunk, between, 1), 2000);
+            if (i%8 > 3) {
+                val pair = Pair.of(GT_OreDictUnificator.get(OrePrefixes.oreChunk, permutations.get(2).getKey(),1), permutations.get(2).getValue());
                 itemOutputsAndChances.add(pair);
             }
-
-            if (useSporadic) {
-                val pair = Pair.of(GT_OreDictUnificator.get(OrePrefixes.oreChunk, sporadic, 1), 1000);
+            if (i%16 > 7 ) {
+                val pair = Pair.of(GT_OreDictUnificator.get(OrePrefixes.oreChunk, permutations.get(3).getKey(),1), permutations.get(3).getValue());
                 itemOutputsAndChances.add(pair);
             }
 
