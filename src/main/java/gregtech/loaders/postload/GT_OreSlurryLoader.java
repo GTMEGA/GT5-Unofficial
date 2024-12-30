@@ -50,22 +50,22 @@ public class GT_OreSlurryLoader implements Runnable {
         addSet(permutations, between,2000);
         addSet(permutations, sporadic,1000);
 
-        for (int i = 1; i < Math.pow(2,permutations.size()); i++) {
+        for (int i = 0; i < (Math.pow(2,permutations.size()) - 1); i++) {
 
             val itemOutputsAndChances = new ArrayList<Pair<ItemStack, Integer>>();
-            if (i%2 == 1) {
+            if (i%2 == 0 && !permutations.isEmpty()) {
                 val pair = Pair.of(GT_OreDictUnificator.get(OrePrefixes.oreChunk, permutations.get(0).getKey(),1), permutations.get(0).getValue());
                 itemOutputsAndChances.add(pair);
             }
-            if (i%4 > 1) {
+            if (i%4 < 2 && permutations.size() > 1) {
                 val pair = Pair.of(GT_OreDictUnificator.get(OrePrefixes.oreChunk, permutations.get(1).getKey(),1), permutations.get(1).getValue());
                 itemOutputsAndChances.add(pair);
             }
-            if (i%8 > 3) {
+            if (i%8 < 4 && permutations.size() > 2) {
                 val pair = Pair.of(GT_OreDictUnificator.get(OrePrefixes.oreChunk, permutations.get(2).getKey(),1), permutations.get(2).getValue());
                 itemOutputsAndChances.add(pair);
             }
-            if (i%16 > 7 ) {
+            if (i%16 < 8 && permutations.size() > 3) {
                 val pair = Pair.of(GT_OreDictUnificator.get(OrePrefixes.oreChunk, permutations.get(3).getKey(),1), permutations.get(3).getValue());
                 itemOutputsAndChances.add(pair);
             }
