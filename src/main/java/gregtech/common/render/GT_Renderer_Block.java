@@ -45,7 +45,6 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
     private static final float coverThickness = blockMax / 8.0F;
     private static final float coverInnerMin = blockMin + coverThickness;
     private static final float coverInnerMax = blockMax - coverThickness;
-    public static final float Z_FIGHTING_OFFSET = 0.0002f;
     public static GT_Renderer_Block INSTANCE;
     public final int mRenderID;
 
@@ -654,12 +653,10 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             GT_Compat.tessellator().setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY - 1 : aY, aZ));
         }
         if (aIcon == null) return;
-        float offset = 0;
         for (ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderYNeg(aRenderer, aBlock, aX, aY, aZ,offset);
+                iTexture.renderYNeg(aRenderer, aBlock, aX, aY, aZ, 0);
             }
-            offset += Z_FIGHTING_OFFSET;
         }
     }
 
@@ -669,12 +666,11 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             GT_Compat.tessellator().setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY + 1 : aY, aZ));
         }
         if (aIcon == null) return;
-        float offset = 0;
+
         for (ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderYPos(aRenderer, aBlock, aX, aY, aZ,offset);
+                iTexture.renderYPos(aRenderer, aBlock, aX, aY, aZ, 0);
             }
-            offset += Z_FIGHTING_OFFSET;
         }
     }
 
@@ -684,12 +680,10 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             GT_Compat.tessellator().setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ - 1 : aZ));
         }
         if (aIcon == null) return;
-        float offset = 0;
         for (ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderZNeg(aRenderer, aBlock, aX, aY, aZ,offset);
+                iTexture.renderZNeg(aRenderer, aBlock, aX, aY, aZ, 0);
             }
-            offset += Z_FIGHTING_OFFSET;
         }
     }
 
@@ -699,12 +693,10 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             GT_Compat.tessellator().setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ + 1 : aZ));
         }
         if (aIcon == null) return;
-        float offset = 0;
         for (ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderZPos(aRenderer, aBlock, aX, aY, aZ,offset);
+                iTexture.renderZPos(aRenderer, aBlock, aX, aY, aZ, 0);
             }
-            offset += Z_FIGHTING_OFFSET;
         }
     }
 
@@ -714,12 +706,10 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             GT_Compat.tessellator().setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX - 1 : aX, aY, aZ));
         }
         if (aIcon == null) return;
-        float offset = 0;
         for (ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderXNeg(aRenderer, aBlock, aX, aY, aZ,offset);
+                iTexture.renderXNeg(aRenderer, aBlock, aX, aY, aZ, 0);
             }
-            offset += Z_FIGHTING_OFFSET;
         }
     }
 
@@ -729,12 +719,10 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             GT_Compat.tessellator().setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX + 1 : aX, aY, aZ));
         }
         if (aIcon == null) return;
-        float offset = 0;
         for (ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderXPos(aRenderer, aBlock, aX, aY, aZ,offset);
+                iTexture.renderXPos(aRenderer, aBlock, aX, aY, aZ, 0);
             }
-            offset += Z_FIGHTING_OFFSET;
         }
     }
 
