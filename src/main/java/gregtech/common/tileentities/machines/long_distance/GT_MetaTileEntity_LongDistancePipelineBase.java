@@ -45,7 +45,7 @@ import java.util.*;
 import static net.minecraft.util.EnumChatFormatting.*;
 
 public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_MetaTileEntity_BasicHull_NonElectric {
-    public static int minimalDistancePoints = 64;
+    public static int minimalDistancePoints = 48;
     protected GT_MetaTileEntity_LongDistancePipelineBase mTarget = null, mSender = null;
     protected ChunkCoordinates mTargetPos = null;
 
