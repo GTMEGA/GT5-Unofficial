@@ -19,9 +19,9 @@ import java.util.concurrent.atomic.AtomicReference;
 public
 enum GT_DaisyCutterTier implements IGT_ExplosiveTier<GT_DaisyCutterTier> {
 
-    MK1("Daisy Cutter Mk 1", ExplosiveTextureInfo.getOld(), ExplosiveFlavorInfo.builder().build(), DaisyCutterParameters.get(20.0).build()),
-    MK2("Daisy Cutter Mk 2", ExplosiveTextureInfo.getOld(), ExplosiveFlavorInfo.builder().build(), DaisyCutterParameters.get(48.0).build()),
-    MK3("Daisy Cutter Mk 3", ExplosiveTextureInfo.getNew("mk3"), ExplosiveFlavorInfo.builder().build(), DaisyCutterParameters.get(96.0).magic(true).build()),
+    MK1("§7Daisy Cutter MKI§r", ExplosiveTextureInfo.getOld(), ExplosiveFlavorInfo.builder().build(), DaisyCutterParameters.get(20.0).build()),
+    MK2("§eDaisy Cutter MKII§r", ExplosiveTextureInfo.getOld(), ExplosiveFlavorInfo.builder().build(), DaisyCutterParameters.get(48.0).build()),
+    MK3("§cDaisy Cutter MKIII§r", ExplosiveTextureInfo.getNew("mk3"), ExplosiveFlavorInfo.builder().build(), DaisyCutterParameters.get(96.0).magic(true).build()),
     ;
 
     @Getter

@@ -23,9 +23,9 @@ import java.util.concurrent.atomic.AtomicReference;
 @Getter
 public
 enum GT_MiningExplosiveTier implements IGT_ExplosiveTier<GT_MiningExplosiveTier> {
-    MK1("Mining Explosive Mk 1", ExplosiveTextureInfo.getOld(), ExplosiveFlavorInfo.builder().build(), MiningExplosiveParameters.getDefaults(4.0f, 3).build()),
-    MK2("Mining Explosive Mk 2", ExplosiveTextureInfo.getOld(), ExplosiveFlavorInfo.builder().build(), MiningExplosiveParameters.getDefaults(5.0f, 4).build()),
-    MK3("Mining Explosive Mk 3", ExplosiveTextureInfo.getNew("mk3"), ExplosiveFlavorInfo.builder().build(), MiningExplosiveParameters.getDefaults(5.5f, 5).magic(true).build()),
+    MK1("§7Mining Explosive MKI§r", ExplosiveTextureInfo.getOld(), ExplosiveFlavorInfo.builder().build(), MiningExplosiveParameters.getDefaults(4.0f, 3).build()),
+    MK2("§eMining Explosive MKII§r", ExplosiveTextureInfo.getOld(), ExplosiveFlavorInfo.builder().build(), MiningExplosiveParameters.getDefaults(5.0f, 4).build()),
+    MK3("§cMining Explosive MKIII§r", ExplosiveTextureInfo.getNew("mk3"), ExplosiveFlavorInfo.builder().build(), MiningExplosiveParameters.getDefaults(5.5f, 5).magic(true).build()),
     ;
 
 
