@@ -41,7 +41,7 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
 
     @Override
     public boolean shouldUseRenderHelper(IItemRenderer.ItemRenderType aType, ItemStack aStack, IItemRenderer.ItemRendererHelper aHelper) {
-        if (GT_Utility.isStackInvalid(aStack)) {
+        if (GT_Utility.isStackInvalid(aStack) || aHelper == IItemRenderer.ItemRendererHelper.BLOCK_3D) {
             return false;
         }
         return aType == IItemRenderer.ItemRenderType.ENTITY;
@@ -62,9 +62,10 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
         GL11.glEnable(GL11.GL_BLEND);
         if (type == IItemRenderer.ItemRenderType.ENTITY) {
             if (RenderItem.renderInFrame) {
-                GL11.glScalef(0.85F, 0.85F, 0.85F);
-                GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-                GL11.glTranslated(-0.5D, -0.42D, 0.0D);
+                GL11.glScalef(2F, 2F, 2F);
+                GL11.glRotatef(-180F, 0F, 1F, 0F);
+                GL11.glScalef(0.5128205F, 0.5128205F, 0.5128205F);
+                GL11.glTranslatef(-0.50F, -0.30F, 0.045F);
             } else {
                 GL11.glTranslated(-0.5D, -0.42D, 0.0D);
             }

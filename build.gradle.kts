@@ -113,4 +113,7 @@ dependencies {
     devOnlyNonPublishable("com.azanor.baubles:Baubles:1.7.10-1.0.1.10:deobf") {
         excludeDeps()
     }
+
+    //Plonk 10.0.4
+//    runtimeOnly(deobfCurse("plonk-345779:4480767"))
 }
