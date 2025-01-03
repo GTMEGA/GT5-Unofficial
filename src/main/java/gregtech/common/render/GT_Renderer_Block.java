@@ -583,7 +583,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         if (aIcon == null) return;
         for (ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderYNeg(aRenderer, aBlock, aX, aY, aZ, 0);
+                iTexture.renderYNeg(aRenderer, aBlock, aX, aY, aZ);
             }
         }
     }
@@ -597,7 +597,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
 
         for (ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderYPos(aRenderer, aBlock, aX, aY, aZ, 0);
+                iTexture.renderYPos(aRenderer, aBlock, aX, aY, aZ);
             }
         }
     }
@@ -610,7 +610,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         if (aIcon == null) return;
         for (ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderZNeg(aRenderer, aBlock, aX, aY, aZ, 0);
+                iTexture.renderZNeg(aRenderer, aBlock, aX, aY, aZ);
             }
         }
     }
@@ -623,7 +623,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         if (aIcon == null) return;
         for (ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderZPos(aRenderer, aBlock, aX, aY, aZ, 0);
+                iTexture.renderZPos(aRenderer, aBlock, aX, aY, aZ);
             }
         }
     }
@@ -636,7 +636,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         if (aIcon == null) return;
         for (ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderXNeg(aRenderer, aBlock, aX, aY, aZ, 0);
+                iTexture.renderXNeg(aRenderer, aBlock, aX, aY, aZ);
             }
         }
     }
@@ -649,7 +649,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         if (aIcon == null) return;
         for (ITexture iTexture : aIcon) {
             if (iTexture != null) {
-                iTexture.renderXPos(aRenderer, aBlock, aX, aY, aZ, 0);
+                iTexture.renderXPos(aRenderer, aBlock, aX, aY, aZ);
             }
         }
     }
