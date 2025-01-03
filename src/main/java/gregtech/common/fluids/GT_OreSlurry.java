@@ -4,7 +4,6 @@ import gregtech.api.objects.GT_Fluid;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import lombok.val;
-import lombok.var;
 import org.lwjgl.input.Keyboard;
 
 import net.minecraft.entity.player.EntityPlayer;

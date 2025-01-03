@@ -12,7 +12,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_Container_ItemDistributor;
 import gregtech.common.gui.GT_GUIContainer_ItemDistributor;
 import lombok.val;
-import lombok.var;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;

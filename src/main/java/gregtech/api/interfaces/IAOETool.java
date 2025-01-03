@@ -1,7 +1,6 @@
 package gregtech.api.interfaces;
 
 import lombok.val;
-import lombok.var;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;

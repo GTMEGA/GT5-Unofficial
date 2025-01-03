@@ -15,7 +15,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_Renderer_Block;
 import lombok.Getter;
 import lombok.val;
-import lombok.var;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;

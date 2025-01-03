@@ -13,7 +13,6 @@ import gregtech.api.gui.widgets.slider.GT_GuiSlider_Horizontal;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 import lombok.val;
-import lombok.var;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import org.lwjgl.input.Mouse;

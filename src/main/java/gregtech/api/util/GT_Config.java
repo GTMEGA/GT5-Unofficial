@@ -2,7 +2,6 @@ package gregtech.api.util;
 
 import gregtech.api.GregTech_API;
 import lombok.val;
-import lombok.var;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 

@@ -10,7 +10,6 @@ import gregtech.common.items.GT_MEGAnet;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.val;
-import lombok.var;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;

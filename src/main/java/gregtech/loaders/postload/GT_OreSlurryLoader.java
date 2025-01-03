@@ -9,7 +9,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gregtech.common.fluids.GT_OreSlurry;
 import lombok.val;
-import lombok.var;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 

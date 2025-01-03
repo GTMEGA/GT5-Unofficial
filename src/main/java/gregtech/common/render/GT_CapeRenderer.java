@@ -4,7 +4,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import lombok.val;
-import lombok.var;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderManager;

@@ -14,7 +14,6 @@ import gregtech.common.misc.explosions.detonator_util.RemoteDetonatorArmedUpdate
 import gregtech.common.misc.explosions.detonator_util.RemoteDetonatorDelayUpdate;
 import lombok.NonNull;
 import lombok.val;
-import lombok.var;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

@@ -9,7 +9,6 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.tools.GT_Tool_Drill_LV;
 import lombok.val;
-import lombok.var;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;

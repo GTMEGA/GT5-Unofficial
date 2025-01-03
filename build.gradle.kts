@@ -5,6 +5,10 @@ plugins {
 group = "gtmega"
 
 minecraft_fp {
+    java {
+        compatibility = jabel
+    }
+
     mod {
         modid = "gregtech"
         name = "GregTech"

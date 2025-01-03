@@ -1,7 +1,6 @@
 package gregtech.loaders.preload.metatileentity;
 
 import gregtech.api.enums.Materials;
-import lombok.var;
 import net.minecraft.item.ItemStack;
 
 import static gregtech.api.enums.Dyes.dyeBlack;
