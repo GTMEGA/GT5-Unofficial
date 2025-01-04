@@ -158,6 +158,10 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                             texturedTile.getTexture(block, EAST)});
             }
         } finally {
+            // Reset bounds
+            block.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
+            render.setRenderBoundsFromBlock(block);
+
             // Reset tint/ao
             render.useInventoryTint = prevUseInventoryTint;
             render.enableAO = prevEnableAO;
