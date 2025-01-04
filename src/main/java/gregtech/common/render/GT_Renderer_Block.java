@@ -673,82 +673,147 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         renderPositiveXFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock);
     }
 
-    public static void renderNegativeYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock) {
-        if (aWorld != null) {
-            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY - 1, aZ, 0))) return;
-            GT_Compat.tessellator().setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY - 1 : aY, aZ));
+    public static boolean renderNegativeYFacing(IBlockAccess world,
+                                             RenderBlocks render,
+                                             Block block,
+                                             int posX,
+                                             int posY,
+                                             int posZ,
+                                             ITexture[] textures,
+                                             boolean isFullBlock) {
+        if (textures == null)
+            return false;
+        if (world != null) {
+            if ((isFullBlock) && (!block.shouldSideBeRendered(world, posX, posY - 1, posZ, 0)))
+                return false;
+            val brightness = block.getMixedBrightnessForBlock(world, posX, isFullBlock ? posY - 1 : posY, posZ);
+            GT_Compat.tessellator().setBrightness(brightness);
         }
-        if (aIcon == null) return;
-        for (ITexture iTexture : aIcon) {
-            if (iTexture != null) {
-                iTexture.renderYNeg(aRenderer, aBlock, aX, aY, aZ);
-            }
-        }
+
+        var didWork = false;
+        for (val texture : textures)
+            if (texture != null)
+                didWork |= texture.renderYNeg(render, block, posX, posY, posZ);
+        return didWork;
     }
 
-    public static void renderPositiveYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock) {
-        if (aWorld != null) {
-            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY + 1, aZ, 1))) return;
-            GT_Compat.tessellator().setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY + 1 : aY, aZ));
+    public static boolean renderPositiveYFacing(IBlockAccess world,
+                                             RenderBlocks render,
+                                             Block block,
+                                             int posX,
+                                             int posY,
+                                             int posZ,
+                                             ITexture[] textures,
+                                             boolean isFullBlock) {
+        if (textures == null)
+            return false;
+        if (world != null) {
+            if ((isFullBlock) && (!block.shouldSideBeRendered(world, posX, posY + 1, posZ, 1)))
+                return false;
+            val brightness = block.getMixedBrightnessForBlock(world, posX, isFullBlock ? posY + 1 : posY, posZ);
+            GT_Compat.tessellator().setBrightness(brightness);
         }
-        if (aIcon == null) return;
 
-        for (ITexture iTexture : aIcon) {
-            if (iTexture != null) {
-                iTexture.renderYPos(aRenderer, aBlock, aX, aY, aZ);
-            }
-        }
+        var didWork = false;
+        for (val texture : textures)
+            if (texture != null)
+                didWork |= texture.renderYPos(render, block, posX, posY, posZ);
+        return didWork;
     }
 
-    public static void renderNegativeZFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock) {
-        if (aWorld != null) {
-            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ - 1, 2))) return;
-            GT_Compat.tessellator().setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ - 1 : aZ));
+    public static boolean renderNegativeZFacing(IBlockAccess world,
+                                             RenderBlocks render,
+                                             Block block,
+                                             int posX,
+                                             int posY,
+                                             int posZ,
+                                             ITexture[] textures,
+                                             boolean isFullBlock) {
+        if (textures == null)
+            return false;
+        if (world != null) {
+            if ((isFullBlock) && (!block.shouldSideBeRendered(world, posX, posY, posZ - 1, 2)))
+                return false;
+            val brightness = block.getMixedBrightnessForBlock(world, posX, posY, isFullBlock ? posZ - 1 : posZ);
+            GT_Compat.tessellator().setBrightness(brightness);
         }
-        if (aIcon == null) return;
-        for (ITexture iTexture : aIcon) {
-            if (iTexture != null) {
-                iTexture.renderZNeg(aRenderer, aBlock, aX, aY, aZ);
-            }
-        }
+
+        var didWork = false;
+        for (val texture : textures)
+            if (texture != null)
+                didWork |= texture.renderZNeg(render, block, posX, posY, posZ);
+        return didWork;
     }
 
-    public static void renderPositiveZFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock) {
-        if (aWorld != null) {
-            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ + 1, 3))) return;
-            GT_Compat.tessellator().setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ + 1 : aZ));
+    public static boolean renderPositiveZFacing(IBlockAccess world,
+                                             RenderBlocks render,
+                                             Block block,
+                                             int posX,
+                                             int posY,
+                                             int posZ,
+                                             ITexture[] textures,
+                                             boolean isFullBlock) {
+        if (textures == null)
+            return false;
+        if (world != null) {
+            if ((isFullBlock) && (!block.shouldSideBeRendered(world, posX, posY, posZ + 1, 3)))
+                return false;
+            val brightness = block.getMixedBrightnessForBlock(world, posX, posY, isFullBlock ? posZ + 1 : posZ);
+            GT_Compat.tessellator().setBrightness(brightness);
         }
-        if (aIcon == null) return;
-        for (ITexture iTexture : aIcon) {
-            if (iTexture != null) {
-                iTexture.renderZPos(aRenderer, aBlock, aX, aY, aZ);
-            }
-        }
+
+        var didWork = false;
+        for (val texture : textures)
+            if (texture != null)
+                didWork |= texture.renderZPos(render, block, posX, posY, posZ);
+        return didWork;
     }
 
-    public static void renderNegativeXFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock) {
-        if (aWorld != null) {
-            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX - 1, aY, aZ, 4))) return;
-            GT_Compat.tessellator().setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX - 1 : aX, aY, aZ));
+    public static boolean renderNegativeXFacing(IBlockAccess world,
+                                             RenderBlocks render,
+                                             Block block,
+                                             int posX,
+                                             int posY,
+                                             int posZ,
+                                             ITexture[] textures,
+                                             boolean isFullBlock) {
+        if (textures == null)
+            return false;
+        if (world != null) {
+            if ((isFullBlock) && (!block.shouldSideBeRendered(world, posX - 1, posY, posZ, 4)))
+                return false;
+            val brightness = block.getMixedBrightnessForBlock(world, isFullBlock ? posX - 1 : posX, posY, posZ);
+            GT_Compat.tessellator().setBrightness(brightness);
         }
-        if (aIcon == null) return;
-        for (ITexture iTexture : aIcon) {
-            if (iTexture != null) {
-                iTexture.renderXNeg(aRenderer, aBlock, aX, aY, aZ);
-            }
-        }
+
+        var didWork = false;
+        for (val texture : textures)
+            if (texture != null)
+                didWork |= texture.renderXNeg(render, block, posX, posY, posZ);
+        return didWork;
     }
 
-    public static void renderPositiveXFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock) {
-        if (aWorld != null) {
-            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX + 1, aY, aZ, 5))) return;
-            GT_Compat.tessellator().setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX + 1 : aX, aY, aZ));
+    public static boolean renderPositiveXFacing(IBlockAccess world,
+                                             RenderBlocks render,
+                                             Block block,
+                                             int posX,
+                                             int posY,
+                                             int posZ,
+                                             ITexture[] textures,
+                                             boolean isFullBlock) {
+        if (textures == null)
+            return false;
+        if (world != null) {
+            if ((isFullBlock) && (!block.shouldSideBeRendered(world, posX + 1, posY, posZ, 5)))
+                return false;
+            val brightness = block.getMixedBrightnessForBlock(world, isFullBlock ? posX + 1 : posX, posY, posZ);
+            GT_Compat.tessellator().setBrightness(brightness);
         }
-        if (aIcon == null) return;
-        for (ITexture iTexture : aIcon) {
-            if (iTexture != null) {
-                iTexture.renderXPos(aRenderer, aBlock, aX, aY, aZ);
-            }
-        }
+
+        var didWork = false;
+        for (val texture : textures)
+            if (texture != null)
+                didWork |= texture.renderXPos(render, block, posX, posY, posZ);
+        return didWork;
     }
 }
