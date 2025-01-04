@@ -40,18 +40,118 @@ import static net.minecraftforge.common.util.ForgeDirection.VALID_DIRECTIONS;
 import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
+    public static GT_Renderer_Block INSTANCE;
+    public final int mRenderID;
+
     public static final float blockMin = 0.0F;
     public static final float blockMax = 1.0F;
     private static final float coverThickness = blockMax / 8.0F;
     private static final float coverInnerMin = blockMin + coverThickness;
     private static final float coverInnerMax = blockMax - coverThickness;
-    public static GT_Renderer_Block INSTANCE;
-    public final int mRenderID;
 
     public GT_Renderer_Block() {
         this.mRenderID = RenderingRegistry.getNextAvailableRenderId();
         INSTANCE = this;
         RenderingRegistry.registerBlockHandler(this);
+    }
+
+    @Override
+    public void renderInventoryBlock(Block block, int blockMeta, int modelID, RenderBlocks renderBlocks) {
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        GL11.glPushMatrix();
+
+        val prevEnableAO = renderBlocks.enableAO;
+        val prevUseInventoryTint = renderBlocks.useInventoryTint;
+        renderBlocks.enableAO = false;
+        renderBlocks.useInventoryTint = true;
+
+        try {
+            GL11.glRotatef(180F, 0F, 1F, 0F);
+            GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+
+            render:
+            {
+                // Special case for ores
+                if (block instanceof GT_Block_Ore_Abstract ore) {
+                    block.setBlockBoundsForItemRender();
+                    renderBlocks.setRenderBoundsFromBlock(block);
+                    val textures = ore.getTextures();
+                    renderAllFaces(null, renderBlocks, block, 0, 0, 0, textures, true);
+                    break render;
+                }
+                // Special case for potentiometer
+                if (block instanceof GT_Block_Potentiometer potentiometer) {
+                    block.setBlockBoundsForItemRender();
+                    renderBlocks.setRenderBoundsFromBlock(block);
+                    val textures = potentiometer.getInventoryTexture(blockMeta);
+                    renderAllFaces(null, renderBlocks, block, 0, 0, 0, textures, true);
+                    break render;
+                }
+                // Everything else
+                if (blockMeta > 0
+                    && (blockMeta < GregTech_API.METATILEENTITIES.length)
+                    && block instanceof GT_Block_Machines
+                    && (GregTech_API.METATILEENTITIES[blockMeta] != null)
+                    && (!GregTech_API.METATILEENTITIES[blockMeta].renderInInventory(block, blockMeta, renderBlocks))) {
+                    renderNormalInventoryMetaTileEntity(block, blockMeta, renderBlocks);
+                }
+            }
+        } finally {
+            // Reset bounds
+            block.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
+            renderBlocks.setRenderBoundsFromBlock(block);
+
+            // Reset tint/ao
+            renderBlocks.useInventoryTint = prevUseInventoryTint;
+            renderBlocks.enableAO = prevEnableAO;
+
+            GL11.glMatrixMode(GL11.GL_MODELVIEW);
+            GL11.glPopMatrix();
+            GL11.glPopAttrib();
+        }
+    }
+
+    @Override
+    public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID, RenderBlocks aRenderer) {
+        aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion;
+        aRenderer.useInventoryTint = false;
+        if (aBlock instanceof GT_Block_Ore_Abstract) {
+            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, ((GT_Block_Ore_Abstract) aBlock).getTextures());
+        }
+        if (aBlock instanceof GT_Block_Potentiometer) {
+            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, ((GT_Block_Potentiometer) aBlock).getPotentiometerTextures(aWorld, aX, aY, aZ));
+        }
+        TileEntity tileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (tileEntity == null) return false;
+        if (tileEntity instanceof IGregTechTileEntity) {
+            IMetaTileEntity metaTileEntity;
+            if ((metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity()) != null &&
+                metaTileEntity.renderInWorld(aWorld, aX, aY, aZ, aBlock, aRenderer)) {
+                aRenderer.enableAO = false;
+                return true;
+            }
+        }
+        if (tileEntity instanceof IPipeRenderedTileEntity &&
+            renderPipeBlock(aWorld, aX, aY, aZ, aBlock, (IPipeRenderedTileEntity) tileEntity, aRenderer)) {
+            aRenderer.enableAO = false;
+            return true;
+        }
+        if (renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer)) {
+            aRenderer.enableAO = false;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean shouldRender3DInInventory(int aModel) {
+        return true;
+    }
+
+    @Override
+    public int getRenderId() {
+        return this.mRenderID;
     }
 
     public static boolean renderStandardBlock(IBlockAccess world, int posX, int posY, int posZ, Block block, RenderBlocks renderBlocks) {
@@ -470,63 +570,6 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         return true;
     }
 
-    @Override
-    public void renderInventoryBlock(Block block, int blockMeta, int modelID, RenderBlocks renderBlocks) {
-        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glPushMatrix();
-
-        val prevEnableAO = renderBlocks.enableAO;
-        val prevUseInventoryTint = renderBlocks.useInventoryTint;
-        renderBlocks.enableAO = false;
-        renderBlocks.useInventoryTint = true;
-
-        try {
-            GL11.glRotatef(180F, 0F, 1F, 0F);
-            GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-
-            render:
-            {
-                // Special case for ores
-                if (block instanceof GT_Block_Ore_Abstract ore) {
-                    block.setBlockBoundsForItemRender();
-                    renderBlocks.setRenderBoundsFromBlock(block);
-                    val textures = ore.getTextures();
-                    renderAllFaces(null, renderBlocks, block, 0, 0, 0, textures, true);
-                    break render;
-                }
-                // Special case for potentiometer
-                if (block instanceof GT_Block_Potentiometer potentiometer) {
-                    block.setBlockBoundsForItemRender();
-                    renderBlocks.setRenderBoundsFromBlock(block);
-                    val textures = potentiometer.getInventoryTexture(blockMeta);
-                    renderAllFaces(null, renderBlocks, block, 0, 0, 0, textures, true);
-                    break render;
-                }
-                // Everything else
-                if (blockMeta > 0
-                    && (blockMeta < GregTech_API.METATILEENTITIES.length)
-                    && block instanceof GT_Block_Machines
-                    && (GregTech_API.METATILEENTITIES[blockMeta] != null)
-                    && (!GregTech_API.METATILEENTITIES[blockMeta].renderInInventory(block, blockMeta, renderBlocks))) {
-                    renderNormalInventoryMetaTileEntity(block, blockMeta, renderBlocks);
-                }
-            }
-        } finally {
-            // Reset bounds
-            block.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
-            renderBlocks.setRenderBoundsFromBlock(block);
-
-            // Reset tint/ao
-            renderBlocks.useInventoryTint = prevUseInventoryTint;
-            renderBlocks.enableAO = prevEnableAO;
-
-            GL11.glMatrixMode(GL11.GL_MODELVIEW);
-            GL11.glPopMatrix();
-            GL11.glPopAttrib();
-        }
-    }
-
     private static void renderNormalInventoryMetaTileEntity(Block aBlock, int aMeta, RenderBlocks aRenderer) {
         if ((aMeta <= 0) || (aMeta >= GregTech_API.METATILEENTITIES.length)) {
             return;
@@ -686,47 +729,5 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 iTexture.renderXPos(aRenderer, aBlock, aX, aY, aZ);
             }
         }
-    }
-
-    @Override
-    public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID, RenderBlocks aRenderer) {
-        aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion;
-        aRenderer.useInventoryTint = false;
-        if (aBlock instanceof GT_Block_Ore_Abstract) {
-            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, ((GT_Block_Ore_Abstract) aBlock).getTextures());
-        }
-        if (aBlock instanceof GT_Block_Potentiometer) {
-            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, ((GT_Block_Potentiometer) aBlock).getPotentiometerTextures(aWorld, aX, aY, aZ));
-        }
-        TileEntity tileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tileEntity == null) return false;
-        if (tileEntity instanceof IGregTechTileEntity) {
-            IMetaTileEntity metaTileEntity;
-            if ((metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity()) != null &&
-                metaTileEntity.renderInWorld(aWorld, aX, aY, aZ, aBlock, aRenderer)) {
-                aRenderer.enableAO = false;
-                return true;
-            }
-        }
-        if (tileEntity instanceof IPipeRenderedTileEntity &&
-            renderPipeBlock(aWorld, aX, aY, aZ, aBlock, (IPipeRenderedTileEntity) tileEntity, aRenderer)) {
-            aRenderer.enableAO = false;
-            return true;
-        }
-        if (renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer)) {
-            aRenderer.enableAO = false;
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean shouldRender3DInInventory(int aModel) {
-        return true;
-    }
-
-    @Override
-    public int getRenderId() {
-        return this.mRenderID;
     }
 }
