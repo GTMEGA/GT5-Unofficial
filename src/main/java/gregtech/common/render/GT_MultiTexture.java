@@ -1,6 +1,7 @@
 package gregtech.common.render;
 
 import gregtech.api.interfaces.ITexture;
+import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
@@ -16,39 +17,57 @@ class GT_MultiTexture implements ITexture {
     }
 
     @Override
-    public void renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        for (ITexture tTexture : mTextures)
-            if (tTexture != null && tTexture.isValidTexture()) tTexture.renderXPos(aRenderer, aBlock, aX, aY, aZ);
+    public boolean renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+        var didWork = false;
+        for (val tTexture : mTextures)
+            if (tTexture != null && tTexture.isValidTexture())
+                didWork |= tTexture.renderXPos(aRenderer, aBlock, aX, aY, aZ);
+        return didWork;
     }
 
     @Override
-    public void renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        for (ITexture tTexture : mTextures)
-            if (tTexture != null && tTexture.isValidTexture()) tTexture.renderXNeg(aRenderer, aBlock, aX, aY, aZ);
+    public boolean renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+        var didWork = false;
+        for (val tTexture : mTextures)
+            if (tTexture != null && tTexture.isValidTexture())
+                didWork |= tTexture.renderXNeg(aRenderer, aBlock, aX, aY, aZ);
+        return didWork;
     }
 
     @Override
-    public void renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        for (ITexture tTexture : mTextures)
-            if (tTexture != null && tTexture.isValidTexture()) tTexture.renderYPos(aRenderer, aBlock, aX, aY, aZ);
+    public boolean renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+        var didWork = false;
+        for (val tTexture : mTextures)
+            if (tTexture != null && tTexture.isValidTexture())
+                didWork |= tTexture.renderYPos(aRenderer, aBlock, aX, aY, aZ);
+        return didWork;
     }
 
     @Override
-    public void renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        for (ITexture tTexture : mTextures)
-            if (tTexture != null && tTexture.isValidTexture()) tTexture.renderYNeg(aRenderer, aBlock, aX, aY, aZ);
+    public boolean renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+        var didWork = false;
+        for (val tTexture : mTextures)
+            if (tTexture != null && tTexture.isValidTexture())
+                didWork |= tTexture.renderYNeg(aRenderer, aBlock, aX, aY, aZ);
+        return didWork;
     }
 
     @Override
-    public void renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        for (ITexture tTexture : mTextures)
-            if (tTexture != null && tTexture.isValidTexture()) tTexture.renderZPos(aRenderer, aBlock, aX, aY, aZ);
+    public boolean renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+        var didWork = false;
+        for (val tTexture : mTextures)
+            if (tTexture != null && tTexture.isValidTexture())
+                didWork |= tTexture.renderZPos(aRenderer, aBlock, aX, aY, aZ);
+        return didWork;
     }
 
     @Override
-    public void renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        for (ITexture tTexture : mTextures)
-            if (tTexture != null && tTexture.isValidTexture()) tTexture.renderZNeg(aRenderer, aBlock, aX, aY, aZ);
+    public boolean renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+        var didWork = false;
+        for (val tTexture : mTextures)
+            if (tTexture != null && tTexture.isValidTexture())
+                didWork |= tTexture.renderZNeg(aRenderer, aBlock, aX, aY, aZ);
+        return didWork;
     }
 
     @Override

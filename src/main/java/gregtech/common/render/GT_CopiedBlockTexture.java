@@ -25,7 +25,7 @@ class GT_CopiedBlockTexture implements ITexture, IBlockContainer {
     }
 
     @Override
-    public void renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         IIcon aIcon = getIcon(ForgeDirection.EAST.ordinal());
         aRenderer.field_152631_f = true;
         startDrawingQuads(aRenderer, 1.0f, 0.0f, 0.0f);
@@ -35,10 +35,11 @@ class GT_CopiedBlockTexture implements ITexture, IBlockContainer {
         aRenderer.renderFaceXPos(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
         aRenderer.field_152631_f = false;
+        return true;
     }
 
     @Override
-    public void renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         startDrawingQuads(aRenderer, -1.0f, 0.0f, 0.0f);
         IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal());
         new LightingHelper(aRenderer)
@@ -46,10 +47,11 @@ class GT_CopiedBlockTexture implements ITexture, IBlockContainer {
                 .setupColor(ForgeDirection.WEST.ordinal(), 0xffffff);
         aRenderer.renderFaceXNeg(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
+        return true;
     }
 
     @Override
-    public void renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         startDrawingQuads(aRenderer, 0.0f, 1.0f, 0.0f);
         IIcon aIcon = getIcon(ForgeDirection.UP.ordinal());
             new LightingHelper(aRenderer)
@@ -57,10 +59,11 @@ class GT_CopiedBlockTexture implements ITexture, IBlockContainer {
                     .setupColor(ForgeDirection.UP.ordinal(), 0xffffff);
         aRenderer.renderFaceYPos(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
+        return true;
     }
 
     @Override
-    public void renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         startDrawingQuads(aRenderer, 0.0f, -1.0f, 0.0f);
         IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal());
         new LightingHelper(aRenderer)
@@ -68,10 +71,11 @@ class GT_CopiedBlockTexture implements ITexture, IBlockContainer {
                 .setupColor(ForgeDirection.DOWN.ordinal(), 0xffffff);
         aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
+        return true;
     }
 
     @Override
-    public void renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         startDrawingQuads(aRenderer, 0.0f, 0.0f, 1.0f);
         IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal());
         new LightingHelper(aRenderer)
@@ -79,10 +83,11 @@ class GT_CopiedBlockTexture implements ITexture, IBlockContainer {
                 .setupColor(ForgeDirection.SOUTH.ordinal(), 0xffffff);
         aRenderer.renderFaceZPos(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
+        return true;
     }
 
     @Override
-    public void renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         startDrawingQuads(aRenderer, 0.0f, 0.0f, -1.0f);
         IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal());
         aRenderer.field_152631_f = true;
@@ -92,6 +97,7 @@ class GT_CopiedBlockTexture implements ITexture, IBlockContainer {
         aRenderer.renderFaceZNeg(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
         aRenderer.field_152631_f = false;
+        return true;
     }
 
     @Override

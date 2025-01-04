@@ -43,12 +43,12 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
     }
 
     @Override
-    public void renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         startDrawingQuads(aRenderer, 1.0f, 0.0f, 0.0f);
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return false;
             aRenderer.enableAO = false;
             lighting.setLightnessOverride(1.0F);
             if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
@@ -62,15 +62,16 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         }
         aRenderer.enableAO = enableAO;
         draw(aRenderer);
+        return true;
     }
 
     @Override
-    public void renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         startDrawingQuads(aRenderer, -1.0f, 0.0f, 0.0f);
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return false;
             aRenderer.enableAO = false;
             lighting.setLightnessOverride(1.0F);
             if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
@@ -84,15 +85,16 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         }
         aRenderer.enableAO = enableAO;
         draw(aRenderer);
+        return true;
     }
 
     @Override
-    public void renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         startDrawingQuads(aRenderer, 0.0f, 1.0f, 0.0f);
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return false;
             aRenderer.enableAO = false;
             lighting.setLightnessOverride(1.0F);
             if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
@@ -106,15 +108,16 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         }
         aRenderer.enableAO = enableAO;
         draw(aRenderer);
+        return true;
     }
 
     @Override
-    public void renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         startDrawingQuads(aRenderer, 0.0f, -1.0f, 0.0f);
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return false;
             aRenderer.enableAO = false;
             lighting.setLightnessOverride(1.0F);
             if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
@@ -128,15 +131,16 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         }
         aRenderer.enableAO = enableAO;
         draw(aRenderer);
+        return true;
     }
 
     @Override
-    public void renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         startDrawingQuads(aRenderer, 0.0f, 0.0f, 1.0f);
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return false;
             aRenderer.enableAO = false;
             lighting.setLightnessOverride(1.0F);
             if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
@@ -150,15 +154,16 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         }
         aRenderer.enableAO = enableAO;
         draw(aRenderer);
+        return true;
     }
 
     @Override
-    public void renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         startDrawingQuads(aRenderer, 0.0f, 0.0f, -1.0f);
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return false;
             aRenderer.enableAO = false;
             lighting.setLightnessOverride(1.0F);
             if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
@@ -172,6 +177,7 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         }
         aRenderer.enableAO = enableAO;
         draw(aRenderer);
+        return true;
     }
 
     @Override
