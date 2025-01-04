@@ -54,25 +54,25 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         RenderingRegistry.registerBlockHandler(this);
     }
 
-    public static boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof IPipeRenderedTileEntity)) {
-            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, new ITexture[][]{
-                    ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) DOWN.ordinal()),
-                    ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) UP.ordinal()),
-                    ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) NORTH.ordinal()),
-                    ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) SOUTH.ordinal()),
-                    ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) WEST.ordinal()),
-                    ((IPipeRenderedTileEntity) tTileEntity).getTextureCovered((byte) EAST.ordinal())});
+    public static boolean renderStandardBlock(IBlockAccess world, int posX, int posY, int posZ, Block block, RenderBlocks renderBlocks) {
+        val te = world.getTileEntity(posX, posY, posZ);
+        if ((te instanceof IPipeRenderedTileEntity pipeTile)) {
+            return renderStandardBlock(world, posX, posY, posZ, block, renderBlocks, new ITexture[][]{
+                    pipeTile.getTextureCovered((byte) DOWN.ordinal()),
+                    pipeTile.getTextureCovered((byte) UP.ordinal()),
+                    pipeTile.getTextureCovered((byte) NORTH.ordinal()),
+                    pipeTile.getTextureCovered((byte) SOUTH.ordinal()),
+                    pipeTile.getTextureCovered((byte) WEST.ordinal()),
+                    pipeTile.getTextureCovered((byte) EAST.ordinal())});
         }
-        if ((tTileEntity instanceof ITexturedTileEntity)) {
-            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, new ITexture[][]{
-                    ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) DOWN.ordinal()),
-                    ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) UP.ordinal()),
-                    ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) NORTH.ordinal()),
-                    ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) SOUTH.ordinal()),
-                    ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) WEST.ordinal()),
-                    ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) EAST.ordinal())});
+        if (te instanceof ITexturedTileEntity texturedTile) {
+            return renderStandardBlock(world, posX, posY, posZ, block, renderBlocks, new ITexture[][]{
+                    texturedTile.getTexture(block, (byte) DOWN.ordinal()),
+                    texturedTile.getTexture(block, (byte) UP.ordinal()),
+                    texturedTile.getTexture(block, (byte) NORTH.ordinal()),
+                    texturedTile.getTexture(block, (byte) SOUTH.ordinal()),
+                    texturedTile.getTexture(block, (byte) WEST.ordinal()),
+                    texturedTile.getTexture(block, (byte) EAST.ordinal())});
         }
         return false;
     }
