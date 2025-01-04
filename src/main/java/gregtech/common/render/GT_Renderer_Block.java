@@ -202,29 +202,21 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         return false;
     }
 
-    public static boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer, ITexture[][] aTextures) {
-        aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
-        aRenderer.setRenderBoundsFromBlock(aBlock);
-
-        renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[DOWN.ordinal()], true);
-        renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[UP.ordinal()], true);
-        renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[NORTH.ordinal()], true);
-        renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SOUTH.ordinal()], true);
-        renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[WEST.ordinal()], true);
-        renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[EAST.ordinal()], true);
-        return true;
+    public static boolean renderStandardBlock(IBlockAccess world, int posX, int posY, int posZ, Block block, RenderBlocks render, ITexture[][] textures) {
+        block.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
+        render.setRenderBoundsFromBlock(block);
+        return renderNegativeYFacing(world, render, block, posX, posY, posZ, textures[DOWN.ordinal()], true) ||
+               renderPositiveYFacing(world, render, block, posX, posY, posZ, textures[UP.ordinal()], true) ||
+               renderNegativeZFacing(world, render, block, posX, posY, posZ, textures[NORTH.ordinal()], true) ||
+               renderPositiveZFacing(world, render, block, posX, posY, posZ, textures[SOUTH.ordinal()], true) ||
+               renderNegativeXFacing(world, render, block, posX, posY, posZ, textures[WEST.ordinal()], true) ||
+               renderPositiveXFacing(world, render, block, posX, posY, posZ, textures[EAST.ordinal()], true);
     }
 
-    public static boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer, ITexture[] aTextures) {
-        aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
-        aRenderer.setRenderBoundsFromBlock(aBlock);
-        renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures, true);
-        renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures, true);
-        renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures, true);
-        renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures, true);
-        renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures, true);
-        renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures, true);
-        return true;
+    public static boolean renderStandardBlock(IBlockAccess world, int posX, int posY, int posZ, Block block, RenderBlocks render, ITexture[] textures) {
+        block.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
+        render.setRenderBoundsFromBlock(block);
+        return renderAllFaces(world, render, block, posX, posY, posZ, textures, true);
     }
 
     public static boolean renderPipeBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, IPipeRenderedTileEntity aTileEntity, RenderBlocks aRenderer) {
@@ -633,14 +625,14 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
     }
 
     public static boolean renderFacing(IBlockAccess world,
-                                    RenderBlocks render,
-                                    Block block,
-                                    int posX,
-                                    int posY,
-                                    int posZ,
-                                    ITexture[] textures,
-                                    boolean isFullBlock,
-                                    byte side) {
+                                       RenderBlocks render,
+                                       Block block,
+                                       int posX,
+                                       int posY,
+                                       int posZ,
+                                       ITexture[] textures,
+                                       boolean isFullBlock,
+                                       byte side) {
         return switch (side) {
             case 0 -> renderNegativeYFacing(world, render, block, posX, posY, posZ, textures, isFullBlock);
             case 1 -> renderPositiveYFacing(world, render, block, posX, posY, posZ, textures, isFullBlock);
