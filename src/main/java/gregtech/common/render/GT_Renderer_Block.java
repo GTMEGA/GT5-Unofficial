@@ -205,12 +205,14 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
     public static boolean renderStandardBlock(IBlockAccess world, int posX, int posY, int posZ, Block block, RenderBlocks render, ITexture[][] textures) {
         block.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
         render.setRenderBoundsFromBlock(block);
-        return renderNegativeYFacing(world, render, block, posX, posY, posZ, textures[DOWN.ordinal()], true) ||
-               renderPositiveYFacing(world, render, block, posX, posY, posZ, textures[UP.ordinal()], true) ||
-               renderNegativeZFacing(world, render, block, posX, posY, posZ, textures[NORTH.ordinal()], true) ||
-               renderPositiveZFacing(world, render, block, posX, posY, posZ, textures[SOUTH.ordinal()], true) ||
-               renderNegativeXFacing(world, render, block, posX, posY, posZ, textures[WEST.ordinal()], true) ||
-               renderPositiveXFacing(world, render, block, posX, posY, posZ, textures[EAST.ordinal()], true);
+        var didWork = false;
+        didWork |= renderNegativeYFacing(world, render, block, posX, posY, posZ, textures[DOWN.ordinal()], true);
+        didWork |= renderPositiveYFacing(world, render, block, posX, posY, posZ, textures[UP.ordinal()], true);
+        didWork |= renderNegativeZFacing(world, render, block, posX, posY, posZ, textures[NORTH.ordinal()], true);
+        didWork |= renderPositiveZFacing(world, render, block, posX, posY, posZ, textures[SOUTH.ordinal()], true);
+        didWork |= renderNegativeXFacing(world, render, block, posX, posY, posZ, textures[WEST.ordinal()], true);
+        didWork |= renderPositiveXFacing(world, render, block, posX, posY, posZ, textures[EAST.ordinal()], true);
+        return didWork;
     }
 
     public static boolean renderStandardBlock(IBlockAccess world, int posX, int posY, int posZ, Block block, RenderBlocks render, ITexture[] textures) {
@@ -652,12 +654,14 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                                          int posZ,
                                          ITexture[] textures,
                                          boolean isFullBlock) {
-        return renderNegativeYFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock) ||
-               renderPositiveYFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock) ||
-               renderNegativeZFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock) ||
-               renderPositiveZFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock) ||
-               renderNegativeXFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock) ||
-               renderPositiveXFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock);
+        var didWork = false;
+        didWork |= renderNegativeYFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock);
+        didWork |= renderPositiveYFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock);
+        didWork |= renderNegativeZFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock);
+        didWork |= renderPositiveZFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock);
+        didWork |= renderNegativeXFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock);
+        didWork |= renderPositiveXFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock);
+        return didWork;
     }
 
     public static boolean renderNegativeYFacing(IBlockAccess world,
