@@ -58,21 +58,21 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         val te = world.getTileEntity(posX, posY, posZ);
         if ((te instanceof IPipeRenderedTileEntity pipeTile)) {
             return renderStandardBlock(world, posX, posY, posZ, block, renderBlocks, new ITexture[][]{
-                    pipeTile.getTextureCovered((byte) DOWN.ordinal()),
-                    pipeTile.getTextureCovered((byte) UP.ordinal()),
-                    pipeTile.getTextureCovered((byte) NORTH.ordinal()),
-                    pipeTile.getTextureCovered((byte) SOUTH.ordinal()),
-                    pipeTile.getTextureCovered((byte) WEST.ordinal()),
-                    pipeTile.getTextureCovered((byte) EAST.ordinal())});
+                    pipeTile.getTextureCovered(DOWN),
+                    pipeTile.getTextureCovered(UP),
+                    pipeTile.getTextureCovered(NORTH),
+                    pipeTile.getTextureCovered(SOUTH),
+                    pipeTile.getTextureCovered(WEST),
+                    pipeTile.getTextureCovered(EAST)});
         }
         if (te instanceof ITexturedTileEntity texturedTile) {
             return renderStandardBlock(world, posX, posY, posZ, block, renderBlocks, new ITexture[][]{
-                    texturedTile.getTexture(block, (byte) DOWN.ordinal()),
-                    texturedTile.getTexture(block, (byte) UP.ordinal()),
-                    texturedTile.getTexture(block, (byte) NORTH.ordinal()),
-                    texturedTile.getTexture(block, (byte) SOUTH.ordinal()),
-                    texturedTile.getTexture(block, (byte) WEST.ordinal()),
-                    texturedTile.getTexture(block, (byte) EAST.ordinal())});
+                    texturedTile.getTexture(block, DOWN),
+                    texturedTile.getTexture(block, UP),
+                    texturedTile.getTexture(block, NORTH),
+                    texturedTile.getTexture(block, SOUTH),
+                    texturedTile.getTexture(block, WEST),
+                    texturedTile.getTexture(block, EAST)});
         }
         return false;
     }
@@ -119,12 +119,20 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             tIsCovered[i] = (aTileEntity.getCoverIDAtSide((byte) i) != 0);
         }
 
-        final ITexture[][] tIcons = new ITexture[VALID_DIRECTIONS.length][];
-        final ITexture[][] tCovers = new ITexture[VALID_DIRECTIONS.length][];
-        for (int i = 0; i < VALID_DIRECTIONS.length; i++) {
-            tCovers[i] = aTileEntity.getTexture(aBlock, (byte) i);
-            tIcons[i] = aTileEntity.getTextureUncovered((byte) i);
-        }
+        final ITexture[][] tIcons = new ITexture[][]{
+                aTileEntity.getTextureUncovered(DOWN),
+                aTileEntity.getTextureUncovered(UP),
+                aTileEntity.getTextureUncovered(NORTH),
+                aTileEntity.getTextureUncovered(SOUTH),
+                aTileEntity.getTextureUncovered(WEST),
+                aTileEntity.getTextureUncovered(EAST)};
+        final ITexture[][] tCovers = new ITexture[][]{
+                aTileEntity.getTexture(aBlock, DOWN),
+                aTileEntity.getTexture(aBlock, UP),
+                aTileEntity.getTexture(aBlock, NORTH),
+                aTileEntity.getTexture(aBlock, SOUTH),
+                aTileEntity.getTexture(aBlock, WEST),
+                aTileEntity.getTexture(aBlock, EAST)};
 
         switch (aConnections) {
             case NO_CONNECTION:

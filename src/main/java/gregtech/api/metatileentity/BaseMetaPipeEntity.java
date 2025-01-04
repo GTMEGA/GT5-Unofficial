@@ -823,16 +823,16 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide) {
-        ITexture rIcon = getCoverTexture(aSide);
+    public ITexture[] getTexture(Block block, ForgeDirection side) {
+        ITexture rIcon = getCoverTexture((byte) side.ordinal());
         if (rIcon != null) return new ITexture[]{rIcon};
-        return getTextureUncovered(aSide);
+        return getTextureUncovered(side);
     }
 
     @Override
-    public ITexture[] getTextureCovered(byte aSide) {
-        ITexture coverTexture = getCoverTexture(aSide);
-        ITexture[] textureUncovered = getTextureUncovered(aSide);
+    public ITexture[] getTextureCovered(ForgeDirection side) {
+        ITexture coverTexture = getCoverTexture((byte) side.ordinal());
+        ITexture[] textureUncovered = getTextureUncovered(side);
         ITexture[] textureCovered;
         if (coverTexture != null) {
             textureCovered = Arrays.copyOf(textureUncovered, textureUncovered.length + 1);
@@ -844,7 +844,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public ITexture[] getTextureUncovered(byte aSide) {
+    public ITexture[] getTextureUncovered(ForgeDirection side) {
         if ((mConnections & IConnectable.HAS_FRESHFOAM) != 0) return Textures.BlockIcons.FRESHFOAM;
         if ((mConnections & IConnectable.HAS_HARDENEDFOAM) != 0) return Textures.BlockIcons.HARDENEDFOAMS[mColor];
         if ((mConnections & IConnectable.HAS_FOAM) != 0) return Textures.BlockIcons.ERROR_RENDERING;
@@ -853,9 +853,9 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         else if (tConnections == IConnectable.CONNECTED_DOWN || tConnections == IConnectable.CONNECTED_UP) tConnections = (byte) (IConnectable.CONNECTED_DOWN | IConnectable.CONNECTED_UP);
         else if (tConnections == IConnectable.CONNECTED_NORTH || tConnections == IConnectable.CONNECTED_SOUTH) tConnections = (byte) (IConnectable.CONNECTED_NORTH | IConnectable.CONNECTED_SOUTH);
         if (hasValidMetaTileEntity())
-            return mMetaTileEntity.getTexture(this, aSide, tConnections, (byte) (mColor - 1),
-                    tConnections == 0 || (tConnections & (1 << aSide)) != 0,
-                    getOutputRedstoneSignal(aSide) > 0);
+            return mMetaTileEntity.getTexture(this, (byte) side.ordinal(), tConnections, (byte) (mColor - 1),
+                    tConnections == 0 || (tConnections & (1 << side.ordinal())) != 0,
+                    getOutputRedstoneSignal((byte) side.ordinal()) > 0);
         return Textures.BlockIcons.ERROR_RENDERING;
     }
 

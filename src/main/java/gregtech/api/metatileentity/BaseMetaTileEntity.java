@@ -1252,10 +1252,10 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide) {
-        ITexture coverTexture = getCoverTexture(aSide);
+    public ITexture[] getTexture(Block block, ForgeDirection side) {
+        ITexture coverTexture = getCoverTexture((byte) side.ordinal());
         ITexture[] textureUncovered = hasValidMetaTileEntity() ?
-                mMetaTileEntity.getTexture(this, aSide, mFacing, (byte) (mColor - 1), mActive, getOutputRedstoneSignal(aSide) > 0) :
+                mMetaTileEntity.getTexture(this, (byte)side.ordinal(), mFacing, (byte) (mColor - 1), mActive, getOutputRedstoneSignal((byte) side.ordinal()) > 0) :
                 Textures.BlockIcons.ERROR_RENDERING;
         ITexture[] textureCovered;
         if (coverTexture != null) {
