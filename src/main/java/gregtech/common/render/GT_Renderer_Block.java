@@ -463,50 +463,60 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
-        aRenderer.enableAO = false;
-        aRenderer.useInventoryTint = true;
+    public void renderInventoryBlock(Block block, int blockMeta, int modelID, RenderBlocks renderBlocks) {
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        GL11.glPushMatrix();
 
-        GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+        val prevEnableAO = renderBlocks.enableAO;
+        val prevUseInventoryTint = renderBlocks.useInventoryTint;
+        renderBlocks.enableAO = false;
+        renderBlocks.useInventoryTint = true;
 
-        if (aBlock instanceof GT_Block_Ore_Abstract) {
-            ITexture[] textures = ((GT_Block_Ore_Abstract) aBlock).getTextures();
+        try {
+            GL11.glRotatef(180F, 0F, 1F, 0F);
+            GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
-            aBlock.setBlockBoundsForItemRender();
-            aRenderer.setRenderBoundsFromBlock(aBlock);
-            val tess = GT_Compat.tessellator();
-            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, textures, true);
-            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, textures, true);
-            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, textures, true);
-            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, textures, true);
-            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, textures, true);
-            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, textures, true);
+            render:
+            {
+                // Special case for ores
+                if (block instanceof GT_Block_Ore_Abstract ore) {
+                    block.setBlockBoundsForItemRender();
+                    renderBlocks.setRenderBoundsFromBlock(block);
+                    val textures = ore.getTextures();
+                    renderAllFaces(null, renderBlocks, block, 0, 0, 0, textures, true);
+                    break render;
+                }
+                // Special case for potentiometer
+                if (block instanceof GT_Block_Potentiometer potentiometer) {
+                    block.setBlockBoundsForItemRender();
+                    renderBlocks.setRenderBoundsFromBlock(block);
+                    val textures = potentiometer.getInventoryTexture(blockMeta);
+                    renderAllFaces(null, renderBlocks, block, 0, 0, 0, textures, true);
+                    break render;
+                }
+                // Everything else
+                if (blockMeta > 0
+                    && (blockMeta < GregTech_API.METATILEENTITIES.length)
+                    && block instanceof GT_Block_Machines
+                    && (GregTech_API.METATILEENTITIES[blockMeta] != null)
+                    && (!GregTech_API.METATILEENTITIES[blockMeta].renderInInventory(block, blockMeta, renderBlocks))) {
+                    renderNormalInventoryMetaTileEntity(block, blockMeta, renderBlocks);
+                }
+            }
+        } finally {
+            // Reset bounds
+            block.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
+            renderBlocks.setRenderBoundsFromBlock(block);
 
-        } else if (aMeta > 0
-                && (aMeta < GregTech_API.METATILEENTITIES.length)
-                && aBlock instanceof GT_Block_Machines
-                && (GregTech_API.METATILEENTITIES[aMeta] != null)
-                && (!GregTech_API.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer))) {
-            renderNormalInventoryMetaTileEntity(aBlock, aMeta, aRenderer);
-        } else if (aBlock instanceof GT_Block_Potentiometer) {
-            final GT_Block_Potentiometer potentiometer = (GT_Block_Potentiometer) aBlock;
-            aBlock.setBlockBoundsForItemRender();
-            aRenderer.setRenderBoundsFromBlock(aBlock);
-            val tess = GT_Compat.tessellator();
-            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, potentiometer.getInventoryTexture(aMeta), true);
-            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, potentiometer.getInventoryTexture(aMeta), true);
-            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, potentiometer.getInventoryTexture(aMeta), true);
-            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, potentiometer.getInventoryTexture(aMeta), true);
-            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, potentiometer.getInventoryTexture(aMeta), true);
-            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, potentiometer.getInventoryTexture(aMeta), true);
+            // Reset tint/ao
+            renderBlocks.useInventoryTint = prevUseInventoryTint;
+            renderBlocks.enableAO = prevEnableAO;
+
+            GL11.glMatrixMode(GL11.GL_MODELVIEW);
+            GL11.glPopMatrix();
+            GL11.glPopAttrib();
         }
-
-        aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
-        aRenderer.setRenderBoundsFromBlock(aBlock);
-
-        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        aRenderer.useInventoryTint = false;
     }
 
     private static void renderNormalInventoryMetaTileEntity(Block aBlock, int aMeta, RenderBlocks aRenderer) {
@@ -573,6 +583,22 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 break;
             }
         }
+    }
+
+    public static void renderAllFaces(IBlockAccess world,
+                                      RenderBlocks renderBlocks,
+                                      Block block,
+                                      int posX,
+                                      int posY,
+                                      int posZ,
+                                      ITexture[] textures,
+                                      boolean isFullBlock) {
+        renderNegativeYFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock);
+        renderPositiveYFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock);
+        renderNegativeZFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock);
+        renderPositiveZFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock);
+        renderNegativeXFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock);
+        renderPositiveXFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock);
     }
 
     public static void renderNegativeYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, ITexture[] aIcon, boolean aFullBlock) {
@@ -669,13 +695,13 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         if (tileEntity instanceof IGregTechTileEntity) {
             IMetaTileEntity metaTileEntity;
             if ((metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity()) != null &&
-                    metaTileEntity.renderInWorld(aWorld, aX, aY, aZ, aBlock, aRenderer)) {
+                metaTileEntity.renderInWorld(aWorld, aX, aY, aZ, aBlock, aRenderer)) {
                 aRenderer.enableAO = false;
                 return true;
             }
         }
         if (tileEntity instanceof IPipeRenderedTileEntity &&
-                renderPipeBlock(aWorld, aX, aY, aZ, aBlock, (IPipeRenderedTileEntity) tileEntity, aRenderer)) {
+            renderPipeBlock(aWorld, aX, aY, aZ, aBlock, (IPipeRenderedTileEntity) tileEntity, aRenderer)) {
             aRenderer.enableAO = false;
             return true;
         }
