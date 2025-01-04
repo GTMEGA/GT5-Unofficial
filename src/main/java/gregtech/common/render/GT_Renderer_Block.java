@@ -113,33 +113,54 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID, RenderBlocks aRenderer) {
-        aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion;
-        aRenderer.useInventoryTint = false;
-        if (aBlock instanceof GT_Block_Ore_Abstract) {
-            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, ((GT_Block_Ore_Abstract) aBlock).getTextures());
-        }
-        if (aBlock instanceof GT_Block_Potentiometer) {
-            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, ((GT_Block_Potentiometer) aBlock).getPotentiometerTextures(aWorld, aX, aY, aZ));
-        }
-        TileEntity tileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tileEntity == null) return false;
-        if (tileEntity instanceof IGregTechTileEntity) {
-            IMetaTileEntity metaTileEntity;
-            if ((metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity()) != null &&
-                metaTileEntity.renderInWorld(aWorld, aX, aY, aZ, aBlock, aRenderer)) {
-                aRenderer.enableAO = false;
-                return true;
+    public boolean renderWorldBlock(IBlockAccess world,
+                                    int posX,
+                                    int posY,
+                                    int posZ,
+                                    Block block,
+                                    int modelId,
+                                    RenderBlocks render) {
+        val prevEnableAO = render.enableAO;
+        val prevUseInventoryTint = render.useInventoryTint;
+
+        render.enableAO = Minecraft.isAmbientOcclusionEnabled() && GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion;
+        render.useInventoryTint = false;
+
+        try {
+            // Special case for ores
+            if (block instanceof GT_Block_Ore_Abstract ore) {
+                val textures = ore.getTextures();
+                return renderStandardBlock(world, posX, posY, posZ, block, render, textures);
             }
-        }
-        if (tileEntity instanceof IPipeRenderedTileEntity &&
-            renderPipeBlock(aWorld, aX, aY, aZ, aBlock, (IPipeRenderedTileEntity) tileEntity, aRenderer)) {
-            aRenderer.enableAO = false;
-            return true;
-        }
-        if (renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer)) {
-            aRenderer.enableAO = false;
-            return true;
+            // Special case for potentiometer
+            if (block instanceof GT_Block_Potentiometer potentiometer) {
+                val textures = potentiometer.getPotentiometerTextures(world, posX, posY, posZ);
+                return renderStandardBlock(world, posX, posY, posZ, block, render, textures);
+            }
+
+            val te = world.getTileEntity(posX, posY, posZ);
+            if (te != null) {
+                if (te instanceof IGregTechTileEntity gte) {
+                    // Set the MTE handle it's own rendering, or keep going
+                    val metaTileEntity = gte.getMetaTileEntity();
+                    if (metaTileEntity != null && metaTileEntity.renderInWorld(world, posX, posY, posZ, block, render))
+                        return true;
+                }
+                if (te instanceof IPipeRenderedTileEntity pipeTile)
+                    return renderPipeBlock(world, posX, posY, posZ, block, pipeTile, render);
+                if (te instanceof ITexturedTileEntity texturedTile)
+                    return renderStandardBlock(world, posX, posY, posZ, block, render, new ITexture[][]{
+                            texturedTile.getTexture(block, DOWN),
+                            texturedTile.getTexture(block, UP),
+                            texturedTile.getTexture(block, NORTH),
+                            texturedTile.getTexture(block, SOUTH),
+                            texturedTile.getTexture(block, WEST),
+                            texturedTile.getTexture(block, EAST)});
+            }
+        } finally {
+            // Reset tint/ao
+            render.useInventoryTint = prevUseInventoryTint;
+            render.enableAO = prevEnableAO;
         }
         return false;
     }
