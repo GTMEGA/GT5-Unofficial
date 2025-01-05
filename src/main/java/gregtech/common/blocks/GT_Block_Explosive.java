@@ -2,6 +2,8 @@ package gregtech.common.blocks;
 
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_LanguageManager;
@@ -14,6 +16,7 @@ import lombok.Setter;
 import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -189,6 +192,12 @@ public class GT_Block_Explosive<TierType extends Enum<TierType> & IGT_ExplosiveT
             metadata = metadata & sideMask;
         }
         world.setBlockMetadataWithNotify(x, y, z, metadata, 3);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister reg) {
+        // NO-OP as the icons are obtained elsewhere
     }
 
 }
