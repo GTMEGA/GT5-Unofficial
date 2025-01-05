@@ -62,4 +62,11 @@ public interface ITextureBuilder {
      * @return {@link ITextureBuilder} for chaining
      */
     ITextureBuilder extFacing();
+
+    /**
+     * Should texture render as opaque or as translucent?
+     *
+     * @return {@link ITextureBuilder} for chaining
+     */
+    ITextureBuilder setTranslucent(boolean isTranslucent);
 }

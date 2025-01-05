@@ -16,18 +16,20 @@ class GT_SidedTexture implements ITexture, IColorModulationContainer {
      * Otherwise some colored things will get Problems.
      */
     private final short[] mRGBa;
+    private final boolean isTranslucent;
 
-    GT_SidedTexture(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2, IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5, short[] aRGBa) {
+    GT_SidedTexture(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2, IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5, short[] aRGBa, boolean isTranslucent) {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_RenderedTexture");
         mTextures = new ITexture[]{
-            TextureFactory.of(aIcon0, aRGBa),
-            TextureFactory.of(aIcon1, aRGBa),
-            TextureFactory.of(aIcon2, aRGBa),
-            TextureFactory.of(aIcon3, aRGBa),
-            TextureFactory.of(aIcon4, aRGBa),
-            TextureFactory.of(aIcon5, aRGBa)
+                TextureFactory.builder().addIcon(aIcon0).setRGBA(aRGBa).setTranslucent(isTranslucent).build(),
+                TextureFactory.builder().addIcon(aIcon1).setRGBA(aRGBa).setTranslucent(isTranslucent).build(),
+                TextureFactory.builder().addIcon(aIcon2).setRGBA(aRGBa).setTranslucent(isTranslucent).build(),
+                TextureFactory.builder().addIcon(aIcon3).setRGBA(aRGBa).setTranslucent(isTranslucent).build(),
+                TextureFactory.builder().addIcon(aIcon4).setRGBA(aRGBa).setTranslucent(isTranslucent).build(),
+                TextureFactory.builder().addIcon(aIcon5).setRGBA(aRGBa).setTranslucent(isTranslucent).build(),
         };
         mRGBa = aRGBa;
+        this.isTranslucent = isTranslucent;
     }
 
     @Override
@@ -71,5 +73,10 @@ class GT_SidedTexture implements ITexture, IColorModulationContainer {
             if (!renderedTexture.isValidTexture()) return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean isTranslucent() {
+        return isTranslucent;
     }
 }

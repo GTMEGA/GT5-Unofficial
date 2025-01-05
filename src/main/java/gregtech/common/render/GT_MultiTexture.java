@@ -5,15 +5,20 @@ import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
+import java.util.Arrays;
+import java.util.function.Predicate;
+
 /**
  * <p>Lets Multiple ITextures Render overlay over each other.<</p>
  * <p>I should have done this much earlier...</p>
  */
 class GT_MultiTexture implements ITexture {
     protected final ITexture[] mTextures;
+    protected final boolean isTranslucent;
 
     GT_MultiTexture(ITexture... aTextures) {
         mTextures = aTextures;
+        isTranslucent = Arrays.stream(aTextures).anyMatch(ITexture::isTranslucent);
     }
 
     @Override
@@ -73,5 +78,10 @@ class GT_MultiTexture implements ITexture {
     @Override
     public boolean isValidTexture() {
         return true;
+    }
+
+    @Override
+    public boolean isTranslucent() {
+        return isTranslucent;
     }
 }

@@ -22,6 +22,16 @@ public interface ITexture {
 
     boolean isValidTexture();
 
+    boolean isTranslucent();
+
+    default boolean shouldRenderOnPass(int pass) {
+        return switch (pass) {
+            case 0 -> !isTranslucent();
+            case 1 -> isTranslucent();
+            default -> throw new IllegalStateException("Unknown render pass: " + pass);
+        };
+    }
+
     /**
      * Will initialize the {@link Tessellator} if rendering off-world (Inventory)
      * @param aRenderer The {@link RenderBlocks} Renderer

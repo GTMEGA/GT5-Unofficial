@@ -31,13 +31,15 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
     private final short[] mRGBa;
     private final boolean stdOrient;
     private final boolean useExtFacing;
+    private final boolean isTranslucent;
 
-    GT_RenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean stdOrient, boolean extFacing) {
+    GT_RenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean stdOrient, boolean extFacing, boolean isTranslucent) {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_RenderedTexture");
         mIconContainer = aIcon;
         mRGBa = aRGBa;
         this.stdOrient = stdOrient;
         this.useExtFacing = extFacing;
+        this.isTranslucent = isTranslucent;
     }
 
     @Override
@@ -150,6 +152,11 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
     @Override
     public boolean isValidTexture() {
         return mIconContainer != null;
+    }
+
+    @Override
+    public boolean isTranslucent() {
+        return isTranslucent;
     }
 
     /**

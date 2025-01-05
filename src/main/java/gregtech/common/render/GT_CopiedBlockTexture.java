@@ -106,6 +106,16 @@ class GT_CopiedBlockTexture implements ITexture, IBlockContainer {
     }
 
     @Override
+    public boolean isTranslucent() {
+        return mBlock.getRenderBlockPass() == 1;
+    }
+
+    @Override
+    public boolean shouldRenderOnPass(int pass) {
+        return mBlock.canRenderInPass(pass);
+    }
+
+    @Override
     public Block getBlock() {
         return mBlock;
     }
