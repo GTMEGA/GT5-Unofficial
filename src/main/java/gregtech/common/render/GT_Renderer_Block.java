@@ -16,7 +16,6 @@ import gregtech.common.blocks.GT_Block_Potentiometer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 
 import lombok.val;
@@ -128,7 +127,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             val renderPass = ForgeHooksClient.getWorldRenderPass();
             if (renderPass == 0) {
                 isTranslucentPass = false;
-            } else if(renderPass == 1) {
+            } else if (renderPass == 1) {
                 isTranslucentPass = true;
             } else {
                 return false; // Don't render anything, something went wrong! Can't log either because it would do another A2 fr fr...
@@ -200,22 +199,22 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         val te = world.getTileEntity(posX, posY, posZ);
         if ((te instanceof IPipeRenderedTileEntity pipeTile)) {
             return renderStandardBlock(world, posX, posY, posZ, block, renderBlocks, new ITexture[][]{
-                    pipeTile.getTextureCovered(DOWN),
-                    pipeTile.getTextureCovered(UP),
-                    pipeTile.getTextureCovered(NORTH),
-                    pipeTile.getTextureCovered(SOUTH),
-                    pipeTile.getTextureCovered(WEST),
-                    pipeTile.getTextureCovered(EAST)},
+                                               pipeTile.getTextureCovered(DOWN),
+                                               pipeTile.getTextureCovered(UP),
+                                               pipeTile.getTextureCovered(NORTH),
+                                               pipeTile.getTextureCovered(SOUTH),
+                                               pipeTile.getTextureCovered(WEST),
+                                               pipeTile.getTextureCovered(EAST)},
                                        isTranslucentPass);
         }
         if (te instanceof ITexturedTileEntity texturedTile) {
             return renderStandardBlock(world, posX, posY, posZ, block, renderBlocks, new ITexture[][]{
-                    texturedTile.getTexture(block, DOWN),
-                    texturedTile.getTexture(block, UP),
-                    texturedTile.getTexture(block, NORTH),
-                    texturedTile.getTexture(block, SOUTH),
-                    texturedTile.getTexture(block, WEST),
-                    texturedTile.getTexture(block, EAST)},
+                                               texturedTile.getTexture(block, DOWN),
+                                               texturedTile.getTexture(block, UP),
+                                               texturedTile.getTexture(block, NORTH),
+                                               texturedTile.getTexture(block, SOUTH),
+                                               texturedTile.getTexture(block, WEST),
+                                               texturedTile.getTexture(block, EAST)},
                                        isTranslucentPass);
         }
         return false;
@@ -656,12 +655,18 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                                        byte side,
                                        boolean isTranslucentPass) {
         return switch (side) {
-            case 0 -> renderNegativeYFacing(world, render, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
-            case 1 -> renderPositiveYFacing(world, render, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
-            case 2 -> renderNegativeZFacing(world, render, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
-            case 3 -> renderPositiveZFacing(world, render, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
-            case 4 -> renderNegativeXFacing(world, render, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
-            case 5 -> renderPositiveXFacing(world, render, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
+            case 0 ->
+                    renderNegativeYFacing(world, render, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
+            case 1 ->
+                    renderPositiveYFacing(world, render, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
+            case 2 ->
+                    renderNegativeZFacing(world, render, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
+            case 3 ->
+                    renderPositiveZFacing(world, render, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
+            case 4 ->
+                    renderNegativeXFacing(world, render, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
+            case 5 ->
+                    renderPositiveXFacing(world, render, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
             default -> false;
         };
     }
