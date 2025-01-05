@@ -26,7 +26,6 @@ public class GT_Generic_Block extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister reg) {
-        val textureName = getTextureName();
         // Let's default to the stone texture icon here instead of spamming the log, these blocks wont use this texture anyway.
         this.blockIcon = textureName != null ? reg.registerIcon(textureName) : Blocks.stone.getIcon(0, 0);
     }
