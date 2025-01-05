@@ -39,6 +39,7 @@ import gregtech.common.misc.explosions.GT_Explosion_Info;
 import gregtech.common.net.MessageUpdateFluidDisplayItem;
 import gregtech.common.render.*;
 import ic2.api.tile.IWrenchable;
+import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
@@ -514,12 +515,13 @@ public class GT_Client extends GT_Proxy
      */
     @Override
     public EntityPlayer getPlayerFromUUID(final UUID uuid) {
-        return MinecraftServer.getServer().getEntityWorld().func_152378_a(uuid);
-        /* val player = Minecraft.getMinecraft().thePlayer;
-        if (player.getUniqueID().equals(uuid)) {
-            return player;
+        for (val worldServer: MinecraftServer.getServer().worldServers) {
+            final EntityPlayer result = worldServer.func_152378_a(uuid);
+            if (result != null) {
+                return result;
+            }
         }
-        return null; */
+        return null;
     }
 
     @SubscribeEvent

@@ -1,5 +1,6 @@
 package gregtech.common;
 
+import lombok.val;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
@@ -44,7 +45,13 @@ public class GT_Server extends GT_Proxy {
      */
     @Override
     public EntityPlayer getPlayerFromUUID(final UUID uuid) {
-        return MinecraftServer.getServer().getEntityWorld().func_152378_a(uuid);
+        for (val worldServer: MinecraftServer.getServer().worldServers) {
+            final EntityPlayer result = worldServer.func_152378_a(uuid);
+            if (result != null) {
+                return result;
+            }
+        }
+        return null;
     }
 
 }
