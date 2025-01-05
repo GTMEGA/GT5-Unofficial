@@ -759,4 +759,16 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         }
         return false;
     }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getRenderBlockPass() {
+        return 1;// One here means both (more or less)
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean canRenderInPass(int pass) {
+        return pass == 0 || pass == 1;
+    }
 }

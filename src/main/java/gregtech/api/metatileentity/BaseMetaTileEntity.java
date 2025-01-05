@@ -2472,6 +2472,11 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
+    public boolean hasTranslucency() {
+        return hasValidMetaTileEntity() && mMetaTileEntity.hasTranslucency();
+    }
+
+    @Override
     public IAlignment getAlignment() {
         return getMetaTileEntity() instanceof IAlignmentProvider ? ((IAlignmentProvider) getMetaTileEntity()).getAlignment() : new BasicAlignment();
     }

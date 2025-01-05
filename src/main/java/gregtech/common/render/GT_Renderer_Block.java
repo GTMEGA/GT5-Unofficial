@@ -154,25 +154,27 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             }
 
             val te = world.getTileEntity(posX, posY, posZ);
-            if (te != null) {
-                if (te instanceof IGregTechTileEntity gte) {
-                    // Set the MTE handle it's own rendering, or keep going
-                    val metaTileEntity = gte.getMetaTileEntity();
-                    if (metaTileEntity != null && metaTileEntity.renderInWorld(world, posX, posY, posZ, block, render, isTranslucentPass))
-                        return true;
-                }
-                if (te instanceof IPipeRenderedTileEntity pipeTile)
-                    return renderPipeBlock(world, posX, posY, posZ, block, pipeTile, render, isTranslucentPass);
-                if (te instanceof ITexturedTileEntity texturedTile)
-                    return renderStandardBlock(world, posX, posY, posZ, block, render, new ITexture[][]{
-                            texturedTile.getTexture(block, DOWN),
-                            texturedTile.getTexture(block, UP),
-                            texturedTile.getTexture(block, NORTH),
-                            texturedTile.getTexture(block, SOUTH),
-                            texturedTile.getTexture(block, WEST),
-                            texturedTile.getTexture(block, EAST)},
-                                               isTranslucentPass);
+            if (!(te instanceof ITexturedTileEntity texturedTile))
+                return false;
+            if (isTranslucentPass && !texturedTile.hasTranslucency())
+                return false;
+
+            if (te instanceof IGregTechTileEntity gte) {
+                // Set the MTE handle it's own rendering, or keep going
+                val metaTileEntity = gte.getMetaTileEntity();
+                if (metaTileEntity != null && metaTileEntity.renderInWorld(world, posX, posY, posZ, block, render, isTranslucentPass))
+                    return true;
             }
+            if (te instanceof IPipeRenderedTileEntity pipeTile)
+                return renderPipeBlock(world, posX, posY, posZ, block, pipeTile, render, isTranslucentPass);
+            return renderStandardBlock(world, posX, posY, posZ, block, render, new ITexture[][]{
+                                               texturedTile.getTexture(block, DOWN),
+                                               texturedTile.getTexture(block, UP),
+                                               texturedTile.getTexture(block, NORTH),
+                                               texturedTile.getTexture(block, SOUTH),
+                                               texturedTile.getTexture(block, WEST),
+                                               texturedTile.getTexture(block, EAST)},
+                                       isTranslucentPass);
         } finally {
             // Reset bounds
             block.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
@@ -182,7 +184,6 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             render.useInventoryTint = prevUseInventoryTint;
             render.enableAO = prevEnableAO;
         }
-        return false;
     }
 
     @Override

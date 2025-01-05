@@ -450,4 +450,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 
     }
 
+    default boolean hasTranslucency() {
+        return false;
+    }
 }

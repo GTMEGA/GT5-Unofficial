@@ -9,4 +9,8 @@ public interface ITexturedTileEntity {
      * @return the Textures rendered by the GT IconRenderer
      */
     ITexture[] getTexture(Block block, ForgeDirection side);
+
+    default boolean hasTranslucency() {
+        return false;
+    }
 }

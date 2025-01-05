@@ -23,8 +23,6 @@ class GT_MultiTexture implements ITexture {
 
     @Override
     public boolean renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
-        if (!shouldRenderOnPass(isTranslucentPass))
-            return false;
         var didWork = false;
         for (val tTexture : mTextures)
             if (tTexture != null && tTexture.isValidTexture())
@@ -34,8 +32,6 @@ class GT_MultiTexture implements ITexture {
 
     @Override
     public boolean renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
-        if (!shouldRenderOnPass(isTranslucentPass))
-            return false;
         var didWork = false;
         for (val tTexture : mTextures)
             if (tTexture != null && tTexture.isValidTexture())
@@ -45,8 +41,6 @@ class GT_MultiTexture implements ITexture {
 
     @Override
     public boolean renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
-        if (!shouldRenderOnPass(isTranslucentPass))
-            return false;
         var didWork = false;
         for (val tTexture : mTextures)
             if (tTexture != null && tTexture.isValidTexture())
@@ -56,8 +50,6 @@ class GT_MultiTexture implements ITexture {
 
     @Override
     public boolean renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
-        if (!shouldRenderOnPass(isTranslucentPass))
-            return false;
         var didWork = false;
         for (val tTexture : mTextures)
             if (tTexture != null && tTexture.isValidTexture())
@@ -67,8 +59,6 @@ class GT_MultiTexture implements ITexture {
 
     @Override
     public boolean renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
-        if (!shouldRenderOnPass(isTranslucentPass))
-            return false;
         var didWork = false;
         for (val tTexture : mTextures)
             if (tTexture != null && tTexture.isValidTexture())
@@ -78,8 +68,6 @@ class GT_MultiTexture implements ITexture {
 
     @Override
     public boolean renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
-        if (!shouldRenderOnPass(isTranslucentPass))
-            return false;
         var didWork = false;
         for (val tTexture : mTextures)
             if (tTexture != null && tTexture.isValidTexture())
