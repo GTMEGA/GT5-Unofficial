@@ -43,7 +43,9 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
     }
 
     @Override
-    public boolean renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        if (!shouldRenderOnPass(isTranslucentPass))
+            return false;
         startDrawingQuads(aRenderer, 1.0f, 0.0f, 0.0f);
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
@@ -60,7 +62,9 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
     }
 
     @Override
-    public boolean renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        if (!shouldRenderOnPass(isTranslucentPass))
+            return false;
         startDrawingQuads(aRenderer, -1.0f, 0.0f, 0.0f);
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
@@ -77,7 +81,9 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
     }
 
     @Override
-    public boolean renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        if (!shouldRenderOnPass(isTranslucentPass))
+            return false;
         startDrawingQuads(aRenderer, 0.0f, 1.0f, 0.0f);
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
@@ -94,7 +100,9 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
     }
 
     @Override
-    public boolean renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        if (!shouldRenderOnPass(isTranslucentPass))
+            return false;
         startDrawingQuads(aRenderer, 0.0f, -1.0f, 0.0f);
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
@@ -111,7 +119,9 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
     }
 
     @Override
-    public boolean renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        if (!shouldRenderOnPass(isTranslucentPass))
+            return false;
         startDrawingQuads(aRenderer, 0.0f, 0.0f, 1.0f);
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
@@ -128,7 +138,9 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
     }
 
     @Override
-    public boolean renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        if (!shouldRenderOnPass(isTranslucentPass))
+            return false;
         startDrawingQuads(aRenderer, 0.0f, 0.0f, -1.0f);
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);

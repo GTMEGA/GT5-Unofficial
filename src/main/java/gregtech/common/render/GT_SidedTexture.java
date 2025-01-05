@@ -33,33 +33,39 @@ class GT_SidedTexture implements ITexture, IColorModulationContainer {
     }
 
     @Override
-    public boolean renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        return mTextures[5].renderXPos(aRenderer, aBlock, aX, aY, aZ);
+    public boolean renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        return shouldRenderOnPass(isTranslucentPass) &&
+               mTextures[5].renderXPos(aRenderer, aBlock, aX, aY, aZ, isTranslucentPass);
     }
 
     @Override
-    public boolean renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        return mTextures[4].renderXNeg(aRenderer, aBlock, aX, aY, aZ);
+    public boolean renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        return shouldRenderOnPass(isTranslucentPass) &&
+               mTextures[4].renderXNeg(aRenderer, aBlock, aX, aY, aZ, isTranslucentPass);
     }
 
     @Override
-    public boolean renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        return mTextures[1].renderYPos(aRenderer, aBlock, aX, aY, aZ);
+    public boolean renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        return shouldRenderOnPass(isTranslucentPass) &&
+               mTextures[1].renderYPos(aRenderer, aBlock, aX, aY, aZ, isTranslucentPass);
     }
 
     @Override
-    public boolean renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        return mTextures[0].renderYNeg(aRenderer, aBlock, aX, aY, aZ);
+    public boolean renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        return shouldRenderOnPass(isTranslucentPass) &&
+               mTextures[0].renderYNeg(aRenderer, aBlock, aX, aY, aZ, isTranslucentPass);
     }
 
     @Override
-    public boolean renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        return mTextures[3].renderZPos(aRenderer, aBlock, aX, aY, aZ);
+    public boolean renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        return shouldRenderOnPass(isTranslucentPass) &&
+               mTextures[3].renderZPos(aRenderer, aBlock, aX, aY, aZ, isTranslucentPass);
     }
 
     @Override
-    public boolean renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        return mTextures[2].renderZNeg(aRenderer, aBlock, aX, aY, aZ);
+    public boolean renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        return shouldRenderOnPass(isTranslucentPass) &&
+               mTextures[2].renderZNeg(aRenderer, aBlock, aX, aY, aZ, isTranslucentPass);
     }
 
     @Override

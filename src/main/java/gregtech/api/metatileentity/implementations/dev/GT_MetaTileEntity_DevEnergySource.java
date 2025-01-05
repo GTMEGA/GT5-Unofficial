@@ -430,12 +430,12 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public boolean renderInWorld(final IBlockAccess aWorld, final int aX, final int aY, final int aZ, final Block aBlock, final RenderBlocks aRenderer) {
+    public boolean renderInWorld(final IBlockAccess aWorld, final int aX, final int aY, final int aZ, final Block aBlock, final RenderBlocks aRenderer, boolean isTranslucentPass) {
         val  te     = getBaseMetaTileEntity();
         byte facing = te.getFrontFacing();
         for (byte side = 0; side < 6; side++) {
             val tex = getTexture(te, side, facing, te.getColorization(), te.isActive(), true);
-            GT_Renderer_Block.renderFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tex, true, side);
+            GT_Renderer_Block.renderFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tex, true, side, isTranslucentPass);
         }
         return true;
     }

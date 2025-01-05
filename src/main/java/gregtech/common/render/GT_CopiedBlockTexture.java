@@ -25,7 +25,9 @@ class GT_CopiedBlockTexture implements ITexture, IBlockContainer {
     }
 
     @Override
-    public boolean renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        if (!shouldRenderOnPass(isTranslucentPass))
+            return false;
         IIcon aIcon = getIcon(ForgeDirection.EAST.ordinal());
         aRenderer.field_152631_f = true;
         startDrawingQuads(aRenderer, 1.0f, 0.0f, 0.0f);
@@ -39,7 +41,9 @@ class GT_CopiedBlockTexture implements ITexture, IBlockContainer {
     }
 
     @Override
-    public boolean renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        if (!shouldRenderOnPass(isTranslucentPass))
+            return false;
         startDrawingQuads(aRenderer, -1.0f, 0.0f, 0.0f);
         IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal());
         new LightingHelper(aRenderer)
@@ -51,7 +55,9 @@ class GT_CopiedBlockTexture implements ITexture, IBlockContainer {
     }
 
     @Override
-    public boolean renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        if (!shouldRenderOnPass(isTranslucentPass))
+            return false;
         startDrawingQuads(aRenderer, 0.0f, 1.0f, 0.0f);
         IIcon aIcon = getIcon(ForgeDirection.UP.ordinal());
             new LightingHelper(aRenderer)
@@ -63,7 +69,9 @@ class GT_CopiedBlockTexture implements ITexture, IBlockContainer {
     }
 
     @Override
-    public boolean renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        if (!shouldRenderOnPass(isTranslucentPass))
+            return false;
         startDrawingQuads(aRenderer, 0.0f, -1.0f, 0.0f);
         IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal());
         new LightingHelper(aRenderer)
@@ -75,7 +83,9 @@ class GT_CopiedBlockTexture implements ITexture, IBlockContainer {
     }
 
     @Override
-    public boolean renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        if (!shouldRenderOnPass(isTranslucentPass))
+            return false;
         startDrawingQuads(aRenderer, 0.0f, 0.0f, 1.0f);
         IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal());
         new LightingHelper(aRenderer)
@@ -87,7 +97,9 @@ class GT_CopiedBlockTexture implements ITexture, IBlockContainer {
     }
 
     @Override
-    public boolean renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        if (!shouldRenderOnPass(isTranslucentPass))
+            return false;
         startDrawingQuads(aRenderer, 0.0f, 0.0f, -1.0f);
         IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal());
         aRenderer.field_152631_f = true;

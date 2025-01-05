@@ -8,21 +8,25 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 
 public interface ITexture {
-    boolean renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    boolean renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass);
 
-    boolean renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    boolean renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass);
 
-    boolean renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    boolean renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass);
 
-    boolean renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    boolean renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass);
 
-    boolean renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    boolean renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass);
 
-    boolean renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
+    boolean renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass);
 
     boolean isValidTexture();
 
     boolean isTranslucent();
+
+    default boolean shouldRenderOnPass(boolean isTranslucentPass) {
+        return shouldRenderOnPass(isTranslucentPass ? 1 : 0);
+    }
 
     default boolean shouldRenderOnPass(int pass) {
         return switch (pass) {

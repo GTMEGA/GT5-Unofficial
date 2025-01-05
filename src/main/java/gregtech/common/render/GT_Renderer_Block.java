@@ -20,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 
 import lombok.val;
+import net.minecraftforge.client.ForgeHooksClient;
 import org.lwjgl.opengl.GL11;
 
 import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_DOWN;
@@ -57,6 +58,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block block, int blockMeta, int modelID, RenderBlocks renderBlocks) {
+        val isTranslucentPass = false; //TODO: Rendering item blocks in inventory with translucency
+
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glPushMatrix();
@@ -77,7 +80,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                     block.setBlockBoundsForItemRender();
                     renderBlocks.setRenderBoundsFromBlock(block);
                     val textures = ore.getTextures();
-                    renderAllFaces(null, renderBlocks, block, 0, 0, 0, textures, true);
+                    renderAllFaces(null, renderBlocks, block, 0, 0, 0, textures, true, isTranslucentPass);
                     break render;
                 }
                 // Special case for potentiometer
@@ -85,7 +88,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                     block.setBlockBoundsForItemRender();
                     renderBlocks.setRenderBoundsFromBlock(block);
                     val textures = potentiometer.getInventoryTexture(blockMeta);
-                    renderAllFaces(null, renderBlocks, block, 0, 0, 0, textures, true);
+                    renderAllFaces(null, renderBlocks, block, 0, 0, 0, textures, true, isTranslucentPass);
                     break render;
                 }
                 // Everything else
@@ -94,7 +97,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                     && block instanceof GT_Block_Machines
                     && (GregTech_API.METATILEENTITIES[blockMeta] != null)
                     && (!GregTech_API.METATILEENTITIES[blockMeta].renderInInventory(block, blockMeta, renderBlocks))) {
-                    renderNormalInventoryMetaTileEntity(block, blockMeta, renderBlocks);
+                    renderNormalInventoryMetaTileEntity(block, blockMeta, renderBlocks, isTranslucentPass);
                 }
             }
         } finally {
@@ -120,6 +123,18 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                                     Block block,
                                     int modelId,
                                     RenderBlocks render) {
+        final boolean isTranslucentPass;
+        {
+            val renderPass = ForgeHooksClient.getWorldRenderPass();
+            if (renderPass == 0) {
+                isTranslucentPass = false;
+            } else if(renderPass == 1) {
+                isTranslucentPass = true;
+            } else {
+                return false; // Don't render anything, something went wrong! Can't log either because it would do another A2 fr fr...
+            }
+        }
+
         val prevEnableAO = render.enableAO;
         val prevUseInventoryTint = render.useInventoryTint;
 
@@ -130,12 +145,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             // Special case for ores
             if (block instanceof GT_Block_Ore_Abstract ore) {
                 val textures = ore.getTextures();
-                return renderStandardBlock(world, posX, posY, posZ, block, render, textures);
+                return renderStandardBlock(world, posX, posY, posZ, block, render, textures, isTranslucentPass);
             }
             // Special case for potentiometer
             if (block instanceof GT_Block_Potentiometer potentiometer) {
                 val textures = potentiometer.getPotentiometerTextures(world, posX, posY, posZ);
-                return renderStandardBlock(world, posX, posY, posZ, block, render, textures);
+                return renderStandardBlock(world, posX, posY, posZ, block, render, textures, isTranslucentPass);
             }
 
             val te = world.getTileEntity(posX, posY, posZ);
@@ -143,11 +158,11 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 if (te instanceof IGregTechTileEntity gte) {
                     // Set the MTE handle it's own rendering, or keep going
                     val metaTileEntity = gte.getMetaTileEntity();
-                    if (metaTileEntity != null && metaTileEntity.renderInWorld(world, posX, posY, posZ, block, render))
+                    if (metaTileEntity != null && metaTileEntity.renderInWorld(world, posX, posY, posZ, block, render, isTranslucentPass))
                         return true;
                 }
                 if (te instanceof IPipeRenderedTileEntity pipeTile)
-                    return renderPipeBlock(world, posX, posY, posZ, block, pipeTile, render);
+                    return renderPipeBlock(world, posX, posY, posZ, block, pipeTile, render, isTranslucentPass);
                 if (te instanceof ITexturedTileEntity texturedTile)
                     return renderStandardBlock(world, posX, posY, posZ, block, render, new ITexture[][]{
                             texturedTile.getTexture(block, DOWN),
@@ -155,7 +170,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                             texturedTile.getTexture(block, NORTH),
                             texturedTile.getTexture(block, SOUTH),
                             texturedTile.getTexture(block, WEST),
-                            texturedTile.getTexture(block, EAST)});
+                            texturedTile.getTexture(block, EAST)},
+                                               isTranslucentPass);
             }
         } finally {
             // Reset bounds
@@ -179,7 +195,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         return this.mRenderID;
     }
 
-    public static boolean renderStandardBlock(IBlockAccess world, int posX, int posY, int posZ, Block block, RenderBlocks renderBlocks) {
+    public static boolean renderStandardBlock(IBlockAccess world, int posX, int posY, int posZ, Block block, RenderBlocks renderBlocks, boolean isTranslucentPass) {
         val te = world.getTileEntity(posX, posY, posZ);
         if ((te instanceof IPipeRenderedTileEntity pipeTile)) {
             return renderStandardBlock(world, posX, posY, posZ, block, renderBlocks, new ITexture[][]{
@@ -188,7 +204,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                     pipeTile.getTextureCovered(NORTH),
                     pipeTile.getTextureCovered(SOUTH),
                     pipeTile.getTextureCovered(WEST),
-                    pipeTile.getTextureCovered(EAST)});
+                    pipeTile.getTextureCovered(EAST)},
+                                       isTranslucentPass);
         }
         if (te instanceof ITexturedTileEntity texturedTile) {
             return renderStandardBlock(world, posX, posY, posZ, block, renderBlocks, new ITexture[][]{
@@ -197,38 +214,39 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                     texturedTile.getTexture(block, NORTH),
                     texturedTile.getTexture(block, SOUTH),
                     texturedTile.getTexture(block, WEST),
-                    texturedTile.getTexture(block, EAST)});
+                    texturedTile.getTexture(block, EAST)},
+                                       isTranslucentPass);
         }
         return false;
     }
 
-    public static boolean renderStandardBlock(IBlockAccess world, int posX, int posY, int posZ, Block block, RenderBlocks render, ITexture[][] textures) {
+    public static boolean renderStandardBlock(IBlockAccess world, int posX, int posY, int posZ, Block block, RenderBlocks render, ITexture[][] textures, boolean isTranslucentPass) {
         block.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
         render.setRenderBoundsFromBlock(block);
         var didWork = false;
-        didWork |= renderNegativeYFacing(world, render, block, posX, posY, posZ, textures[DOWN.ordinal()], true);
-        didWork |= renderPositiveYFacing(world, render, block, posX, posY, posZ, textures[UP.ordinal()], true);
-        didWork |= renderNegativeZFacing(world, render, block, posX, posY, posZ, textures[NORTH.ordinal()], true);
-        didWork |= renderPositiveZFacing(world, render, block, posX, posY, posZ, textures[SOUTH.ordinal()], true);
-        didWork |= renderNegativeXFacing(world, render, block, posX, posY, posZ, textures[WEST.ordinal()], true);
-        didWork |= renderPositiveXFacing(world, render, block, posX, posY, posZ, textures[EAST.ordinal()], true);
+        didWork |= renderNegativeYFacing(world, render, block, posX, posY, posZ, textures[DOWN.ordinal()], true, isTranslucentPass);
+        didWork |= renderPositiveYFacing(world, render, block, posX, posY, posZ, textures[UP.ordinal()], true, isTranslucentPass);
+        didWork |= renderNegativeZFacing(world, render, block, posX, posY, posZ, textures[NORTH.ordinal()], true, isTranslucentPass);
+        didWork |= renderPositiveZFacing(world, render, block, posX, posY, posZ, textures[SOUTH.ordinal()], true, isTranslucentPass);
+        didWork |= renderNegativeXFacing(world, render, block, posX, posY, posZ, textures[WEST.ordinal()], true, isTranslucentPass);
+        didWork |= renderPositiveXFacing(world, render, block, posX, posY, posZ, textures[EAST.ordinal()], true, isTranslucentPass);
         return didWork;
     }
 
-    public static boolean renderStandardBlock(IBlockAccess world, int posX, int posY, int posZ, Block block, RenderBlocks render, ITexture[] textures) {
+    public static boolean renderStandardBlock(IBlockAccess world, int posX, int posY, int posZ, Block block, RenderBlocks render, ITexture[] textures, boolean isTranslucentPass) {
         block.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
         render.setRenderBoundsFromBlock(block);
-        return renderAllFaces(world, render, block, posX, posY, posZ, textures, true);
+        return renderAllFaces(world, render, block, posX, posY, posZ, textures, true, isTranslucentPass);
     }
 
-    public static boolean renderPipeBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, IPipeRenderedTileEntity aTileEntity, RenderBlocks aRenderer) {
+    public static boolean renderPipeBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, IPipeRenderedTileEntity aTileEntity, RenderBlocks aRenderer, boolean isTranslucentPass) {
         final byte aConnections = aTileEntity.getConnections();
         if ((aConnections & (HAS_FRESHFOAM | HAS_HARDENEDFOAM)) != 0) {
-            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer);
+            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, isTranslucentPass);
         }
         final float thickness = aTileEntity.getThickNess();
         if (thickness >= 0.99F) {
-            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer);
+            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, isTranslucentPass);
         }
         // Range of block occupied by pipe
         final float pipeMin = (blockMax - thickness) / 2.0F;
@@ -258,51 +276,51 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             case NO_CONNECTION:
                 aBlock.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
-                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false);
-                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[UP.ordinal()], false);
-                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[NORTH.ordinal()], false);
-                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false);
-                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false);
-                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false);
+                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false, isTranslucentPass);
+                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[UP.ordinal()], false, isTranslucentPass);
+                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[NORTH.ordinal()], false, isTranslucentPass);
+                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false, isTranslucentPass);
+                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false, isTranslucentPass);
+                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false, isTranslucentPass);
                 break;
             case CONNECTED_EAST | CONNECTED_WEST:
                 // EAST - WEST Pipe Sides
                 aBlock.setBlockBounds(blockMin, pipeMin, pipeMin, blockMax, pipeMax, pipeMax);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
-                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false);
-                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[UP.ordinal()], false);
-                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[NORTH.ordinal()], false);
-                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false);
+                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false, isTranslucentPass);
+                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[UP.ordinal()], false, isTranslucentPass);
+                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[NORTH.ordinal()], false, isTranslucentPass);
+                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false, isTranslucentPass);
 
                 // EAST - WEST Pipe Ends
-                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false);
-                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false);
+                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false, isTranslucentPass);
+                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false, isTranslucentPass);
                 break;
             case CONNECTED_DOWN | CONNECTED_UP:
                 // UP - DOWN Pipe Sides
                 aBlock.setBlockBounds(pipeMin, blockMin, pipeMin, pipeMax, blockMax, pipeMax);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
-                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[NORTH.ordinal()], false);
-                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false);
-                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false);
-                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false);
+                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[NORTH.ordinal()], false, isTranslucentPass);
+                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false, isTranslucentPass);
+                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false, isTranslucentPass);
+                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false, isTranslucentPass);
 
                 // UP - DOWN Pipe Ends
-                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false);
-                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[UP.ordinal()], false);
+                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false, isTranslucentPass);
+                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[UP.ordinal()], false, isTranslucentPass);
                 break;
             case CONNECTED_NORTH | CONNECTED_SOUTH:
                 // NORTH - SOUTH Pipe Sides
                 aBlock.setBlockBounds(pipeMin, pipeMin, blockMin, pipeMax, pipeMax, blockMax);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
-                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false);
-                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[UP.ordinal()], false);
-                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false);
-                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false);
+                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false, isTranslucentPass);
+                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[UP.ordinal()], false, isTranslucentPass);
+                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false, isTranslucentPass);
+                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false, isTranslucentPass);
 
                 // NORTH - SOUTH Pipe Ends
-                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[NORTH.ordinal()], false);
-                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false);
+                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[NORTH.ordinal()], false, isTranslucentPass);
+                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false, isTranslucentPass);
                 break;
             default:
                 if ((aConnections & CONNECTED_WEST) == 0) {
@@ -311,12 +329,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 } else {
                     aBlock.setBlockBounds(blockMin, pipeMin, pipeMin, pipeMin, pipeMax, pipeMax);
                     aRenderer.setRenderBoundsFromBlock(aBlock);
-                    didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false);
-                    didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[UP.ordinal()], false);
-                    didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[NORTH.ordinal()], false);
-                    didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false);
+                    didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false, isTranslucentPass);
+                    didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[UP.ordinal()], false, isTranslucentPass);
+                    didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[NORTH.ordinal()], false, isTranslucentPass);
+                    didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false, isTranslucentPass);
                 }
-                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false);
+                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false, isTranslucentPass);
 
                 if ((aConnections & CONNECTED_EAST) == 0) {
                     aBlock.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
@@ -324,12 +342,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 } else {
                     aBlock.setBlockBounds(pipeMax, pipeMin, pipeMin, blockMax, pipeMax, pipeMax);
                     aRenderer.setRenderBoundsFromBlock(aBlock);
-                    didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false);
-                    didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[UP.ordinal()], false);
-                    didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[NORTH.ordinal()], false);
-                    didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false);
+                    didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false, isTranslucentPass);
+                    didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[UP.ordinal()], false, isTranslucentPass);
+                    didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[NORTH.ordinal()], false, isTranslucentPass);
+                    didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false, isTranslucentPass);
                 }
-                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false);
+                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false, isTranslucentPass);
 
                 if ((aConnections & CONNECTED_DOWN) == 0) {
                     aBlock.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
@@ -337,12 +355,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 } else {
                     aBlock.setBlockBounds(pipeMin, blockMin, pipeMin, pipeMax, pipeMin, pipeMax);
                     aRenderer.setRenderBoundsFromBlock(aBlock);
-                    didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[NORTH.ordinal()], false);
-                    didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false);
-                    didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false);
-                    didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false);
+                    didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[NORTH.ordinal()], false, isTranslucentPass);
+                    didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false, isTranslucentPass);
+                    didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false, isTranslucentPass);
+                    didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false, isTranslucentPass);
                 }
-                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false);
+                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false, isTranslucentPass);
 
                 if ((aConnections & CONNECTED_UP) == 0) {
                     aBlock.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
@@ -350,12 +368,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 } else {
                     aBlock.setBlockBounds(pipeMin, pipeMax, pipeMin, pipeMax, blockMax, pipeMax);
                     aRenderer.setRenderBoundsFromBlock(aBlock);
-                    didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[NORTH.ordinal()], false);
-                    didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false);
-                    didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false);
-                    didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false);
+                    didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[NORTH.ordinal()], false, isTranslucentPass);
+                    didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false, isTranslucentPass);
+                    didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false, isTranslucentPass);
+                    didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false, isTranslucentPass);
                 }
-                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[UP.ordinal()], false);
+                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[UP.ordinal()], false, isTranslucentPass);
 
                 if ((aConnections & CONNECTED_NORTH) == 0) {
                     aBlock.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
@@ -363,12 +381,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 } else {
                     aBlock.setBlockBounds(pipeMin, pipeMin, blockMin, pipeMax, pipeMax, pipeMin);
                     aRenderer.setRenderBoundsFromBlock(aBlock);
-                    didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false);
-                    didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[UP.ordinal()], false);
-                    didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false);
-                    didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false);
+                    didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false, isTranslucentPass);
+                    didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[UP.ordinal()], false, isTranslucentPass);
+                    didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false, isTranslucentPass);
+                    didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false, isTranslucentPass);
                 }
-                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[NORTH.ordinal()], false);
+                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[NORTH.ordinal()], false, isTranslucentPass);
 
                 if ((aConnections & CONNECTED_SOUTH) == 0) {
                     aBlock.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
@@ -376,12 +394,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 } else {
                     aBlock.setBlockBounds(pipeMin, pipeMin, pipeMax, pipeMax, pipeMax, blockMax);
                     aRenderer.setRenderBoundsFromBlock(aBlock);
-                    didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false);
-                    didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[UP.ordinal()], false);
-                    didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false);
-                    didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false);
+                    didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false, isTranslucentPass);
+                    didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[UP.ordinal()], false, isTranslucentPass);
+                    didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false, isTranslucentPass);
+                    didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false, isTranslucentPass);
                 }
-                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false);
+                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false, isTranslucentPass);
                 break;
         }
 
@@ -390,199 +408,199 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, coverInnerMin, blockMax);
             aRenderer.setRenderBoundsFromBlock(aBlock);
             if (!tIsCovered[NORTH.ordinal()]) {
-                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[DOWN.ordinal()], false);
+                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[DOWN.ordinal()], false, isTranslucentPass);
             }
             if (!tIsCovered[SOUTH.ordinal()]) {
-                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[DOWN.ordinal()], false);
+                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[DOWN.ordinal()], false, isTranslucentPass);
             }
             if (!tIsCovered[WEST.ordinal()]) {
-                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[DOWN.ordinal()], false);
+                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[DOWN.ordinal()], false, isTranslucentPass);
             }
             if (!tIsCovered[EAST.ordinal()]) {
-                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[DOWN.ordinal()], false);
+                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[DOWN.ordinal()], false, isTranslucentPass);
             }
-            didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[DOWN.ordinal()], false);
+            didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[DOWN.ordinal()], false, isTranslucentPass);
             if ((aConnections & CONNECTED_DOWN) != 0) {
                 // Split outer face to leave hole for pipe
                 // Lower panel
                 aRenderer.setRenderBounds(blockMin, blockMin, blockMin, blockMax, blockMin, pipeMin);
-                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[DOWN.ordinal()], false);
+                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[DOWN.ordinal()], false, isTranslucentPass);
                 // Upper panel
                 aRenderer.setRenderBounds(blockMin, blockMin, pipeMax, blockMax, blockMin, blockMax);
-                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[DOWN.ordinal()], false);
+                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[DOWN.ordinal()], false, isTranslucentPass);
                 // Middle left panel
                 aRenderer.setRenderBounds(blockMin, blockMin, pipeMin, pipeMin, blockMin, pipeMax);
-                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[DOWN.ordinal()], false);
+                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[DOWN.ordinal()], false, isTranslucentPass);
                 // Middle right panel
                 aRenderer.setRenderBounds(pipeMax, blockMin, pipeMin, blockMax, blockMin, pipeMax);
             }
-            didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[DOWN.ordinal()], false);
+            didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[DOWN.ordinal()], false, isTranslucentPass);
         }
 
         if (tIsCovered[UP.ordinal()]) {
             aBlock.setBlockBounds(blockMin, coverInnerMax, blockMin, blockMax, blockMax, blockMax);
             aRenderer.setRenderBoundsFromBlock(aBlock);
             if (!tIsCovered[NORTH.ordinal()]) {
-                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[UP.ordinal()], false);
+                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[UP.ordinal()], false, isTranslucentPass);
             }
             if (!tIsCovered[SOUTH.ordinal()]) {
-                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[UP.ordinal()], false);
+                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[UP.ordinal()], false, isTranslucentPass);
             }
             if (!tIsCovered[WEST.ordinal()]) {
-                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[UP.ordinal()], false);
+                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[UP.ordinal()], false, isTranslucentPass);
             }
             if (!tIsCovered[EAST.ordinal()]) {
-                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[UP.ordinal()], false);
+                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[UP.ordinal()], false, isTranslucentPass);
             }
-            didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[UP.ordinal()], false);
+            didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[UP.ordinal()], false, isTranslucentPass);
             if ((aConnections & CONNECTED_UP) != 0) {
                 // Split outer face to leave hole for pipe
                 // Lower panel
                 aRenderer.setRenderBounds(blockMin, blockMax, blockMin, blockMax, blockMax, pipeMin);
-                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[UP.ordinal()], false);
+                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[UP.ordinal()], false, isTranslucentPass);
                 // Upper panel
                 aRenderer.setRenderBounds(blockMin, blockMax, pipeMax, blockMax, blockMax, blockMax);
-                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[UP.ordinal()], false);
+                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[UP.ordinal()], false, isTranslucentPass);
                 // Middle left panel
                 aRenderer.setRenderBounds(blockMin, blockMax, pipeMin, pipeMin, blockMax, pipeMax);
-                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[UP.ordinal()], false);
+                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[UP.ordinal()], false, isTranslucentPass);
                 // Middle right panel
                 aRenderer.setRenderBounds(pipeMax, blockMax, pipeMin, blockMax, blockMax, pipeMax);
             }
-            didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[UP.ordinal()], false);
+            didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[UP.ordinal()], false, isTranslucentPass);
         }
 
         if (tIsCovered[NORTH.ordinal()]) {
             aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, coverInnerMin);
             aRenderer.setRenderBoundsFromBlock(aBlock);
             if (!tIsCovered[DOWN.ordinal()]) {
-                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[NORTH.ordinal()], false);
+                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[NORTH.ordinal()], false, isTranslucentPass);
             }
             if (!tIsCovered[UP.ordinal()]) {
-                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[NORTH.ordinal()], false);
+                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[NORTH.ordinal()], false, isTranslucentPass);
             }
             if (!tIsCovered[WEST.ordinal()]) {
-                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[NORTH.ordinal()], false);
+                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[NORTH.ordinal()], false, isTranslucentPass);
             }
             if (!tIsCovered[EAST.ordinal()]) {
-                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[NORTH.ordinal()], false);
+                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[NORTH.ordinal()], false, isTranslucentPass);
             }
-            didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[NORTH.ordinal()], false);
+            didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[NORTH.ordinal()], false, isTranslucentPass);
             if ((aConnections & CONNECTED_NORTH) != 0) {
                 // Split outer face to leave hole for pipe
                 // Lower panel
                 aRenderer.setRenderBounds(blockMin, blockMin, blockMin, blockMax, pipeMin, blockMin);
-                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[NORTH.ordinal()], false);
+                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[NORTH.ordinal()], false, isTranslucentPass);
                 // Upper panel
                 aRenderer.setRenderBounds(blockMin, pipeMax, blockMin, blockMax, blockMax, blockMin);
-                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[NORTH.ordinal()], false);
+                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[NORTH.ordinal()], false, isTranslucentPass);
                 // Middle left panel
                 aRenderer.setRenderBounds(blockMin, pipeMin, blockMin, pipeMin, pipeMax, blockMin);
-                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[NORTH.ordinal()], false);
+                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[NORTH.ordinal()], false, isTranslucentPass);
                 // Middle right panel
                 aRenderer.setRenderBounds(pipeMax, pipeMin, blockMin, blockMax, pipeMax, blockMin);
             }
-            didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[NORTH.ordinal()], false);
+            didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[NORTH.ordinal()], false, isTranslucentPass);
         }
 
         if (tIsCovered[SOUTH.ordinal()]) {
             aBlock.setBlockBounds(blockMin, blockMin, coverInnerMax, blockMax, blockMax, blockMax);
             aRenderer.setRenderBoundsFromBlock(aBlock);
             if (!tIsCovered[DOWN.ordinal()]) {
-                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[SOUTH.ordinal()], false);
+                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[SOUTH.ordinal()], false, isTranslucentPass);
             }
             if (!tIsCovered[UP.ordinal()]) {
-                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[SOUTH.ordinal()], false);
+                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[SOUTH.ordinal()], false, isTranslucentPass);
             }
             if (!tIsCovered[WEST.ordinal()]) {
-                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[SOUTH.ordinal()], false);
+                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[SOUTH.ordinal()], false, isTranslucentPass);
             }
             if (!tIsCovered[EAST.ordinal()]) {
-                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[SOUTH.ordinal()], false);
+                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[SOUTH.ordinal()], false, isTranslucentPass);
             }
-            didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[SOUTH.ordinal()], false);
+            didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[SOUTH.ordinal()], false, isTranslucentPass);
             if ((aConnections & CONNECTED_SOUTH) != 0) {
                 // Split outer face to leave hole for pipe
                 // Lower panel
                 aRenderer.setRenderBounds(blockMin, blockMin, blockMax, blockMax, pipeMin, blockMax);
-                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[SOUTH.ordinal()], false);
+                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[SOUTH.ordinal()], false, isTranslucentPass);
                 // Upper panel
                 aRenderer.setRenderBounds(blockMin, pipeMax, blockMax, blockMax, blockMax, blockMax);
-                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[SOUTH.ordinal()], false);
+                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[SOUTH.ordinal()], false, isTranslucentPass);
                 // Middle left panel
                 aRenderer.setRenderBounds(blockMin, pipeMin, blockMax, pipeMin, pipeMax, blockMax);
-                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[SOUTH.ordinal()], false);
+                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[SOUTH.ordinal()], false, isTranslucentPass);
                 // Middle right panel
                 aRenderer.setRenderBounds(pipeMax, pipeMin, blockMax, blockMax, pipeMax, blockMax);
             }
-            didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[SOUTH.ordinal()], false);
+            didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[SOUTH.ordinal()], false, isTranslucentPass);
         }
 
         if (tIsCovered[WEST.ordinal()]) {
             aBlock.setBlockBounds(blockMin, blockMin, blockMin, coverInnerMin, blockMax, blockMax);
             aRenderer.setRenderBoundsFromBlock(aBlock);
             if (!tIsCovered[DOWN.ordinal()]) {
-                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[WEST.ordinal()], false);
+                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[WEST.ordinal()], false, isTranslucentPass);
             }
             if (!tIsCovered[UP.ordinal()]) {
-                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[WEST.ordinal()], false);
+                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[WEST.ordinal()], false, isTranslucentPass);
             }
             if (!tIsCovered[NORTH.ordinal()]) {
-                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[WEST.ordinal()], false);
+                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[WEST.ordinal()], false, isTranslucentPass);
             }
             if (!tIsCovered[SOUTH.ordinal()]) {
-                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[WEST.ordinal()], false);
+                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[WEST.ordinal()], false, isTranslucentPass);
             }
-            didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[WEST.ordinal()], false);
+            didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[WEST.ordinal()], false, isTranslucentPass);
             if ((aConnections & CONNECTED_WEST) != 0) {
                 // Split outer face to leave hole for pipe
                 // Lower panel
                 aRenderer.setRenderBounds(blockMin, blockMin, blockMin, blockMin, pipeMin, blockMax);
-                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[WEST.ordinal()], false);
+                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[WEST.ordinal()], false, isTranslucentPass);
                 // Upper panel
                 aRenderer.setRenderBounds(blockMin, pipeMax, blockMin, blockMin, blockMax, blockMax);
-                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[WEST.ordinal()], false);
+                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[WEST.ordinal()], false, isTranslucentPass);
                 // Middle left panel
                 aRenderer.setRenderBounds(blockMin, pipeMin, blockMin, blockMin, pipeMax, pipeMin);
-                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[WEST.ordinal()], false);
+                didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[WEST.ordinal()], false, isTranslucentPass);
                 // Middle right panel
                 aRenderer.setRenderBounds(blockMin, pipeMin, pipeMax, blockMin, pipeMax, blockMax);
             }
-            didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[WEST.ordinal()], false);
+            didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[WEST.ordinal()], false, isTranslucentPass);
         }
 
         if (tIsCovered[EAST.ordinal()]) {
             aBlock.setBlockBounds(coverInnerMax, blockMin, blockMin, blockMax, blockMax, blockMax);
             aRenderer.setRenderBoundsFromBlock(aBlock);
             if (!tIsCovered[DOWN.ordinal()]) {
-                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[EAST.ordinal()], false);
+                didWork |= renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[EAST.ordinal()], false, isTranslucentPass);
             }
             if (!tIsCovered[UP.ordinal()]) {
-                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[EAST.ordinal()], false);
+                didWork |= renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[EAST.ordinal()], false, isTranslucentPass);
             }
             if (!tIsCovered[NORTH.ordinal()]) {
-                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[EAST.ordinal()], false);
+                didWork |= renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[EAST.ordinal()], false, isTranslucentPass);
             }
             if (!tIsCovered[SOUTH.ordinal()]) {
-                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[EAST.ordinal()], false);
+                didWork |= renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[EAST.ordinal()], false, isTranslucentPass);
             }
-            didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[EAST.ordinal()], false);
+            didWork |= renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[EAST.ordinal()], false, isTranslucentPass);
 
             if ((aConnections & CONNECTED_EAST) != 0) {
                 // Split outer face to leave hole for pipe
                 // Lower panel
                 aRenderer.setRenderBounds(blockMax, blockMin, blockMin, blockMax, pipeMin, blockMax);
-                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[EAST.ordinal()], false);
+                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[EAST.ordinal()], false, isTranslucentPass);
                 // Upper panel
                 aRenderer.setRenderBounds(blockMax, pipeMax, blockMin, blockMax, blockMax, blockMax);
-                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[EAST.ordinal()], false);
+                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[EAST.ordinal()], false, isTranslucentPass);
                 // Middle left panel
                 aRenderer.setRenderBounds(blockMax, pipeMin, blockMin, blockMax, pipeMax, pipeMin);
-                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[EAST.ordinal()], false);
+                didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[EAST.ordinal()], false, isTranslucentPass);
                 // Middle right panel
                 aRenderer.setRenderBounds(blockMax, pipeMin, pipeMax, blockMax, pipeMax, blockMax);
             }
-            didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[EAST.ordinal()], false);
+            didWork |= renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tCovers[EAST.ordinal()], false, isTranslucentPass);
         }
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
         aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -590,7 +608,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         return didWork;
     }
 
-    private static void renderNormalInventoryMetaTileEntity(Block aBlock, int aMeta, RenderBlocks aRenderer) {
+    private static void renderNormalInventoryMetaTileEntity(Block aBlock, int aMeta, RenderBlocks aRenderer, boolean isTranslucentPass) {
         if ((aMeta <= 0) || (aMeta >= GregTech_API.METATILEENTITIES.length)) {
             return;
         }
@@ -610,19 +628,19 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
 
             aBlock.setBlockBounds(blockMin, pipeMin, pipeMin, blockMax, pipeMax, pipeMax);
             aRenderer.setRenderBoundsFromBlock(aBlock);
-            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) DOWN.ordinal(), (byte) (CONNECTED_WEST | CONNECTED_EAST), (byte) -1, false, false), true);
-            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) UP.ordinal(), (byte) (CONNECTED_WEST | CONNECTED_EAST), (byte) -1, false, false), true);
-            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) NORTH.ordinal(), (byte) (CONNECTED_WEST | CONNECTED_EAST), (byte) -1, false, false), true);
-            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) SOUTH.ordinal(), (byte) (CONNECTED_WEST | CONNECTED_EAST), (byte) -1, false, false), true);
-            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) WEST.ordinal(), (byte) (CONNECTED_WEST | CONNECTED_EAST), (byte) -1, true, false), true);
-            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) EAST.ordinal(), (byte) (CONNECTED_WEST | CONNECTED_EAST), (byte) -1, true, false), true);
+            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) DOWN.ordinal(), (byte) (CONNECTED_WEST | CONNECTED_EAST), (byte) -1, false, false), true, isTranslucentPass);
+            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) UP.ordinal(), (byte) (CONNECTED_WEST | CONNECTED_EAST), (byte) -1, false, false), true, isTranslucentPass);
+            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) NORTH.ordinal(), (byte) (CONNECTED_WEST | CONNECTED_EAST), (byte) -1, false, false), true, isTranslucentPass);
+            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) SOUTH.ordinal(), (byte) (CONNECTED_WEST | CONNECTED_EAST), (byte) -1, false, false), true, isTranslucentPass);
+            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) WEST.ordinal(), (byte) (CONNECTED_WEST | CONNECTED_EAST), (byte) -1, true, false), true, isTranslucentPass);
+            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) EAST.ordinal(), (byte) (CONNECTED_WEST | CONNECTED_EAST), (byte) -1, true, false), true, isTranslucentPass);
         } else {
-            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) DOWN.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false), true);
-            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) UP.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false), true);
-            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) NORTH.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false), true);
-            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) SOUTH.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false), true);
-            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) WEST.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false), true);
-            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) EAST.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false), true);
+            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) DOWN.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false), true, isTranslucentPass);
+            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) UP.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false), true, isTranslucentPass);
+            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) NORTH.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false), true, isTranslucentPass);
+            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) SOUTH.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false), true, isTranslucentPass);
+            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) WEST.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false), true, isTranslucentPass);
+            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, (byte) EAST.ordinal(), (byte) WEST.ordinal(), (byte) -1, true, false), true, isTranslucentPass);
         }
     }
 
@@ -634,14 +652,15 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                                        int posZ,
                                        ITexture[] textures,
                                        boolean isFullBlock,
-                                       byte side) {
+                                       byte side,
+                                       boolean isTranslucentPass) {
         return switch (side) {
-            case 0 -> renderNegativeYFacing(world, render, block, posX, posY, posZ, textures, isFullBlock);
-            case 1 -> renderPositiveYFacing(world, render, block, posX, posY, posZ, textures, isFullBlock);
-            case 2 -> renderNegativeZFacing(world, render, block, posX, posY, posZ, textures, isFullBlock);
-            case 3 -> renderPositiveZFacing(world, render, block, posX, posY, posZ, textures, isFullBlock);
-            case 4 -> renderNegativeXFacing(world, render, block, posX, posY, posZ, textures, isFullBlock);
-            case 5 -> renderPositiveXFacing(world, render, block, posX, posY, posZ, textures, isFullBlock);
+            case 0 -> renderNegativeYFacing(world, render, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
+            case 1 -> renderPositiveYFacing(world, render, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
+            case 2 -> renderNegativeZFacing(world, render, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
+            case 3 -> renderPositiveZFacing(world, render, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
+            case 4 -> renderNegativeXFacing(world, render, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
+            case 5 -> renderPositiveXFacing(world, render, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
             default -> false;
         };
     }
@@ -653,14 +672,15 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                                          int posY,
                                          int posZ,
                                          ITexture[] textures,
-                                         boolean isFullBlock) {
+                                         boolean isFullBlock,
+                                         boolean isTranslucentPass) {
         var didWork = false;
-        didWork |= renderNegativeYFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock);
-        didWork |= renderPositiveYFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock);
-        didWork |= renderNegativeZFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock);
-        didWork |= renderPositiveZFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock);
-        didWork |= renderNegativeXFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock);
-        didWork |= renderPositiveXFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock);
+        didWork |= renderNegativeYFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
+        didWork |= renderPositiveYFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
+        didWork |= renderNegativeZFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
+        didWork |= renderPositiveZFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
+        didWork |= renderNegativeXFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
+        didWork |= renderPositiveXFacing(world, renderBlocks, block, posX, posY, posZ, textures, isFullBlock, isTranslucentPass);
         return didWork;
     }
 
@@ -671,7 +691,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                                                 int posY,
                                                 int posZ,
                                                 ITexture[] textures,
-                                                boolean isFullBlock) {
+                                                boolean isFullBlock,
+                                                boolean isTranslucentPass) {
         if (textures == null)
             return false;
         if (world != null) {
@@ -684,7 +705,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         var didWork = false;
         for (val texture : textures)
             if (texture != null)
-                didWork |= texture.renderYNeg(render, block, posX, posY, posZ);
+                didWork |= texture.renderYNeg(render, block, posX, posY, posZ, isTranslucentPass);
         return didWork;
     }
 
@@ -695,7 +716,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                                                 int posY,
                                                 int posZ,
                                                 ITexture[] textures,
-                                                boolean isFullBlock) {
+                                                boolean isFullBlock,
+                                                boolean isTranslucentPass) {
         if (textures == null)
             return false;
         if (world != null) {
@@ -708,7 +730,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         var didWork = false;
         for (val texture : textures)
             if (texture != null)
-                didWork |= texture.renderYPos(render, block, posX, posY, posZ);
+                didWork |= texture.renderYPos(render, block, posX, posY, posZ, isTranslucentPass);
         return didWork;
     }
 
@@ -719,7 +741,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                                                 int posY,
                                                 int posZ,
                                                 ITexture[] textures,
-                                                boolean isFullBlock) {
+                                                boolean isFullBlock,
+                                                boolean isTranslucentPass) {
         if (textures == null)
             return false;
         if (world != null) {
@@ -732,7 +755,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         var didWork = false;
         for (val texture : textures)
             if (texture != null)
-                didWork |= texture.renderZNeg(render, block, posX, posY, posZ);
+                didWork |= texture.renderZNeg(render, block, posX, posY, posZ, isTranslucentPass);
         return didWork;
     }
 
@@ -743,7 +766,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                                                 int posY,
                                                 int posZ,
                                                 ITexture[] textures,
-                                                boolean isFullBlock) {
+                                                boolean isFullBlock,
+                                                boolean isTranslucentPass) {
         if (textures == null)
             return false;
         if (world != null) {
@@ -756,7 +780,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         var didWork = false;
         for (val texture : textures)
             if (texture != null)
-                didWork |= texture.renderZPos(render, block, posX, posY, posZ);
+                didWork |= texture.renderZPos(render, block, posX, posY, posZ, isTranslucentPass);
         return didWork;
     }
 
@@ -767,7 +791,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                                                 int posY,
                                                 int posZ,
                                                 ITexture[] textures,
-                                                boolean isFullBlock) {
+                                                boolean isFullBlock,
+                                                boolean isTranslucentPass) {
         if (textures == null)
             return false;
         if (world != null) {
@@ -780,7 +805,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         var didWork = false;
         for (val texture : textures)
             if (texture != null)
-                didWork |= texture.renderXNeg(render, block, posX, posY, posZ);
+                didWork |= texture.renderXNeg(render, block, posX, posY, posZ, isTranslucentPass);
         return didWork;
     }
 
@@ -791,7 +816,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                                                 int posY,
                                                 int posZ,
                                                 ITexture[] textures,
-                                                boolean isFullBlock) {
+                                                boolean isFullBlock,
+                                                boolean isTranslucentPass) {
         if (textures == null)
             return false;
         if (world != null) {
@@ -804,7 +830,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         var didWork = false;
         for (val texture : textures)
             if (texture != null)
-                didWork |= texture.renderXPos(render, block, posX, posY, posZ);
+                didWork |= texture.renderXPos(render, block, posX, posY, posZ, isTranslucentPass);
         return didWork;
     }
 }

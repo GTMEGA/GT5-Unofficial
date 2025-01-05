@@ -22,56 +22,68 @@ class GT_MultiTexture implements ITexture {
     }
 
     @Override
-    public boolean renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        if (!shouldRenderOnPass(isTranslucentPass))
+            return false;
         var didWork = false;
         for (val tTexture : mTextures)
             if (tTexture != null && tTexture.isValidTexture())
-                didWork |= tTexture.renderXPos(aRenderer, aBlock, aX, aY, aZ);
+                didWork |= tTexture.renderXPos(aRenderer, aBlock, aX, aY, aZ, isTranslucentPass);
         return didWork;
     }
 
     @Override
-    public boolean renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        if (!shouldRenderOnPass(isTranslucentPass))
+            return false;
         var didWork = false;
         for (val tTexture : mTextures)
             if (tTexture != null && tTexture.isValidTexture())
-                didWork |= tTexture.renderXNeg(aRenderer, aBlock, aX, aY, aZ);
+                didWork |= tTexture.renderXNeg(aRenderer, aBlock, aX, aY, aZ, isTranslucentPass);
         return didWork;
     }
 
     @Override
-    public boolean renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        if (!shouldRenderOnPass(isTranslucentPass))
+            return false;
         var didWork = false;
         for (val tTexture : mTextures)
             if (tTexture != null && tTexture.isValidTexture())
-                didWork |= tTexture.renderYPos(aRenderer, aBlock, aX, aY, aZ);
+                didWork |= tTexture.renderYPos(aRenderer, aBlock, aX, aY, aZ, isTranslucentPass);
         return didWork;
     }
 
     @Override
-    public boolean renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        if (!shouldRenderOnPass(isTranslucentPass))
+            return false;
         var didWork = false;
         for (val tTexture : mTextures)
             if (tTexture != null && tTexture.isValidTexture())
-                didWork |= tTexture.renderYNeg(aRenderer, aBlock, aX, aY, aZ);
+                didWork |= tTexture.renderYNeg(aRenderer, aBlock, aX, aY, aZ, isTranslucentPass);
         return didWork;
     }
 
     @Override
-    public boolean renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        if (!shouldRenderOnPass(isTranslucentPass))
+            return false;
         var didWork = false;
         for (val tTexture : mTextures)
             if (tTexture != null && tTexture.isValidTexture())
-                didWork |= tTexture.renderZPos(aRenderer, aBlock, aX, aY, aZ);
+                didWork |= tTexture.renderZPos(aRenderer, aBlock, aX, aY, aZ, isTranslucentPass);
         return didWork;
     }
 
     @Override
-    public boolean renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
+    public boolean renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ, boolean isTranslucentPass) {
+        if (!shouldRenderOnPass(isTranslucentPass))
+            return false;
         var didWork = false;
         for (val tTexture : mTextures)
             if (tTexture != null && tTexture.isValidTexture())
-                didWork |= tTexture.renderZNeg(aRenderer, aBlock, aX, aY, aZ);
+                didWork |= tTexture.renderZNeg(aRenderer, aBlock, aX, aY, aZ, isTranslucentPass);
         return didWork;
     }
 

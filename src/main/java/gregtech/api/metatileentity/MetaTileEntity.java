@@ -965,7 +965,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
+    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer, boolean isTranslucentPass) {
         return false;
     }
 
