@@ -13,13 +13,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 
 import java.util.Collections;
-import java.util.List;
 
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_REGULATOR;
-import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_REGULATOR_GLOW;
 
 public class GT_MetaTileEntity_Regulator
         extends GT_MetaTileEntity_Buffer {
@@ -49,9 +46,7 @@ public class GT_MetaTileEntity_Regulator
 
     @Override
     public ITexture getOverlayIcon() {
-        return TextureFactory.of(
-                TextureFactory.of(AUTOMATION_REGULATOR),
-                TextureFactory.builder().addIcon(AUTOMATION_REGULATOR_GLOW).glow().build());
+        return TextureFactory.of(AUTOMATION_REGULATOR);
     }
 
     @Override

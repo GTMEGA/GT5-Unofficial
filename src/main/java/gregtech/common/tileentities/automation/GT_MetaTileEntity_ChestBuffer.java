@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_CHESTBUFFER;
-import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_CHESTBUFFER_GLOW;
 
 public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer {
 
@@ -55,9 +54,7 @@ public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer {
 
     @Override
     public ITexture getOverlayIcon() {
-        return TextureFactory.of(
-                TextureFactory.of(AUTOMATION_CHESTBUFFER),
-                TextureFactory.builder().addIcon(AUTOMATION_CHESTBUFFER_GLOW).glow().build());
+        return TextureFactory.of(AUTOMATION_CHESTBUFFER);
     }
 
     @Override

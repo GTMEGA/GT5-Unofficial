@@ -23,8 +23,6 @@ import java.util.ArrayList;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 
 public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlockBase {
@@ -251,12 +249,10 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
         if (aSide == 1) {
             if (aActive) return new ITexture[]{
                     casingTexturePages[0][10],
-                    TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW).glow().build()};
+                    TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE)};
             return new ITexture[]{
                     casingTexturePages[0][10],
                     TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ROCK_BREAKER_GLOW).glow().build(),
             };
         }
         return new ITexture[]{casingTexturePages[0][10]};

@@ -18,30 +18,14 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachine {
     public GT_MetaTileEntity_RockBreaker(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 1, "Put Lava and Water adjacent", 1, 1, "RockBreaker.png", "",
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_ROCK_BREAKER_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_ROCK_BREAKER_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_ROCK_BREAKER_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_GLOW).glow().build()));
+              TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE),
+              TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER),
+              TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE),
+              TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER),
+              TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER_ACTIVE),
+              TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER),
+              TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE),
+              TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER));
     }
 
     public GT_MetaTileEntity_RockBreaker(String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {

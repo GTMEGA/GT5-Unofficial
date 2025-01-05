@@ -1,6 +1,5 @@
 package gregtech.common.items;
 
-import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
@@ -14,7 +13,6 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Item_X32;
 import gregtech.api.objects.ItemData;
-import gregtech.api.objects.MaterialStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_FoodStat;
 import gregtech.api.util.GT_LanguageManager;
@@ -793,11 +791,11 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         //GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Sensor_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_PlayerDetector.get(1L), 3200, 128);
 
         GregTech_API.registerCover(ItemList.Cover_Controller.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_CONTROLLER)), new GT_Cover_ControlsWork());
-        GregTech_API.registerCover(ItemList.Cover_ActivityDetector.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(TextureFactory.of(OVERLAY_ACTIVITYDETECTOR), TextureFactory.builder().addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW).glow().build())), new GT_Cover_DoesWork());
+        GregTech_API.registerCover(ItemList.Cover_ActivityDetector.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ACTIVITYDETECTOR)), new GT_Cover_DoesWork());
         GregTech_API.registerCover(ItemList.Cover_FluidDetector.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_FLUIDDETECTOR)), new GT_Cover_LiquidMeter());
         GregTech_API.registerCover(ItemList.Cover_ItemDetector.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ITEMDETECTOR)), new GT_Cover_ItemMeter());
         GregTech_API.registerCover(ItemList.Cover_EnergyDetector.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ENERGYDETECTOR)), new GT_Cover_EUMeter());
-        GregTech_API.registerCover(ItemList.Cover_PlayerDetector.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(TextureFactory.of(OVERLAY_ACTIVITYDETECTOR), TextureFactory.builder().addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW).glow().build())), new GT_Cover_PlayerDetector());
+        GregTech_API.registerCover(ItemList.Cover_PlayerDetector.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ACTIVITYDETECTOR)), new GT_Cover_PlayerDetector());
 
         ItemList.Cover_Screen.set(addItem(tLastID = 740, "Computer Monitor Cover", "Displays Data and GUI", new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 1L)));
         ItemList.Cover_Crafting.set(addItem(tLastID = 744, "Crafting Table Cover", "Better than a wooden Workbench", new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 4L)));
@@ -818,7 +816,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L), new ItemStack(Blocks.crafting_table, 1), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Crafting.get(1L), 800, 16);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Cover_Shutter.get(1L), GT_OreDictUnificator.get(circuitLogic, LOGIC_LV, 1), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.FluidFilter.get(1L), 800, 4);
 
-        GregTech_API.registerCover(ItemList.Cover_Screen.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(TextureFactory.of(OVERLAY_SCREEN), TextureFactory.builder().addIcon(OVERLAY_SCREEN_GLOW).glow().build())), new GT_Cover_Screen());
+        GregTech_API.registerCover(ItemList.Cover_Screen.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_SCREEN)), new GT_Cover_Screen());
         GregTech_API.registerCover(ItemList.Cover_Crafting.get(1L), TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_CRAFTING)), new GT_Cover_Crafting());
         GregTech_API.registerCover(ItemList.Cover_Drain.get(1L), TextureFactory.of(MACHINE_CASINGS[0][0], TextureFactory.of(OVERLAY_DRAIN)), new GT_Cover_Drain());
         GregTech_API.registerCover(ItemList.Cover_Shutter.get(1L), TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_SHUTTER)), new GT_Cover_Shutter());
@@ -862,8 +860,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Cover_RedstoneReceiverExternal.set(addItem(tLastID = 746, "Redstone Receiver (Out)", "Transfers Redstonesignals wireless", new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         ItemList.Cover_RedstoneReceiverInternal.set(addItem(tLastID = 747, "Redstone Receiver (In)", "Transfers Redstonesignals wireless", new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
 
-        GregTech_API.registerCover(ItemList.Cover_RedstoneTransmitterExternal.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(TextureFactory.of(OVERLAY_ACTIVITYDETECTOR), TextureFactory.builder().addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW).glow().build())), new GT_Cover_RedstoneTransmitterExternal());
-        GregTech_API.registerCover(ItemList.Cover_RedstoneTransmitterInternal.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(TextureFactory.of(OVERLAY_ACTIVITYDETECTOR), TextureFactory.builder().addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW).glow().build())), new GT_Cover_RedstoneTransmitterInternal());
+        GregTech_API.registerCover(ItemList.Cover_RedstoneTransmitterExternal.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ACTIVITYDETECTOR)), new GT_Cover_RedstoneTransmitterExternal());
+        GregTech_API.registerCover(ItemList.Cover_RedstoneTransmitterInternal.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ACTIVITYDETECTOR)), new GT_Cover_RedstoneTransmitterInternal());
         GregTech_API.registerCover(ItemList.Cover_RedstoneReceiverExternal.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_FLUIDDETECTOR)), new GT_Cover_RedstoneReceiverExternal());
         GregTech_API.registerCover(ItemList.Cover_RedstoneReceiverInternal.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_FLUIDDETECTOR)), new GT_Cover_RedstoneReceiverInternal());
 
@@ -876,7 +874,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Cover_NeedsMaintainance.set(addItem(tLastID = 748, "Needs Maintenance Cover", "Attach to Multiblock Controller. Emits Redstone Signal if needs Maintenance", new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         //GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Sensor_LV.get(1L), ItemList.Emitter_LV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Steel, 1L), GT_Utility.getIntegratedCircuit(1)}, SolderingAlloy.getMolten(72L), ItemList.Cover_NeedsMaintainance.get(1L), 800, 16);
-        GregTech_API.registerCover(ItemList.Cover_NeedsMaintainance.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(TextureFactory.of(OVERLAY_ACTIVITYDETECTOR), TextureFactory.builder().addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW).glow().build())), new GT_Cover_NeedMaintainance());
+        GregTech_API.registerCover(ItemList.Cover_NeedsMaintainance.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ACTIVITYDETECTOR)), new GT_Cover_NeedMaintainance());
 
        //GT_ModHandler.addCraftingRecipe(ItemList.ItemFilter_Export.get(1L), new Object[]{"SPS", "dIC", "SPS", 'P', OrePrefixes.plate.get(Materials.Tin), 'S', OrePrefixes.screw.get(Materials.Iron), 'I', ItemList.Component_Filter, 'C', ItemList.Conveyor_Module_LV});
        //GT_ModHandler.addCraftingRecipe(ItemList.ItemFilter_Import.get(1L), new Object[]{"SPS", "CId", "SPS", 'P', OrePrefixes.plate.get(Materials.Tin), 'S', OrePrefixes.screw.get(Materials.Iron), 'I', ItemList.Component_Filter, 'C', ItemList.Conveyor_Module_LV});

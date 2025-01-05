@@ -19,18 +19,14 @@ public class GT_TextureBuilder implements ITextureBuilder {
     private int fromMeta;
     private ForgeDirection fromSide;
     private short[] rgba;
-    private boolean allowAlpha;
     private boolean stdOrient;
     private boolean extFacing;
-    private boolean glow;
 
     public GT_TextureBuilder() {
         textureLayers = new ArrayList<>();
         iconContainerList = new ArrayList<>();
         rgba = Dyes._NULL.mRGBa;
-        allowAlpha = true;
         stdOrient = false;
-        glow = false;
     }
 
     @Override
@@ -66,12 +62,6 @@ public class GT_TextureBuilder implements ITextureBuilder {
     }
 
     @Override
-    public ITextureBuilder setAllowAlpha(final boolean allowAlpha) {
-        this.allowAlpha = allowAlpha;
-        return this;
-    }
-
-    @Override
     public ITextureBuilder stdOrient() {
         this.stdOrient = true;
         return this;
@@ -84,18 +74,12 @@ public class GT_TextureBuilder implements ITextureBuilder {
     }
 
     @Override
-    public ITextureBuilder glow() {
-        glow = true;
-        return this;
-    }
-
-    @Override
     public ITexture build() {
-        if (fromBlock != null) return new GT_CopiedBlockTexture(fromBlock, fromSide.ordinal(), fromMeta, rgba, allowAlpha);
+        if (fromBlock != null) return new GT_CopiedBlockTexture(fromBlock, fromSide.ordinal(), fromMeta, rgba);
         if (!textureLayers.isEmpty()) return new GT_MultiTexture(textureLayers.toArray(new ITexture[0]));
         switch (iconContainerList.size()) {
             case 1:
-                return new GT_RenderedTexture(iconContainerList.get(0), rgba, allowAlpha, glow, stdOrient, extFacing);
+                return new GT_RenderedTexture(iconContainerList.get(0), rgba, stdOrient, extFacing);
             case 6:
                 return new GT_SidedTexture(
                         iconContainerList.get(ForgeDirection.DOWN.ordinal()),
@@ -104,7 +88,7 @@ public class GT_TextureBuilder implements ITextureBuilder {
                         iconContainerList.get(ForgeDirection.SOUTH.ordinal()),
                         iconContainerList.get(ForgeDirection.WEST.ordinal()),
                         iconContainerList.get(ForgeDirection.EAST.ordinal()),
-                        rgba, allowAlpha);
+                        rgba);
             default:
                 throw new IllegalStateException("Invalid sideIconContainer count");
         }

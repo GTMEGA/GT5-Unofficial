@@ -12,7 +12,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK_GLOW;
 
 public class GT_MetaTileEntity_SuperTank extends GT_MetaTileEntity_BasicTank {
     public GT_MetaTileEntity_SuperTank(int aID, String aName, String aNameRegional, int aTier) {
@@ -95,8 +94,7 @@ public class GT_MetaTileEntity_SuperTank extends GT_MetaTileEntity_BasicTank {
         if (aSide != ForgeDirection.UP.ordinal()) return new ITexture[]{MACHINE_CASINGS[mTier][aColorIndex + 1]};
         return new ITexture[]{
                 MACHINE_CASINGS[mTier][aColorIndex + 1],
-                TextureFactory.of(OVERLAY_QTANK),
-                TextureFactory.builder().addIcon(OVERLAY_QTANK_GLOW).glow().build()
+                TextureFactory.of(OVERLAY_QTANK)
         };
     }
 

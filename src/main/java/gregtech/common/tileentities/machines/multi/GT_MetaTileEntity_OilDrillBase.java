@@ -26,8 +26,6 @@ import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.GT_Values.debugDriller;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_DRILL;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_DRILL_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_DRILL_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_DRILL_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 import static gregtech.common.GT_UndergroundOil.undergroundOil;
 import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
@@ -51,12 +49,10 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
         if (aSide == aFacing) {
             if (aActive) return new ITexture[]{
                     getCasingTextureForId(casingTextureIndex),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_DRILL_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_DRILL_ACTIVE_GLOW).extFacing().glow().build()};
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_DRILL_ACTIVE).extFacing().build()};
             return new ITexture[]{
                     getCasingTextureForId(casingTextureIndex),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_DRILL).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_DRILL_GLOW).extFacing().glow().build()};
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_DRILL).extFacing().build()};
         }
         return new ITexture[]{getCasingTextureForId(casingTextureIndex)};
     }

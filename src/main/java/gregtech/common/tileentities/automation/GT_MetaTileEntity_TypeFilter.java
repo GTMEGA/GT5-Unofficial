@@ -17,7 +17,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER;
-import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER_GLOW;
 
 public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_Buffer {
     public boolean bNBTAllowed = false;
@@ -47,9 +46,7 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_Buffer {
 
     @Override
     public ITexture getOverlayIcon() {
-        return TextureFactory.of(
-                TextureFactory.of(AUTOMATION_TYPEFILTER),
-                TextureFactory.builder().addIcon(AUTOMATION_TYPEFILTER_GLOW).glow().build());
+        return TextureFactory.of(AUTOMATION_TYPEFILTER);
     }
 
     @Override

@@ -16,8 +16,6 @@ import net.minecraftforge.fluids.FluidStack;
 import static gregtech.api.enums.GT_Values.EU_PER_STEAM;
 import static gregtech.api.enums.Textures.BlockIcons.BOILER_LAVA_FRONT;
 import static gregtech.api.enums.Textures.BlockIcons.BOILER_LAVA_FRONT_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.BOILER_LAVA_FRONT_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.BOILER_LAVA_FRONT_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEELBRICKS_BOTTOM;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEELBRICKS_SIDE;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEELBRICKS_TOP;
@@ -55,12 +53,10 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
                 texSide = {TextureFactory.of(MACHINE_STEELBRICKS_SIDE), TextureFactory.of(OVERLAY_PIPE)},
                 texFront = {
                         TextureFactory.of(MACHINE_STEELBRICKS_SIDE),
-                        TextureFactory.of(BOILER_LAVA_FRONT),
-                        TextureFactory.of(BOILER_LAVA_FRONT_GLOW)},
+                        TextureFactory.of(BOILER_LAVA_FRONT)},
                 texFrontActive = {
                         TextureFactory.of(MACHINE_STEELBRICKS_SIDE),
-                        TextureFactory.of(BOILER_LAVA_FRONT_ACTIVE),
-                        TextureFactory.builder().addIcon(BOILER_LAVA_FRONT_ACTIVE_GLOW).glow().build()};
+                        TextureFactory.of(BOILER_LAVA_FRONT_ACTIVE)};
         for (byte i = 0; i < 17; i++) {
             rTextures[0][i] = texBottom;
             rTextures[1][i] = texTop;

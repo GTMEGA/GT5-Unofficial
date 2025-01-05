@@ -12,7 +12,7 @@ class GT_CopiedBlockTexture implements ITexture, IBlockContainer {
     private final Block mBlock;
     private final byte mSide, mMeta;
 
-    GT_CopiedBlockTexture(Block aBlock, int aSide, int aMeta, short[] aRGBa, boolean allowAlpha) {
+    GT_CopiedBlockTexture(Block aBlock, int aSide, int aMeta, short[] aRGBa) {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_CopiedBlockTexture");
         mBlock = aBlock;
         mSide = (byte) aSide;

@@ -38,8 +38,6 @@ import static gregtech.api.enums.GT_Values.STEAM_PER_WATER;
 import static gregtech.api.enums.GT_Values.EU_PER_STEAM;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_GLOW;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_LargeBoiler> {
@@ -150,12 +148,10 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
         if (aSide == aFacing) {
             if (aActive) return new ITexture[]{
                     BlockIcons.getCasingTextureForId(getCasingTextureIndex()),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_BOILER_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_BOILER_ACTIVE_GLOW).extFacing().glow().build()};
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_BOILER_ACTIVE).extFacing().build()};
             return new ITexture[]{
                     BlockIcons.getCasingTextureForId(getCasingTextureIndex()),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_BOILER).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_BOILER_GLOW).extFacing().glow().build()};
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_BOILER).extFacing().build()};
         }
         return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex())};
     }

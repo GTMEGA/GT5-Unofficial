@@ -52,7 +52,7 @@ public final class TextureFactory {
     public static ITexture of(final IIconContainer bottom, final IIconContainer top, final IIconContainer north,
                               final IIconContainer south, final IIconContainer west, final IIconContainer east,
                               final short[] rgba) {
-        return builder().addIcon(bottom, top, north, south, west, east).setRGBA(rgba).setAllowAlpha(true).build();
+        return builder().addIcon(bottom, top, north, south, west, east).setRGBA(rgba).build();
     }
 
     /**
@@ -66,7 +66,7 @@ public final class TextureFactory {
      */
     public static ITexture of(final IIconContainer bottom, final IIconContainer top, final IIconContainer sides,
                               final short[] rgba) {
-        return builder().addIcon(bottom, top, sides, sides, sides, sides).setRGBA(rgba).setAllowAlpha(true).build();
+        return builder().addIcon(bottom, top, sides, sides, sides, sides).setRGBA(rgba).build();
     }
 
     /**
@@ -74,13 +74,8 @@ public final class TextureFactory {
      *
      * @param iconContainer The {@link IIconContainer} to render
      * @param rgba          The {@code short[]} RGBA tint for the texture.
-     * @param allowAlpha    Determine if texture will use alpha blending (Not yet implemented)
      * @return The instance of an {@link ITexture} implementation
      */
-    public static ITexture of(final IIconContainer iconContainer, final short[] rgba, final boolean allowAlpha) {
-        return builder().addIcon(iconContainer).setRGBA(rgba).setAllowAlpha(allowAlpha).build();
-    }
-
     public static ITexture of(final IIconContainer iconContainer, final short[] rgba) {
         return builder().addIcon(iconContainer).setRGBA(rgba).build();
     }

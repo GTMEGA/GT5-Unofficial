@@ -30,8 +30,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
@@ -95,12 +93,10 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
         if (aSide != aFacing) return new ITexture[]{casingTexturePages[0][CASING_INDEX]};
         if (aActive) return new ITexture[]{
                 casingTexturePages[0][CASING_INDEX],
-                TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_SMELTER_ACTIVE).extFacing().build(),
-                TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW).extFacing().glow().build()};
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_SMELTER_ACTIVE).extFacing().build()};
         return new ITexture[]{
                 casingTexturePages[0][CASING_INDEX],
-                TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_SMELTER).extFacing().build(),
-                TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_SMELTER_GLOW).extFacing().glow().build()};
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_SMELTER).extFacing().build()};
     }
 
     @Override

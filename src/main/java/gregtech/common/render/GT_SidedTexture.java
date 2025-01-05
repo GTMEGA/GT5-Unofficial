@@ -17,15 +17,15 @@ class GT_SidedTexture implements ITexture, IColorModulationContainer {
      */
     private final short[] mRGBa;
 
-    GT_SidedTexture(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2, IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5, short[] aRGBa, boolean aAllowAlpha) {
+    GT_SidedTexture(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2, IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5, short[] aRGBa) {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_RenderedTexture");
         mTextures = new ITexture[]{
-            TextureFactory.of(aIcon0, aRGBa, aAllowAlpha),
-            TextureFactory.of(aIcon1, aRGBa, aAllowAlpha),
-            TextureFactory.of(aIcon2, aRGBa, aAllowAlpha),
-            TextureFactory.of(aIcon3, aRGBa, aAllowAlpha),
-            TextureFactory.of(aIcon4, aRGBa, aAllowAlpha),
-            TextureFactory.of(aIcon5, aRGBa, aAllowAlpha)
+            TextureFactory.of(aIcon0, aRGBa),
+            TextureFactory.of(aIcon1, aRGBa),
+            TextureFactory.of(aIcon2, aRGBa),
+            TextureFactory.of(aIcon3, aRGBa),
+            TextureFactory.of(aIcon4, aRGBa),
+            TextureFactory.of(aIcon5, aRGBa)
         };
         mRGBa = aRGBa;
     }

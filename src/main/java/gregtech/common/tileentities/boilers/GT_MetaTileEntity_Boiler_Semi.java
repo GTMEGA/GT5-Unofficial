@@ -51,12 +51,10 @@ public class GT_MetaTileEntity_Boiler_Semi extends GT_MetaTileEntity_Boiler {
                 texSide = {TextureFactory.of(MACHINE_BRONZEBRICKS_SIDE), TextureFactory.of(OVERLAY_FLUID_OUT)},
                 texFront = {
                         TextureFactory.of(MACHINE_BRONZEBRICKS_SIDE),
-                        TextureFactory.of(BOILER_LAVA_FRONT),
-                        TextureFactory.of(BOILER_LAVA_FRONT_GLOW)},
+                        TextureFactory.of(BOILER_LAVA_FRONT)},
                 texFrontActive = {
                         TextureFactory.of(MACHINE_BRONZEBRICKS_SIDE),
-                        TextureFactory.of(BOILER_LAVA_FRONT_ACTIVE),
-                        TextureFactory.builder().addIcon(BOILER_LAVA_FRONT_ACTIVE_GLOW).glow().build()};
+                        TextureFactory.of(BOILER_LAVA_FRONT_ACTIVE)};
         for (byte i = 0; i < 17; i++) {
             rTextures[0][i] = texBottom;
             rTextures[1][i] = texTop;

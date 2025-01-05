@@ -22,7 +22,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.Arrays;
 
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_ITEMDISTRIBUTOR;
-import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_ITEMDISTRIBUTOR_GLOW;
 
 public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer {
 
@@ -169,7 +168,7 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
 
     @Override
     public ITexture getOverlayIcon() {
-        return TextureFactory.of(TextureFactory.of(AUTOMATION_ITEMDISTRIBUTOR), TextureFactory.builder().addIcon(AUTOMATION_ITEMDISTRIBUTOR_GLOW).glow().build());
+        return TextureFactory.of(AUTOMATION_ITEMDISTRIBUTOR);
     }
 
     @Override

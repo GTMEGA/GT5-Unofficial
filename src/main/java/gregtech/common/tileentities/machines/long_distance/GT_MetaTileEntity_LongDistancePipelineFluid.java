@@ -37,7 +37,6 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPELINE_FLUID_BACK;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPELINE_FLUID_FRONT;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPELINE_FLUID_SIDE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPELINE_FLUID_SIDE_GLOW;
 
 public class GT_MetaTileEntity_LongDistancePipelineFluid extends GT_MetaTileEntity_LongDistancePipelineBase {
     static final FluidTankInfo[] emptyTank = {new FluidTankInfo(null, Integer.MAX_VALUE)};
@@ -117,7 +116,6 @@ public class GT_MetaTileEntity_LongDistancePipelineFluid extends GT_MetaTileEnti
         else 
             return new ITexture[]{
                     MACHINE_CASINGS[mTier][aColorIndex + 1],
-                    TextureFactory.of(OVERLAY_PIPELINE_FLUID_SIDE),
-                    TextureFactory.builder().addIcon(OVERLAY_PIPELINE_FLUID_SIDE_GLOW).glow().build()};
+                    TextureFactory.of(OVERLAY_PIPELINE_FLUID_SIDE)};
     }
 }

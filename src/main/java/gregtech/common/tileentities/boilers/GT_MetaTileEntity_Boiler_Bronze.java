@@ -51,12 +51,10 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
                 texTop = {TextureFactory.of(MACHINE_BRONZEBRICKS_TOP), TextureFactory.of(OVERLAY_PIPE)},
                 texSide = {TextureFactory.of(MACHINE_BRONZEBRICKS_SIDE), TextureFactory.of(OVERLAY_PIPE)},
                 texFront = {TextureFactory.of(MACHINE_BRONZEBRICKS_SIDE),
-                        TextureFactory.of(BOILER_FRONT),
-                        TextureFactory.builder().addIcon(BOILER_FRONT_GLOW).glow().build()},
+                        TextureFactory.of(BOILER_FRONT)},
                 texFrontActive = {
                         TextureFactory.of(MACHINE_BRONZEBRICKS_SIDE),
-                        TextureFactory.of(BOILER_FRONT_ACTIVE),
-                        TextureFactory.builder().addIcon(BOILER_FRONT_ACTIVE_GLOW).glow().build()};
+                        TextureFactory.of(BOILER_FRONT_ACTIVE)};
         for (int i = 0; i < 17; i++) {
             rTextures[0][i] = texBottom;
             rTextures[1][i] = texTop;

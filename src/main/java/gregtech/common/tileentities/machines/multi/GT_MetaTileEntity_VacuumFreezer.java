@@ -18,8 +18,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 
 public class GT_MetaTileEntity_VacuumFreezer extends GT_MetaTileEntity_CubicMultiBlockBase<GT_MetaTileEntity_VacuumFreezer> {
@@ -63,13 +61,11 @@ public class GT_MetaTileEntity_VacuumFreezer extends GT_MetaTileEntity_CubicMult
             if (aActive) {
                 rTexture = new ITexture[]{
                         casingTexturePages[0][17],
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE).extFacing().build(),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW).extFacing().glow().build()};
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE).extFacing().build()};
             } else {
                 rTexture = new ITexture[]{
                         casingTexturePages[0][17],
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER).extFacing().build(),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER_GLOW).extFacing().glow().build()};
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER).extFacing().build()};
             }
         } else {
             rTexture = new ITexture[]{casingTexturePages[0][17]};

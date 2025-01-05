@@ -4,7 +4,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.ItemData;
@@ -27,7 +26,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static gregtech.api.enums.GT_Values.ticksBetweenSounds;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
 
@@ -47,30 +45,14 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
                 1, // output slot count
                 "Default.png", // GUI name
                 "", // NEI name
-              TextureFactory.of(
-                      TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE),
-                      TextureFactory.builder().addIcon(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
-              TextureFactory.of(
-                      TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER),
-                      TextureFactory.builder().addIcon(OVERLAY_SIDE_ROCK_BREAKER_GLOW).glow().build()),
-              TextureFactory.of(
-                      TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER_ACTIVE),
-                      TextureFactory.builder().addIcon(OVERLAY_TOP_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_ROCK_BREAKER_GLOW).glow().build()),
-              TextureFactory.of(
-                      TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE),
-                      TextureFactory.builder().addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
-              TextureFactory.of(
-                      TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER),
-                      TextureFactory.builder().addIcon(OVERLAY_FRONT_ROCK_BREAKER_GLOW).glow().build()),
-              TextureFactory.of(
-                      TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE),
-                      TextureFactory.builder().addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
-              TextureFactory.of(
-                      TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER),
-                      TextureFactory.builder().addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_GLOW).glow().build()));
+                TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE),
+                TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER),
+                TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER_ACTIVE),
+                TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER),
+                TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE),
+                TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER),
+                TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE),
+                TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER));
         this.mSound = aSound;
         radius = aRadius;
         step = aStep;

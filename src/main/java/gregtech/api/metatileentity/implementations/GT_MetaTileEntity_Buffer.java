@@ -46,18 +46,10 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         ITexture[][][] rTextures = new ITexture[ForgeDirection.VALID_DIRECTIONS.length][17][];
         ITexture tIcon = getOverlayIcon();
         ITexture tOut = TextureFactory.of(OVERLAY_ITEM_OUT);
-        ITexture tUp = TextureFactory.of(
-                TextureFactory.of(ARROW_UP),
-                TextureFactory.builder().addIcon(ARROW_UP_GLOW).glow().build());
-        ITexture tDown = TextureFactory.of(
-                TextureFactory.of(ARROW_DOWN),
-                TextureFactory.builder().addIcon(ARROW_DOWN_GLOW).glow().build());
-        ITexture tLeft = TextureFactory.of(
-                TextureFactory.of(ARROW_LEFT),
-                TextureFactory.builder().addIcon(ARROW_LEFT_GLOW).glow().build());
-        ITexture tRight = TextureFactory.of(
-                TextureFactory.of(ARROW_RIGHT),
-                TextureFactory.builder().addIcon(ARROW_RIGHT_GLOW).glow().build());
+        ITexture tUp = TextureFactory.of(ARROW_UP);
+        ITexture tDown = TextureFactory.of(ARROW_DOWN);
+        ITexture tLeft = TextureFactory.of(ARROW_LEFT);
+        ITexture tRight = TextureFactory.of(ARROW_RIGHT);
         for (int i = 0; i < rTextures[0].length; i++) {
             rTextures[OUTPUT_INDEX][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], tOut};
             rTextures[ARROW_RIGHT_INDEX][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], tRight, tIcon};

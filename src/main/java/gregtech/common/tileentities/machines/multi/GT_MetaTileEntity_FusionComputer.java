@@ -35,7 +35,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
 public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_FusionComputer> {
@@ -109,11 +108,10 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
     public int mEUStore;
 
     static {
-        Textures.BlockIcons.setCasingTextureForId(52,
-                TextureFactory.of(
-                        TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW).extFacing().build(),
-                        TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).extFacing().glow().build()
-                ));
+        Textures.BlockIcons.setCasingTextureForId(52, TextureFactory.builder()
+                                                                    .addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW)
+                                                                    .extFacing()
+                                                                    .build());
     }
 
     public GT_MetaTileEntity_FusionComputer(int aID, String aName, String aNameRegional, int tier) {

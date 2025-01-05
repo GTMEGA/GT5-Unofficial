@@ -50,14 +50,6 @@ public interface ITextureBuilder {
     ITextureBuilder addLayer(final ITexture... iTextures);
 
     /**
-     * Set alpha blending
-     * @param allowAlpha to set
-     *
-     * @return {@link ITextureBuilder} for chaining
-     */
-    ITextureBuilder setAllowAlpha(final boolean allowAlpha);
-
-    /**
      * Texture will render with same orientation as with vanilla blocks
      *
      * @return {@link ITextureBuilder} for chaining
@@ -70,11 +62,4 @@ public interface ITextureBuilder {
      * @return {@link ITextureBuilder} for chaining
      */
     ITextureBuilder extFacing();
-
-    /**
-     * Texture always render with full brightness to glow in the dark
-     *
-     * @return {@link ITextureBuilder} for chaining
-     */
-    ITextureBuilder glow();
 }

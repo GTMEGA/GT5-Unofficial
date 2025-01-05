@@ -27,9 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE_IDLE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE_IDLE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DUCTTAPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MAINTENANCE;
 
@@ -77,8 +75,7 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         if (mAuto) return new ITexture[]{
                 aBaseTexture,
-                TextureFactory.of(OVERLAY_AUTOMAINTENANCE_IDLE),
-                TextureFactory.builder().addIcon(OVERLAY_AUTOMAINTENANCE_IDLE_GLOW).glow().build()};
+                TextureFactory.of(OVERLAY_AUTOMAINTENANCE_IDLE)};
         return new ITexture[]{
                 aBaseTexture,
                 TextureFactory.of(OVERLAY_MAINTENANCE)};
@@ -88,8 +85,7 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         if (mAuto) return new ITexture[]{
                 aBaseTexture,
-                TextureFactory.of(OVERLAY_AUTOMAINTENANCE),
-                TextureFactory.builder().addIcon(OVERLAY_AUTOMAINTENANCE_GLOW).glow().build()};
+                TextureFactory.of(OVERLAY_AUTOMAINTENANCE)};
         return new ITexture[]{
                 aBaseTexture,
                 TextureFactory.of(OVERLAY_MAINTENANCE),

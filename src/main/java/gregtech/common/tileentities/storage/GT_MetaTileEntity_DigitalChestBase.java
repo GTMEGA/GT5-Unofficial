@@ -23,7 +23,6 @@ import java.util.Map;
 
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST_GLOW;
 
 @Optional.Interface(iface = "appeng.api.storage.IMEMonitor", modid = "appliedenergistics2", striprefs = true)
 public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEntity_TieredMachineBlock implements appeng.api.storage.IMEMonitor<appeng.api.storage.data.IAEItemStack> {
@@ -472,8 +471,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
         if (aSide != aFacing) return new ITexture[]{MACHINE_CASINGS[mTier][aColorIndex + 1]};
         return new ITexture[]{
                 MACHINE_CASINGS[mTier][aColorIndex + 1],
-                TextureFactory.of(OVERLAY_SCHEST),
-                TextureFactory.builder().addIcon(OVERLAY_SCHEST_GLOW).glow().build()
+                TextureFactory.of(OVERLAY_SCHEST)
         };
     }
 }

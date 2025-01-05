@@ -42,8 +42,7 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
         };
         return new ITexture[]{
                 BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-                TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW),
-                TextureFactory.builder().addIcon(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).glow().build()
+                TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW)
         };
     }
 

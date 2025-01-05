@@ -39,8 +39,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
@@ -120,12 +118,10 @@ public abstract class GT_MetaTileEntity_DrillerBase extends GT_MetaTileEntity_En
         if (aSide == aFacing) {
             if (aActive) return new ITexture[]{
                     getCasingTextureForId(casingTextureIndex),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ORE_DRILL_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ORE_DRILL_ACTIVE_GLOW).extFacing().glow().build()};
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ORE_DRILL_ACTIVE).extFacing().build()};
             return new ITexture[]{
                     getCasingTextureForId(casingTextureIndex),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ORE_DRILL).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ORE_DRILL_GLOW).extFacing().glow().build()};
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ORE_DRILL).extFacing().build()};
         }
         return new ITexture[]{getCasingTextureForId(casingTextureIndex)};
     }

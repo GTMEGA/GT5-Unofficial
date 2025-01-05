@@ -27,7 +27,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_RECIPEFILTER;
-import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_RECIPEFILTER_GLOW;
 
 
 public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_Buffer {
@@ -77,7 +76,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_Buffer {
 
     @Override
     public ITexture getOverlayIcon() {
-        return TextureFactory.of(TextureFactory.of(AUTOMATION_RECIPEFILTER), TextureFactory.builder().addIcon(AUTOMATION_RECIPEFILTER_GLOW).glow().build());
+        return TextureFactory.of(AUTOMATION_RECIPEFILTER);
     }
 
     @Override

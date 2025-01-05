@@ -9,7 +9,6 @@ import gregtech.common.gui.GT_GUIContainer_SuperBuffer;
 import net.minecraft.entity.player.InventoryPlayer;
 
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_SUPERBUFFER;
-import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_SUPERBUFFER_GLOW;
 
 public class GT_MetaTileEntity_SuperBuffer extends GT_MetaTileEntity_ChestBuffer {
     public GT_MetaTileEntity_SuperBuffer(int aID, String aName, String aNameRegional, int aTier) {
@@ -35,9 +34,7 @@ public class GT_MetaTileEntity_SuperBuffer extends GT_MetaTileEntity_ChestBuffer
 
     @Override
     public ITexture getOverlayIcon() {
-        return TextureFactory.of(
-                TextureFactory.of(AUTOMATION_SUPERBUFFER),
-                TextureFactory.builder().addIcon(AUTOMATION_SUPERBUFFER_GLOW).glow().build());
+        return TextureFactory.of(AUTOMATION_SUPERBUFFER);
     }
 
     @Override

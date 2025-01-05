@@ -30,8 +30,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GT_Values.MOD_ID_DC;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PYROLYSE_OVEN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PYROLYSE_OVEN_GLOW;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
@@ -113,12 +111,10 @@ public class GT_MetaTileEntity_PyrolyseOven extends GT_MetaTileEntity_EnhancedMu
             if (aActive)
                 return new ITexture[]{
                         BlockIcons.casingTexturePages[8][66],
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE).extFacing().build(),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE_GLOW).extFacing().glow().build()};
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE).extFacing().build()};
             return new ITexture[]{
                     BlockIcons.casingTexturePages[8][66],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PYROLYSE_OVEN).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_GLOW).extFacing().glow().build()};
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PYROLYSE_OVEN).extFacing().build()};
         }
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[8][66]};
     }

@@ -378,7 +378,6 @@ public class GT_Mod implements IGT_Mod {
                 }
         );
         gregtechproxy.mRenderTileAmbientOcclusion = GregTech_API.sClientDataFile.get("render", "TileAmbientOcclusion", true);
-        gregtechproxy.mRenderGlowTextures = GregTech_API.sClientDataFile.get("render", "GlowTextures", true);
         gregtechproxy.mRenderFlippedMachinesFlipped = GregTech_API.sClientDataFile.get("render", "RenderFlippedMachinesFlipped", true);
         gregtechproxy.mRenderIndicatorsOnHatch = GregTech_API.sClientDataFile.get("render", "RenderIndicatorsOnHatch", true);
         gregtechproxy.mTooltipVerbosity = GregTech_API.sClientDataFile.get("interface", "TooltipVerbosity", 2);

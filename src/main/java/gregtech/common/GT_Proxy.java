@@ -229,11 +229,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean mRenderTileAmbientOcclusion = true;
 
     /**
-     * This enables rendering of glowing textures
-     */
-    public boolean mRenderGlowTextures = true;
-
-    /**
      * Render flipped textures
      */
     public boolean mRenderFlippedMachinesFlipped = true;

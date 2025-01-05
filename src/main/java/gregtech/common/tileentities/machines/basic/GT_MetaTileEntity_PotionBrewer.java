@@ -20,30 +20,14 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachine {
     public GT_MetaTileEntity_PotionBrewer(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 1, "Brewing your Drinks", 1, 0, "PotionBrewer.png", "",
-                TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_POTIONBREWER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_POTIONBREWER_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_POTIONBREWER),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_POTIONBREWER_GLOW).glow().build()),
-                TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_POTIONBREWER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_POTIONBREWER_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_POTIONBREWER),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_POTIONBREWER_GLOW).glow().build()),
-                TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_POTIONBREWER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_POTIONBREWER_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_POTIONBREWER),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_POTIONBREWER_GLOW).glow().build()),
-                TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_POTIONBREWER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_POTIONBREWER_ACTIVE_GLOW).glow().build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_BOTTOM_POTIONBREWER),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_POTIONBREWER_GLOW).glow().build())
+                        TextureFactory.of(OVERLAY_BOTTOM_POTIONBREWER)
         );
     }
 

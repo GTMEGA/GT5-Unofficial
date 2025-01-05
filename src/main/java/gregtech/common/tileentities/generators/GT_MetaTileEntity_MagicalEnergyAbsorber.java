@@ -208,7 +208,6 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
         return new ITexture[]{
                 super.getFront(aColor)[0],
                 TextureFactory.of(MACHINE_CASING_MAGIC),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_GLOW).glow().build(),
                 OVERLAYS_ENERGY_OUT[mTier]};
     }
 
@@ -216,16 +215,14 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
     public ITexture[] getBack(byte aColor) {
         return new ITexture[]{
                 super.getBack(aColor)[0],
-                TextureFactory.of(MACHINE_CASING_MAGIC_FRONT),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_FRONT_GLOW).glow().build()};
+                TextureFactory.of(MACHINE_CASING_MAGIC_FRONT)};
     }
 
     @Override
     public ITexture[] getBottom(byte aColor) {
         return new ITexture[]{
                 super.getBottom(aColor)[0],
-                TextureFactory.of(MACHINE_CASING_MAGIC),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_GLOW).glow().build()};
+                TextureFactory.of(MACHINE_CASING_MAGIC)};
     }
 
     @Override
@@ -239,8 +236,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
     public ITexture[] getSides(byte aColor) {
         return new ITexture[]{
                 super.getSides(aColor)[0],
-                TextureFactory.of(MACHINE_CASING_MAGIC),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_GLOW).glow().build()};
+                TextureFactory.of(MACHINE_CASING_MAGIC)};
     }
 
     @Override
@@ -248,7 +244,6 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
         return new ITexture[]{
                 super.getFrontActive(aColor)[0],
                 TextureFactory.of(MACHINE_CASING_MAGIC_ACTIVE),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW).glow().build(),
                 OVERLAYS_ENERGY_OUT[mTier]};
     }
 
@@ -256,24 +251,21 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
     public ITexture[] getBackActive(byte aColor) {
         return new ITexture[]{
                 super.getBackActive(aColor)[0],
-                TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_FRONT_ACTIVE_GLOW).glow().build()};
+                TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE)};
     }
 
     @Override
     public ITexture[] getBottomActive(byte aColor) {
         return new ITexture[]{
                 super.getBottomActive(aColor)[0],
-                TextureFactory.of(MACHINE_CASING_MAGIC_ACTIVE),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW).glow().build()};
+                TextureFactory.of(MACHINE_CASING_MAGIC_ACTIVE)};
     }
 
     @Override
     public ITexture[] getTopActive(byte aColor) {
         return new ITexture[]{
                 super.getTopActive(aColor)[0],
-                TextureFactory.of(MACHINE_CASING_DRAGONEGG),
-                TextureFactory.builder().addIcon(MACHINE_CASING_DRAGONEGG_GLOW).glow().build()
+                TextureFactory.of(MACHINE_CASING_DRAGONEGG)
         };
     }
 
@@ -281,8 +273,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
     public ITexture[] getSidesActive(byte aColor) {
         return new ITexture[]{
                 super.getSidesActive(aColor)[0],
-                TextureFactory.of(MACHINE_CASING_MAGIC_ACTIVE),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW).glow().build()};
+                TextureFactory.of(MACHINE_CASING_MAGIC_ACTIVE)};
     }
 
     @Override

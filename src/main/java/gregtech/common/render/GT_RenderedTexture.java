@@ -29,15 +29,13 @@ import static gregtech.api.util.LightingHelper.MAX_BRIGHTNESS;
 class GT_RenderedTexture implements ITexture, IColorModulationContainer {
     protected final IIconContainer mIconContainer;
     private final short[] mRGBa;
-    private final boolean glow;
     private final boolean stdOrient;
     private final boolean useExtFacing;
 
-    GT_RenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean allowAlpha, boolean glow, boolean stdOrient, boolean extFacing) {
+    GT_RenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean stdOrient, boolean extFacing) {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_RenderedTexture");
         mIconContainer = aIcon;
         mRGBa = aRGBa;
-        this.glow = glow;
         this.stdOrient = stdOrient;
         this.useExtFacing = extFacing;
     }
@@ -47,12 +45,6 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         startDrawingQuads(aRenderer, 1.0f, 0.0f, 0.0f);
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
-        if (glow) {
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return false;
-            aRenderer.enableAO = false;
-            lighting.setLightnessOverride(1.0F);
-            if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
-        }
         lighting.setupLightingXPos(aBlock, aX, aY, aZ).setupColor(ForgeDirection.EAST.ordinal(), mRGBa);
         ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceXPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
@@ -70,12 +62,6 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         startDrawingQuads(aRenderer, -1.0f, 0.0f, 0.0f);
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
-        if (glow) {
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return false;
-            aRenderer.enableAO = false;
-            lighting.setLightnessOverride(1.0F);
-            if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
-        }
         lighting.setupLightingXNeg(aBlock, aX, aY, aZ).setupColor(ForgeDirection.WEST.ordinal(), mRGBa);
         ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceXNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
@@ -93,12 +79,6 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         startDrawingQuads(aRenderer, 0.0f, 1.0f, 0.0f);
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
-        if (glow) {
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return false;
-            aRenderer.enableAO = false;
-            lighting.setLightnessOverride(1.0F);
-            if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
-        }
         lighting.setupLightingYPos(aBlock, aX, aY, aZ).setupColor(ForgeDirection.UP.ordinal(), mRGBa);
         ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceYPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
@@ -116,12 +96,6 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         startDrawingQuads(aRenderer, 0.0f, -1.0f, 0.0f);
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
-        if (glow) {
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return false;
-            aRenderer.enableAO = false;
-            lighting.setLightnessOverride(1.0F);
-            if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
-        }
         lighting.setupLightingYNeg(aBlock, aX, aY, aZ).setupColor(ForgeDirection.DOWN.ordinal(), mRGBa);
         ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceYNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
@@ -139,12 +113,6 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         startDrawingQuads(aRenderer, 0.0f, 0.0f, 1.0f);
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
-        if (glow) {
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return false;
-            aRenderer.enableAO = false;
-            lighting.setLightnessOverride(1.0F);
-            if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
-        }
         lighting.setupLightingZPos(aBlock, aX, aY, aZ).setupColor(ForgeDirection.SOUTH.ordinal(), mRGBa);
         ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceZPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
@@ -162,12 +130,6 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         startDrawingQuads(aRenderer, 0.0f, 0.0f, -1.0f);
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
-        if (glow) {
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return false;
-            aRenderer.enableAO = false;
-            lighting.setLightnessOverride(1.0F);
-            if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
-        }
         lighting.setupLightingZNeg(aBlock, aX, aY, aZ).setupColor(ForgeDirection.NORTH.ordinal(), mRGBa);
         ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceZNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
