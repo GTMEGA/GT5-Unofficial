@@ -20,6 +20,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import ic2.core.Ic2Items;
+import lombok.val;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -52,16 +53,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             int aInputSlots, int aOutputSlots, int aTankCapacity, int aGUIParameterA, int aGUIParameterB, String aGUIName, String aSound, boolean aSharedTank,
             boolean aRequiresFluidForFiltering, int aSpecialEffect, String aOverlays, Object[] aRecipe
     ) {
-        super(aID, aName, aNameRegional, aTier, aRecipes.mAmperage, aDescription, aInputSlots, aOutputSlots, aGUIName, aRecipes.mNEIName,
-                        TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE")),
-                        TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE")),
-                        TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_ACTIVE")),
-                        TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT")),
-                        TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_ACTIVE")),
-                        TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP")),
-                        TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_ACTIVE")),
-                        TextureFactory.of(new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM"))
-                );
+        super(aID, aName, aNameRegional, aTier, aRecipes.mAmperage, aDescription, aInputSlots, aOutputSlots, aGUIName, aRecipes.mNEIName, createTextures(aOverlays));
         this.mSharedTank = aSharedTank;
         this.mTankCapacity = aTankCapacity;
         this.mSpecialEffect = aSpecialEffect;
@@ -933,4 +925,32 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     }
 
     public enum X {PUMP, WIRE, WIRE4, HULL, PIPE, GLASS, PLATE, MOTOR, ROTOR, SENSOR, PISTON, EMITTER, CONVEYOR, ROBOT_ARM, COIL_HEATING, COIL_ELECTRIC, STICK_MAGNETIC, STICK_DISTILLATION, FIELD_GENERATOR, COIL_HEATING_DOUBLE, STICK_ELECTROMAGNETIC, CIRCUIT_POWER, CIRCUIT_LOGIC}
+
+    @Override
+    public boolean hasTranslucency() {
+        return true;
+    }
+
+    private static ITexture[] createTextures(String aOverlays) {
+        val prefix = "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_";
+        return new ITexture[]{
+                texzWithDaGlass(prefix, "SIDE_ACTIVE", "SIDE_TRANSLUCENT"),
+                texzWithDaGlass(prefix, "SIDE", "SIDE_TRANSLUCENT"),
+                texzWithDaGlass(prefix, "FRONT_ACTIVE", "FRONT_TRANSLUCENT"),
+                texzWithDaGlass(prefix, "FRONT", "FRONT_TRANSLUCENT"),
+                texzWithDaGlass(prefix, "TOP_ACTIVE", "TOP_TRANSLUCENT"),
+                texzWithDaGlass(prefix, "TOP", "TOP_TRANSLUCENT"),
+                texzWithDaGlass(prefix, "BOTTOM_ACTIVE", "BOTTOM_TRANSLUCENT"),
+                texzWithDaGlass(prefix, "BOTTOM", "BOTTOM_TRANSLUCENT"),
+                };
+    }
+
+    private static ITexture texzWithDaGlass(String prefix, String opaqueName, String translucentName) {
+        val opaque = TextureFactory.of(new CustomIcon(prefix + opaqueName));
+        val translucent = TextureFactory.builder()
+                                        .addIcon(new CustomIcon(prefix + translucentName))
+                                        .setTranslucent(true)
+                                        .build();
+        return TextureFactory.of(opaque, translucent);
+    }
 }
