@@ -101,7 +101,7 @@ abstract public class GenerateNodeMap {
             if (tInvalidSide > -1) {
                 tPipeNode.mNeighbourNodes[tInvalidSide] = aPreviousNode;
                 tPipeNode.mNodePaths[tInvalidSide] = getNewPath(aPipes.toArray(new MetaPipeEntity[0]));
-                Lock lock = new Lock();
+                Lock lock = getLock(aPreviousNode,tPipeNode,tPipeNode.mNodePaths[tInvalidSide]);
                 tPipeNode.mNodePaths[tSideOp].lock = lock;
                 tPipeNode.locks[tInvalidSide] = lock;
                 aPreviousNode.returnValues.mReturnPath = tPipeNode.mNodePaths[tInvalidSide];
@@ -113,7 +113,7 @@ abstract public class GenerateNodeMap {
             ConsumerNode tConsumeNode = aConsumers.get(aConsumers.size() - 1);
             tConsumeNode.mNeighbourNodes[tSideOp] = aPreviousNode;
             tConsumeNode.mNodePaths[tSideOp] = getNewPath(aPipes.toArray(new MetaPipeEntity[0]));
-            Lock lock = new Lock();
+            Lock lock = getLock(aPreviousNode,tConsumeNode,tConsumeNode.mNodePaths[tSideOp]);
             tConsumeNode.mNodePaths[tSideOp].lock = lock;
             aPreviousNode.returnValues.mReturnPath = tConsumeNode.mNodePaths[tSideOp];
             aPreviousNode.returnValues.returnLock = lock;
@@ -165,6 +165,10 @@ abstract public class GenerateNodeMap {
 
     // get correct pathClass  that you need for your node network
     protected abstract NodePath getNewPath(MetaPipeEntity[] aPipes);
+
+    protected Lock getLock(Node lowerNode,Node upperNode,NodePath path) {
+        return new Lock();
+    }
 
     // used for if you need to use dead ends for something can be null
     protected Node getEmptyNode(int aNodeValue, byte aSide, TileEntity aTileEntity, ArrayList<ConsumerNode> aConsumers) {

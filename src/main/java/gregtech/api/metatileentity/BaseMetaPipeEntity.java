@@ -7,7 +7,6 @@ import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.graphs.Lock;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.paths.NodePath;
-import gregtech.api.interfaces.IAdvancedGUIEntity;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -81,14 +80,14 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         this.nodePath = nodePath;
     }
 
-    public void addToLock(TileEntity tileEntity, int side) {
+    public void addToLock(TileEntity tileEntity, int side,boolean input,boolean output) {
         if (node != null) {
             Lock lock = node.locks[side];
             if (lock != null) {
-                lock.addTileEntity(tileEntity);
+                lock.addTileEntity(tileEntity,side,input,output);
             }
         } else if (nodePath != null) {
-            nodePath.lock.addTileEntity(tileEntity);
+            nodePath.lock.addTileEntity(tileEntity,side,input,output);
         }
     }
 
@@ -296,7 +295,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                                 mConnections = (byte) ((mConnections & ~IConnectable.HAS_FRESHFOAM) | IConnectable.HAS_HARDENEDFOAM);
                             }
                             if (mTickTimer > 12 && oldConnections != mConnections)
-                                GregTech_API.causeCableUpdate(worldObj,xCoord,yCoord,zCoord);
+                                GregTech_API.causePipeUpdate(worldObj,xCoord,yCoord,zCoord,getMetaTileEntity());
                         }
                     case 8:
                         tCode = 9;
@@ -497,8 +496,10 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public void receiveCoverData(byte coverSide, int coverID, int coverData) {
-        if ((coverSide >= 0 && coverSide < 6) && (mCoverSides[coverSide] == coverID))
+        if ((coverSide >= 0 && coverSide < 6) && (mCoverSides[coverSide] == coverID)) {
             setCoverDataAtSide(coverSide, coverData);
+            reloadLocks();
+        }
     }
 
     @Override

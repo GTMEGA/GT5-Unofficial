@@ -4,6 +4,8 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.graphs.GenerateNodeMap;
+import gregtech.api.graphs.api.PushItemGraph;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityItemPipe;
@@ -11,12 +13,16 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
+import gregtech.api.objects.GT_Cover_None;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.threads.GT_Runnable_Cable_Update;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.GT_Client;
+import lombok.val;
+import lombok.var;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -27,6 +33,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -37,6 +44,7 @@ import java.util.List;
 import static gregtech.api.enums.Textures.BlockIcons.PIPE_RESTRICTOR;
 
 public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileEntityItemPipe {
+    public static PushItemGraph PUSH_ITEM = null;
     public final float mThickNess;
     public final Materials mMaterial;
     public final int mStepSize;
@@ -170,24 +178,76 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
 
             if (oLastReceivedFrom == mLastReceivedFrom) {
                 doTickProfilingInThisTick = false;
+                BaseMetaPipeEntity tBase =(BaseMetaPipeEntity) getBaseMetaTileEntity();
 
-                ArrayList<IMetaTileEntityItemPipe> tPipeList = new ArrayList<IMetaTileEntityItemPipe>();
+                if (PUSH_ITEM != null) {
+                    var node = tBase.getNode();
+                    if (node == null && !isInventoryEmpty()) {
+                        PUSH_ITEM.generate(tBase);
+                        node = tBase.getNode();
+                    }
+                    PUSH_ITEM.push(node,mInventory,mLastReceivedFrom);
+                } else {
+                    ArrayList<IMetaTileEntityItemPipe> tPipeList = new ArrayList<IMetaTileEntityItemPipe>();
 
-                for (boolean temp = true; temp && !isInventoryEmpty() && pipeCapacityCheck(); ) {
-                    temp = false;
-                    tPipeList.clear();
-                    for (IMetaTileEntityItemPipe tTileEntity : GT_Utility.sortMapByValuesAcending(IMetaTileEntityItemPipe.Util.scanPipes(this, new HashMap<>(), 0, false, false)).keySet()) {
-                        if (temp) break;
-                        tPipeList.add(tTileEntity);
-                        while (!temp && !isInventoryEmpty() && tTileEntity.sendItemStack(aBaseMetaTileEntity))
-                            for (IMetaTileEntityItemPipe tPipe : tPipeList)
-                                if (!tPipe.incrementTransferCounter(1)) temp = true;
+                    for (boolean temp = true; temp && !isInventoryEmpty() && pipeCapacityCheck(); ) {
+                        temp = false;
+                        tPipeList.clear();
+                        for (IMetaTileEntityItemPipe tTileEntity : GT_Utility.sortMapByValuesAcending(IMetaTileEntityItemPipe.Util.scanPipes(this, new HashMap<>(), 0, false, false)).keySet()) {
+                            if (temp) break;
+                            tPipeList.add(tTileEntity);
+                            while (!temp && !isInventoryEmpty() && tTileEntity.sendItemStack(aBaseMetaTileEntity))
+                                for (IMetaTileEntityItemPipe tPipe : tPipeList)
+                                    if (!tPipe.incrementTransferCounter(1)) temp = true;
+                        }
                     }
                 }
             }
-
             if (isInventoryEmpty()) mLastReceivedFrom = 6;
             oLastReceivedFrom = mLastReceivedFrom;
+        }
+    }
+
+
+
+    @Override
+    public void reloadLocks() {
+        BaseMetaPipeEntity pipe = (BaseMetaPipeEntity) getBaseMetaTileEntity();
+        if (pipe.getNode() != null) {
+            for (byte i = 0; i < 6; i++) {
+                if (isConnectedAtSide(i)) {
+                    final GT_CoverBehaviorBase<?> coverBehavior = pipe.getCoverBehaviorAtSideNew(i);
+                    if (coverBehavior instanceof GT_Cover_None) continue;
+                    final int coverId = pipe.getCoverIDAtSide(i);
+                    ISerializableObject coverData = pipe.getComplexCoverDataAtSide(i);
+                    val in = letsIn(coverBehavior, i, coverId, coverData, pipe);
+                    val out = letsOut(coverBehavior, i, coverId, coverData, pipe);
+                    if (!in || !out) {
+                        pipe.addToLock(pipe, i,in,out);
+                    }else {
+                        pipe.removeFromLock(pipe, i);
+                    }
+                }
+            }
+        } else {
+            boolean allow = true;
+            for (byte i = 0; i < 6; i++) {
+                if (isConnectedAtSide(i)) {
+                    final GT_CoverBehaviorBase<?> coverBehavior = pipe.getCoverBehaviorAtSideNew(i);
+                    if (coverBehavior instanceof GT_Cover_None) continue;
+                    final int coverId = pipe.getCoverIDAtSide(i);
+                    ISerializableObject coverData = pipe.getComplexCoverDataAtSide(i);
+                    val in = letsIn(coverBehavior, i, coverId, coverData, pipe);
+                    val out = letsOut(coverBehavior, i, coverId, coverData, pipe);
+                    if (!in || !out) {
+                        pipe.addToLock(pipe, i, in,out);
+                        allow = false;
+                    }
+                }
+            }
+            if (allow){
+                pipe.removeFromLock(pipe, 0);
+            }
         }
     }
 
@@ -292,6 +352,20 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
             }
         }
         return false;
+    }
+
+    @Override
+    protected void checkConnections() {
+        BaseMetaPipeEntity tBase =(BaseMetaPipeEntity) getBaseMetaTileEntity();
+        GT_Runnable_Cable_Update.setPipeUpdateValues(tBase.getWorld(), new ChunkCoordinates(tBase.xCoord, tBase.yCoord, tBase.zCoord));
+        super.checkConnections();
+    }
+
+    @Override
+    public void onMachineBlockUpdate() {
+        val node = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).getNode();
+        if (node != null)
+            GenerateNodeMap.clearNodeMap(node,-1);
     }
 
     @Override

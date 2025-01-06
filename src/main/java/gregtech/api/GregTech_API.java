@@ -13,6 +13,8 @@ import gregtech.api.items.GT_CoolantCellIC_Item;
 import gregtech.api.items.GT_CoolantCell_Item;
 import gregtech.api.items.GT_Tool_Item;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
+import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Item;
 import gregtech.api.objects.GT_Cover_Default;
 import gregtech.api.objects.GT_Cover_None;
 import gregtech.api.objects.GT_HashSet;
@@ -459,13 +461,16 @@ public class GregTech_API {
         return false;
     }
 
-    public static boolean causeCableUpdate(World aWorld, int aX, int aY, int aZ) {
-        if (aWorld != null && !aWorld.isRemote) { // World might be null during Worldgen
-            GT_Runnable_Cable_Update.setCableUpdateValues(aWorld, new ChunkCoordinates(aX, aY, aZ));
+    public static boolean causePipeUpdate(World aWorld, int aX, int aY, int aZ, IMetaTileEntity meta) {
+        if (aWorld != null && !aWorld.isRemote) {
+            // World might be null during Worldgen
+            if (meta instanceof GT_MetaPipeEntity_Cable)
+                GT_Runnable_Cable_Update.setCableUpdateValues(aWorld, new ChunkCoordinates(aX, aY, aZ));
+            else if (meta instanceof GT_MetaPipeEntity_Item)
+                GT_Runnable_Cable_Update.setPipeUpdateValues(aWorld, new ChunkCoordinates(aX, aY, aZ));
             return true;
         }
         return false;
-
     }
 
     /**

@@ -1,7 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
 import cofh.api.energy.IEnergyReceiver;
-import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
@@ -477,8 +476,10 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
                     if (coverBehavior instanceof GT_Cover_None) continue;
                     final int coverId = pipe.getCoverIDAtSide(i);
                     ISerializableObject coverData = pipe.getComplexCoverDataAtSide(i);
-                    if (!letsIn(coverBehavior, i, coverId, coverData, pipe) || !letsOut(coverBehavior, i, coverId, coverData, pipe)) {
-                        pipe.addToLock(pipe, i);
+                    val in = letsIn(coverBehavior, i, coverId, coverData, pipe);
+                    val out = letsOut(coverBehavior, i, coverId, coverData, pipe);
+                    if (!in || !out) {
+                        pipe.addToLock(pipe, i,in,out);
                     } else {
                         pipe.removeFromLock(pipe, i);
                     }
@@ -498,7 +499,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
                 }
             }
             if (dontAllow) {
-                pipe.addToLock(pipe, 0);
+                pipe.addToLock(pipe, 0,false,false);
             } else {
                 pipe.removeFromLock(pipe, 0);
             }

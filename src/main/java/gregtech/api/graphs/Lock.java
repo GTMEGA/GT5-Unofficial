@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Lock {
     protected ArrayList<TileEntity> tiles = new ArrayList<>();
 
-    public void addTileEntity(TileEntity tileEntity) {
+    public void addTileEntity(TileEntity tileEntity,int side,boolean input,boolean output) {
         int i = contains(tileEntity);
         if (i == -1) {
             tiles.add(tileEntity);
