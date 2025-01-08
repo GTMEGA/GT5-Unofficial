@@ -417,6 +417,7 @@ public class GregTech_API {
         addGTSoundToList(226, "boiler_vent");
         addGTSoundToList(227, "steam_hammer");
         addGTSoundToList(228, "seismic");
+        addGTSoundToList(229, "mcdonal");
 
         //Don't forget to put your sounds into sounds.json too!
     }

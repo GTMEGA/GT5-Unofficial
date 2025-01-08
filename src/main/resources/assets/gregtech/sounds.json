@@ -120,6 +120,12 @@
             "seismic"
         ]
     },
+    "mcdonal": {
+        "category": "block",
+        "sounds": [
+            "mcdonal"
+        ]
+    },
     "potentiometer_click": {
         "category": "block",
         "sounds": [
