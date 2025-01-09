@@ -14,6 +14,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagIntArray;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -21,6 +24,8 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+
+import net.minecraftforge.common.util.Constants;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,9 +38,7 @@ import java.util.stream.Stream;
 @Getter
 public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_ExplosiveTier<TierType>> extends Explosion {
 
-    protected final List<ItemStack> harvested = new ArrayList<>();
-
-    protected final Set<ChunkPosition> seen = new HashSet<>(), targeted = new HashSet<>();
+    protected final Set<ChunkPosition> targeted = new HashSet<>();
 
     private final GT_Entity_Explosive gtExplosive;
 
@@ -50,6 +53,33 @@ public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_Explosi
         this.gtExplosive = entity;
         this.pubWorld    = world;
         this.isSmoking   = true;
+    }
+
+    public NBTTagCompound serializeNBT() {
+        val nbt = new NBTTagCompound();
+        val targeted = new NBTTagList();
+        nbt.setTag("targeted", targeted);
+        for (val pos: this.targeted) {
+            targeted.appendTag(new NBTTagIntArray(serializePos(pos)));
+        }
+        return nbt;
+    }
+
+    public void deserializeNBT(NBTTagCompound nbt) {
+        targeted.clear();
+        val t = nbt.getTagList("targeted", Constants.NBT.TAG_INT_ARRAY);
+        int length = t.tagCount();
+        for (int i = 0; i < length; i++) {
+            targeted.add(deserializePos(t.func_150306_c(i)));
+        }
+    }
+
+    public static int[] serializePos(final ChunkPosition pos) {
+        return new int[]{pos.chunkPosX, pos.chunkPosY, pos.chunkPosZ};
+    }
+
+    public static ChunkPosition deserializePos(final int[] nbt) {
+        return new ChunkPosition(nbt[0], nbt[1], nbt[2]);
     }
 
     public int getX() {
@@ -122,6 +152,7 @@ public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_Explosi
         } else {
             blocksToDestroy = targeted;
         }
+        val harvested = new HashSet<ItemStack>();
         for (ChunkPosition position : blocksToDestroy) {
             int   i, j, k, meta;
             Block block;
@@ -136,12 +167,12 @@ public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_Explosi
             }
             if (block.getMaterial() != Material.air) {
                 if (block.canDropFromExplosion(this)) {
-                    getDrops(block, i, j, k, meta);
+                    getDrops(harvested, block, i, j, k, meta);
                 }
                 destroyBlock(block, i, j, k);
             }
         }
-        processDrops();
+        processDrops(harvested);
     }
 
     protected void explosionPost() {
@@ -240,7 +271,7 @@ public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_Explosi
         pubWorld.spawnParticle("smoke", d0, d1, d2, d3, d4, d5);
     }
 
-    protected void getDrops(final Block block, final int x, final int y, final int z, final int metadata) {
+    protected void getDrops(Set<ItemStack> harvested, final Block block, final int x, final int y, final int z, final int metadata) {
         if (!pubWorld.isRemote) {
             final float          chance = getDropChance(block);
             ArrayList<ItemStack> items  = block.getDrops(pubWorld, x, y, z, metadata, getFortune());
@@ -252,7 +283,7 @@ public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_Explosi
         block.onBlockExploded(pubWorld, i, j, k, this);
     }
 
-    protected void processDrops() {
+    protected void processDrops(Set<ItemStack> harvested) {
         harvested.forEach(this::spawnItem);
     }
 
@@ -291,7 +322,7 @@ public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_Explosi
     }
 
     protected boolean hasEncountered(final ChunkPosition pos) {
-        return seen.contains(pos) || targeted.contains(pos);
+        return targeted.contains(pos);
     }
 
     protected float getRayPower() {

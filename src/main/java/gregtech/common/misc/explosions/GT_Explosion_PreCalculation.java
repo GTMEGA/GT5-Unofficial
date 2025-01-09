@@ -5,11 +5,25 @@ import codechicken.lib.math.MathHelper;
 import gregtech.common.entities.GT_Entity_Explosive;
 import lombok.*;
 import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagIntArray;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkPosition;
 
+import net.minecraftforge.common.util.Constants;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import static gregtech.common.misc.explosions.GT_Explosion.serializePos;
+import static gregtech.common.misc.explosions.GT_Explosion.deserializePos;
 import static java.lang.Math.max;
 
 
@@ -54,6 +68,90 @@ public class GT_Explosion_PreCalculation {
 
         private int parX, parY, parZ;
 
+        @SneakyThrows
+        private void toByteArray(DataOutputStream dOut) {
+            dOut.writeDouble(aX);
+            dOut.writeDouble(aY);
+            dOut.writeDouble(aZ);
+            dOut.writeBoolean(flagFields[0]);
+            dOut.writeBoolean(flagFields[1]);
+            dOut.writeBoolean(flagFields[2]);
+            dOut.writeInt(intFields[0]);
+            dOut.writeInt(intFields[1]);
+            dOut.writeInt(intFields[2]);
+            dOut.writeDouble(doubleFields[0]);
+            dOut.writeDouble(doubleFields[1]);
+            dOut.writeDouble(doubleFields[2]);
+            dOut.writeDouble(maxLength);
+            dOut.writeDouble(distance);
+            dOut.writeDouble(power);
+            dOut.writeDouble(myLength);
+            dOut.writeDouble(posX);
+            dOut.writeDouble(posY);
+            dOut.writeDouble(posZ);
+            dOut.writeInt(chunkPosition.chunkPosX);
+            dOut.writeInt(chunkPosition.chunkPosY);
+            dOut.writeInt(chunkPosition.chunkPosZ);
+            dOut.writeBoolean(canContinue);
+        }
+
+        @SneakyThrows
+        public static NBTTagCompound serializeNBT(Collection<Ray> rays) {
+            val b = new ByteArrayOutputStream();
+            val dOut = new DataOutputStream(b);
+            dOut.writeInt(rays.size());
+            for (val ray: rays) {
+                ray.toByteArray(dOut);
+            }
+            dOut.close();
+            NBTTagCompound nbt = new NBTTagCompound();
+            nbt.setByteArray("data_v1", b.toByteArray());
+            return nbt;
+        }
+
+        @SneakyThrows
+        private static void fromByteArray_v1(GT_Explosion_PreCalculation parent, Collection<Ray> rayList, byte[] bytes) {
+            val dIn = new DataInputStream(new ByteArrayInputStream(bytes));
+            val count = dIn.readInt();
+            for (int i = 0; i < count; i++) {
+                val ax = dIn.readDouble();
+                val ay = dIn.readDouble();
+                val az = dIn.readDouble();
+                val ray = new Ray(parent, ax, ay, az);
+                ray.parX = parent.explosion.getX();
+                ray.parY = parent.explosion.getY();
+                ray.parZ = parent.explosion.getZ();
+                ray.flagFields[0] = dIn.readBoolean();
+                ray.flagFields[1] = dIn.readBoolean();
+                ray.flagFields[2] = dIn.readBoolean();
+                ray.intFields[0] = dIn.readInt();
+                ray.intFields[1] = dIn.readInt();
+                ray.intFields[2] = dIn.readInt();
+                ray.doubleFields[0] = dIn.readDouble();
+                ray.doubleFields[1] = dIn.readDouble();
+                ray.doubleFields[2] = dIn.readDouble();
+                ray.maxLength = dIn.readDouble();
+                ray.distance = dIn.readDouble();
+                ray.power = dIn.readDouble();
+                ray.myLength = dIn.readDouble();
+                ray.posX = dIn.readDouble();
+                ray.posY = dIn.readDouble();
+                ray.posZ = dIn.readDouble();
+                val cX = dIn.readInt();
+                val cY = dIn.readInt();
+                val cZ = dIn.readInt();
+                ray.chunkPosition = new ChunkPosition(cX, cY, cZ);
+                ray.canContinue = dIn.readBoolean();
+                rayList.add(ray);
+            }
+        }
+
+        public static void deserializeNBT(GT_Explosion_PreCalculation parent, Collection<Ray> rayList, NBTTagCompound nbt) {
+            if (nbt.hasKey("data_v1")) {
+                fromByteArray_v1(parent, rayList, nbt.getByteArray("data_v1"));
+            }
+        }
+
         protected void init() {
             parX = parent.explosion.getX();
             parY = parent.explosion.getY();
@@ -83,9 +181,6 @@ public class GT_Explosion_PreCalculation {
 
     }
 
-
-    protected static final Set<GT_Explosion_PreCalculation> active = new HashSet<>();
-
     private final @NonNull GT_Explosion<?> explosion;
 
     private final @NonNull Set<Ray> rays = new HashSet<>();
@@ -96,38 +191,88 @@ public class GT_Explosion_PreCalculation {
 
     private int ticked = 0;
 
+    public NBTTagCompound serializeNBT() {
+        val nbt = new NBTTagCompound();
+        val seen = new NBTTagList();
+        val target = new NBTTagList();
+        nbt.setTag("rays", Ray.serializeNBT(this.rays));
+        nbt.setTag("seen", seen);
+        nbt.setTag("target", target);
+        System.out.println(this.rays.size());
+        System.out.println(seenPositions.size());
+        System.out.println(targetPositions.size());
+        for (val pos: seenPositions) {
+            seen.appendTag(new NBTTagIntArray(serializePos(pos)));
+        }
+        for (val pos: targetPositions) {
+            target.appendTag(new NBTTagIntArray(serializePos(pos)));
+        }
+        nbt.setInteger("fuse", fuse);
+        nbt.setInteger("ticked", ticked);
+        return nbt;
+    }
+
+    public static GT_Explosion_PreCalculation deserializeNBT(GT_Explosion<?> parent, NBTTagCompound nbt) {
+        val result = new GT_Explosion_PreCalculation(parent);
+        val rays = nbt.getCompoundTag("rays");
+        val seen  = nbt.getTagList("seen", Constants.NBT.TAG_COMPOUND);
+        val target = nbt.getTagList("target", Constants.NBT.TAG_COMPOUND);
+        int seenCount = seen.tagCount();
+        int targetCount = target.tagCount();
+        Ray.deserializeNBT(result, result.rays, rays);
+        for (int i = 0; i < seenCount; i++) {
+            result.seenPositions.add(deserializePos(seen.func_150306_c(i)));
+        }
+        for (int i = 0; i < targetCount; i++) {
+            result.targetPositions.add(deserializePos(target.func_150306_c(i)));
+        }
+        result.fuse = nbt.getInteger("fuse");
+        result.ticked = nbt.getInteger("ticked");
+        return result;
+    }
+
+    private static final float PHI = (float) (Math.PI * (Math.sqrt(5) - 1));
+    private static void fibSphere(int samples, int index, Vec3 pos) {
+        float y = 1 - (index / (float)(samples - 1)) * 2;
+        float radius = (float) Math.sqrt(1 - y * y);
+        float theta = PHI * index;
+
+        double x = MathHelper.cos(theta) * radius;
+        double z = MathHelper.sin(theta) * radius;
+
+        pos.xCoord = x;
+        pos.yCoord = y;
+        pos.zCoord = z;
+    }
+
     public GT_Explosion_PreCalculation initialize() {
-        if (!isServerSide() || active.contains(this)) {
+        if (!isServerSide()) {
             return this;
         }
         this.fuse = getExplosionSource().fuse;
-        active.add(this);
-        //
-        val maxRaysX = explosion.getMaxX();
-        val maxRaysY = explosion.getMaxY();
-        val maxRaysZ = explosion.getMaxZ();
-        for (int i = 0; i < maxRaysX; i++) {
-            for (int j = 0; j < maxRaysY; j++) {
-                for (int k = 0; k < maxRaysZ; k++) {
-                    if (i == 0 || i == maxRaysX - 1 || j == 0 || j == maxRaysY - 1 || k == 0 || k == maxRaysZ - 1) {
-                        var aX        = i / (double) (maxRaysX - 1) * 2.0 - 1.0;
-                        var aY        = j / (double) (maxRaysY - 1) * 2.0 - 1.0;
-                        var aZ        = k / (double) (maxRaysZ - 1) * 2.0 - 1.0;
-                        val magnitude = Math.sqrt(aX * aX + aY * aY + aZ * aZ);
-                        aX /= magnitude;
-                        aY /= magnitude;
-                        aZ /= magnitude;
-                        val ray = new Ray(this, aX, aY, aZ);
-                        ray.power = explosion.getRayPower();
-                        ray.init();
-                        ray.maxLength = explosion.preCalculateRayMaximumLength(ray);
-                        explosion.preprocessRay(ray);
-                        rays.add(ray);
-                    }
-                }
-            }
+        int x = explosion.getMaxX();
+        int y = explosion.getMaxY();
+        int z = explosion.getMaxZ();
+        float min = Math.min(x, Math.min(y, z));
+        float xBias = min / x;
+        float yBias = min / y;
+        float zBias = min / z;
+        int count = 32 * Math.max(x, Math.max(y, z));
+        val vec = Vec3.createVectorHelper(0, 0, 0);
+        for (int i = 0; i < count; i++) {
+            fibSphere(count, i, vec);
+            vec.xCoord *= xBias;
+            vec.yCoord *= yBias;
+            vec.zCoord *= zBias;
+            vec.normalize();
+            val ray = new Ray(this, vec.xCoord, vec.yCoord, vec.zCoord);
+            ray.power = explosion.getRayPower();
+            ray.init();
+            ray.maxLength = explosion.preCalculateRayMaximumLength(ray);
+            explosion.preprocessRay(ray);
+            rays.add(ray);
         }
-        return this;
+         return this;
     }
 
     public boolean isServerSide() {
@@ -194,23 +339,11 @@ public class GT_Explosion_PreCalculation {
         if (!first) {
             return false;
         }
-        for (val active : active) {
-            if (active.targetPositions.contains(currentPosition)) {
-                return false;
-            }
-        }
         return true;
     }
 
     private boolean canDestroy(final Ray ray, final Block block, final int x, final int y, final int z) {
         return getExplosionSource().canBlockBeExploded(explosion, explosion.getPubWorld(), x, y, z, block, (float) ray.power);
-    }
-
-    public void finalizeExplosion() {
-        if (!isServerSide()) {
-            return;
-        }
-        active.remove(this);
     }
 
 }

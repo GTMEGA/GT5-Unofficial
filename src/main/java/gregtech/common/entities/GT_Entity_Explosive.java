@@ -16,6 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
@@ -92,9 +93,6 @@ public class GT_Entity_Explosive extends EntityTNTPrimed implements IEntityAddit
             this.setDead();
             if (!this.worldObj.isRemote) {
                 this.doExplode();
-                if (preCalc != null) {
-                    this.preCalc.finalizeExplosion();
-                }
             }
         } else {
             final int n = rand.nextInt(2) + 1;
@@ -118,12 +116,19 @@ public class GT_Entity_Explosive extends EntityTNTPrimed implements IEntityAddit
     protected void writeEntityToNBT(final NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
         compound.setInteger("initialFuse", initialFuse);
+        compound.setInteger("fuse", fuse);
         compound.setInteger("meta", metadata);
         compound.setDouble("rX", realX);
         compound.setDouble("rY", realY);
         compound.setDouble("rZ", realZ);
         compound.setInteger("tier", tier.getTier());
         compound.setInteger("typeIndex", tier.getTierTrackIndex());
+        if (explosion != null) {
+            compound.setTag("explosion", explosion.serializeNBT());
+        }
+        if (preCalc != null) {
+            compound.setTag("preCalc", preCalc.serializeNBT());
+        }
     }
 
     /**
@@ -136,14 +141,20 @@ public class GT_Entity_Explosive extends EntityTNTPrimed implements IEntityAddit
     protected void readEntityFromNBT(final NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         this.initialFuse = compound.getInteger("initialFuse");
+        this.fuse        = compound.getInteger("fuse");
         this.metadata    = compound.getInteger("meta");
         this.realX       = compound.getDouble("rX");
         this.realY       = compound.getDouble("rY");
         this.realZ       = compound.getDouble("rZ");
         this.tier        = getTier(compound);
-        if (!worldObj.isRemote && explosion == null) {
-            // Uncomment this to *somewhat* fix the issue of re-logging or crashing deleting explosives. The calculations appear to be messed up though in doing so
-//            createAndInitExplosion();
+        if (compound.hasKey("explosion")) {
+            val exp = compound.getCompoundTag("explosion");
+            explosion = tier.createExplosion(this);
+            explosion.deserializeNBT(exp);
+            if (compound.hasKey("preCalc")) {
+                val pre = compound.getCompoundTag("preCalc");
+                preCalc = GT_Explosion_PreCalculation.deserializeNBT(explosion, pre);
+            }
         }
     }
 
