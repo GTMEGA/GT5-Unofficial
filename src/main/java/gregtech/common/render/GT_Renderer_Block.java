@@ -128,6 +128,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             if (renderPass == 0) {
                 isTranslucentPass = false;
             } else if (renderPass == 1) {
+                if (!GT_Mod.gregtechproxy.mRenderTileTranslucentPass)
+                    return false;
                 isTranslucentPass = true;
             } else {
                 return false; // Don't render anything, something went wrong! Can't log either because it would do another A2 fr fr...

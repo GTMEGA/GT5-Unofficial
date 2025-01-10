@@ -378,6 +378,8 @@ public class GT_Mod implements IGT_Mod {
                 }
         );
         gregtechproxy.mRenderTileAmbientOcclusion = GregTech_API.sClientDataFile.get("render", "TileAmbientOcclusion", true);
+        // TODO: [VEN] Currently disabled, set to 'true' once the FalseTweaks translucent block implementation is done.
+        gregtechproxy.mRenderTileTranslucentPass = GregTech_API.sClientDataFile.get("render", "TileTranslucentPass", false);
         gregtechproxy.mRenderFlippedMachinesFlipped = GregTech_API.sClientDataFile.get("render", "RenderFlippedMachinesFlipped", true);
         gregtechproxy.mRenderIndicatorsOnHatch = GregTech_API.sClientDataFile.get("render", "RenderIndicatorsOnHatch", true);
         gregtechproxy.mTooltipVerbosity = GregTech_API.sClientDataFile.get("interface", "TooltipVerbosity", 2);

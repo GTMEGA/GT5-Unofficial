@@ -2,6 +2,7 @@ package gregtech.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDebugableBlock;
@@ -763,12 +764,16 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     @Override
     @SideOnly(Side.CLIENT)
     public int getRenderBlockPass() {
-        return 1;// One here means both (more or less)
+        if (GT_Mod.gregtechproxy.mRenderTileTranslucentPass)
+            return 1;// One here means both (more or less)
+        return super.getRenderBlockPass();
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public boolean canRenderInPass(int pass) {
-        return pass == 0 || pass == 1;
+        if (GT_Mod.gregtechproxy.mRenderTileTranslucentPass)
+            return pass == 0 || pass == 1;
+        return super.canRenderInPass(pass);
     }
 }
