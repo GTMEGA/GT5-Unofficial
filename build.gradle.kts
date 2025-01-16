@@ -37,6 +37,7 @@ minecraft_fp {
 }
 
 repositories {
+    mavenLocal()
     cursemavenEX()
     mavenpattern()
     mega()
@@ -67,7 +68,7 @@ repositories {
 }
 
 dependencies {
-    implementation("mega:structurelib-mc1.7.10:1.2.6-mega:dev")
+    implementation("mega:structurelib-mc1.7.10:1.3.1-mega:dev")
     implementation("codechicken:codechickencore-mc1.7.10:1.4.0-mega:dev")
     devOnlyNonPublishable("codechicken:notenoughitems-mc1.7.10:2.3.0-mega:dev")
 

@@ -1,7 +1,9 @@
 package gregtech.common.tileentities.machines.multi;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.IDeconstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
@@ -20,6 +22,8 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_GUIContainer_FusionReactor;
+import org.apache.commons.lang3.tuple.Pair;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -37,7 +41,8 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
-public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_FusionComputer> {
+public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_FusionComputer>
+                                                       implements IDeconstructable<GT_MetaTileEntity_FusionComputer> {
     public static final String STRUCTURE_PIECE_MAIN = "main";
     private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_FusionComputer>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GT_MetaTileEntity_FusionComputer>>() {
         @Override
@@ -473,5 +478,16 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 7, 1, 12);
+    }
+
+    @Override
+    public GT_MetaTileEntity_FusionComputer getType() {
+        return this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Pair<String, Vec3Impl>[] getActivePieces() {
+        return (Pair<String, Vec3Impl>[]) new Pair[] { Pair.of(STRUCTURE_PIECE_MAIN, new Vec3Impl(7, 1, 12)) };
     }
 }
