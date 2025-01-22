@@ -40,9 +40,9 @@ public class GT_Container_ItemDistributor extends GT_ContainerMetaTile_Machine {
             if (aSlotIndex == 27) {
                 ((GT_MetaTileEntity_ItemDistributor) this.mTileEntity.getMetaTileEntity()).bOutput = (!((GT_MetaTileEntity_ItemDistributor) this.mTileEntity.getMetaTileEntity()).bOutput);
                 if (((GT_MetaTileEntity_ItemDistributor) this.mTileEntity.getMetaTileEntity()).bOutput) {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("116","Emit Energy to Outputside"));
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("116","Passing energy to outputs."));
                 } else {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("117","Don't emit Energy"));
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("117","Energy pass-through disabled."));
                 }
                 return null;
             }

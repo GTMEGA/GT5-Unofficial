@@ -73,9 +73,9 @@ public class GT_Container_Filter extends GT_ContainerMetaTile_Machine {
             if (aSlotIndex == 18) {
                 ((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bOutput = (!((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bOutput);
                 if (((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bOutput) {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("116","Emit Energy to Outputside"));
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("116","Passing energy to outputs."));
                 } else {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("117","Don't emit Energy"));
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("117","Energy pass-through disabled."));
                 }
                 return null;
             }
@@ -100,9 +100,9 @@ public class GT_Container_Filter extends GT_ContainerMetaTile_Machine {
             if (aSlotIndex == 21) {
                 ((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bInvertFilter = (!((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bInvertFilter);
                 if (((GT_MetaTileEntity_Filter) this.mTileEntity.getMetaTileEntity()).bInvertFilter) {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("124","Invert Filter"));
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("124","Blacklist configured items."));
                 } else {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("125","Don't invert Filter"));
+                    GT_Utility.sendChatToPlayer(aPlayer, trans("125","Whitelist configured items."));
                 }
                 return null;
             }
