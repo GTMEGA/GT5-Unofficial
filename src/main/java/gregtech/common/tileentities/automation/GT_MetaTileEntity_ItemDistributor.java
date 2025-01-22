@@ -82,11 +82,10 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
                 aNameRegional,
                 aTier,
                 28,
-                new String[]{"Distributes Items between different Machine Sides",
-                             "Default Items per Machine Side: 0",
-                             "Use Screwdriver to increase/decrease Items per Side",
+                new String[]{"Distributes specified quantities of items between output sides.",
+                             "RMB or Shift+RMB using a Screwdriver to increase or decrease items pushed per side.",
                              "Right-click with a hammer to configure forced sorting",
-                             "Does not consume energy to move Item"}
+                             "Does not require energy to move items, but CAN accept energy to pass to a connected machine."}
              );
     }
 
@@ -137,9 +136,9 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
         ITexture       outDisabledIcon = TextureFactory.of(Textures.BlockIcons.OVERLAY_OUT_DISABLED);
         for (int i = 0; i < 17; i++) {
             val casing = Textures.BlockIcons.MACHINE_CASINGS[mTier][i];
-            returnTextures[TEX_PAGE_INPUT][i]           = new ITexture[]{casing, inIcon, baseIcon};
-            returnTextures[TEX_PAGE_OUTPUT_ENABLED][i]  = new ITexture[]{casing, outIcon, baseIcon};
-            returnTextures[TEX_PAGE_OUTPUT_DISABLED][i] = new ITexture[]{casing, outDisabledIcon, baseIcon};
+            returnTextures[TEX_PAGE_INPUT][i]           = new ITexture[]{casing, baseIcon, inIcon};
+            returnTextures[TEX_PAGE_OUTPUT_ENABLED][i]  = new ITexture[]{casing, baseIcon, outIcon};
+            returnTextures[TEX_PAGE_OUTPUT_DISABLED][i] = new ITexture[]{casing, baseIcon,outDisabledIcon,};
         }
         return returnTextures;
     }
