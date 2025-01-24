@@ -43,6 +43,7 @@ import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -621,15 +622,15 @@ public class GT_Client extends GT_Proxy
             return;
 
         if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWireCutterList) ||
-                GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sSolderingToolList)) {
+                GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sSolderingToolList) ||
+                GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sScrewdriverList)) {
             if (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0)
                 drawGrid(aEvent, false, false, aEvent.player.isSneaking());
             return;
         }
 
         if ((aEvent.currentItem == null && aEvent.player.isSneaking()) ||
-                GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sCrowbarList) ||
-                GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sScrewdriverList)) {
+                GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sCrowbarList)) {
             if (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0)
                 for (byte i = 0; i < 6; i++)
                     if (((ICoverable) aTileEntity).getCoverIDAtSide(i) > 0) {
