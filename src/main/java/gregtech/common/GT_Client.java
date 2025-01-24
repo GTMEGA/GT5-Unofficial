@@ -51,6 +51,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
@@ -69,6 +70,8 @@ import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
 
 public class GT_Client extends GT_Proxy
         implements Runnable {
+
+    private static final ResourceLocation EMPTY_TEXTURE = new ResourceLocation("gregtech", "textures/empty_texture.png");
 
     public static final String GTMEGA_CAPE_LIST_URL = "https://raw.githubusercontent.com/GTMEGA/CustomGTCapeHook-Cape-List/master/capes.txt";
     public static final String GT_CAPE_LIST_URL = "http://gregtech.overminddl1.com/com/gregoriust/gregtech/supporterlist.txt";
@@ -174,6 +177,31 @@ public class GT_Client extends GT_Proxy
     private static boolean checkedForChicken = false;
 
     private static void drawGrid(DrawBlockHighlightEvent aEvent, boolean showCoverConnections, boolean aIsWrench, boolean aIsSneaking) {
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
+
+        Minecraft.getMinecraft().renderEngine.bindTexture(EMPTY_TEXTURE);
+
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+        GL11.glPushMatrix();
+
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glDisable(GL11.GL_LIGHTING);
+
+        GL11.glColor4f(1F, 1F, 1F, 1F);
+
+        drawGrid0(aEvent, showCoverConnections, aIsWrench, aIsSneaking);
+
+        GL11.glPopMatrix();
+        GL11.glPopAttrib();
+
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit,
+                                              OpenGlHelper.lastBrightnessX,
+                                              OpenGlHelper.lastBrightnessY);
+    }
+
+    private static void drawGrid0(DrawBlockHighlightEvent aEvent, boolean showCoverConnections, boolean aIsWrench, boolean aIsSneaking) {
         if (!checkedForChicken) {
             try {
                 Class.forName("codechicken.lib.vec.Rotation");
