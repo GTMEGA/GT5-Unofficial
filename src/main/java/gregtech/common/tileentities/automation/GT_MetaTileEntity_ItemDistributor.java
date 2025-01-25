@@ -71,9 +71,7 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
 
     private byte currentSide = 0, currentSideItemCount = 0;
 
-    private byte facingPrevious = -1, perpFacingNow = -1, perpFacingPrev = -1;
-
-    private boolean placedFromCustomStack = false;
+    private byte perpFacingNow = -1;
 
     public GT_MetaTileEntity_ItemDistributor(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -212,16 +210,6 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
     }
 
     @Override
-    public void setItemNBT(NBTTagCompound aNBT) {
-        super.setItemNBT(aNBT);
-        aNBT.setByte("mCurrentFacing", getBaseMetaTileEntity().getFrontFacing());
-        aNBT.setByte("mCurrentPerp", perpFacingNow);
-        aNBT.setBoolean("mUseNewDistributionBehavior", useNewDistributionBehavior);
-        aNBT.setByteArray("mItemsPerSide", itemsPerSide);
-        GT_NBT_Util.setBooleanArray(aNBT, "mSidesEnabled", sidesEnabled);
-    }
-
-    @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         val newPerSideValue = (byte) ((itemsPerSide[aSide] + (aPlayer.isSneaking() ? -1 : 1) + 128) % 128);
         updateSideToValue(aSide, newPerSideValue);
@@ -238,14 +226,6 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
         if (getBaseMetaTileEntity().isServerSide()) {
             val toSend = (aSide & 0x7) | (sidesEnabled[aSide] ? 0x8 : 0);
             getBaseMetaTileEntity().sendBlockEvent(BaseMetaTileEntity.ClientEvents.MISC_EVENT, (byte) toSend);
-        }
-    }
-
-    @Override
-    public void onFirstTick(final IGregTechTileEntity aBaseMetaTileEntity) {
-        super.onFirstTick(aBaseMetaTileEntity);
-        if (/*aBaseMetaTileEntity.isServerSide() && */placedFromCustomStack) {
-            attemptRotation();
         }
     }
 
@@ -293,58 +273,6 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
 
     private void iterateSide() {
         currentSide = (byte) ((currentSide + 1) % 6);
-    }
-
-    private void attemptRotation() {
-        val f   = ForgeDirection.getOrientation(facingPrevious);
-        var p   = getPerpFacing(perpFacingPrev);
-        val phi = ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing());
-        var pi  = getPerpFacing(perpFacingNow);
-        if (f.equals(phi) && p.equals(pi)) {
-            setSideEnabledFromItemPerSide();
-            sendAllSidesToClient();
-            return;
-        }
-        val    t               = crossProduct(f, p);
-        val    tau             = crossProduct(phi, pi);
-        byte[] newItemsPerSide = new byte[6];
-        if (f.equals(phi)) {
-            // The facing axis is unchanged, simply rotate
-            processAxialRotation(f, p, pi, newItemsPerSide);
-        } else if (p.equals(pi)) {
-            // The perpendicular axis is unchanged, simply rotate
-            processAxialRotation(p, f, phi, newItemsPerSide);
-        } else {
-            val transformFToPhi = getInverseRotationMatrix(f, phi);
-            val p_prime         = p.getRotation(transformFToPhi);
-            if (p_prime.equals(pi.getOpposite())) {
-                // Rotate itemPerSide by transformFToPhi and then 180 about phi
-                for (byte i = 0; i < 6; i++) {
-                    var dir = ForgeDirection.getOrientation(i).getRotation(transformFToPhi);
-                    if (!phi.equals(ForgeDirection.UP)) {
-                        // Special case because of player perspective
-                        dir = rotationSquared(phi, dir);
-                    }
-                    var j = dir.ordinal();
-                    newItemsPerSide[j] = itemsPerSide[i];
-                }
-            } else {
-                if (phi.equals(ForgeDirection.DOWN)) {
-                    // Special case because of player perspective
-                    pi = pi.getOpposite();
-                }
-                // Apply brute force rotation
-                newItemsPerSide[rotationSquared(phi, phi).ordinal()]               = itemsPerSide[f.ordinal()];
-                newItemsPerSide[rotationSquared(phi, pi).ordinal()]                = itemsPerSide[p.ordinal()];
-                newItemsPerSide[rotationSquared(phi, tau).ordinal()]               = itemsPerSide[t.ordinal()];
-                newItemsPerSide[rotationSquared(phi, phi.getOpposite()).ordinal()] = itemsPerSide[f.getOpposite().ordinal()];
-                newItemsPerSide[rotationSquared(phi, pi.getOpposite()).ordinal()]  = itemsPerSide[p.getOpposite().ordinal()];
-                newItemsPerSide[rotationSquared(phi, tau.getOpposite()).ordinal()] = itemsPerSide[t.getOpposite().ordinal()];
-            }
-        }
-        itemsPerSide = newItemsPerSide;
-        setSideEnabledFromItemPerSide();
-        sendAllSidesToClient();
     }
 
     private ForgeDirection getPerpFacing(final byte perpFacing) {
@@ -401,17 +329,6 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
 
     private static ForgeDirection rotationSquared(final ForgeDirection axis, final ForgeDirection initial) {
         return initial.getRotation(axis).getRotation(axis);
-    }
-
-    @Override
-    public void initDefaultModes(final NBTTagCompound aNBT) {
-        super.initDefaultModes(aNBT);
-        if (aNBT != null /*&& getBaseMetaTileEntity().isServerSide()*/) {
-            grabNBT(aNBT);
-            facingPrevious        = aNBT.getByte("mCurrentFacing");
-            perpFacingPrev        = aNBT.getByte("mCurrentPerp");
-            placedFromCustomStack = true;
-        }
     }
 
     @Override
