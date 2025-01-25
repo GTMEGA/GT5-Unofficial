@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.automation;
 
+import com.enderio.core.common.util.BlockCoord;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -17,9 +18,12 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_ITEMDISTRIBUTOR;
 
@@ -48,6 +52,24 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
             }
             rowIndex += 1;
         }
+    }
+
+    @Override
+    public void getWailaBody(ItemStack stack, List<String> currentTip, MovingObjectPosition pos, NBTTagCompound tag, int side) {
+        super.getWailaBody(stack, currentTip, pos, tag, side);
+        val itemsPerSide = tag.getByteArray("mItemsPerSide");
+        for (byte facing = 0; facing < 6; facing++) {
+            val items = itemsPerSide[facing];
+            if (items > 0) {
+                currentTip.add(String.format("Output: %s [%s]", ForgeDirection.getOrientation(facing).name(), items));
+            }
+        }
+    }
+
+    @Override
+    public void getWailaNBT(NBTTagCompound tag, World world, BlockCoord pos) {
+        super.getWailaNBT(tag, world, pos);
+        tag.setByteArray("mItemsPerSide", itemsPerSide);
     }
 
     private static ForgeDirection crossProduct(ForgeDirection a, ForgeDirection b) {
@@ -84,7 +106,7 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
                              "RMB or Shift+RMB using a Screwdriver to increase or decrease items pushed per side.",
                              "Right-click with a hammer to configure forced sorting",
                              "Does not require energy to move items, but CAN accept energy to pass to a connected machine."}
-             );
+        );
     }
 
     @SuppressWarnings("unused")
@@ -127,16 +149,16 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
 
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
-        ITexture[][][] returnTextures  = new ITexture[3][17][];
-        ITexture       baseIcon        = getOverlayIcon();
-        ITexture       inIcon          = TextureFactory.of(Textures.BlockIcons.OVERLAY_ITEM_IN);
-        ITexture       outIcon         = TextureFactory.of(Textures.BlockIcons.OVERLAY_ITEM_OUT);
-        ITexture       outDisabledIcon = TextureFactory.of(Textures.BlockIcons.OVERLAY_OUT_DISABLED);
+        ITexture[][][] returnTextures = new ITexture[3][17][];
+        ITexture baseIcon = getOverlayIcon();
+        ITexture inIcon = TextureFactory.of(Textures.BlockIcons.OVERLAY_ITEM_IN);
+        ITexture outIcon = TextureFactory.of(Textures.BlockIcons.OVERLAY_ITEM_OUT);
+        ITexture outDisabledIcon = TextureFactory.of(Textures.BlockIcons.OVERLAY_OUT_DISABLED);
         for (int i = 0; i < 17; i++) {
             val casing = Textures.BlockIcons.MACHINE_CASINGS[mTier][i];
-            returnTextures[TEX_PAGE_INPUT][i]           = new ITexture[]{casing, baseIcon, inIcon};
-            returnTextures[TEX_PAGE_OUTPUT_ENABLED][i]  = new ITexture[]{casing, baseIcon, outIcon};
-            returnTextures[TEX_PAGE_OUTPUT_DISABLED][i] = new ITexture[]{casing, baseIcon,outDisabledIcon,};
+            returnTextures[TEX_PAGE_INPUT][i] = new ITexture[]{casing, baseIcon, inIcon};
+            returnTextures[TEX_PAGE_OUTPUT_ENABLED][i] = new ITexture[]{casing, baseIcon, outIcon};
+            returnTextures[TEX_PAGE_OUTPUT_DISABLED][i] = new ITexture[]{casing, baseIcon, outDisabledIcon,};
         }
         return returnTextures;
     }
@@ -185,15 +207,15 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         grabNBT(aNBT);
-        currentSide          = aNBT.getByte("mCurrentSide");
+        currentSide = aNBT.getByte("mCurrentSide");
         currentSideItemCount = aNBT.getByte("mCurrentSideItemCount");
-        perpFacingNow        = aNBT.getByte("mCurrentPerp");
+        perpFacingNow = aNBT.getByte("mCurrentPerp");
     }
 
     private void grabNBT(final NBTTagCompound aNBT) {
         useNewDistributionBehavior = aNBT.getBoolean("mUseNewDistributionBehavior");
-        itemsPerSide               = aNBT.getByteArray("mItemsPerSide");
-        sidesEnabled               = GT_NBT_Util.getBooleanArray(aNBT, "mSidesEnabled");
+        itemsPerSide = aNBT.getByteArray("mItemsPerSide");
+        sidesEnabled = GT_NBT_Util.getBooleanArray(aNBT, "mSidesEnabled");
         if (itemsPerSide.length != 6) {
             itemsPerSide = new byte[6];
         }
@@ -240,20 +262,20 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
     @Override
     protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         fillStacksIntoFirstSlots();
-        int        movedItems;
+        int movedItems;
         TileEntity adjacentTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(currentSide);
-        int        inspectedSides     = 0;
+        int inspectedSides = 0;
         while (itemsPerSide[currentSide] == 0) {
             iterateSide();
             currentSideItemCount = 0;
-            adjacentTileEntity   = aBaseMetaTileEntity.getTileEntityAtSide(currentSide);
+            adjacentTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(currentSide);
             inspectedSides += 1;
             if (inspectedSides == 6) {
                 return;
             }
         }
         val oppositeSide = GT_Utility.getOppositeSide(currentSide);
-        val maxAmount    = (byte) (itemsPerSide[currentSide] - currentSideItemCount);
+        val maxAmount = (byte) (itemsPerSide[currentSide] - currentSideItemCount);
         movedItems = GT_Utility.moveOneItemStack(aBaseMetaTileEntity, adjacentTileEntity, currentSide, oppositeSide, null, false, (byte) 64, (byte) 1, maxAmount, (byte) 1);
         currentSideItemCount += (byte) movedItems;
         if (currentSideItemCount >= itemsPerSide[currentSide] || useNewDistributionBehavior) {
@@ -344,7 +366,7 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
     @Override
     protected void receiveMiscEvent(byte eventData) {
         if (getBaseMetaTileEntity().isClientSide()) {
-            val aSide       = eventData & 0x7;
+            val aSide = eventData & 0x7;
             val sideEnabled = (eventData & 0x8) != 0;
             sidesEnabled[aSide] = sideEnabled;
         }
