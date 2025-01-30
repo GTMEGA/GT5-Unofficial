@@ -89,19 +89,7 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.bismuth", true, 80, 120, 8, false, true, false, true, true, false, Materials.Bismuth);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.firestone", true, 5, 15, 8, false, false, false, Materials.Firestone);
             //TwF Ores
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.ruby", true, 5, 35, 2, false, false, false, false, true, true, Materials.Ruby);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.sapphire", true, 5, 35, 2, false, false, false, false, true, true, Materials.Sapphire);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.greensapphire", true, 5, 35, 2, false, false, false, false, true, true, Materials.GreenSapphire);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.olivine", true, 5, 35, 2, false, false, false, false, true, true, Materials.Olivine);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.topaz", true, 5, 35, 2, false, false, false, false, true, true, Materials.Topaz);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.tanzanite", true, 5, 35, 2, false, false, false, false, true, true, Materials.Tanzanite);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.amethyst", true, 5, 35, 2, false, false, false, false, true, true, Materials.Amethyst);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.opal", true, 5, 35, 2, false, false, false, false, true, true, Materials.Opal);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.jasper", true, 5, 35, 2, false, false, false, false, true, true, Materials.Jasper);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.bluetopaz", true, 5, 35, 2, false, false, false, false, true, true, Materials.BlueTopaz);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.amber", true, 5, 35, 2, false, false, false, false, true, true, Materials.Amber);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.garnetred", true, 5, 35, 2, false, false, false, false, true, true, Materials.GarnetRed);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.garnetyellow", true, 5, 35, 2, false, false, false, false, true, true, Materials.GarnetYellow);
+            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.amethyst", true, 5, 35, 4, false, false, false, false, true, true, Materials.Amethyst);
 
             //Overworld Ore Veins
             //Unlocalized name, Enabled by defaut, Min Y Spawn Height (7-242), Max Y Spawn Height (14-249), Relative Spawn Weight (1-x), Vein Density (1-10), Size (Appx. Diameter (8-32)), Spawn in Overworld?, Spawn in Nether?, Spawn in End?, Primary (Top ore layer), Secondary (Bottom ore layer), Between (Middle Ore Layer), Sporadic (Randomly placed in vein)
