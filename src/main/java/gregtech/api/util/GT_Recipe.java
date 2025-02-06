@@ -203,8 +203,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 //		checkCellBalance();
     }
 
-    public GT_Recipe(ItemStack aInput1, ItemStack aOutput1, int aFuelValue, int aType) {
-        this(aInput1, aOutput1, null, null, null, aFuelValue, aType);
+    public static GT_Recipe[] createFuel(ItemStack aInput1, ItemStack aOutput1, int aFuelValue, int aType) {
+        return createFuel(aInput1, aOutput1, null, null, null, aFuelValue, aType);
     }
 
     private static FluidStack[] tryGetFluidInputsFromCells(ItemStack aInput) {
@@ -213,39 +213,55 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     }
 
     // aSpecialValue = EU per Liter! If there is no Liquid for this Object, then it gets multiplied with 1000!
-    public GT_Recipe(ItemStack aInput1, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, int aSpecialValue, int aType) {
-        this(true, new ItemStack[]{aInput1}, new ItemStack[]{aOutput1, aOutput2, aOutput3, aOutput4}, null, null, null, null, 0, 0, Math.max(1, aSpecialValue));
+    public static GT_Recipe[] createFuel(ItemStack aInput1, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, int aSpecialValue, int aType) {
+        val recipe = new GT_Recipe(true, new ItemStack[]{aInput1}, new ItemStack[]{aOutput1, aOutput2, aOutput3, aOutput4}, null, null, null, null, 0, 0, Math.max(1, aSpecialValue));
 
-        if (mInputs.length > 0 && aSpecialValue > 0) {
+        val result = new ArrayList<GT_Recipe>();
+        if (recipe.mInputs.length > 0 && aSpecialValue > 0) {
             switch (aType) {
                 // Diesel Generator
-                case 0:
-                    GT_Recipe_Map.sDieselFuels.addRecipe(this);
-                    GT_Recipe_Map.sLargeBoilerFakeFuels.addDieselRecipe(this);
+                case 0: {
+                    val r1 = GT_Recipe_Map.sDieselFuels.addRecipe(recipe);
+                    val r2 = GT_Recipe_Map.sLargeBoilerFakeFuels.addDieselRecipe(recipe);
+                    result.add(r1);
+                    result.add(r2);
                     break;
+                }
                 // Gas Turbine
-                case 1:
-                    GT_Recipe_Map.sTurbineFuels.addRecipe(this);
+                case 1: {
+                    val r = GT_Recipe_Map.sTurbineFuels.addRecipe(recipe);
+                    result.add(r);
                     break;
+                }
                 // Thermal Generator
-                case 2:
-                    GT_Recipe_Map.sHotFuels.addRecipe(this);
+                case 2: {
+                    val r = GT_Recipe_Map.sHotFuels.addRecipe(recipe);
+                    result.add(r);
                     break;
+                }
                 // Plasma Generator
-                case 4:
-                    GT_Recipe_Map.sPlasmaFuels.addRecipe(this);
+                case 4: {
+                    val r = GT_Recipe_Map.sPlasmaFuels.addRecipe(recipe);
+                    result.add(r);
                     break;
+                }
                 // Magic Generator
-                case 5:
-                    GT_Recipe_Map.sMagicFuels.addRecipe(this);
+                case 5: {
+                    val r = GT_Recipe_Map.sMagicFuels.addRecipe(recipe);
+                    result.add(r);
                     break;
+                }
                 // Fluid Generator. Usually 3. Every wrong Type ends up in the Semifluid Generator
-                default:
-                    GT_Recipe_Map.sDenseLiquidFuels.addRecipe(this);
-                    GT_Recipe_Map.sLargeBoilerFakeFuels.addDenseLiquidRecipe(this);
+                default: {
+                    val r1 = GT_Recipe_Map.sDenseLiquidFuels.addRecipe(recipe);
+                    val r2 = GT_Recipe_Map.sLargeBoilerFakeFuels.addDenseLiquidRecipe(recipe);
+                    result.add(r1);
+                    result.add(r2);
                     break;
+                }
             }
         }
+        return result.isEmpty() ? null : result.toArray(new GT_Recipe[0]);
     }
 
     public GT_Recipe(FluidStack aInput1, FluidStack aInput2, FluidStack aOutput1, int aDuration, int aEUt, int aSpecialValue) {
@@ -691,11 +707,12 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public final Map<GT_ItemStack, Collection<GT_Recipe>> mRecipeItemMap = new /*Concurrent*/HashMap<>();
 
         public final ArrayList<Consumer<GT_Recipe>> recipeAddCallback = new ArrayList<>();
+        public final ArrayList<Consumer<GT_Recipe>> recipeRemoveCallback = new ArrayList<>();
         /**
          * HashMap of Recipes based on their Fluids
          */
         public final Map<Fluid, Collection<GT_Recipe>> mRecipeFluidMap = new /*Concurrent*/HashMap<>();
-        public final HashSet<String> mRecipeFluidNameMap = new HashSet<>();
+        public final Map<String, Integer> mRecipeFluidNameMap = new HashMap<>();
         /**
          * The List of all Recipes
          */
@@ -725,12 +742,12 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         /**
          * Whether this recipe map contains any fluid outputs.
          */
-        private boolean mHasFluidOutputs = false;
+        private int mHasFluidOutputs = 0;
 
         /**
          * Whether this recipe map contains special slot inputs.
          */
-        private boolean mUsesSpecialSlot = false;
+        private int mUsesSpecialSlot = 0;
 
         /**
          * Initialises a new type of Recipe Handler.
@@ -833,12 +850,31 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             mRecipeList.add(aRecipe);
             addToFluidMap(aRecipe);
             if (aRecipe.mFluidOutputs.length != 0) {
-                this.mHasFluidOutputs = true;
+                this.mHasFluidOutputs++;
             }
             if (aRecipe.mSpecialItems != null) {
-                this.mUsesSpecialSlot = true;
+                this.mUsesSpecialSlot++;
             }
             return addToItemMap(aRecipe);
+        }
+
+        public GT_Recipe remove(GT_Recipe aRecipe) {
+            if (aRecipe == null)
+                return null;
+            if (!mRecipeList.remove(aRecipe)) {
+                return null;
+            }
+            for (val consumer: recipeRemoveCallback) {
+                consumer.accept(aRecipe);
+            }
+            removeFromFluidMap(aRecipe);
+            if (aRecipe.mFluidOutputs.length != 0 && this.mHasFluidOutputs > 0) {
+                this.mHasFluidOutputs--;
+            }
+            if (aRecipe.mSpecialItems != null && this.mUsesSpecialSlot > 0) {
+                this.mUsesSpecialSlot--;
+            }
+            return removeFromItemMap(aRecipe);
         }
 
         public void reInit() {
@@ -870,7 +906,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * @return if this Fluid is a valid Input for any for the Recipes
          */
         public boolean containsInput(Fluid aFluid) {
-        	return aFluid != null && mRecipeFluidNameMap.contains(aFluid.getName());
+        	return aFluid != null && mRecipeFluidNameMap.containsKey(aFluid.getName());
         }
 
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, boolean aNotUnificated, long aVoltage, FluidStack[] aFluids, ItemStack... aInputs) {
@@ -972,13 +1008,50 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return aRecipe;
         }
 
-        protected GT_Recipe addToFluidMap(GT_Recipe aRecipe) {
-            for (FluidStack aFluid : aRecipe.mFluidInputs)
-                if (aFluid != null) {
-                    Collection<GT_Recipe> tList = mRecipeFluidMap.computeIfAbsent(aFluid.getFluid(), k -> new HashSet<>(1));
-                    tList.add(aRecipe);
-                    mRecipeFluidNameMap.add(aFluid.getFluid().getName());
+        protected GT_Recipe removeFromItemMap(GT_Recipe aRecipe) {
+            for (val aStack: aRecipe.mInputs) {
+                if (aStack == null) {
+                    continue;
                 }
+                val tStack = new GT_ItemStack(aStack);
+                val tList = mRecipeItemMap.get(tStack);
+                if (tList == null) {
+                    continue;
+                }
+                tList.remove(aRecipe);
+            }
+            return aRecipe;
+        }
+
+        protected GT_Recipe addToFluidMap(GT_Recipe aRecipe) {
+            for (FluidStack aFluid : aRecipe.mFluidInputs) {
+                if (aFluid == null) {
+                    continue;
+                }
+                Collection<GT_Recipe> tList = mRecipeFluidMap.computeIfAbsent(aFluid.getFluid(), k -> new HashSet<>(1));
+                tList.add(aRecipe);
+                val name = aFluid.getFluid().getName();
+                mRecipeFluidNameMap.compute(name, (key, value) -> value == null ? 1 : value + 1);
+            }
+            return aRecipe;
+        }
+
+        protected GT_Recipe removeFromFluidMap(GT_Recipe aRecipe) {
+            for (val aFluid: aRecipe.mFluidInputs) {
+                if (aFluid == null) {
+                    continue;
+                }
+                val fluid = aFluid.getFluid();
+                val tList = mRecipeFluidMap.get(fluid);
+                if (tList != null) {
+                    tList.remove(aRecipe);
+                    if (tList.isEmpty()) {
+                        mRecipeFluidMap.remove(fluid);
+                    }
+                }
+                val name = aFluid.getFluid().getName();
+                mRecipeFluidNameMap.compute(name, (key, value) -> value == null ? null : value <= 1 ? null : value - 1);
+            }
             return aRecipe;
         }
 
@@ -986,7 +1059,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * Whether this recipe map contains any fluid outputs.
          */
         public boolean hasFluidOutputs() {
-            return mHasFluidOutputs;
+            return mHasFluidOutputs > 0;
         }
 
         /**
@@ -1000,7 +1073,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * Whether this recipe map contains special slot inputs.
          */
         public boolean usesSpecialSlot() {
-            return mUsesSpecialSlot;
+            return mUsesSpecialSlot > 0;
         }
     }
 
