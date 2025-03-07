@@ -144,14 +144,6 @@ public class GT_Container_DevItemSource extends GT_Container_Dev<GT_MetaTileEnti
         super.updateProgressBar(changeID, data);
     }
 
-    /**
-     * @return
-     */
-    @Override
-    public boolean shouldReceiveLiveServerUpdates() {
-        return false;
-    }
-
     protected void setRedstoneMode(final RSControlMode redstoneMode) {
         data.setRedstoneMode(redstoneMode);
         detectAndSendChanges();

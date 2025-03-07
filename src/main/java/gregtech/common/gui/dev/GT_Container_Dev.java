@@ -28,6 +28,8 @@ public abstract class GT_Container_Dev<MachineType extends MetaTileEntity & IAdv
 
     protected boolean valid = false;
 
+    protected boolean clientReceive = true;
+
     public GT_Container_Dev(
             final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity, Class<MachineType> machineKlass, Class<DataType> dataKlass
                            ) {
@@ -67,6 +69,7 @@ public abstract class GT_Container_Dev<MachineType extends MetaTileEntity & IAdv
     @Override
     public void updateProgressBar(final int changeID, final int data) {
         super.updateProgressBar(changeID, data);
+        if (changeID == 500) clientReceive = false;
         if (mTileEntity == null || this.data == null) {
             return;
         }
@@ -76,7 +79,7 @@ public abstract class GT_Container_Dev<MachineType extends MetaTileEntity & IAdv
     }
 
     public boolean shouldReceiveLiveServerUpdates() {
-        return true;
+        return clientReceive;
     }
 
     public MachineType getSource() {

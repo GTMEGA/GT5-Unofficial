@@ -131,14 +131,6 @@ public class GT_Container_DevFluidSource extends GT_Container_Dev<GT_MetaTileEnt
         return applyDWSBump(baseWidth());
     }
 
-    /**
-     * @return
-     */
-    @Override
-    public boolean shouldReceiveLiveServerUpdates() {
-        return false;
-    }
-
     protected void setMode(final RSControlMode mode) {
         data.setMode(mode);
         detectAndSendChanges();

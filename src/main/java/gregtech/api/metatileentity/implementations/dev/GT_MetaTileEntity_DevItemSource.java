@@ -149,12 +149,14 @@ public class GT_MetaTileEntity_DevItemSource extends GT_MetaTileEntity_TieredMac
          */
         @Override
         public void sendChange(final Container source, final ICrafting crafter) {
+
             crafter.sendProgressBarUpdate(source, 200, getRedstoneMode().ordinal());
             crafter.sendProgressBarUpdate(source, 201, getRate());
             crafter.sendProgressBarUpdate(source, 202, getFrequency());
 //            crafter.sendProgressBarUpdate(source, 203, isPerTick() ? 1 : 0);
             crafter.sendProgressBarUpdate(source, 203, isActive() ? 1 : 0);
 //            crafter.sendProgressBarUpdate(source, 204, isRsActive() ? 1 : 0);
+            crafter.sendProgressBarUpdate(source,500,0);//stop client from receiving the data
         }
 
         /**

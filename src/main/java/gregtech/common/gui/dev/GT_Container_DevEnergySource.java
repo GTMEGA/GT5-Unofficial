@@ -11,6 +11,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 @Getter
 public class GT_Container_DevEnergySource extends GT_Container_Dev<GT_MetaTileEntity_DevEnergySource, GT_MetaTileEntity_DevEnergySource.GUIData> {
 
+    boolean receiveServerData = true;
+
     public GT_Container_DevEnergySource(InventoryPlayer aPlayerInventory, IGregTechTileEntity aTileEntityInventory) {
         super(aPlayerInventory, aTileEntityInventory, GT_MetaTileEntity_DevEnergySource.class, GT_MetaTileEntity_DevEnergySource.GUIData.class);
     }
@@ -44,14 +46,6 @@ public class GT_Container_DevEnergySource extends GT_Container_Dev<GT_MetaTileEn
     @Override
     public int getDWSWidthBump() {
         return 0;
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public boolean shouldReceiveLiveServerUpdates() {
-        return false;
     }
 
     protected void setMode(final RSControlMode mode) {

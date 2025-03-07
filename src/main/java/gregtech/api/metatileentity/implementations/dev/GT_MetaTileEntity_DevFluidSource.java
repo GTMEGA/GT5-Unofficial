@@ -158,6 +158,7 @@ public class GT_MetaTileEntity_DevFluidSource extends GT_MetaTileEntity_BasicTan
 //            crafter.sendProgressBarUpdate(container, 202, perTick ? 1 : 0);
 //            crafter.sendProgressBarUpdate(container, 203, rPT);
 //            crafter.sendProgressBarUpdate(container, 204, rPS);
+            crafter.sendProgressBarUpdate(container,500,0);//stop client from receiving the data
         }
 
         /**

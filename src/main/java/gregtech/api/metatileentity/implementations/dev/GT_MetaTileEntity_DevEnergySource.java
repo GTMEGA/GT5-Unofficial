@@ -176,6 +176,7 @@ public class GT_MetaTileEntity_DevEnergySource extends GT_MetaTileEntity_TieredM
             crafter.sendProgressBarUpdate(source, 204, (int) ((getVoltage() & 0xFFFFFFFF00000000L) >> 32));
             crafter.sendProgressBarUpdate(source, 205, getMode().ordinal());
             crafter.sendProgressBarUpdate(source, 206, isRsActive() ? 1 : 0);
+            crafter.sendProgressBarUpdate(source,500,0);//stop client from receiving the data
         }
 
         @Override
