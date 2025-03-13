@@ -129,6 +129,15 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * When a Player rightclicks the Facing with a Screwdriver.
      */
+    default void onScrewdriverRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        onScrewdriverRightClick(aWrenchingSide, aPlayer, aX, aY, aZ);
+    }
+
+    /**
+     * When a Player rightclicks the Facing with a Screwdriver.
+     * TODO: Re-wire machines to override the other method instead
+     */
+    @Deprecated
     void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ);
 
     /**

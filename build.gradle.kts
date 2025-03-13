@@ -1,5 +1,5 @@
 plugins {
-    id("fpgradle-minecraft") version ("0.10.0")
+    id("fpgradle-minecraft") version ("0.10.1")
 }
 
 group = "gtmega"
@@ -37,34 +37,22 @@ minecraft_fp {
 }
 
 repositories {
+    ic2EX()
     mavenLocal()
     cursemavenEX()
-    mavenpattern()
-    mega()
-    maven("ic2", "https://mvn.falsepattern.com/ic2/") {
-        metadataSources {
-            mavenPom()
-            artifact()
-        }
+    exclusive(mavenpattern(), "com.falsepattern")
+    exclusive(mega(), "mega", "gtmega", "team.chisel") {
+        includeModule("codechicken", "notenoughitems-mc1.7.10")
+        includeModule("codechicken", "codechickencore-mc1.7.10")
+        includeModule("codechicken", "forgemultipart-mc1.7.10")
     }
-    exclusive(ivy("https://mvn.falsepattern.com/releases/mirror/", "[orgPath]/[artifact]-[revision].[ext]"), "mirror", "mirror.micdoodle")
-    maven("usrv", "https://mvn.falsepattern.com/usrv/") {
-        content {
-            includeModule("eu.usrv", "YAMCore")
-        }
+    exclusive(ivy("https://mvn.falsepattern.com/releases/mirror", "[orgPath]/[artifact]-[revision].[ext]"), "mirror", "mirror.micdoodle")
+    exclusive(maven("usrv", "https://mvn.falsepattern.com/usrv"), "eu.usrv")
+    exclusive(maven("tterrag", "https://mvn.falsepattern.com/tterrag"), "com.enderio")
+    exclusive(maven("covers1624", "https://mvn.falsepattern.com/covers1624")) {
+        includeModule("codechicken", "Translocator")
     }
-    maven("tterrag", "https://maven.tterrag.com/")
-    maven("chickenbones", "https://nexus.covers1624.net/repository/maven-hosted/") {
-        content {
-            includeModule("codechicken", "Translocator")
-        }
-    }
-    maven("overmind", "https://gregtech.overminddl1.com") {
-        content {
-            includeModule("com.mod-buildcraft", "buildcraft")
-            includeModule("com.azanor.baubles", "Baubles")
-        }
-    }
+    exclusive(maven("overmind", "https://mvn.falsepattern.com/overmind"), "com.mod-buildcraft", "com.azanor.baubles")
 }
 
 dependencies {

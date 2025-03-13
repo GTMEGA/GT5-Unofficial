@@ -18,25 +18,25 @@ public final class ItemStuffLoader {
     public static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
-        Super_Chest_LV.set(new GT_MetaTileEntity_SuperChest(135, "super.chest.tier.01", "Super Chest I", 1).getStackForm(1L));
-        Super_Chest_MV.set(new GT_MetaTileEntity_SuperChest(136, "super.chest.tier.02", "Super Chest II", 2).getStackForm(1L));
-        Super_Chest_HV.set(new GT_MetaTileEntity_SuperChest(137, "super.chest.tier.03", "Super Chest III", 3).getStackForm(1L));
-        Super_Chest_EV.set(new GT_MetaTileEntity_SuperChest(138, "super.chest.tier.04", "Super Chest IV", 4).getStackForm(1L));
-        Super_Chest_IV.set(new GT_MetaTileEntity_SuperChest(139, "super.chest.tier.05", "Super Chest V", 5).getStackForm(1L));
+        Super_Chest_LV.set(new GT_MetaTileEntity_SuperChest(135, "super.chest.tier.01", "Super Item Storage I [Disabled]", 1).getStackForm(1L));
+        Super_Chest_MV.set(new GT_MetaTileEntity_SuperChest(136, "super.chest.tier.02", "Super Item Storage II [Disabled]", 2).getStackForm(1L));
+        Super_Chest_HV.set(new GT_MetaTileEntity_SuperChest(137, "super.chest.tier.03", "Super Item Storage III [Disabled]", 3).getStackForm(1L));
+        Super_Chest_EV.set(new GT_MetaTileEntity_SuperChest(138, "super.chest.tier.04", "Super Item Storage IV [Disabled]", 4).getStackForm(1L));
+        Super_Chest_IV.set(new GT_MetaTileEntity_SuperChest(139, "super.chest.tier.05", "Super Item Storage V [Disabled]", 5).getStackForm(1L));
 
         long bits = RecipeBits.NOT_REMOVABLE | RecipeBits.REVERSIBLE | RecipeBits.BUFFERED;
         long bitsd = RecipeBits.DISMANTLEABLE | RecipeBits.NOT_REMOVABLE | RecipeBits.REVERSIBLE | RecipeBits.BUFFERED;
 
-        Automation_ChestBuffer_ULV.set(new GT_MetaTileEntity_ChestBuffer(9230, "automation.chestbuffer.tier.00", "ULV Chest Buffer", 0).getStackForm(1L));
-        Automation_ChestBuffer_LV.set(new GT_MetaTileEntity_ChestBuffer(9231, "automation.chestbuffer.tier.01", "LV Chest Buffer", 1).getStackForm(1L));
-        Automation_ChestBuffer_MV.set(new GT_MetaTileEntity_ChestBuffer(9232, "automation.chestbuffer.tier.02", "MV Chest Buffer", 2).getStackForm(1L));
-        Automation_ChestBuffer_HV.set(new GT_MetaTileEntity_ChestBuffer(9233, "automation.chestbuffer.tier.03", "HV Chest Buffer", 3).getStackForm(1L));
-        Automation_ChestBuffer_EV.set(new GT_MetaTileEntity_ChestBuffer(9234, "automation.chestbuffer.tier.04", "EV Chest Buffer", 4).getStackForm(1L));
-        Automation_ChestBuffer_IV.set(new GT_MetaTileEntity_ChestBuffer(9235, "automation.chestbuffer.tier.05", "IV Chest Buffer", 5).getStackForm(1L));
-        Automation_ChestBuffer_LuV.set(new GT_MetaTileEntity_ChestBuffer(9236, "automation.chestbuffer.tier.06", "LuV Chest Buffer", 6).getStackForm(1L));
-        Automation_ChestBuffer_ZPM.set(new GT_MetaTileEntity_ChestBuffer(9237, "automation.chestbuffer.tier.07", "ZPM Chest Buffer", 7).getStackForm(1L));
-        Automation_ChestBuffer_UV.set(new GT_MetaTileEntity_ChestBuffer(9238, "automation.chestbuffer.tier.08", "UV Chest Buffer", 8).getStackForm(1L));
-        Automation_ChestBuffer_MAX.set(new GT_MetaTileEntity_ChestBuffer(9239, "automation.chestbuffer.tier.09", "UHV Chest Buffer", 9).getStackForm(1L));
+        Automation_ChestBuffer_ULV.set(new GT_MetaTileEntity_ChestBuffer(9230, "automation.chestbuffer.tier.00", "ULV Item Buffer", 0).getStackForm(1L));
+        Automation_ChestBuffer_LV.set(new GT_MetaTileEntity_ChestBuffer(9231, "automation.chestbuffer.tier.01", "LV Item  Buffer", 1).getStackForm(1L));
+        Automation_ChestBuffer_MV.set(new GT_MetaTileEntity_ChestBuffer(9232, "automation.chestbuffer.tier.02", "MV Item  Buffer", 2).getStackForm(1L));
+        Automation_ChestBuffer_HV.set(new GT_MetaTileEntity_ChestBuffer(9233, "automation.chestbuffer.tier.03", "HV Item  Buffer", 3).getStackForm(1L));
+        Automation_ChestBuffer_EV.set(new GT_MetaTileEntity_ChestBuffer(9234, "automation.chestbuffer.tier.04", "EV Item  Buffer", 4).getStackForm(1L));
+        Automation_ChestBuffer_IV.set(new GT_MetaTileEntity_ChestBuffer(9235, "automation.chestbuffer.tier.05", "IV Item  Buffer", 5).getStackForm(1L));
+        Automation_ChestBuffer_LuV.set(new GT_MetaTileEntity_ChestBuffer(9236, "automation.chestbuffer.tier.06", "LuV Item  Buffer", 6).getStackForm(1L));
+        Automation_ChestBuffer_ZPM.set(new GT_MetaTileEntity_ChestBuffer(9237, "automation.chestbuffer.tier.07", "ZPM Item  Buffer", 7).getStackForm(1L));
+        Automation_ChestBuffer_UV.set(new GT_MetaTileEntity_ChestBuffer(9238, "automation.chestbuffer.tier.08", "UV Item  Buffer", 8).getStackForm(1L));
+        Automation_ChestBuffer_MAX.set(new GT_MetaTileEntity_ChestBuffer(9239, "automation.chestbuffer.tier.09", "UHV Item  Buffer", 9).getStackForm(1L));
 
         addCraftingRecipe(Automation_ChestBuffer_ULV.get(4L), bitsd, new Object[]{"CMV", " X ", 'M', Hull_ULV, 'V', Conveyor_Module_LV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV)});
         addCraftingRecipe(Automation_ChestBuffer_LV.get(4L), bitsd, new Object[]{"CMV", " X ", 'M', Hull_LV, 'V', Conveyor_Module_LV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV)});
@@ -93,16 +93,16 @@ public final class ItemStuffLoader {
         addCraftingRecipe(Automation_TypeFilter_UV.get(4L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_UV, 'V', Conveyor_Module_UV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
         addCraftingRecipe(Automation_TypeFilter_MAX.get(4L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', Hull_MAX, 'V', Conveyor_Module_UHV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
 
-        Automation_Regulator_ULV.set(new GT_MetaTileEntity_Regulator(9270, "automation.regulator.tier.00", "ULV Regulator", 0).getStackForm(1L));
-        Automation_Regulator_LV.set(new GT_MetaTileEntity_Regulator(9271, "automation.regulator.tier.01", "LV Regulator", 1).getStackForm(1L));
-        Automation_Regulator_MV.set(new GT_MetaTileEntity_Regulator(9272, "automation.regulator.tier.02", "MV Regulator", 2).getStackForm(1L));
-        Automation_Regulator_HV.set(new GT_MetaTileEntity_Regulator(9273, "automation.regulator.tier.03", "HV Regulator", 3).getStackForm(1L));
-        Automation_Regulator_EV.set(new GT_MetaTileEntity_Regulator(9274, "automation.regulator.tier.04", "EV Regulator", 4).getStackForm(1L));
-        Automation_Regulator_IV.set(new GT_MetaTileEntity_Regulator(9275, "automation.regulator.tier.05", "IV Regulator", 5).getStackForm(1L));
-        Automation_Regulator_LuV.set(new GT_MetaTileEntity_Regulator(9276, "automation.regulator.tier.06", "LuV Regulator", 6).getStackForm(1L));
-        Automation_Regulator_ZPM.set(new GT_MetaTileEntity_Regulator(9277, "automation.regulator.tier.07", "ZPM Regulator", 7).getStackForm(1L));
-        Automation_Regulator_UV.set(new GT_MetaTileEntity_Regulator(9278, "automation.regulator.tier.08", "UV Regulator", 8).getStackForm(1L));
-        Automation_Regulator_MAX.set(new GT_MetaTileEntity_Regulator(9279, "automation.regulator.tier.09", "UHV Regulator", 9).getStackForm(1L));
+        Automation_Regulator_ULV.set(new GT_MetaTileEntity_Regulator(9270, "automation.regulator.tier.00", "ULV Item  Regulator", 0).getStackForm(1L));
+        Automation_Regulator_LV.set(new GT_MetaTileEntity_Regulator(9271, "automation.regulator.tier.01", "LV Item  Regulator", 1).getStackForm(1L));
+        Automation_Regulator_MV.set(new GT_MetaTileEntity_Regulator(9272, "automation.regulator.tier.02", "MV Item  Regulator", 2).getStackForm(1L));
+        Automation_Regulator_HV.set(new GT_MetaTileEntity_Regulator(9273, "automation.regulator.tier.03", "HV Item Regulator", 3).getStackForm(1L));
+        Automation_Regulator_EV.set(new GT_MetaTileEntity_Regulator(9274, "automation.regulator.tier.04", "EV Item Regulator", 4).getStackForm(1L));
+        Automation_Regulator_IV.set(new GT_MetaTileEntity_Regulator(9275, "automation.regulator.tier.05", "IV Item Regulator", 5).getStackForm(1L));
+        Automation_Regulator_LuV.set(new GT_MetaTileEntity_Regulator(9276, "automation.regulator.tier.06", "LuV Item Regulator", 6).getStackForm(1L));
+        Automation_Regulator_ZPM.set(new GT_MetaTileEntity_Regulator(9277, "automation.regulator.tier.07", "ZPM Item Regulator", 7).getStackForm(1L));
+        Automation_Regulator_UV.set(new GT_MetaTileEntity_Regulator(9278, "automation.regulator.tier.08", "UV Item Regulator", 8).getStackForm(1L));
+        Automation_Regulator_MAX.set(new GT_MetaTileEntity_Regulator(9279, "automation.regulator.tier.09", "UHV Item Regulator", 9).getStackForm(1L));
 
         addCraftingRecipe(Automation_Regulator_ULV.get(4L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_ULV, 'V', Robot_Arm_LV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
         addCraftingRecipe(Automation_Regulator_LV.get(4L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_LV, 'V', Robot_Arm_LV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
@@ -115,27 +115,16 @@ public final class ItemStuffLoader {
         addCraftingRecipe(Automation_Regulator_UV.get(4L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_UV, 'V', Robot_Arm_UV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
         addCraftingRecipe(Automation_Regulator_MAX.get(4L), bitsd, new Object[]{"XFX", "VMV", "XCX", 'M', Hull_MAX, 'V', Robot_Arm_UHV, 'C', craftingChest, 'F', craftingFilter, 'X', circuitLogic.get(LOGIC_LV)});
 
-        Automation_SuperBuffer_ULV.set(new GT_MetaTileEntity_SuperBuffer(9300, "automation.superbuffer.tier.00", "ULV Super Buffer", 0).getStackForm(1L));
-        Automation_SuperBuffer_LV.set(new GT_MetaTileEntity_SuperBuffer(9301, "automation.superbuffer.tier.01", "LV Super Buffer", 1).getStackForm(1L));
-        Automation_SuperBuffer_MV.set(new GT_MetaTileEntity_SuperBuffer(9302, "automation.superbuffer.tier.02", "MV Super Buffer", 2).getStackForm(1L));
-        Automation_SuperBuffer_HV.set(new GT_MetaTileEntity_SuperBuffer(9303, "automation.superbuffer.tier.03", "HV Super Buffer", 3).getStackForm(1L));
-        Automation_SuperBuffer_EV.set(new GT_MetaTileEntity_SuperBuffer(9304, "automation.superbuffer.tier.04", "EV Super Buffer", 4).getStackForm(1L));
-        Automation_SuperBuffer_IV.set(new GT_MetaTileEntity_SuperBuffer(9305, "automation.superbuffer.tier.05", "IV Super Buffer", 5).getStackForm(1L));
-        Automation_SuperBuffer_LuV.set(new GT_MetaTileEntity_SuperBuffer(9306, "automation.superbuffer.tier.06", "LuV Super Buffer", 6).getStackForm(1L));
-        Automation_SuperBuffer_ZPM.set(new GT_MetaTileEntity_SuperBuffer(9307, "automation.superbuffer.tier.07", "ZPM Super Buffer", 7).getStackForm(1L));
-        Automation_SuperBuffer_UV.set(new GT_MetaTileEntity_SuperBuffer(9308, "automation.superbuffer.tier.08", "UV Super Buffer", 8).getStackForm(1L));
-        Automation_SuperBuffer_MAX.set(new GT_MetaTileEntity_SuperBuffer(9309, "automation.superbuffer.tier.09", "UHV Super Buffer", 9).getStackForm(1L));
-
-        addCraftingRecipe(Automation_SuperBuffer_ULV.get(4L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_ULV, 'V', Conveyor_Module_LV, 'D', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_SuperBuffer_LV.get(4L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_LV, 'V', Conveyor_Module_LV, 'D', circuitLogic.get(LOGIC_LV)});
-        addCraftingRecipe(Automation_SuperBuffer_MV.get(4L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_MV, 'V', Conveyor_Module_MV, 'D', circuitLogic.get(LOGIC_MV)});
-        addCraftingRecipe(Automation_SuperBuffer_HV.get(4L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_HV, 'V', Conveyor_Module_HV, 'D', circuitLogic.get(LOGIC_HV)});
-        addCraftingRecipe(Automation_SuperBuffer_EV.get(4L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_EV, 'V', Conveyor_Module_EV, 'D', circuitLogic.get(LOGIC_EV)});
-        addCraftingRecipe(Automation_SuperBuffer_IV.get(4L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_IV, 'V', Conveyor_Module_IV, 'D', circuitLogic.get(LOGIC_IV)});
-        addCraftingRecipe(Automation_SuperBuffer_LuV.get(4L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_LuV, 'V', Conveyor_Module_LuV, 'D', circuitLogic.get(LOGIC_LUV)});
-        addCraftingRecipe(Automation_SuperBuffer_ZPM.get(4L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_ZPM, 'V', Conveyor_Module_ZPM, 'D', circuitLogic.get(LOGIC_ZPM)});
-        addCraftingRecipe(Automation_SuperBuffer_UV.get(4L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_UV, 'V', Conveyor_Module_UV, 'D', circuitLogic.get(LOGIC_UV)});
-        addCraftingRecipe(Automation_SuperBuffer_MAX.get(4L), bitsd, new Object[]{"DMV", 'M', Automation_ChestBuffer_MAX, 'V', Conveyor_Module_UHV, 'D', circuitLogic.get(LOGIC_MAX)});
+        Automation_SuperBuffer_ULV.set(new GT_MetaTileEntity_SuperBuffer(9300, "automation.superbuffer.tier.00", "ULV XL Item Buffer [Deprecated]", 0).getStackForm(1L));
+        Automation_SuperBuffer_LV.set(new GT_MetaTileEntity_SuperBuffer(9301, "automation.superbuffer.tier.01", "LV XL Item Buffer [Deprecated]", 1).getStackForm(1L));
+        Automation_SuperBuffer_MV.set(new GT_MetaTileEntity_SuperBuffer(9302, "automation.superbuffer.tier.02", "MV XL Item Buffer [Deprecated]", 2).getStackForm(1L));
+        Automation_SuperBuffer_HV.set(new GT_MetaTileEntity_SuperBuffer(9303, "automation.superbuffer.tier.03", "HV XL Item Buffer [Deprecated]", 3).getStackForm(1L));
+        Automation_SuperBuffer_EV.set(new GT_MetaTileEntity_SuperBuffer(9304, "automation.superbuffer.tier.04", "EV XL Item Buffer [Deprecated]", 4).getStackForm(1L));
+        Automation_SuperBuffer_IV.set(new GT_MetaTileEntity_SuperBuffer(9305, "automation.superbuffer.tier.05", "IV XL Item Buffer [Deprecated]", 5).getStackForm(1L));
+        Automation_SuperBuffer_LuV.set(new GT_MetaTileEntity_SuperBuffer(9306, "automation.superbuffer.tier.06", "LuV XL Item Buffer [Deprecated]", 6).getStackForm(1L));
+        Automation_SuperBuffer_ZPM.set(new GT_MetaTileEntity_SuperBuffer(9307, "automation.superbuffer.tier.07", "ZPM XL Item Buffer [Deprecated]", 7).getStackForm(1L));
+        Automation_SuperBuffer_UV.set(new GT_MetaTileEntity_SuperBuffer(9308, "automation.superbuffer.tier.08", "UV XL Item Buffer [Deprecated]", 8).getStackForm(1L));
+        Automation_SuperBuffer_MAX.set(new GT_MetaTileEntity_SuperBuffer(9309, "automation.superbuffer.tier.09", "UHV XL Item Buffer [Deprecated]", 9).getStackForm(1L));
 
 //        addCraftingRecipe(Automation_SuperBuffer_ULV.get(4L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_ULV, 'V', Conveyor_Module_LV, 'D', Tool_DataStick});
 //        addCraftingRecipe(Automation_SuperBuffer_LV.get(4L), bitsd, new Object[]{"DMV", "DDD", 'M', Hull_LV, 'V', Conveyor_Module_LV, 'D', Tool_DataStick});
@@ -170,11 +159,11 @@ public final class ItemStuffLoader {
         addCraftingRecipe(Automation_ItemDistributor_UV.get(4L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_UV, 'V', Conveyor_Module_UV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
         addCraftingRecipe(Automation_ItemDistributor_MAX.get(4L), bitsd, new Object[]{"XCP", "VMV", "   ", 'M', Hull_MAX, 'V', Conveyor_Module_UHV, 'C', craftingChest, 'X', circuitLogic.get(LOGIC_LV), 'P', circuitLogic.get(PWR_LV)});
 
-        Quantum_Chest_LV.set(new GT_MetaTileEntity_QuantumChest(125, "quantum.chest.tier.06", "Quantum Chest I", 6).getStackForm(1L));
-        Quantum_Chest_MV.set(new GT_MetaTileEntity_QuantumChest(126, "quantum.chest.tier.07", "Quantum Chest II", 7).getStackForm(1L));
-        Quantum_Chest_HV.set(new GT_MetaTileEntity_QuantumChest(127, "quantum.chest.tier.08", "Quantum Chest III", 8).getStackForm(1L));
-        Quantum_Chest_EV.set(new GT_MetaTileEntity_QuantumChest(128, "quantum.chest.tier.09", "Quantum Chest IV", 9).getStackForm(1L));
-        Quantum_Chest_IV.set(new GT_MetaTileEntity_QuantumChest(129, "quantum.chest.tier.10", "Quantum Chest V", 10).getStackForm(1L));
+        Quantum_Chest_LV.set(new GT_MetaTileEntity_QuantumChest(125, "quantum.chest.tier.06", "Quantum Item Storage I [Disabled]", 6).getStackForm(1L));
+        Quantum_Chest_MV.set(new GT_MetaTileEntity_QuantumChest(126, "quantum.chest.tier.07", "Quantum Item Storage II[Disabled]", 7).getStackForm(1L));
+        Quantum_Chest_HV.set(new GT_MetaTileEntity_QuantumChest(127, "quantum.chest.tier.08", "Quantum Item Storage III[Disabled]", 8).getStackForm(1L));
+        Quantum_Chest_EV.set(new GT_MetaTileEntity_QuantumChest(128, "quantum.chest.tier.09", "Quantum Item Storage IV[Disabled]", 9).getStackForm(1L));
+        Quantum_Chest_IV.set(new GT_MetaTileEntity_QuantumChest(129, "quantum.chest.tier.10", "Quantum Item Storage V[Disabled]", 10).getStackForm(1L));
 
 
         Automation_RecipeFilter_ULV.set(new GT_MetaTileEntity_RecipeFilter(9334, "automation.recipefilter.tier.00", "ULV Recipe Filter", 0).getStackForm(1L));

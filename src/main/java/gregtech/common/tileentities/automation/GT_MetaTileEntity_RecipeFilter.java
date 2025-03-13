@@ -220,24 +220,13 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_Buffer {
     }
 
     public boolean setCircuitFromStack(ItemStack stack) {
-        if (getBaseMetaTileEntity().isServerSide()) {
-            final int result = getCircuitNumberFromStack(stack);
-            if (stack == null || result != 0) {
-                this.circuitNumber = result;
-                markDirty();
-                return true;
-            }
+        if (getBaseMetaTileEntity().isClientSide() || stack == null)
             return false;
+        if (stack.getItem() instanceof GT_IntegratedCircuit_Item) {
+            circuitNumber = stack.getItemDamage();
+            markDirty();
+            return true;
         }
         return false;
     }
-
-    public int getCircuitNumberFromStack(ItemStack stack) {
-        if (stack != null && stack.getItem() instanceof GT_IntegratedCircuit_Item) {
-            return stack.getItemDamage();
-        }
-        return 0;
-    }
-
-
 }
