@@ -38,7 +38,6 @@ minecraft_fp {
 
 repositories {
     ic2EX()
-    mavenLocal()
     cursemavenEX()
     exclusive(mavenpattern(), "com.falsepattern")
     exclusive(mega(), "mega", "gtmega", "team.chisel") {

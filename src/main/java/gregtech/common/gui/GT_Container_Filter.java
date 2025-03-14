@@ -28,15 +28,15 @@ public class GT_Container_Filter extends GT_ContainerMetaTile_Machine {
         addSlotToContainer(new Slot(this.mTileEntity, 7, 116, 41));
         addSlotToContainer(new Slot(this.mTileEntity, 8, 134, 41));
 
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 9, 18, 6, false, true, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 10, 35, 6, false, true, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 11, 52, 6, false, true, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 12, 18, 23, false, true, 1));
+        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 9, 17, 5, false, true, 1));
+        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 10, 35, 5, false, true, 1));
+        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 11, 53, 5, false, true, 1));
+        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 12, 17, 23, false, true, 1));
         addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 13, 35, 23, false, true, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 14, 52, 23, false, true, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 15, 18, 40, false, true, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 16, 35, 40, false, true, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 17, 52, 40, false, true, 1));
+        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 14, 53, 23, false, true, 1));
+        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 15, 17, 41, false, true, 1));
+        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 16, 35, 41, false, true, 1));
+        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 17, 53, 41, false, true, 1));
 
         addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 18, 8, 63, false, true, 1));
         addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 18, 26, 63, false, true, 1));
