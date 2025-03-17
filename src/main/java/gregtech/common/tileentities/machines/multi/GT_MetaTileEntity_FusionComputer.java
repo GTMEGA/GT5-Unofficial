@@ -481,8 +481,8 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
     }
 
     @Override
-    public GT_MetaTileEntity_FusionComputer getType() {
-        return this;
+    public Class<GT_MetaTileEntity_FusionComputer> getType() {
+        return GT_MetaTileEntity_FusionComputer.class;
     }
 
     @Override
