@@ -126,6 +126,24 @@
             "mcdonal"
         ]
     },
+    "electrolyzer": {
+        "category": "block",
+        "sounds": [
+            "electrolyzer1"
+        ]
+    },
+    "centrifuge": {
+        "category": "block",
+        "sounds": [
+            "centrifuge1"
+        ]
+    },
+    "thermal": {
+        "category": "block",
+        "sounds": [
+            "thermal1"
+        ]
+    },
     "potentiometer_click": {
         "category": "block",
         "sounds": [

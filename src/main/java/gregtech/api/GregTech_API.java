@@ -400,7 +400,7 @@ public class GregTech_API {
         addIC2SoundToList(210, "machines.InterruptOne");
         addIC2SoundToList(211, "machines.KaChing");
         addIC2SoundToList(212, "machines.MagnetizerLoop");
-        //
+        //Keep these deep-fried in dev.
         addGTSoundToList(213, "mining_explosives_explosion");
         addGTSoundToList(214, "mining_explosives_trigger");
         addGTSoundToList(215, "meganet_pickup");
@@ -418,7 +418,9 @@ public class GregTech_API {
         addGTSoundToList(227, "steam_hammer");
         addGTSoundToList(228, "seismic");
         addGTSoundToList(229, "mcdonal");
-
+        addGTSoundToList(230, "electrolyzer");
+        addGTSoundToList(231, "centrifuge");
+        addGTSoundToList(232, "thermal");
         //Don't forget to put your sounds into sounds.json too!
     }
 
