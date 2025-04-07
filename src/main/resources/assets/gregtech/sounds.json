@@ -77,6 +77,7 @@
         "sounds": [
             {
                 "name": "macerator1",
+                "volume": 0.6,
                 "stream": false
             }
         ]
@@ -93,7 +94,6 @@
         "sounds": [
             "steamFurnace1",
             "steamFurnace2"
-
         ]
     },
     "steam_vent": {
@@ -116,8 +116,11 @@
     },
     "seismic": {
         "category": "block",
-        "sounds": [
-            "seismic"
+        "sounds":[
+            {
+            "name":"seismic",
+            "volume":2.5
+            }
         ]
     },
     "mcdonal": {
