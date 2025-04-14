@@ -1368,11 +1368,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Coal.addOreByProducts(Coal, Thorium);
         Ilmenite.addOreByProducts(Iron, Rutile);
         Manganese.addOreByProducts(Chrome, Iron);
-        Sapphire.addOreByProducts(Sapphire, Sapphire);
-        GreenSapphire.addOreByProducts(GreenSapphire, GreenSapphire);
+//        Sapphire.addOreByProducts(Sapphire, Sapphire);
+//        GreenSapphire.addOreByProducts(GreenSapphire, GreenSapphire);
         Platinum.addOreByProducts(Nickel, Iridium);
         Emerald.addOreByProducts(Beryllium, Emerald);
-        Olivine.addOreByProducts(Pyrope, Magnesium);
+        Olivine.addOreByProducts(Olivine, Magnesium);
         Chrome.addOreByProducts(Iron, Magnesium);
         Chromite.addOreByProducts(Iron, Magnesium);
         Tetrahedrite.addOreByProducts(Antimony, Zinc);
@@ -1387,8 +1387,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Spodumene.addOreByProducts(Quartzite, Lithium);
         Ruby.addOreByProducts(Chrome, GarnetRed);
         Iridium.addOreByProducts(Platinum, Osmium);
-        Pyrope.addOreByProducts(GarnetRed, Magnesium);
-        Almandine.addOreByProducts(GarnetRed, Iron);
+//        Pyrope.addOreByProducts(GarnetRed, Magnesium);
+//        Almandine.addOreByProducts(GarnetRed, Iron);
         Spessartine.addOreByProducts(GarnetRed, Manganese);
 //        Grossular.addOreByProducts(GarnetYellow, Calcium);
         Uvarovite.addOreByProducts(GarnetYellow, Chrome);
@@ -1426,7 +1426,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Osmium.addOreByProducts(Iridium);
         Magnesium.addOreByProducts(Olivine);
         Aluminium.addOreByProducts(Ilmenite);
-        Titanium.addOreByProducts(Almandine);
+        Titanium.addOreByProducts(Ilmenite);
         Obsidian.addOreByProducts(Olivine);
         Ash.addOreByProducts(Carbon);
         DarkAsh.addOreByProducts(Carbon);

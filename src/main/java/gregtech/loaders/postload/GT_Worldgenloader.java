@@ -113,11 +113,10 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.mica", true, 20, 40, 45, 4, 24, true, false, false, Materials.Kyanite, Materials.Mica, Materials.Kyanite, Materials.Cassiterite);
 
             //Twilight Forest-Only Veins
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.sapphire", true, 10, 40, 60, 2, 16, false, false, false, Materials.Almandine, Materials.Pyrope, Materials.Sapphire, Materials.GreenSapphire);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.olivine", true, 10, 40, 60, 2, 16, false, false, false, Materials.Bentonite, Materials.Magnesite, Materials.Olivine, Materials.Bismuth);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.aquaignis", true, 5, 35, 16, 2, 16, false, false, false, Materials.InfusedWater, Materials.InfusedFire, Materials.Amber, Materials.Cinnabar);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.terraaer", true, 5, 35, 16, 2, 16, false, false, false, Materials.InfusedEarth, Materials.InfusedAir, Materials.Amber, Materials.Cinnabar);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.perditioordo", true, 5, 35, 16, 2, 16, false, false, false, Materials.InfusedEntropy, Materials.InfusedOrder, Materials.Amber, Materials.Cinnabar);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.olivine", true, 10, 40, 30, 2, 16, false, false, false, Materials.Magnesium, Materials.Olivine, Materials.Olivine, Materials.Bismuth);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.aquaignis", true, 5, 35, 30, 2, 16, false, false, false, Materials.InfusedWater, Materials.InfusedFire, Materials.Amber, Materials.Cinnabar);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.terraaer", true, 5, 35, 30, 2, 16, false, false, false, Materials.InfusedEarth, Materials.InfusedAir, Materials.Amber, Materials.Cinnabar);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.perditioordo", true, 5, 35, 30, 2, 16, false, false, false, Materials.InfusedEntropy, Materials.InfusedOrder, Materials.Amber, Materials.Cinnabar);
 
             //Nether-Only Veins
             new GT_Worldgen_GT_Ore_Layer("ore.mix.saltpeterelectrotine", true, 5, 45, 55, 5, 16, false, true, false, Materials.Electrotine, Materials.Saltpeter, Materials.Saltpeter, Materials.Sphalerite);
