@@ -1831,7 +1831,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         NitroCarbon.add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
 
         Lead.add(SubTag.MORTAR_GRINDABLE);
-        Tin.add(SubTag.MORTAR_GRINDABLE);
+        Tin.add(SubTag.MORTAR_GRINDABLE, SubTag.YES_CABLES);
         SolderingAlloy.add(SubTag.MORTAR_GRINDABLE, SubTag.SOLDERING_MATERIAL, SubTag.SOLDERING_MATERIAL_GOOD);
 
         Cheese.add(SubTag.SMELTING_TO_FLUID);
@@ -1863,12 +1863,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         BlackBronze.add(SubTag.YES_TOOLS);
         StainlessSteel.add(SubTag.YES_TOOLS);
         Aluminium.add(SubTag.YES_TOOLS);
-        Titanium.add(SubTag.YES_TOOLS);
+        Titanium.add(SubTag.YES_TOOLS, SubTag.YES_CABLES);
         TungstenSteel.add(SubTag.YES_TOOLS);
         Iridium.add(SubTag.YES_TOOLS);
         VanadiumSteel.add(SubTag.YES_TOOLS);
 
-        Gold.add(SubTag.MORTAR_GRINDABLE);
+        Gold.add(SubTag.MORTAR_GRINDABLE, SubTag.YES_CABLES);
         Silver.add(SubTag.MORTAR_GRINDABLE);
         Iron.add(SubTag.MORTAR_GRINDABLE, SubTag.YES_TOOLS);
         IronMagnetic.add(SubTag.MORTAR_GRINDABLE);
@@ -1877,7 +1877,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         SteelMagnetic.add(SubTag.MORTAR_GRINDABLE);
         Zinc.add(SubTag.MORTAR_GRINDABLE);
         Antimony.add(SubTag.MORTAR_GRINDABLE);
-        Copper.add(SubTag.MORTAR_GRINDABLE);
+        Copper.add(SubTag.MORTAR_GRINDABLE, SubTag.YES_CABLES);
         AnnealedCopper.add(SubTag.MORTAR_GRINDABLE);
         Bronze.add(SubTag.MORTAR_GRINDABLE, SubTag.YES_TOOLS);
         Nickel.add(SubTag.MORTAR_GRINDABLE);

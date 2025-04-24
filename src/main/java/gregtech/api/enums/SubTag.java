@@ -88,8 +88,10 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      * This Material cannot be unificated
      */
     public static final SubTag YES_TOOLS = getNewSubTag("YES_TOOLS");
+
+    public static final SubTag YES_CABLES = getNewSubTag("YES_CABLES");
     /**
-     * This Material can be made into tools!!!!! !!! !  ! !   ! !  ! !   ! 1
+     * Allows crafting of wires in the assembler.
      */
     public static final SubTag NO_UNIFICATION = getNewSubTag("NO_UNIFICATION");
     /**

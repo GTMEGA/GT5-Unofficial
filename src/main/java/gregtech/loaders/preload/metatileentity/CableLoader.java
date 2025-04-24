@@ -47,7 +47,7 @@ public final class CableLoader {
         makeWires(Copper, 1360, 3,128, 16L, V[2], true, false);
         makeWires(AnnealedCopper, 1380, 1,128, 16L, V[2], true, false);
 
-        makeWires(Gold, 1420, 3,512, 16L, V[3], true, false);
+        makeWires(Gold, 1420, 3,512, 32L, V[3], true, false);
         makeWires(Electrum, 1440, 2,512, 16L, V[3], true, false);
         makeWires(BlueAlloy, 1480, 1,512, 16L, V[3], true, false);
         makeWires(Nichrome, 1500, 4,512, 1L, V[3], true, false);
@@ -56,7 +56,7 @@ public final class CableLoader {
         makeWires(Kanthal, 1400, 3,2048, 1L, V[4], true, false);
         makeWires(Steel, 1520, 5,2048, 8L, V[4], true, false);
         makeWires(BlackSteel, 1540, 2048,2048, 3L, V[4], true, false);
-        makeWires(Titanium, 1560, 3,2048, 16L, V[4], true, false);
+        makeWires(Titanium, 1560, 2,2048, 32L, V[4], true, false);
         makeWires(Graphene, 1600, 1,2048, 16L, V[4], false, true);
 
         makeWires(Osmium, 1620, 8192, 8192, 14L, V[5], true, false);
