@@ -5,6 +5,7 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
 import lombok.*;
 import net.minecraft.item.ItemStack;
@@ -111,16 +112,21 @@ public final class CableLoader {
         registerOre(wireGt08, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 3, aTextWire1 + aMaterial.mName.toLowerCase() + ".08", "Heavy " + name + aTextWire2, 0.5F, aMaterial, aLoss, 8L * aAmperage, aVoltage, false, !aAutoInsulated).getStackForm(1L));
         hideRegister(wireGt12, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 4, aTextWire1 + aMaterial.mName.toLowerCase() + ".12", "Deprecated " + name + aTextWire2, 0.1F, aMaterial, aLoss, 8L * aAmperage, aVoltage, false, !aAutoInsulated).getStackForm(1L));
         hideRegister(wireGt16, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 5, aTextWire1 + aMaterial.mName.toLowerCase() + ".16", "Mega " + name + aTextWire2, 0.875F, aMaterial, aLoss, 32L * aAmperage, aVoltage, false, !aAutoInsulated).getStackForm(1L));
+
+        var amperageMultiplier = 1;
+        if  (aMaterial.contains(SubTag.GOOD_CABLES)){
+            amperageMultiplier = 2;
+        }
         if (aInsulatable) {
-            registerOre(cableGt01, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 6, aTextCable1 + aMaterial.mName.toLowerCase() + ".01", "" + name + aTextCable2, 0.375F, aMaterial, aLossInsulated, 1L * aAmperage, aVoltage, true, false).getStackForm(1L));
+            registerOre(cableGt01, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 6, aTextCable1 + aMaterial.mName.toLowerCase() + ".01", "" + name + aTextCable2, 0.375F, aMaterial, aLossInsulated, 1L * aAmperage * amperageMultiplier, aVoltage, true, false).getStackForm(1L));
             hideRegister(cableGt02, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 7, aTextCable1 + aMaterial.mName.toLowerCase() + ".02", "Deprecated " + name + aTextCable2, 0.1F, aMaterial, aLossInsulated, 1L * aAmperage, aVoltage, true, false).getStackForm(1L));
             hideRegister(cableGt04, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 8, aTextCable1 + aMaterial.mName.toLowerCase() + ".04", "Deprecated " + name + aTextCable2, 0.1F, aMaterial, aLossInsulated, 1L * aAmperage, aVoltage, true, false).getStackForm(1L));
             registerOre(cableGt08, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 9, aTextCable1 + aMaterial.mName.toLowerCase() + ".08", "Heavy " + name + aTextCable2, 0.625F, aMaterial, aLossInsulated, 8L * aAmperage, aVoltage, true, false).getStackForm(1L));
             hideRegister(cableGt12, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 10, aTextCable1 + aMaterial.mName.toLowerCase() + ".12", "Deprecated " + name + aTextCable2, 0.1F, aMaterial, aLossInsulated, 8L * aAmperage, aVoltage, true, false).getStackForm(1L));
             hideRegister(cableGt16, aMaterial, new GT_MetaPipeEntity_Cable(aStartID + 11, aTextCable1 + aMaterial.mName.toLowerCase() + ".16", "Mega " + name + aTextCable2, 0.9375F, aMaterial, aLossInsulated, 32L * aAmperage, aVoltage, true, false).getStackForm(1L));
         }
-    }
 
+    }
     private static void hideRegister(OrePrefixes aPrefix, Object aMaterial, ItemStack aStack) {
         registerOre(aPrefix,aMaterial,aStack);
         if (GregTech_API.mNEI) {

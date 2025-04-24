@@ -93,6 +93,10 @@ public final class SubTag implements ICondition<ISubTagContainer> {
     /**
      * Allows crafting of wires in the assembler.
      */
+    public static final SubTag GOOD_CABLES = getNewSubTag("YES_CABLES");
+    /**
+     * More amperage for certain cables.
+     */
     public static final SubTag NO_UNIFICATION = getNewSubTag("NO_UNIFICATION");
     /**
      * This Material cannot be used in any Recycler. Already listed are:
