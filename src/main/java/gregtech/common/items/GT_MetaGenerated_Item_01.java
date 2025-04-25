@@ -803,7 +803,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Cover_Shutter.set(addItem(tLastID = 749, "Shutter Module Cover", "Blocks Inventory/Tank Side. Use together with Machine Controller.", new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L)));
 
-        GT_ModHandler.addCraftingRecipe(ItemList.Cover_Screen.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"ACA", "PPP", "ALA", 'A', OrePrefixes.plate.get(Steel), 'L', OrePrefixes.dust.get(Materials.Glowstone), 'C', circuitPower.get(PWR_LV), 'P', OrePrefixes.plate.get(Materials.Glass)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Cover_Screen.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"ACA", "PPP", "ALA", 'A', OrePrefixes.plate.get(Steel), 'L', OrePrefixes.plate.get(Glass), 'C', circuitPower.get(PWR_LV), 'P', OrePrefixes.plate.get(Materials.Glass)});
 
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L), ItemList.Cover_Drain.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Shutter.get(1L), 200, 64);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L), ItemList.Cover_Drain.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Shutter.get(1L), 800, 16);
