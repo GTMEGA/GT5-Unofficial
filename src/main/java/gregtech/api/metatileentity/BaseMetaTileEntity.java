@@ -11,8 +11,10 @@ import appeng.tile.events.TileEventType;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
+import com.gtnewhorizon.structurelib.alignment.constructable.ICallbackable;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructableProvider;
+import com.gtnewhorizon.structurelib.alignment.constructable.ICallbackableProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import cpw.mods.fml.common.Optional;
 import gregtech.GT_Mod;
@@ -36,6 +38,9 @@ import gregtech.api.util.*;
 import gregtech.common.GT_Client;
 import gregtech.common.GT_Pollution;
 import ic2.api.Direction;
+import lombok.val;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.entity.Entity;
@@ -58,7 +63,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,7 +83,7 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 @Optional.InterfaceList(value = {
     @Optional.Interface(iface = "appeng.api.networking.security.IActionHost", modid = "appliedenergistics2", striprefs = true),
     @Optional.Interface(iface = "appeng.me.helpers.IGridProxyable", modid = "appliedenergistics2", striprefs = true)})
-public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileEntity, IActionHost, IGridProxyable, IAlignmentProvider, IConstructableProvider {
+public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileEntity, IActionHost, IGridProxyable, IAlignmentProvider, IConstructableProvider, ICallbackableProvider {
     static final String[] COVER_DATA_NBT_KEYS = Arrays.stream(ForgeDirection.VALID_DIRECTIONS).mapToInt(Enum::ordinal).mapToObj(i -> "mCoverData" + i).toArray(String[]::new);
     private final GT_CoverBehaviorBase<?>[] mCoverBehaviors = new GT_CoverBehaviorBase<?>[]{GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior};
     protected MetaTileEntity mMetaTileEntity;
@@ -2485,6 +2489,18 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public IConstructable getConstructable() {
         return getMetaTileEntity() instanceof IConstructable ? (IConstructable) getMetaTileEntity() : null;
+    }
+
+    @Nullable
+    @Override
+    public ICallbackable getCallbackable() {
+        val mte = this.getMetaTileEntity();
+
+        if (mte instanceof ICallbackable<?>) {
+            return (ICallbackable) mte;
+        }
+
+        return null;
     }
 
     private class BasicAlignment implements IAlignment {
