@@ -4,6 +4,9 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.common.GT_Proxy;
+import org.apache.commons.lang3.NotImplementedException;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -87,6 +90,10 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
      */
     public final boolean onCoverShiftRightClick(byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer) {
         return onCoverShiftRightClickImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity, aPlayer);
+    }
+
+    public final Object getServerGUI(byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
+        return getServerGUIImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity, aPlayer, aWorld);
     }
 
     public final Object getClientGUI(byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
@@ -281,10 +288,18 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     protected boolean onCoverShiftRightClickImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer) {
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             setLastPlayer(aPlayer);
-            GT_Values.NW.sendToPlayer(new GT_Packet_TileEntityCoverGUI(aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer), (EntityPlayerMP) aPlayer);
+            if (hasContainer())
+                aPlayer.openGui(GT_Values.GT, GT_Proxy.GUI_ID_COVER_SIDE_BASE + aSide, aPlayer.getEntityWorld(),aTileEntity.getXCoord(),aTileEntity.getYCoord(),aTileEntity.getZCoord());
+            else
+                GT_Values.NW.sendToPlayer(new GT_Packet_TileEntityCoverGUI(aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer), (EntityPlayerMP) aPlayer);
             return true;
         }
         return false;
+    }
+
+    protected Object getServerGUIImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
+        if (hasCoverGUI() && hasContainer()) throw new NotImplementedException("You need to implement this if you have a container");
+        return null;
     }
 
     protected Object getClientGUIImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
@@ -450,6 +465,10 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
      */
     public boolean isCoverPlaceable(byte aSide, GT_ItemStack aStack, ICoverable aTileEntity) {
         return true;
+    }
+
+    public boolean hasContainer() {
+        return false;
     }
 
     public boolean hasCoverGUI() {

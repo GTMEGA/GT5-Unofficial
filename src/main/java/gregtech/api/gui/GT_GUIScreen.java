@@ -9,10 +9,13 @@ import gregtech.api.gui.widgets.GT_GuiTooltipManager.GT_IToolTipRenderer;
 import gregtech.api.interfaces.IGuiScreen;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -22,7 +25,7 @@ import org.lwjgl.opengl.GL12;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRenderer, IGuiScreen {
+public abstract class GT_GUIScreen extends GuiContainer implements GT_IToolTipRenderer, IGuiScreen {
 
 	protected GT_GuiTooltipManager ttManager = new GT_GuiTooltipManager();
 
@@ -38,11 +41,27 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 	protected List<IGuiElement> elements = new ArrayList<>();
 	protected List<GT_GuiIntegerTextBox> textBoxes = new ArrayList<>();
 
-	public GT_GUIScreen(int width, int height, String header) {
+	public GT_GUIScreen(Container container, int width, int height, String header) {
+		super(container);
 		this.gui_width = width;
 		this.gui_height = height;
 		this.header = header;
 		this.headerIcon = new GT_GuiFakeItemButton(this, 5, 5, null);
+	}
+
+	public GT_GUIScreen(int width, int height, String header) {
+		this(new Container() {
+				 @Override
+				 public boolean canInteractWith(EntityPlayer player) {
+					 return false;
+				 }
+
+				 @Override
+				 public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+					 return null;
+				 }
+			 }
+		,width,height,header);
 	}
 
 	@Override
@@ -83,8 +102,7 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float parTicks) {
-		drawDefaultBackground();
-
+		this.drawWorldBackground(0); // base impl of drawDefaultBackground()
 		drawBackground(mouseX, mouseY, parTicks);
 
 		RenderHelper.disableStandardItemLighting();
@@ -97,6 +115,7 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 				e.draw(mouseX, mouseY, parTicks);
 		}
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		super.drawScreen(mouseX,mouseY,parTicks);
 
 		GL11.glPushMatrix();
 		GL11.glTranslatef(guiLeft, guiTop, 0.0F);
@@ -111,6 +130,12 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		RenderHelper.enableStandardItemLighting();
+
+	}
+
+	@Override
+	public void drawDefaultBackground() {
+		//dont draw this twice
 	}
 
 	public void drawForegroundLayer(int mouseX, int mouseY, float parTicks) {
@@ -123,6 +148,11 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 		GL11.glColor3ub((byte) color[0], (byte) color[1], (byte) color[2]);
 		this.mc.renderEngine.bindTexture(new ResourceLocation("gregtech:textures/gui/GuiCover.png"));
 		drawTexturedModalRect(guiLeft, guiTop, 0,0, gui_width, gui_height);
+	}
+
+	@Override
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+
 	}
 
 	public void drawExtras(int mouseX, int mouseY, float parTicks) {

@@ -774,7 +774,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             mNEISpecialValueMultiplier = aNEISpecialValueMultiplier;
             mNEISpecialValuePost = aNEISpecialValuePost;
             mAmperage = aAmperage;
-            mUsualInputCount = aUsualInputCount;
+                mUsualInputCount = aUsualInputCount;
             mUsualOutputCount = aUsualOutputCount;
             mMinimalInputItems = aMinimalInputItems;
             mMinimalInputFluids = aMinimalInputFluids;

@@ -1,5 +1,6 @@
 package gregtech;
 
+import codechicken.nei.api.GuiInfo;
 import com.google.common.base.Stopwatch;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.event.*;
@@ -47,6 +48,7 @@ import gregtech.loaders.misc.GT_CoverLoader;
 import gregtech.loaders.misc.NetworkDispatcher;
 import gregtech.loaders.postload.*;
 import gregtech.loaders.preload.*;
+import gregtech.nei.DragHandler;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 import net.minecraft.creativetab.CreativeTabs;
@@ -804,6 +806,8 @@ public class GT_Mod implements IGT_Mod {
         if (GregTech_API.sPostloadStarted) {
             return;
         }
+
+        GuiInfo.guiHandlers.add(new DragHandler());
 
         for (Runnable tRunnable : GregTech_API.sBeforeGTPostload) {
             try {

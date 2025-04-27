@@ -6,6 +6,7 @@ import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.icon.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconButton;
+import gregtech.api.interfaces.NEIDragAndDrop;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
@@ -189,10 +190,10 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
 
     @Override
     protected Object getClientGUIImpl(byte aSide, int aCoverID, FluidFilterData coverData, ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
-        return new GT_FluidFilterGUICover(aSide, aCoverID, coverData, aTileEntity);
+        return new GT_FluidFilterGUICover(aSide, aCoverID, coverData, aTileEntity,aPlayer);
     }
 
-    private class GT_FluidFilterGUICover extends GT_GUICover {
+    private class GT_FluidFilterGUICover extends GT_GUICover implements NEIDragAndDrop {
         private final byte side;
         private final int coverID;
         private final FluidFilterData coverVariable;
@@ -204,7 +205,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        public GT_FluidFilterGUICover(byte aSide, int aCoverID, FluidFilterData aCoverVariable, ICoverable aTileEntity) {
+        public GT_FluidFilterGUICover(byte aSide, int aCoverID, FluidFilterData aCoverVariable, ICoverable aTileEntity, EntityPlayer player) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
             this.side = aSide;
             this.coverID = aCoverID;
@@ -220,6 +221,20 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
 
             fluidFilterButton = new GT_GuiFakeItemButton(this, startX, startY + spaceY * 3 + 2, GT_GuiIcon.SLOT_DARKGRAY);
             fluidFilterButton.setMimicSlot(true);
+        }
+
+        @Override
+        public boolean handleDragNDrop(int mousex, int mousey, ItemStack draggedStack, int button) {
+            if (!fluidFilterButton.inBounds(mousex - guiLeft,mousey - guiTop,1)) return false;
+            //get fluid and set filter
+            FluidStack tFluid = GT_Utility.getFluidForFilledItem(draggedStack, true);
+            if (tFluid != null) {
+                coverVariable.mFluidID = tFluid.getFluidID();
+                GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
+                updateButtons();
+                return true;
+            }
+            return false;
         }
 
         private int getNewFilterMode(int id) {

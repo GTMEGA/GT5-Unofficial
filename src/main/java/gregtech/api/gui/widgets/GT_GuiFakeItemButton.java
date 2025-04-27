@@ -129,6 +129,7 @@ public class GT_GuiFakeItemButton implements IGT_GuiButton {
                 GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             }
             gui.getItemRenderer().renderItemAndEffectIntoGUI(gui.getFontRenderer(), Minecraft.getMinecraft().getTextureManager(), item, xPosition, yPosition);
+            GL11.glColor4f(1, 1, 1, 1);
             if (item.getItem() instanceof ItemBlock) {
                 GL11.glPopAttrib();
             }

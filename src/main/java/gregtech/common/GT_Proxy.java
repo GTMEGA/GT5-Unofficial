@@ -1709,8 +1709,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         }
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if ((tTileEntity instanceof IGregTechTileEntity)) {
+            IGregTechTileEntity tile = (IGregTechTileEntity) tTileEntity;
             if (GUI_ID_COVER_SIDE_BASE <= aID && aID < GUI_ID_COVER_SIDE_BASE+6) {
-                return null;
+                byte side = (byte) (aID - GT_Proxy.GUI_ID_COVER_SIDE_BASE);
+                GT_CoverBehaviorBase<?> cover = tile.getCoverBehaviorAtSideNew(side);
+                if (cover.hasCoverGUI())
+                    return cover.getServerGUI(side, tile.getCoverIDAtSide(side), tile.getComplexCoverDataAtSide(side), tile, aPlayer, aWorld);
             }
             IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
             if (tMetaTileEntity != null) {
