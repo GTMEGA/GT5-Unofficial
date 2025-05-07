@@ -1,5 +1,7 @@
 package gregtech.common.blocks;
 
+import com.gtnewhorizon.structurelib.item.IBlockInfoProvider;
+import com.gtnewhorizon.structurelib.structure.BlockInfo;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
@@ -9,7 +11,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public abstract class GT_Item_Casings_Abstract extends ItemBlock {
+public abstract class GT_Item_Casings_Abstract extends ItemBlock implements IBlockInfoProvider {
     protected final String mNoMobsToolTip = GT_LanguageManager.addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
     protected final String mNoTileEntityToolTip = GT_LanguageManager.addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
     protected final String mCoil01Tooltip = GT_LanguageManager.addStringLocalization("gt.coil01tooltip", "Base Heating Capacity = 1800 Kelvin");
@@ -47,5 +49,10 @@ public abstract class GT_Item_Casings_Abstract extends ItemBlock {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
         aList.add(this.mNoMobsToolTip);
         aList.add(this.mNoTileEntityToolTip);
+    }
+
+    @Override
+    public BlockInfo getBlockInfo(ItemStack itemStack) {
+        return new BlockInfo(this.field_150939_a, itemStack.getItemDamage());
     }
 }

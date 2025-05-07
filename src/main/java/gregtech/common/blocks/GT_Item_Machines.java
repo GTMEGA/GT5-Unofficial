@@ -1,5 +1,7 @@
 package gregtech.common.blocks;
 
+import com.gtnewhorizon.structurelib.item.IBlockInfoProvider;
+import com.gtnewhorizon.structurelib.structure.BlockInfo;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -26,7 +28,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class GT_Item_Machines extends ItemBlock {
+public class GT_Item_Machines extends ItemBlock implements IBlockInfoProvider {
 
     private static final String[] directionNames = {"Bottom", "Top", "North", "South", "West", "East"};
 
@@ -226,5 +228,27 @@ public class GT_Item_Machines extends ItemBlock {
             this.field_150939_a.onPostBlockPlaced(aWorld, aX, aY, aZ, tDamage);
         }
         return true;
+    }
+
+    @Override
+    public boolean matches(ItemStack itemStack, BlockInfo other) {
+        val blockInfo = this.getBlockInfo(itemStack);
+
+        if (blockInfo == null) {
+            return false;
+        }
+
+        return blockInfo.equals(other);
+    }
+
+    @Override
+    public BlockInfo getBlockInfo(ItemStack itemStack) {
+        val aDamage = itemStack.getItemDamage();
+
+        if (GregTech_API.METATILEENTITIES[aDamage] instanceof GT_MetaPipeEntity_Frame) {
+            return new BlockInfo(this.field_150939_a, aDamage);
+        }
+
+        return null;
     }
 }
