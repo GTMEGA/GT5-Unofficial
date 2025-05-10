@@ -65,7 +65,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
 
         //TODO: CHECK
-        if (aRecipe != null) {
+        if (aRecipe != null && aRecipe.length > 0) {
             for (int i = 3; i < aRecipe.length; i++) {
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL) {
                     aRecipe[i] = Tier.ELECTRIC[this.mTier].mHullObject;
