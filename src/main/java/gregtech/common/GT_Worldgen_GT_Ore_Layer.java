@@ -6,6 +6,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.GT_Block_Ore_Abstract;
 import lombok.NonNull;
+import lombok.val;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -39,14 +40,7 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
     public final boolean mNether;
     public final boolean mEnd;
     public final boolean mEndAsteroid;
-    public static final int WRONG_BIOME=0;
-    public static final int WRONG_DIMENSION=1;
-    public static final int NO_ORE_IN_BOTTOM_LAYER=2;
-    public static final int NO_OVERLAP=3;
-    public static final int ORE_PLACED=4;
-    public static final int NO_OVERLAP_AIR_BLOCK=5;
 
-    public final boolean mMoon = false, mMars = false, mAsteroid = false;
     public final String aTextWorldgen = "worldgen.";
 
     public GT_Worldgen_GT_Ore_Layer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize, boolean aOverworld, boolean aNether, boolean aEnd, Materials aPrimary, Materials aSecondary, Materials aBetween, Materials aSporadic) {
@@ -99,13 +93,13 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
     }
 
     @Override
-    public int executeWorldgenChunkified(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX, int aChunkZ, int aSeedX, int aSeedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+    public WorldGenResult executeWorldgenChunkified(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX, int aChunkZ, int aSeedX, int aSeedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         if( mWorldGenName.equals("NoOresInVein") ) {
             if (debugOrevein) GT_Log.out.println(
                             " NoOresInVein"
             );
             // This is a special empty orevein
-            return ORE_PLACED;
+            new WorldGenResult(WorldGenStatus.ORE_PLACED, 0);
         }
         if (!isGenerationAllowed(aWorld, aDimensionType, ((aDimensionType == -1) && (this.mNether)) || ((aDimensionType == 0) && (this.mOverworld)) || ((aDimensionType == 1) && (this.mEnd)) ? aDimensionType : aDimensionType ^ 0xFFFFFFFF)) {
             /* // Debug code, but spams log
@@ -115,13 +109,13 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
                 );
             }
             */
-            return WRONG_DIMENSION;
+            return new WorldGenResult(WorldGenStatus.WRONG_DIMENSION, 0);
         }
         /*if (!((aWorld.provider.getDimensionName().equalsIgnoreCase("Overworld")) || (aWorld.provider.getDimensionName().equalsIgnoreCase("Nether"))||(aWorld.provider.getDimensionName().equalsIgnoreCase("Underdark"))||(aWorld.provider.getDimensionName().equalsIgnoreCase("Twilight Forest"))||(aWorld.provider.getDimensionName().equalsIgnoreCase("Underdark"))||(aWorld.provider.getDimensionName().equalsIgnoreCase("The End"))))
         	return WRONG_DIMENSION;*/
         
         if (!this.mRestrictBiome.equals("None") && !(this.mRestrictBiome.equals(aBiome))) {
-            return WRONG_BIOME;
+            return new WorldGenResult(WorldGenStatus.WRONG_BIOME, 0);
         }
         // For optimal performance, this should be done upstream. Meh
         String tDimensionName = aWorld.provider.getDimensionName();
@@ -147,10 +141,10 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
                 tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockGranites) ||
                 tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockStones) ) {
                 // Didn't reach, but could have placed. Save orevein for future use.
-                return NO_OVERLAP;
+                return new WorldGenResult(WorldGenStatus.NO_OVERLAP, 0);
             } else {
                 // Didn't reach, but couldn't place in test spot anywys, try for another orevein
-                return NO_OVERLAP_AIR_BLOCK;
+                return new WorldGenResult(WorldGenStatus.NO_OVERLAP_AIR_BLOCK, 0);
             }
         }
         // Determine North/Sound ends of orevein
@@ -166,23 +160,22 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
                 tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockGranites) ||
                 tBlock.isReplaceableOreGen(aWorld, aChunkX+7, tMinY, aChunkZ + 9, GregTech_API.sBlockStones) ) {
                 // Didn't reach, but could have placed. Save orevein for future use.
-                return NO_OVERLAP;
+                return new WorldGenResult(WorldGenStatus.NO_OVERLAP, 0);
             } else {
                 // Didn't reach, but couldn't place in test spot anywys, try for another orevein
-                return NO_OVERLAP_AIR_BLOCK;
+                return  new WorldGenResult(WorldGenStatus.NO_OVERLAP_AIR_BLOCK, 0);
             }
         }
 
         if (debugOrevein) {
-            GT_Log.out.print(
-                            "Trying Orevein:" + this.mWorldGenName +
-                            " Dimension=" + tDimensionName +
-                            " mX="+aChunkX/16+
-                            " mZ="+aChunkZ/16+
-                            " oreseedX="+ aSeedX/16 +
-                            " oreseedZ="+ aSeedZ/16 +
-                            " cY="+tMinY
-                            );
+            GT_Log.out.printf("Trying Orevein:%s Dimension=%s mX=%d mZ=%d oreseedX=%d oreseedZ=%d cY=%d",
+                              this.mWorldGenName,
+                              tDimensionName,
+                              aChunkX / 16,
+                              aChunkZ / 16,
+                              aSeedX / 16,
+                              aSeedZ / 16,
+                              tMinY);
         }
         // Adjust the density down the more chunks we are away from the oreseed.  The 5 chunks surrounding the seed should always be max density due to truncation of Math.sqrt().
         int localDensity = (int) Math.max(1, ((((float) this.mDensity) * 1.25f /*to compensate for removing 2 layers*/) / (Math.sqrt(2 + Math.pow(aChunkX/16f - aSeedX/16f, 2) + Math.pow(aChunkZ/16f - aSeedZ/16f, 2)))));
@@ -213,7 +206,7 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
             if (debugOrevein) GT_Log.out.println(
                 " No ore in bottom layer"
             );
-            return NO_ORE_IN_BOTTOM_LAYER;  // Exit early, didn't place anything in the bottom layer
+            return new WorldGenResult(WorldGenStatus.NO_ORE_IN_BOTTOM_LAYER, 0);  // Exit early, didn't place anything in the bottom layer
         }
         // Layers 2 Secondary and Sporadic
         for (level = tMinY; level < tMinY+1; level++) {
@@ -327,6 +320,7 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
                 }
             }
         }
+
         //Place small ores for the vein
         if( oreveinPlacerOres ) {
             int nSmallOres = (eX-wX)*(sZ-nZ)*this.mDensity/10 * oreveinPlacerOresMultiplier;
@@ -361,22 +355,24 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
                 }
             }
         }
+
         if (debugOrevein) {
-            GT_Log.out.println(
-                            " wXVein" + wXVein +
-                            " eXVein" + eXVein +
-                            " nZVein" + nZVein +
-                            " sZVein" + sZVein +
-                            " locDen=" + localDensity +
-                            " Den=" + this.mDensity +
-                            " Sec="+placeCount[1]+
-                            " Spo="+placeCount[3]+
-                            " Bet="+placeCount[2]+
-                            " Pri="+placeCount[0]
-            );
+            GT_Log.out.printf(" wXVein%d eXVein%d nZVein%d sZVein%d locDen=%d Den=%s Sec=%d Spo=%d Bet=%d Pri=%d%n",
+                              wXVein,
+                              eXVein,
+                              nZVein,
+                              sZVein,
+                              localDensity,
+                              this.mDensity,
+                              placeCount[1],
+                              placeCount[3],
+                              placeCount[2],
+                              placeCount[0]);
         }
+
+        val oresPlaced = placeCount[0] + placeCount[1] + placeCount[2] + placeCount[3];
         // Something (at least the bottom layer must have 1 block) must have been placed, return true
-        return ORE_PLACED;
+        return new WorldGenResult(WorldGenStatus.ORE_PLACED, oresPlaced);
     }
 
     public boolean containsMaterial(@NonNull Materials material) {

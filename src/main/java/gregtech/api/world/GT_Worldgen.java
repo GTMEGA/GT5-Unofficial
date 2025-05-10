@@ -1,6 +1,8 @@
 package gregtech.api.world;
 
 import gregtech.api.GregTech_API;
+import lombok.RequiredArgsConstructor;
+
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
@@ -10,6 +12,20 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class GT_Worldgen {
+    public enum WorldGenStatus {
+       WRONG_BIOME,
+       WRONG_DIMENSION,
+       NO_ORE_IN_BOTTOM_LAYER,
+       NO_OVERLAP,
+       ORE_PLACED,
+       NO_OVERLAP_AIR_BLOCK,
+    }
+
+    @RequiredArgsConstructor
+    public static class WorldGenResult {
+        public final WorldGenStatus status;
+        public final int blocksPlaced;
+    }
 
     public final String mWorldGenName;
     public final boolean mEnabled;
@@ -34,8 +50,9 @@ public abstract class GT_Worldgen {
         return false;
     }
 
-    public int executeWorldgenChunkified(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX, int aChunkZ, int seedX, int seedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
-        return 4; // This is for the empty Orevein 
+    public WorldGenResult executeWorldgenChunkified(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX, int aChunkZ, int seedX, int seedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+        // This is for the empty Orevein
+        return new WorldGenResult(WorldGenStatus.ORE_PLACED, 0);
     }
 
     /**
