@@ -31,7 +31,7 @@ public class GT_Block_Ore extends GT_Block_Ore_Abstract {
         val chunkCoord = new ChunkCoordIntPair(x >> 4, z >> 4);
         val dimId = worldIn.provider.dimensionId;
 
-        val data = GT_OreVeinLocations.RecordedOreVeinInChunk.get(dimId, chunkCoord);
+        val data = GT_OreVeinLocations.RecordedOreVeinInChunk.get().get(dimId, chunkCoord);
 
         if (data != null && data.oresCurrent > 0) {
             data.oresCurrent--;

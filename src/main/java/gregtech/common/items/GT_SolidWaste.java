@@ -31,8 +31,7 @@ public class GT_SolidWaste extends GT_Generic_Item {
         }
 
         val chunkCoordinate = new ChunkCoordIntPair(x >> 4, z >> 4);
-        val oreMix = GT_OreVeinLocations.RecordedOreVeinInChunk.get(world.provider.dimensionId,
-                                                                    chunkCoordinate);
+        val oreMix = GT_OreVeinLocations.RecordedOreVeinInChunk.get().get(world.provider.dimensionId, chunkCoordinate);
 
         player.addChatMessage(new ChatComponentText(String.format("[%s, %s] -> %s",
                                                                   chunkCoordinate.chunkXPos,

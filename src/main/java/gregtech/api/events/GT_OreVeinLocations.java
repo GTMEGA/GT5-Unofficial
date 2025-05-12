@@ -31,7 +31,7 @@ public class GT_OreVeinLocations {
     /**
      * (dimId, ChunkLocation) -> ore mix name
      */
-    public static final Table<Integer, ChunkCoordIntPair, VeinData> RecordedOreVeinInChunk = HashBasedTable.create(3, 1024);
+    public static final ThreadLocal<Table<Integer, ChunkCoordIntPair, VeinData>> RecordedOreVeinInChunk = ThreadLocal.withInitial(() -> HashBasedTable.create(3, 1024));
     private static final Map<String, GT_Worldgen_GT_Ore_Layer> lookup = new HashMap<>();
 
     private static final String NBT_ORE_MIX_TAG = "gregtech:ORE_MIX_IN_CHUNK";
@@ -46,8 +46,8 @@ public class GT_OreVeinLocations {
 
         val chunk = event.getChunk();
 
-        val data = RecordedOreVeinInChunk.get(chunk.worldObj.provider.dimensionId,
-                                              chunk.getChunkCoordIntPair());
+        val data = RecordedOreVeinInChunk.get().get(chunk.worldObj.provider.dimensionId,
+                                                    chunk.getChunkCoordIntPair());
 
         if (data != null) {
             val nbt = event.getData();
@@ -73,14 +73,14 @@ public class GT_OreVeinLocations {
         if (oreMixNames != null && !oreMixNames.isEmpty()) {
             val chunk = event.getChunk();
 
-            RecordedOreVeinInChunk.put(chunk.worldObj.provider.dimensionId,
-                                       chunk.getChunkCoordIntPair(),
-                                       new VeinData(oreMixNames, oreCountMax, oreCountCurrent));
+            RecordedOreVeinInChunk.get().put(chunk.worldObj.provider.dimensionId,
+                                             chunk.getChunkCoordIntPair(),
+                                             new VeinData(oreMixNames, oreCountMax, oreCountCurrent));
         }
     }
 
     public static GT_Worldgen_GT_Ore_Layer getOreVeinInChunk(int dimensionId, ChunkCoordIntPair location) {
-        val veinData = RecordedOreVeinInChunk.get(dimensionId, location);
+        val veinData = RecordedOreVeinInChunk.get().get(dimensionId, location);
 
         if (veinData == null) {
             return null;
@@ -94,9 +94,9 @@ public class GT_OreVeinLocations {
             return;
         }
 
-        GT_OreVeinLocations.RecordedOreVeinInChunk.put(chunk.worldObj.provider.dimensionId,
-                                                       chunk.getChunkCoordIntPair(),
-                                                       veinData);
+        GT_OreVeinLocations.RecordedOreVeinInChunk.get().put(chunk.worldObj.provider.dimensionId,
+                                                             chunk.getChunkCoordIntPair(),
+                                                             veinData);
     }
 
     public static void addOreVeins(List<GT_Worldgen_GT_Ore_Layer> oreLayers) {
