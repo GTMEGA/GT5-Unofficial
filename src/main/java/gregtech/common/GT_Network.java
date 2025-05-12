@@ -50,6 +50,7 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
         INVENTORY_UPDATE(new GT_Packet_InventoryUpdate()),
         OPEN_GUI(new GT_Packet_OpenGUI()),
         GT_PACKET_SET_FILTER_SLOT(new GT_Packet_SetFilterSlot()),
+        GT_PACKET_VEIN_UPDATE(new GT_Packet_VeinDataUpdate()),
         ;
 
         private final GT_Packet_New packet;

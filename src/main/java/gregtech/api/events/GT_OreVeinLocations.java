@@ -2,17 +2,23 @@ package gregtech.api.events;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import com.google.common.collect.Tables;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.net.GT_Packet_VeinDataUpdate;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
-import gregtech.common.GT_Worldgenerator;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.val;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.world.ChunkDataEvent;
-import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.event.world.ChunkWatchEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 
 import java.util.HashMap;
 import java.util.List;
@@ -79,6 +85,22 @@ public class GT_OreVeinLocations {
         }
     }
 
+    @SubscribeEvent
+    public void onPlayerWatchChunk(ChunkWatchEvent.Watch event) {
+        if (event.player.worldObj.isRemote) {
+            return;
+        }
+
+        val dimId = event.player.worldObj.provider.dimensionId;
+        val chunkCoord = event.chunk;
+
+        val veinData = RecordedOreVeinInChunk.get().get(dimId, chunkCoord);
+
+        val packet = new GT_Packet_VeinDataUpdate(Tables.immutableCell(dimId, chunkCoord, veinData));
+
+        GT_Values.NW.sendToPlayer(packet, event.player);
+    }
+
     public static GT_Worldgen_GT_Ore_Layer getOreVeinInChunk(int dimensionId, ChunkCoordIntPair location) {
         val veinData = RecordedOreVeinInChunk.get().get(dimensionId, location);
 
@@ -103,5 +125,12 @@ public class GT_OreVeinLocations {
         for (val oreLayer : oreLayers) {
             lookup.put(oreLayer.mWorldGenName, oreLayer);
         }
+    }
+
+    public static void updateClients(int dimensionId, ChunkCoordIntPair chunkCoord, VeinData veinData) {
+        val packet = new GT_Packet_VeinDataUpdate(Tables.immutableCell(dimensionId, chunkCoord, veinData));
+        val targetPoint = new NetworkRegistry.TargetPoint(dimensionId, 0, 0, 0, Double.POSITIVE_INFINITY);
+
+        GT_Values.NW.sendToAllAround(packet, targetPoint);
     }
 }

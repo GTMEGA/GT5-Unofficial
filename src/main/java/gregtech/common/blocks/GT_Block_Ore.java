@@ -36,5 +36,7 @@ public class GT_Block_Ore extends GT_Block_Ore_Abstract {
         if (data != null && data.oresCurrent > 0) {
             data.oresCurrent--;
         }
+
+        GT_OreVeinLocations.updateClients(dimId, chunkCoord, data);
     }
 }
