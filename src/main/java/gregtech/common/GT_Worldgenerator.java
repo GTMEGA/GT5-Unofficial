@@ -405,7 +405,9 @@ public class GT_Worldgenerator implements IWorldGenerator {
                     }
                 }
 
-                GT_OreVeinLocations.recordOreVeinInChunk(tChunk, veinData);
+                if (veinData != null && veinData.oresPlaced > 0) {
+                    GT_OreVeinLocations.recordOreVeinInChunk(tChunk, veinData);
+                }
             }
             long endTime = System.nanoTime();
             long duration = (endTime - startTime);
