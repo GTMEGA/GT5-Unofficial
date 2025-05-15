@@ -53,7 +53,7 @@ public abstract class GT_GUIScreen extends GuiContainer implements GT_IToolTipRe
 		this(new Container() {
 				 @Override
 				 public boolean canInteractWith(EntityPlayer player) {
-					 return false;
+					 return true;
 				 }
 
 				 @Override

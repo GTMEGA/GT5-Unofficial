@@ -9,6 +9,7 @@ import org.apache.commons.lang3.NotImplementedException;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.world.World;
@@ -288,17 +289,24 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     protected boolean onCoverShiftRightClickImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer) {
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             setLastPlayer(aPlayer);
-            if (hasContainer())
                 aPlayer.openGui(GT_Values.GT, GT_Proxy.GUI_ID_COVER_SIDE_BASE + aSide, aPlayer.getEntityWorld(),aTileEntity.getXCoord(),aTileEntity.getYCoord(),aTileEntity.getZCoord());
-            else
-                GT_Values.NW.sendToPlayer(new GT_Packet_TileEntityCoverGUI(aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer), (EntityPlayerMP) aPlayer);
             return true;
         }
         return false;
     }
 
     protected Object getServerGUIImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
-        if (hasCoverGUI() && hasContainer()) throw new NotImplementedException("You need to implement this if you have a container");
+        if (hasCoverGUI()) return new Container() {
+            @Override
+            public boolean canInteractWith(EntityPlayer player) {
+                return true;
+            }
+
+            @Override
+            public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+                return null;
+            }
+        };
         return null;
     }
 
@@ -465,10 +473,6 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
      */
     public boolean isCoverPlaceable(byte aSide, GT_ItemStack aStack, ICoverable aTileEntity) {
         return true;
-    }
-
-    public boolean hasContainer() {
-        return false;
     }
 
     public boolean hasCoverGUI() {
