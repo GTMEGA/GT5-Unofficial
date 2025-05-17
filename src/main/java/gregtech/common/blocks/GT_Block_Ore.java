@@ -28,6 +28,10 @@ public class GT_Block_Ore extends GT_Block_Ore_Abstract {
 
     @Override
     public void breakBlock(World worldIn, int x, int y, int z, Block blockBroken, int meta) {
+        if (worldIn.isRemote) {
+            return;
+        }
+
         val chunkCoord = new ChunkCoordIntPair(x >> 4, z >> 4);
         val dimId = worldIn.provider.dimensionId;
 
