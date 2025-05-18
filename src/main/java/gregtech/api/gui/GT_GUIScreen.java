@@ -9,6 +9,7 @@ import gregtech.api.gui.widgets.GT_GuiTooltipManager.GT_IToolTipRenderer;
 import gregtech.api.interfaces.IGuiScreen;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
@@ -25,7 +26,7 @@ import org.lwjgl.opengl.GL12;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class GT_GUIScreen extends GuiContainer implements GT_IToolTipRenderer, IGuiScreen {
+public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRenderer, IGuiScreen {
 
 	protected GT_GuiTooltipManager ttManager = new GT_GuiTooltipManager();
 
@@ -42,7 +43,7 @@ public abstract class GT_GUIScreen extends GuiContainer implements GT_IToolTipRe
 	protected List<GT_GuiIntegerTextBox> textBoxes = new ArrayList<>();
 
 	public GT_GUIScreen(Container container, int width, int height, String header) {
-		super(container);
+		//super(container);
 		this.gui_width = width;
 		this.gui_height = height;
 		this.header = header;
@@ -150,10 +151,10 @@ public abstract class GT_GUIScreen extends GuiContainer implements GT_IToolTipRe
 		drawTexturedModalRect(guiLeft, guiTop, 0,0, gui_width, gui_height);
 	}
 
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-
-	}
+//	@Override
+//	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+//
+//	}
 
 	public void drawExtras(int mouseX, int mouseY, float parTicks) {
 		this.fontRendererObj.drawString(header, 25, 9, 0xFF222222);

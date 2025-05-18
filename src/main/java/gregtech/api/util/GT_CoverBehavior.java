@@ -212,8 +212,8 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
     public boolean onCoverShiftRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer) {
         if(hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             setLastPlayer(aPlayer);
-            aPlayer.openGui(GT_Values.GT, GT_Proxy.GUI_ID_COVER_SIDE_BASE + aSide,aTileEntity.getWorld(),aTileEntity.getXCoord(),aTileEntity.getYCoord(),aTileEntity.getZCoord());
-            //GT_Values.NW.sendToPlayer(new GT_Packet_TileEntityCoverGUI(aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer), (EntityPlayerMP) aPlayer);
+            //aPlayer.openGui(GT_Values.GT, GT_Proxy.GUI_ID_COVER_SIDE_BASE + aSide,aTileEntity.getWorld(),aTileEntity.getXCoord(),aTileEntity.getYCoord(),aTileEntity.getZCoord());
+            GT_Values.NW.sendToPlayer(new GT_Packet_TileEntityCoverGUI(aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer), (EntityPlayerMP) aPlayer);
             return true;
         }
         return false;
