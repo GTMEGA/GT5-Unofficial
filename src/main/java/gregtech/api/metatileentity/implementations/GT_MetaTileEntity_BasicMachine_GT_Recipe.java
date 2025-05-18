@@ -201,16 +201,16 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                     switch (this.mTier) {
                         case 0:
                         case 1:
-                            aRecipe[i] = OrePrefixes.wireGt08.get(Materials.Copper);
+                            aRecipe[i] = OrePrefixes.wireGt01.get(Materials.Copper);
                             break;
                         case 2:
-                            aRecipe[i] = OrePrefixes.wireGt08.get(Materials.Cupronickel);
+                            aRecipe[i] = OrePrefixes.wireGt01.get(Materials.Cupronickel);
                             break;
                         case 3:
-                            aRecipe[i] = OrePrefixes.wireGt08.get(Materials.Nichrome);
+                            aRecipe[i] = OrePrefixes.wireGt01.get(Materials.Nichrome);
                             break;
                         case 4:
-                            aRecipe[i] = OrePrefixes.wireGt08.get(Materials.Kanthal);
+                            aRecipe[i] = OrePrefixes.wireGt01.get(Materials.Kanthal);
                             break;
                         case 5:
                             aRecipe[i] = OrePrefixes.wireGt08.get(Materials.TungstenSteel);
