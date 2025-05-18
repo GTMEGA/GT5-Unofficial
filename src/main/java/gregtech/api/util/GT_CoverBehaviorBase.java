@@ -290,7 +290,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             setLastPlayer(aPlayer);
             GT_Values.NW.sendToPlayer(new GT_Packet_TileEntityCoverGUI(aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer), (EntityPlayerMP) aPlayer);
-//                aPlayer.openGui(GT_Values.GT, GT_Proxy.GUI_ID_COVER_SIDE_BASE + aSide, aPlayer.getEntityWorld(),aTileEntity.getXCoord(),aTileEntity.getYCoord(),aTileEntity.getZCoord());
+                aPlayer.openGui(GT_Values.GT, GT_Proxy.GUI_ID_COVER_SIDE_BASE + aSide, aPlayer.getEntityWorld(),aTileEntity.getXCoord(),aTileEntity.getYCoord(),aTileEntity.getZCoord());
             return true;
         }
         return false;

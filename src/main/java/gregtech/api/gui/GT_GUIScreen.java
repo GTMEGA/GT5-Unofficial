@@ -9,7 +9,6 @@ import gregtech.api.gui.widgets.GT_GuiTooltipManager.GT_IToolTipRenderer;
 import gregtech.api.interfaces.IGuiScreen;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
@@ -26,7 +25,8 @@ import org.lwjgl.opengl.GL12;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRenderer, IGuiScreen {
+//TODO fix where buttons get reset when using container
+public abstract class GT_GUIScreen extends GuiContainer implements GT_IToolTipRenderer, IGuiScreen {
 
 	protected GT_GuiTooltipManager ttManager = new GT_GuiTooltipManager();
 
@@ -43,7 +43,7 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 	protected List<GT_GuiIntegerTextBox> textBoxes = new ArrayList<>();
 
 	public GT_GUIScreen(Container container, int width, int height, String header) {
-		//super(container);
+		super(container);
 		this.gui_width = width;
 		this.gui_height = height;
 		this.header = header;
@@ -66,6 +66,11 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 	}
 
 	@Override
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+
+	}
+
+	@Override
 	public void initGui() {
 		guiLeft = (this.width - this.gui_width) / 2;
 		guiTop = (this.height - this.gui_height) / 2;
@@ -83,6 +88,10 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 			element.onInit();
 		}
 		super.initGui();
+	}
+
+	public void reInit() {
+		onInitGui(guiLeft, guiTop, gui_width, gui_height);
 	}
 
 	protected abstract void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height);

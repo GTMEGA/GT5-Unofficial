@@ -3,11 +3,14 @@ package gregtech.api.net;
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.gui.GT_GUIScreen;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.GT_Proxy;
 import io.netty.buffer.ByteBuf;
+import lombok.val;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -139,6 +142,10 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
             if (tile instanceof IGregTechTileEntity && !((IGregTechTileEntity) tile).isDead()) {
 
                 ((IGregTechTileEntity) tile).setCoverDataAtSide(side, coverData); //Set it client side to read later.
+//                val currentGui = Minecraft.getMinecraft().currentScreen;
+//                if (currentGui instanceof GT_GUIScreen gt_gui) {
+//                    gt_gui.reInit();
+//                }
                 a.openGui(GT_Values.GT, GT_Proxy.GUI_ID_COVER_SIDE_BASE + side, a.worldObj, mX, mY, mZ);
             }
         }
