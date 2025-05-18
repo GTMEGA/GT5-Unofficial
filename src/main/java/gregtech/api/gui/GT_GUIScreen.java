@@ -208,6 +208,7 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 				setFocusedTextBox(null);
 				return;
 			} else {
+				mc.thePlayer.closeScreen();
 				closeScreen();
 				// don't fall through to parent
 				return;
