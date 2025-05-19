@@ -142,18 +142,40 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
 
     @Override
     public boolean allowToCheckRecipe() {
-        if (mNeedsSteamVenting && getBaseMetaTileEntity().getCoverIDAtSide(getBaseMetaTileEntity().getFrontFacing()) == 0 && !GT_Utility.hasBlockHitBox(getBaseMetaTileEntity().getWorld(), getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 1), getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 1), getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 1))) {
-            sendSound((byte) 9);
+        //this.mMainFacing
+
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        byte frontFacing = base.getFrontFacing();
+        if (mNeedsSteamVenting && (checkAndVoidSteam(base,frontFacing) || checkAndVoidSteam(base, (byte) mMainFacing))) {
             mNeedsSteamVenting = false;
+        }
+        return !mNeedsSteamVenting;
+    }
+
+    private boolean checkAndVoidSteam(IGregTechTileEntity base, byte frontFacing) {
+        if (base.getCoverIDAtSide(frontFacing) == 0 && !GT_Utility.hasBlockHitBox(base.getWorld(),
+                                                                                                  base.getOffsetX(frontFacing, 1),
+                                                                                                  base.getOffsetY(frontFacing, 1),
+                                                                                                  base.getOffsetZ(frontFacing, 1))) {
+            sendSound((byte) 9);
             try {
-                for (EntityLivingBase tLiving : (ArrayList<EntityLivingBase>) getBaseMetaTileEntity().getWorld().getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 1), getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 1), getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 1), getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 1) + 1, getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 1) + 1, getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 1) + 1))) {
+                for (EntityLivingBase tLiving : (ArrayList<EntityLivingBase>) base.getWorld()
+                                                                                  .getEntitiesWithinAABB(EntityLivingBase.class,
+                                                                                                         AxisAlignedBB.getBoundingBox(base.getOffsetX(frontFacing, 1),
+                                                                                                                                      base.getOffsetY(frontFacing, 1),
+                                                                                                                                      base.getOffsetZ(frontFacing, 1),
+                                                                                                                                      base.getOffsetX(frontFacing, 1) + 1,
+                                                                                                                                      base.getOffsetY(frontFacing, 1) + 1,
+                                                                                                                                      base.getOffsetZ(frontFacing, 1) + 1))) {
                     GT_Utility.applyHeatDamage(tLiving, getSteamDamage());
                 }
             } catch (Throwable e) {
-                if (D1) e.printStackTrace(GT_Log.err);
+                if (D1)
+                    e.printStackTrace(GT_Log.err);
             }
+            return true;
         }
-        return !mNeedsSteamVenting;
+        return false;
     }
 
     @Override
@@ -240,9 +262,9 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
                     .setIdentifier("largesmoke")
                     .setWorld(getBaseMetaTileEntity().getWorld())
                     .setMotion(
-                            ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetX / 5.0,
-                            ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetY / 5.0,
-                            ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetZ / 5.0
+                            ForgeDirection.getOrientation(mMainFacing).offsetX / 5.0,
+                            ForgeDirection.getOrientation(mMainFacing).offsetY / 5.0,
+                            ForgeDirection.getOrientation(mMainFacing).offsetZ / 5.0
                     )
                     .<WorldSpawnedEventBuilder.ParticleEventBuilder>times(8, x -> x
                             .setPosition(
