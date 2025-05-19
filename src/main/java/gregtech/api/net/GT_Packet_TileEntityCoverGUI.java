@@ -142,10 +142,6 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
             if (tile instanceof IGregTechTileEntity && !((IGregTechTileEntity) tile).isDead()) {
 
                 ((IGregTechTileEntity) tile).setCoverDataAtSide(side, coverData); //Set it client side to read later.
-//                val currentGui = Minecraft.getMinecraft().currentScreen;
-//                if (currentGui instanceof GT_GUIScreen gt_gui) {
-//                    gt_gui.reInit();
-//                }
                 a.openGui(GT_Values.GT, GT_Proxy.GUI_ID_COVER_SIDE_BASE + side, a.worldObj, mX, mY, mZ);
             }
         }

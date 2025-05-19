@@ -176,6 +176,7 @@ public abstract class GT_GUIScreen extends GuiContainer implements GT_IToolTipRe
 	}
 
 	public void closeScreen() {
+		mc.thePlayer.closeScreen();
 		this.mc.displayGuiScreen(null);
 		this.mc.setIngameFocus();
 	}
@@ -217,7 +218,6 @@ public abstract class GT_GUIScreen extends GuiContainer implements GT_IToolTipRe
 				setFocusedTextBox(null);
 				return;
 			} else {
-				mc.thePlayer.closeScreen();
 				closeScreen();
 				// don't fall through to parent
 				return;
