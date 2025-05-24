@@ -125,14 +125,14 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         final boolean isTranslucentPass;
         {
             val renderPass = ForgeHooksClient.getWorldRenderPass();
-            if (renderPass == 0) {
-                isTranslucentPass = false;
-            } else if (renderPass == 1) {
+            if (renderPass == 1) {
                 if (!GT_Mod.gregtechproxy.mRenderTileTranslucentPass)
                     return false;
                 isTranslucentPass = true;
             } else {
-                return false; // Don't render anything, something went wrong! Can't log either because it would do another A2 fr fr...
+                // This will happen for either pass -1 (block breaking overlay usually)
+                // Or pass 0, which is the opaque render into the actual chunk mesh
+                isTranslucentPass = false;
             }
         }
 

@@ -10,6 +10,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.world.IBlockAccess;
 
 import static gregtech.api.enums.GT_Values.W;
 
@@ -28,5 +29,10 @@ public class GT_Generic_Block extends Block {
     public void registerBlockIcons(IIconRegister reg) {
         // Let's default to the stone texture icon here instead of spamming the log, these blocks wont use this texture anyway.
         this.blockIcon = textureName != null ? reg.registerIcon(textureName) : Blocks.stone.getIcon(0, 0);
+    }
+
+    @Override
+    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, int x, int y, int z) {
+        setBlockBounds(0.0F, 0.0F, 0.0F, 1F, 1F, 1F);
     }
 }
