@@ -1743,6 +1743,7 @@ public enum ItemList implements IItemContainer {
     EnergyPowerHatch_64A_UHV,
 
     Solid_Waste,
+    Machine_Upgrade,
 
     MEGASteamValve,
     ;

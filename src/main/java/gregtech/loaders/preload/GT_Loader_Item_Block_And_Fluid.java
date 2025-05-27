@@ -241,6 +241,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         ItemList.Reactor_Coolant_Sp_6.set(GregTech_API.constructCoolantCellItem("1080k_Space_Coolantcell", "1080k Sp Coolant Cell", 1080000));
 
         ItemList.Solid_Waste.set(new GT_SolidWaste());
+        ItemList.Machine_Upgrade.set(new GT_MachineUpgrade());
 
         if (!GregTech_API.mIC2Classic) {
             ItemList.neutroniumHeatCapacitor.set(GregTech_API.constructCoolantCellItem("neutroniumHeatCapacitor", "1G Neutronium Heat Capacitor", 1000000000));
