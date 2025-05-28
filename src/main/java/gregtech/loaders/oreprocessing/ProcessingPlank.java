@@ -31,7 +31,6 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(3L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 3L), new ItemStack(Blocks.trapdoor, 1), 300, 4);
             GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(4L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 4L), new ItemStack(Blocks.crafting_table, 1), 400, 4);
             GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(6L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 6L), new ItemStack(Items.wooden_door, 1), 600, 4);
-            GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(8L, aStack), ItemList.Circuit_Integrated.getWithDamage(0L, 8L), new ItemStack(Blocks.chest, 1), 800, 4);
             GT_Values.RA.addAssemblerRecipe(GT_Utility.copyAmount(6L, aStack), new ItemStack(Items.book, 3), new ItemStack(Blocks.bookshelf, 1), 400, 4);
 
             if (aStack.getItemDamage() == 32767) {

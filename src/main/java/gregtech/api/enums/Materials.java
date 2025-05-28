@@ -1883,7 +1883,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Nickel.add(SubTag.MORTAR_GRINDABLE);
         Invar.add(SubTag.MORTAR_GRINDABLE);
         Brass.add(SubTag.MORTAR_GRINDABLE, SubTag.YES_TOOLS);
-        WroughtIron.add(SubTag.MORTAR_GRINDABLE, SubTag.YES_TOOLS);
+        WroughtIron.add(SubTag.MORTAR_GRINDABLE);
         Electrum.add(SubTag.MORTAR_GRINDABLE);
         Clay.add(SubTag.MORTAR_GRINDABLE);
 
