@@ -81,8 +81,8 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.emerald", true, 65, 90, 16, true, false, false, false, true, true, Materials.Emerald);
             //Common Nether Ores
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.netherquartz", true, 10, 120, 80, false, true, false, false, false, false, Materials.NetherQuartz);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.saltpeter", true, 10, 120, 80, false, true, false, false, false, false, Materials.Saltpeter);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.sulfur", true, 10, 120, 80, false, true, false, false, false, false, Materials.Sulfur);
+            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.saltpeter", true, 10, 120, 80, false, false, false, false, false, false, Materials.Saltpeter);
+            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.sulfur", true, 10, 120, 80, false, false, false, false, false, false, Materials.Sulfur);
             //Uncommon Nether Ores
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.redstone", true, 5, 110, 16, true, true, false, true, true, true, Materials.Redstone);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.gold", true, 5, 110, 16, true, true, false, true, true, true, Materials.Gold);
@@ -103,7 +103,7 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.salts", true, 40, 45, 50, 2, 24, true, false, false, Materials.Salt, Materials.Saltpeter, Materials.Lepidolite, Materials.Spodumene);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.redstone", true, 5, 15, 60, 3, 24, true, false, false, Materials.Redstone, Materials.Redstone, Materials.Ruby, Materials.Cinnabar);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.nickel", true, 10, 40, 50, 2, 24, true, false, false, Materials.Nickel, Materials.Garnierite, Materials.Cobaltite, Materials.Pentlandite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.manganese", true, 20, 30, 30, 2, 16, true, true, false, Materials.Spessartine, Materials.Spessartine, Materials.Tantalite, Materials.Pyrolusite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.manganese", true, 20, 30, 30, 2, 16, true, false, false, Materials.Spessartine, Materials.Spessartine, Materials.Tantalite, Materials.Pyrolusite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.diamond", true, 5, 20, 40, 2, 20, true, false, false, Materials.Diamond, Materials.Graphite, Materials.Graphite, Materials.Diamond);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.apatite", true, 40, 60, 40, 2, 16, true, false, false, Materials.Apatite, Materials.Apatite, Materials.TricalciumPhosphate, Materials.Pyrochlore);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.galena", true, 5, 45, 30, 2, 16, true, false, false, Materials.Lead, Materials.Silver, Materials.Galena, Materials.Galena);
@@ -115,16 +115,16 @@ public class GT_Worldgenloader implements Runnable {
 
             //Twilight Forest-Only Veins
             new GT_Worldgen_GT_Ore_Layer("ore.mix.olivine", true, 10, 40, 30, 2, 16, false, false, false, Materials.Magnesium, Materials.Olivine, Materials.Olivine, Materials.Bismuth);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.aquaignis", true, 5, 35, 30, 2, 16, false, false, false, Materials.InfusedWater, Materials.InfusedFire, Materials.Amber, Materials.Cinnabar);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.terraaer", true, 5, 35, 30, 2, 16, false, false, false, Materials.InfusedEarth, Materials.InfusedAir, Materials.Amber, Materials.Cinnabar);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.perditioordo", true, 5, 35, 30, 2, 16, false, false, false, Materials.InfusedEntropy, Materials.InfusedOrder, Materials.Amber, Materials.Cinnabar);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.aquaignis", true, 5, 35, 60, 2, 16, false, false, false, Materials.InfusedWater, Materials.InfusedFire, Materials.Amber, Materials.Cinnabar);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.terraaer", true, 5, 35, 60, 2, 16, false, false, false, Materials.InfusedEarth, Materials.InfusedAir, Materials.Amber, Materials.Cinnabar);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.perditioordo", true, 5, 35, 60, 2, 16, false, false, false, Materials.InfusedEntropy, Materials.InfusedOrder, Materials.Amber, Materials.Cinnabar);
 
             //Nether-Only Veins
             new GT_Worldgen_GT_Ore_Layer("ore.mix.saltpeterelectrotine", true, 5, 45, 55, 5, 16, false, true, false, Materials.Electrotine, Materials.Saltpeter, Materials.Saltpeter, Materials.Sphalerite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.beryllium", true, 5, 30, 30, 2, 16, false, true, false, Materials.Beryllium, Materials.Beryllium, Materials.Emerald, Materials.Thorium);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.tetrahedrite", true, 90, 120, 70, 4, 24, false, true, false, Materials.Tetrahedrite, Materials.Tetrahedrite, Materials.Stibnite, Materials.Sphalerite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.quartz", true, 90, 120, 70, 6, 24, false, true, false, Materials.NetherQuartz, Materials.CertusQuartz, Materials.NetherQuartz, Materials.Barite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.sulfur", true, 5, 20, 100, 4, 24, false, true, false, Materials.Sulfur, Materials.Sulfur, Materials.Pyrite, Materials.Sphalerite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.tetrahedrite", true, 90, 120, 50, 4, 24, false, true, false, Materials.Tetrahedrite, Materials.Tetrahedrite, Materials.Stibnite, Materials.Sphalerite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.quartz", true, 90, 120, 50, 6, 24, false, true, false, Materials.NetherQuartz, Materials.CertusQuartz, Materials.NetherQuartz, Materials.Barite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.sulfur", true, 5, 20, 50, 4, 24, false, true, false, Materials.Sulfur, Materials.Sulfur, Materials.Pyrite, Materials.Sphalerite);
         }
 
         GT_OreVeinLocations.addOreVeins(GT_Worldgen_GT_Ore_Layer.sList);
