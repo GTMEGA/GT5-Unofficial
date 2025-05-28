@@ -175,6 +175,13 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
         }
 
         @Override
+        public void initData(int aCoverVariable) {
+            this.coverVariable = aCoverVariable;
+            fBox.setFocused(true);
+            ((GT_GuiIconCheckButton) buttonList.get(0)).setChecked((coverVariable & CHECKBOX_MASK) > 0);
+        }
+
+        @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
             this.getFontRenderer().drawString(trans("246","Frequency" ),  startX + spaceX*4, 4+startY+spaceY*0, 0xFF555555);

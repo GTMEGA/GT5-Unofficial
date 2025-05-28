@@ -164,7 +164,7 @@ public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_Control
     private class GUI extends GT_GUICover {
         private final byte side;
         private final int coverID;
-        private final InternalData coverVariable;
+        private InternalData coverVariable;
 
         private static final int startX = 10;
         private static final int startY = 25;
@@ -182,6 +182,12 @@ public class GT_Cover_ControlsWork extends GT_CoverBehaviorBase<GT_Cover_Control
             new GT_GuiIconButton(this, 2, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.CROSS);
 
             new GT_GuiIconCheckButton(this, 3, startX + spaceX * 0, startY + spaceY * 3, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS).setChecked(aCoverVariable.isSafe());
+        }
+
+        @Override
+        public void initData(ISerializableObject aCoverVariable) {
+            coverVariable = (InternalData) aCoverVariable;
+            updateButtons();
         }
 
         @Override
