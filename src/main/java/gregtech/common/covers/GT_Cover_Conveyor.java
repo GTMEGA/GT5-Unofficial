@@ -180,6 +180,13 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
             b = new GT_GuiIconButton(this, 6, startX + spaceX*1, startY+spaceY*2, GT_GuiIcon.BLOCK_INPUT).setTooltipText(trans("228","Block Input"));
         }
 
+
+        @Override
+        public void initData(int aCoverVariable) {
+            this.coverVariable = aCoverVariable;
+            updateButtons();
+        }
+
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);

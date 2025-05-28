@@ -128,6 +128,14 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
             b = new GT_GuiIconCheckButton(this, 2, startX + spaceX*0, startY+spaceY*1, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF);
         }
 
+
+        @Override
+        public void initData(int aCoverVariable) {
+            this.coverVariable = aCoverVariable;
+            updateButtons();
+        }
+
+
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);

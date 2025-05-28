@@ -198,6 +198,12 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
         }
 
         @Override
+        public void initData(int aCoverVariable) {
+            coverVariable = aCoverVariable;
+            updateButtons();
+        }
+
+        @Override
         protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
             updateButtons();
         }

@@ -211,7 +211,7 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
         private final byte side;
         private final int coverID;
         private final GT_GuiIconCheckButton btnMode;
-        private final ItemFilterData coverVariable;
+        private ItemFilterData coverVariable;
         private final GT_GuiFakeItemButton itemFilterButtons;
 
         private static final int startX = 10;
@@ -230,6 +230,12 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
 
             itemFilterButtons = new GT_GuiFakeItemButton(this, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.SLOT_GRAY);
             itemFilterButtons.setMimicSlot(true);
+        }
+
+        @Override
+        public void initData(ISerializableObject aCoverVariable) {
+            coverVariable = (ItemFilterData) aCoverVariable;
+            updateButtons();
         }
 
         @Override

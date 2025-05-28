@@ -263,6 +263,14 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehavior {
 			lBox.setMaxStringLength(4);
 		}
 
+
+		@Override
+		public void initData(int aCoverVariable) {
+			this.coverVariable = aCoverVariable;
+			updateButtons();
+			tBox.setFocused(true);
+		}
+
 		@Override
 		public void drawExtras(int mouseX, int mouseY, float parTicks) {
 			super.drawExtras(mouseX, mouseY, parTicks);

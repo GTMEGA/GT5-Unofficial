@@ -196,7 +196,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     private class GT_FluidFilterGUICover extends GT_GUICover implements NEIDragAndDrop {
         private final byte side;
         private final int coverID;
-        private final FluidFilterData coverVariable;
+        private FluidFilterData coverVariable;
         private final GT_GuiFakeItemButton fluidFilterButton;
         protected String fluidFilterName;
 
@@ -221,6 +221,12 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
 
             fluidFilterButton = new GT_GuiFakeItemButton(this, startX, startY + spaceY * 3 + 2, GT_GuiIcon.SLOT_DARKGRAY);
             fluidFilterButton.setMimicSlot(true);
+        }
+
+        @Override
+        public void initData(ISerializableObject aCoverVariable) {
+            this.coverVariable = (FluidFilterData) aCoverVariable;
+            updateButtons();
         }
 
         @Override

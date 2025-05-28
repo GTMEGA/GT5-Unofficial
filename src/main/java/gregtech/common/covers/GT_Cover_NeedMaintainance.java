@@ -224,6 +224,11 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
             b = new GT_GuiIconCheckButton(this, 7, startX + spaceX*4 + 4, startY+spaceY*3, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF);
         }
 
+        @Override
+        public void initData(int aCoverVariable) {
+            this.coverVariable = aCoverVariable;
+            updateButtons();
+        }
 
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {

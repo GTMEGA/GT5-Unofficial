@@ -204,6 +204,15 @@ public class GT_Cover_ItemMeter extends GT_CoverBehavior {
                 intSlot.setEnabled(false);
         }
 
+
+        @Override
+        public void initData(int aCoverVariable) {
+            this.coverVariable = aCoverVariable;
+            update();
+            if (intSlot.isEnabled())
+                intSlot.setFocused(true);
+        }
+
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);

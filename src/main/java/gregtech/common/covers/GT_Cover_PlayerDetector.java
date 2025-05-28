@@ -154,6 +154,12 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
         }
 
         @Override
+        public void initData(int aCoverVariable) {
+            this.coverVariable = aCoverVariable;
+            updateButtons();
+        }
+
+        @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
             this.fontRendererObj.drawString("Any player",

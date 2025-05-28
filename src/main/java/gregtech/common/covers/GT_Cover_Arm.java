@@ -285,6 +285,13 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
         }
 
         @Override
+        public void initData(int aCoverVariable) {
+            this.coverVariable = aCoverVariable;
+            intSlot.setFocused(true);
+            updateButtons();
+        }
+
+        @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
             if (export)
