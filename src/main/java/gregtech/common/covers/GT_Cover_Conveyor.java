@@ -9,8 +9,10 @@ import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.ISerializableObject;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.Fluid;
 
@@ -38,6 +40,13 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
 
         this.mTickRate = Math.max(1,aTickRate);
         this.maxItems = maxStacks;
+    }
+
+    @Override
+    public void placeCover(byte aSide, ItemStack aCover, ICoverable aTileEntity) {
+        super.placeCover(aSide, aCover, aTileEntity);
+        // Default to Import instead of Export for ergonomics
+        aTileEntity.setCoverDataAtSide(aSide,  new ISerializableObject.LegacyCoverData(1));
     }
 
     @Override
