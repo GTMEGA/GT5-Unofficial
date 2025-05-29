@@ -113,6 +113,11 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     }
 
     @Override
+    public boolean isLadder(IBlockAccess world, int x, int y, int z, EntityLivingBase entity) {
+        return world.getBlockMetadata(x,y,z) >= 4;
+    }
+
+    @Override
     public String getUnlocalizedName() {
         return "gt.blockmachines";
     }
