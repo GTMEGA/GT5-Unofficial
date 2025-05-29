@@ -17,6 +17,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.GT_Cover_Fluidfilter;
+import ic2.core.IC2;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -1570,5 +1571,17 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider) {
         mMetaTileEntity.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
+
+        if (collider instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer)collider;
+            player.fallDistance = 0.0F;
+            if (player.motionY < -0.15) {
+                player.motionY = -0.15;
+            }
+
+            if (IC2.keyboard.isForwardKeyDown(player) && player.motionY < 0.2) {
+                player.motionY = 0.2;
+            }
+        }
     }
 }
