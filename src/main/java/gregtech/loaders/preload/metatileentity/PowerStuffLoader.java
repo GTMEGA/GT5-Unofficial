@@ -24,15 +24,15 @@ public final class PowerStuffLoader {
     public static void load() {
         if (LOADED)
             throw new RuntimeException("Already loaded!");
-        Transformer_LV_ULV.set(new GT_MetaTileEntity_Transformer(20, "transformer.tier.00", "ULV Transformer", 0, "LV -> ULV (Use Soft Mallet to invert)").getStackForm(1L));
-        Transformer_MV_LV.set(new GT_MetaTileEntity_Transformer(21, "transformer.tier.01", "LV Transformer", 1, "MV -> LV (Use Soft Mallet to invert)").getStackForm(1L));
-        Transformer_HV_MV.set(new GT_MetaTileEntity_Transformer(22, "transformer.tier.02", "MV Transformer", 2, "HV -> MV (Use Soft Mallet to invert)").getStackForm(1L));
-        Transformer_EV_HV.set(new GT_MetaTileEntity_Transformer(23, "transformer.tier.03", "HV Transformer", 3, "EV -> HV (Use Soft Mallet to invert)").getStackForm(1L));
-        Transformer_IV_EV.set(new GT_MetaTileEntity_Transformer(24, "transformer.tier.04", "EV Transformer", 4, "IV -> EV (Use Soft Mallet to invert)").getStackForm(1L));
-        Transformer_LuV_IV.set(new GT_MetaTileEntity_Transformer(25, "transformer.tier.05", "IV Transformer", 5, "LuV -> IV (Use Soft Mallet to invert)").getStackForm(1L));
-        Transformer_ZPM_LuV.set(new GT_MetaTileEntity_Transformer(26, "transformer.tier.06", "LuV Transformer", 6, "ZPM -> LuV (Use Soft Mallet to invert)").getStackForm(1L));
-        Transformer_UV_ZPM.set(new GT_MetaTileEntity_Transformer(27, "transformer.tier.07", "ZPM Transformer", 7, "UV -> ZPM (Use Soft Mallet to invert)").getStackForm(1L));
-        Transformer_MAX_UV.set(new GT_MetaTileEntity_Transformer(28, "transformer.tier.08", "UV Transformer", 8, "UHV -> UV (Use Soft Mallet to invert)").getStackForm(1L));
+        Transformer_LV_ULV.set(new GT_MetaTileEntity_Transformer(20, "transformer.tier.00", "ULV 16A Transformer", 0, "LV -> ULV (Use Soft Mallet to invert)").getStackForm(1L));
+        Transformer_MV_LV.set(new GT_MetaTileEntity_Transformer(21, "transformer.tier.01", "LV 16A Transformer", 1, "MV -> LV (Use Soft Mallet to invert)").getStackForm(1L));
+        Transformer_HV_MV.set(new GT_MetaTileEntity_Transformer(22, "transformer.tier.02", "MV 16A Transformer", 2, "HV -> MV (Use Soft Mallet to invert)").getStackForm(1L));
+        Transformer_EV_HV.set(new GT_MetaTileEntity_Transformer(23, "transformer.tier.03", "HV 16A Transformer", 3, "EV -> HV (Use Soft Mallet to invert)").getStackForm(1L));
+        Transformer_IV_EV.set(new GT_MetaTileEntity_Transformer(24, "transformer.tier.04", "EV 16A Transformer", 4, "IV -> EV (Use Soft Mallet to invert)").getStackForm(1L));
+        Transformer_LuV_IV.set(new GT_MetaTileEntity_Transformer(25, "transformer.tier.05", "IV 16A Transformer", 5, "LuV -> IV (Use Soft Mallet to invert)").getStackForm(1L));
+        Transformer_ZPM_LuV.set(new GT_MetaTileEntity_Transformer(26, "transformer.tier.06", "LuV 16A Transformer", 6, "ZPM -> LuV (Use Soft Mallet to invert)").getStackForm(1L));
+        Transformer_UV_ZPM.set(new GT_MetaTileEntity_Transformer(27, "transformer.tier.07", "ZPM 16A Transformer", 7, "UV -> ZPM (Use Soft Mallet to invert)").getStackForm(1L));
+        Transformer_MAX_UV.set(new GT_MetaTileEntity_Transformer(28, "transformer.tier.08", "UV 16A Transformer", 8, "UHV -> UV (Use Soft Mallet to invert)").getStackForm(1L));
 //        addCraftingRecipe(Transformer_LV_ULV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{" BB", "CM ", " BB", 'M', Hull_ULV, 'C', cableGt01.get(Tin), 'B', cableGt01.get(RedAlloy)});
 //        addCraftingRecipe(Transformer_MV_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{" BB", "CM ", " BB", 'M', Hull_LV, 'C', cableGt01.get(AnyCopper), 'B', cableGt01.get(Tin)});
 //        addCraftingRecipe(Transformer_HV_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"KBB", "CM ", "KBB", 'M', Hull_MV, 'C', cableGt01.get(Gold), 'B', cableGt01.get(AnyCopper), 'K', circuitPower.get(PWR_LV)});
