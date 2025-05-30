@@ -1581,6 +1581,15 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
 
             if (IC2.keyboard.isForwardKeyDown(player) && player.motionY < 0.2) {
                 player.motionY = 0.2;
+                float yaw =  ((Math.abs(player.rotationYaw)%360)/360f)%0.5f;
+                if (yaw < 0.05 || yaw > 0.45) {
+                    player.motionX = 0;
+                    return;
+                }
+                yaw -= 0.25f;
+                if (yaw < 0.05 || yaw > 0.45) {
+                    player.motionZ = 0;
+                }
             }
         }
     }
