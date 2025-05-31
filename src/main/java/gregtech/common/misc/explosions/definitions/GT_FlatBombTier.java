@@ -20,9 +20,9 @@ import java.util.concurrent.atomic.AtomicReference;
 @Getter
 public enum GT_FlatBombTier implements IGT_ExplosiveTier<GT_FlatBombTier> {
 
-    MK1("§7Flattening Explosive MKI§r", ExplosiveTextureInfo.getNew("mk1"), ExplosiveFlavorInfo.builder().build(), FlatBombParameters.get(4, 10).build()),
-    MK2("§eFlattening Explosive MKII§r", ExplosiveTextureInfo.getNew("mk2"), ExplosiveFlavorInfo.builder().build(), FlatBombParameters.get(6, 16).build()),
-    MK3("§cFlattening Explosive MKIII§r", ExplosiveTextureInfo.getNew("mk3"), ExplosiveFlavorInfo.builder().build(), FlatBombParameters.get(6, 20).magic(true).build()),
+    MK1("§7Flattening Explosive MKI§r", ExplosiveTextureInfo.getNew("mk1"), ExplosiveFlavorInfo.builder().build(), FlatBombParameters.get(8, 10).build()),
+    MK2("§eFlattening Explosive MKII§r", ExplosiveTextureInfo.getNew("mk2"), ExplosiveFlavorInfo.builder().build(), FlatBombParameters.get(12, 16).build()),
+    MK3("§cFlattening Explosive MKIII§r", ExplosiveTextureInfo.getNew("mk3"), ExplosiveFlavorInfo.builder().build(), FlatBombParameters.get(14, 24).magic(true).build()),
     ;
 
 
@@ -37,11 +37,15 @@ public enum GT_FlatBombTier implements IGT_ExplosiveTier<GT_FlatBombTier> {
 
         private final double maxDepth, maxRadius;
 
-        @Builder.Default private double depthVariation = 1.5;
+        @Builder.Default private double depthVariation = 0.1;
 
         @Builder.Default private double clayChance = 1.0;
 
-        @Builder.Default private double otherChance = 0.001;
+        @Builder.Default private double otherChance = 0.5;
+
+        @Builder.Default private float soilChance = 0.75f;
+
+        @Builder.Default private float rockChance = 0.50f;
 
         @Builder.Default private boolean magic = false;
 
@@ -80,7 +84,7 @@ public enum GT_FlatBombTier implements IGT_ExplosiveTier<GT_FlatBombTier> {
 
     @Override
     public ResourceLocation getEntityTexture() {
-        return Textures.BlockIcons.TUNEX.getTextureFile();
+        return Textures.BlockIcons.FLAT_BOMB.getTextureFile();
     }
 
     @Override

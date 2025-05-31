@@ -23,9 +23,9 @@ import java.util.concurrent.atomic.AtomicReference;
 @Getter
 public
 enum GT_MiningExplosiveTier implements IGT_ExplosiveTier<GT_MiningExplosiveTier> {
-    MK1("§7Mining Explosive MKI§r", ExplosiveTextureInfo.getOld(), ExplosiveFlavorInfo.builder().build(), MiningExplosiveParameters.getDefaults(4.0f, 3).build()),
-    MK2("§eMining Explosive MKII§r", ExplosiveTextureInfo.getOld(), ExplosiveFlavorInfo.builder().build(), MiningExplosiveParameters.getDefaults(5.0f, 4).build()),
-    MK3("§cMining Explosive MKIII§r", ExplosiveTextureInfo.getNew("mk3"), ExplosiveFlavorInfo.builder().build(), MiningExplosiveParameters.getDefaults(5.5f, 5).magic(true).build()),
+    MK1("§7Mining Explosive MKI§r", ExplosiveTextureInfo.getNew("mk1"), ExplosiveFlavorInfo.builder().build(), MiningExplosiveParameters.getDefaults(4.5f, 3).build()),
+    MK2("§eMining Explosive MKII§r", ExplosiveTextureInfo.getNew("mk2"), ExplosiveFlavorInfo.builder().build(), MiningExplosiveParameters.getDefaults(5.5f, 4).build()),
+    MK3("§cMining Explosive MKIII§r", ExplosiveTextureInfo.getNew("mk3"), ExplosiveFlavorInfo.builder().build(), MiningExplosiveParameters.getDefaults(6.0f, 5).magic(true).build()),
     ;
 
 
@@ -61,7 +61,7 @@ enum GT_MiningExplosiveTier implements IGT_ExplosiveTier<GT_MiningExplosiveTier>
         private float featherRange = 2.5f;
 
         @Builder.Default
-        private float featherOffset = 1.5f;
+        private float featherOffset = 2.5f;
 
         @Builder.Default
         private boolean magic = false;

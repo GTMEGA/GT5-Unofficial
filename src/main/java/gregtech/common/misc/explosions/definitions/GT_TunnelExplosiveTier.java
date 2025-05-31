@@ -19,8 +19,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public
 enum GT_TunnelExplosiveTier implements IGT_ExplosiveTier<GT_TunnelExplosiveTier> {
 
-    MK1("§7Tunnel Explosive MKI§r", ExplosiveTextureInfo.getOld(), ExplosiveFlavorInfo.builder().build(), TunnelExplosiveParameters.getDefaults(30, 4).build()),
-    MK2("§eTunnel Explosive MKII§r", ExplosiveTextureInfo.getOld(), ExplosiveFlavorInfo.builder().build(), TunnelExplosiveParameters.getDefaults(45, 5).build()),
+    MK1("§7Tunnel Explosive MKI§r", ExplosiveTextureInfo.getNew("mk1"), ExplosiveFlavorInfo.builder().build(), TunnelExplosiveParameters.getDefaults(30, 4).build()),
+    MK2("§eTunnel Explosive MKII§r", ExplosiveTextureInfo.getNew("mk2"), ExplosiveFlavorInfo.builder().build(), TunnelExplosiveParameters.getDefaults(45, 5).build()),
     MK3("§cTunnel Explosive MKIII§r", ExplosiveTextureInfo.getNew("mk3"), ExplosiveFlavorInfo.builder().build(), TunnelExplosiveParameters.getDefaults(55, 6).magic(true).build()),
     ;
 
