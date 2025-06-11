@@ -56,6 +56,8 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
         this.setCreativeTab(GregTech_API.TAB_GREGTECH_ORES);
         this.oreType = oreType;
         this.textures = new ITexture[]{stone, getOreTexture(this.oreType)};
+
+        GT_OreDictUnificator.add(OrePrefixes.ore, oreType, new ItemStack(this));
     }
 
     public static void registerOres() {

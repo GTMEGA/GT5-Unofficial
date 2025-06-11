@@ -5,9 +5,11 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.events.GT_OreVeinLocations;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_OreDictUnificator;
 import lombok.val;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 
@@ -15,6 +17,8 @@ public class GT_Block_Ore extends GT_Block_Ore_Abstract {
     protected GT_Block_Ore(Materials oreType) {
         super(oreType, String.join(".", "gt.blockore", oreType.mName));
         this.setStepSound(soundTypeStone);
+
+        GT_OreDictUnificator.add(OrePrefixes.oreNormal, oreType, new ItemStack(this));
     }
 
     @Override
