@@ -12,12 +12,15 @@ import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.GT_Cover_Fluidfilter;
 import ic2.core.IC2;
+import lombok.val;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -37,6 +40,7 @@ import net.minecraftforge.fluids.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -1480,9 +1484,30 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public byte setColorization(byte aColor) {
         if (aColor > 15 || aColor < -1) aColor = -1;
-        mColor = (byte) (aColor + 1);
-        if (canAccessData()) mMetaTileEntity.onColorChangeServer(aColor);
+        try {
+            recurseColor(aColor,-1,new HashSet<>());
+        } catch (StackOverflowError ignore){}
         return mColor;
+    }
+
+    private void recurseColor(byte color,int side,HashSet<BaseMetaPipeEntity> goneOver) {
+        mColor = (byte) (color + 1);
+        if (canAccessData()) mMetaTileEntity.onColorChangeServer(color);
+        goneOver.add(this);
+        for (int i = 0; i < 6; i++) {
+            if (!mMetaTileEntity.isConnectedAtSide(i)) continue;
+            val te = getPipeAtSide(i);
+            if (te == null || goneOver.contains(te)) continue;
+            te.recurseColor(color,i,goneOver);
+        }
+    }
+
+    protected BaseMetaPipeEntity getPipeAtSide(int side) {
+        val te = getTileEntityAtSide((byte) side);
+        if (te instanceof BaseMetaPipeEntity pipe) {
+            return pipe;
+        }
+        return null;
     }
 
     @Override
