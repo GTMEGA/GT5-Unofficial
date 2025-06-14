@@ -14,7 +14,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
 
     public ProcessingOre() {
         for (OrePrefixes tPrefix : OrePrefixes.values())
-            if ((tPrefix.name().startsWith("ore")) && (tPrefix != OrePrefixes.orePoor) && (tPrefix != OrePrefixes.oreSmall) && (tPrefix != OrePrefixes.oreRich) && (tPrefix != OrePrefixes.oreNormal))
+            if ((tPrefix.name().startsWith("oreChunk")) && (tPrefix != OrePrefixes.oreSmall) && (tPrefix != OrePrefixes.oreNormal))
                 tPrefix.add(this);
     }
 

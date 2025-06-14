@@ -37,7 +37,7 @@ public class GT_Loader_OreProcessing
         new ProcessingTransforming();
         new ProcessingNugget();
         new ProcessingOre();
-        new ProcessingOrePoor();
+//        new ProcessingOrePoor();
         new ProcessingOreSmelting();
         new ProcessingPipe();
         new ProcessingPlank();
