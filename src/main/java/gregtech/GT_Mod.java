@@ -30,6 +30,7 @@ import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.items.GT_MEGAnet;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
+import gregtech.common.misc.commands.MEGA_Commands;
 import gregtech.common.misc.explosions.GT_Explosion_Info;
 import gregtech.common.misc.explosions.detonator_util.RemoteDetonatorInteractionHandler;
 import gregtech.common.misc.GT_Command;
@@ -1255,6 +1256,7 @@ public class GT_Mod implements IGT_Mod {
         }
 
         aEvent.registerServerCommand(new GT_Command());
+        aEvent.registerServerCommand(new MEGA_Commands());
         //Sets a new Machine Block Update Thread everytime a world is loaded
         GT_Runnable_MachineBlockUpdate.initExecutorService();
     }
