@@ -95,10 +95,6 @@ public class GT_OreVeinLocations {
         }
     }
 
-    public void onChunkFinishLoad(ChunkEvent.Load event) {
-
-    }
-
     @SubscribeEvent
     public void onPlayerWatchChunk(ChunkWatchEvent.Watch event) {
         if (event.player.worldObj.isRemote) {
@@ -180,14 +176,15 @@ public class GT_OreVeinLocations {
             }
         }
 
-        for (val ore : oreTypeFrequency.keySet()) {
+        for (val oreEntry : oreTypeFrequency.entrySet()) {
+            val ore = oreEntry.getKey();
             val material = ore.material();
 
             for (val oreMix : GT_Worldgen_GT_Ore_Layer.sList) {
                 if (oreMix.containsMaterial(material)) {
                     val frequency = oreVeinLikelihood.computeIfAbsent(oreMix, key -> 0);
 
-                    oreVeinLikelihood.put(oreMix, frequency + 1);
+                    oreVeinLikelihood.put(oreMix, frequency + oreEntry.getValue());
                 }
             }
         }
