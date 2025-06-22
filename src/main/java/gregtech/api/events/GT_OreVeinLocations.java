@@ -20,6 +20,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.world.ChunkDataEvent;
+import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -72,7 +73,7 @@ public class GT_OreVeinLocations {
     }
 
     @SubscribeEvent
-    public void onChunkLoad(ChunkDataEvent.Load event) {
+    public void onChunkStartLoad(ChunkDataEvent.Load event) {
         if (event.world.isRemote) {
             return;
         }
@@ -90,8 +91,12 @@ public class GT_OreVeinLocations {
                                              chunk.getChunkCoordIntPair(),
                                              new VeinData(oreMixNames, oreCountMax, oreCountCurrent));
         } else {
-            scanSlurryInChunkAt(chunk.worldObj, chunk.xPosition, chunk.zPosition);
+            scanSlurryInChunk(chunk);
         }
+    }
+
+    public void onChunkFinishLoad(ChunkEvent.Load event) {
+
     }
 
     @SubscribeEvent
@@ -151,10 +156,13 @@ public class GT_OreVeinLocations {
     }
 
     public static GT_OreSlurry scanSlurryInChunkAt(World world, int chunkX, int chunkZ) {
+        return scanSlurryInChunk(world.getChunkFromChunkCoords(chunkX, chunkZ));
+    }
+
+    public static GT_OreSlurry scanSlurryInChunk(Chunk chunk) {
         val oreVeinLikelihood = new HashMap<GT_Worldgen_GT_Ore_Layer, Integer>();
         val oreTypeFrequency = new IdentityHashMap<GT_Block_Ore_Abstract, Integer>();
 
-        val chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
                 val yMax = chunk.getHeightValue(x, z);
@@ -210,7 +218,7 @@ public class GT_OreVeinLocations {
 
             recordOreVeinInChunk(chunk, veinData);
 
-            GT_Mod.GT_FML_LOGGER.info("Recalculated Ore Vein type at [{}, {}] to be {}", chunkX, chunkZ, currentVein.mWorldGenName);
+            GT_Mod.GT_FML_LOGGER.info("Recalculated Ore Vein type at [{}, {}] to be {}", chunk.xPosition, chunk.zPosition, currentVein.mWorldGenName);
         } else {
             GT_Mod.GT_FML_LOGGER.warn("Null ore slurry selected");
         }
