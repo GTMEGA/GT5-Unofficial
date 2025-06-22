@@ -115,8 +115,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
 
         if (this.slurryType == null) {
             val chunkCoord = new ChunkCoordIntPair(this.getXDrill() >> 4, this.getZDrill() >> 4);
-            val oreMix = GT_OreVeinLocations.getOreVeinInChunk(this.getBaseMetaTileEntity().getWorld().provider.dimensionId,
-                                                               chunkCoord);
+            val oreMix = GT_OreVeinLocations.getOreVeinInChunk(this.getBaseMetaTileEntity().getWorld(), chunkCoord);
 
             this.slurryType = GT_OreSlurry.slurries.get(oreMix);
 

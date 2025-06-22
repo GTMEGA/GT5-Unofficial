@@ -83,12 +83,14 @@ public class GT_OreVeinLocations {
         val oreCountMax = data.getInteger(NBT_ORE_COUNT_MAX);
         val oreCountCurrent = data.getInteger(NBT_ORE_COUNT);
 
-        if (oreMixNames != null && !oreMixNames.isEmpty()) {
-            val chunk = event.getChunk();
+        val chunk = event.getChunk();
 
+        if (!oreMixNames.isEmpty()) {
             RecordedOreVeinInChunk.get().put(chunk.worldObj.provider.dimensionId,
                                              chunk.getChunkCoordIntPair(),
                                              new VeinData(oreMixNames, oreCountMax, oreCountCurrent));
+        } else {
+            scanSlurryInChunkAt(chunk.worldObj, chunk.xPosition, chunk.zPosition);
         }
     }
 
@@ -108,11 +110,18 @@ public class GT_OreVeinLocations {
         GT_Values.NW.sendToPlayer(packet, event.player);
     }
 
-    public static GT_Worldgen_GT_Ore_Layer getOreVeinInChunk(int dimensionId, ChunkCoordIntPair location) {
-        val veinData = RecordedOreVeinInChunk.get().get(dimensionId, location);
+    public static GT_Worldgen_GT_Ore_Layer getOreVeinInChunk(World world, ChunkCoordIntPair location) {
+        val table = RecordedOreVeinInChunk.get();
+        var veinData = table.get(world.provider.dimensionId, location);
 
         if (veinData == null) {
-            return null;
+            scanSlurryInChunkAt(world, location.chunkXPos, location.chunkZPos);
+
+            veinData = table.get(world.provider.dimensionId, location);
+
+            if (veinData == null) {
+                return null;
+            }
         }
 
         return lookup.get(veinData.oreMix);
@@ -199,7 +208,7 @@ public class GT_OreVeinLocations {
 
             val veinData = new VeinData(currentVein.mWorldGenName, oreCount, oreCount);
 
-            RecordedOreVeinInChunk.get().put(world.provider.dimensionId, new ChunkCoordIntPair(chunkX, chunkZ), veinData);
+            recordOreVeinInChunk(chunk, veinData);
 
             GT_Mod.GT_FML_LOGGER.info("Recalculated Ore Vein type at [{}, {}] to be {}", chunkX, chunkZ, currentVein.mWorldGenName);
         } else {
