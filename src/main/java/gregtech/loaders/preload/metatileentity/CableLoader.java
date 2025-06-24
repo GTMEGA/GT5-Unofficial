@@ -7,6 +7,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
+import gregtech.api.util.GT_ModHandler;
+
 import lombok.*;
 import net.minecraft.item.ItemStack;
 
@@ -17,7 +19,6 @@ import static gregtech.api.util.GT_LanguageManager.i18nPlaceholder;
 import static gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED;
 import static gregtech.api.util.GT_ModHandler.RecipeBits.NOT_REMOVABLE;
 import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
-import static gregtech.api.util.GT_ModHandler.getIC2Item;
 import static gregtech.api.util.GT_OreDictUnificator.registerOre;
 
 public final class CableLoader {
@@ -95,12 +96,6 @@ public final class CableLoader {
 
         makeWires(Ichorium, 2600, 2L, 2L, 12L, V[9], false, true);
 
-        if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
-            addCraftingRecipe(getIC2Item("copperCableItem", 2L), NOT_REMOVABLE | BUFFERED, new Object[]{"xP", 'P', plate.get(AnyCopper)});
-            addCraftingRecipe(getIC2Item("goldCableItem", 4L), NOT_REMOVABLE | BUFFERED, new Object[]{"xP", 'P', plate.get(Gold)});
-            addCraftingRecipe(getIC2Item("ironCableItem", 3L), NOT_REMOVABLE | BUFFERED, new Object[]{"xP", 'P', plate.get(AnyIron)});
-            addCraftingRecipe(getIC2Item("tinCableItem", 3L), NOT_REMOVABLE | BUFFERED, new Object[]{"xP", 'P', plate.get(Tin)});
-        }
         LOADED = true;
     }
 

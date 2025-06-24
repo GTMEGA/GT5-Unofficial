@@ -179,15 +179,6 @@
       }
     ]
   },
-  "tools.Treetap": {
-    "category": "player",
-    "sounds": [
-      {
-        "name": "Treetap",
-        "stream": false
-      }
-    ]
-  },
   "tools.Wrench": {
     "category": "player",
     "sounds": [

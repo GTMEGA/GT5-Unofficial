@@ -38,7 +38,6 @@ import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.misc.explosions.GT_Explosion_Info;
 import gregtech.common.net.MessageUpdateFluidDisplayItem;
 import gregtech.common.render.*;
-import ic2.api.tile.IWrenchable;
 import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -613,7 +612,7 @@ public class GT_Client extends GT_Proxy
 
         if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWrenchList))
         {
-            if (aTileEntity instanceof ITurnable || ROTATABLE_VANILLA_BLOCKS.contains(aBlock) || aTileEntity instanceof IWrenchable)
+            if (aTileEntity instanceof ITurnable || ROTATABLE_VANILLA_BLOCKS.contains(aBlock))
                 drawGrid(aEvent, false, true, aEvent.player.isSneaking());
             return;
         }

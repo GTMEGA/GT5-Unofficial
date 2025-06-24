@@ -16,6 +16,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
+
 import lombok.val;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
@@ -34,8 +35,6 @@ import java.util.List;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 
 public class GT_RecipeAdder implements IGT_RecipeAdder {
-
-
     @Override
     @Deprecated
     public GT_Recipe addFusionReactorRecipeRemovable(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, int aDuration, int aEUt, int aStartEU) {
@@ -60,12 +59,18 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
 
     @Override
     public GT_Recipe addCentrifugeRecipeRemovable(ItemStack aInput1, int aInput2, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, ItemStack aOutput5, ItemStack aOutput6, int aDuration) {
-        return addCentrifugeRecipeRemovable(aInput1, aInput2 < 0 ? ItemList.IC2_Fuel_Can_Empty.get(-aInput2, new Object[0]) : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2, new Object[0]) : null, null, null, aOutput1, aOutput2, aOutput3, aOutput4, aOutput5, aOutput6, null, aDuration, 5);
+           return addCentrifugeRecipeRemovable(aInput1,
+                                            aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2, new Object[0]) : null, null,
+                                            null, aOutput1, aOutput2, aOutput3, aOutput4, aOutput5, aOutput6, null,
+                                            aDuration, 5);
     }
 
     @Override
     public GT_Recipe addCentrifugeRecipeRemovable(ItemStack aInput1, int aInput2, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, ItemStack aOutput5, ItemStack aOutput6, int aDuration, int aEUt) {
-        return addCentrifugeRecipeRemovable(aInput1, aInput2 < 0 ? ItemList.IC2_Fuel_Can_Empty.get(-aInput2, new Object[0]) : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2, new Object[0]) : null, null, null, aOutput1, aOutput2, aOutput3, aOutput4, aOutput5, aOutput6, null, aDuration, aEUt);
+        return addCentrifugeRecipeRemovable(aInput1,
+                                            aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2, new Object[0]) : null, null,
+                                            null, aOutput1, aOutput2, aOutput3, aOutput4, aOutput5, aOutput6, null,
+                                            aDuration, aEUt);
     }
 
     @Override
@@ -113,7 +118,10 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
 
     @Override
     public GT_Recipe addElectrolyzerRecipeRemovable(ItemStack aInput1, int aInput2, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, ItemStack aOutput5, ItemStack aOutput6, int aDuration, int aEUt) {
-        return addElectrolyzerRecipeRemovable(aInput1, aInput2 < 0 ? ItemList.IC2_Fuel_Can_Empty.get(-aInput2, new Object[0]) : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2, new Object[0]) : null, null, null, aOutput1, aOutput2, aOutput3, aOutput4, aOutput5, aOutput6, null, aDuration, aEUt);
+        return addElectrolyzerRecipeRemovable(aInput1,
+                                              aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2, new Object[0]) : null,
+                                              null, null, aOutput1, aOutput2, aOutput3, aOutput4, aOutput5, aOutput6,
+                                              null, aDuration, aEUt);
     }
 
     @Override
@@ -763,9 +771,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         }
         int tExplosives = aInput2 > 0 ? aInput2 < 64 ? aInput2 : 64 : 1;
         int tGunpowder = tExplosives<<1;//Worst
-        int tDynamite = Math.max(1, tExplosives>>1);//good
         int tTNT = tExplosives;//Slightly better
-        int tITNT = Math.max(1, tExplosives>>2);//the best
         //new GT_Recipe(aInput1, aInput2, aOutput1, aOutput2);
         val recipes = new ArrayList<GT_Recipe>();
         if(tGunpowder<65){
@@ -774,19 +780,9 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 recipes.add(r);
             }
         }
-        if(tDynamite<17){
-            val r = GT_Recipe.GT_Recipe_Map.sImplosionRecipes.addRecipe(true, new ItemStack[]{aInput1, GT_ModHandler.getIC2Item("dynamite", tDynamite, null)}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, 20, 30, 0);
-            if (r != null) {
-                recipes.add(r);
-            }
-        }
         val r1 = GT_Recipe.GT_Recipe_Map.sImplosionRecipes.addRecipe(true, new ItemStack[]{aInput1, new ItemStack(Blocks.tnt,tTNT)}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, 20, 30, 0);
-        val r2 = GT_Recipe.GT_Recipe_Map.sImplosionRecipes.addRecipe(true, new ItemStack[]{aInput1, GT_ModHandler.getIC2Item("industrialTnt", tITNT, null)}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, 20, 30, 0);
         if (r1 != null) {
             recipes.add(r1);
-        }
-        if (r2 != null) {
-            recipes.add(r2);
         }
 
         return recipes.isEmpty() ? null : recipes.toArray(new GT_Recipe[0]);
@@ -1025,21 +1021,6 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes.remove(recipe);
     }
 
-    @Override
-    public GT_Recipe addUnboxingRecipeRemovable(ItemStack aFullBox, ItemStack aContainedItem, ItemStack aEmptyBox, int aDuration, int aEUt) {
-        if ((aFullBox == null) || (aContainedItem == null)) {
-            return null;
-        }
-        if (!GregTech_API.sRecipeFile.get("unboxing", aFullBox, true)) {
-            return null;
-        }
-        return GT_Recipe.GT_Recipe_Map.sUnboxinatorRecipes.addRecipe(true, new ItemStack[]{aFullBox}, new ItemStack[]{aContainedItem, aEmptyBox}, null, null, null, aDuration, aEUt, 0);
-    }
-
-    @Override
-    public void removeUnboxingRecipe(GT_Recipe recipe) {
-        GT_Recipe.GT_Recipe_Map.sUnboxinatorRecipes.remove(recipe);
-    }
 
     @Override
     public GT_Recipe addThermalCentrifugeRecipeRemovable(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, int aDuration, int aEUt) {

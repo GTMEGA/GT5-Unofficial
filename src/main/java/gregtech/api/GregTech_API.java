@@ -9,8 +9,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.items.GT_CoolantCellIC_Item;
-import gregtech.api.items.GT_CoolantCell_Item;
 import gregtech.api.items.GT_Tool_Item;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
@@ -417,6 +415,10 @@ public class GregTech_API {
         addGTSoundToList(226, "boiler_vent");
         addGTSoundToList(227, "steam_hammer");
         addGTSoundToList(228, "seismic");
+
+        //TODO update references
+        addGTSoundToList(239, "treetap_extract");
+
         addGTSoundToList(229, "mcdonal");
         addGTSoundToList(230, "electrolyzer");
         addGTSoundToList(231, "centrifuge");
@@ -516,21 +518,6 @@ public class GregTech_API {
             return id != null && (id & B[aMeta]) != 0;
         }
         return false;
-    }
-
-    /**
-     * Creates a new Coolant Cell Item for your Nuclear Reactor
-     */
-    public static Item constructCoolantCellItem(String aUnlocalized, String aEnglish, int aMaxStore) {
-        try {
-            return new GT_CoolantCellIC_Item(aUnlocalized, aEnglish, aMaxStore);
-//			return (Item)Class.forName("gregtech.api.items.GT_CoolantCellIC_Item").getConstructors()[0].newInstance(aUnlocalized, aEnglish, aMaxStore);
-        } catch (Throwable e) {/*Do nothing*/}
-        try {
-            return new GT_CoolantCell_Item(aUnlocalized, aEnglish, aMaxStore);
-//			return (Item)Class.forName("gregtech.api.items.GT_CoolantCell_Item").getConstructors()[0].newInstance(aUnlocalized, aEnglish, aMaxStore);
-        } catch (Throwable e) {/*Do nothing*/}
-        return new gregtech.api.items.GT_Generic_Item(aUnlocalized, aEnglish, "Doesn't work as intended, this is a Bug", false);
     }
 
     /**

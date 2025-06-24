@@ -105,7 +105,7 @@ public class ItemComb extends Item {
 		//Organic
 		addProcessGT(CombType.LIGNIE, new Materials[] {Materials.Lignite}, Voltage.LV);
 		addProcessGT(CombType.COAL, new Materials[] {Materials.Coal}, Voltage.LV);
-		addCentrifugeToItemStack(CombType.STICKY, new ItemStack[] { ItemList.IC2_Resin.get(1), ItemList.IC2_Plantball.get(1), ItemList.FR_Wax.get(1) }, new int[] {50 * 100, 15 * 100, 50 * 100}, Voltage.ULV);
+		addCentrifugeToItemStack(CombType.STICKY, new ItemStack[] { ItemList.Resin.get(1), ItemList.Plantball.get(1), ItemList.FR_Wax.get(1) }, new int[] {50 * 100, 15 * 100, 50 * 100}, Voltage.ULV);
 		addProcessGT(CombType.OIL, new Materials[] {Materials.Oilsands}, Voltage.LV);
 		addProcessGT(CombType.APATITE, new Materials[] {Materials.Apatite, Materials.Phosphate}, Voltage.LV);
 		addCentrifugeToMaterial(CombType.ASH, new Materials[] {Materials.DarkAsh, Materials.Ash}, new int[] { 50*100, 50*100}, new int[] {}, Voltage.ULV, NI, 50 * 100);
@@ -122,7 +122,6 @@ public class ItemComb extends Item {
 		
 		//ic2
 		addCentrifugeToItemStack(CombType.COOLANT, new ItemStack[] { GT_Bees.drop.getStackForType(DropType.COOLANT), ItemList.FR_Wax.get(1) }, new int[] {100 * 100, 100 * 100}, Voltage.HV, 196);
-		addCentrifugeToItemStack(CombType.ENERGY, new ItemStack[] {GT_Bees.drop.getStackForType(DropType.HOT_COOLANT), ItemList.IC2_Energium_Dust.get(1L), ItemList.FR_RefractoryWax.get(1)}, new int[] {20 * 100, 20 * 100, 50 * 100}, Voltage.HV, 196);
 		addCentrifugeToItemStack(CombType.LAPOTRON, new ItemStack[] {GT_Bees.drop.getStackForType(DropType.LAPIS), GT_ModHandler.getModItem(MOD_ID_DC, "item.LapotronDust", 1, 0), GT_ModHandler.getModItem("MagicBees", "wax", 1, 2) }, new int[] {20 * 100, 15 * 100, 40 * 100}, Voltage.HV, 196);
 		addCentrifugeToMaterial(CombType.PYROTHEUM, new Materials[] {Materials.Blaze, Materials.Pyrotheum}, new int[] { 25 * 100, 20 * 100}, new int[] {}, Voltage.HV, NI, 30 * 100);
 		addCentrifugeToMaterial(CombType.CRYOTHEUM, new Materials[] {Materials.Blizz, Materials.Cryotheum}, new int[] { 25 * 100, 20 * 100}, new int[] {}, Voltage.HV, NI, 30 * 100);

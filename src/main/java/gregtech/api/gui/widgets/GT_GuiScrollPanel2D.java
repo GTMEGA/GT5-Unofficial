@@ -2,7 +2,7 @@ package gregtech.api.gui.widgets;
 
 
 import gregtech.api.interfaces.IGuiScreen;
-import ic2.core.util.Vector2;
+import gregtech.api.util.Vector2;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;

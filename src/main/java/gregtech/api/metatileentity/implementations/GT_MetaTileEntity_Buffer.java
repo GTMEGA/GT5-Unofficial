@@ -160,11 +160,6 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public boolean isTeleporterCompatible() {
-        return false;
-    }
-
-    @Override
     public long getMinimumStoredEU() {
         return 512L;
     }

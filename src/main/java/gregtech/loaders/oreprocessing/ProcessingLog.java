@@ -6,6 +6,8 @@ import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+
+
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -17,10 +19,10 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         if (aOreDictName.equals("logRubber")) {
-            GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(2), null, Materials.Methane.getGas(60L), ItemList.IC2_Resin.get(1L), GT_ModHandler.getIC2Item("plantBall", 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L), GT_Values.NI, GT_Values.NI, new int[]{5000, 3750, 2500, 2500}, 200, 20);
-            GT_ModHandler.addSawmillRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.IC2_Resin.get(1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 16L));
+            GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(2), null, Materials.Methane.getGas(60L), ItemList.Resin.get(1L), ItemList.Plantball.get(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L), GT_Values.NI, GT_Values.NI, new int[]{5000, 3750, 2500, 2500}, 200, 20);
+            GT_ModHandler.addSawmillRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Resin.get(1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 16L));
             GT_ModHandler.addExtractionRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1L));
-            GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L), ItemList.IC2_Resin.get(1L), 33, false);
+            GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L), ItemList.Resin.get(1L), 33, false);
         } else {
         	GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1), null, Materials.Methane.getGas(60L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 200, 20);
             GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L), 80, false);

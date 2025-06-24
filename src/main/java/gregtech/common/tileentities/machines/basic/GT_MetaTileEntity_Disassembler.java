@@ -127,13 +127,7 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
     }
 
     private boolean compareToUnpacker(ItemStack is){
-       return null != GT_Recipe.GT_Recipe_Map.sUnboxinatorRecipes.findRecipe(
-               null,
-               true,
-               true,
-               Long.MAX_VALUE,
-               null,
-               is);
+       return false;
     }
 
     @Override

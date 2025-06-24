@@ -97,11 +97,6 @@ public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_Tiered
     }
 
     @Override
-    public boolean isTeleporterCompatible() {
-        return false;
-    }
-
-    @Override
     public long getMinimumStoredEU() {
         return 512L;
     }

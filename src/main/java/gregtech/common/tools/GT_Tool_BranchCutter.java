@@ -1,11 +1,14 @@
 package gregtech.common.tools;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_ToolHarvestHelper;
 import gregtech.api.util.GT_Utility;
+
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -55,9 +58,9 @@ public class GT_Tool_BranchCutter extends GT_Tool {
             } else if (aBlock == Blocks.leaves2) {
                 aDrops.clear();
                 aDrops.add(new ItemStack(Blocks.sapling, 1, (aMetaData & 0x3) + 4));
-            } else if (aBlock == GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("rubberLeaves", 1L))) {
+            } else if (aBlock == ItemList.Rubber_Leaves.getBlock()) {
                 aDrops.clear();
-                aDrops.add(GT_ModHandler.getIC2Item("rubberSapling", 1L));
+                aDrops.add(ItemList.Rubber_Sapling.get(1));
             }
         }
         return 0;

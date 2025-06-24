@@ -111,11 +111,6 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     }
 
     @Override
-    public boolean isTeleporterCompatible() {
-        return false;
-    }
-
-    @Override
     public long getMinimumStoredEU() {
         return V[mTier + 1];
     }
@@ -230,11 +225,6 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
                         trans("148", "V ") +
                         maxAmperesOut() +
                         trans("149", "A");
-    }
-
-    @Override
-    public boolean shouldJoinIc2Enet() {
-        return true;
     }
 
     @Override

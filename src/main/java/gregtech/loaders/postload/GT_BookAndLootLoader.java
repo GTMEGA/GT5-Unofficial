@@ -78,7 +78,6 @@ public class GT_BookAndLootLoader implements Runnable {
         ChestGenHooks.addItem("pyramidDesertyChest", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.GarnetRed, 1L), 2, 8, 4));
         ChestGenHooks.addItem("pyramidDesertyChest", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.GarnetYellow, 1L), 2, 8, 4));
 
-        ChestGenHooks.addItem("pyramidJungleChest", new WeightedRandomChestContent(ItemList.Coin_Gold_Ancient.get(1L), 16, 64, 10));
         ChestGenHooks.addItem("pyramidJungleChest", new WeightedRandomChestContent(ItemList.ZPM.getWithCharge(1L, 2147483647), 1, 1, 1));
         ChestGenHooks.addItem("pyramidJungleChest", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1L), 4, 16, 12));
         ChestGenHooks.addItem("pyramidJungleChest", new WeightedRandomChestContent(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Ruby, 1L), 2, 8, 2));

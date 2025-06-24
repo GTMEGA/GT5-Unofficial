@@ -12,13 +12,16 @@ import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.GT_Cover_Fluidfilter;
-import ic2.core.IC2;
+import lombok.val;
+
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,6 +40,7 @@ import net.minecraftforge.fluids.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -309,7 +313,6 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                                 for (byte i = 0; i < 6; i++)
                                     mCoverBehaviors[i] = GregTech_API.getCoverBehaviorNew(mCoverSides[i]);
                                 issueBlockUpdate();
-                                joinEnet();
                             }
 
                             if (xCoord != oX || yCoord != oY || zCoord != oZ) {
@@ -469,8 +472,6 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
             }
             tList.add("Is" + (mMetaTileEntity.isAccessAllowed(aPlayer) ? " " : EnumChatFormatting.RED+" not "+EnumChatFormatting.RESET) + "accessible for you");
         }
-        if(joinedIc2Enet)
-            tList.add("Joined IC2 ENet");
 
         return mMetaTileEntity.getSpecialDebugInfo(this, aPlayer, aLogLevel, tList);
     }
@@ -556,7 +557,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
 
     @Override
     public void setFrontFacing(byte aFacing) {
-        doEnetUpdate();
+
     }
 
     @Override
@@ -616,7 +617,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
             mMetaTileEntity.onRemoval();
             mMetaTileEntity.setBaseMetaTileEntity(null);
         }
-        leaveEnet();
+
         super.invalidate();
     }
 
@@ -969,7 +970,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                         //logic handled internally
                         GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
                     }
-                    doEnetUpdate();
+
                     return true;
                 }
 
@@ -985,7 +986,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                         GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(103), 3.0F, -1, xCoord, yCoord, zCoord);
                         issueBlockUpdate();
                     }
-                    doEnetUpdate();
+
                     return true;
                 }
 
@@ -1141,20 +1142,6 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
             mSidedRedstone[aSide] = aStrength;
             issueBlockUpdate();
         }
-    }
-
-    @Override
-    public boolean isSteamEngineUpgradable() {
-        return isUpgradable() && !hasSteamEngineUpgrade() && getSteamCapacity() > 0;
-    }
-
-    @Override
-    public boolean addSteamEngineUpgrade() {
-        if (isSteamEngineUpgradable()) {
-            issueBlockUpdate();
-            return true;
-        }
-        return false;
     }
 
     @Override
@@ -1480,9 +1467,30 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public byte setColorization(byte aColor) {
         if (aColor > 15 || aColor < -1) aColor = -1;
-        mColor = (byte) (aColor + 1);
-        if (canAccessData()) mMetaTileEntity.onColorChangeServer(aColor);
+        try {
+            recurseColor(aColor,-1,new HashSet<>());
+        } catch (StackOverflowError ignore){}
         return mColor;
+    }
+
+    private void recurseColor(byte color,int side,HashSet<BaseMetaPipeEntity> goneOver) {
+        mColor = (byte) (color + 1);
+        if (canAccessData()) mMetaTileEntity.onColorChangeServer(color);
+        goneOver.add(this);
+        for (int i = 0; i < 6; i++) {
+            if (!mMetaTileEntity.isConnectedAtSide(i)) continue;
+            val te = getPipeAtSide(i);
+            if (te == null || goneOver.contains(te)) continue;
+            te.recurseColor(color,i,goneOver);
+        }
+    }
+
+    protected BaseMetaPipeEntity getPipeAtSide(int side) {
+        val te = getTileEntityAtSide((byte) side);
+        if (te instanceof BaseMetaPipeEntity pipe) {
+            return pipe;
+        }
+        return null;
     }
 
     @Override
@@ -1579,18 +1587,19 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                 player.motionY = -0.15;
             }
 
-            if (IC2.keyboard.isForwardKeyDown(player) && player.motionY < 0.2) {
-                player.motionY = 0.2;
-                float yaw =  ((Math.abs(player.rotationYaw)%360)/360f)%0.5f;
-                if (yaw < 0.05 || yaw > 0.45) {
-                    player.motionX = 0;
-                    return;
-                }
-                yaw -= 0.25f;
-                if (yaw < 0.05 || yaw > 0.45) {
-                    player.motionZ = 0;
-                }
-            }
+            //TODO fix
+//            if (IC2.keyboard.isForwardKeyDown(player) && player.motionY < 0.2) {
+//                player.motionY = 0.2;
+//                float yaw =  ((Math.abs(player.rotationYaw)%360)/360f)%0.5f;
+//                if (yaw < 0.05 || yaw > 0.45) {
+//                    player.motionX = 0;
+//                    return;
+//                }
+//                yaw -= 0.25f;
+//                if (yaw < 0.05 || yaw > 0.45) {
+//                    player.motionZ = 0;
+//                }
+//            }
         }
     }
 }

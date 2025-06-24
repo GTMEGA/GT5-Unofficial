@@ -155,5 +155,11 @@
                 "stream": false
             }
         ]
+    },
+    "treetap_extract": {
+        "category": "player",
+        "sounds": [
+            "treetap"
+        ]
     }
 }

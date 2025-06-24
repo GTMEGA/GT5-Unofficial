@@ -5,7 +5,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.items.GT_Generic_Item;
-import ic2.core.util.LiquidUtil;
+import gregtech.common.misc.LiquidUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -26,8 +26,7 @@ import net.minecraftforge.fluids.*;
 import java.util.List;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
-import static ic2.core.util.LiquidUtil.*;
-
+import static gregtech.common.misc.LiquidUtil.*;
 
 public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContainerItem {
     private final int maxCapacity;
@@ -235,7 +234,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
         if (fs != null && (!player.isSneaking() || fs.amount >= capacity)) {
             int amount = handler.fill(dir, fs, false);
             if (amount > 0) {
-                fs = LiquidUtil.drainContainerStack(stack, player, amount, false);
+                fs = drainContainerStack(stack, player, amount, false);
                 if (fs != null && fs.amount > 0) {
                     handler.fill(dir, fs, true);
                 }

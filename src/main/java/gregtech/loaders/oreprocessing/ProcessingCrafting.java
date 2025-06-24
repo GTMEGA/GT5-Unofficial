@@ -25,7 +25,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                 break;
             case "craftingWireCopper":
             case "craftingWireTin":
-//                GT_Values.RA.addAssemblerRecipe(ItemList.Circuit_Basic.get(1L), GT_Utility.copyAmount(1L, aStack), GT_ModHandler.getIC2Item("frequencyTransmitter", 1L), 800, 1);
+//                GT_Values.RA.addAssemblerRecipe(ItemList.Circuit_Basic.get(1L), GT_Utility.copyAmount(1L, aStack), Ic2Items.of(Ic2Items.frequencyTransmitter, 1), 800, 1);
                 break;
             case "craftingLensBlue":
                 GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L), GT_Utility.copyAmount(0L, aStack), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 13),

@@ -29,9 +29,6 @@ public class GT_ProcessingArrayRecipeLoader {
         // Microwave (New)
         registerMapBetweenRange(311, 315, GT_Recipe.GT_Recipe_Map.sMicrowaveRecipes);
 
-        //Recycler
-        registerMapBetweenRange(331, 335, GT_Recipe.GT_Recipe_Map.sRecyclerRecipes);
-
         //Thermal Centrifuge
         registerMapBetweenRange(381, 385, GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes);
 
@@ -100,9 +97,6 @@ public class GT_ProcessingArrayRecipeLoader {
 
         // Boxinator
         registerMapBetweenRange(401, 408, GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes);
-
-        // Unboxinator
-        registerMapBetweenRange(411, 418, GT_Recipe.GT_Recipe_Map.sUnboxinatorRecipes);
 
         // Polarizer
         registerMapBetweenRange(551, 555, GT_Recipe.GT_Recipe_Map.sPolarizerRecipes);

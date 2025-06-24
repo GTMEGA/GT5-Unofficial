@@ -19,7 +19,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import ic2.core.Ic2Items;
+
 import lombok.val;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -89,7 +89,6 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             aRecipe[i] = new ItemStack(Blocks.glass, 1, W);
                             break;
                         default:
-                            aRecipe[i] = Ic2Items.reinforcedGlass;
                             break;
                     }
                     continue;

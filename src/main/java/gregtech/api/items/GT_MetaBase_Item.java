@@ -271,8 +271,16 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item implements ISpeci
             if (!aSimulate) aStack.stackSize--;
             return tStats[3];
         }
-        long tChargeBefore = getRealCharge(aStack), tNewCharge = Math.max(0, tChargeBefore - (aIgnoreTransferLimit ? (long) aCharge : Math.min(tStats[1], (long) aCharge)));
-        if (!aSimulate) setCharge(aStack, tNewCharge);
+        long tChargeBefore = getRealCharge(aStack);
+        long tNewCharge;
+        if (aIgnoreTransferLimit) {
+            tNewCharge = Math.max(0, tChargeBefore - (long) aCharge);
+        } else {
+            tNewCharge = Math.max(0, tChargeBefore - Math.min(tStats[1], (long) aCharge));
+        }
+        if (!aSimulate) {
+            setCharge(aStack, tNewCharge);
+        }
         return tChargeBefore - tNewCharge;
     }
 

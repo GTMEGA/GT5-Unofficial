@@ -6,6 +6,7 @@ import gregtech.api.events.GT_OreVeinLocations;
 import gregtech.api.util.GT_Log;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
+import gregtech.common.GT_Worldgen_Rubber_Tree;
 import gregtech.common.GT_Worldgen_Stone;
 import gregtech.common.GT_Worldgenerator;
 
@@ -67,6 +68,8 @@ public class GT_Worldgenloader implements Runnable {
         new GT_Worldgen_Stone("nether.stone.basalt.medium", false, GregTech_API.sBlockStones, 8, -1, 1, 200, 80, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.basalt.large", false, GregTech_API.sBlockStones, 8, -1, 1, 300, 70, 0, 120, null, false);
         new GT_Worldgen_Stone("nether.stone.basalt.huge", false, GregTech_API.sBlockStones, 8, -1, 1, 400, 150, 0, 120, null, false);
+
+        new GT_Worldgen_Rubber_Tree();
 
         if (GregTech_API.sWorldgenFile.get("worldgen", "doOreGeneration", true)) {
             //Small Ores

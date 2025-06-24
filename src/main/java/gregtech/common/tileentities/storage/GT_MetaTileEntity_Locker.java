@@ -98,11 +98,6 @@ public class GT_MetaTileEntity_Locker extends GT_MetaTileEntity_TieredMachineBlo
     }
 
     @Override
-    public boolean isTeleporterCompatible() {
-        return false;
-    }
-
-    @Override
     public long maxEUStore() {
         return gregtech.api.enums.GT_Values.V[this.mTier] * maxAmperesIn();
     }

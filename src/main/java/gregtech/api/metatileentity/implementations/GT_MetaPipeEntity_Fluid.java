@@ -408,7 +408,9 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         byte tMask = (byte) (1 << side);
         mDisableInput &= ~tMask;
         goneOver.add(this);
-        recursiveConnectionEnable(side,goneOver);
+        try {
+            recursiveConnectionEnable(side,goneOver);
+        } catch (StackOverflowError ignore) {}
     }
 
 

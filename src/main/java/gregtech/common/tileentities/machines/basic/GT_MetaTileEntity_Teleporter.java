@@ -373,16 +373,6 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank {
     }
 
     @Override
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    @Override
-    public boolean isTransformerUpgradable() {
-        return false;
-    }
-
-    @Override
     public boolean isElectric() {
         return true;
     }
@@ -404,11 +394,6 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank {
 
     @Override
     public boolean isOutputFacing(byte aSide) {
-        return false;
-    }
-
-    @Override
-    public boolean isTeleporterCompatible() {
         return false;
     }
 

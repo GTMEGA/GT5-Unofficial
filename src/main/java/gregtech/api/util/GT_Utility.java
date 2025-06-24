@@ -1,8 +1,6 @@
 package gregtech.api.util;
 
 import cofh.api.transport.IItemDuct;
-import com.google.common.base.Suppliers;
-import com.google.common.collect.Maps;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.mojang.authlib.GameProfile;
@@ -28,12 +26,8 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.threads.GT_Runnable_Sound;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.api.util.interop.BaublesInterop;
-import gregtech.common.GT_Pollution;
 import gregtech.common.blocks.GT_Block_Ore_Abstract;
-import ic2.api.recipe.IRecipeInput;
-import ic2.api.recipe.RecipeInputItemStack;
-import ic2.api.recipe.RecipeInputOreDict;
-import ic2.api.recipe.RecipeOutput;
+
 import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
@@ -92,7 +86,6 @@ import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
-import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.GT_Mod.gregtechproxy;
 import static gregtech.api.enums.GT_Values.*;
 import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
@@ -1074,7 +1067,6 @@ public class GT_Utility {
         if (aStack.getItem().hasContainerItem(aStack)) return aStack.getItem().getContainerItem(aStack);
         /** These are all special Cases, in which it is intended to have only GT Blocks outputting those Container Items */
         if (ItemList.Cell_Empty.isStackEqual(aStack, false, true)) return null;
-        if (ItemList.IC2_Fuel_Can_Filled.isStackEqual(aStack, false, true)) return ItemList.IC2_Fuel_Can_Empty.get(1);
         if (aStack.getItem() == Items.potionitem || aStack.getItem() == Items.experience_bottle || ItemList.TF_Vial_FieryBlood.isStackEqual(aStack) || ItemList.TF_Vial_FieryTears.isStackEqual(aStack))
             return ItemList.Bottle_Empty.get(1);
 
@@ -1088,87 +1080,7 @@ public class GT_Utility {
         int tCapsuleCount = GT_ModHandler.getCapsuleCellContainerCount(aStack);
         if (tCapsuleCount > 0) return ItemList.Cell_Empty.get(tCapsuleCount);
 
-        if (ItemList.IC2_ForgeHammer.isStackEqual(aStack) || ItemList.IC2_WireCutter.isStackEqual(aStack))
-            return copyMetaData(Items.feather.getDamage(aStack) + 1, aStack);
         return null;
-    }
-
-    public static synchronized boolean removeIC2BottleRecipe(ItemStack aContainer, ItemStack aInput, Map<ic2.api.recipe.ICannerBottleRecipeManager.Input, RecipeOutput> aRecipeList, ItemStack aOutput) {
-        if ((isStackInvalid(aInput) && isStackInvalid(aOutput) && isStackInvalid(aContainer)) || aRecipeList == null)
-            return false;
-        boolean rReturn = false;
-        Iterator<Map.Entry<ic2.api.recipe.ICannerBottleRecipeManager.Input, RecipeOutput>> tIterator = aRecipeList.entrySet().iterator();
-        aOutput = GT_OreDictUnificator.get(aOutput);
-        while (tIterator.hasNext()) {
-            Map.Entry<ic2.api.recipe.ICannerBottleRecipeManager.Input, RecipeOutput> tEntry = tIterator.next();
-            if (aInput == null || tEntry.getKey().matches(aContainer, aInput)) {
-                List<ItemStack> tList = tEntry.getValue().items;
-                if (tList != null) for (ItemStack tOutput : tList)
-                    if (aOutput == null || areStacksEqual(GT_OreDictUnificator.get(tOutput), aOutput)) {
-                        tIterator.remove();
-                        rReturn = true;
-                        break;
-                    }
-            }
-        }
-        return rReturn;
-    }
-
-    public static synchronized boolean removeSimpleIC2MachineRecipe(ItemStack aInput, Map<IRecipeInput, RecipeOutput> aRecipeList, ItemStack aOutput) {
-        if ((isStackInvalid(aInput) && isStackInvalid(aOutput)) || aRecipeList == null) return false;
-        boolean rReturn = false;
-        Iterator<Map.Entry<IRecipeInput, RecipeOutput>> tIterator = aRecipeList.entrySet().iterator();
-        aOutput = GT_OreDictUnificator.get(aOutput);
-        while (tIterator.hasNext()) {
-            Map.Entry<IRecipeInput, RecipeOutput> tEntry = tIterator.next();
-            if (aInput == null || tEntry.getKey().matches(aInput)) {
-                List<ItemStack> tList = tEntry.getValue().items;
-                if (tList != null) for (ItemStack tOutput : tList)
-                    if (aOutput == null || areStacksEqual(GT_OreDictUnificator.get(tOutput), aOutput)) {
-                        tIterator.remove();
-                        rReturn = true;
-                        break;
-                    }
-            }
-        }
-        return rReturn;
-    }
-
-    public static synchronized void bulkRemoveSimpleIC2MachineRecipe(Map<ItemStack, ItemStack> toRemove, Map<IRecipeInput, RecipeOutput> aRecipeList) {
-        if (aRecipeList == null || aRecipeList.isEmpty()) return;
-        toRemove.entrySet().removeIf(aEntry -> (isStackInvalid(aEntry.getKey()) && isStackInvalid(aEntry.getValue())));
-        final Map<ItemStack, ItemStack> finalToRemove = Maps.transformValues(toRemove, GT_OreDictUnificator::get_nocopy);
-
-        aRecipeList.entrySet().removeIf(tEntry -> finalToRemove.entrySet().stream().anyMatch(aEntry -> {
-            final ItemStack aInput = aEntry.getKey(), aOutput = aEntry.getValue();
-            final List<ItemStack> tList = tEntry.getValue().items;
-
-            if (tList == null) return false;
-            if (aInput != null && !tEntry.getKey().matches(aInput)) return false;
-
-            return tList.stream().anyMatch(tOutput -> (aOutput == null || areStacksEqual(GT_OreDictUnificator.get(tOutput), aOutput)));
-        }));
-    }
-
-    public static boolean addSimpleIC2MachineRecipe(ItemStack aInput, Map<IRecipeInput, RecipeOutput> aRecipeList, NBTTagCompound aNBT, Object... aOutput) {
-        if (isStackInvalid(aInput) || aOutput.length == 0 || aRecipeList == null) return false;
-        ItemData tOreName = GT_OreDictUnificator.getAssociation(aInput);
-        for (Object o : aOutput) {
-            if (o == null) {
-                GT_FML_LOGGER.info("EmptyIC2Output!" + aInput.getUnlocalizedName());
-                return false;
-            }
-        }
-        ItemStack[] tStack = GT_OreDictUnificator.getStackArray(true, aOutput);
-        if (tStack == null || (tStack.length > 0 && areStacksEqual(aInput, tStack[0]))) return false;
-        if (tOreName != null) {
-            if (tOreName.toString().equals("dustAsh") && tStack[0].getUnlocalizedName().equals("tile.volcanicAsh"))
-                return false;
-            aRecipeList.put(new RecipeInputOreDict(tOreName.toString(), aInput.stackSize), new RecipeOutput(aNBT, tStack));
-        } else {
-            aRecipeList.put(new RecipeInputItemStack(copyOrNull(aInput), aInput.stackSize), new RecipeOutput(aNBT, tStack));
-        }
-        return true;
     }
 
     public static ItemStack getWrittenBook(String aMapping, ItemStack aStackToPutNBT) {
@@ -1350,7 +1262,7 @@ public class GT_Utility {
     }
 
     public static boolean isDebugItem(ItemStack aStack) {
-        return /*ItemList.Armor_Cheat.isStackEqual(aStack, T, T) || */areStacksEqual(GT_ModHandler.getIC2Item("debug", 1), aStack, true);
+        return false;
     }
 
     public static ItemStack updateItemStack(ItemStack aStack) {
@@ -2003,27 +1915,6 @@ public class GT_Utility {
                 if (D1) e.printStackTrace(GT_Log.err);
             }
             try {
-                if (tTileEntity instanceof ic2.api.reactor.IReactorChamber) {
-                    rEUAmount += 500;
-                    tTileEntity = (TileEntity) (((ic2.api.reactor.IReactorChamber) tTileEntity).getReactor());
-                }
-            } catch (Throwable e) {
-                if (D1) e.printStackTrace(GT_Log.err);
-            }
-            try {
-                if (tTileEntity instanceof ic2.api.reactor.IReactor) {
-                    rEUAmount += 500;
-                    tList.add(
-                            trans("168", "Heat: ") + EnumChatFormatting.GREEN + formatNumbers(((ic2.api.reactor.IReactor) tTileEntity).getHeat()) + EnumChatFormatting.RESET + " / " +
-                                    EnumChatFormatting.YELLOW + formatNumbers(((ic2.api.reactor.IReactor) tTileEntity).getMaxHeat()) + EnumChatFormatting.RESET);
-                    tList.add(
-                            trans("169", "HEM: ") + EnumChatFormatting.YELLOW + ((ic2.api.reactor.IReactor) tTileEntity).getHeatEffectModifier() + EnumChatFormatting.RESET
-                            /* + trans("170"," Base EU Output: ")/* + ((ic2.api.reactor.IReactor)tTileEntity).getOutput()*/);
-                }
-            } catch (Throwable e) {
-                if (D1) e.printStackTrace(GT_Log.err);
-            }
-            try {
                 if (tTileEntity instanceof IAlignmentProvider) {
                     IAlignment tAlignment = ((IAlignmentProvider) tTileEntity).getAlignment();
                     if (tAlignment != null) {
@@ -2148,41 +2039,6 @@ public class GT_Utility {
             try {
                 if (tTileEntity instanceof IGregTechDeviceInformation && ((IGregTechDeviceInformation) tTileEntity).isGivingInformation()) {
                     tList.addAll(Arrays.asList(((IGregTechDeviceInformation) tTileEntity).getInfoData()));
-                }
-            } catch (Throwable e) {
-                if (D1) e.printStackTrace(GT_Log.err);
-            }
-            try {
-                if (tTileEntity instanceof ic2.api.crops.ICropTile) {
-                    rEUAmount += 1000;
-                    ic2.api.crops.ICropTile crop = (ic2.api.crops.ICropTile) tTileEntity;
-                    if (crop.getScanLevel() < 4)
-                        crop.setScanLevel((byte) 4);
-                    if (crop.getCrop() != null) {
-                        tList.add(trans("187", "Type -- Crop-Name: ") + crop.getCrop().name()
-                                + trans("188", "  Growth: ") + crop.getGrowth()
-                                + trans("189", "  Gain: ") + crop.getGain()
-                                + trans("190", "  Resistance: ") + crop.getResistance()
-                        );
-                    }
-                    tList.add(trans("191", "Plant -- Fertilizer: ") + crop.getNutrientStorage()
-                            + trans("192", "  Water: ") + crop.getHydrationStorage()
-                            + trans("193", "  Weed-Ex: ") + crop.getWeedExStorage()
-                            + trans("194", "  Scan-Level: ") + crop.getScanLevel()
-                    );
-                    tList.add(trans("195", "Environment -- Nutrients: ") + crop.getNutrients()
-                            + trans("196", "  Humidity: ") + crop.getHumidity()
-                            + trans("197", "  Air-Quality: ") + crop.getAirQuality()
-                    );
-                    if (crop.getCrop() != null) {
-                        StringBuilder tStringB = new StringBuilder();
-                        for (String tAttribute : crop.getCrop().attributes()) {
-                            tStringB.append(", ").append(tAttribute);
-                        }
-                        String tString = tStringB.toString();
-                        tList.add(trans("198", "Attributes:") + tString.replaceFirst(",", E));
-                        tList.add(trans("199", "Discovered by: ") + crop.getCrop().discoveredBy());
-                    }
                 }
             } catch (Throwable e) {
                 if (D1) e.printStackTrace(GT_Log.err);

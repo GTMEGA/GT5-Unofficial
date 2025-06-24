@@ -6,7 +6,6 @@ import gregtech.api.graphs.consumers.ConsumerNode;
 import gregtech.api.graphs.consumers.EmptyPowerConsumer;
 import gregtech.api.graphs.consumers.NodeEnergyConnected;
 import gregtech.api.graphs.consumers.NodeEnergyReceiver;
-import gregtech.api.graphs.consumers.NodeEnergySink;
 import gregtech.api.graphs.consumers.NodeGTBaseMetaTile;
 import gregtech.api.graphs.paths.NodePath;
 import gregtech.api.graphs.paths.PowerNodePath;
@@ -15,9 +14,8 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
-import ic2.api.energy.tile.IEnergySink;
+
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -50,22 +48,6 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
             IEnergyConnected tTileEntity = (IEnergyConnected) aTileEntity;
             if (tTileEntity.inputEnergyFrom(aSide, false)) {
                 ConsumerNode tConsumerNode = new NodeEnergyConnected(aNodeValue, tTileEntity, aSide, aConsumers);
-                aConsumers.add(tConsumerNode);
-                return true;
-            }
-        } else if (aTileEntity instanceof IEnergySink) {
-            // ic2 wants the tilentity next to it of that side not going to add a bunch of arguments just for ic2
-            // crossborder checks to not load chuncks just to make sure
-            int dX = aTileEntity.xCoord + ForgeDirection.getOrientation(aSide).offsetX;
-            int dY = aTileEntity.yCoord + ForgeDirection.getOrientation(aSide).offsetY;
-            int dZ = aTileEntity.zCoord + ForgeDirection.getOrientation(aSide).offsetZ;
-            boolean crossesChuncks = dX >> 4 != aTileEntity.xCoord >> 4 || dZ >> 4 != aTileEntity.zCoord >> 4;
-            TileEntity tNextTo = null;
-            if (!crossesChuncks || !aTileEntity.getWorldObj().blockExists(dX, dY, dZ))
-                tNextTo = aTileEntity.getWorldObj().getTileEntity(dX, dY, dZ);
-
-            if (((IEnergySink) aTileEntity).acceptsEnergyFrom(tNextTo, ForgeDirection.getOrientation(aSide))) {
-                ConsumerNode tConsumerNode = new NodeEnergySink(aNodeValue, (IEnergySink) aTileEntity, aSide, aConsumers);
                 aConsumers.add(tConsumerNode);
                 return true;
             }

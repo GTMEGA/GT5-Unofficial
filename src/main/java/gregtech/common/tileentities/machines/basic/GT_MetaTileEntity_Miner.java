@@ -10,6 +10,8 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Ore;
+
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -27,9 +29,9 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.debugBlockMiner;
 
 public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine {
-    private static final ItemStack MINING_PIPE = GT_ModHandler.getIC2Item("miningPipe", 0);
+    private static final ItemStack MINING_PIPE = new ItemStack(Blocks.iron_bars);
     private static final Block MINING_PIPE_BLOCK = GT_Utility.getBlockFromStack(MINING_PIPE);
-    private static final Block MINING_PIPE_TIP_BLOCK = GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 0));
+    private static final Block MINING_PIPE_TIP_BLOCK = Blocks.iron_block;
 
     int drillY = 0;
     boolean isPickingPipes;

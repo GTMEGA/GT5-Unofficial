@@ -1,5 +1,5 @@
 plugins {
-    id("fpgradle-minecraft") version ("0.10.1")
+    id("fpgradle-minecraft") version ("0.14.1")
 }
 
 group = "gtmega"
@@ -59,17 +59,15 @@ dependencies {
     implementation("codechicken:codechickencore-mc1.7.10:1.4.0-mega:dev")
     devOnlyNonPublishable("codechicken:notenoughitems-mc1.7.10:2.3.0-mega:dev")
 
-    implementation("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-
     implementation("eu.usrv:YAMCore:1.7.10-0.5.80:deobf")
 
     devOnlyNonPublishable("mega:projectred-mc1.7.10:5.0.0-mega:dev")
-    devOnlyNonPublishable("mega:forestry-mc1.7.10:4.5.3-mega:dev") {
+    compileOnly("mega:forestry-mc1.7.10:4.5.3-mega:dev") {
         exclude("com.github.GTNewHorizons", "BuildCraft")
     }
     devOnlyNonPublishable("gtmega:ae2-mc1.7.10:rv3-beta.58-gtmega:dev")
     devOnlyNonPublishable("team.chisel:chisel-mc1.7.10:2.14.7-mega:dev")
-    devOnlyNonPublishable("com.falsepattern:falsetweaks-mc1.7.10:3.1.0:dev")
+    devOnlyNonPublishable("com.falsepattern:falsetweaks-mc1.7.10:3.9.6:dev")
 
     //Third-party deps
 

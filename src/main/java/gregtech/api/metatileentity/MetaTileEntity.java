@@ -44,7 +44,6 @@ import java.util.Locale;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.EU_PER_STEAM;
-import static gregtech.api.enums.GT_Values.V;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -628,20 +627,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     /**
-     * If this accepts up to 4 Overclockers
-     */
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    /**
-     * If this accepts Transformer Upgrades
-     */
-    public boolean isTransformerUpgradable() {
-        return false;
-    }
-
-    /**
      * Progress this machine has already made
      */
     public int getProgresstime() {
@@ -674,13 +659,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
      * When the Facing gets changed.
      */
     public void onFacingChange() {/*Do nothing*/}
-
-    /**
-     * if the IC2 Teleporter can drain from this.
-     */
-    public boolean isTeleporterCompatible() {
-        return isEnetOutput() && getBaseMetaTileEntity().getOutputVoltage() >= 128 && getBaseMetaTileEntity().getUniversalEnergyCapacity() >= 500000;
-    }
 
     /**
      * Gets the Output for the comparator on the given Side
@@ -1021,11 +999,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     @Override
     public String getAlternativeModeText() {
         return "";
-    }
-
-    @Override
-    public boolean shouldJoinIc2Enet() {
-        return false;
     }
 
     public boolean shouldTriggerBlockUpdate() {

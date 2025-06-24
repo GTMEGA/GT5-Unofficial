@@ -15,7 +15,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.GT_Cover_Fluidfilter;
-import lombok.val;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -42,7 +42,6 @@ import java.util.List;
 import java.util.Locale;
 
 import static gregtech.api.enums.GT_Values.GT;
-import static gregtech.api.enums.GT_Values.V;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -856,11 +855,6 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     }
 
     public boolean getGT6StyleConnection() {
-        return false;
-    }
-
-    @Override
-    public boolean shouldJoinIc2Enet() {
         return false;
     }
 

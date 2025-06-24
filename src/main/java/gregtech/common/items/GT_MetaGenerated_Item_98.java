@@ -11,6 +11,8 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -279,7 +281,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
 
         // Register IC2 steam cell and Railcraft steam cell as synonyms.
         // There is no steam material, so we'll use Water.cellMolten instead.
-        GT_OreDictUnificator.add(OrePrefixes.cellMolten, Materials.Water, GT_ModHandler.getIC2Item("steamCell", 1L));
+//        GT_OreDictUnificator.add(OrePrefixes.cellMolten, Materials.Water, Ic2Items.of(Ic2Items.steamCell, 1));
         GT_OreDictUnificator.add(OrePrefixes.cellMolten, Materials.Water, FluidCell.STEAM.getNoCopy());
     }
 

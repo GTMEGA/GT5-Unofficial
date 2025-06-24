@@ -20,6 +20,5 @@ public class GT_Tool_Item extends GT_Generic_Item {
         setMaxStackSize(1);
         setNoRepair();
         setFull3D();
-        GT_ModHandler.registerBoxableItemToToolBox(this);
     }
 }

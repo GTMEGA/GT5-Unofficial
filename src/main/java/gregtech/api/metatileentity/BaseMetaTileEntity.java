@@ -23,7 +23,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.graphs.GenerateNodeMap;
-import gregtech.api.graphs.GenerateNodeMapPower;
 import gregtech.api.graphs.Node;
 import gregtech.api.interfaces.IRedstoneSensitive;
 import gregtech.api.interfaces.ITexture;
@@ -37,7 +36,8 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_Client;
 import gregtech.common.GT_Pollution;
-import ic2.api.Direction;
+import lombok.val;
+
 import lombok.val;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,7 +53,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.EnumSkyBlock;
@@ -309,7 +308,12 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
      * Called when trying to discharge Items
      */
     public void dischargeItem(ItemStack aStack) {
-        increaseStoredEnergyUnits(GT_ModHandler.dischargeElectricItem(aStack, (int) Math.min(Integer.MAX_VALUE, getEUCapacity() - getStoredEU()), (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getInputTier()), false, false, false), true);
+        val toDischarge = (int) Math.min(Integer.MAX_VALUE, getEUCapacity() - getStoredEU());
+        val tier = (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getInputTier());
+
+        val discharged = GT_ModHandler.dischargeElectricItem(aStack, toDischarge, tier, false, false, false);
+
+        this.increaseStoredEnergyUnits(discharged, true);
     }
 
     @Override
@@ -437,7 +441,6 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                             oRedstone = mRedstone;
                             issueBlockUpdate();
                         }
-                        if(mTickTimer == 10) joinEnet();
 
                         if (xCoord != oX || yCoord != oY || zCoord != oZ) {
                             oX = xCoord;
@@ -542,13 +545,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                             for (int i = mMetaTileEntity.dechargerSlotStartIndex(), k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
                                 if (mMetaTileEntity.mInventory[i] != null && getStoredEU() < getEUCapacity()) {
                                     dischargeItem(mMetaTileEntity.mInventory[i]);
-				                    if(ic2.api.info.Info.itemEnergy.getEnergyValue(mMetaTileEntity.mInventory[i])>0){
-                                       if((getStoredEU() + ic2.api.info.Info.itemEnergy.getEnergyValue(mMetaTileEntity.mInventory[i]))<getEUCapacity()){
-                                           increaseStoredEnergyUnits((long)ic2.api.info.Info.itemEnergy.getEnergyValue(mMetaTileEntity.mInventory[i]),false);
-                                           mMetaTileEntity.mInventory[i].stackSize--;
-                                           mInventoryChanged = true;
-                                       }
-                                    }
+
                                     if (mMetaTileEntity.mInventory[i].stackSize <= 0) {
                                         mMetaTileEntity.mInventory[i] = null;
                                         mInventoryChanged = true;
@@ -832,8 +829,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             if (!mHasEnoughEnergy)
                 tList.add(EnumChatFormatting.RED+"ATTENTION: This Device needs more power."+EnumChatFormatting.RESET);
         }
-        if(joinedIc2Enet)
-            tList.add("Joined IC2 ENet");
+
         return mMetaTileEntity.getSpecialDebugInfo(this, aPlayer, aLogLevel, tList);
     }
 
@@ -920,7 +916,6 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             mFacing = aFacing;
             mMetaTileEntity.onFacingChange();
 
-            doEnetUpdate();
             cableUpdateDelay = 10;
 
             if (mMetaTileEntity.shouldTriggerBlockUpdate()) {
@@ -991,7 +986,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public void invalidate() {
         tileEntityInvalid = false;
-        leaveEnet();
+
         if (canAccessData()) {
             if (GregTech_API.mAE2)
                 invalidateAE();
@@ -1539,7 +1534,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(103), 3.0F, -1, xCoord, yCoord, zCoord);
                             issueBlockUpdate();
                         }
-                        doEnetUpdate();
+
                         cableUpdateDelay = 10;
                         return true;
                     }
@@ -1550,7 +1545,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                             //logic handled internally
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
                         }
-                        doEnetUpdate();
+
                         cableUpdateDelay = 10;
                         return true;
                     }
@@ -1737,21 +1732,6 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             mSidedRedstone[aSide] = aStrength;
             issueBlockUpdate();
         }
-    }
-
-    @Override
-    public boolean isSteamEngineUpgradable() {
-        return isUpgradable() && !hasSteamEngineUpgrade() && getSteamCapacity() > 0;
-    }
-
-    @Override
-    public boolean addSteamEngineUpgrade() {
-        if (isSteamEngineUpgradable()) {
-            issueBlockUpdate();
-            mSteamConverter = true;
-            return true;
-        }
-        return false;
     }
 
     @Override
@@ -2123,68 +2103,12 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         return new FluidTankInfo[]{};
     }
 
-    public double getOutputEnergyUnitsPerTick() {
-        return oOutput;
-    }
-
-    public boolean isTeleporterCompatible(ForgeDirection aSide) {
-        return canAccessData() && mMetaTileEntity.isTeleporterCompatible();
-    }
-
-    public double demandedEnergyUnits() {
-        if (mReleaseEnergy || !canAccessData() || !mMetaTileEntity.isEnetInput()) return 0;
-        return getEUCapacity() - getStoredEU();
-    }
-
     public double injectEnergyUnits(ForgeDirection aDirection, double aAmount) {
         return injectEnergyUnits((byte) aDirection.ordinal(), (int) aAmount, 1) > 0 ? 0 : aAmount;
     }
 
-    public boolean acceptsEnergyFrom(TileEntity aEmitter, ForgeDirection aDirection) {
-        return inputEnergyFrom((byte) aDirection.ordinal());
-    }
-
-    public boolean emitsEnergyTo(TileEntity aReceiver, ForgeDirection aDirection) {
-        return outputsEnergyTo((byte) aDirection.ordinal());
-    }
-
-    public double getOfferedEnergy() {
-        return (canAccessData() && getStoredEU() - mMetaTileEntity.getMinimumStoredEU() >= oOutput) ? Math.max(0, oOutput) : 0;
-    }
-
-    public void drawEnergy(double amount) {
-        mAverageEUOutput[mAverageEUOutputIndex] += amount;
-        decreaseStoredEU((int) amount, true);
-    }
-
-    public int injectEnergy(ForgeDirection aForgeDirection, int aAmount) {
-        return injectEnergyUnits((byte) aForgeDirection.ordinal(), aAmount, 1) > 0 ? 0 : aAmount;
-    }
-
-    public int addEnergy(int aEnergy) {
-        if (!canAccessData()) return 0;
-        if (aEnergy > 0)
-            increaseStoredEnergyUnits(aEnergy, true);
-        else
-            decreaseStoredEU(-aEnergy, true);
-        return (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getEUVar());
-    }
-
-    public boolean isAddedToEnergyNet() {
-        return false;
-    }
-
-    public int demandsEnergy() {
-        if (mReleaseEnergy || !canAccessData() || !mMetaTileEntity.isEnetInput()) return 0;
-        return getCapacity() - getStored();
-    }
-
     public int getCapacity() {
         return (int) Math.min(Integer.MAX_VALUE, getEUCapacity());
-    }
-
-    public int getStored() {
-        return (int) Math.min(Integer.MAX_VALUE, Math.min(getStoredEU(), getCapacity()));
     }
 
     public void setStored(int aEU) {
@@ -2202,22 +2126,6 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
 
     public int getOutput() {
         return (int) Math.min(Integer.MAX_VALUE, oOutput);
-    }
-
-    public int injectEnergy(Direction aDirection, int aAmount) {
-        return injectEnergyUnits((byte) aDirection.toSideValue(), aAmount, 1) > 0 ? 0 : aAmount;
-    }
-
-    public boolean isTeleporterCompatible(Direction aSide) {
-        return canAccessData() && mMetaTileEntity.isTeleporterCompatible();
-    }
-
-    public boolean acceptsEnergyFrom(TileEntity aReceiver, Direction aDirection) {
-        return inputEnergyFrom((byte) aDirection.toSideValue());
-    }
-
-    public boolean emitsEnergyTo(TileEntity aReceiver, Direction aDirection) {
-        return outputsEnergyTo((byte) aDirection.toSideValue());
     }
 
     @Override

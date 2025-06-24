@@ -6,7 +6,6 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import ic2.api.tile.IWrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,37 +37,7 @@ public class Behaviour_Wrench extends Behaviour_None {
         }
         byte aMeta = (byte) aWorld.getBlockMetadata(aX, aY, aZ);
         byte aTargetSide = GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ);
-        TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        try {
-            if (((aTileEntity instanceof IWrenchable))) {
-                if (((IWrenchable) aTileEntity).wrenchCanSetFacing(aPlayer, aTargetSide)) {
-                    if ((aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
-                        ((IWrenchable) aTileEntity).setFacing((short) aTargetSide);
-                        GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(100), 1.0F, -1.0F, aX, aY, aZ);
-                    }
-                    return true;
-                }
-                if (((IWrenchable) aTileEntity).wrenchCanRemove(aPlayer)) {
-                    int tDamage = ((IWrenchable) aTileEntity).getWrenchDropRate() < 1.0F ? 10 : 3;
-                    if ((aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, tDamage * this.mCosts))) {
-                        ItemStack tOutput = ((IWrenchable) aTileEntity).getWrenchDrop(aPlayer);
-                        for (ItemStack tStack : aBlock.getDrops(aWorld, aX, aY, aZ, aMeta, 0)) {
-                            if (tOutput == null) {
-                                aWorld.spawnEntityInWorld(new EntityItem(aWorld, aX + 0.5D, aY + 0.5D, aZ + 0.5D, tStack));
-                            } else {
-                                aWorld.spawnEntityInWorld(new EntityItem(aWorld, aX + 0.5D, aY + 0.5D, aZ + 0.5D, tOutput));
-                                tOutput = null;
-                            }
-                        }
-                        aWorld.setBlockToAir(aX, aY, aZ);
-                        GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(100), 1.0F, -1.0F, aX, aY, aZ);
-                    }
-                    return true;
-                }
-                return true;
-            }
-        } catch (Throwable ignored) {
-        }
+
         if ((aBlock == Blocks.log) || (aBlock == Blocks.log2) || (aBlock == Blocks.hay_block)) {
             if ((aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
                 aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (aMeta + 4) % 12, 3);

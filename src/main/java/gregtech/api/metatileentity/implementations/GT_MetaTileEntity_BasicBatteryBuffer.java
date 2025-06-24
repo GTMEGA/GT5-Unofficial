@@ -112,11 +112,6 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
     }
 
     @Override
-    public boolean isTeleporterCompatible() {
-        return false;
-    }
-
-    @Override
     public long getMinimumStoredEU() {
         return V[mTier] * 16L * mInventory.length;
     }

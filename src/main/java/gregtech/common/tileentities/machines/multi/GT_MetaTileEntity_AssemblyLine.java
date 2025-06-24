@@ -21,6 +21,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
@@ -65,7 +66,7 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
             .addElement('G', ofBlock(GregTech_API.sBlockCasings3, 10)) // grate machine casing
             .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 9)) // assembler machine casing
             .addElement('m', ofBlock(GregTech_API.sBlockCasings2, 5)) // assembling line casing
-            .addElement('g', ofBlockAnyMeta(GameRegistry.findBlock("IC2", "blockAlloyGlass")))
+            .addElement('g', ofBlockAnyMeta(Blocks.glass)) // replacing reinforced glass
             .addElement('e', ofHatchAdderOptional(GT_MetaTileEntity_AssemblyLine::addEnergyInputToMachineList, 16, 1, GregTech_API.sBlockCasings2, 0))
             .addElement('d', ofHatchAdderOptional(GT_MetaTileEntity_AssemblyLine::addDataAccessToMachineList, 42, 2, GregTech_API.sBlockCasings3, 10))
             .addElement('b', ofChain(

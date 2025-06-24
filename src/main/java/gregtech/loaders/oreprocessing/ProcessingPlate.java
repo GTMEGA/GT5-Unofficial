@@ -6,15 +6,12 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.ToolDictNames;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -83,7 +80,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 registerItemCasing(aPrefix, aMaterial, aStack, aNoSmashing);
                 break;
             case plateAlloy:
-                registerPlateAlloy(aOreDictName, aStack);
                 break;
             default:
                 break;
@@ -96,11 +92,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         GT_ModHandler.removeRecipeByOutputDelayed(aStack);
         GT_ModHandler.removeRecipeDelayed(aStack);
-
-        GT_Utility.removeSimpleIC2MachineRecipe(
-                GT_Utility.copyAmount(9L, aStack),
-                GT_ModHandler.getCompressorRecipeList(),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L));
 
         if (aMaterial.mFuelPower > 0) {
 
@@ -526,88 +517,4 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
 
     }
-
-    private void registerPlateAlloy(final String aOreDictName,
-                                    final ItemStack aStack) {
-
-        switch (aOreDictName) {
-
-            case "plateAlloyCarbon":
-
-                RA.addAssemblerRecipe(
-                        GT_ModHandler.getIC2Item("generator", 1L),
-                        GT_Utility.copyAmount(4L, aStack),
-                        GT_ModHandler.getIC2Item("windMill", 1L),
-                        6400, 8);
-
-                GT_ModHandler.addAlloySmelterRecipe(
-                        GT_Utility.copyAmount(1L, aStack),
-                        new ItemStack(Blocks.glass, 3, W),
-                        GT_ModHandler.getIC2Item("reinforcedGlass", 4L),
-                        400, 4, false);
-
-                GT_ModHandler.addAlloySmelterRecipe(
-                        GT_Utility.copyAmount(1L, aStack),
-                        Materials.Glass.getDust(3),
-                        GT_ModHandler.getIC2Item("reinforcedGlass", 4L),
-                        400, 4, false);
-
-                break;
-
-            case "plateAlloyAdvanced":
-
-                GT_ModHandler.addAlloySmelterRecipe(
-                        GT_Utility.copyAmount(1L, aStack),
-                        new ItemStack(Blocks.glass, 3, W),
-                        GT_ModHandler.getIC2Item("reinforcedGlass", 4L),
-                        400, 4, false);
-
-                GT_ModHandler.addAlloySmelterRecipe(
-                        GT_Utility.copyAmount(1L, aStack),
-                        Materials.Glass.getDust(3),
-                        GT_ModHandler.getIC2Item("reinforcedGlass", 4L),
-                        400, 4, false);
-
-                break;
-
-            case "plateAlloyIridium":
-
-                // Remove IC2 Shaped recipe for Iridium Reinforced Plate
-                GT_ModHandler.removeRecipeByOutputDelayed(aStack);
-
-                break;
-
-            default:
-                break;
-
-        }
-
-    }
-
-//    private void registerCover(final Materials aMaterial, final ItemStack aStack) {
-//
-//        // Get ItemStack of Block matching Materials
-//        ItemStack tStack = NI;
-//        // Try different prefixes to use same smooth stones as older GT5U
-//        for (OrePrefixes orePrefix : new OrePrefixes[]{
-//                OrePrefixes.block, OrePrefixes.block_, OrePrefixes.stoneSmooth, OrePrefixes.stone}) {
-//            if ((tStack = GT_OreDictUnificator.get(orePrefix, aMaterial, 1)) != NI) break;
-//        }
-//
-//        // Register the cover
-//        GregTech_API.registerCover(
-//                aStack,
-//                // If there is an ItemStack of Block for Materials
-//                tStack == NI ?
-//                        // Use Materials mRGBa dyed blocs/materialicons/MATERIALSET/block1 icons
-//                        TextureFactory.builder()
-//                                .addIcon(aMaterial.mIconSet.mTextures[TextureSet.INDEX_block1])
-//                                .setRGBA(aMaterial.mRGBa)
-//                                .stdOrient().build() :
-//                        // or copy Block texture
-//                        TextureFactory.of(Block.getBlockFromItem(tStack.getItem()), tStack.getItemDamage()),
-//                null);
-//
-//    }
-
 }

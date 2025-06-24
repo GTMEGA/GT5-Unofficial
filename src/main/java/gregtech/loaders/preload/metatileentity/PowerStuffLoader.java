@@ -1,11 +1,14 @@
 package gregtech.loaders.preload.metatileentity;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Charger;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_MicrowaveEnergyTransmitter;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_Locker;
+
 
 import static gregtech.api.GregTech_API.sOPStuff;
 import static gregtech.api.enums.ConfigCategories.Recipes.gregtechrecipes;
@@ -15,7 +18,6 @@ import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.OreDictNames.craftingChest;
 import static gregtech.api.enums.OrePrefixes.*;
 import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
-import static gregtech.api.util.GT_ModHandler.getIC2Item;
 import static gregtech.loaders.preload.GT_Loader_MetaTileEntities.DISMANTLEABLE_RECIPE_MASK;
 
 public final class PowerStuffLoader {
@@ -141,7 +143,8 @@ public final class PowerStuffLoader {
         addCraftingRecipe(Battery_Charger_4by4_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WTW", "WMW", "BCB", 'M', Hull_LV, 'W', wireGt16.get(Tin), 'T', craftingChest, 'B', Battery_RE_LV_Lithium, 'C', circuitPower.get(PWR_LV)});
         addCraftingRecipe(Battery_Charger_4by4_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WTW", "WMW", "BCB", 'M', Hull_MV, 'W', wireGt16.get(AnyCopper), 'T', craftingChest, 'B', Battery_RE_MV_Lithium, 'C', circuitPower.get(PWR_MV)});
         addCraftingRecipe(Battery_Charger_4by4_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WTW", "WMW", "BCB", 'M', Hull_HV, 'W', wireGt16.get(Gold), 'T', craftingChest, 'B', Battery_RE_HV_Lithium, 'C', circuitPower.get(PWR_HV)});
-        addCraftingRecipe(Battery_Charger_4by4_EV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WTW", "WMW", "BCB", 'M', Hull_EV, 'W', wireGt16.get(Aluminium), 'T', craftingChest, 'B', IC2_LapotronCrystal, 'C', circuitPower.get(PWR_EV)});
+        //TODO Houston fix
+        addCraftingRecipe(Battery_Charger_4by4_EV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WTW", "WMW", "BCB", 'M', Hull_EV, 'W', wireGt16.get(Aluminium), 'T', craftingChest, 'B', Coin_Doge, 'C', circuitPower.get(PWR_EV)});
         addCraftingRecipe(Battery_Charger_4by4_IV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WTW", "WMW", "BCB", 'M', Hull_IV, 'W', wireGt16.get(Tungsten), 'T', craftingChest, 'B', Energy_LapotronicOrb, 'C', circuitPower.get(PWR_IV)});
         addCraftingRecipe(Battery_Charger_4by4_LuV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WTW", "WMW", "BCB", 'M', Hull_LuV, 'W', wireGt16.get(VanadiumGallium), 'T', craftingChest, 'B', Energy_LapotronicOrb2, 'C', circuitPower.get(PWR_LUV)});
         addCraftingRecipe(Battery_Charger_4by4_ZPM.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WTW", "WMW", "BCB", 'M', Hull_ZPM, 'W', wireGt16.get(Naquadah), 'T', craftingChest, 'B', Energy_LapotronicOrb2, 'C', circuitPower.get(PWR_ZPM)});
@@ -176,7 +179,8 @@ public final class PowerStuffLoader {
         MicroTransmitter_ZPM.set(new GT_MetaTileEntity_MicrowaveEnergyTransmitter(1165, "basicmachine.microtransmitter.07", "ZPM Microwave Energy Transmitter", 7).getStackForm(1L));
         MicroTransmitter_UV.set(new GT_MetaTileEntity_MicrowaveEnergyTransmitter(1166, "basicmachine.microtransmitter.08", "UV Microwave Energy Transmitter", 8).getStackForm(1L));
         addCraftingRecipe(MicroTransmitter_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "CMC", "GBG", 'M', Hull_HV, 'B', Battery_RE_HV_Lithium, 'C', Emitter_HV, 'G', circuitPower.get(PWR_HV), 'P', Field_Generator_HV});
-        addCraftingRecipe(MicroTransmitter_EV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "CMC", "GBG", 'M', Hull_EV, 'B', getIC2Item("lapotronCrystal", 1L, GT_Values.W), 'C', Emitter_EV, 'G', circuitPower.get(PWR_EV), 'P', Field_Generator_EV});
+        //TODO Houston fix
+        addCraftingRecipe(MicroTransmitter_EV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "CMC", "GBG", 'M', Hull_EV, 'B', Coin_Doge, 'C', Emitter_EV, 'G', circuitPower.get(PWR_EV), 'P', Field_Generator_EV});
         addCraftingRecipe(MicroTransmitter_IV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "CMC", "GBG", 'M', Hull_IV, 'B', Energy_LapotronicOrb, 'C', Emitter_IV, 'G', circuitPower.get(PWR_IV), 'P', Field_Generator_IV});
         addCraftingRecipe(MicroTransmitter_LUV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "CMC", "GBG", 'M', Hull_LuV, 'B', Energy_LapotronicOrb2, 'C', Emitter_LuV, 'G', circuitPower.get(PWR_LUV), 'P', Field_Generator_LuV});
         addCraftingRecipe(MicroTransmitter_ZPM.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CPC", "CMC", "GBG", 'M', Hull_ZPM, 'B', sOPStuff.get(gregtechrecipes, "EnableZPMandUVBatteries", false) ? Energy_Module : ZPM2, 'C', Emitter_ZPM, 'G', circuitPower.get(PWR_ZPM), 'P', Field_Generator_ZPM});

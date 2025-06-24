@@ -26,12 +26,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.GT_Cover_SolarPanel;
-import ic2.api.energy.EnergyNet;
-import ic2.api.energy.tile.IEnergyEmitter;
-import ic2.api.energy.tile.IEnergySink;
-import ic2.api.energy.tile.IEnergySource;
-import ic2.api.energy.tile.IEnergyTile;
-import ic2.api.reactor.IReactorChamber;
 import lombok.val;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -288,33 +282,11 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
                 return true;
         }
 
-        // IC2 Compat
-        {
-            final TileEntity ic2Energy;
-
-            if (tTileEntity instanceof IReactorChamber)
-                ic2Energy = (TileEntity) ((IReactorChamber) tTileEntity).getReactor();
-            else
-                ic2Energy = (tTileEntity == null || tTileEntity instanceof IEnergyTile || EnergyNet.instance == null) ? tTileEntity :
-                    EnergyNet.instance.getTileEntity(tTileEntity.getWorldObj(), tTileEntity.xCoord, tTileEntity.yCoord, tTileEntity.zCoord);
-
-            // IC2 Sink Compat
-            if ((ic2Energy instanceof IEnergySink) && ((IEnergySink) ic2Energy).acceptsEnergyFrom((TileEntity) baseMetaTile, tDir))
-                return true;
-
-            // IC2 Source Compat
-            if (GT_Mod.gregtechproxy.ic2EnergySourceCompat && (ic2Energy instanceof IEnergySource)) {
-                if (((IEnergySource) ic2Energy).emitsEnergyTo((TileEntity) baseMetaTile, tDir)) {
-                    return true;
-                }
-            }
-        }
         // RF Output Compat
         if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver && ((IEnergyReceiver) tTileEntity).canConnectEnergy(tDir))
             return true;
 
-        // RF Input Compat
-        return GregTech_API.mInputRF && (tTileEntity instanceof IEnergyEmitter && ((IEnergyEmitter) tTileEntity).emitsEnergyTo((TileEntity) baseMetaTile, tDir));
+        return false;
     }
 
     @Override
@@ -445,25 +417,6 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     		AxisAlignedBB aabb = getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
     		if (inputAABB.intersectsWith(aabb)) outputAABB.add(aabb);
     	}
-    }
-
-    @Override
-    public boolean shouldJoinIc2Enet() {
-        if (!GT_Mod.gregtechproxy.ic2EnergySourceCompat) return false;
-
-        if (mConnections != 0) {
-            final IGregTechTileEntity baseMeta = getBaseMetaTileEntity();
-            for( byte aSide = 0 ; aSide < 6 ; aSide++) if(isConnectedAtSide(aSide)) {
-                final TileEntity tTileEntity = baseMeta.getTileEntityAtSide(aSide);
-                final TileEntity tEmitter = (tTileEntity == null || tTileEntity instanceof IEnergyTile || EnergyNet.instance == null) ? tTileEntity :
-                        EnergyNet.instance.getTileEntity(tTileEntity.getWorldObj(), tTileEntity.xCoord, tTileEntity.yCoord, tTileEntity.zCoord);
-
-                if (tEmitter instanceof IEnergyEmitter)
-                    return true;
-
-            }
-        }
-        return false;
     }
 
     @Override

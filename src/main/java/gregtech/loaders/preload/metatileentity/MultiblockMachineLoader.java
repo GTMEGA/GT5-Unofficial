@@ -1,24 +1,14 @@
 package gregtech.loaders.preload.metatileentity;
 
-import codechicken.nei.api.API;
-import cpw.mods.fml.common.Loader;
 import gregtech.common.tileentities.generators.GT_MetaTileEntity_LightningRod;
 import gregtech.common.tileentities.machines.multi.*;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
-import static gregtech.GT_Mod.gregtechproxy;
 import static gregtech.api.enums.ItemList.*;
 import static gregtech.api.enums.Materials.*;
-import static gregtech.api.enums.OreDictNames.craftingFurnace;
-import static gregtech.api.enums.OreDictNames.craftingIronFurnace;
 import static gregtech.api.enums.OrePrefixes.*;
-import static gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED;
-import static gregtech.api.util.GT_ModHandler.RecipeBits.NOT_REMOVABLE;
 import static gregtech.api.util.GT_ModHandler.addCraftingRecipe;
 import static gregtech.loaders.postload.GT_ProcessingArrayRecipeLoader.registerDefaultGregtechMaps;
 import static gregtech.loaders.preload.GT_Loader_MetaTileEntities.DISMANTLEABLE_RECIPE_MASK;
-import static ic2.core.Ic2Items.reinforcedStone;
 
 public final class MultiblockMachineLoader {
     private static boolean LOADED = false;

@@ -9,6 +9,8 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -50,18 +52,6 @@ public class GT_Loader_ItemData implements Runnable {
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.hardened_clay, 1, 32767), new ItemData(Materials.Clay, 3628800L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.stained_hardened_clay, 1, 32767), new ItemData(Materials.Clay, 3628800L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.brick_block, 1, 32767), new ItemData(Materials.Brick, 3628800L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getIC2Item("Uran238", 1L), new ItemData(Materials.Uranium, 3628800L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getIC2Item("Uran235", 1L), new ItemData(Materials.Uranium235, 3628800L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getIC2Item("Plutonium", 1L), new ItemData(Materials.Plutonium, 3628800L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getIC2Item("smallUran235", 1L), new ItemData(Materials.Uranium235, 403200L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getIC2Item("smallPlutonium", 1L), new ItemData(Materials.Plutonium, 403200L));
-        GT_OreDictUnificator.addItemData(ItemList.IC2_Item_Casing_Iron.get(1L), new ItemData(Materials.Iron, 1814400L));
-        GT_OreDictUnificator.addItemData(ItemList.IC2_Item_Casing_Gold.get(1L), new ItemData(Materials.Gold, 1814400L));
-        GT_OreDictUnificator.addItemData(ItemList.IC2_Item_Casing_Bronze.get(1L), new ItemData(Materials.Bronze, 1814400L));
-        GT_OreDictUnificator.addItemData(ItemList.IC2_Item_Casing_Copper.get(1L), new ItemData(Materials.Copper, 1814400L));
-        GT_OreDictUnificator.addItemData(ItemList.IC2_Item_Casing_Tin.get(1L), new ItemData(Materials.Tin, 1814400L));
-        GT_OreDictUnificator.addItemData(ItemList.IC2_Item_Casing_Lead.get(1L), new ItemData(Materials.Lead, 1814400L));
-        GT_OreDictUnificator.addItemData(ItemList.IC2_Item_Casing_Steel.get(1L), new ItemData(Materials.Steel, 1814400L));
         GT_OreDictUnificator.addItemData(new ItemStack(Items.book, 1, 32767), new ItemData(Materials.Paper, 10886400L));
         GT_OreDictUnificator.addItemData(new ItemStack(Items.written_book, 1, 32767), new ItemData(Materials.Paper, 10886400L));
         GT_OreDictUnificator.addItemData(new ItemStack(Items.writable_book, 1, 32767), new ItemData(Materials.Paper, 10886400L));
@@ -75,10 +65,7 @@ public class GT_Loader_ItemData implements Runnable {
         GT_OreDictUnificator.addItemData(new ItemStack(Items.cauldron, 1), new ItemData(Materials.Iron, 25401600L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.iron_bars, 8, 32767), new ItemData(Materials.Iron, 10886400L));
         GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem(MOD_ID_DC, "item.SteelBars", 8L, 0), new ItemData(Materials.Steel, 10886400L));
-        GT_OreDictUnificator.addItemData(GT_ModHandler.getIC2Item("ironFurnace", 1L), new ItemData(Materials.Iron, 18144000L));
-        GT_OreDictUnificator.addItemData(ItemList.IC2_Food_Can_Empty.get(1L), new ItemData(Materials.Tin, 1814400L));
-        GT_OreDictUnificator.addItemData(ItemList.IC2_Fuel_Rod_Empty.get(1L), new ItemData(Materials.Iron, 3628800L));
-        GT_OreDictUnificator.addItemData(ItemList.IC2_Fuel_Can_Empty.get(1L), new ItemData(Materials.Tin, 25401600L));
+
 //        GT_OreDictUnificator.addItemData(new ItemStack(Blocks.light_weighted_pressure_plate, 1, 32767), new ItemData(Materials.Gold, 7257600L));
 //        GT_OreDictUnificator.addItemData(new ItemStack(Blocks.heavy_weighted_pressure_plate, 1, 32767), new ItemData(Materials.Iron, 7257600L));
         GT_OreDictUnificator.addItemData(GT_ModHandler.getModItem("Railcraft", "tile.railcraft.anvil", 1L, 0), new ItemData(Materials.Steel, 108864000L));
@@ -88,7 +75,6 @@ public class GT_Loader_ItemData implements Runnable {
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.anvil, 1, 1), new ItemData(Materials.Iron, 72576000L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.anvil, 1, 2), new ItemData(Materials.Iron, 36288000L));
         //GT_OreDictUnificator.addItemData(new ItemStack(Blocks.hopper, 1, 32767), new ItemData(Materials.Iron, 18144000L, new MaterialStack(Materials.Wood, 29030400L)));
-        GT_OreDictUnificator.addItemData(ItemList.Cell_Universal_Fluid.get(1L), new ItemData(Materials.Tin, 7257600L));
         GT_OreDictUnificator.addItemData(ItemList.Cell_Empty.get(1L), new ItemData(Materials.Tin, 7257600L));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.tripwire_hook, 1, 32767), new ItemData(Materials.Iron, OrePrefixes.ring.mMaterialAmount * 2L, new MaterialStack(Materials.Wood, 3628800L)));
         GT_OreDictUnificator.addItemData(ItemList.Bottle_Empty.get(1L), new ItemData(Materials.Glass, 3628800L));

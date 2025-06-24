@@ -47,15 +47,4 @@ public class GT_ToolHarvestHelper {
     public static boolean isStringEmpty(String s) {
         return s == null || s.length() == 0;
     }
-
-    public static boolean hasNull(Object... obj) {
-        for (Object iObj : obj) {
-            if (iObj == null) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
 }

@@ -82,11 +82,6 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     }
 
     @Override
-    public boolean isTeleporterCompatible() {
-        return false;
-    }
-
-    @Override
     public boolean isFacingValid(byte aFacing) {
         return aFacing > 1;
     }

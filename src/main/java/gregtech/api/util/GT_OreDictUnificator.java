@@ -288,7 +288,6 @@ public class GT_OreDictUnificator {
                 long tValidMaterialAmount = aData.mMaterial.mMaterial.contains(SubTag.NO_RECYCLING) ? 0 : aData.mMaterial.mAmount >= 0 ? aData.mMaterial.mAmount : M;
                 for (MaterialStack tMaterial : aData.mByProducts)
                     tValidMaterialAmount += tMaterial.mMaterial.contains(SubTag.NO_RECYCLING) ? 0 : tMaterial.mAmount >= 0 ? tMaterial.mAmount : M;
-                if (tValidMaterialAmount < M) GT_ModHandler.addToRecyclerBlackList(aStack);
             }
             if (mRunThroughTheList) {
                 if (GregTech_API.sLoadStarted) {

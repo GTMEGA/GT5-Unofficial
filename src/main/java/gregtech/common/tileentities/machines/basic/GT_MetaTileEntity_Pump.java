@@ -12,10 +12,13 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
+
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -37,9 +40,9 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.debugBlockPump;
 
 public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
-    private static final ItemStack MINING_PIPE = GT_ModHandler.getIC2Item("miningPipe", 0);
+    private static final ItemStack MINING_PIPE = new ItemStack(Blocks.iron_bars);
     private static final Block MINING_PIPE_BLOCK = GT_Utility.getBlockFromStack(MINING_PIPE);
-    private static final Block MINING_PIPE_TIP_BLOCK = GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 0));
+    private static final Block MINING_PIPE_TIP_BLOCK = Blocks.iron_block;
 
     public static int getMaxDistanceForTier(int aTier) {
         return (10 * ((int) Math.pow(1.6D, aTier)));
@@ -637,16 +640,6 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    @Override
-    public boolean isTransformerUpgradable() {
-        return false;
-    }
-
-    @Override
     public boolean isElectric() {
         return true;
     }
@@ -668,11 +661,6 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
 
     @Override
     public boolean isOutputFacing(byte aSide) {
-        return false;
-    }
-
-    @Override
-    public boolean isTeleporterCompatible() {
         return false;
     }
 

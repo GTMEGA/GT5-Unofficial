@@ -7,7 +7,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.GT_Pollution;
-import ic2.api.energy.tile.IEnergySink;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -73,11 +72,6 @@ public interface IEnergyConnected extends IColoredTileEntity, IHasWorldObjectAnd
                         }
                         rUsedAmperes += ((IEnergyConnected) tTileEntity).injectEnergyUnits(j, aVoltage, aAmperage - rUsedAmperes);
 
-                    } else if (tTileEntity instanceof IEnergySink) {
-                        if (((IEnergySink) tTileEntity).acceptsEnergyFrom((TileEntity) aEmitter, ForgeDirection.getOrientation(j))) {
-                            while (aAmperage > rUsedAmperes && ((IEnergySink) tTileEntity).getDemandedEnergy() > 0 && ((IEnergySink) tTileEntity).injectEnergy(ForgeDirection.getOrientation(j), aVoltage, aVoltage) < aVoltage)
-                                rUsedAmperes++;
-                        }
                     } else if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver) {
                         ForgeDirection tDirection = ForgeDirection.getOrientation(i).getOpposite();
                         int rfOut = GT_Utility.safeInt(aVoltage * GregTech_API.mEUtoRF / 100);

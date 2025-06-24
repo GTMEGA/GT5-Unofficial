@@ -718,10 +718,6 @@ public interface IGT_RecipeAdder {
      * Adds a Boxing Recipe
      */
     GT_Recipe addBoxingRecipeRemovable(ItemStack aContainedItem, ItemStack aEmptyBox, ItemStack aFullBox, int aDuration, int aEUt);
-    @Deprecated
-    default boolean addBoxingRecipe(ItemStack aContainedItem, ItemStack aEmptyBox, ItemStack aFullBox, int aDuration, int aEUt) {
-        return addBoxingRecipeRemovable(aContainedItem, aEmptyBox, aFullBox, aDuration, aEUt) != null;
-    }
 
     /**
      * @param aInput    must be != null
@@ -740,15 +736,6 @@ public interface IGT_RecipeAdder {
     @Deprecated
     default boolean addThermalCentrifugeRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, int[] aChances, int aDuration, int aEUt) {
         return addThermalCentrifugeRecipeRemovable(aInput, aOutput1, aOutput2, aOutput3, aChances, aDuration, aEUt) != null;
-    }
-
-    /**
-     * Adds an Unboxing Recipe
-     */
-    GT_Recipe addUnboxingRecipeRemovable(ItemStack aFullBox, ItemStack aContainedItem, ItemStack aEmptyBox, int aDuration, int aEUt);
-    @Deprecated
-    default boolean addUnboxingRecipe(ItemStack aFullBox, ItemStack aContainedItem, ItemStack aEmptyBox, int aDuration, int aEUt) {
-        return addUnboxingRecipeRemovable(aFullBox, aContainedItem, aEmptyBox, aDuration, aEUt) != null;
     }
 
     /**
@@ -1207,7 +1194,6 @@ public interface IGT_RecipeAdder {
     void removeCutterRecipe(GT_Recipe[] recipe);
     void removeBoxingRecipe(GT_Recipe recipe);
     void removeThermalCentrifugeRecipe(GT_Recipe recipe);
-    void removeUnboxingRecipe(GT_Recipe recipe);
     void removeVacuumFreezerRecipe(GT_Recipe[] recipe);
     void removeFuel(GT_Recipe[] recipe, int aType);
     void removeAmplifier(GT_Recipe recipe);

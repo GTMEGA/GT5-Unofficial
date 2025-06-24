@@ -61,15 +61,9 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         }
         if (!OrePrefixes.block.isIgnored(aMaterial))
             GT_ModHandler.addCompressionRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L), GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L));
-        switch (aMaterial.mName) {
-            case "Mercury":
-                System.err.println("'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block? On Pluto Greg :)");
-                break;
-            case "Iron":
-            case "WroughtIron":
-            case "Steel":
-                GT_Values.RA.addAssemblerRecipe(ItemList.IC2_Compressed_Coal_Ball.get(8L), GT_Utility.copyAmount(1L, aStack), ItemList.IC2_Compressed_Coal_Chunk.get(1L), 400, 4);
-                break;
+        if (aMaterial.mName.equals("Mercury")) {
+            System.err.println(
+                    "'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block? On Pluto Greg :)");
         }
     }
 }

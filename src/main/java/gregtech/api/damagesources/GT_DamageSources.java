@@ -8,15 +8,7 @@ import javax.annotation.Nullable;
 
 public class GT_DamageSources {
     public static DamageSource getElectricDamage() {
-        return ic2.api.info.Info.DMG_ELECTRIC;
-    }
-
-    public static DamageSource getRadioactiveDamage() {
-        return ic2.api.info.Info.DMG_RADIATION;
-    }
-
-    public static DamageSource getNukeExplosionDamage() {
-        return ic2.api.info.Info.DMG_NUKE_EXPLOSION;
+        return new DamageSourceElectric();
     }
 
     public static DamageSource getExplodingDamage() {
@@ -33,6 +25,18 @@ public class GT_DamageSources {
 
     public static DamageSource getFrostDamage() {
         return new DamageSourceFrost();
+    }
+
+    private static class DamageSourceElectric extends DamageSource {
+        public DamageSourceElectric() {
+            super("electric");
+            setDifficultyScaled();
+        }
+
+        @Override
+        public IChatComponent func_151519_b(EntityLivingBase aTarget) {
+            return new ChatComponentText(EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " was shocked");
+        }
     }
 
     private static class DamageSourceCombat extends EntityDamageSource {

@@ -72,6 +72,10 @@ public class GT_Values {
      */
     public static final long L = 144;
 
+    public static final int setBlockNotify = 1;
+    public static final int setBlockUpdate = 2;
+    public static final int setBlockNoUpdateFromClient = 4;
+
     /**
      * The Item WildCard Tag. Even shorter than the "-1" of the past
      */

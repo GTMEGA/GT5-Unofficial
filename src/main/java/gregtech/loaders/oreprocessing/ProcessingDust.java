@@ -128,16 +128,12 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(true, new ItemStack[]{GT_Utility.copyAmount(1L, aStack)}, null, null, null, new FluidStack[]{Materials.Oil.getFluid(1000)}, 660, 8, 0);
                         break;
                     case "Coal":
-                        if (GT_Mod.gregtechproxy.mTEMachineRecipes)
-                            GT_ModHandler.addLiquidTransposerFillRecipe(GT_Utility.copyAmount(1L, aStack), Materials.Water.getFluid(125L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HydratedCoal, 1L), 125);
                         break;
                     case "HydratedCoal":
-                        if (GT_Mod.gregtechproxy.mTEMachineRecipes)
-                            GT_ModHandler.addLiquidTransposerEmptyRecipe(GT_Utility.copyAmount(1L, aStack), Materials.Water.getFluid(125L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L), 125);
                         GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L));
                         break;
                     case "Diamond":
-                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4L, aStack), 32, ItemList.IC2_Industrial_Diamond.get(3L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 4L));
+                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4L, aStack), 32, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 3L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 16L));
                         break;
                     case "Opal": case "Olivine": case "Emerald": case "Ruby": case "Sapphire": case "GreenSapphire": case "Topaz": case "BlueTopaz": case "Tanzanite": case "Amethyst":
                         GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4L, aStack), 24, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 3L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 3L));

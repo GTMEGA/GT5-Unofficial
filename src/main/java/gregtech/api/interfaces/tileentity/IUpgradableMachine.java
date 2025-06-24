@@ -16,22 +16,12 @@ public interface IUpgradableMachine extends IMachineProgress {
     boolean isMufflerUpgradable();
 
     /**
-     * Accepts Steam-Converter Upgrades
-     */
-    boolean isSteamEngineUpgradable();
-
-    /**
      * Adds Muffler Upgrade
      */
     boolean addMufflerUpgrade();
 
     /**
-     * Adds MJ-Converter Upgrade
-     */
-    boolean addSteamEngineUpgrade();
-
-    /**
-     * Does this Machine have an Muffler
+     * Does this Machine have a Muffler
      */
     boolean hasMufflerUpgrade();
 

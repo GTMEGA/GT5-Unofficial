@@ -18,6 +18,7 @@ import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
+
 import lombok.val;
 
 import net.minecraft.block.Block;
@@ -44,10 +45,10 @@ import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public abstract class GT_MetaTileEntity_DrillerBase extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_DrillerBase> implements IChunkLoader {
-    private static final ItemStack miningPipe = GT_ModHandler.getIC2Item("miningPipe", 0);
-    private static final ItemStack miningPipeTip = GT_ModHandler.getIC2Item("miningPipeTip", 0);
-    private static final Block miningPipeBlock = GT_Utility.getBlockFromStack(miningPipe);
-    private static final Block miningPipeTipBlock = GT_Utility.getBlockFromStack(miningPipeTip);
+    private static final ItemStack miningPipe = new ItemStack(Blocks.iron_bars);
+    private static final ItemStack miningPipeTip = new ItemStack(Blocks.iron_block);
+    private static final Block miningPipeBlock = Blocks.iron_bars;
+    private static final Block miningPipeTipBlock = Blocks.iron_block;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final ClassValue<IStructureDefinition<GT_MetaTileEntity_DrillerBase>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GT_MetaTileEntity_DrillerBase>>() {
         @Override
