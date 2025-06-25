@@ -422,8 +422,8 @@ public enum OrePrefixes {
         nugget.mNotGeneratedItems.add(Materials.Gold);
         plate.mNotGeneratedItems.add(Materials.Paper);
         cell.mNotGeneratedItems.add(Materials.Empty);
-        cell.mNotGeneratedItems.add(Materials.Water);
-        cell.mNotGeneratedItems.add(Materials.Lava);
+//        cell.mNotGeneratedItems.add(Materials.Water);
+//        cell.mNotGeneratedItems.add(Materials.Lava);
         cell.mNotGeneratedItems.add(Materials.ConstructionFoam);
         cell.mNotGeneratedItems.add(Materials.UUMatter);
         cell.mNotGeneratedItems.add(Materials.CoalFuel);
