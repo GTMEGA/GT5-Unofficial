@@ -35,8 +35,10 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
     @Override
     public void run() {
-        Materials.Water.mFluid = (Materials.Ice.mFluid = GT_ModHandler.getWater(1000L).getFluid());
+        Materials.Water.mFluid = GT_ModHandler.getWater(1000L).getFluid();
+        Materials.Ice.mFluid = GT_ModHandler.getWater(1000L).getFluid();
         Materials.Lava.mFluid  = GT_ModHandler.getLava(1000L).getFluid();
+
         ItemList.Cell_Air.set(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Air, 1));
 
         /*
@@ -457,10 +459,9 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Mod.gregtechproxy.addFluid("Methane", "Methane", Materials.Methane, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Methane, 1L), ItemList.Cell_Empty.get(1L), 1000);
         GT_Mod.gregtechproxy.addFluid("Nitrogen", "Nitrogen", Materials.Nitrogen, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Nitrogen, 1L), ItemList.Cell_Empty.get(1L), 1000);
         GT_Mod.gregtechproxy.addFluid("NitrogenDioxide", "Nitrogen Dioxide", Materials.NitrogenDioxide, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NitrogenDioxide, 1L), ItemList.Cell_Empty.get(1L), 1000);
-        GT_Mod.gregtechproxy.addFluid("Steam", "Steam", Materials.Water, 2, 375, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Steam, 1L), Materials.Empty.getCells(1), 1000);
-        GT_Values.RA.addFluidCannerRecipe(Materials.Empty.getCells(1), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Steam, 1L), GT_ModHandler.getSteam(1000), null);
-        Materials.Ice.mGas = Materials.Water.mGas;
-        Materials.Water.mGas.setTemperature(375).setGaseous(true);
+        GT_Mod.gregtechproxy.addFluid("Steam", "Steam", Materials.Steam, 1, 375, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Steam, 1L), Materials.Empty.getCells(1), 1000);
+
+        GT_Values.RA.addFluidCannerRecipe(Materials.Empty.getCells(1), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Steam, 1L), Materials.Steam.getFluid(1000), null);
     }
 
     private static void loadOils() {
