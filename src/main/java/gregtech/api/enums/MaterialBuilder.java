@@ -38,8 +38,7 @@ public class MaterialBuilder {
 	private List<MaterialStack> materialList = new ArrayList<>();
 	private List<TC_Aspects.TC_AspectStack> aspects = new ArrayList<>();
 	private boolean hasCorrespondingFluid = false;
-	private boolean hasCorrespondingGas = false;
-	private boolean canBeCracked = false;
+    private boolean canBeCracked = false;
 	private boolean canBeSteamCracked = false;
 	private int liquidTemperature = 300;
 	private int gasTemperature = 300;
@@ -55,7 +54,6 @@ public class MaterialBuilder {
 		return new Materials(metaItemSubID, iconSet, toolSpeed, durability, toolQuality, types, r, g, b, a, name, defaultLocalName, fuelType, fuelPower, meltingPoint, blastFurnaceTemp,
 				blastFurnaceRequired, transparent, oreValue, densityMultiplier, densityDivider, color, extraData, materialList, aspects)
 				.setHasCorrespondingFluid(hasCorrespondingFluid)
-				.setHasCorrespondingGas(hasCorrespondingGas)
 				.setCanBeCracked(canBeCracked);
 	}
 
@@ -111,11 +109,6 @@ public class MaterialBuilder {
 
 	public MaterialBuilder addFluid(){
 		this.hasCorrespondingFluid = true;
-		return this;
-	}
-
-	public MaterialBuilder addGas(){
-		this.hasCorrespondingGas = true;
 		return this;
 	}
 
@@ -237,15 +230,6 @@ public class MaterialBuilder {
 
 	public MaterialBuilder setLiquidTemperature(int liquidTemperature) {
 		this.liquidTemperature = liquidTemperature;
-		return this;
-	}
-
-	public int getGasTemperature() {
-		return gasTemperature;
-	}
-
-	public MaterialBuilder setGasTemperature(int gasTemperature) {
-		this.gasTemperature = gasTemperature;
 		return this;
 	}
 

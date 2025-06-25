@@ -19,12 +19,12 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         if (aOreDictName.equals("logRubber")) {
-            GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(2), null, Materials.Methane.getGas(60L), ItemList.Resin.get(1L), ItemList.Plantball.get(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L), GT_Values.NI, GT_Values.NI, new int[]{5000, 3750, 2500, 2500}, 200, 20);
+            GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(2), null, Materials.Methane.getFluid(60L), ItemList.Resin.get(1L), ItemList.Plantball.get(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L), GT_Values.NI, GT_Values.NI, new int[]{5000, 3750, 2500, 2500}, 200, 20);
             GT_ModHandler.addSawmillRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Resin.get(1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 16L));
             GT_ModHandler.addExtractionRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1L));
             GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L), ItemList.Resin.get(1L), 33, false);
         } else {
-        	GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1), null, Materials.Methane.getGas(60L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 200, 20);
+        	GT_Values.RA.addCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1), null, Materials.Methane.getFluid(60L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 200, 20);
             GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L), 80, false);
         }
 
@@ -96,15 +96,15 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
 
     public static void addPyrolyeOvenRecipes(ItemStack logStack){
 //        GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), GT_Values.NF, 1, Materials.Charcoal.getGems(20), Materials.Creosote.getFluid(4000), 640, 64);
-//        GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), Materials.Nitrogen.getGas(1000), 2, Materials.Charcoal.getGems(20), Materials.Creosote.getFluid(4000), 320, 96);
+//        GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), Materials.Nitrogen.getFluid(1000), 2, Materials.Charcoal.getGems(20), Materials.Creosote.getFluid(4000), 320, 96);
 //        GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), GT_Values.NF, 3, Materials.Ash.getDust(4), Materials.OilHeavy.getFluid(200), 320, 192);
-//        GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), GT_Values.NF, 3, Materials.Charcoal.getGems(8), Materials.CharcoalByproducts.getGas(4000), 1280, 32);
-//        GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), Materials.Nitrogen.getGas(1000), 4, Materials.Charcoal.getGems(8), Materials.CharcoalByproducts.getGas(4000), 640, 32);
-//        GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), GT_Values.NF, 5, Materials.Charcoal.getGems(20), Materials.WoodGas.getGas(1500), 640, 64);
-//        GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), Materials.Nitrogen.getGas(1000), 6, Materials.Charcoal.getGems(20), Materials.WoodGas.getGas(1500), 320, 96);
+//        GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), GT_Values.NF, 3, Materials.Charcoal.getGems(8), Materials.CharcoalByproducts.getFluid(4000), 1280, 32);
+//        GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), Materials.Nitrogen.getFluid(1000), 4, Materials.Charcoal.getGems(8), Materials.CharcoalByproducts.getFluid(4000), 640, 32);
+//        GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), GT_Values.NF, 5, Materials.Charcoal.getGems(20), Materials.WoodGas.getFluid(1500), 640, 64);
+//        GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), Materials.Nitrogen.getFluid(1000), 6, Materials.Charcoal.getGems(20), Materials.WoodGas.getFluid(1500), 320, 96);
 //        GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), GT_Values.NF, 7, Materials.Charcoal.getGems(20), Materials.WoodVinegar.getFluid(3000), 640, 64);
-//        GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), Materials.Nitrogen.getGas(1000), 8, Materials.Charcoal.getGems(20), Materials.WoodVinegar.getFluid(3000), 320, 96);
+//        GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), Materials.Nitrogen.getFluid(1000), 8, Materials.Charcoal.getGems(20), Materials.WoodVinegar.getFluid(3000), 320, 96);
 //        GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), GT_Values.NF, 9, Materials.Charcoal.getGems(20), Materials.WoodTar.getFluid(1500), 640, 64);
-//        GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), Materials.Nitrogen.getGas(1000), 10, Materials.Charcoal.getGems(20), Materials.WoodTar.getFluid(1500), 320, 96);
+//        GT_Values.RA.addPyrolyseRecipe(GT_Utility.copyAmount(16L, logStack), Materials.Nitrogen.getFluid(1000), 10, Materials.Charcoal.getGems(20), Materials.WoodTar.getFluid(1500), 320, 96);
     }
 }

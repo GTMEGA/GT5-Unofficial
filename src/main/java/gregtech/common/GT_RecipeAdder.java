@@ -250,13 +250,13 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         //Oxygen/Titaniumtetrafluoride -> +50% Output each
         addChemicalRecipe(ItemList.Cell_Air.get(1, new Object[0]), GT_Utility.getIntegratedCircuit(1), new GT_FluidStack(aBasicMaterial, 144), new GT_FluidStack(aPolymer, 144), Materials.Empty.getCells(1), 160);
         addChemicalRecipe(Materials.Oxygen.getCells(1), GT_Utility.getIntegratedCircuit(1), new GT_FluidStack(aBasicMaterial, 144), new GT_FluidStack(aPolymer, 216), Materials.Empty.getCells(1), 160);
-        addChemicalRecipe(aBasicMaterialCell, GT_Utility.getIntegratedCircuit(1), Materials.Air.getGas(14000), new GT_FluidStack(aPolymer, 1000), Materials.Empty.getCells(1), 1120);
-        addChemicalRecipe(aBasicMaterialCell, GT_Utility.getIntegratedCircuit(1), Materials.Oxygen.getGas(7000), new GT_FluidStack(aPolymer, 1500), Materials.Empty.getCells(1), 1120);
+        addChemicalRecipe(aBasicMaterialCell, GT_Utility.getIntegratedCircuit(1), Materials.Air.getFluid(14000), new GT_FluidStack(aPolymer, 1000), Materials.Empty.getCells(1), 1120);
+        addChemicalRecipe(aBasicMaterialCell, GT_Utility.getIntegratedCircuit(1), Materials.Oxygen.getFluid(7000), new GT_FluidStack(aPolymer, 1500), Materials.Empty.getCells(1), 1120);
         addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(2)},
-                new FluidStack[]{new GT_FluidStack(aBasicMaterial, 2160), Materials.Air.getGas(7500), Materials.Titaniumtetrachloride.getFluid(100)},
+                new FluidStack[]{new GT_FluidStack(aBasicMaterial, 2160), Materials.Air.getFluid(7500), Materials.Titaniumtetrachloride.getFluid(100)},
                 new FluidStack[]{new GT_FluidStack(aPolymer, 3240)}, null, 800, 30);
         addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(2)},
-                new FluidStack[]{new GT_FluidStack(aBasicMaterial, 2160), Materials.Oxygen.getGas(7500), Materials.Titaniumtetrachloride.getFluid(100)},
+                new FluidStack[]{new GT_FluidStack(aBasicMaterial, 2160), Materials.Oxygen.getFluid(7500), Materials.Titaniumtetrachloride.getFluid(100)},
                 new FluidStack[]{new GT_FluidStack(aPolymer, 4320)}, null, 800, 30);
     }
 
@@ -1572,7 +1572,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 if ((aDuration = GregTech_API.sRecipeFile.get("arcfurnace", aInput, aDuration)) <= 0) {
                     return null;
                 }
-                GT_Recipe sRecipe = GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutputs, null, aChances, new FluidStack[]{Materials.Oxygen.getGas(aDuration)}, null, Math.max(1, aDuration), Math.max(1, aEUt), 0);
+                GT_Recipe sRecipe = GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutputs, null, aChances, new FluidStack[]{Materials.Oxygen.getFluid(aDuration)}, null, Math.max(1, aDuration), Math.max(1, aEUt), 0);
                 if ((hidden) && (sRecipe != null)) {
                     sRecipe.mHidden = true;
                 }
@@ -1580,7 +1580,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 for (Materials tMaterial : new Materials[]{Materials.Argon, Materials.Nitrogen}) {
                     if (tMaterial.mPlasma != null) {
                         int tPlasmaAmount = (int) Math.max(1L, aDuration / (tMaterial.getMass() * 16L));
-                        GT_Recipe tRecipe =GT_Recipe.GT_Recipe_Map.sPlasmaArcFurnaceRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutputs, null, aChances, new FluidStack[]{tMaterial.getPlasma(tPlasmaAmount)}, new FluidStack[]{tMaterial.getGas(tPlasmaAmount)}, Math.max(1, aDuration / 16), Math.max(1, aEUt / 3), 0);
+                        GT_Recipe tRecipe =GT_Recipe.GT_Recipe_Map.sPlasmaArcFurnaceRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutputs, null, aChances, new FluidStack[]{tMaterial.getPlasma(tPlasmaAmount)}, new FluidStack[]{tMaterial.getFluid(tPlasmaAmount)}, Math.max(1, aDuration / 16), Math.max(1, aEUt / 3), 0);
                         if ((hidden) && (tRecipe != null)) {
                             tRecipe.mHidden = true;
                         }

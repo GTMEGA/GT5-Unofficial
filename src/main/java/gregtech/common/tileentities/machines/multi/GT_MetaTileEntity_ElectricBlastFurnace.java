@@ -41,8 +41,8 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 public class GT_MetaTileEntity_ElectricBlastFurnace extends GT_MetaTileEntity_AbstractMultiFurnace<GT_MetaTileEntity_ElectricBlastFurnace> implements IConstructable {
     private int mHeatingCapacity = 0;
     protected final ArrayList<GT_MetaTileEntity_Hatch_Output> mPollutionOutputHatches = new ArrayList<>();
-    protected final FluidStack[] pollutionFluidStacks = {Materials.CarbonDioxide.getGas(1000),
-            Materials.CarbonMonoxide.getGas(1000), Materials.SulfurDioxide.getGas(1000)};
+    protected final FluidStack[] pollutionFluidStacks = {Materials.CarbonDioxide.getFluid(1000),
+            Materials.CarbonMonoxide.getFluid(1000), Materials.SulfurDioxide.getFluid(1000)};
 
     protected static final int CASING_INDEX = 11;
     protected static final String STRUCTURE_PIECE_MAIN = "main";

@@ -190,7 +190,7 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_EnhancedMu
                 if (!depleteInput(tLiquid)) {
                     return false;
                 }
-                boostEu = depleteInput(getBooster().getGas(O2_PER_TICK * getAdditiveFactor()));
+                boostEu = depleteInput(getBooster().getFluid(O2_PER_TICK * getAdditiveFactor()));
 
                 //Deplete Lubricant. 1000L should = 1 hour of runtime (if baseEU = 2048)
                 if ((mRuntime % LUBRICANT_TIMER == 0 || mRuntime == 0) && !depleteInput(Materials.Lubricant.getFluid((boostEu ? 2L : 1L) * getAdditiveFactor()))) {
