@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.val;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -109,6 +110,11 @@ public class GT_OreVeinLocations {
         val packet = new GT_Packet_VeinDataUpdate(Tables.immutableCell(dimId, chunkCoord, veinData));
 
         GT_Values.NW.sendToPlayer(packet, event.player);
+    }
+
+    public static GT_Worldgen_GT_Ore_Layer getOreVeinInChunk(int dimensionId, ChunkCoordIntPair location) {
+        val world = MinecraftServer.getServer().worldServerForDimension(dimensionId);
+        return getOreVeinInChunk(world,location);
     }
 
     public static GT_Worldgen_GT_Ore_Layer getOreVeinInChunk(World world, ChunkCoordIntPair location) {
