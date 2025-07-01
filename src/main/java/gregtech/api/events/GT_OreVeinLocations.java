@@ -74,7 +74,7 @@ public class GT_OreVeinLocations {
     }
 
     @SubscribeEvent
-    public void onChunkStartLoad(ChunkDataEvent.Load event) {
+    public void onChunkLoad(ChunkDataEvent.Load event) {
         if (event.world.isRemote) {
             return;
         }
@@ -85,14 +85,12 @@ public class GT_OreVeinLocations {
         val oreCountMax = data.getInteger(NBT_ORE_COUNT_MAX);
         val oreCountCurrent = data.getInteger(NBT_ORE_COUNT);
 
-        val chunk = event.getChunk();
+        if (oreMixNames != null && !oreMixNames.isEmpty()) {
+            val chunk = event.getChunk();
 
-        if (!oreMixNames.isEmpty()) {
             RecordedOreVeinInChunk.get().put(chunk.worldObj.provider.dimensionId,
                                              chunk.getChunkCoordIntPair(),
                                              new VeinData(oreMixNames, oreCountMax, oreCountCurrent));
-        } else {
-            scanSlurryInChunk(chunk);
         }
     }
 
@@ -110,11 +108,6 @@ public class GT_OreVeinLocations {
         val packet = new GT_Packet_VeinDataUpdate(Tables.immutableCell(dimId, chunkCoord, veinData));
 
         GT_Values.NW.sendToPlayer(packet, event.player);
-    }
-
-    public static GT_Worldgen_GT_Ore_Layer getOreVeinInChunk(int dimensionId, ChunkCoordIntPair location) {
-        val world = MinecraftServer.getServer().worldServerForDimension(dimensionId);
-        return getOreVeinInChunk(world,location);
     }
 
     public static GT_Worldgen_GT_Ore_Layer getOreVeinInChunk(World world, ChunkCoordIntPair location) {
