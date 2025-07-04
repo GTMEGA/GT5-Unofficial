@@ -13,21 +13,16 @@ import gregtech.common.fluids.GT_OreSlurry;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.val;
-import org.apache.commons.lang3.tuple.ImmutableTriple;
 
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.world.ChunkDataEvent;
-import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -119,8 +114,8 @@ public class GT_OreVeinLocations {
 
             veinData = table.get(world.provider.dimensionId, location);
 
-            if (veinData == null) {
-                return null;
+            if (veinData == null || GT_Worldgen_GT_Ore_Layer.EMPTY_VEIN.mWorldGenName.equals(veinData.oreMix)) {
+                return GT_Worldgen_GT_Ore_Layer.EMPTY_VEIN;
             }
         }
 
@@ -188,14 +183,18 @@ public class GT_OreVeinLocations {
             }
         }
 
+        val fallback = new AbstractMap.SimpleEntry<>(GT_Worldgen_GT_Ore_Layer.EMPTY_VEIN, 0);
+
         val oreVeinEntry = oreVeinLikelihood.entrySet()
                                             .stream()
                                             .max(Map.Entry.comparingByValue())
-                                            .orElse(null);
+                                            .orElse(fallback);
 
         GT_OreSlurry slurry = null;
 
-        if (oreVeinEntry != null) {
+        VeinData veinData;
+
+        if (oreVeinEntry != fallback) {
             slurry = GT_OreSlurry.slurries.get(oreVeinEntry.getKey());
 
             val currentVein = slurry.oreLayer;
@@ -210,14 +209,16 @@ public class GT_OreVeinLocations {
                            oreTypeFrequency.getOrDefault(c, 0) +
                            oreTypeFrequency.getOrDefault(d, 0);
 
-            val veinData = new VeinData(currentVein.mWorldGenName, oreCount, oreCount);
-
-            recordOreVeinInChunk(chunk, veinData);
+            veinData = new VeinData(currentVein.mWorldGenName, oreCount, oreCount);
 
             GT_Mod.GT_FML_LOGGER.info("Recalculated Ore Vein type at [{}, {}] to be {}", chunk.xPosition, chunk.zPosition, currentVein.mWorldGenName);
         } else {
             GT_Mod.GT_FML_LOGGER.warn("Null ore slurry selected");
+
+            veinData = new GT_OreVeinLocations.VeinData(GT_Worldgen_GT_Ore_Layer.EMPTY_VEIN.mWorldGenName, 0, 0);
         }
+
+        recordOreVeinInChunk(chunk, veinData);
 
         return slurry;
     }
