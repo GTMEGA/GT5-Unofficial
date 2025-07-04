@@ -304,7 +304,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                 }
 
                 GT_Worldgen_GT_Ore_Layer tWorldGen = validOreveins.get(oreveinSeed);
-                oreveinRNG.setSeed(oreveinSeed ^ (tWorldGen.mPrimary.mMetaItemSubID));  // Reset RNG to only be based on oreseed X/Z and type of vein
+                oreveinRNG.setSeed(oreveinSeed ^ (tWorldGen.mWorldGenName.hashCode()));  // Reset RNG to only be based on oreseed X/Z and type of vein
 
                 val result = tWorldGen.executeWorldgenChunkified(this.mWorld, oreveinRNG, this.mBiome, this.mDimensionType, this.mX * 16, this.mZ * 16, oreseedX * 16, oreseedZ * 16, this.mChunkGenerator, this.mChunkProvider);
 
