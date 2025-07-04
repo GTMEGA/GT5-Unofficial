@@ -85,6 +85,10 @@ public class GT_MEGA_Command_ReScanOreVein extends SubCommand {
             }
         }
 
-        GT_OreVeinLocations.updateClients(world.provider.dimensionId, new ChunkCoordIntPair(centerChunkX, centerChunkZ));
+        val chunkCoord = new ChunkCoordIntPair(centerChunkX, centerChunkZ);
+        val veinData = GT_OreVeinLocations.RecordedOreVeinInChunk.get()
+                                          .get(world.provider.dimensionId, chunkCoord);
+
+        GT_OreVeinLocations.updateClients(world.provider.dimensionId, chunkCoord, veinData);
     }
 }
