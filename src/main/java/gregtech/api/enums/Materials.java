@@ -1864,11 +1864,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         RoseGold.add(SubTag.YES_TOOLS);
         BlackBronze.add(SubTag.YES_TOOLS);
         StainlessSteel.add(SubTag.YES_TOOLS);
-        Aluminium.add(SubTag.YES_TOOLS);
+        Aluminium.add(SubTag.YES_TOOLS, SubTag.YES_CABLES);
         Titanium.add(SubTag.YES_TOOLS, SubTag.YES_CABLES, SubTag.GOOD_CABLES);
         TungstenSteel.add(SubTag.YES_TOOLS);
         Iridium.add(SubTag.YES_TOOLS);
         VanadiumSteel.add(SubTag.YES_TOOLS);
+        Graphene.add(SubTag.YES_CABLES, SubTag.GOOD_CABLES);
 
         Gold.add(SubTag.MORTAR_GRINDABLE, SubTag.YES_CABLES, SubTag.GOOD_CABLES);
         Silver.add(SubTag.MORTAR_GRINDABLE);
