@@ -193,11 +193,11 @@ public final class BasicMachineLoader {
         addCraftingRecipe(Machine_EV_RockBreaker.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PED", "WMW", "GGG", 'M', Hull_EV, 'D', craftingGrinder, 'E', Electric_Motor_EV, 'P', Electric_Piston_EV, 'C', circuitPower.get(PWR_EV), 'W', cableGt01.get(Aluminium), 'G', new ItemStack(Blocks.glass, 1)});
         addCraftingRecipe(Machine_IV_RockBreaker.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"PED", "WMW", "GGG", 'M', Hull_IV, 'D', craftingGrinder, 'E', Electric_Motor_IV, 'P', Electric_Piston_IV, 'C', circuitPower.get(PWR_IV), 'W', cableGt01.get(Tungsten), 'G', new ItemStack(Blocks.glass, 1)});
 
-        Machine_LV_Disassembler.set(new GT_MetaTileEntity_Disassembler(451, "basicmachine.disassembler.tier.01", "Basic Disassembler", 1).getStackForm(1L));
-        Machine_MV_Disassembler.set(new GT_MetaTileEntity_Disassembler(452, "basicmachine.disassembler.tier.02", "Advanced Disassembler", 2).getStackForm(1L));
-        Machine_HV_Disassembler.set(new GT_MetaTileEntity_Disassembler(453, "basicmachine.disassembler.tier.03", "Advanced Disassembler II", 3).getStackForm(1L));
-        Machine_EV_Disassembler.set(new GT_MetaTileEntity_Disassembler(454, "basicmachine.disassembler.tier.04", "Advanced Disassembler III", 4).getStackForm(1L));
-        Machine_IV_Disassembler.set(new GT_MetaTileEntity_Disassembler(455, "basicmachine.disassembler.tier.05", "Advanced Disassembler IV", 5).getStackForm(1L));
+        Machine_LV_Disassembler.set(new GT_MetaTileEntity_Disassembler(451, "basicmachine.disassembler.tier.01", "Basic Component Recycler", 1).getStackForm(1L));
+        Machine_MV_Disassembler.set(new GT_MetaTileEntity_Disassembler(452, "basicmachine.disassembler.tier.02", "Advanced Component Recycler", 2).getStackForm(1L));
+        Machine_HV_Disassembler.set(new GT_MetaTileEntity_Disassembler(453, "basicmachine.disassembler.tier.03", "Advanced Component Recycler II", 3).getStackForm(1L));
+        Machine_EV_Disassembler.set(new GT_MetaTileEntity_Disassembler(454, "basicmachine.disassembler.tier.04", "Advanced Component Recycler III", 4).getStackForm(1L));
+        Machine_IV_Disassembler.set(new GT_MetaTileEntity_Disassembler(455, "basicmachine.disassembler.tier.05", "Advanced Component Recycler IV", 5).getStackForm(1L));
 
         addCraftingRecipe(Machine_LV_Disassembler.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"ACA", "WMW", "ACA", 'M', Hull_LV, 'A', Robot_Arm_LV, 'C', circuitLogic.get(LOGIC_LV), 'W', cableGt01.get(Tin)});
         addCraftingRecipe(Machine_MV_Disassembler.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"ACA", "WMW", "ACA", 'M', Hull_MV, 'A', Robot_Arm_MV, 'C', circuitLogic.get(LOGIC_MV), 'W', cableGt01.get(AnyCopper)});

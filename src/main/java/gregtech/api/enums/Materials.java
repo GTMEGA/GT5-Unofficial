@@ -1561,15 +1561,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
         SubTag.WASHING_MERCURY.addTo(
                 Gold,
-                Osmium,
-                Mithril,
-                Platinum,
-                /**Midasium,
-                 **/Cooperite,
+                Silver,
                 AstralSilver
         );
 
-        SubTag.WASHING_MERCURY_99_PERCENT.addTo(Silver);
+//        SubTag.WASHING_MERCURY_99_PERCENT.addTo(Silver);
 
         SubTag.WASHING_SODIUMPERSULFATE.addTo(
                 Zinc,

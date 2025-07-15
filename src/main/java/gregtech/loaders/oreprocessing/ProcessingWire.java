@@ -62,7 +62,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 correspondingWire = OrePrefixes.wireGt08;
                 GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 8L), new Object[]{aOreDictName});
                 GT_ModHandler.addShapelessCraftingRecipe(GT_Utility.copyAmount(1L, aStack), new Object[]{OrePrefixes.wireGt01.get(aMaterial), OrePrefixes.wireGt01.get(aMaterial), OrePrefixes.wireGt01.get(aMaterial), OrePrefixes.wireGt01.get(aMaterial),OrePrefixes.wireGt01.get(aMaterial), OrePrefixes.wireGt01.get(aMaterial), OrePrefixes.wireGt01.get(aMaterial), OrePrefixes.wireGt01.get(aMaterial)});
-                GT_Values.RA.addAssemblerRecipe(GT_Utility.getIntegratedCircuit(8), GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 8L),GT_OreDictUnificator.get(correspondingWire, aMaterial, 1L), 60, 8);
+                GT_Values.RA.addAssemblerRecipe(GT_Utility.getIntegratedCircuit(8), GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 8L),GT_OreDictUnificator.get(correspondingWire, aMaterial, 1L), 6, 8);
                 break;
 
             case wireGt16 :

@@ -30,9 +30,9 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                                                                       GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
                                                                       1L),
                                              GT_OreDictUnificator.get(OrePrefixes.dust,
-                                                                      GT_Utility.selectItemInList(0, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
+                                                                      GT_Utility.selectItemInList(0, aMaterial.mMacerateInto, aMaterial.mMaterialInto),
                                                                       1L),
-                                             10,
+                                             10 * aMaterial.mOreMultiplier,
                                              false);
 
         if (aPrefix == OrePrefixes.crushed) {
@@ -40,14 +40,14 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                                              new int[]{10000, 4000, 2500},
                                              1000,
                                              GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1L),
-                                             GT_OreDictUnificator.get(OrePrefixes.dust, GT_Utility.selectItemInList(0, aMaterial.mMacerateInto), 1L),
+                                             GT_OreDictUnificator.get(OrePrefixes.dust, GT_Utility.selectItemInList(0, aMaterial.mMacerateInto), 1L * aMaterial.mOreMultiplier),
                                              GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L));
         } else {
             GT_ModHandler.addOreWasherRecipe(GT_Utility.copyAmount(1L, aStack),
                                              new int[]{10000, 4000, 2500},
                                              1000,
                                              GT_OreDictUnificator.get(OrePrefixes.dustPure, aMaterial, 1L),
-                                             GT_OreDictUnificator.get(OrePrefixes.dust, GT_Utility.selectItemInList(0, aMaterial.mMacerateInto), 1L),
+                                             GT_OreDictUnificator.get(OrePrefixes.dust, GT_Utility.selectItemInList(0, aMaterial.mMacerateInto), 1L * aMaterial.mOreMultiplier),
                                              GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L));
         }
 //        GT_ModHandler.addThermalCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack), new int[] {10000, 1111, 2500}, (int) Math.min(5000L, Math.abs(aMaterial.getMass() * 20L)), GT_OreDictUnificator.get(aPrefix == OrePrefixes.crushed ? OrePrefixes.crushedCentrifuged : OrePrefixes.dust, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, GT_Utility.selectItemInList(1, aMaterial.mMacerateInto, aMaterial.mOreByProducts), 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L));
@@ -59,8 +59,8 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                                                    GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1L),
                                                    GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
                                                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
-                                                   new int[]{10000, 7000, 4000},
-                                                   800,
+                                                   new int[]{7500, 7500, 2500},
+                                                   400,
                                                    8);
             } else {
                 GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, aStack),
@@ -69,7 +69,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                                                    GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
                                                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
                                                    new int[]{10000, 7000, 4000},
-                                                   800,
+                                                   400,
                                                    8);
             }
         }
@@ -81,7 +81,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                                                    GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
                                                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
                                                    new int[]{10000, 9900, 4000},
-                                                   800,
+                                                   400,
                                                    8);
             } else {
                 GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, aStack),
@@ -90,7 +90,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                                                    GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
                                                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
                                                    new int[]{10000, 9900, 4000},
-                                                   800,
+                                                   400,
                                                    8);
             }
         }
@@ -102,8 +102,8 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                                                        GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1L),
                                                        GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
                                                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
-                                                       new int[]{10000, 7000, 4000},
-                                                       800,
+                                                         new int[]{7500, 7500, 2500},
+                                                       400,
                                                        8);
                 } else {
                     GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, aStack),
@@ -111,8 +111,8 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                                                        GT_OreDictUnificator.get(OrePrefixes.dustPure, aMaterial, 1L),
                                                        GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
                                                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
-                                                       new int[]{10000, 7000, 4000},
-                                                       800,
+                                                        new int[]{7500, 7500, 2500},
+                                                       400,
                                                        8);
                 }
             } else {
@@ -122,8 +122,8 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                                                        GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1L),
                                                        GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
                                                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
-                                                       new int[]{10000, 7000, 4000},
-                                                       800,
+                                                          new int[]{7500, 7500, 2500},
+                                                       400,
                                                        8);
                 } else {
                     GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, aStack),
@@ -131,8 +131,8 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                                                        GT_OreDictUnificator.get(OrePrefixes.dustPure, aMaterial, 1L),
                                                        GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
                                                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
-                                                       new int[]{10000, 7000, 4000},
-                                                       800,
+                                                        new int[]{7500, 7500, 2500},
+                                                        400,
                                                        8);
                 }
             }
@@ -146,8 +146,8 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                                                        GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1L),
                                                        GT_OreDictUnificator.get(OrePrefixes.dust, tMaterial.mMacerateInto, 1L),
                                                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
-                                                       new int[]{10000, 7000, 4000},
-                                                       800,
+                                                        new int[]{7500, 7500, 2500},
+                                                       400,
                                                        8);
                 } else {
                     GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, aStack),
@@ -155,8 +155,8 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                                                        GT_OreDictUnificator.get(OrePrefixes.dustPure, aMaterial, 1L),
                                                        GT_OreDictUnificator.get(OrePrefixes.dust, tMaterial.mMacerateInto, 1L),
                                                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
-                                                       new int[]{10000, 7000, 4000},
-                                                       800,
+                                                         new int[]{7500, 7500, 2500},
+                                                       400,
                                                        8);
                 }
             }
@@ -169,7 +169,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                                                        GT_OreDictUnificator.get(OrePrefixes.dust, tMaterial.mMacerateInto, 1L),
                                                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
                                                        new int[]{10000, 9900, 4000},
-                                                       800,
+                                                       400,
                                                        8);
                 } else {
                     GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, aStack),
@@ -178,7 +178,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                                                        GT_OreDictUnificator.get(OrePrefixes.dust, tMaterial.mMacerateInto, 1L),
                                                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
                                                        new int[]{10000, 9900, 4000},
-                                                       800,
+                                                       400,
                                                        8);
                 }
             }
@@ -190,8 +190,8 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                                                            GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1L),
                                                            GT_OreDictUnificator.get(OrePrefixes.dust, tMaterial.mMacerateInto, 1L),
                                                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
-                                                           new int[]{10000, 7000, 4000},
-                                                           800,
+                                                            new int[]{7500, 7500, 2500},
+                                                           400,
                                                            8);
                     } else {
                         GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, aStack),
@@ -199,8 +199,8 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                                                            GT_OreDictUnificator.get(OrePrefixes.dustPure, aMaterial, 1L),
                                                            GT_OreDictUnificator.get(OrePrefixes.dust, tMaterial.mMacerateInto, 1L),
                                                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
-                                                           new int[]{10000, 7000, 4000},
-                                                           800,
+                                                           new int[]{7500, 7500, 2500},
+                                                           400,
                                                            8);
                     }
                 } else {
@@ -210,8 +210,8 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                                                            GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1L),
                                                            GT_OreDictUnificator.get(OrePrefixes.dust, tMaterial.mMacerateInto, 1L),
                                                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
-                                                           new int[]{10000, 7000, 4000},
-                                                           800,
+                                                           new int[]{7500, 7500, 2500},
+                                                           400,
                                                            8);
                     } else {
                         GT_Values.RA.addChemicalBathRecipe(GT_Utility.copyAmount(1L, aStack),
@@ -219,8 +219,8 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                                                            GT_OreDictUnificator.get(OrePrefixes.dustPure, aMaterial, 1L),
                                                            GT_OreDictUnificator.get(OrePrefixes.dust, tMaterial.mMacerateInto, 1L),
                                                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
-                                                           new int[]{10000, 7000, 4000},
-                                                           800,
+                                                           new int[]{7500, 7500, 2500},
+                                                           400,
                                                            8);
                     }
                 }

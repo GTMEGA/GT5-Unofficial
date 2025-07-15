@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeRegistrator {
     public ProcessingCrushedOre() {
 		OrePrefixes.crushedCentrifuged.add(this);
+		OrePrefixes.oreChunk.add(this);
         OrePrefixes.crushedPurified.add(this);
     }
 
@@ -26,9 +27,17 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
 				//TODO: Implement a +1% per tier chance for this maceration step
 				GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, aStack),
                                                      GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
-                                                     GT_OreDictUnificator.get(OrePrefixes.dust, GT_Utility.selectItemInList(2, aMaterial.mMacerateInto, aMaterial.mOreByProducts), 1L),
-                                                     10,
+                                                     GT_OreDictUnificator.get(OrePrefixes.dust, GT_Utility.selectItemInList(2, aMaterial.mMacerateInto, aMaterial.mMacerateInto), 1L),
+                                                     //GT_OreDictUnificator.get(OrePrefixes.dust, GT_Utility.selectItemInList(2, aMaterial.mMacerateInto, aMaterial.mOreByProducts), 1L),
+                                                     10 * aMaterial.mOreMultiplier,
                                                      false);
+			case oreChunk:
+				//TODO: Implement a +1% per tier chance for this maceration step
+				GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, aStack),
+						GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial.mMacerateInto, 2L * aMaterial.mOreMultiplier),
+						GT_OreDictUnificator.get(OrePrefixes.crushed, GT_Utility.selectItemInList(2, aMaterial.mMacerateInto, aMaterial.mMacerateInto), 1L * aMaterial.mOreMultiplier),
+						10,
+						false);
 				break;
 			case crushedPurified:
 				GT_ModHandler.addThermalCentrifugeRecipe(GT_Utility.copyAmount(1L, aStack),
