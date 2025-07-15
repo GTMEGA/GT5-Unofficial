@@ -23,6 +23,9 @@ import static gregtech.api.enums.GT_Values.oreveinPlacerOres;
 import static gregtech.api.enums.GT_Values.oreveinPlacerOresMultiplier;
 
 public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
+    // This is probably not going to work.  Trying to create a fake orevein to put into hashtable when there will be no ores in a vein.
+    public static GT_Worldgen_GT_Ore_Layer EMPTY_VEIN = new GT_Worldgen_GT_Ore_Layer("empty_vein", false, 0, 255, 0, 255, 16, false, false, false, Materials.Empty, Materials.Empty, Materials.Empty, Materials.Empty);
+
     public static ArrayList<GT_Worldgen_GT_Ore_Layer> sList = new ArrayList<>();
     public static int sWeight = 0;
     public final short mMinY;
@@ -94,9 +97,9 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
 
     @Override
     public WorldGenResult executeWorldgenChunkified(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX, int aChunkZ, int aSeedX, int aSeedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
-        if( mWorldGenName.equals("NoOresInVein") ) {
+        if (EMPTY_VEIN.mWorldGenName.equals(this.mWorldGenName)) {
             if (debugOrevein) GT_Log.out.println(
-                            " NoOresInVein"
+                            " empty_vein"
             );
             // This is a special empty orevein
             new WorldGenResult(WorldGenStatus.ORE_PLACED, 0);

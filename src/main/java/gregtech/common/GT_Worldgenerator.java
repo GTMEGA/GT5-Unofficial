@@ -36,8 +36,6 @@ public class GT_Worldgenerator implements IWorldGenerator {
     private static boolean endAsteroids = true;
     public static List<Runnable> mList = new ArrayList<>();
     public static HashSet<Long> ProcChunks = new HashSet<Long>();
-    // This is probably not going to work.  Trying to create a fake orevein to put into hashtable when there will be no ores in a vein.
-    public static GT_Worldgen_GT_Ore_Layer noOresInVein = new GT_Worldgen_GT_Ore_Layer( "NoOresInVein", false, 0, 255, 0, 255, 16,  false, false, false, Materials.Aluminium, Materials.Aluminium, Materials.Aluminium, Materials.Aluminium);
     public static Hashtable<Long, GT_Worldgen_GT_Ore_Layer> validOreveins = new Hashtable(1024);
     public boolean mIsGenerating = false;
     public static final Object listLock = new Object();
@@ -282,7 +280,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                               placementAttempts,
                                               tDimensionName);
                         }
-                        validOreveins.put(oreveinSeed, noOresInVein );
+                        validOreveins.put(oreveinSeed, GT_Worldgen_GT_Ore_Layer.EMPTY_VEIN );
                     }
                 } else if (oreveinPercentageRoll >= oreveinPercentage) {
                     if (debugOrevein) {
@@ -297,7 +295,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                           tDimensionName);
                     }
 
-                    validOreveins.put(oreveinSeed, noOresInVein);
+                    validOreveins.put(oreveinSeed, GT_Worldgen_GT_Ore_Layer.EMPTY_VEIN);
                 }
             } else {
                 // oreseed is located in the previously processed table
@@ -306,7 +304,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                 }
 
                 GT_Worldgen_GT_Ore_Layer tWorldGen = validOreveins.get(oreveinSeed);
-                oreveinRNG.setSeed(oreveinSeed ^ (tWorldGen.mPrimary.mMetaItemSubID));  // Reset RNG to only be based on oreseed X/Z and type of vein
+                oreveinRNG.setSeed(oreveinSeed ^ (tWorldGen.mWorldGenName.hashCode()));  // Reset RNG to only be based on oreseed X/Z and type of vein
 
                 val result = tWorldGen.executeWorldgenChunkified(this.mWorld, oreveinRNG, this.mBiome, this.mDimensionType, this.mX * 16, this.mZ * 16, oreseedX * 16, oreseedZ * 16, this.mChunkGenerator, this.mChunkProvider);
 

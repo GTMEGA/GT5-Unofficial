@@ -6,6 +6,7 @@ import lombok.val;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 
 public class GT_MEGA_Command_ReScanOreVein extends SubCommand {
@@ -83,5 +84,11 @@ public class GT_MEGA_Command_ReScanOreVein extends SubCommand {
                 GT_OreVeinLocations.scanSlurryInChunkAt(world, chunkX, chunkZ);
             }
         }
+
+        val chunkCoord = new ChunkCoordIntPair(centerChunkX, centerChunkZ);
+        val veinData = GT_OreVeinLocations.RecordedOreVeinInChunk.get()
+                                          .get(world.provider.dimensionId, chunkCoord);
+
+        GT_OreVeinLocations.updateClients(world.provider.dimensionId, chunkCoord, veinData);
     }
 }
