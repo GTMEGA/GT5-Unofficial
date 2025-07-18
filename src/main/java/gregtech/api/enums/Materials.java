@@ -239,7 +239,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Oilsands                = new Materials( 878, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   ,  10,  10,  10,   0,   "Oilsands"                ,   "Oilsands"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
     public static Materials Peanutwood              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Peanutwood"              ,   "Peanut Wood"                   ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
     public static Materials Petroleum               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   , 255, 255, 255,   0,   "Petroleum"               ,   "Petroleum"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
-    public static Materials Quartzite               = new Materials( 523, TextureSet.SET_QUARTZ            ,   1.0F,      0,  1, 1  |4|8                   , 210, 230, 210,   0,   "Quartzite"               ,   "Quartzite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeWhite       );
+    public static Materials Quartzite               = new Materials( 523, TextureSet.SET_QUARTZ            ,   1.0F,      0,  1, 1  |4|8                   , 235, 235, 250,   0,   "Quartzite"               ,   "Crystal Quartz"                ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeWhite       );
     public static Materials Randomite               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 1    |8                   , 255, 255, 255,   0,   "Randomite"               ,   "Randomite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          );
     public static Materials Rubracium               = new Materials( 488, TextureSet.SET_METALLIC          ,   1.0F,    128,  1, 1|2  |8      |64|128      , 151,  45,  45,   0,   "Rubracium"               ,   "Rubracium"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeRed         );
     public static Materials Sand                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  1, 0                         , 255, 255, 255,   0,   "Sand"                    ,   "Sand"                          ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
@@ -646,7 +646,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials QuartzSand              = new Materials( 939, TextureSet.SET_SAND              ,   1.0F,      0,  1, 1    |8                   , 194, 178, 128,   0,   "QuartzSand"              ,   "Quartz Sand"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , 2, Arrays.asList(new MaterialStack(CertusQuartz, 1), new MaterialStack(Quartzite, 1)));
     public static Materials Bastnasite              = new Materials( 905, TextureSet.SET_FINE              ,   1.0F,      0,  2, 1    |8                   , 200, 110,  45,   0,   "Bastnasite"              ,   "Bastnasite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Cerium, 1), new MaterialStack(Carbon, 1), new MaterialStack(Fluorine, 1), new MaterialStack(Oxygen, 3))); // (Ce, La, Y)CO3F
     public static Materials Pentlandite             = new Materials( 909, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 165, 150,   5,   0,   "Pentlandite"             ,   "Pentlandite"                   ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Nickel, 9), new MaterialStack(Sulfur, 8))); // (Fe,Ni)9S8
-    public static Materials Spodumene               = new Materials( 920, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 190, 170, 170,   0,   "Spodumene"               ,   "Spodumene"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Lithium, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Silicon, 2), new MaterialStack(Oxygen, 6))); // LiAl(SiO3)2
+    public static Materials Spodumene               = new Materials( 920, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 190, 170, 170,   0,   "Spodumene"               ,   "Spodumene"                     ,    0,       0,         -1,    0, false, false,   2,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Lithium, 1), new MaterialStack(Aluminium, 1), new MaterialStack(Silicon, 2), new MaterialStack(Oxygen, 6))); // LiAl(SiO3)2
     public static Materials Pollucite               = new Materials( 919, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1    |8                   , 240, 210, 210,   0,   "Pollucite"               ,   "Pollucite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Caesium, 2), new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 4), new MaterialStack(Water, 2), new MaterialStack(Oxygen, 12))); // (Cs,Na)2Al2Si4O12 2H2O (also a source of Rb)
     public static Materials Tantalite               = new Materials( 921, TextureSet.SET_METALLIC          ,   1.0F,      0,  3, 1    |8                   , 145,  80,  40,   0,   "Tantalite"               ,   "Tantalite"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Manganese, 1), new MaterialStack(Tantalum, 2), new MaterialStack(Oxygen, 6))); // (Fe, Mn)Ta2O6 (also source of Nb)
     public static Materials Lepidolite              = new Materials( 907, TextureSet.SET_FINE              ,   1.0F,      0,  2, 1    |8                   , 240,  50, 140,   0,   "Lepidolite"              ,   "Lepidolite"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes._NULL          , 1, Arrays.asList(new MaterialStack(Potassium, 1), new MaterialStack(Lithium, 3), new MaterialStack(Aluminium, 4), new MaterialStack(Fluorine, 2), new MaterialStack(Oxygen, 10))); // K(Li,Al,Rb)3(Al,Si)4O10(F,OH)2
@@ -1132,26 +1132,21 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         InfusedVis.setOreMultiplier(2).setSmeltingMultiplier(2);
         InfusedDull.setOreMultiplier(2).setSmeltingMultiplier(2);
         Salt.setOreMultiplier(2).setSmeltingMultiplier(2);
-        RockSalt.setOreMultiplier(2).setSmeltingMultiplier(2);
         Scheelite.setOreMultiplier(2).setSmeltingMultiplier(2);
         Tungstate.setOreMultiplier(2).setSmeltingMultiplier(2);
         Cassiterite.setOreMultiplier(2).setSmeltingMultiplier(2);
         CassiteriteSand.setOreMultiplier(2).setSmeltingMultiplier(2);
-        NetherQuartz.setOreMultiplier(2).setSmeltingMultiplier(2);
-        CertusQuartz.setOreMultiplier(2).setSmeltingMultiplier(2);
         TricalciumPhosphate.setOreMultiplier(3).setSmeltingMultiplier(3);
         Saltpeter.setOreMultiplier(4).setSmeltingMultiplier(4);
         Apatite.setOreMultiplier(2).setSmeltingMultiplier(2);
-        Electrotine.setOreMultiplier(5).setSmeltingMultiplier(5);
         Redstone.setOreMultiplier(3).setSmeltingMultiplier(3);
         Glowstone.setOreMultiplier(5).setSmeltingMultiplier(5);
-        Sodalite.setOreMultiplier(2).setSmeltingMultiplier(2).setByProductMultiplier(2);
-        Lazurite.setOreMultiplier(2).setSmeltingMultiplier(2).setByProductMultiplier(2);
-        Monazite.setOreMultiplier(8).setSmeltingMultiplier(8).setByProductMultiplier(2);
         Tetrahedrite.setOreMultiplier(2);
-        Pyrite.setOreMultiplier(2);
         Mica.setOreMultiplier(2);
         Asbestos.setOreMultiplier(2);
+        Spodumene.setOreMultiplier(2);
+        Quartzite.setOreMultiplier(3);
+
     }
 
     private static void setEnchantmentKnockbackTools() {
@@ -1164,23 +1159,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void setEnchantmentFortuneTools() {
-        Gold.setEnchantmentForTools(Enchantment.fortune, 2);
-        Brass.setEnchantmentForTools(Enchantment.fortune, 1);
-        BlackBronze.setEnchantmentForTools(Enchantment.fortune, 2);
-        Steel.setEnchantmentForTools(Enchantment.fortune, 1);
-        Diamond.setEnchantmentForTools(Enchantment.fortune, 2);
-        Sapphire.setEnchantmentForTools(Enchantment.fortune, 2);
-        GreenSapphire.setEnchantmentForTools(Enchantment.fortune, 2);
-        Ruby.setEnchantmentForTools(Enchantment.fortune, 2);
-        StainlessSteel.setEnchantmentForTools(Enchantment.fortune, 2);
-        Aluminium.setEnchantmentForTools(Enchantment.fortune, 3);
-        RoseGold.setEnchantmentForTools(Enchantment.fortune, 3);
-        IronWood.setEnchantmentForTools(Enchantment.fortune, 2);
-        Steeleaf.setEnchantmentForTools(Enchantment.fortune, 3);
         Mithril.setEnchantmentForTools(Enchantment.fortune, 4);
-        Vinteum.setEnchantmentForTools(Enchantment.fortune, 3);
-        Thaumium.setEnchantmentForTools(Enchantment.fortune, 4);
-        InfusedWater.setEnchantmentForTools(Enchantment.fortune, 2);
     }
 
     private static void setEnchantmentFireAspectTools() {
