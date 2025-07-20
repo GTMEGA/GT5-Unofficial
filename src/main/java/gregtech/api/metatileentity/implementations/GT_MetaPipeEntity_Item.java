@@ -354,13 +354,6 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
     }
 
     @Override
-    protected void checkConnections() {
-        BaseMetaPipeEntity tBase =(BaseMetaPipeEntity) getBaseMetaTileEntity();
-        GT_Runnable_Cable_Update.setPipeUpdateValues(tBase.getWorld(), new ChunkCoordinates(tBase.xCoord, tBase.yCoord, tBase.zCoord));
-        super.checkConnections();
-    }
-
-    @Override
     public void onMachineBlockUpdate() {
         val node = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).getNode();
         if (node != null)
