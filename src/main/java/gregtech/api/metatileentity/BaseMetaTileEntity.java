@@ -37,8 +37,6 @@ import gregtech.api.util.*;
 import gregtech.common.GT_Client;
 import gregtech.common.GT_Pollution;
 import lombok.val;
-
-import lombok.val;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
@@ -589,7 +587,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                         if (mTickTimer > 5 && cableUpdateDelay == 0) {
                             generatePowerNodes();
                             cableUpdateDelay--;
-                        } else {
+                        } else if (cableUpdateDelay > -5) {
                             cableUpdateDelay--;
                         }
                         if (mTickTimer % 10 == 0) {
@@ -916,7 +914,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             mFacing = aFacing;
             mMetaTileEntity.onFacingChange();
 
-            cableUpdateDelay = 10;
+            if (cableUpdateDelay < 0) cableUpdateDelay = 0;
 
             if (mMetaTileEntity.shouldTriggerBlockUpdate()) {
                 // If we're triggering a block update this will call onMachineBlockUpdate()
@@ -1021,7 +1019,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public void onMachineBlockUpdate() {
         if (canAccessData()) mMetaTileEntity.onMachineBlockUpdate();
-        cableUpdateDelay = 10;
+        if (cableUpdateDelay < 0) cableUpdateDelay = 0;
     }
 
     /**
@@ -1476,11 +1474,11 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                     	if(aPlayer.isSneaking() && mMetaTileEntity instanceof GT_MetaTileEntity_BasicMachine && ((GT_MetaTileEntity_BasicMachine)mMetaTileEntity).setMainFacing(GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ))){
                             GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
-                            cableUpdateDelay = 10;
+                            if (cableUpdateDelay < 0) cableUpdateDelay = 0;
                     	}else if (mMetaTileEntity.onWrenchRightClick(aSide, GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ), aPlayer, aX, aY, aZ)) {
                             GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
-                            cableUpdateDelay = 10;
+                            if (cableUpdateDelay < 0) cableUpdateDelay = 0;
                         }
                         return true;
                     }
@@ -1534,8 +1532,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(103), 3.0F, -1, xCoord, yCoord, zCoord);
                             issueBlockUpdate();
                         }
-
-                        cableUpdateDelay = 10;
+                        if (cableUpdateDelay < 0) cableUpdateDelay = 0;
                         return true;
                     }
 
@@ -1545,8 +1542,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                             //logic handled internally
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
                         }
-
-                        cableUpdateDelay = 10;
+                        if (cableUpdateDelay < 0) cableUpdateDelay = 0;
                         return true;
                     }
 
