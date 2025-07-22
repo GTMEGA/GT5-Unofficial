@@ -114,7 +114,7 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.alunite", true, 80, 200, 80, 3, 24, true, false, false, Materials.Alunite, Materials.Kyanite, Materials.Cassiterite, Materials.Chalcopyrite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.garnet", true, 50, 60, 45, 3, 24, true, false, false, Materials.GarnetSand, Materials.Asbestos, Materials.Asbestos, Materials.GarnetRed);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.mica", true, 20, 40, 50, 5, 24, true, false, false, Materials.Kyanite, Materials.Mica, Materials.Kyanite, Materials.Cassiterite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.quartz", true, 10, 30, 20, 5, 20, true, false, false, Materials.Quartzite, Materials.Quartzite, Materials.Quartzite, Materials.NetherQuartz);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.quartz", true, 10, 30, 15, 5, 20, true, false, false, Materials.Quartzite, Materials.Quartzite, Materials.Quartzite, Materials.NetherQuartz);
 
             //Required For recipes and compat for now.
             //TODO: Remove for 1.8.x

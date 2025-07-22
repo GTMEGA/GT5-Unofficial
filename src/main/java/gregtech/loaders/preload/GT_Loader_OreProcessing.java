@@ -24,7 +24,7 @@ public class GT_Loader_OreProcessing
         new ProcessingDirty();
         new ProcessingDust();
         new ProcessingDye();
-        new ProcessingFoil();
+//        new ProcessingFoil();
         new ProcessingFineWire();
         new ProcessingFood();
         new ProcessingLens();
@@ -35,7 +35,7 @@ public class GT_Loader_OreProcessing
         new ProcessingItem();
         new ProcessingLog();
         new ProcessingTransforming();
-        new ProcessingNugget();
+//        new ProcessingNugget();
         new ProcessingOre();
 //        new ProcessingOrePoor();
         new ProcessingOreSmelting();
@@ -44,14 +44,14 @@ public class GT_Loader_OreProcessing
         new ProcessingPlate();
         new ProcessingPure();
         new ProcessingRecycling();
-        new ProcessingRound();
+//        new ProcessingRound();
         new ProcessingRotor();
         new ProcessingSand();
         new ProcessingSaplings();
         new ProcessingScrew();
         new ProcessingSlab();
         new ProcessingStick();
-        new ProcessingStickLong();
+//        new ProcessingStickLong();
         new ProcessingStone();
         new ProcessingStoneCobble();
         new ProcessingStoneVarious();
