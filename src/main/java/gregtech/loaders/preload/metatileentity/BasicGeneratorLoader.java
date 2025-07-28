@@ -56,23 +56,23 @@ public final class BasicGeneratorLoader {
         MagicEnergyAbsorber_MV.set(new GT_MetaTileEntity_MagicalEnergyAbsorber(1128, "basicgenerator.magicenergyabsorber.tier.02", "Adept Magic Energy Absorber", 2).getStackForm(1L));
         MagicEnergyAbsorber_HV.set(new GT_MetaTileEntity_MagicalEnergyAbsorber(1129, "basicgenerator.magicenergyabsorber.tier.03", "Master Magic Energy Absorber", 3).getStackForm(1L));
         MagicEnergyAbsorber_EV.set(new GT_MetaTileEntity_MagicalEnergyAbsorber(1130, "basicgenerator.magicenergyabsorber.tier.04", "Grandmaster Magic Energy Absorber", 4).getStackForm(1L));
-        if (!Loader.isModLoaded("Thaumcraft")) {
-            addCraftingRecipe(MagicEnergyConverter_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', Hull_LV, 'B', new ItemStack(Blocks.beacon), 'C', circuitPower.get(PWR_MV), 'T', Field_Generator_LV, 'F', plate.get(Platinum)});
-            addCraftingRecipe(MagicEnergyConverter_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', Hull_MV, 'B', new ItemStack(Blocks.beacon), 'C', circuitPower.get(PWR_HV), 'T', Field_Generator_MV, 'F', plate.get(Iridium)});
-            addCraftingRecipe(MagicEnergyConverter_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', Hull_HV, 'B', new ItemStack(Blocks.beacon), 'C', circuitPower.get(PWR_EV), 'T', Field_Generator_HV, 'F', plate.get(Neutronium)});
-
-            addCraftingRecipe(MagicEnergyAbsorber_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', Hull_LV, 'B', MagicEnergyConverter_LV.get(1L), 'C', circuitPower.get(PWR_MV), 'T', Field_Generator_LV, 'F', plate.get(Platinum)});
-            addCraftingRecipe(MagicEnergyAbsorber_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', Hull_MV, 'B', MagicEnergyConverter_MV.get(1L), 'C', circuitPower.get(PWR_HV), 'T', Field_Generator_MV, 'F', plate.get(Iridium)});
-            addCraftingRecipe(MagicEnergyAbsorber_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', Hull_HV, 'B', MagicEnergyConverter_MV.get(1L), 'C', circuitPower.get(PWR_EV), 'T', Field_Generator_HV, 'F', plate.get(Europium)});
-            addCraftingRecipe(MagicEnergyAbsorber_EV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', Hull_HV, 'B', MagicEnergyConverter_HV.get(1L), 'C', circuitPower.get(PWR_IV), 'T', Field_Generator_EV, 'F', plate.get(Neutronium)});
-        }
+//        if (!Loader.isModLoaded("Thaumcraft")) {
+//            addCraftingRecipe(MagicEnergyConverter_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', Hull_LV, 'B', new ItemStack(Blocks.beacon), 'C', circuitPower.get(PWR_MV), 'T', Field_Generator_LV, 'F', plate.get(Platinum)});
+//            addCraftingRecipe(MagicEnergyConverter_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', Hull_MV, 'B', new ItemStack(Blocks.beacon), 'C', circuitPower.get(PWR_HV), 'T', Field_Generator_MV, 'F', plate.get(Iridium)});
+//            addCraftingRecipe(MagicEnergyConverter_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', Hull_HV, 'B', new ItemStack(Blocks.beacon), 'C', circuitPower.get(PWR_EV), 'T', Field_Generator_HV, 'F', plate.get(Neutronium)});
+//
+//            addCraftingRecipe(MagicEnergyAbsorber_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', Hull_LV, 'B', MagicEnergyConverter_LV.get(1L), 'C', circuitPower.get(PWR_MV), 'T', Field_Generator_LV, 'F', plate.get(Platinum)});
+//            addCraftingRecipe(MagicEnergyAbsorber_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', Hull_MV, 'B', MagicEnergyConverter_MV.get(1L), 'C', circuitPower.get(PWR_HV), 'T', Field_Generator_MV, 'F', plate.get(Iridium)});
+//            addCraftingRecipe(MagicEnergyAbsorber_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', Hull_HV, 'B', MagicEnergyConverter_MV.get(1L), 'C', circuitPower.get(PWR_EV), 'T', Field_Generator_HV, 'F', plate.get(Europium)});
+//            addCraftingRecipe(MagicEnergyAbsorber_EV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"CTC", "FMF", "CBC", 'M', Hull_HV, 'B', MagicEnergyConverter_HV.get(1L), 'C', circuitPower.get(PWR_IV), 'T', Field_Generator_EV, 'F', plate.get(Neutronium)});
+//        }
         Generator_Plasma_IV.set(new GT_MetaTileEntity_PlasmaGenerator(1196, "basicgenerator.plasmagenerator.tier.05",   "Plasma Generator MKI", 4).getStackForm(1L));
         Generator_Plasma_LuV.set(new GT_MetaTileEntity_PlasmaGenerator(1197, "basicgenerator.plasmagenerator.tier.06",  "Plasma Generator MKII", 5).getStackForm(1L));
         Generator_Plasma_ZPMV.set(new GT_MetaTileEntity_PlasmaGenerator(1198, "basicgenerator.plasmagenerator.tier.07", "Plasma Generator MKIII", 6).getStackForm(1L));
 
-        addCraftingRecipe(Generator_Plasma_IV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"UCU", "FMF", "WCW", 'M', Hull_LuV, 'F', Field_Generator_HV, 'C', circuitPower.get(PWR_IV), 'W', cableGt04.get(Tungsten), 'U', stick.get(Plutonium241)});
-        addCraftingRecipe(Generator_Plasma_LuV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"UCU", "FMF", "WCW", 'M', Hull_ZPM, 'F', Field_Generator_EV, 'C', circuitPower.get(PWR_LUV), 'W', wireGt04.get(VanadiumGallium), 'U', stick.get(Europium)});
-        addCraftingRecipe(Generator_Plasma_ZPMV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"UCU", "FMF", "WCW", 'M', Hull_UV, 'F', Field_Generator_IV, 'C', circuitPower.get(PWR_ZPM), 'W', wireGt04.get(Naquadah), 'U', stick.get(Americium)});
+//        addCraftingRecipe(Generator_Plasma_IV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"UCU", "FMF", "WCW", 'M', Hull_LuV, 'F', Field_Generator_HV, 'C', circuitPower.get(PWR_IV), 'W', cableGt04.get(Tungsten), 'U', stick.get(Plutonium241)});
+//        addCraftingRecipe(Generator_Plasma_LuV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"UCU", "FMF", "WCW", 'M', Hull_ZPM, 'F', Field_Generator_EV, 'C', circuitPower.get(PWR_LUV), 'W', wireGt04.get(VanadiumGallium), 'U', stick.get(Europium)});
+//        addCraftingRecipe(Generator_Plasma_ZPMV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"UCU", "FMF", "WCW", 'M', Hull_UV, 'F', Field_Generator_IV, 'C', circuitPower.get(PWR_ZPM), 'W', wireGt04.get(Naquadah), 'U', stick.get(Americium)});
         LOADED = true;
     }
 }
