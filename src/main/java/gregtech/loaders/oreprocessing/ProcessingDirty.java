@@ -22,6 +22,9 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, net.minecraft.item.ItemStack aStack) {
+        if (!aMaterial.contains(SubTag.YES_ORES)){
+            return;
+        }
         GT_Values.RA.addForgeHammerRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L), 10, 16);
 
         GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, aStack),

@@ -51,15 +51,15 @@ public enum OrePrefixes {
     crystalline("Crystallised Metals", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1),
     cleanGravel("Clean Gravels", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1),
     dirtyGravel("Dirty Gravels", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1),
-    ingotQuintuple("5x Ingots", "Quintuple ", " Ingot", true, true, false, false, false, false, true, true, false, false, B[1], M * 5, 12, 16), // A quintuple Ingot.
-    ingotQuadruple("4x Ingots", "Quadruple ", " Ingot", true, true, false, false, false, false, true, true, false, false, B[1], M * 4, 16, 15), // A quadruple Ingot.
+    ingotQuintuple("5x Ingots", "Quintuple ", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 5, 12, 16), // A quintuple Ingot.
+    ingotQuadruple("4x Ingots", "Quadruple ", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 4, 16, 15), // A quadruple Ingot.
     @Deprecated ingotQuad("4x Ingots", "Quadruple ", " Ingot", false, false, false, false, false, false, false, false, false, false, B[1], -1, 16, 15),
-    ingotTriple("3x Ingots", "Triple ", " Ingot", true, true, false, false, false, false, true, false, false, false, B[1], M * 3, 21, 14), // A triple Ingot.
-    ingotDouble("2x Ingots", "Double ", " Ingot", true, true, false, false, false, false, true, true, false, false, B[1], M * 2, 32, 13), // A double Ingot. Introduced by TerraFirmaCraft
+    ingotTriple("3x Ingots", "Triple ", " Ingot", true, true, false, false, false, false, false, false, false, false, B[1], M * 3, 21, 14), // A triple Ingot.
+    ingotDouble("2x Ingots", "Double ", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 2, 32, 13), // A double Ingot. Introduced by TerraFirmaCraft
     ingotHot("Hot Ingots", "Hot ", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 1, 64, 12), // A hot Ingot, which has to be cooled down by a Vacuum Freezer.
     ingot("Ingots", "", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 1, 64, 11), // A regular Ingot. Introduced by Eloraam
-    gemChipped("Chipped Gemstones", "Chipped ", "", true, true, true, false, false, false, true, true, false, false, B[2], M / 4, 64, 59), // A regular Gem worth one small Dust. Introduced by TerraFirmaCraft
-    gemFlawed("Flawed Gemstones", "Flawed ", "", true, true, true, false, false, false, true, true, false, false, B[2], M / 2, 64, 60), // A regular Gem worth two small Dusts. Introduced by TerraFirmaCraft
+    gemChipped("Chipped Gemstones", "Chipped ", "", true, true, true, false, false, false, false, true, false, false, B[2], M / 4, 64, 59), // A regular Gem worth one small Dust. Introduced by TerraFirmaCraft
+    gemFlawed("Flawed Gemstones", "Flawed ", "", true, true, true, false, false, false, false, true, false, false, B[2], M / 2, 64, 60), // A regular Gem worth two small Dusts. Introduced by TerraFirmaCraft
     gemFlawless("Flawless Gemstones", "Flawless ", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 2, 32, 61), // A regular Gem worth two Dusts. Introduced by TerraFirmaCraft
     gemExquisite("Exquisite Gemstones", "Exquisite ", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 4, 16, 62), // A regular Gem worth four Dusts. Introduced by TerraFirmaCraft
     gem("Gemstones", "", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 1, 64, 8), // A regular Gem worth one Dust. Introduced by Eloraam
@@ -73,29 +73,29 @@ public enum OrePrefixes {
     nugget("Nuggets", "", " Nugget", true, true, false, false, false, false, false, true, false, false, B[1], M / 9, 64, 9), // A Nugget. Introduced by Eloraam
     plateAlloy("Alloy Plates", "", "", true, false, false, false, false, false, false, false, false, false, B[1], -1, 64, 17), // Special Alloys have this prefix.
     plateSteamcraft("Steamcraft Plates", "", "", false, false, false, false, false, false, false, false, false, false, B[1], -1, 64, 17),
-    plateDense("Dense Plates", "Dense ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 9, 8, 22), // 9 Plates combined in one Item.
-    plateQuintuple("5x Plates", "Quintuple ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 5, 12, 21),
-    plateQuadruple("4x Plates", "Quadruple ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 4, 16, 20),
+    plateDense("Dense Plates", "Dense ", " Plate", true, true, false, false, false, false, false, true, false, false, B[1], M * 9, 8, 22), // 9 Plates combined in one Item.
+    plateQuintuple("5x Plates", "Quintuple ", " Plate", true, true, false, false, false, false, false, true, false, false, B[1], M * 5, 12, 21),
+    plateQuadruple("4x Plates", "Quadruple ", " Plate", true, true, false, false, false, false, false, true, false, false, B[1], M * 4, 16, 20),
     @Deprecated plateQuad("4x Plates", "", "", false, false, false, false, false, false, false, false, false, false, B[1], -1, 16, 20),
-    plateTriple("3x Plates", "Triple ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 3, 21, 19),
-    plateDouble("2x Plates", "Double ", " Plate", true, true, false, false, false, false, true, true, false, false, B[1], M * 2, 32, 18),
+    plateTriple("3x Plates", "Triple ", " Plate", true, true, false, false, false, false, false, true, false, false, B[1], M * 3, 21, 19),
+    plateDouble("2x Plates", "Double ", " Plate", true, true, false, false, false, false, false, true, false, false, B[1], M * 2, 32, 18),
     plate("Plates", "", " Plate", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M * 1, 64, 17), // Regular Plate made of one Ingot/Dust. Introduced by Calclavia
-    itemCasing("Casings", "", " Casing", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 2, 64, 10), // Casing made of 1/2 Ingot/Dust
-    foil("Foils", "", " Foil", true, true, false, false, false, false, true, true, false, false, B[1], M / 4, 64, 29), // Foil made of 1/4 Ingot/Dust.
-    stickLong("Long Sticks/Rods", "Long ", " Rod", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M * 1, 64, 54), // Stick made of an Ingot.
-    stick("Sticks/Rods", "", " Rod", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 2, 64, 23), // Stick made of half an Ingot. Introduced by Eloraam
-    round("Rounds", "", " Round", true, true, false, false, false, false, true, true, false, false, B[1], M / 9, 64, 25), // consisting out of one Nugget.
-    bolt("Bolts", "", " Bolt", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 8, 64, 26), // consisting out of 1/8 Ingot or 1/4 Stick.
+    itemCasing("Casings", "", " Casing", true, true, false, false, false, false, false, true, false, false, B[1] | B[2], M / 2, 64, 10), // Casing made of 1/2 Ingot/Dust
+    foil("Foils", "", " Foil", true, true, false, false, false, false, false, true, false, false, B[1], M / 4, 64, 29), // Foil made of 1/4 Ingot/Dust.
+    stickLong("Long Sticks/Rods", "Long ", " Rod", true, true, false, false, false, false, false, true, false, false, B[1] | B[2], M * 1, 64, 54), // Stick made of an Ingot.
+    stick("Sticks/Rods", "", " Rod", true, true, false, false, false, false, false, true, false, false, B[1] | B[2], M / 2, 64, 23), // Stick made of half an Ingot. Introduced by Eloraam
+    round("Rounds", "", " Round", true, true, false, false, false, false, false, true, false, false, B[1], M / 9, 64, 25), // consisting out of one Nugget.
+    bolt("Bolts", "", " Bolt", true, true, false, false, false, false, false, true, false, false, B[1] | B[2], M / 8, 64, 26), // consisting out of 1/8 Ingot or 1/4 Stick.
     comb("Combs", "", " Comb", false, false, false, false, false, false, false, true, false, false, B[1] | B[2], M, 64, 101), // contain dusts
-    screw("Screws", "", " Screw", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 9, 64, 27), // consisting out of a Bolt.
-    ring("Rings", "", " Ring", true, true, false, false, false, false, true, true, false, false, B[1], M / 4, 64, 28), // consisting out of 1/2 Stick.
-    springSmall("Small Springs", "Small ", " Spring", true, true, false, false, false, false, true, true, false, false, B[1], M / 4, 64, 55), // consisting out of 1 Fine Wire.
-    spring("Springs", "", " Spring", true, true, false, false, false, false, true, true, false, false, B[1], M * 1, 64, 56), // consisting out of 2 Sticks.
-    wireFine("Fine Wires", "Fine ", " Wire", true, true, false, false, false, false, true, true, false, false, B[1], M / 8, 64, 51), // consisting out of 1/8 Ingot or 1/4 Wire.
-    rotor("Rotors", "", " Rotor", true, true, false, false, false, false, true, true, false, false, B[7], M * 4 + M / 4, 16, 53), // consisting out of 4 Plates, 1 Ring and 1 Screw.
+    screw("Screws", "", " Screw", true, true, false, false, false, false, false, true, false, false, B[1] | B[2], M / 9, 64, 27), // consisting out of a Bolt.
+    ring("Rings", "", " Ring", true, true, false, false, false, false, false, true, false, false, B[1], M / 4, 64, 28), // consisting out of 1/2 Stick.
+    springSmall("Small Springs", "Small ", " Spring", true, true, false, false, false, false, false, true, false, false, B[1], M / 4, 64, 55), // consisting out of 1 Fine Wire.
+    spring("Springs", "", " Spring", true, true, false, false, false, false, false, true, false, false, B[1], M * 1, 64, 56), // consisting out of 2 Sticks.
+    wireFine("Fine Wires", "Fine ", " Wire", true, true, false, false, false, false, false, true, false, false, B[1], M / 8, 64, 51), // consisting out of 1/8 Ingot or 1/4 Wire.
+    rotor("Rotors", "", " Rotor", true, true, false, false, false, false, true, true, false, false, B[7], M * 4, 16, 53), // consisting out of 4 Plates, 1 Ring and 1 Screw.
     gearGtSmall("Gears", "", " Gear", true, true, false, false, false, false, true, true, false, false, B[7], M * 1, 64, 52),
-    gearGt("Old Gears", "Deprecated ", " Gear", true, true, false, false, false, false, true, true, false, false, B[7], M * 4, 16, 63), // Introduced by me because BuildCraft has ruined the gear Prefix...
-    lens("Lenses", "", " Lens", true, true, false, false, false, false, true, true, false, false, B[2], (M * 3) / 4, 64, 24), // 3/4 of a Plate or Gem used to shape a Lense. Normally only used on Transparent Materials.
+    gearGt("Old Gears", "Deprecated ", " Gear", true, true, false, false, false, false, false, true, false, false, B[7], M * 4, 16, 63), // Introduced by me because BuildCraft has ruined the gear Prefix...
+    lens("Lenses", "", " Lens", true, true, false, false, false, false, false, true, false, false, B[2], (M * 3) / 4, 64, 24), // 3/4 of a Plate or Gem used to shape a Lense. Normally only used on Transparent Materials.
     crateGtDust("Crates of Dust", "Crate of ", " Dust", true, true, false, true, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], -1, 64, 96), // consisting out of 16 Dusts.
     crateGtPlate("Crates of Plates", "Crate of ", " Plate", true, true, false, true, false, false, false, true, false, false, B[1] | B[2], -1, 64, 99), // consisting out of 16 Plates.
     crateGtIngot("Crates of Ingots", "Crate of ", " Ingot", true, true, false, true, false, false, false, true, false, false, B[1], -1, 64, 97), // consisting out of 16 Ingots.
@@ -111,33 +111,33 @@ public enum OrePrefixes {
     bulletGtSmall("Small Bullets", "Small ", " Bullet", true, true, false, false, true, false, true, false, true, false, B[6] | B[8], M / 9, 64, -1),
     bulletGtMedium("Medium Bullets", "Medium ", " Bullet", true, true, false, false, true, false, true, false, true, false, B[6] | B[8], M / 6, 64, -1),
     bulletGtLarge("Large Bullets", "Large ", " Bullet", true, true, false, false, true, false, true, false, true, false, B[6] | B[8], M / 3, 64, -1),
-    arrowGtWood("Regular Arrows", "", " Arrow", true, true, false, false, true, false, true, false, true, false, B[6], M / 4, 64, 57), // Arrow made of 1/4 Ingot/Dust + Wooden Stick.
-    arrowGtPlastic("Light Arrows", "Light ", " Arrow", true, true, false, false, true, false, true, false, true, false, B[6], M / 4, 64, 58), // Arrow made of 1/4 Ingot/Dust + Plastic Stick.
+    arrowGtWood("Regular Arrows", "", " Arrow", true, true, false, false, true, false, false, false, true, false, B[6], M / 4, 64, 57), // Arrow made of 1/4 Ingot/Dust + Wooden Stick.
+    arrowGtPlastic("Light Arrows", "Light ", " Arrow", true, true, false, false, true, false, false, false, true, false, B[6], M / 4, 64, 58), // Arrow made of 1/4 Ingot/Dust + Plastic Stick.
     arrow("Arrows", "", "", false, false, true, false, false, false, false, false, true, false, B[6], -1, 64, 57),
-    toolHeadArrow("Arrow Heads", "", " Arrow Head", true, true, false, false, false, false, true, true, false, false, B[6], M / 4, 64, 46), // consisting out of 1/4 Ingot.
-    toolHeadSword("Sword Blades", "", " Sword Blade", true, true, false, false, false, false, true, true, false, false, B[6], M * 2, 16, 32), // consisting out of 2 Ingots.
-    toolHeadPickaxe("Pickaxe Heads", "", " Pickaxe Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 3, 16, 33), // consisting out of 3 Ingots.
-    toolHeadShovel("Shovel Heads", "", " Shovel Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 1, 16, 34), // consisting out of 1 Ingots.
-    toolHeadUniversalSpade("Universal Spade Heads", "", " Universal Spade Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 1, 16, 43), // consisting out of 1 Ingots.
-    toolHeadAxe("Axe Heads", "", " Axe Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 3, 16, 35), // consisting out of 3 Ingots.
-    toolHeadHoe("Hoe Heads", "", " Hoe Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 2, 16, 36), // consisting out of 2 Ingots.
-    toolHeadSense("Sense Blades", "", " Sense Blade", true, true, false, false, false, false, true, true, false, false, B[6], M * 3, 16, 44), // consisting out of 3 Ingots.
-    toolHeadFile("File Heads", "", " File Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 2, 16, 38), // consisting out of 2 Ingots.
-    toolHeadHammer("Hammer Heads", "", " Hammer Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
-    toolHeadPlow("Plow Heads", "", " Plow Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 4, 16, 45), // consisting out of 4 Ingots.
-    toolHeadSaw("Saw Blades", "", " Saw Blade", true, true, false, false, false, false, true, true, false, false, B[6], M * 2, 16, 39), // consisting out of 2 Ingots.
-    toolHeadBuzzSaw("Buzzsaw Blades", "", " Buzzsaw Blade", true, true, false, false, false, false, true, true, false, false, B[6], M * 4, 16, 48), // consisting out of 4 Ingots.
-    toolHeadScrewdriver("Screwdriver Tips", "", " Screwdriver Tip", true, true, false, false, false, false, true, false, false, false, B[6], M * 1, 16, 47), // consisting out of 1 Ingots.
-    toolHeadDrill("Drill Tips", "", " Drill Tip", true, true, false, false, false, false, true, true, false, false, B[6], M * 4, 16, 40), // consisting out of 4 Ingots.
-    toolHeadChainsaw("Chainsaw Tips", "", " Chainsaw Tip", true, true, false, false, false, false, true, true, false, false, B[6], M * 2, 16, 41), // consisting out of 2 Ingots.
-    toolHeadWrench("Wrench Tips", "", " Wrench Tip", true, true, false, false, false, false, true, true, false, false, B[6], M * 4, 16, 42), // consisting out of 4 Ingots.
-    turbineBlade("Turbine Blades", "", " Turbine Blade", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 64, 100), // consisting out of 6 Ingots.
-    toolSword("Swords", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 2, 1, -1), // vanilly Sword
-    toolPickaxe("Pickaxes", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 3, 1, -1), // vanilly Pickaxe
-    toolShovel("Shovels", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 1, 1, -1), // vanilly Shovel
-    toolAxe("Axes", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 3, 1, -1), // vanilly Axe
-    toolHoe("Hoes", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 2, 1, -1), // vanilly Hoe
-    toolShears("Shears", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 2, 1, -1), // vanilly Shears
+    toolHeadArrow("Arrow Heads", "", " Arrow Head", true, true, false, false, false, false, false, true, false, false, B[6], M / 4, 64, 46), // consisting out of 1/4 Ingot.
+    toolHeadSword("Sword Blades", "", " Sword Blade", true, true, false, false, false, false, false, true, false, false, B[6], M * 2, 16, 32), // consisting out of 2 Ingots.
+    toolHeadPickaxe("Pickaxe Heads", "", " Pickaxe Head", true, true, false, false, false, false, false, true, false, false, B[6], M * 3, 16, 33), // consisting out of 3 Ingots.
+    toolHeadShovel("Shovel Heads", "", " Shovel Head", true, true, false, false, false, false, false, true, false, false, B[6], M * 1, 16, 34), // consisting out of 1 Ingots.
+    toolHeadUniversalSpade("Universal Spade Heads", "", " Universal Spade Head", true, true, false, false, false, false, false, true, false, false, B[6], M * 1, 16, 43), // consisting out of 1 Ingots.
+    toolHeadAxe("Axe Heads", "", " Axe Head", true, true, false, false, false, false, false, true, false, false, B[6], M * 3, 16, 35), // consisting out of 3 Ingots.
+    toolHeadHoe("Hoe Heads", "", " Hoe Head", true, true, false, false, false, false, false, true, false, false, B[6], M * 2, 16, 36), // consisting out of 2 Ingots.
+    toolHeadSense("Sense Blades", "", " Sense Blade", true, true, false, false, false, false, false, true, false, false, B[6], M * 3, 16, 44), // consisting out of 3 Ingots.
+    toolHeadFile("File Heads", "", " File Head", true, true, false, false, false, false, false, true, false, false, B[6], M * 2, 16, 38), // consisting out of 2 Ingots.
+    toolHeadHammer("Hammer Heads", "", " Hammer Head", true, true, false, false, false, false, false, true, false, false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
+    toolHeadPlow("Plow Heads", "", " Plow Head", true, true, false, false, false, false, false, true, false, false, B[6], M * 4, 16, 45), // consisting out of 4 Ingots.
+    toolHeadSaw("Saw Blades", "", " Saw Blade", true, true, false, false, false, false, false, true, false, false, B[6], M * 2, 16, 39), // consisting out of 2 Ingots.
+    toolHeadBuzzSaw("Buzzsaw Blades", "", " Buzzsaw Blade", true, true, false, false, false, false, false, true, false, false, B[6], M * 4, 16, 48), // consisting out of 4 Ingots.
+    toolHeadScrewdriver("Screwdriver Tips", "", " Screwdriver Tip", true, true, false, false, false, false, false, false, false, false, B[6], M * 1, 16, 47), // consisting out of 1 Ingots.
+    toolHeadDrill("Drill Tips", "", " Drill Tip", true, true, false, false, false, false, false, true, false, false, B[6], M * 4, 16, 40), // consisting out of 4 Ingots.
+    toolHeadChainsaw("Chainsaw Tips", "", " Chainsaw Tip", true, true, false, false, false, false, false, true, false, false, B[6], M * 2, 16, 41), // consisting out of 2 Ingots.
+    toolHeadWrench("Wrench Tips", "", " Wrench Tip", true, true, false, false, false, false, false, true, false, false, B[6], M * 4, 16, 42), // consisting out of 4 Ingots.
+    turbineBlade("Turbine Blades", "", " Turbine Blade", true, true, false, false, false, false, false, true, false, false, B[6], M * 6, 64, 100), // consisting out of 6 Ingots.
+    toolSword("Swords", "", "", false, true, false, false, false, false, false, false, true, false, B[6], M * 2, 1, -1), // vanilly Sword
+    toolPickaxe("Pickaxes", "", "", false, true, false, false, false, false, false, false, true, false, B[6], M * 3, 1, -1), // vanilly Pickaxe
+    toolShovel("Shovels", "", "", false, true, false, false, false, false, false, false, true, false, B[6], M * 1, 1, -1), // vanilly Shovel
+    toolAxe("Axes", "", "", false, true, false, false, false, false, false, false, true, false, B[6], M * 3, 1, -1), // vanilly Axe
+    toolHoe("Hoes", "", "", false, true, false, false, false, false, false, false, true, false, B[6], M * 2, 1, -1), // vanilly Hoe
+    toolShears("Shears", "", "", false, true, false, false, false, false, false, false, true, false, B[6], M * 2, 1, -1), // vanilly Shears
     tool("Tools", "", "", false, false, false, false, false, false, false, false, true, false, B[6], -1, 1, -1), // toolPot, toolSkillet, toolSaucepan, toolBakeware, toolCuttingboard, toolMortarandpestle, toolMixingbowl, toolJuicer
     compressedCobblestone("9^X Compressed Cobblestones", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
     compressedStone("9^X Compressed Stones", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
@@ -189,32 +189,32 @@ public enum OrePrefixes {
     armorLeggings("Leggings", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 7, 1, -1), // vanilly Pants
     armorBoots("Boots", "", "", false, true, false, false, false, false, true, false, true, false, B[6], M * 4, 1, -1), // vanilly Boots
     armor("Armor Parts", "", "", false, false, false, false, false, false, false, false, true, false, B[6], -1, 1, -1),
-    frameGt("Frame Boxes", "", "", true, true, false, false, true, false, true, false, false, false, 0, M * 2, 64, 83),
-    pipeTiny("Tiny Pipes", "Tiny ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M / 2, 64, 78),
-    pipeSmall("Small Pipes", "Small ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 1, 64, 79),
+    frameGt("Frame Boxes", "", "", true, true, false, false, true, false, false, false, false, false, 0, M * 2, 64, 83),
+    pipeTiny("Tiny Pipes", "Tiny ", " Pipe", true, true, false, false, true, false, false, false, false, false, 0, M / 2, 64, 78),
+    pipeSmall("Small Pipes", "Small ", " Pipe", true, true, false, false, true, false, false, false, false, false, 0, M * 1, 64, 79),
     pipeMedium("Medium Pipes", "Medium ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 1, 64, 80),
     pipeLarge("Large pipes", "Large ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 4, 64, 81),
-    pipeHuge("Huge Pipes", "Huge ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 12, 64, 82),
+    pipeHuge("Huge Pipes", "Huge ", " Pipe", true, true, false, false, true, false, false, false, false, false, 0, M * 12, 64, 82),
     pipeQuadruple("Quadruple Pipes", "Quadruple ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 4, 64, 84),
     pipeNonuple("Nonuple Pipes", "Nonuple ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 9, 64, 85),
-    pipeRestrictiveTiny("Tiny Restrictive Pipes", "Tiny Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M / 2, 64, 78),
-    pipeRestrictiveSmall("Small Restrictive Pipes", "Small Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 1, 64, 79),
-    pipeRestrictiveMedium("Medium Restrictive Pipes", "Medium Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 3, 64, 80),
-    pipeRestrictiveLarge("Large Restrictive Pipes", "Large Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 6, 64, 81),
-    pipeRestrictiveHuge("Huge Restrictive Pipes", "Huge Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 12, 64, 82),
+    pipeRestrictiveTiny("Tiny Restrictive Pipes", "Tiny Restrictive ", " Pipe", true, true, false, false, true, false, false, false, false, false, 0, M / 2, 64, 78),
+    pipeRestrictiveSmall("Small Restrictive Pipes", "Small Restrictive ", " Pipe", true, true, false, false, true, false, false, false, false, false, 0, M * 1, 64, 79),
+    pipeRestrictiveMedium("Medium Restrictive Pipes", "Medium Restrictive ", " Pipe", true, true, false, false, true, false, false, false, false, false, 0, M * 3, 64, 80),
+    pipeRestrictiveLarge("Large Restrictive Pipes", "Large Restrictive ", " Pipe", true, true, false, false, true, false, false, false, false, false, 0, M * 6, 64, 81),
+    pipeRestrictiveHuge("Huge Restrictive Pipes", "Huge Restrictive ", " Pipe", true, true, false, false, true, false, false, false, false, false, 0, M * 12, 64, 82),
     pipe("Pipes", "", " Pipe", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, 77),
-    wireGt16("16x Wires", "16x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 32, 64, -1),
-    wireGt12("12x Wires", "12x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 8, 64, -1),
-    wireGt08("8x Wires", "8x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 4, 64, -1),
-    wireGt04("4x Wires", "4x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 4, 64, -1),
-    wireGt02("2x Wires", "2x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 1, 64, -1),
-    wireGt01("1x Wires", "1x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M / 1, 64, -1),
-    cableGt16("16x Cables", "16x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M * 32, 64, -1),
-    cableGt12("12x Cables", "12x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M * 8, 64, -1),
-    cableGt08("8x Cables", "8x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M * 4, 64, -1),
-    cableGt04("4x Cables", "4x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M * 4, 64, -1),
-    cableGt02("2x Cables", "2x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M * 1, 64, -1),
-    cableGt01("1x Cables", "1x ", " Cable", true, true, false, false, false, false, true, false, false, false, 0, M / 1, 64, -1),
+    wireGt16("16x Wires", "16x ", " Wire", true, true, false, false, false, false, false, false, false, false, 0, M * 32, 64, -1),
+    wireGt12("12x Wires", "12x ", " Wire", true, true, false, false, false, false, false, false, false, false, 0, M * 8, 64, -1),
+    wireGt08("8x Wires", "8x ", " Wire", true, true, false, false, false, false, false, false, false, false, 0, M * 4, 64, -1),
+    wireGt04("4x Wires", "4x ", " Wire", true, true, false, false, false, false, false, false, false, false, 0, M * 4, 64, -1),
+    wireGt02("2x Wires", "2x ", " Wire", true, true, false, false, false, false, false, false, false, false, 0, M * 1, 64, -1),
+    wireGt01("1x Wires", "1x ", " Wire", true, true, false, false, false, false, false, false, false, false, 0, M / 1, 64, -1),
+    cableGt16("16x Cables", "16x ", " Cable", true, true, false, false, false, false, false, false, false, false, 0, M * 32, 64, -1),
+    cableGt12("12x Cables", "12x ", " Cable", true, true, false, false, false, false, false, false, false, false, 0, M * 8, 64, -1),
+    cableGt08("8x Cables", "8x ", " Cable", true, true, false, false, false, false, false, false, false, false, 0, M * 4, 64, -1),
+    cableGt04("4x Cables", "4x ", " Cable", true, true, false, false, false, false, false, false, false, false, 0, M * 4, 64, -1),
+    cableGt02("2x Cables", "2x ", " Cable", true, true, false, false, false, false, false, false, false, false, 0, M * 1, 64, -1),
+    cableGt01("1x Cables", "1x ", " Cable", true, true, false, false, false, false, false, false, false, false, 0, M / 1, 64, -1),
 
     /* Electric Components.
      *
@@ -321,8 +321,8 @@ public enum OrePrefixes {
     liquid("Liquids", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
     bars("Bars", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
     bar("Bars", "", "", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
-	toolHeadMallet("Mallet Heads", "", " Mallet Head", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 16, 127), // Reverse Head consisting out of 6 Ingots.
-	handleMallet("Mallet Handle", "", " Handle", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 2, 64, 126), // Reverse Stick made of half an Ingot. Introduced by Eloraam
+	toolHeadMallet("Mallet Heads", "", " Mallet Head", true, true, false, false, false, false, false, true, false, false, B[6], M * 6, 16, 127), // Reverse Head consisting out of 6 Ingots.
+	handleMallet("Mallet Handle", "", " Handle", true, true, false, false, false, false, false, true, false, false, B[1] | B[2], M / 2, 64, 126), // Reverse Stick made of half an Ingot. Introduced by Eloraam
 
     // Cracked fluids
     cellHydroCracked1("Cells", "Lightly Hydro-Cracked ", " Cell", true, true, true, true, false, false, false, true, false, false, 0, M * 1, 64, 30),

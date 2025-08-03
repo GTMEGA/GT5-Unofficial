@@ -461,7 +461,7 @@ public class GT_Mod implements IGT_Mod {
         }
 
         if (tMainConfig.get("general", "hardermobspawners", true).getBoolean(true)) {
-            Blocks.mob_spawner.setHardness(500.0F).setResistance(6000000.0F);
+            Blocks.mob_spawner.setHardness(100.0F).setResistance(6000.0F);
         }
         gregtechproxy.mOnline = tMainConfig.get(aTextGeneral, "online", true).getBoolean(false);
 

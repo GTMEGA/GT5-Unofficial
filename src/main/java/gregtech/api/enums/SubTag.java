@@ -87,6 +87,10 @@ public final class SubTag implements ICondition<ISubTagContainer> {
     /**
      * This Material cannot be unificated
      */
+
+    //Materials that will have ore processing recipes.
+    public static final SubTag YES_ORES = getNewSubTag("YES_ORES");
+
     public static final SubTag YES_TOOLS = getNewSubTag("YES_TOOLS");
 
     public static final SubTag YES_CABLES = getNewSubTag("YES_CABLES");

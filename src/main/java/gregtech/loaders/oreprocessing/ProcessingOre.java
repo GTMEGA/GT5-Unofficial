@@ -41,6 +41,9 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
     }
 
     private boolean registerStandardOreRecipes(OrePrefixes aPrefix, Materials aMaterial, ItemStack aOreStack, int aMultiplier) {
+        if (!aMaterial.contains(SubTag.YES_ORES)){
+            return false;
+        }
         if ((aOreStack == null) || (aMaterial == null))
             return false;
         Materials tMaterial = aMaterial.mOreReplacement;

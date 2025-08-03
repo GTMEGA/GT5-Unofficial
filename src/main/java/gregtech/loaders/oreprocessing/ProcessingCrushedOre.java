@@ -3,6 +3,7 @@ package gregtech.loaders.oreprocessing;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -18,6 +19,9 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+		if (!aMaterial.contains(SubTag.YES_ORES)){
+			return;
+		}
 		switch (aPrefix) {
 			case crushedCentrifuged:
 				GT_Values.RA.addForgeHammerRecipe(GT_Utility.copyAmount(1L, aStack),
@@ -31,6 +35,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                                                      //GT_OreDictUnificator.get(OrePrefixes.dust, GT_Utility.selectItemInList(2, aMaterial.mMacerateInto, aMaterial.mOreByProducts), 1L),
                                                      10 * aMaterial.mOreMultiplier,
                                                      false);
+				break;
 			case oreChunk:
 				//TODO: Implement a +1% per tier chance for this maceration step
 				GT_ModHandler.addPulverisationRecipe(GT_Utility.copyAmount(1L, aStack),
@@ -49,21 +54,21 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
 				ItemStack tGem = GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
 				if(tGem!=null){
 				switch (aMaterial.mName) {
-					case "Tanzanite":
-                    case "Sapphire":
+//					case "Tanzanite":
+//                    case "Sapphire":
                     case "Olivine":
-                    case "GreenSapphire":
-                    case "Opal":
+//                    case "GreenSapphire":
+//                    case "Opal":
                     case "Amethyst":
                     case "Emerald":
                     case "Ruby":
 					case "Amber":
                     case "Diamond":
-                    case "FoolsRuby":
-                    case "BlueTopaz":
+//                    case "FoolsRuby":
+//                    case "BlueTopaz":
                     case "GarnetRed":
-                    case "Topaz":
-                    case "Jasper":
+//                    case "Topaz":
+//                    case "Jasper":
                     case "GarnetYellow":
 						GT_Values.RA.addSifterRecipe(GT_Utility.copyAmount(1L, aStack),
                                                      new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, tGem, 1L), GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, tGem, 1L), tGem, tGem, tGem, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, tGem, 1L) },
