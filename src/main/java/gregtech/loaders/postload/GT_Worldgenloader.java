@@ -86,13 +86,13 @@ public class GT_Worldgenloader implements Runnable {
             //Common Nether Ores
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.netherquartz", true, 10, 120, 80, false, true, false, false, false, false, Materials.NetherQuartz);
             //Uncommon Nether Ores
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.redstone", true, 5, 110, 16, true, true, false, true, true, true, Materials.Redstone);
+            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.redstone", true, 5, 110, 16, false, true, false, true, true, true, Materials.Redstone);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.gold", true, 5, 110, 16, true, true, false, true, true, true, Materials.Gold);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.bismuth", true, 80, 120, 8, false, true, false, true, true, false, Materials.Bismuth);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.firestone", true, 5, 15, 8, false, false, false, Materials.Firestone);
+            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.firestone", true, 5, 15, 8, false, true, false, Materials.Firestone);
             //TwF Ores
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.amethyst", true, 5, 35, 4, false, false, false, false, true, true, Materials.Amethyst);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.lapis", true, 3, 35, 8, false, false, false, false, true, true, Materials.Lapis);
+            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.lapis", true, 3, 35, 8, true, false, false, false, true, true, Materials.Lapis);
 
             //Overworld Ore Veins
             //Unlocalized name, Enabled by defaut, Min Y Spawn Height (7-242), Max Y Spawn Height (14-249), Relative Spawn Weight (1-x), Vein Density (1-10), Size (Appx. Diameter (8-32)), Spawn in Overworld?, Spawn in Nether?, Spawn in End?, Primary (Top ore layer), Secondary (Bottom ore layer), Between (Middle Ore Layer), Sporadic (Randomly placed in vein)
