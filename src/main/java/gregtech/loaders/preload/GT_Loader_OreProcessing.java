@@ -25,7 +25,7 @@ public class GT_Loader_OreProcessing
         new ProcessingDust();
         new ProcessingDye();
 //        new ProcessingFoil();
-        new ProcessingFineWire();
+//        new ProcessingFineWire();
         new ProcessingFood();
         new ProcessingLens();
         new ProcessingShaping();

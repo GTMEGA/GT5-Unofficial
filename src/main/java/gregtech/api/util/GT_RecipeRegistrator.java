@@ -282,22 +282,10 @@ public class GT_RecipeRegistrator {
      * Place Materials which you want to replace in Non-GT-Recipes here (warning HUGHE impact on loading times!)
      */
     private static final Materials[] VANILLA_MATS = {
-            Cobalt,
-            Gold,
-            Iron,
-            Lead,
-            FierySteel,
-            Void,
-            Bronze,
-            Diamond,
-            Ruby,
-            Sapphire,
-            Steel,
             IronWood,
             Steeleaf,
             Knightmetal,
             Thaumium,
-            DarkSteel,
     };
 
     /**
