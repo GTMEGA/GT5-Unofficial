@@ -2,8 +2,10 @@ package gregtech.common.blocks;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import lombok.val;
 
 import net.minecraft.block.BlockLeaves;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,6 +22,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 
 public class GT_Block_Rubber_Leaves extends BlockLeaves {
+    @SideOnly(Side.CLIENT)
+    protected IIcon[] textures;
+
     public GT_Block_Rubber_Leaves() {
         super();
 
@@ -44,12 +49,16 @@ public class GT_Block_Rubber_Leaves extends BlockLeaves {
 
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
-        this.blockIcon = iconRegister.registerIcon(GT_Values.RES_PATH_BLOCK + "misc/blockRubberLeaves");
+        this.textures = new IIcon[2];
+        this.textures[0] = iconRegister.registerIcon(GT_Values.RES_PATH_BLOCK + "misc/blockRubberLeaves");
+        this.textures[1] = iconRegister.registerIcon(GT_Values.RES_PATH_BLOCK + "misc/blockRubberLeaves_opaque");;
     }
 
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return this.blockIcon;
+        val index = Minecraft.getMinecraft().gameSettings.fancyGraphics ? 0 : 1;
+
+        return this.textures[index];
     }
 
     public String[] func_150125_e() {
@@ -62,5 +71,23 @@ public class GT_Block_Rubber_Leaves extends BlockLeaves {
 
     public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
         return 20;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side) {
+        val fancy = Minecraft.getMinecraft().gameSettings.fancyGraphics;
+
+        if (fancy) {
+            return true;
+        }
+
+        val block = worldIn.getBlock(x, y, z);
+
+        return block != this;
     }
 }
