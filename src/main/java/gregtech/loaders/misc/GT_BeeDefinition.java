@@ -742,120 +742,120 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     ),
 
     //IC2
-    COOLANT(GT_BranchDefinition.IC2, "Coolant", false, new Color(0x144F5A), new Color(0x2494A2),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 4), 0.30f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.COOLANT), 0.15f);
-                beeSpecies.setHumidity(ARID);
-                beeSpecies.setTemperature(COLD);
-                beeSpecies.setHasEffect();
-            },
-            template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOW);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORT);
-                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.UP_1);
-                AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
-                AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.SNOW);
-                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectGlacial);
-            },
-            dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Icy"), getSpecies(FORESTRY, "Glacial"), 10);
-                tMutation.requireResource(Block.getBlockFromItem(GT_ModHandler.getModItem("IC2", "fluidCoolant", 1).getItem()), 0);
-                tMutation.restrictTemperature(ICY);
-            }
-    ),
-    ENERGY(GT_BranchDefinition.IC2, "Energy", false, new Color(0xC11F1F), new Color(0xEBB9B9),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem("ExtraBees", "honeyComb", 1, 12), 0.30f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.ENERGY), 0.15f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setTemperature(WARM);
-                beeSpecies.setHasEffect();
-            },
-            template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGER);
-                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectIgnition);
-                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.DOWN_2);
-                AlleleHelper.instance.set(template, NOCTURNAL, true);
-                AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.NETHER);
-                AlleleHelper.instance.set(template, FLOWERING, Flowering.AVERAGE);
-            },
-            dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Demonic"), getSpecies(EXTRABEES, "volcanic"), 10);
-                tMutation.requireResource(Block.getBlockFromItem(GT_ModHandler.getModItem("IC2", "fluidHotCoolant", 1).getItem()), 0);
-                tMutation.addMutationCondition(new GT_Bees.BiomeIDMutationCondition(128, "Boneyard Biome"));//Boneyard Biome
-            }
-    ),
-    LAPOTRON(GT_BranchDefinition.IC2, "Lapotron", false, new Color(0x6478FF), new Color(0x1414FF),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.LAPIS), 0.20f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.ENERGY), 0.15f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.LAPOTRON), 0.10f);
-                beeSpecies.setHumidity(DAMP);
-                beeSpecies.setTemperature(ICY);
-                beeSpecies.setHasEffect();
-            },
-            template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGER);
-                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectIgnition);
-                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.UP_1);
-                AlleleHelper.instance.set(template, NOCTURNAL, true);
-                AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.SNOW);
-                AlleleHelper.instance.set(template, FLOWERING, Flowering.AVERAGE);
-            },
-            dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(LAPIS, ENERGY, 6);
-                tMutation.requireResource("blockLapis");
-                tMutation.restrictTemperature(ICY);
-                tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(28, "Moon"));//moon dim
-            }
-    ),
-    PYROTHEUM(GT_BranchDefinition.IC2, "Pyrotheum", false, new Color(0xffebc4), new Color(0xe36400),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.ENERGY), 0.20f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.PYROTHEUM), 0.15f);
-                beeSpecies.setHumidity(ARID);
-                beeSpecies.setTemperature(HELLISH);
-                beeSpecies.setHasEffect();
-            },
-            template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.FASTEST);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
-                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectIgnition);
-                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.NONE);
-                AlleleHelper.instance.set(template, NOCTURNAL, true);
-                AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.NETHER);
-                AlleleHelper.instance.set(template, FLOWERING, Flowering.AVERAGE);
-            },
-            dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(REDSTONE, ENERGY, 4);
-                tMutation.restrictTemperature(HELLISH);
-            }
-    ),
-    CRYOTHEUM(GT_BranchDefinition.IC2, "Cryotheum", false, new Color(0x2660ff), new Color(0x5af7ff),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.COOLANT), 0.20f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.CRYOTHEUM), 0.15f);
-                beeSpecies.setHumidity(ARID);
-                beeSpecies.setTemperature(ICY);
-                beeSpecies.setHasEffect();
-            },
-            template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
-                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectSnowing);
-                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.NONE);
-                AlleleHelper.instance.set(template, NOCTURNAL, true);
-                AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.SNOW);
-                AlleleHelper.instance.set(template, FLOWERING, Flowering.AVERAGE);
-            },
-            dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(REDSTONE, COOLANT, 4);
-                tMutation.restrictTemperature(ICY);
-            }
-    ),
+//    COOLANT(GT_BranchDefinition.IC2, "Coolant", false, new Color(0x144F5A), new Color(0x2494A2),
+//            beeSpecies -> {
+//                beeSpecies.addProduct(GT_ModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 4), 0.30f);
+//                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.COOLANT), 0.15f);
+//                beeSpecies.setHumidity(ARID);
+//                beeSpecies.setTemperature(COLD);
+//                beeSpecies.setHasEffect();
+//            },
+//            template -> {
+//                AlleleHelper.instance.set(template, SPEED, Speed.SLOW);
+//                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORT);
+//                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.UP_1);
+//                AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
+//                AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.SNOW);
+//                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectGlacial);
+//            },
+//            dis -> {
+//                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Icy"), getSpecies(FORESTRY, "Glacial"), 10);
+//                tMutation.requireResource(Block.getBlockFromItem(GT_ModHandler.getModItem("IC2", "fluidCoolant", 1).getItem()), 0);
+//                tMutation.restrictTemperature(ICY);
+//            }
+//    ),
+//    ENERGY(GT_BranchDefinition.IC2, "Energy", false, new Color(0xC11F1F), new Color(0xEBB9B9),
+//            beeSpecies -> {
+//                beeSpecies.addProduct(GT_ModHandler.getModItem("ExtraBees", "honeyComb", 1, 12), 0.30f);
+//                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.ENERGY), 0.15f);
+//                beeSpecies.setHumidity(EnumHumidity.NORMAL);
+//                beeSpecies.setTemperature(WARM);
+//                beeSpecies.setHasEffect();
+//            },
+//            template -> {
+//                AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
+//                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGER);
+//                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectIgnition);
+//                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.DOWN_2);
+//                AlleleHelper.instance.set(template, NOCTURNAL, true);
+//                AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.NETHER);
+//                AlleleHelper.instance.set(template, FLOWERING, Flowering.AVERAGE);
+//            },
+//            dis -> {
+//                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Demonic"), getSpecies(EXTRABEES, "volcanic"), 10);
+//                tMutation.requireResource(Block.getBlockFromItem(GT_ModHandler.getModItem("IC2", "fluidHotCoolant", 1).getItem()), 0);
+//                tMutation.addMutationCondition(new GT_Bees.BiomeIDMutationCondition(128, "Boneyard Biome"));//Boneyard Biome
+//            }
+//    ),
+//    LAPOTRON(GT_BranchDefinition.IC2, "Lapotron", false, new Color(0x6478FF), new Color(0x1414FF),
+//            beeSpecies -> {
+//                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.LAPIS), 0.20f);
+//                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.ENERGY), 0.15f);
+//                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.LAPOTRON), 0.10f);
+//                beeSpecies.setHumidity(DAMP);
+//                beeSpecies.setTemperature(ICY);
+//                beeSpecies.setHasEffect();
+//            },
+//            template -> {
+//                AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
+//                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGER);
+//                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectIgnition);
+//                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.UP_1);
+//                AlleleHelper.instance.set(template, NOCTURNAL, true);
+//                AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.SNOW);
+//                AlleleHelper.instance.set(template, FLOWERING, Flowering.AVERAGE);
+//            },
+//            dis -> {
+//                IBeeMutationCustom tMutation = dis.registerMutation(LAPIS, ENERGY, 6);
+//                tMutation.requireResource("blockLapis");
+//                tMutation.restrictTemperature(ICY);
+//                tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(28, "Moon"));//moon dim
+//            }
+//    ),
+//    PYROTHEUM(GT_BranchDefinition.IC2, "Pyrotheum", false, new Color(0xffebc4), new Color(0xe36400),
+//            beeSpecies -> {
+//                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.ENERGY), 0.20f);
+//                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.PYROTHEUM), 0.15f);
+//                beeSpecies.setHumidity(ARID);
+//                beeSpecies.setTemperature(HELLISH);
+//                beeSpecies.setHasEffect();
+//            },
+//            template -> {
+//                AlleleHelper.instance.set(template, SPEED, Speed.FASTEST);
+//                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
+//                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectIgnition);
+//                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.NONE);
+//                AlleleHelper.instance.set(template, NOCTURNAL, true);
+//                AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.NETHER);
+//                AlleleHelper.instance.set(template, FLOWERING, Flowering.AVERAGE);
+//            },
+//            dis -> {
+//                IBeeMutationCustom tMutation = dis.registerMutation(REDSTONE, ENERGY, 4);
+//                tMutation.restrictTemperature(HELLISH);
+//            }
+//    ),
+//    CRYOTHEUM(GT_BranchDefinition.IC2, "Cryotheum", false, new Color(0x2660ff), new Color(0x5af7ff),
+//            beeSpecies -> {
+//                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.COOLANT), 0.20f);
+//                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.CRYOTHEUM), 0.15f);
+//                beeSpecies.setHumidity(ARID);
+//                beeSpecies.setTemperature(ICY);
+//                beeSpecies.setHasEffect();
+//            },
+//            template -> {
+//                AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
+//                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
+//                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectSnowing);
+//                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.NONE);
+//                AlleleHelper.instance.set(template, NOCTURNAL, true);
+//                AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.SNOW);
+//                AlleleHelper.instance.set(template, FLOWERING, Flowering.AVERAGE);
+//            },
+//            dis -> {
+//                IBeeMutationCustom tMutation = dis.registerMutation(REDSTONE, COOLANT, 4);
+//                tMutation.restrictTemperature(ICY);
+//            }
+//    ),
     //Alloy
     REDALLOY(GT_BranchDefinition.GTALLOY, "RedAlloy", false, new Color(0xE60000), new Color(0xB80000),
             beeSpecies -> {
