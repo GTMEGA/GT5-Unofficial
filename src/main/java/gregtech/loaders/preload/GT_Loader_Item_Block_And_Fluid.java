@@ -105,6 +105,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         ItemList.VOLUMETRIC_FLASK.set(new GT_VolumetricFlask("Volumetric_Flask", "Volumetric flask", 1000));
 
         ItemList.Solid_Waste.set(new GT_SolidWaste());
+        ItemList.Machine_Upgrade.set(new GT_MachineUpgrade());
         ItemList.Treetap.set(new GT_TreeTap());
         ItemList.Treetap_Electric.set(new GT_TreeTap_Electric());
 

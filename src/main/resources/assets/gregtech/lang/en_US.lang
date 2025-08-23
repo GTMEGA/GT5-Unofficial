@@ -1116,6 +1116,10 @@ gregtech.speedAccelerated=Accelerated
 gregtech.lifeBlink=Blink 
 gregtech.lifeEon=Eon
 
+tile.BlockRubberLog.name=Rubber Tree Log
+tile.BlockRubberLeaves.name=Rubber Tree Leaves
+tile.BlockRubberSapling.name=Rubber Tree Sapling
+
 entity.gregtech.GT_Entity_Arrow.name= a GregTech arrow
 
 fluid.Xenon=Xenon
