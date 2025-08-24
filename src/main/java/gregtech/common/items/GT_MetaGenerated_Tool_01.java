@@ -65,6 +65,7 @@ public class GT_MetaGenerated_Tool_01  extends GT_MetaGenerated_Tool {
     public static final short TURBINE_HUGE = 176;
     @Deprecated
     public static final short TURBINE_BLADE = 178;
+    public static final short MULTITOOL = 200;
     public static GT_MetaGenerated_Tool_01 INSTANCE;
 
     public GT_MetaGenerated_Tool_01() {
@@ -177,5 +178,7 @@ public class GT_MetaGenerated_Tool_01  extends GT_MetaGenerated_Tool {
                 GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Items.blaze_powder, 2), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ToolDictNames.craftingToolMortar, new ItemStack(Items.blaze_rod, 1)});
             }
         }
+        GregTech_API.registerTool(addTool(MULTITOOL, "Atomizer", "Breaks anything.", new GT_Tool_Multitool(), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 100L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 100L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERDITIO, 100L)), GregTech_API.sToolList);
+
     }
 }

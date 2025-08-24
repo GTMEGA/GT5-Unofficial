@@ -12,6 +12,9 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
     }
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+        if (aMaterial == Materials.Osmiridium) {
+            GT_ModHandler.addCraftingRecipe(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.MULTITOOL, 1, aMaterial, Materials.Osmiridium, new long[]{2097152, 2048L, 4L, -1L}), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"LBf", "Sd ", "P  ", 'B', OrePrefixes.bolt.get(aMaterial), 'P', OrePrefixes.plate.get(Materials.Osmiridium), 'S', OrePrefixes.stick.get(Materials.Osmiridium), 'L', ItemList.Energy_LapotronicOrb.get(1L)});
+        }
         if (aMaterial.contains(SubTag.YES_TOOLS) && (aMaterial != Materials.Stone) && (aMaterial != Materials.Flint)) {
             if (aMaterial != Materials.Rubber) {
                 GT_ModHandler.addCraftingRecipe(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.PLUNGER, 1, aMaterial, aMaterial, null), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"xRR", " SR", "S f", 'S', OrePrefixes.stick.get(aMaterial), 'R', OrePrefixes.plate.get(Materials.AnyRubber)});

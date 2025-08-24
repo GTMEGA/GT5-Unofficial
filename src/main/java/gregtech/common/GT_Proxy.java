@@ -412,9 +412,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         ItemList.Cell_Empty.set(new GT_Item_Cell());
 
         ItemList.Fertilizer.set(new GT_Generic_Item("fertilizer", "Fertilizer", "Okie-Dookie", true));
-        ItemList.Resin.set(new GT_Generic_Item("resin", "Resin", "It appears to resinate with sulfur", true));
-        ItemList.Plantball.set(new GT_Generic_Item("plantball", "Plantball", "Like a snowball, but messier", true));
-        ItemList.Biochaff.set(new GT_Generic_Item("biochaff", "Biochaff", "Makes me chaffed to bits", true));
+        ItemList.Resin.set(new GT_Generic_Item("resin", "Resin", "[Raw Material]", true));
+        ItemList.Plantball.set(new GT_Generic_Item("plantball", "Plantball", "[Intermediate Material]", true));
+        ItemList.Biochaff.set(new GT_Generic_Item("biochaff", "Biochaff", "[Intermediate Material]", true));
 
         ItemList.Dye_Bonemeal.set(new ItemStack(Items.dye, 1, 15));
         ItemList.Dye_SquidInk.set(new ItemStack(Items.dye, 1, 0));

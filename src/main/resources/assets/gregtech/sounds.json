@@ -156,6 +156,24 @@
             }
         ]
     },
+    "atomizer": {
+        "category": "player",
+        "sounds": [
+            {
+                "name": "atomizer",
+                "stream": false
+            }
+        ]
+    },
+    "atomizer_hit": {
+        "category": "player",
+        "sounds": [
+            {
+                "name": "atomizer_hit",
+                "stream": false
+            }
+        ]
+    },
     "treetap_extract": {
         "category": "player",
         "sounds": [

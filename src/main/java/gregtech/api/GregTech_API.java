@@ -423,6 +423,9 @@ public class GregTech_API {
         addGTSoundToList(230, "electrolyzer");
         addGTSoundToList(231, "centrifuge");
         addGTSoundToList(232, "thermal");
+        addGTSoundToList(233, "atomizer");
+        addGTSoundToList(234, "atomizer_hit");
+
         //Don't forget to put your sounds into sounds.json too!
     }
 
