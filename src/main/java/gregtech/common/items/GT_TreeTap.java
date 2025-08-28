@@ -87,7 +87,7 @@ public class GT_TreeTap extends GT_Generic_Item {
         }
 
         if (!world.isRemote) {
-            GT_Utility.sendSoundToPlayers(world, GregTech_API.sSoundList.get(239), 1.0F, -1.0F, x, y, z);
+            GT_Utility.sendSoundToPlayers(world, GregTech_API.sSoundList.get(239), 1.0F, 0.9F, x, y, z);
 
             switch (nodeState) {
                 case DRY:
