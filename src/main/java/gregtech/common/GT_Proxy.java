@@ -236,10 +236,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     /**
      *  This enables rendering certain blocks in both an opaque and translucent pass
-     * <p>
-     *  TODO: [VEN] Currently disabled, set to 'true' once the FalseTweaks translucent block implementation is done.
      */
-    public boolean mRenderTileTranslucentPass = false;
+    public boolean mRenderTileTranslucentPass = true;
 
     /**
      * Render flipped textures
