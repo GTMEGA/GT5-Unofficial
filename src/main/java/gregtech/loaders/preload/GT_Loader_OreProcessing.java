@@ -53,7 +53,7 @@ public class GT_Loader_OreProcessing
         new ProcessingStick();
 //        new ProcessingStickLong();
         new ProcessingStone();
-        new ProcessingStoneCobble();
+//        new ProcessingStoneCobble();
         new ProcessingStoneVarious();
         new ProcessingToolHead();
         new ProcessingToolOther();
