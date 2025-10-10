@@ -2,6 +2,7 @@ package gregtech.common.blocks;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import lombok.val;
 
 import net.minecraft.block.BlockLeaves;
@@ -20,6 +21,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class GT_Block_Rubber_Leaves extends BlockLeaves {
     @SideOnly(Side.CLIENT)
@@ -89,5 +91,10 @@ public class GT_Block_Rubber_Leaves extends BlockLeaves {
         val block = worldIn.getBlock(x, y, z);
 
         return block != this;
+    }
+
+    @Override
+    public Item getItemDropped(int meta, Random random, int fortune) {
+        return ItemList.Rubber_Sapling.getItem();
     }
 }
