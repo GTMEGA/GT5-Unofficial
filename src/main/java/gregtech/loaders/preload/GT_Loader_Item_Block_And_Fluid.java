@@ -8,6 +8,8 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.items.GT_Block_LongDistancePipe;
 import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GT_Log;
@@ -17,6 +19,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.*;
 import gregtech.common.items.*;
 import gregtech.common.misc.explosions.GT_Explosion_Info;
+import lombok.val;
 
 
 import net.minecraft.init.Blocks;
@@ -39,7 +42,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         Materials.Ice.mFluid = GT_ModHandler.getWater(1000L).getFluid();
         Materials.Lava.mFluid  = GT_ModHandler.getLava(1000L).getFluid();
 
-        ItemList.Cell_Air.set(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Air, 1));
+        ItemList.Cell_Air.set(new GT_Item_Compressed_Air_Cell());
 
         /*
         GT_Log.out.println("GT_Mod: Register Books.");
@@ -94,6 +97,16 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         new GT_MetaGenerated_Item_99();
         new GT_MetaGenerated_Tool_01();
         new GT_FluidDisplayItem();
+
+        ItemList.Cell_Water.set(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1));
+        FluidContainerRegistry.registerFluidContainer(Materials.Water.mFluid,
+                                                      ItemList.Cell_Water.get(1),
+                                                      ItemList.Cell_Empty.get(1));
+
+        ItemList.Cell_Lava.set(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Lava, 1));
+        FluidContainerRegistry.registerFluidContainer(Materials.Lava.mFluid,
+                                                      ItemList.Cell_Lava.get(1),
+                                                      ItemList.Cell_Empty.get(1));
 
         //Tiered recipe materials actually appear to be set in GT_MetaTileEntity_BasicMachine_GT_Recipe, making these unused
         ItemList.Rotor_LV.set(GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Tin, 1L));
@@ -165,6 +178,9 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         loadMiscExternalOreDictEntries();
 
+        FluidContainerRegistry.registerFluidContainer(Materials.Air.mFluid,
+                                                      ItemList.Cell_Air.get(1),
+                                                      ItemList.Cell_Empty.get(1));
 
         GT_OreDictUnificator.set(OrePrefixes.dust, Materials.Cocoa, GT_ModHandler.getModItem("harvestcraft", "cocoapowderItem", 1L, 0));
         //TODO ADD LATER @Technus why it crash if enable?
