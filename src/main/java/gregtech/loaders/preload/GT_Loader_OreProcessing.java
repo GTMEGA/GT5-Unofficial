@@ -48,7 +48,7 @@ public class GT_Loader_OreProcessing
         new ProcessingRotor();
         new ProcessingSand();
         new ProcessingSaplings();
-        new ProcessingScrew();
+//        new ProcessingScrew();
         new ProcessingSlab();
         new ProcessingStick();
 //        new ProcessingStickLong();
