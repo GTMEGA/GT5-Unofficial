@@ -33,7 +33,7 @@ public class GT_MetaTileEntity_Sifter_Steel extends GT_MetaTileEntity_Template_S
 
     @Override
     protected String getOverlay() {
-        return "sifter";
+        return "sifter_hp";
     }
 
     @Override
