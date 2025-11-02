@@ -951,9 +951,12 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     public void doExplosion(long aExplosionPower) {
         World tWorld = getBaseMetaTileEntity().getWorld();
         GT_Utility.sendSoundToPlayers(tWorld, GregTech_API.sSoundList.get(209), 1.0F, -1, getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getYCoord(), getBaseMetaTileEntity().getZCoord());
-        tWorld.setBlock(getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getYCoord(), getBaseMetaTileEntity().getZCoord(), Blocks.air);
+        int x = getBaseMetaTileEntity().getXCoord();
+        int y = getBaseMetaTileEntity().getYCoord();
+        int z = getBaseMetaTileEntity().getZCoord();
+        tWorld.setBlock(x, y, z, Blocks.air);
         if (GregTech_API.sMachineExplosions)
-            tWorld.createExplosion(null, getBaseMetaTileEntity().getXCoord() + 0.5, (int) getBaseMetaTileEntity().getYCoord() + 0.5, getBaseMetaTileEntity().getZCoord() + 0.5, GT_Values.MachineExplosionPower, true);
+            tWorld.createExplosion(null, x + 0.5, y + 0.5, z + 0.5, GT_Values.MachineExplosionPower, true);
     }
 
     @Override
