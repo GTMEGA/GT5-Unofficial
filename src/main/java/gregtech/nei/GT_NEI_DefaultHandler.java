@@ -221,8 +221,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         String[] recipeDesc = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.getNeiDesc();
         if (recipeDesc == null) {
             if (tEUt != 0) {
-                drawText(10, 73, trans("152","Total: ") + GT_Utility.formatNumbers((long) tDuration * tEUt) + " EU", 0xFF000000);
-                drawText(10, 83, trans("153","Usage: ") + GT_Utility.formatNumbers(tEUt) + " EU/t", 0xFF000000);
+                drawText(10, 73, trans("152","Total: ") + GT_Utility.formatNumbers((long) tDuration * tEUt) + " EU", 0xFFFFFFFF);
+                drawText(10, 83, trans("153","Usage: ") + GT_Utility.formatNumbers(tEUt) + " EU/t", 0xFFFFFFFF);
                 if (this.mRecipeMap.mShowVoltageAmperageInNEI) {
                     int voltage = tEUt / this.mRecipeMap.mAmperage;
                     byte tier = GT_Utility.getTier(voltage);
@@ -230,35 +230,35 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                         drawText(10, 93, trans("154","Voltage: ") + GT_Utility.formatNumbers(voltage) + " EU", 0xFFFF0000);
 //add here gt logger
                     } else {
-                        drawText(10, 93, trans("154","Voltage: ") + GT_Utility.formatNumbers(voltage) + " EU (" + GT_Values.VN[tier] + ")", 0xFF000000);
+                        drawText(10, 93, trans("154","Voltage: ") + GT_Utility.formatNumbers(voltage) + " EU (" + GT_Values.VN[tier] + ")", 0xFFFFFFFF);
                     }
-                    drawText(10, 103, trans("155","Amperage: ") + GT_Utility.formatNumbers(this.mRecipeMap.mAmperage), 0xFF000000);
+                    drawText(10, 103, trans("155","Amperage: ") + GT_Utility.formatNumbers(this.mRecipeMap.mAmperage), 0xFFFFFFFF);
                 } else {
-                    drawText(10, 93, trans("156","Voltage: unspecified"), 0xFF000000);
-                    drawText(10, 103, trans("157","Amperage: unspecified"), 0xFF000000);
+                    drawText(10, 93, trans("156","Voltage: unspecified"), 0xFFFFFFFF);
+                    drawText(10, 103, trans("157","Amperage: unspecified"), 0xFFFFFFFF);
                 }
             }
             if (tDuration > 0) {
-                drawText(10, 113, trans("158","Time: ") + GT_Utility.formatNumbers(0.05d * tDuration) + trans("161"," secs"), 0xFF000000);
+                drawText(10, 113, trans("158","Time: ") + GT_Utility.formatNumbers(0.05d * tDuration) + trans("161"," secs"), 0xFFFFFFFF);
             }
             int tSpecial = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue;
             if (tSpecial == -100 && GT_Mod.gregtechproxy.mLowGravProcessing) {
-                drawText(10, 123, trans("159","Needs Low Gravity"), 0xFF000000);
+                drawText(10, 123, trans("159","Needs Low Gravity"), 0xFFFFFFFF);
             } else if (tSpecial == -200 && GT_Mod.gregtechproxy.mEnableCleanroom) {
-                drawText(10, 123, trans("160","Needs Cleanroom"), 0xFF000000);
+                drawText(10, 123, trans("160","Needs Cleanroom"), 0xFFFFFFFF);
             } else if (tSpecial == -201) {
-                drawText(10, 123, trans("206","Scan for Assembly Line"), 0xFF000000);
+                drawText(10, 123, trans("206","Scan for Assembly Line"), 0xFFFFFFFF);
             } else if (tSpecial == -300 && GT_Mod.gregtechproxy.mEnableCleanroom) {
-                drawText(10, 123, trans("160","Needs Cleanroom & LowGrav"), 0xFF000000);
+                drawText(10, 123, trans("160","Needs Cleanroom & LowGrav"), 0xFFFFFFFF);
             } else if (tSpecial == -400) {
-                drawText(10, 123, trans("216","Deprecated Recipe"), 0xFF000000);
+                drawText(10, 123, trans("216","Deprecated Recipe"), 0xFFFFFFFF);
             } else if ((GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre)) || (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost))) {
-                drawText(10, 123, this.mRecipeMap.mNEISpecialValuePre + GT_Utility.formatNumbers(tSpecial * this.mRecipeMap.mNEISpecialValueMultiplier) + this.mRecipeMap.mNEISpecialValuePost, 0xFF000000);
+                drawText(10, 123, this.mRecipeMap.mNEISpecialValuePre + GT_Utility.formatNumbers(tSpecial * this.mRecipeMap.mNEISpecialValueMultiplier) + this.mRecipeMap.mNEISpecialValuePost, 0xFFFFFFFF);
             }
         } else {
             int i = 0;
             for (String descLine : recipeDesc) {
-                drawText(10, 73 + 10 * i, descLine, 0xFF000000);
+                drawText(10, 73 + 10 * i, descLine, 0xFFFFFFFF);
                 i++;
             }
         }
