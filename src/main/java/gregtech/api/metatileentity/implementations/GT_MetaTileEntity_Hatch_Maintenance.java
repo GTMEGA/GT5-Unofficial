@@ -26,6 +26,9 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
+
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE_IDLE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DUCTTAPE;
@@ -226,7 +229,9 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
             mCrowbar = true;
         if (GT_ModHandler.useSolderingIron(aStack, aPlayer)) mSolderingTool = true;
 
-        if (GT_OreDictUnificator.isItemStackInstanceOf(aStack, "item.maintenance_kit")) {
+
+        if (GT_OreDictUnificator.isItemStackInstanceOf(aStack, "item.maintenance_kit") ||
+            !Loader.isModLoaded("htx") && GT_OreDictUnificator.isItemStackInstanceOf(aStack, "craftingDuctTape")) {
             mWrench = mScrewdriver = mSoftHammer = mHardHammer = mCrowbar = mSolderingTool = true;
             getBaseMetaTileEntity().setActive(false);
             aStack.stackSize--;
