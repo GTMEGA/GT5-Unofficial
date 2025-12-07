@@ -3,6 +3,7 @@ package gregtech.api.threads;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.common.GT_Proxy;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
@@ -65,7 +66,7 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
     }
 
     public static void initExecutorService() {
-        EXECUTOR_SERVICE = Executors.newFixedThreadPool(Math.max(1, (Runtime.getRuntime().availableProcessors() * 2 / 3)), THREAD_FACTORY);
+        EXECUTOR_SERVICE = Executors.newFixedThreadPool(1, THREAD_FACTORY);
     }
 
     public static void shutdownExecutorService() {
@@ -111,6 +112,10 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
                     isMachineBlock = GregTech_API.isMachineBlock(world.getBlock(aCoords.posX, aCoords.posY, aCoords.posZ), world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ));
                 } finally {
                     GT_Proxy.TICK_LOCK.unlock();
+                }
+
+                if (tTileEntity instanceof BaseMetaPipeEntity) {
+                    return;
                 }
                 
                 // See if the block itself needs an update
