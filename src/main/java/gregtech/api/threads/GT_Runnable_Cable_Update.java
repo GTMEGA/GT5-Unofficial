@@ -31,17 +31,6 @@ public class GT_Runnable_Cable_Update extends GT_Runnable_MachineBlockUpdate {
         }
     }
 
-    public static void setPipeUpdateValues(World aWorld, ChunkCoordinates aCoords) {
-        if (isEnabled) {
-            EXECUTOR_SERVICE.submit(new GT_Runnable_Cable_Update(aWorld, aCoords,(t,r) -> {
-                if ((t instanceof BaseMetaPipeEntity)) {
-                    return ((BaseMetaPipeEntity) t).getMetaTileEntity() instanceof GT_MetaPipeEntity_Item;
-                }
-                return false;
-            }));
-        }
-    }
-
     public interface BlockChecker {
         boolean check(TileEntity entity,boolean shouldRecurse);
     }
