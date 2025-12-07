@@ -474,8 +474,6 @@ public class GregTech_API {
             // World might be null during Worldgen
             if (meta instanceof GT_MetaPipeEntity_Cable)
                 GT_Runnable_Cable_Update.setCableUpdateValues(aWorld, new ChunkCoordinates(aX, aY, aZ));
-            else if (meta instanceof GT_MetaPipeEntity_Item)
-                GT_Runnable_Cable_Update.setPipeUpdateValues(aWorld, new ChunkCoordinates(aX, aY, aZ));
             return true;
         }
         return false;
