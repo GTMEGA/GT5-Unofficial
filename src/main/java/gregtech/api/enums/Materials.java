@@ -1778,6 +1778,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 Apatite,
                 Amber,
                 Amethyst,
+                Asbestos,
                 Bauxite,
                 Bismuth,
                 Calcite,
