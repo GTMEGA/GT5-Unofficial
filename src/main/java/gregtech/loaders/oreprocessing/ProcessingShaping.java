@@ -38,10 +38,10 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                 if (((aPrefix != OrePrefixes.ingot) || (aMaterial != aMaterial.mSmeltInto)) && (aMaterial.contains(SubTag.BOUNCY))) {
                     GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Ingot.get(0L), GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, tAmount), 10, 4 * tVoltageMultiplier);
                 }
-                if (!(aMaterial == Materials.Redstone || aMaterial == Materials.Glowstone)) {
-                    GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Pipe_Medium.get(0L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial.mSmeltInto, tAmount), 20, 2 * tVoltageMultiplier);
-                    GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(4L, aStack), ItemList.Shape_Extruder_Pipe_Large.get(0L), GT_OreDictUnificator.get(OrePrefixes.pipeLarge, aMaterial.mSmeltInto, tAmount), 40 * tAmount, 2 * tVoltageMultiplier);
-                }
+//                if (!(aMaterial == Materials.Redstone || aMaterial == Materials.Glowstone)) {
+//                    GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Pipe_Medium.get(0L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial.mSmeltInto, tAmount), 20, 2 * tVoltageMultiplier);
+//                    GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(4L, aStack), ItemList.Shape_Extruder_Pipe_Large.get(0L), GT_OreDictUnificator.get(OrePrefixes.pipeLarge, aMaterial.mSmeltInto, tAmount), 40 * tAmount, 2 * tVoltageMultiplier);
+//                }
 
 //                    GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(12L, aStack), ItemList.Shape_Extruder_Pipe_Huge.get(0L), GT_OreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial.mSmeltInto, tAmount), 96 * tAmount, 2 * tVoltageMultiplier);
 //                    GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Plate.get(0L), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial.mSmeltInto, tAmount), (int) Math.max(aMaterialMass * 1L * tAmount, tAmount), 8 * tVoltageMultiplier);
