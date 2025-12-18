@@ -90,7 +90,7 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.bismuth", true, 80, 120, 8, false, true, false, true, true, false, Materials.Bismuth);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.firestone", true, 5, 15, 8, false, true, false, Materials.Firestone);
             //Rare Nether Ores
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.netherstar", true, 105, 115, 4, false, true, false, Materials.NetherStar);
+            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.netherstar", true, 101, 115, 6, false, true, false, Materials.NetherStar);
             //TwF Ores
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.amethyst", true, 5, 35, 4, false, false, false, false, true, true, Materials.Amethyst);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.lapis", true, 3, 35, 8, true, false, false, false, true, true, Materials.Lapis);
@@ -129,8 +129,11 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.perditioordo", true, 5, 35, 60, 2, 16, false, false, false, Materials.InfusedEntropy, Materials.InfusedOrder, Materials.Amber, Materials.Cinnabar);
 
             //Nether-Only Veins
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.titanium", true, 64, 120, 50, 6, 24, false, true, false, Materials.Ilmenite, Materials.Rutile, Materials.Ilmenite, Materials.Ilmenite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.nuclear",   true, 5, 60, 50, 8, 16, false, true, false, Materials.Pitchblende, Materials.Thorium, Materials.Pitchblende, Materials.Uraninite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.titanium", true, 70, 90, 50, 6, 24, false, true, false, Materials.Ilmenite, Materials.Rutile, Materials.Ilmenite, Materials.Ilmenite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.nuclear",   true, 5, 50, 50, 7, 16, false, true, false, Materials.Pitchblende, Materials.Thorium, Materials.Pitchblende, Materials.Uraninite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.firestone", true, 5, 30, 50, 3, 1, false, true, false, Materials.Firestone, Materials.Firestone, Materials.Firestone, Materials.Firestone);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.infusedgold",true, 5, 100, 50, 2, 5, false, true, false, Materials.InfusedGold, Materials.InfusedGold, Materials.InfusedGold, Materials.InfusedGold);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.netherstar",true, 116, 120, 2, 1, 2, false, true, false, Materials.NetherStar, Materials.NetherStar, Materials.NetherStar, Materials.NetherStar);
             //Old nether veins.
 //            new GT_Worldgen_GT_Ore_Layer("ore.mix.saltpeterelectrotine", true, 5, 45, 55, 5, 16, false, true, false, Materials.Electrotine, Materials.Saltpeter, Materials.Saltpeter, Materials.Sphalerite);
 //            new GT_Worldgen_GT_Ore_Layer("ore.mix.beryllium", true, 5, 30, 30, 2, 16, false, true, false, Materials.Beryllium, Materials.Beryllium, Materials.Emerald, Materials.Thorium);
