@@ -815,7 +815,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     public int fill(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
-        if (getBaseMetaTileEntity().hasSteamEngineUpgrade() && GT_ModHandler.isSteam(aFluid) && aFluid.amount > 1) {
+        if (getBaseMetaTileEntity().hasSteamEngineUpgrade() && GT_ModHandler.isSteam(aFluid) && aFluid.amount > 0) {
             long tSteam = Math.min(Integer.MAX_VALUE, Math.min(((long) aFluid.amount * EU_PER_STEAM), getBaseMetaTileEntity().getSteamCapacity() - getBaseMetaTileEntity().getStoredSteam()));
             if (tSteam >= EU_PER_STEAM) {
                 markDirty();
