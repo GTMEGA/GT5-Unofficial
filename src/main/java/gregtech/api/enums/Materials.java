@@ -1143,6 +1143,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Glowstone.setOreMultiplier(5).setSmeltingMultiplier(5);
         Tetrahedrite.setOreMultiplier(2);
         Mica.setOreMultiplier(2);
+        Silver.setOreMultiplier(2).setSmeltingMultiplier(2);
         Asbestos.setOreMultiplier(2);
         Spodumene.setOreMultiplier(2);
         Quartzite.setOreMultiplier(3);

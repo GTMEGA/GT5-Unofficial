@@ -641,14 +641,14 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
 
 
     @Override
-    public GT_Recipe addWiremillRecipeRemovable(ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt) {
+    public GT_Recipe addWiremillRecipeRemovable(ItemStack aInput, ItemStack aCircuit, ItemStack aOutput, int aDuration, int aEUt) {
         if ((aInput == null) || (aOutput == null)) {
             return null;
         }
         if ((aDuration = GregTech_API.sRecipeFile.get("wiremill", aInput, aDuration)) <= 0) {
             return null;
         }
-        return GT_Recipe.GT_Recipe_Map.sWiremillRecipes.addRecipe(true, new ItemStack[]{aInput}, new ItemStack[]{aOutput}, null, null, null, aDuration, aEUt, 0);
+        return GT_Recipe.GT_Recipe_Map.sWiremillRecipes.addRecipe(true, new ItemStack[]{aInput, aCircuit},  new ItemStack[]{aOutput}, null, null, null, aDuration, aEUt, 0);
     }
 
     @Override

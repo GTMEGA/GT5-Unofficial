@@ -501,10 +501,10 @@ public interface IGT_RecipeAdder {
      * @param aDuration must be > 0
      * @param aEUt      should be > 0
      */
-    GT_Recipe addWiremillRecipeRemovable(ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt);
+    GT_Recipe addWiremillRecipeRemovable(ItemStack aInput, ItemStack aCircuit, ItemStack aOutput, int aDuration, int aEUt);
     @Deprecated
-    default boolean addWiremillRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt) {
-        return addWiremillRecipeRemovable(aInput, aOutput, aDuration, aEUt) != null;
+    default boolean addWiremillRecipe(ItemStack aInput, ItemStack aCircuit, ItemStack aOutput, int aDuration, int aEUt) {
+        return addWiremillRecipeRemovable(aInput, aCircuit, aOutput, aDuration, aEUt) != null;
     }
 
     /**
