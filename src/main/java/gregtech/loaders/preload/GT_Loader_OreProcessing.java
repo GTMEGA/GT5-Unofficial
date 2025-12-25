@@ -58,6 +58,6 @@ public class GT_Loader_OreProcessing
         new ProcessingToolHead();
         new ProcessingToolOther();
         new ProcessingWax();
-        new ProcessingWire();
+//        new ProcessingWire();
     }
 }
