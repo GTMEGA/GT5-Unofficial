@@ -55,8 +55,8 @@ public class GT_Loader_OreProcessing
         new ProcessingStone();
 //        new ProcessingStoneCobble();
         new ProcessingStoneVarious();
-        new ProcessingToolHead();
-        new ProcessingToolOther();
+//        new ProcessingToolHead();
+//        new ProcessingToolOther();
         new ProcessingWax();
 //        new ProcessingWire();
     }
