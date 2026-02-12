@@ -26,4 +26,4 @@ Please do not contribute without discussing your ideas with the team first, we d
 ## Modpacks
 Currently only MEGA is supported.
 [MEGA](https://github.com/GTMEGA)
-https://discord.gg/TbegaS2Cgd
+https://discord.gg/cEeavd6pSs
