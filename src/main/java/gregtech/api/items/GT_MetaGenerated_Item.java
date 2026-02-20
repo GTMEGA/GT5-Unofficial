@@ -50,7 +50,7 @@ import static gregtech.api.enums.GT_Values.*;
  *         <p/>
  *         These Items can also have special RightClick abilities, electric Charge or even be set to become a Food alike Item.
  */
-@Optional.Interface(iface = "squeek.applecore.api.food.IEdible", modid = MOD_ID_APC, striprefs = true)
+@Optional.Interface(iface = "squeek.applecore.api.food.IEdible", modid = MOD_ID_APC)
 public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements IEdible {
     /**
      * All instances of this Item Class are listed here.
@@ -127,6 +127,10 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
             for (Object tRandomData : aRandomData)
                 if (tRandomData != null) {
                     boolean tUseOreDict = true;
+                    if (tRandomData instanceof IFoodStat) {
+                        setFoodBehavior(mOffset + aID, (IFoodStat) tRandomData);
+                        tUseOreDict = false;
+                    }
                     if (tRandomData instanceof IItemBehaviour) {
                         addItemBehavior(mOffset + aID, (IItemBehaviour<GT_MetaBase_Item>) tRandomData);
                         tUseOreDict = false;
