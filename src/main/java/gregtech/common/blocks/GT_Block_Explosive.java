@@ -111,15 +111,17 @@ public class GT_Block_Explosive<TierType extends Enum<TierType> & IGT_ExplosiveT
 
     @Override
     public void onNeighborBlockChange(final World world, final int x, final int y, final int z, final Block block) {
+        boolean dontGoOffTwice = false;
         if (canConnectRedstone(world, x, y, z, 0)) {
             if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
                 setPrimed(world, x, y, z, true);
                 val powerNextTo = world.getStrongestIndirectPower(x, y, z);
                 val timer       = (15 - powerNextTo) * 20;
                 goBoom(world, x, y, z, null, timer);
+                dontGoOffTwice = true;
             }
         }
-        if (tier.isMagic()) {
+        if (tier.isMagic() && !dontGoOffTwice) {
             if (world.rand.nextDouble() >= INSTABILITY_CHANCE) {
                 return;
             }

@@ -90,6 +90,10 @@ enum GT_MiningExplosiveTier implements IGT_ExplosiveTier<GT_MiningExplosiveTier>
         return getParameters().fortune;
     }
 
+    @Override
+    public int offsetFactor() {
+        return (int) getParameters().radius - 1;
+    }
 
     @Override
     public boolean isMagic() {

@@ -125,11 +125,8 @@ public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_Explosi
      */
     @Override
     public void doExplosionA() {
-        final float ogExplosionSize = explosionSize;
         // fireRays();
-        explosionSize += 2F;
         doEntityStuff();
-        explosionSize = ogExplosionSize;
         explosionAPost();
     }
 
@@ -223,7 +220,7 @@ public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_Explosi
                     blockDensity = 1.0 / 2.0;
                     invDist      = (1.0 - distance) * blockDensity;
                     if (!(entity instanceof EntityItem)) {
-                        entity.attackEntityFrom(DamageSource.setExplosionSource(this), (float) ((int) ((invDist * invDist + invDist) / 2.0 * 8.0 * (double) explosionSize + 1.0)));
+                        entity.attackEntityFrom(DamageSource.setExplosionSource(this),( (float) ((int) ((invDist * invDist + invDist) / 2.0 * 8.0 * (double) explosionSize + 1.0))) * 2f);
                     }
                     final double enchantProtection = EnchantmentProtection.func_92092_a(entity, invDist) * 3.0;
                     entity.motionX += (disX * enchantProtection) * 20 * disMag;
