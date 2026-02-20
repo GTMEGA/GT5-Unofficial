@@ -127,7 +127,7 @@ public abstract class GT_Explosion<TierType extends Enum<TierType> & IGT_Explosi
     public void doExplosionA() {
         final float ogExplosionSize = explosionSize;
         // fireRays();
-        explosionSize *= 1.2F;
+        explosionSize += 2F;
         doEntityStuff();
         explosionSize = ogExplosionSize;
         explosionAPost();
