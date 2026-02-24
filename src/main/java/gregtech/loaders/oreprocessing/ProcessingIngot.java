@@ -56,7 +56,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
 
                 if (!aNoSmashing) {
                     GT_Values.RA.addForgeHammerRecipe(GT_Utility.copyAmount(3L, aStack), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 2L), (int) Math.max(aMaterialMass, 1L), 16);
-                    GT_Recipe.GT_Recipe_Map.sBenderRecipes.addRecipe(new GT_Recipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L), (int) Math.max(aMaterialMass, 1L), 24 ));
+                    GT_Recipe.GT_Recipe_Map.sBenderRecipes.addRecipe(new GT_Recipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L),  24, (int) Math.max(aMaterialMass, 1L)));
                 }
                 break;
 		default:
