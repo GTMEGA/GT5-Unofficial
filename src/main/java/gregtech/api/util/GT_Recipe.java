@@ -264,6 +264,12 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         return result.isEmpty() ? null : result.toArray(new GT_Recipe[0]);
     }
 
+
+    public GT_Recipe(ItemStack aInput1, ItemStack aOutput1,int aEUt, int aDuration) {
+        this(false, new ItemStack[]{aInput1}, new ItemStack[]{aOutput1}, null, null, null, null, Math.max(aDuration, 1), Math.max(aEUt, 1), 0);
+    }
+
+
     public GT_Recipe(FluidStack aInput1, FluidStack aInput2, FluidStack aOutput1, int aDuration, int aEUt, int aSpecialValue) {
         this(true, null, null, null, null, new FluidStack[]{aInput1, aInput2}, new FluidStack[]{aOutput1}, Math.max(aDuration, 1), aEUt, Math.max(Math.min(aSpecialValue, 160000000), 0));
         if (mInputs.length > 1) {
