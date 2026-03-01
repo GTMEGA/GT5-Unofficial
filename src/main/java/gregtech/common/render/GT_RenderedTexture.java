@@ -21,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -50,7 +51,7 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
         lighting.setupLightingXPos(aBlock, aX, aY, aZ).setupColor(ForgeDirection.EAST.ordinal(), mRGBa);
-        ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
+        ExtendedFacing rotation = getExtendedFacing(aRenderer.blockAccess, aX, aY, aZ);
         renderFaceXPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
             lighting.setupColor(ForgeDirection.EAST.ordinal(), 0xffffff);
@@ -69,7 +70,7 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
         lighting.setupLightingXNeg(aBlock, aX, aY, aZ).setupColor(ForgeDirection.WEST.ordinal(), mRGBa);
-        ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
+        ExtendedFacing rotation = getExtendedFacing(aRenderer.blockAccess, aX, aY, aZ);
         renderFaceXNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
             lighting.setupColor(ForgeDirection.WEST.ordinal(), 0xffffff);
@@ -88,7 +89,7 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
         lighting.setupLightingYPos(aBlock, aX, aY, aZ).setupColor(ForgeDirection.UP.ordinal(), mRGBa);
-        ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
+        ExtendedFacing rotation = getExtendedFacing(aRenderer.blockAccess, aX, aY, aZ);
         renderFaceYPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
             lighting.setupColor(ForgeDirection.UP.ordinal(), 0xffffff);
@@ -107,7 +108,7 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
         lighting.setupLightingYNeg(aBlock, aX, aY, aZ).setupColor(ForgeDirection.DOWN.ordinal(), mRGBa);
-        ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
+        ExtendedFacing rotation = getExtendedFacing(aRenderer.blockAccess, aX, aY, aZ);
         renderFaceYNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
             GT_Compat.tessellator().setColorRGBA(255, 255, 255, 255);
@@ -126,7 +127,7 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
         lighting.setupLightingZPos(aBlock, aX, aY, aZ).setupColor(ForgeDirection.SOUTH.ordinal(), mRGBa);
-        ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
+        ExtendedFacing rotation = getExtendedFacing(aRenderer.blockAccess, aX, aY, aZ);
         renderFaceZPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
             lighting.setupColor(ForgeDirection.SOUTH.ordinal(), 0xffffff);
@@ -145,7 +146,7 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         final boolean enableAO = aRenderer.enableAO;
         LightingHelper lighting = new LightingHelper(aRenderer);
         lighting.setupLightingZNeg(aBlock, aX, aY, aZ).setupColor(ForgeDirection.NORTH.ordinal(), mRGBa);
-        ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
+        ExtendedFacing rotation = getExtendedFacing(aRenderer.blockAccess, aX, aY, aZ);
         renderFaceZNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
             lighting.setupColor(ForgeDirection.NORTH.ordinal(), 0xffffff);
@@ -325,12 +326,8 @@ class GT_RenderedTexture implements ITexture, IColorModulationContainer {
         aRenderer.field_152631_f = false;
     }
 
-    private ExtendedFacing getExtendedFacing(int x, int y, int z) {
-        if (stdOrient) return ExtendedFacing.DEFAULT;
-        EntityPlayer player = GT_Mod.gregtechproxy.getThePlayer();
-        if (player == null) return ExtendedFacing.DEFAULT;
-        World w = player.getEntityWorld();
-        if (w == null) return ExtendedFacing.DEFAULT;
+    private ExtendedFacing getExtendedFacing(IBlockAccess w, int x, int y, int z) {
+        if (w == null || stdOrient) return ExtendedFacing.DEFAULT;
         TileEntity te = w.getTileEntity(x, y, z);
         if (te instanceof IGregTechTileEntity) {
             IMetaTileEntity meta = ((IGregTechTileEntity) te).getMetaTileEntity();
