@@ -1,12 +1,15 @@
+import com.falsepattern.fpgradle.FPMinecraftProjectExtension.Java.JvmDowngraderShade.ProjectIsLgpl21PlusCompatible
+
 plugins {
-    id("fpgradle-minecraft") version ("0.14.1")
+    id("com.falsepattern.fpgradle-mc") version "3.3.0"
 }
 
 group = "gtmega"
 
 minecraft_fp {
     java {
-        compatibility = jabel
+        compatibility = jvmDowngrader
+        jvmDowngraderShade = ProjectIsLgpl21PlusCompatible
     }
 
     mod {
@@ -45,7 +48,7 @@ repositories {
         includeModule("codechicken", "codechickencore-mc1.7.10")
         includeModule("codechicken", "forgemultipart-mc1.7.10")
     }
-    exclusive(ivy("https://mvn.falsepattern.com/releases/mirror", "[orgPath]/[artifact]-[revision].[ext]"), "mirror", "mirror.micdoodle")
+    exclusive(ivy("fp_mirror", "https://mvn.falsepattern.com/releases/mirror", "[orgPath]/[artifact]-[revision].[ext]"), "mirror", "mirror.micdoodle")
     exclusive(maven("usrv", "https://mvn.falsepattern.com/usrv"), "eu.usrv")
     exclusive(maven("tterrag", "https://mvn.falsepattern.com/tterrag"), "com.enderio")
     exclusive(maven("covers1624", "https://mvn.falsepattern.com/covers1624")) {
