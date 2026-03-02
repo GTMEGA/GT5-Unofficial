@@ -492,7 +492,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             return GT_OreSlurry.slurries.get(oreVeinEntry.getKey());
         }
 
-        GT_Mod.GT_FML_LOGGER.warn("Null ore slurry selected");
+//        GT_Mod.GT_FML_LOGGER.warn("Null ore slurry selected");
 
         return null;
     }
