@@ -47,7 +47,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 } else {
                     if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
                         GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 2L), GT_Proxy.tBits, new Object[]{"h", "X", 'X', OrePrefixes.gemFlawless.get(aMaterial)});
-                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(3L, aStack), 8, GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1));
+//                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(3L, aStack), 8, GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1));
                         if (aMaterial.contains(SubTag.SMELTING_TO_GEM))
                             GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(1L, aStack), GT_Proxy.tBits, new Object[]{"XXX", "XXX", "XXX", 'X', OrePrefixes.nugget.get(aMaterial)});
                         if (aSpecialRecipeReq)
@@ -84,7 +84,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, aStack), null, aMaterial.mFuelPower * 4, aMaterial.mFuelType);
                 if (!aNoWorking) {
                     if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
-                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(3L, aStack), 8, GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1));
+//                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(3L, aStack), 8, GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1));
                         GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 2L), GT_Proxy.tBits, new Object[]{"h", "X", 'X', OrePrefixes.gemExquisite.get(aMaterial)});
                         if (aSpecialRecipeReq)
                             GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 2L), GT_Proxy.tBits, new Object[]{"X", "m", 'X', OrePrefixes.gemFlawless.get(aMaterial)});
