@@ -101,15 +101,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     case "Tin":
                         GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Extruder_Cell.get(0L), ItemList.Cell_Empty.get(tAmount), tAmount * 128, 30);
                         break;
-                    case "Lead":
-                    case "Copper":
-                    case "AnnealedCopper":
-                    case "Bronze":
-                    case "Gold":
-                        break;
-                    case "Polytetrafluoroethylene":
-                        GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Cell.get(0L), ItemList.Cell_Empty.get(tAmount * 4), tAmount * 128, 30);
-                    	break;
                 }
             }
         }
