@@ -28,7 +28,7 @@ public class GT_MetaTileEntity_Mixer_Bronze extends GT_MetaTileEntity_Template_B
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_BasicMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "Mixer.png", getRecipeList().mUnlocalizedName);
+        return new GT_GUIContainer_BasicMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "Mixer6.png", getRecipeList().mUnlocalizedName);
     }
 
     @Override
