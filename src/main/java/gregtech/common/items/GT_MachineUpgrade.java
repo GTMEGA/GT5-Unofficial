@@ -8,6 +8,7 @@ import gregtech.common.blocks.GT_Item_Machines;
 import lombok.val;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -59,7 +60,7 @@ public class GT_MachineUpgrade extends GT_Generic_Item{
         val active = base.isActive();
         val fake = GT_Utility.getFakePlayer(base);
         if (fake == null) return false;
-        val stack = new ItemStack(GregTech_API.sBlockMachines.getItem(world,x,y,z));
+        val stack = new ItemStack(Item.getItemFromBlock(GregTech_API.sBlockMachines));
         stack.setItemDamage(mappedId);
         if (!(stack.getItem() instanceof GT_Item_Machines machineItem)) return false;
         BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(x,y,z, world, world.getBlock(x,y,z), metaBlock, player);
