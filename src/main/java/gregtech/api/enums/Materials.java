@@ -1136,6 +1136,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Tungstate.setOreMultiplier(2).setSmeltingMultiplier(2);
         Cassiterite.setOreMultiplier(2).setSmeltingMultiplier(2);
         CassiteriteSand.setOreMultiplier(2).setSmeltingMultiplier(2);
+        GarnetSand.setOreMultiplier(2);
         TricalciumPhosphate.setOreMultiplier(3).setSmeltingMultiplier(3);
         Saltpeter.setOreMultiplier(4).setSmeltingMultiplier(4);
         Apatite.setOreMultiplier(2).setSmeltingMultiplier(2);
