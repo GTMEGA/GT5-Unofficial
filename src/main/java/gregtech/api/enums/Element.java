@@ -24,7 +24,7 @@ public enum Element {
     Ne(10, 10, 0, -1, null, "Neon", false),
     Na(11, 11, 0, -1, null, "Sodium", false),
     Mg(12, 12, 0, -1, null, "Magnesium", false),
-    Al(13, 13, 0, -1, null, "Aluminium", false),
+    Al(13, 13, 174, -1, null, "Aluminium", false),
     Si(14, 14, 0, -1, null, "Silicon", false),
     P(15, 15, 0, -1, null, "Phosphorus", false),
     S(16, 16, 0, -1, null, "Sulfur", false),
