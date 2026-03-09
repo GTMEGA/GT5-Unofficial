@@ -68,9 +68,9 @@ public final class HullLoader {
             addCraftingRecipe(Hull_ULV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"PHP", "CMC", 'M', Casing_ULV, 'C', cableGt01.get(Tin), 'H', plate.get(Brass), 'P', plate.get(Wood)});
             addCraftingRecipe(Hull_LV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"PHP", "CMC", 'M', Casing_LV, 'C', cableGt01.get(Tin), 'H', plate.get(Steel), 'P', plate.get(Brass)});
             addCraftingRecipe(Hull_MV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"PHP", "CMC", 'M', Casing_MV, 'C', cableGt01.get(Copper), 'H', plate.get(StainlessSteel), 'P', plate.get(Cobalt)});
-            addCraftingRecipe(Hull_HV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"PHP", "CMC", 'M', Casing_HV, 'C', cableGt01.get(Gold), 'H', plate.get(Aluminium), 'P', plate.get(Plastic)});
-            addCraftingRecipe(Hull_EV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"PHP", "CMC", 'M', Casing_EV, 'C', cableGt01.get(Aluminium), 'H', plate.get(Titanium), 'P', plate.get(Plastic)});
-            addCraftingRecipe(Hull_IV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"PHP", "CMC", 'M', Casing_IV, 'C', cableGt01.get(Tungsten), 'H', plate.get(TungstenSteel), 'P', plate.get(Polytetrafluoroethylene)});
+            //addCraftingRecipe(Hull_HV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"PHP", "CMC", 'M', Casing_HV, 'C', cableGt01.get(Gold), 'H', plate.get(Aluminium), 'P', plate.get(Plastic)});
+            //addCraftingRecipe(Hull_EV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"PHP", "CMC", 'M', Casing_EV, 'C', cableGt01.get(Aluminium), 'H', plate.get(Titanium), 'P', plate.get(Plastic)});
+            //addCraftingRecipe(Hull_IV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"PHP", "CMC", 'M', Casing_IV, 'C', cableGt01.get(Tungsten), 'H', plate.get(TungstenSteel), 'P', plate.get(Polytetrafluoroethylene)});
             //addCraftingRecipe(Hull_LuV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"PHP", "CMC", 'M', Casing_LuV, 'C', cableGt01.get(VanadiumGallium), 'H', plate.get(Chrome), 'P', plate.get(Polytetrafluoroethylene)});
             //addCraftingRecipe(Hull_ZPM.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"PHP", "CMC", 'M', Casing_ZPM, 'C', cableGt01.get(Naquadah), 'H', plate.get(Iridium), 'P', plate.get(Polybenzimidazole)});
             //addCraftingRecipe(Hull_UV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"PHP", "CMC", 'M', Casing_UV, 'C', wireGt04.get(NaquadahAlloy), 'H', plate.get(Osmium), 'P', plate.get(Polybenzimidazole)});
@@ -79,9 +79,9 @@ public final class HullLoader {
             addCraftingRecipe(Hull_ULV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"CMC", 'M', Casing_ULV, 'C', cableGt01.get(Tin)});
             addCraftingRecipe(Hull_LV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"CMC", 'M', Casing_LV, 'C', cableGt01.get(Tin)});
             addCraftingRecipe(Hull_MV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"CMC", 'M', Casing_MV, 'C', cableGt01.get(Copper)});
-            addCraftingRecipe(Hull_HV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"CMC", 'M', Casing_HV, 'C', cableGt01.get(Gold)});
-            addCraftingRecipe(Hull_EV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"CMC", 'M', Casing_EV, 'C', cableGt01.get(Aluminium)});
-            addCraftingRecipe(Hull_IV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"CMC", 'M', Casing_IV, 'C', cableGt01.get(Tungsten)});
+            //addCraftingRecipe(Hull_HV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"CMC", 'M', Casing_HV, 'C', cableGt01.get(Gold)});
+            //addCraftingRecipe(Hull_EV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"CMC", 'M', Casing_EV, 'C', cableGt01.get(Aluminium)});
+            //addCraftingRecipe(Hull_IV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"CMC", 'M', Casing_IV, 'C', cableGt01.get(Tungsten)});
            //addCraftingRecipe(Hull_LuV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"CMC", 'M', Casing_LuV, 'C', cableGt01.get(VanadiumGallium)});
            //addCraftingRecipe(Hull_ZPM.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"CMC", 'M', Casing_ZPM, 'C', cableGt01.get(Naquadah)});
            //addCraftingRecipe(Hull_UV.get(1L), NOT_REMOVABLE | BUFFERED, new Object[]{"CMC", 'M', Casing_UV, 'C', wireGt04.get(NaquadahAlloy)});

@@ -85,8 +85,8 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
         TC_Aspects.MAGNETO.mAspect = new Aspect("magneto", 12632256, new Aspect[]{Aspect.METAL, Aspect.TRAVEL}, new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.MAGNETO.name() + ".png"), 1);
         TC_Aspects.RADIO.mAspect = new Aspect("radio", 12648384, new Aspect[]{Aspect.LIGHT, Aspect.ENERGY}, new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.RADIO.name() + ".png"), 1);
 
-        GT_LanguageManager.addStringLocalization("tc.aspect.strontio", "Stupidness, Incompetence");
-        GT_LanguageManager.addStringLocalization("tc.aspect.nebrisum", "Cheatyness, Raiding");
+        GT_LanguageManager.addStringLocalization("tc.aspect.strontio", "Stupidity, Incompetence");
+        GT_LanguageManager.addStringLocalization("tc.aspect.nebrisum", "Theft, Raiding");
         GT_LanguageManager.addStringLocalization("tc.aspect.electrum", "Electricity, Lightning");
         GT_LanguageManager.addStringLocalization("tc.aspect.magneto", "Magnetism, Attraction");
         GT_LanguageManager.addStringLocalization("tc.aspect.radio", "Radiation");
