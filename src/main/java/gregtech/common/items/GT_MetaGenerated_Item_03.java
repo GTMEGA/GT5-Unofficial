@@ -42,16 +42,16 @@ public class GT_MetaGenerated_Item_03
         GregTech_API.registerCover(ItemList.Cover_SolarPanel_UEV.get(1L), TextureFactory.of(SOLARPANEL_UEV), new GT_Cover_SolarPanel(8388608));
         GregTech_API.registerCover(ItemList.Cover_SolarPanel_UIV.get(1L), TextureFactory.of(SOLARPANEL_UIV), new GT_Cover_SolarPanel(33554432));
 
-        ItemList.ULV_Coil.set(addItem(tLastID = 140, "Magnetic Coil ULV", "Red Alloy Coil", o));
-        ItemList.LV_Coil.set(addItem(tLastID = 141, "Magnetic Coil LV", "Cupronickel Coil", o));
-        ItemList.MV_Coil.set(addItem(tLastID = 142, "Magnetic Coil MV", "Nichrome Coil", o));
-        ItemList.HV_Coil.set(addItem(tLastID = 143, "Magnetic Coil HV", "Kanthal Coil", o));
-        ItemList.EV_Coil.set(addItem(tLastID = 144, "Magnetic Coil EV", "Tungstensteel Coil", o));
-        ItemList.IV_Coil.set(addItem(tLastID = 145, "Magnetic Coil IV", "Iridium Coil", o));
-        ItemList.LuV_Coil.set(addItem(tLastID = 146, "Magnetic Coil LuV", "Osmiridium Coil", o));
-        ItemList.ZPM_Coil.set(addItem(tLastID = 147, "Magnetic Coil ZPM", "Europium Coil", o));
-        ItemList.UV_Coil.set(addItem(tLastID = 148, "Magnetic Coil UV", "Fluxed Coil", o));
-        ItemList.UHV_Coil.set(addItem(tLastID = 149, "Magnetic Coil UHV", "Tritanium Coil", o));
+        ItemList.ULV_Coil.set(addItem(tLastID = 140, "Heating Coil ULV", "Red Alloy Coil", o));
+        ItemList.LV_Coil.set(addItem(tLastID = 141, "Heating Coil LV", "Cupronickel Coil", o));
+        ItemList.MV_Coil.set(addItem(tLastID = 142, "Heating Coil MV", "Nichrome Coil", o));
+        ItemList.HV_Coil.set(addItem(tLastID = 143, "Heating Coil HV", "Kanthal Coil", o));
+        ItemList.EV_Coil.set(addItem(tLastID = 144, "Heating Coil EV", "Tungstensteel Coil", o));
+        ItemList.IV_Coil.set(addItem(tLastID = 145, "Heating Coil IV", "Iridium Coil", o));
+        ItemList.LuV_Coil.set(addItem(tLastID = 146, "Heating Coil LuV", "Osmiridium Coil", o));
+        ItemList.ZPM_Coil.set(addItem(tLastID = 147, "Heating Coil ZPM", "Europium Coil", o));
+        ItemList.UV_Coil.set(addItem(tLastID = 148, "Heating Coil UV", "Fluxed Coil", o));
+        ItemList.UHV_Coil.set(addItem(tLastID = 149, "Heating Coil UHV", "Tritanium Coil", o));
     }
 
     @Override
