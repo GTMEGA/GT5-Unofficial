@@ -215,7 +215,7 @@ public class GT_OreVeinLocations {
 
             veinData = new VeinData(currentVein.mWorldGenName, oreCount, oreCount);
 
-            GT_Mod.GT_FML_LOGGER.info("Recalculated Ore Vein type at [{}, {}] to be {}", chunk.xPosition, chunk.zPosition, currentVein.mWorldGenName);
+            GT_Mod.GT_FML_LOGGER.debug("Recalculated Ore Vein type at [{}, {}] to be {}", chunk.xPosition, chunk.zPosition, currentVein.mWorldGenName);
         } else {
 //            GT_Mod.GT_FML_LOGGER.warn("Null ore slurry selected");
 
