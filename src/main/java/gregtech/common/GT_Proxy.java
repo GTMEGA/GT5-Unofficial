@@ -85,6 +85,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import gregtech.common.misc.ElectricItemManager;
 import gregtech.common.misc.GatewayElectricItemManager;
 import ic2.api.item.ElectricItem;
+import lombok.val;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.io.File;
@@ -1347,7 +1348,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             boolean tHungerEffect = (this.mHungerEffect) && (aEvent.player.ticksExisted % 2400 == 1200);
             if (aEvent.player.ticksExisted % 120 == 0) {
                 int tCount = 64;
-                for (int i = 0; i < 36; i++) {
+
+                val numInvSlots = GregTech_API.mDWS ? 72 : 32;
+                for (int i = 0; i < numInvSlots; i++) {
                     ItemStack tStack;
                     if ((tStack = aEvent.player.inventory.getStackInSlot(i)) != null) {
                         if (!aEvent.player.capabilities.isCreativeMode) {
