@@ -43,7 +43,7 @@ repositories {
     ic2EX()
     cursemavenEX()
     exclusive(mavenpattern(), "com.falsepattern")
-    exclusive(mega(), "mega", "gtmega", "team.chisel") {
+    exclusive(mega(), "mega", "gtmega", "team.chisel", "matt159") {
         includeModule("codechicken", "notenoughitems-mc1.7.10")
         includeModule("codechicken", "codechickencore-mc1.7.10")
         includeModule("codechicken", "forgemultipart-mc1.7.10")
@@ -106,6 +106,8 @@ dependencies {
     devOnlyNonPublishable("com.azanor.baubles:Baubles:1.7.10-1.0.1.10:deobf") {
         excludeDeps()
     }
+
+    runtimeOnlyNonPublishable("matt159:dws-mc1.7.10:0.8.9-beta:dev")
 
     //Plonk 10.0.4
 //    runtimeOnly(deobfCurse("plonk-345779:4480767"))
