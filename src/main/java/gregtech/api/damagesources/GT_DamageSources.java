@@ -61,7 +61,7 @@ public class GT_DamageSources {
 
         @Override
         public IChatComponent func_151519_b(EntityLivingBase aTarget) {
-            return new ChatComponentText(EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " got frozen");
+            return new ChatComponentTranslation("gt5u.death.attack.frost", aTarget.func_145748_c_());
         }
     }
 
@@ -77,6 +77,14 @@ public class GT_DamageSources {
         public ItemStack getDamagingStack() {
             return stack;
         }
+
+        @Override
+        public IChatComponent func_151519_b(EntityLivingBase aTarget) {
+            if (stack == null || stack.hasDisplayName()) {
+                return super.func_151519_b(aTarget);
+            }
+            return new ChatComponentTranslation("gt5u.death.attack.frost.item", aTarget.func_145748_c_(), stack.func_151000_E());
+        }
     }
 
     private static class DamageSourceHeat extends DamageSource {
@@ -87,7 +95,7 @@ public class GT_DamageSources {
 
         @Override
         public IChatComponent func_151519_b(EntityLivingBase aTarget) {
-            return new ChatComponentText(EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " was boiled alive");
+            return new ChatComponentTranslation("gt5u.death.attack.steam", aTarget.func_145748_c_());
         }
     }
 
@@ -102,6 +110,14 @@ public class GT_DamageSources {
         @Nullable
         public ItemStack getDamagingStack() {
             return stack;
+        }
+
+        @Override
+        public IChatComponent func_151519_b(EntityLivingBase aTarget) {
+            if (stack == null || stack.hasDisplayName()) {
+                return super.func_151519_b(aTarget);
+            }
+            return new ChatComponentTranslation("gt5u.death.attack.steam.item", aTarget.func_145748_c_(), stack.func_151000_E());
         }
     }
 

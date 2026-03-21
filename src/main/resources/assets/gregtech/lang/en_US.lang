@@ -1214,3 +1214,9 @@ fluid.sewerage=sewerage
 fluid.fuelgc=fuelgc
 fluid.dirtywater=dirtywater
 fluid.oilgc=oilgc
+
+gt5u.death.attack.steam=%1$s was boiled alive
+gt5u.death.attack.steam.item=%1$s was was boiled alive by %2$s
+
+gt5u.death.attack.frost=%1$s was got frozen
+gt5u.death.attack.frost.item=%1$s was got frozen by %2$s
