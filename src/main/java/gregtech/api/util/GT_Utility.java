@@ -8,6 +8,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.damagesources.GT_DamageSources.DamageSourceHotItem;
+import gregtech.api.damagesources.GT_DamageSources.DamageSourceColdItem;
 import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.*;
 import gregtech.api.events.BlockScanningEvent;
@@ -1548,8 +1549,16 @@ public class GT_Utility {
     }
 
     public static boolean applyFrostDamage(EntityLivingBase aEntity, float aDamage) {
+        return applyFrostDamage(aEntity, aDamage, GT_DamageSources.getFrostDamage());
+    }
+
+    public static boolean applyFrostDamageFromItem(EntityLivingBase aEntity, float aDamage, ItemStack item) {
+        return applyFrostDamage(aEntity, aDamage, new DamageSourceColdItem(item));
+    }
+
+    public static boolean applyFrostDamage(EntityLivingBase aEntity, float aDamage, DamageSource source) {
         if (aDamage > 0 && aEntity != null && !isWearingFullFrostHazmat(aEntity)) {
-            aEntity.attackEntityFrom(GT_DamageSources.getFrostDamage(), aDamage);
+            aEntity.attackEntityFrom(source, aDamage);
             return true;
         }
         return false;

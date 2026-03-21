@@ -1360,7 +1360,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                 if (tHeat > 0.0F) {
                                     GT_Utility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
                                 } else {
-                                    GT_Utility.applyFrostDamage(aEvent.player, -tHeat);
+                                    GT_Utility.applyFrostDamageFromItem(aEvent.player, -tHeat, tStack);
                                 }
                             }
                         }
@@ -1480,7 +1480,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                 if (tHeat > 0.0F) {
                                     GT_Utility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
                                 } else {
-                                    GT_Utility.applyFrostDamage(aEvent.player, -tHeat);
+                                    GT_Utility.applyFrostDamageFromItem(aEvent.player, -tHeat, tStack);
                                 }
                             }
                         }

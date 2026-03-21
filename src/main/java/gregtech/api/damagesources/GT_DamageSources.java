@@ -65,6 +65,20 @@ public class GT_DamageSources {
         }
     }
 
+    public static class DamageSourceColdItem extends DamageSourceFrost {
+        @Nullable
+        private final ItemStack stack;
+
+        public DamageSourceColdItem(@Nullable ItemStack cause) {
+            this.stack = cause;
+        }
+
+        @Nullable
+        public ItemStack getDamagingStack() {
+            return stack;
+        }
+    }
+
     private static class DamageSourceHeat extends DamageSource {
         public DamageSourceHeat() {
             super("steam");
