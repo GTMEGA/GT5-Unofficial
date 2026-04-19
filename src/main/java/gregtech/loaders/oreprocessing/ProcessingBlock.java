@@ -29,11 +29,11 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         if (tStack3 != null) {
             GT_ModHandler.removeRecipeDelayed(tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3, tStack3);
         }
-        if (aMaterial.mStandardMoltenFluid != null) {
-            if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
-            GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Block.get(0L), aMaterial.getMolten(1296L), GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L), 288, 8);
-            }
-        }
+//        if (aMaterial.mStandardMoltenFluid != null) {
+//            if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
+//            GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Block.get(0L), aMaterial.getMolten(1296L), GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L), 288, 8);
+//            }
+//        }
         if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.storageblockcrafting, OrePrefixes.block.get(aMaterial).toString(), false)) {
             if ((tStack1 == null) && (tStack2 == null) && (tStack3 != null))
                 GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L), new Object[]{"XXX", "XXX", "XXX", 'X', OrePrefixes.dust.get(aMaterial)});
@@ -59,11 +59,11 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 //            if (tStack1 != null)
 //                GT_ModHandler.addShapelessCraftingRecipe(tStack1, new Object[]{OrePrefixes.block.get(aMaterial)});
 //        }
-        if (!OrePrefixes.block.isIgnored(aMaterial))
-            GT_ModHandler.addCompressionRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L), GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L));
-        if (aMaterial.mName.equals("Mercury")) {
-            System.err.println(
-                    "'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block? On Pluto Greg :)");
-        }
+//        if (!OrePrefixes.block.isIgnored(aMaterial))
+//            GT_ModHandler.addCompressionRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L), GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L));
+//        if (aMaterial.mName.equals("Mercury")) {
+//            System.err.println(
+//                    "'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block? On Pluto Greg :)");
+//        }
     }
 }

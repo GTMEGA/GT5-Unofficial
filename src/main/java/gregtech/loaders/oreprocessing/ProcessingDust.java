@@ -104,9 +104,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                 }
                 if (aMaterial.contains(SubTag.CRYSTALLISABLE)) {
-                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1), Materials.Water.getFluid(200L), GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 7000, 2000, 24, false);
-                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(2), GT_ModHandler.getDistilledWater(100L), GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 9000, 1500, 24, false);
-                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(3), Materials.Void.getMolten(36L), GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 10000, 1200, 24, false);
+                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1), Materials.Water.getFluid(200L), GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 7500, 600, 24, false);
                 }
 
                 switch (aMaterial.mName) {
@@ -132,14 +130,14 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     case "HydratedCoal":
                         GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, aStack), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L));
                         break;
-                    case "Diamond":
-                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4L, aStack), 32, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 3L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 16L));
-                        break;
-                    case "Opal": case "Olivine": case "Emerald": case "Ruby": case "Sapphire": case "GreenSapphire": case "Topaz": case "BlueTopaz": case "Tanzanite": case "Amethyst":
-                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4L, aStack), 24, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 3L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 3L));
-                        break;
-                    case "FoolsRuby": case "GarnetRed": case "GarnetYellow": case "Jasper": case "Amber": case "Monazite": case "Forcicium": case "Forcillium": case "Force":
-                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4L, aStack), 16, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 3L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 2L));
+//                    case "Diamond":
+//                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4L, aStack), 32, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 3L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 16L));
+//                        break;
+//                    case "Opal": case "Olivine": case "Emerald": case "Ruby": case "Sapphire": case "GreenSapphire": case "Topaz": case "BlueTopaz": case "Tanzanite": case "Amethyst":
+//                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4L, aStack), 24, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 3L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 3L));
+//                        break;
+//                    case "FoolsRuby": case "GarnetRed": case "GarnetYellow": case "Jasper": case "Amber": case "Monazite": case "Forcicium": case "Forcillium": case "Force":
+//                        GT_Values.RA.addImplosionRecipe(GT_Utility.copyAmount(4L, aStack), 16, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 3L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 2L));
                 }
                 break;
 //            case dustPure: case dustImpure:case dustRefined:

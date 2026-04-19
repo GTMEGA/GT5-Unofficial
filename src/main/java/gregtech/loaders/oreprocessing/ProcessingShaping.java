@@ -30,11 +30,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                 } else if (aPrefix.name().startsWith(OrePrefixes.dust.name())) {
                     return;
                 }
-
-                if (!OrePrefixes.block.isIgnored(aMaterial.mSmeltInto)) {
-//                    GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(9L, aStack), ItemList.Shape_Extruder_Block.get(0L), GT_OreDictUnificator.get(OrePrefixes.block, aMaterial.mSmeltInto, tAmount), 10 * tAmount, 8 * tVoltageMultiplier);
-                    GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(9L, aStack), ItemList.Shape_Mold_Block.get(0L), GT_OreDictUnificator.get(OrePrefixes.block, aMaterial.mSmeltInto, tAmount), 5 * tAmount, 4 * tVoltageMultiplier);
-                }
                 if (((aPrefix != OrePrefixes.ingot) || (aMaterial != aMaterial.mSmeltInto)) && (aMaterial.contains(SubTag.BOUNCY))) {
                     GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Ingot.get(0L), GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, tAmount), 10, 4 * tVoltageMultiplier);
                 }

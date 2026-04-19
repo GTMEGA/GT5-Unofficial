@@ -260,10 +260,10 @@ public class GT_RecipeRegistrator {
         if (!aData.hasValidMaterialData()) return;
 
         long tAmount = 0;
-        for (MaterialStack tMaterial : aData.getAllMaterialStacks())
-            tAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
-        boolean tHide = (aData.mMaterial.mMaterial != Materials.Iron) && (GT_Mod.gregtechproxy.mHideRecyclingRecipes);
-        RA.addPulveriserRecipe(aStack, new ItemStack[]{GT_OreDictUnificator.getDust(aData.mMaterial), GT_OreDictUnificator.getDust(aData.getByProduct(0)), GT_OreDictUnificator.getDust(aData.getByProduct(1)), GT_OreDictUnificator.getDust(aData.getByProduct(2))}, null, aData.mMaterial.mMaterial==Materials.Marble ? 1 : (int) Math.max(16, tAmount / M), 4, tHide);
+//        for (MaterialStack tMaterial : aData.getAllMaterialStacks())
+//            tAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
+//        boolean tHide = (aData.mMaterial.mMaterial != Materials.Iron) && (GT_Mod.gregtechproxy.mHideRecyclingRecipes);
+//        RA.addPulveriserRecipe(aStack, new ItemStack[]{GT_OreDictUnificator.getDust(aData.mMaterial), GT_OreDictUnificator.getDust(aData.getByProduct(0)), GT_OreDictUnificator.getDust(aData.getByProduct(1)), GT_OreDictUnificator.getDust(aData.getByProduct(2))}, null, aData.mMaterial.mMaterial==Materials.Marble ? 1 : (int) Math.max(16, tAmount / M), 4, tHide);
 
         if (aAllowHammer) 
         	for (MaterialStack tMaterial : aData.getAllMaterialStacks())

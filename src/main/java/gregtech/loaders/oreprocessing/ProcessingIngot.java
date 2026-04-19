@@ -38,7 +38,10 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     }
                 }
                 GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
-                GT_RecipeRegistrator.registerReverseMacerating(aStack, aMaterial, aPrefix.mMaterialAmount, null, null, null, false);
+
+                GT_Values.RA.addPulveriserRecipeRemovable(GT_Utility.copyAmount(1L, aStack), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L)}, null, 40, 24);
+
+//                GT_RecipeRegistrator.registerReverseMacerating(aStack, aMaterial, aPrefix.mMaterialAmount, null, null, null, false);
                 if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
                     GT_RecipeRegistrator.registerReverseArcSmelting(GT_Utility.copyAmount(1L, aStack), aMaterial, aPrefix.mMaterialAmount, null, null, null);
                 }

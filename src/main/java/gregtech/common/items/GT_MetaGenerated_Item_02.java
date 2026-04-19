@@ -363,15 +363,15 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.double_plant, 1, 4), new ItemStack(Items.dye, 3, 1));
         GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.double_plant, 1, 5), new ItemStack(Items.dye, 3, 9));
 
-        GT_ModHandler.addPulverisationRecipe(ItemList.Food_Sliced_Cheese.get(1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cheese, 1L));
+        GT_ModHandler.addPulverisationRecipe(ItemList.Food_Sliced_Cheese.get(1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cheese, 1L));
         GT_ModHandler.addPulverisationRecipe(ItemList.Dye_Cocoa.get(1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L));
-        GT_ModHandler.addPulverisationRecipe(ItemList.Crop_Drop_Tine.get(1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L));
+        GT_ModHandler.addPulverisationRecipe(ItemList.Crop_Drop_Tine.get(1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L));
         GT_ModHandler.addPulverisationRecipe(new ItemStack(Items.reeds, 1), new ItemStack(Items.sugar, 1), null, 0, false);
         GT_ModHandler.addPulverisationRecipe(new ItemStack(Blocks.melon_block, 1, 0), new ItemStack(Items.melon, 8, 0), new ItemStack(Items.melon_seeds, 1), 80, false);
         GT_ModHandler.addPulverisationRecipe(new ItemStack(Blocks.pumpkin, 1, 0), new ItemStack(Items.pumpkin_seeds, 4, 0), null, 0, false);
         GT_ModHandler.addPulverisationRecipe(new ItemStack(Items.melon, 1, 0), new ItemStack(Items.melon_seeds, 1, 0), null, 0, false);
         GT_ModHandler.addPulverisationRecipe(new ItemStack(Items.wheat, 1, 0), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L), null, 0, false);
-        GT_ModHandler.addPulverisationRecipe(new ItemStack(Items.stick, 1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L), null, 0, false);
+        GT_ModHandler.addPulverisationRecipe(new ItemStack(Items.stick, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L), null, 0, false);
         GT_ModHandler.addPulverisationRecipe(new ItemStack(Blocks.wool, 1, 32767), new ItemStack(Items.string, 2), new ItemStack(Items.string, 1), 50, false);
 
         ItemList.Display_ITS_FREE.set(addItem(tLastID = 766, "ITS FREE", "(or at least almost free)", SubTag.INVISIBLE, new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)));
