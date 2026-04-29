@@ -103,9 +103,9 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         }
                     }
                 }
-                if (aMaterial.contains(SubTag.CRYSTALLISABLE)) {
-                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1), Materials.Water.getFluid(200L), GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 7500, 600, 24, false);
-                }
+//                if (aMaterial.contains(SubTag.CRYSTALLISABLE)) {
+//                    GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1), Materials.Water.getFluid(200L), GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 7500, 600, 24, false);
+//                }
 
                 switch (aMaterial.mName) {
                     case "NULL":
