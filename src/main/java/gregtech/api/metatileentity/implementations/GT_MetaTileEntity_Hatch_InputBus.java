@@ -37,7 +37,7 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch im
         super(id, name, nameRegional, tier, slots, ArrayExt.of(
                 "Item Input for Multiblocks",
                 "Shift + right click with screwdriver to turn Sort mode on/off",
-                "Capacity: " + slots + " stack" + (slots >= 2 ? "s" : "")));
+                "Capacity: " + (slots - 1) + " stack" + (slots >= 2 ? "s" : "")));
     }
 
     @Deprecated
@@ -123,15 +123,15 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch im
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         switch (mInventory.length - 1) {
             case 1:
-                return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, "Input Bus");
+                return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, "Item Input Hatch");
             case 4:
-                return new GT_GUIContainer_2by2(aPlayerInventory, aBaseMetaTileEntity, "Input Bus");
+                return new GT_GUIContainer_2by2(aPlayerInventory, aBaseMetaTileEntity, "Item Input Hatch");
             case 9:
-                return new GT_GUIContainer_3by3(aPlayerInventory, aBaseMetaTileEntity, "Input Bus");
+                return new GT_GUIContainer_3by3(aPlayerInventory, aBaseMetaTileEntity, "Item Input Hatch");
             case 16:
-                return new GT_GUIContainer_4by4(aPlayerInventory, aBaseMetaTileEntity, "Input Bus");
+                return new GT_GUIContainer_4by4(aPlayerInventory, aBaseMetaTileEntity, "Item Input Hatch");
             default:
-                return new GT_GUIContainer_4by4(aPlayerInventory, aBaseMetaTileEntity, "Input Bus");
+                return new GT_GUIContainer_4by4(aPlayerInventory, aBaseMetaTileEntity, "Item Input Hatch");
         }
     }
 

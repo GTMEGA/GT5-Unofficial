@@ -99,7 +99,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Oxygen                  = new Materials(  13, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             ,   0, 100, 200, 240,   "Oxygen"                  ,   "Oxygen"                        ,    0,       0,         54,    0, false,  true,   1,   1,   1, Dyes.dyeWhite       , Element.O         , Arrays.asList(new TC_AspectStack(TC_Aspects.AER, 1)));
     public static Materials Palladium               = new Materials(  52, TextureSet.SET_SHINY             ,   8.0F,    512,  4, 1|2  |8   |32|64|128      , 128, 128, 148,   0,   "Palladium"               ,   "Palladium"                     ,    0,       0,       1828, 1828,  true, false,   4,   1,   1, Dyes.dyeGray        , Element.Pd        , Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 3)));
     public static Materials Phosphorus              = new Materials(  21, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1         |32             , 255, 255,   0,   0,   "Phosphorus"              ,   "Phosphorus"                    ,    0,       0,        317,    0, false, false,   2,   1,   1, Dyes.dyeYellow      , Element.P         , Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 2), new TC_AspectStack(TC_Aspects.POTENTIA, 1)));
-    public static Materials Platinum                = new Materials(  85, TextureSet.SET_SHINY             ,  12.0F,     64,  4, 1|2  |8   |32|64|128      , 225, 230, 202,   0,   "Platinum"                ,   "Platinum"                      ,    0,       0,       2041,    0, true,  false,   6,   1,   1, Dyes.dyeOrange      , Element.Pt        , Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.NEBRISUM, 1)));
+    public static Materials Platinum                = new Materials(  85, TextureSet.SET_SHINY             ,  12.0F,     64,  4, 1|2  |8   |32|64|128      , 225, 230, 195,   0,   "Platinum"                ,   "Platinum"                      ,    0,       0,       2041,    0, true,  false,   6,   1,   1, Dyes.dyeOrange      , Element.Pt        , Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.NEBRISUM, 1)));
     public static Materials Plutonium               = new Materials( 100, TextureSet.SET_METALLIC          ,   6.0F,    512,  3, 1|2  |8   |32|64          , 240,  50,  50,   0,   "Plutonium"               ,   "Plutonium 239"                 ,    0,       0,        912,    0, false, false,   6,   1,   1, Dyes.dyeLime        , Element.Pu        , Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.RADIO, 2)));
     public static Materials Plutonium241            = new Materials( 101, TextureSet.SET_SHINY             ,   6.0F,    512,  3, 1|2  |8   |32|64          , 250,  70,  70,   0,   "Plutonium241"            ,   "Plutonium 241"                 ,    0,       0,        912,    0, false, false,   6,   1,   1, Dyes.dyeLime        , Element.Pu_241    , Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.RADIO, 3)));
     public static Materials Potassium               = new Materials(  25, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1|2       |32             , 154, 172, 223,   0,   "Potassium"               ,   "Potassium"                     ,    0,       0,        336,    0, false, false,   2,   1,   1, Dyes.dyeWhite       , Element.K         , Arrays.asList(new TC_AspectStack(TC_Aspects.VITREUS, 1), new TC_AspectStack(TC_Aspects.POTENTIA, 1)));
@@ -1287,15 +1287,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Pyrotheum.setHeatDamage(5.0F);
     }
 
-    //Byproducts: Ore Washer 40% Chance | Thermal Centrifuge 40% | Pulverizer 10% Chance | Chem Bath Mercury (Usually 70%)
+    //Byproducts: Ore Washer 40% Chance | Thermal Centrifuge 30% | Pulverizer 10% Chance | Chem Bath Mercury (Usually 70%)
     private static void setByProducts() {
         Rubracium.addOreByProducts(Samarium, Samarium, Samarium, Samarium);
         Chalcopyrite.addOreByProducts(Pyrite, Cobalt, Copper, Gold);
         Sphalerite.addOreByProducts(GarnetYellow, Gallium, Sulfur, Zinc);
-//        GlauconiteSand.addOreByProducts(Sodium, QuartzSand, Iron);
-//        Glauconite.addOreByProducts(Sodium, Magnesia, Iron);
-//        Vermiculite.addOreByProducts(Iron, Apatite, Magnesium);
-//        FullersEarth.addOreByProducts(Clay, Silicon, Magnesium);
         Bentonite.addOreByProducts(Clay, Calcium, Magnesium);
         Uraninite.addOreByProducts(Uranium, Thorium, Uranium235);
         Pitchblende.addOreByProducts(Thorium, Uranium, Lead);
@@ -1306,13 +1302,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Nickel.addOreByProducts(Cobalt, Platinum, Iron);
         GarnetRed.addOreByProducts(Spessartine, Ruby);
         GarnetYellow.addOreByProducts(Spessartine, GarnetRed);
-//        Cooperite.addOreByProducts(Palladium, Nickel, Iridium);
         Cinnabar.addOreByProducts(Redstone, Sulfur, Glowstone);
         Cryolite.addOreByProducts(Cryolite, Sodium, Aluminium);
         Tantalite.addOreByProducts(Manganese, Niobium, Tantalum);
-//        Pollucite.addOreByProducts(Caesium, Potassium, Rubidium);
-//        Chrysotile.addOreByProducts(Asbestos, Silicon, Magnesium);
-        Asbestos.addOreByProducts(Asbestos, Silicon, Magnesium);
+        Asbestos.addOreByProducts(Asbestos, Mica);
         Pentlandite.addOreByProducts(Iron, Sulfur, Cobalt);
         Uranium.addOreByProducts(Lead, Uranium235, Thorium);
         Scheelite.addOreByProducts(Manganese, Molybdenum, Calcium);
@@ -1321,23 +1314,16 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Redstone.addOreByProducts(Cinnabar, Ruby, Glowstone);
         Monazite.addOreByProducts(Thorium, Neodymium, RareEarth);
         Malachite.addOreByProducts(Copper, Magnetite, Calcite);
-//        YellowLimonite.addOreByProducts(Nickel, BrownLimonite, Cobalt);
-        Malachite.addOreByProducts(Copper, Malachite, Calcite);
         Lepidolite.addOreByProducts(Lithium, Caesium);
-//        Andradite.addOreByProducts(GarnetYellow, Iron);
         Pyrolusite.addOreByProducts(Tantalite, Manganese, Niobium).add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
         TricalciumPhosphate.addOreByProducts(Apatite, Phosphate);
         Apatite.addOreByProducts(TricalciumPhosphate, Phosphate);
-//        Pyrochlore.addOreByProducts(Apatite, Calcite, Niobium);
-        Quartzite.addOreByProducts(CertusQuartz, Barite);
-        CertusQuartz.addOreByProducts(Quartzite, Barite);
-//        BrownLimonite.addOreByProducts(Malachite, YellowLimonite);
+        Quartzite.addOreByProducts(CertusQuartz, NetherQuartz);
         Neodymium.addOreByProducts(Monazite, RareEarth);
         Bastnasite.addOreByProducts(Neodymium, RareEarth);
         Glowstone.addOreByProducts(Redstone, Gold);
         Zinc.addOreByProducts(Tin, Lead);
         Tungsten.addOreByProducts(Manganese, Molybdenum);
-//        Diatomite.addOreByProducts(BandedIron, Sapphire);
         Iron.addOreByProducts(Nickel, Tin);
         Gold.addOreByProducts(Copper, Nickel);
         Tin.addOreByProducts(Iron, Zinc);
@@ -1353,8 +1339,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Coal.addOreByProducts(Coal, Thorium);
         Ilmenite.addOreByProducts(Iron, Rutile);
         Manganese.addOreByProducts(Chrome, Iron);
-//        Sapphire.addOreByProducts(Sapphire, Sapphire);
-//        GreenSapphire.addOreByProducts(GreenSapphire, GreenSapphire);
         Platinum.addOreByProducts(Nickel, Iridium);
         Emerald.addOreByProducts(Beryllium, Emerald);
         Olivine.addOreByProducts(Olivine, Magnesium);
@@ -1363,8 +1347,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Tetrahedrite.addOreByProducts(Antimony, Zinc);
         GarnetSand.addOreByProducts(GarnetRed, GarnetYellow);
         Magnetite.addOreByProducts(Iron, Gold, Gold);
-//        GraniticMineralSand.addOreByProducts(GraniteBlack, Magnetite);
-//        BasalticMineralSand.addOreByProducts(Basalt, Magnetite);
         Basalt.addOreByProducts(Olivine, DarkAsh);
         VanadiumMagnetite.addOreByProducts(Magnetite, Vanadium);
         Lazurite.addOreByProducts(Sodalite, Lapis);
@@ -1372,12 +1354,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Spodumene.addOreByProducts(Quartzite, Lithium);
         Ruby.addOreByProducts(Chrome, GarnetRed);
         Iridium.addOreByProducts(Platinum, Osmium);
-//        Pyrope.addOreByProducts(GarnetRed, Magnesium);
-//        Almandine.addOreByProducts(GarnetRed, Iron);
         Spessartine.addOreByProducts(GarnetRed, Manganese);
-//        Grossular.addOreByProducts(GarnetYellow, Calcium);
         Uvarovite.addOreByProducts(GarnetYellow, Chrome);
-        Calcite.addOreByProducts(Andradite, Malachite);
+        Calcite.addOreByProducts(Andradite, Chalcopyrite);
         NaquadahEnriched.addOreByProducts(Naquadah, Naquadria);
         Salt.addOreByProducts(RockSalt, Borax);
         RockSalt.addOreByProducts(Salt, Borax);
@@ -1385,28 +1364,25 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Molybdenite.addOreByProducts(Molybdenum);
         Stibnite.addOreByProducts(Antimony);
         Garnierite.addOreByProducts(Nickel);
-//        Lignite.addOreByProducts(Coal);
         Diamond.addOreByProducts(Graphite);
         Beryllium.addOreByProducts(Emerald);
         Electrotine.addOreByProducts(Diamond);
         Magnesite.addOreByProducts(Magnesium);
         NetherQuartz.addOreByProducts(Netherrack);
-//        PigIron.addOreByProducts(Iron);
         DeepIron.addOreByProducts(Trinium, Iron, Trinium);
         ShadowIron.addOreByProducts(Iron);
         DarkIron.addOreByProducts(Iron);
         Steel.addOreByProducts(Iron);
         HSLA.addOreByProducts(Iron);
         Mithril.addOreByProducts(Platinum);
-//      Midasium                .addOreByProducts(Gold                  );
         AstralSilver.addOreByProducts(Silver);
-        Graphite.addOreByProducts(Carbon);
+        Graphite.addOreByProducts(Carbon, Diamond);
         Netherrack.addOreByProducts(Sulfur);
         Flint.addOreByProducts(Obsidian);
         Cobaltite.addOreByProducts(Cobalt);
         Cobalt.addOreByProducts(Cobaltite);
         Sulfur.addOreByProducts(Sulfur);
-        Saltpeter.addOreByProducts(Saltpeter, Saltpeter, Potassium);
+        Saltpeter.addOreByProducts(Saltpeter, Spodumene);
         Endstone.addOreByProducts(Helium_3);
         Osmium.addOreByProducts(Iridium);
         Magnesium.addOreByProducts(Olivine);
