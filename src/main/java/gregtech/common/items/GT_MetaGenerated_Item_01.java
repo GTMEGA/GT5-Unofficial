@@ -81,7 +81,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GT_Utility.ItemNBT.addEnchantment(tStack, Enchantment.smite, 10);
         GT_ModHandler.addCraftingRecipe(tStack, GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"XXX", "XDX", "XXX", 'X', OrePrefixes.gem.get(Materials.NetherStar), 'D', new ItemStack(Blocks.dragon_egg, 1, 32767)});
 
-        ItemList.Coin_Doge.set(addItem(tLastID = 9, "Doge Coin", "wow such value!!! Can be traded in the quest shop.", new ItemData(Materials.Brass, 907200L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)));
+        ItemList.Coin_Doge.set(addItem(tLastID = 9, "MEGA Scrip", "The designated company coinage. Can be traded in the questbook shops.", new ItemData(Iridium, 144), new TC_Aspects.TC_AspectStack(TC_Aspects.NEBRISUM, 10L)));
 
         ItemList.Component_Minecart_Wheels_Iron.set(addItem(tLastID = 100, "Iron Minecart Wheels", "To get things rolling", new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L)));
         ItemList.Component_Minecart_Wheels_Steel.set(addItem(tLastID = 101, "Steel Minecart Wheels", "To get things rolling", new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L)));
