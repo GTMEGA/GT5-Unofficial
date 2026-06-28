@@ -395,27 +395,27 @@ public class GT_ModHandler {
                     RA.addPulveriserRecipe(aInput,
                                            new ItemStack[]{aOutput1, aOutput2, aOutput3},
                                            new int[]{10000, 1000, 1000},
-                                           400,
-                                           2);
+                                           200,
+                                           4);
                 } else {
                     RA.addPulveriserRecipe(aInput, new ItemStack[]{aOutput1, aOutput2, aOutput3},
                                            new int[]{10000, 1000, 100 * aChance3},
-                                           400,
-                                           2);
+                                            200,
+                                           4);
                 }
             } else {
                 if (aChance3 <= 0) {
                     RA.addPulveriserRecipe(aInput,
                                            new ItemStack[]{aOutput1, aOutput2, aOutput3},
                                            new int[]{10000, 100 * aChance2, 1000},
-                                           400,
-                                           2);
+                                            200,
+                                           4);
                 } else {
                     RA.addPulveriserRecipe(aInput,
                                            new ItemStack[]{aOutput1, aOutput2, aOutput3},
                                            new int[]{10000, 100 * aChance2, 100 * aChance3},
-                                           400,
-                                           2);
+                                            200,
+                                           4);
                 }
             }
 
