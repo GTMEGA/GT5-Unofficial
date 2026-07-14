@@ -326,7 +326,7 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
 
         //Place small ores for the vein
         if( oreveinPlacerOres ) {
-            int nSmallOres = (eX-wX)*(sZ-nZ)*this.mDensity/10 * oreveinPlacerOresMultiplier;
+            int nSmallOres = (eX-wX)*(sZ-nZ)*this.mDensity/20 * oreveinPlacerOresMultiplier;
             //Small ores are placed in the whole chunk in which the vein appears.
             for( int nSmallOresCount = 0; nSmallOresCount < nSmallOres; nSmallOresCount++) {
                 int tX = aRandom.nextInt(16) + aChunkX + 2;

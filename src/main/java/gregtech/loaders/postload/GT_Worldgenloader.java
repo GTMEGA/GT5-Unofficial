@@ -72,28 +72,31 @@ public class GT_Worldgenloader implements Runnable {
         new GT_Worldgen_Rubber_Tree();
 
         if (GregTech_API.sWorldgenFile.get("worldgen", "doOreGeneration", true)) {
+
+            //Small Ores now handled by cofhcore
+
             //Small Ores
             //Common Overworld Ores
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.copper", true, 30, 70, 32, true, false, false, true, true, false, Materials.Copper);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.tin", true, 10, 60, 32, true, false, false, true, true, true, Materials.Tin);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.coal", true, 30, 70, 160, true, false, false, false, false, false, Materials.Coal);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.iron", true, 30, 70, 196, true, false, false, true, true, false, Materials.Iron);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.zinc", true, 30, 70, 48, true, false, false, true, true, false, Materials.Zinc);
+//            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.copper", true, 30, 70, 32, true, false, false, true, true, false, Materials.Copper);
+//            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.tin", true, 10, 60, 32, true, false, false, true, true, true, Materials.Tin);
+//            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.coal", true, 30, 70, 160, true, false, false, false, false, false, Materials.Coal);
+//            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.iron", true, 30, 70, 196, true, false, false, true, true, false, Materials.Iron);
+//            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.zinc", true, 30, 70, 48, true, false, false, true, true, false, Materials.Zinc);
             //Uncommon Overworld Ores
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.lapis", true, 5, 30, 12, true, false, false, true, true, false, Materials.Lapis);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.diamond", true, 5, 15, 6, true, false, false, true, true, true, Materials.Diamond);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.emerald", true, 65, 90, 16, true, false, false, false, true, true, Materials.Emerald);
+//            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.lapis", true, 5, 30, 12, true, false, false, true, true, false, Materials.Lapis);
+//            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.diamond", true, 5, 15, 6, true, false, false, true, true, true, Materials.Diamond);
+//            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.emerald", true, 65, 90, 16, true, false, false, false, true, true, Materials.Emerald);
             //Common Nether Ores
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.netherquartz", true, 10, 120, 80, false, true, false, false, false, false, Materials.NetherQuartz);
             //Uncommon Nether Ores
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.gold", true, 5, 110, 16, true, true, false, true, true, true, Materials.Gold);
+            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.gold", true, 5, 110, 16, false, true, false, true, true, true, Materials.Gold);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.bismuth", true, 80, 120, 8, false, true, false, true, true, false, Materials.Bismuth);
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.firestone", true, 5, 15, 8, false, true, false, Materials.Firestone);
             //Rare Nether Ores
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.netherstar", true, 101, 115, 6, false, true, false, Materials.NetherStar);
             //TwF Ores
             new GT_Worldgen_GT_Ore_SmallPieces("ore.small.amethyst", true, 5, 35, 4, false, false, false, false, true, true, Materials.Amethyst);
-            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.lapis", true, 3, 35, 8, true, false, false, false, true, true, Materials.Lapis);
+//            new GT_Worldgen_GT_Ore_SmallPieces("ore.small.lapis", true, 3, 35, 8, true, false, false, false, true, true, Materials.Lapis);
 
             //Overworld Ore Veins
             //Unlocalized name, Enabled by defaut, Min Y Spawn Height (7-242), Max Y Spawn Height (14-249), Relative Spawn Weight (1-x), Vein Density (1-10), Size (Appx. Diameter (8-32)), Spawn in Overworld?, Spawn in Nether?, Spawn in End?, Primary (Top ore layer), Secondary (Bottom ore layer), Between (Middle Ore Layer), Sporadic (Randomly placed in vein)
@@ -102,14 +105,14 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.magnetite", true, 55, 70, 180, 6, 32, true, false, false, Materials.Magnetite, Materials.Magnetite, Materials.VanadiumMagnetite, Materials.Magnetite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.zinc", true, 70, 80, 150, 6, 32, true, false, false, Materials.Zinc, Materials.Tin, Materials.Sphalerite, Materials.Cassiterite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.tin", true, 55, 60, 50, 4, 32, true, false, false, Materials.Tin, Materials.Zinc, Materials.Cassiterite, Materials.Chalcopyrite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.copper", true, 30, 40, 100, 5, 32, true, false, false, Materials.Copper, Materials.Chalcopyrite, Materials.Pyrite, Materials.Iron);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.copper", true, 40, 50, 100, 5, 32, true, false, false, Materials.Copper, Materials.Chalcopyrite, Materials.Pyrite, Materials.Iron);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.owbauxite", true, 10, 30, 25, 4, 32, true, false, false, Materials.Bauxite, Materials.Bauxite, Materials.Bauxite, Materials.Bauxite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.salts", true, 40, 45, 50, 2, 24, true, false, false, Materials.Salt, Materials.Saltpeter, Materials.Spodumene, Materials.Salt);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.redstone", true, 5, 15, 60, 3, 24, true, false, false, Materials.Redstone, Materials.Ruby, Materials.Redstone, Materials.Cinnabar);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.nickel", true, 10, 40, 50, 3, 24, true, false, false, Materials.Nickel, Materials.Cobaltite, Materials.Pentlandite, Materials.Cobaltite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.manganese", true, 20, 30, 30, 2, 20, true, false, false, Materials.Spessartine, Materials.Spessartine, Materials.Tantalite, Materials.Pyrolusite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.diamond", true, 7, 20, 40, 2, 20, true, false, false, Materials.Diamond, Materials.Graphite, Materials.Graphite, Materials.Diamond);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.galena", true, 7, 45, 25, 5, 16, true, false, false, Materials.Galena, Materials.Galena, Materials.Galena, Materials.Silver);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.diamond", true, 4, 16, 40, 2, 20, true, false, false, Materials.Diamond, Materials.Graphite, Materials.Graphite, Materials.Diamond);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.galena", true, 4, 40, 25, 5, 16, true, false, false, Materials.Galena, Materials.Galena, Materials.Galena, Materials.Silver);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.calcite", true, 20, 45, 40, 4, 16, true, false, false, Materials.Calcite, Materials.Apatite, Materials.Calcite, Materials.TricalciumPhosphate);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.oilsand", true, 50, 80, 60, 10, 28, true, false, false, Materials.Oilsands, Materials.Oilsands, Materials.Oilsands, Materials.Oilsands);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.alunite", true, 80, 200, 80, 3, 24, true, false, false, Materials.Alunite, Materials.Kyanite, Materials.Cassiterite, Materials.Chalcopyrite);
