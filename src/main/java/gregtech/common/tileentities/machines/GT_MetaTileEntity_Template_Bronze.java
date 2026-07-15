@@ -17,11 +17,11 @@ abstract public class GT_MetaTileEntity_Template_Bronze extends GT_MetaTileEntit
     public GT_MetaTileEntity_Template_Bronze(String aName, String[] aDescription, ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, boolean aBricked) {
         super(aName, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, aBricked);
     }
-
-    @Override
-    public float getTimeModifier() {
-        return 2;
-    }
+//    This is redundant, but I cannot find the first time modifier.
+//    @Override
+//    public float getTimeModifier() {
+//        return 2;
+//    }
 
     protected abstract String getOverlay();
 
