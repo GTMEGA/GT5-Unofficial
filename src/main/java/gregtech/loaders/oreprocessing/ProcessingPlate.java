@@ -219,9 +219,9 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                         GT_Utility.copyAmount(1L, aStack),
                         DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
                         new Object[]{
+                                "h", // craftingToolHardHammer
                                 "I",
                                 "B",
-                                "h", // craftingToolHardHammer
                                 'I', aPlateStack,
                                 'B', aPlateStack});
 
