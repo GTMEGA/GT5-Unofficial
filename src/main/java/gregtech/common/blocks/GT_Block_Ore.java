@@ -31,6 +31,21 @@ public class GT_Block_Ore extends GT_Block_Ore_Abstract {
     }
 
     @Override
+    int fortune(int fortune) {
+        return (int) (Math.ceil(fortune * 1.66));//ceil for float mods
+    }
+
+    @Override
+    public float getBlockHardness(World world, int x, int y, int z) {
+        return 30.0F;
+    }
+
+    @Override
+    public int getHarvestLevel(int metadata) {
+        return 3;
+    }
+
+    @Override
     public void breakBlock(World worldIn, int x, int y, int z, Block blockBroken, int meta) {
         if (worldIn.isRemote) {
             return;

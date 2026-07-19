@@ -16,6 +16,11 @@ public class GT_Block_Ore_Small extends GT_Block_Ore_Abstract {
     }
 
     @Override
+    int fortune(int fortune) {
+        return fortune;
+    }
+
+    @Override
     protected ITexture getOreTexture(Materials oreType) {
         return TextureFactory.builder()
                 .addIcon(oreType.mIconSet.mTextures[OrePrefixes.oreSmall.mTextureIndex])

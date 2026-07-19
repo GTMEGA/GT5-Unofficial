@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+
 @Getter
 public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
     public static enum OreSize {
@@ -189,10 +191,12 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
         return GT_Renderer_Block.INSTANCE.mRenderID;
     }
 
+    abstract int fortune(int fortune);
+
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         val drops = new ArrayList<ItemStack>();
-        val fortuneFactor = fortune + 1;
+        val fortuneFactor = XSTR_INSTANCE.nextInt(fortune(fortune)*2+1)+1;
         val numStacks = Math.max(1, fortuneFactor / 64);
         var stackAmount = fortuneFactor;
         for (int i = 0; i <= numStacks && stackAmount > 0; i++, stackAmount = fortuneFactor - i * 64) {
@@ -232,7 +236,7 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
     public boolean useNeighborBrightness = false;
     @Override
     public int getHarvestLevel(int metadata) {
-        return 0;
+        return 1;
     }
 
     @Override
