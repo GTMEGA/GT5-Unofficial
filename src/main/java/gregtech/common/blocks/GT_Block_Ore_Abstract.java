@@ -145,6 +145,10 @@ public abstract class GT_Block_Ore_Abstract extends GT_Generic_Block {
             sb.append(OrePrefixes.oreSmall.mLocalizedMaterialPre);
         }
 
+        if (size == OreSize.Normal) {
+            sb.append(OrePrefixes.oreNormal.mLocalizedMaterialPre);
+        }
+
         switch (aMaterial.mName) {
             case "InfusedAir":
             case "InfusedDull":
