@@ -1186,6 +1186,7 @@ fluid.LMP-103S=LMP-103S
 fluid.Nitromethane=Nitromethane
 fluid.O-Xylene=O-Xylene
 //GT_MetaGenerated_Item_98 cells
+fluid.liquid_drillingfluid=Drilling Fluid
 fluid.UnknownNutrientAgar=Unknown Nutrient Agar
 fluid.SeaweedBroth=Seaweed Broth
 fluid.EnzymesSollution=Enzyme Solution
