@@ -485,7 +485,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         ItemList.sNitrationMixture = GT_Mod.gregtechproxy.addFluid("liquid_nitrationmixture", "Nitration Mixture", Materials.NitrationMixture, 1, 295, Materials.NitrationMixture.getCells(1), Materials.Empty.getCells(1), 1000);
         ItemList.sTailings         = GT_Mod.gregtechproxy.addFluid("liquid_tailings", "Tailings", null, 1, 295);
 
-        GT_Mod.gregtechproxy.addFluid("liquid_heavy_oil", "Heavy Oil", Materials.OilHeavy, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.OilHeavy, 1L), ItemList.Cell_Empty.get(1L), 1000);
+        GT_Mod.gregtechproxy.addFluid("liquid_heavy_oil", "Raw Oil", Materials.OilHeavy, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.OilHeavy, 1L), ItemList.Cell_Empty.get(1L), 1000);
         GT_Mod.gregtechproxy.addFluid("liquid_medium_oil", "Refined Oil", Materials.OilMedium, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.OilMedium, 1L), ItemList.Cell_Empty.get(1L), 1000);
         GT_Mod.gregtechproxy.addFluid("liquid_light_oil", "Light Oil", Materials.OilLight, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.OilLight, 1L), ItemList.Cell_Empty.get(1L), 1000);
         GT_Mod.gregtechproxy.addFluid("gas_natural_gas", "Natural Gas", Materials.NatruralGas, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NatruralGas, 1L), ItemList.Cell_Empty.get(1L), 1000);
