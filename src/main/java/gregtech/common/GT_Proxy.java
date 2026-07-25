@@ -1849,21 +1849,20 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public void handleChunkLoadEvent(ChunkDataEvent.Load event) {
         GT_UndergroundOil.migrate(event);
         GT_Pollution.migrate(event);
+        GT_OreVeinStats.migrate(event);
     }
 
     @SubscribeEvent
-    public void onBlockBreakSpeedEvent(PlayerEvent.BreakSpeed aEvent)
-    {
-      if (aEvent.newSpeed > 0.0F)
-      {
-        if (aEvent.entityPlayer != null)
-        {
-          ItemStack aStack = aEvent.entityPlayer.getCurrentEquippedItem();
-          if ((aStack != null) && ((aStack.getItem() instanceof GT_MetaGenerated_Tool))) {
-            aEvent.newSpeed = ((GT_MetaGenerated_Tool)aStack.getItem()).onBlockBreakSpeedEvent(aEvent.newSpeed, aStack, aEvent.entityPlayer, aEvent.block, aEvent.x, aEvent.y, aEvent.z, (byte)aEvent.metadata, aEvent);
-          }
+    public void onBlockBreakSpeedEvent(PlayerEvent.BreakSpeed aEvent) {
+        if (aEvent.newSpeed > 0.0F) {
+            if (aEvent.entityPlayer != null) {
+                ItemStack aStack = aEvent.entityPlayer.getCurrentEquippedItem();
+
+                if ((aStack != null) && ((aStack.getItem() instanceof GT_MetaGenerated_Tool))) {
+                    aEvent.newSpeed = ((GT_MetaGenerated_Tool)aStack.getItem()).onBlockBreakSpeedEvent(aEvent.newSpeed, aStack, aEvent.entityPlayer, aEvent.block, aEvent.x, aEvent.y, aEvent.z, (byte)aEvent.metadata, aEvent);
+                }
+            }
         }
-      }
     }
 
     public static class OreDictEventContainer {
@@ -1882,8 +1881,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     @SubscribeEvent
      public void onBlockEvent(BlockEvent event) {
-        if (event.block.getUnlocalizedName().equals("blockAlloyGlass"))
+        if (event.block.getUnlocalizedName().equals("blockAlloyGlass")) {
             GregTech_API.causeMachineUpdate(event.world, event.x, event.y, event.z);
+        }
     }
 
     public static void addFullHazmatToGeneralItem(String aModID, String aItem, long aAmount, int aMeta){

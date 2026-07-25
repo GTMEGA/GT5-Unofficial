@@ -2,8 +2,8 @@ package gregtech.loaders.postload;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
-import gregtech.api.events.GT_OreVeinLocations;
 import gregtech.api.util.GT_Log;
+import gregtech.common.GT_OreVeinStats;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
 import gregtech.common.GT_Worldgen_Rubber_Tree;
@@ -145,7 +145,7 @@ public class GT_Worldgenloader implements Runnable {
 //            new GT_Worldgen_GT_Ore_Layer("ore.mix.sulfur", true, 5, 20, 50, 4, 24, false, true, false, Materials.Sulfur, Materials.Sulfur, Materials.Pyrite, Materials.Sphalerite);
         }
 
-        GT_OreVeinLocations.addOreVeins(GT_Worldgen_GT_Ore_Layer.sList);
+        GT_OreVeinStats.addOreVeins(GT_Worldgen_GT_Ore_Layer.sList);
 
         //DO NOT DELETE V THIS V - this is needed so that gregtech generates its Ore Layer's first (the ones up there), which can then be transformed into "GT_Worldgen_GT_Ore_Layer_Space". Also Reflexion is slow.
         try {

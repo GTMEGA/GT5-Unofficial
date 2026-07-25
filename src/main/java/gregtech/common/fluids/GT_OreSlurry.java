@@ -18,7 +18,9 @@ import java.util.Map;
 import java.util.Objects;
 
 public class GT_OreSlurry extends GT_Fluid {
-    public static final Map<GT_Worldgen_GT_Ore_Layer, GT_OreSlurry> slurries = new HashMap<>();
+    public static final Map<GT_Worldgen_GT_Ore_Layer, GT_OreSlurry> ORE_SLURRY_LOOKUP = new HashMap<>();
+    public static final GT_OreSlurry NULL_SLURRY = new GT_OreSlurry(GT_Worldgen_GT_Ore_Layer.EMPTY_VEIN);
+
     public final GT_Worldgen_GT_Ore_Layer oreLayer;
 
     public GT_OreSlurry(GT_Worldgen_GT_Ore_Layer oreMix) {

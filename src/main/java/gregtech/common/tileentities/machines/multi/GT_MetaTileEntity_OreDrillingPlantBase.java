@@ -1,20 +1,17 @@
 package gregtech.common.tileentities.machines.multi;
 
-import gregtech.GT_Mod;
 import gregtech.api.enums.ItemList;
-import gregtech.api.events.GT_OreVeinLocations;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.GT_Worldgen_GT_Ore_Layer;
+import gregtech.common.GT_OreVeinStats;
 import gregtech.common.blocks.GT_Block_Ore;
 import gregtech.common.fluids.GT_OreSlurry;
 import lombok.val;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -87,7 +84,13 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         }
 
         if (aNBT.hasKey(NBT_KEY_CURRENT_SLURRY)) {
-            this.slurryType = (GT_OreSlurry) FluidRegistry.getFluid(aNBT.getString(NBT_KEY_CURRENT_SLURRY));
+            val slurryName = aNBT.getString(NBT_KEY_CURRENT_SLURRY);
+
+            if (GT_OreSlurry.NULL_SLURRY.getName().equals(slurryName)) {
+                this.slurryType = GT_OreSlurry.NULL_SLURRY;
+            } else {
+                this.slurryType = (GT_OreSlurry) FluidRegistry.getFluid(slurryName);
+            }
         }
 
         if (aNBT.hasKey(NBT_KEY_CURRENT_MINING)) {
@@ -114,13 +117,20 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         super.updateCoordinates();
 
         if (this.slurryType == null) {
-            val chunkCoord = new ChunkCoordIntPair(this.getXDrill() >> 4, this.getZDrill() >> 4);
-            val oreMix = GT_OreVeinLocations.getOreVeinInChunk(this.getBaseMetaTileEntity().getWorld(), chunkCoord);
+            val world = this.getBaseMetaTileEntity().getWorld();
+            val chunkX = this.getXDrill() >> 4;
+            val chunkY = this.getZDrill() >> 4;
 
-            this.slurryType = GT_OreSlurry.slurries.get(oreMix);
+            val stats = GT_OreVeinStats.getOreVeinStatsInChunk(world, chunkX, chunkY);
+            val oreMix = GT_OreVeinStats.ORE_MIX_LOOKUP.get(stats.oreMix());
 
-            if (this.slurryType == null) {
-                this.slurryType = this.scanSlurry();
+            this.slurryType = GT_OreSlurry.ORE_SLURRY_LOOKUP.get(oreMix);
+
+            if (this.slurryType == GT_OreSlurry.NULL_SLURRY) {
+                val bmte = this.getBaseMetaTileEntity();
+                val currentErrorId = bmte.getErrorDisplayID();
+
+                bmte.setErrorDisplayID(currentErrorId | 128);
             }
         }
     }
@@ -157,6 +167,11 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         if (isOutputFull()) {
             addFluidOutputs(mOutputFluids);
         }
+
+        if (this.slurryType == GT_OreSlurry.NULL_SLURRY) {
+            return false;
+        }
+
         return super.checkRecipe(aStack);
     }
 
@@ -440,61 +455,6 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         if (!oreBlockPositions.contains(blockPos) && isBigOreBlock(block, blockMeta)) {
             oreBlockPositions.add(blockPos);
         }
-    }
-
-    private GT_OreSlurry scanSlurry() {
-        val world = this.getBaseMetaTileEntity().getWorld();
-        val oreVeinLikelihood = new HashMap<GT_Worldgen_GT_Ore_Layer, Integer>();
-
-        val tileEntity = this.getBaseMetaTileEntity();
-        val xPos = tileEntity.getXCoord();
-        val yPos = tileEntity.getYCoord();
-        val zPos = tileEntity.getZCoord();
-
-        this.oreTypeFrequency.clear();
-
-        val scanRange = 7;
-        for (int y = yPos; y > 0; y--) {
-            for (int x = xPos - scanRange; x < xPos + scanRange; x++) {
-                for (int z = zPos - scanRange; z < zPos + scanRange; z++) {
-                    val block = world.getBlock(x, y, z);
-
-                    if (!(block instanceof GT_Block_Ore)) {
-                        continue;
-                    }
-
-                    val ore = (GT_Block_Ore) block;
-
-                    val frequency = this.oreTypeFrequency.computeIfAbsent(ore, key -> 0);
-                    this.oreTypeFrequency.put(ore, frequency + 1);
-                }
-            }
-        }
-
-        for (val ore : this.oreTypeFrequency.keySet()) {
-            val material = ore.material();
-
-            for (val oreMix : GT_Worldgen_GT_Ore_Layer.sList) {
-                if (oreMix.containsMaterial(material)) {
-                    val frequency = oreVeinLikelihood.computeIfAbsent(oreMix, key -> 0);
-
-                    oreVeinLikelihood.put(oreMix, frequency + 1);
-                }
-            }
-        }
-
-        val oreVeinEntry = oreVeinLikelihood.entrySet()
-                                            .stream()
-                                            .max(Map.Entry.comparingByValue())
-                                            .orElse(null);
-
-        if (oreVeinEntry != null) {
-            return GT_OreSlurry.slurries.get(oreVeinEntry.getKey());
-        }
-
-//        GT_Mod.GT_FML_LOGGER.warn("Null ore slurry selected");
-
-        return null;
     }
 
     protected abstract int getRadiusInChunks();

@@ -1,14 +1,12 @@
 package gregtech.common.items;
 
-import gregtech.api.events.GT_OreVeinLocations;
 import gregtech.api.items.GT_Generic_Item;
-import gregtech.common.fluids.GT_OreSlurry;
+import gregtech.common.GT_OreVeinStats;
 import lombok.val;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 
 public class GT_SolidWaste extends GT_Generic_Item {
@@ -31,21 +29,18 @@ public class GT_SolidWaste extends GT_Generic_Item {
             return false;
         }
 
-        val chunkCoordinate = new ChunkCoordIntPair(x >> 4, z >> 4);
-        var oreMix = GT_OreVeinLocations.RecordedOreVeinInChunk.get().get(world.provider.dimensionId, chunkCoordinate);
+        val chunkX = x >> 4;
+        val chunkY = z >> 4;
+        val stats = GT_OreVeinStats.getOreVeinStatsInChunk(world, chunkX, chunkY);
 
-        if (oreMix == null) {
-            val scannedSlurry = GT_OreVeinLocations.scanSlurryInChunkAt(world, chunkCoordinate.chunkXPos, chunkCoordinate.chunkZPos);
+        val message = String.format("[%d, %d] -> %s (%d / %d)",
+                                    chunkX,
+                                    chunkY,
+                                    stats.oreMix(),
+                                    stats.oresCurrent(),
+                                    stats.oresPlaced());
 
-            oreMix = GT_OreVeinLocations.RecordedOreVeinInChunk.get().get(world.provider.dimensionId, chunkCoordinate);
-        }
-
-        player.addChatMessage(new ChatComponentText(String.format("[%s, %s] -> %s (%d / %d)",
-                                                                  chunkCoordinate.chunkXPos,
-                                                                  chunkCoordinate.chunkZPos,
-                                                                  oreMix.oreMix,
-                                                                  oreMix.oresCurrent,
-                                                                  oreMix.oresPlaced)));
+        player.addChatMessage(new ChatComponentText(message));
 
         return false;
     }

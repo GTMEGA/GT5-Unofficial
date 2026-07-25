@@ -2,15 +2,13 @@ package gregtech.common.blocks;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.events.GT_OreVeinLocations;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
-import lombok.val;
+import gregtech.common.GT_OreVeinStats;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 
 public class GT_Block_Ore extends GT_Block_Ore_Abstract {
@@ -51,15 +49,6 @@ public class GT_Block_Ore extends GT_Block_Ore_Abstract {
             return;
         }
 
-        val chunkCoord = new ChunkCoordIntPair(x >> 4, z >> 4);
-        val dimId = worldIn.provider.dimensionId;
-
-        val data = GT_OreVeinLocations.RecordedOreVeinInChunk.get().get(dimId, chunkCoord);
-
-        if (data != null && data.oresCurrent > 0) {
-            data.oresCurrent--;
-        }
-
-        GT_OreVeinLocations.updateClients(dimId, chunkCoord, data);
+        GT_OreVeinStats.decrementOreVeinCount(worldIn, x >> 4, z >> 4);
     }
 }

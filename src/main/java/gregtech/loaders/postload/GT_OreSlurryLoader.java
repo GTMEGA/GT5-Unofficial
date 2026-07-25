@@ -21,9 +21,14 @@ public class GT_OreSlurryLoader implements Runnable {
     public void run() {
         for (val oreMix : GT_Worldgen_GT_Ore_Layer.sList) {
             val slurry = new GT_OreSlurry(oreMix);
+
             this.registerSlurryRecipes(slurry);
-            GT_OreSlurry.slurries.put(oreMix, slurry);
+
+            GT_OreSlurry.ORE_SLURRY_LOOKUP.put(oreMix, slurry);
         }
+
+        GT_OreSlurry.ORE_SLURRY_LOOKUP.put(GT_Worldgen_GT_Ore_Layer.EMPTY_VEIN,
+                                           GT_OreSlurry.NULL_SLURRY);
     }
 
     private void addSet(ArrayList<Pair<Materials,Integer>> set,Materials mat,int chance) {

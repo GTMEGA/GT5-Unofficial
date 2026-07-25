@@ -35,6 +35,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
+import gregtech.common.misc.ClientOreVeinStats;
 import gregtech.common.misc.explosions.GT_Explosion_Info;
 import gregtech.common.net.MessageUpdateFluidDisplayItem;
 import gregtech.common.render.*;
@@ -148,6 +149,8 @@ public class GT_Client extends GT_Proxy
     private boolean mFirstTick = false;
     public static final int ROTATION_MARKER_RESOLUTION = 120;
     private int mReloadCount;
+
+    private final ClientOreVeinStats clientOreVeinStats = new ClientOreVeinStats();
 
     public GT_Client() {
         mCapeRenderer = new GT_CapeRenderer(mCapeList);

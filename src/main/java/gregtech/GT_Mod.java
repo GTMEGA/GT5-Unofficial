@@ -10,7 +10,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.*;
-import gregtech.api.events.GT_OreVeinLocations;
 import gregtech.api.events.IntegratedCircuitScroll;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.objects.ItemData;
@@ -23,6 +22,7 @@ import gregtech.api.util.keybind.GT_KeyHandler;
 import gregtech.common.GT_Compat;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
+import gregtech.common.GT_OreVeinStats;
 import gregtech.common.GT_Proxy;
 import gregtech.common.GT_RecipeAdder;
 import gregtech.common.entities.GT_Entity_Arrow;
@@ -184,7 +184,7 @@ public class GT_Mod implements IGT_Mod {
             }
         }
 
-        MinecraftForge.EVENT_BUS.register(new GT_OreVeinLocations());
+        MinecraftForge.EVENT_BUS.register(new GT_OreVeinStats.GT_OreSlurryEventHandler());
 
         if (FMLCommonHandler.instance().getSide() == CLIENT) {
             MinecraftForge.EVENT_BUS.register(new ExtraIcons());

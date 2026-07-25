@@ -1,8 +1,6 @@
 package gregtech.common;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
-import gregtech.api.events.GT_OreVeinLocations;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
@@ -174,7 +172,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
         // in the dimension. For example veins that range above and below the average height
         // will be less, and veins that are completely above the average height will be much less.
 
-        public GT_OreVeinLocations.VeinData worldGenFindVein(int oreseedX, int oreseedZ) {
+        public GT_OreVeinStats.Stats worldGenFindVein(int oreseedX, int oreseedZ) {
             // Explanation of oreveinseed implementation.
             // (long)this.mWorld.getSeed()<<16)    Deep Dark does two oregen passes, one with getSeed set to +1 the original world seed.  This pushes that +1 off the low bits of oreseedZ, so that the hashes are far apart for the two passes.
             // ((this.mWorld.provider.dimensionId & 0xffL)<<56)    Puts the dimension in the top bits of the hash, to make sure to get unique hashes per dimension
@@ -199,7 +197,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                   this.mWorld.getSeed());
             }
 
-            GT_OreVeinLocations.VeinData oreVeinMix = null;
+            GT_OreVeinStats.Stats oreVeinMix = null;
 
             // Search for a valid orevein for this dimension
             if( !validOreveins.containsKey(oreveinSeed) ) {
@@ -235,7 +233,10 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                         }
 
                                         validOreveins.put(oreveinSeed, tWorldGen);
-                                        oreVeinMix = new GT_OreVeinLocations.VeinData(tWorldGen.mWorldGenName, result.blocksPlaced, result.blocksPlaced);
+                                        oreVeinMix = GT_OreVeinStats.Stats.builder()
+                                                                          .oreMix(tWorldGen.mWorldGenName)
+                                                                          .oresPlaced(result.blocksPlaced).oresCurrent(result.blocksPlaced)
+                                                                          .build();
                                         break;
                                     case NO_OVERLAP_AIR_BLOCK:
                                         if (debugOrevein) {
@@ -317,7 +318,11 @@ public class GT_Worldgenerator implements IWorldGenerator {
                         if (debugOrevein) GT_Log.out.println(" No overlap");
                 }
 
-                oreVeinMix = new GT_OreVeinLocations.VeinData(tWorldGen.mWorldGenName, result.blocksPlaced, result.blocksPlaced);
+                oreVeinMix = GT_OreVeinStats.Stats.builder()
+                                                  .oreMix(tWorldGen.mWorldGenName)
+                                                  .oresPlaced(result.blocksPlaced)
+                                                  .oresCurrent(result.blocksPlaced)
+                                                  .build();
             }
 
             return oreVeinMix;
@@ -369,7 +374,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
 
             // Now process each oreseed vs this requested chunk
             var closestSeedDistance = Long.MAX_VALUE;
-            GT_OreVeinLocations.VeinData veinData = null;
+            GT_OreVeinStats.Stats veinData = null;
 
             while (!seedList.isEmpty()) {
                 val currentOreSeed = seedList.remove(0);
@@ -403,8 +408,11 @@ public class GT_Worldgenerator implements IWorldGenerator {
                     }
                 }
 
-                if (veinData != null && veinData.oresPlaced > 0) {
-                    GT_OreVeinLocations.recordOreVeinInChunk(tChunk, veinData);
+                if (veinData != null && veinData.oresPlaced() > 0) {
+                    GT_OreVeinStats.recordOreVeinStats(this.mWorld,
+                                                       tChunk.xPosition,
+                                                       tChunk.zPosition,
+                                                       veinData);
                 }
             }
             long endTime = System.nanoTime();

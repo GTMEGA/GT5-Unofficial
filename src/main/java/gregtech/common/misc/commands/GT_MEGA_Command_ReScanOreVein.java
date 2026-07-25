@@ -1,7 +1,7 @@
 package gregtech.common.misc.commands;
 
 import com.gtnewhorizon.structurelib.commands.SubCommand;
-import gregtech.api.events.GT_OreVeinLocations;
+import gregtech.common.GT_OreVeinStats;
 import lombok.val;
 
 import net.minecraft.command.ICommandSender;
@@ -81,14 +81,8 @@ public class GT_MEGA_Command_ReScanOreVein extends SubCommand {
 
         for (var chunkX = centerChunkX - radius; chunkX < centerChunkX + radius; chunkX++) {
             for (var chunkZ = centerChunkZ - radius; chunkZ < centerChunkZ + radius; chunkZ++) {
-                GT_OreVeinLocations.scanSlurryInChunkAt(world, chunkX, chunkZ);
+                GT_OreVeinStats.rescanVeinAt(world, chunkX, chunkZ);
             }
         }
-
-        val chunkCoord = new ChunkCoordIntPair(centerChunkX, centerChunkZ);
-        val veinData = GT_OreVeinLocations.RecordedOreVeinInChunk.get()
-                                          .get(world.provider.dimensionId, chunkCoord);
-
-        GT_OreVeinLocations.updateClients(world.provider.dimensionId, chunkCoord, veinData);
     }
 }

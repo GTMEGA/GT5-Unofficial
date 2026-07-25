@@ -50,6 +50,8 @@ public class GT_GUIContainer_MultiMachine extends GT_GUIContainerMetaTile_Machin
                 fontRendererObj.drawString(trans("137", "That doesn't belong there."), 10, 56, 16448255);
             if ((((GT_Container_MultiMachine) mContainer).mDisplayErrorCode & 64) != 0)
                 fontRendererObj.drawString(trans("138", "Incomplete Structure."), 10, 64, 16448255);
+            if ((((GT_Container_MultiMachine) mContainer).mDisplayErrorCode & 128) != 0)
+                fontRendererObj.drawString(trans("300", "No ores here."), 10, 72, 16448255);
 
             if (((GT_Container_MultiMachine) mContainer).mDisplayErrorCode == 0) {
                 if (((GT_Container_MultiMachine) mContainer).mActive == 0) {
