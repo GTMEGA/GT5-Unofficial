@@ -23,7 +23,6 @@ public class GT_Loader_OreProcessing
         new ProcessingDirty();
         new ProcessingDust();
         new ProcessingDye();
-        new ProcessingFood();
         new ProcessingLens();
         new ProcessingShaping();
         new ProcessingGem();
