@@ -30,6 +30,7 @@ import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.items.GT_MEGAnet;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
+import gregtech.common.misc.ClientOreVeinStats;
 import gregtech.common.misc.commands.MEGA_Commands;
 import gregtech.common.misc.explosions.GT_Explosion_Info;
 import gregtech.common.misc.explosions.detonator_util.RemoteDetonatorInteractionHandler;
@@ -51,6 +52,8 @@ import gregtech.loaders.misc.NetworkDispatcher;
 import gregtech.loaders.postload.*;
 import gregtech.loaders.preload.*;
 import gregtech.nei.DragHandler;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -189,6 +192,7 @@ public class GT_Mod implements IGT_Mod {
         if (FMLCommonHandler.instance().getSide() == CLIENT) {
             MinecraftForge.EVENT_BUS.register(new ExtraIcons());
             MinecraftForge.EVENT_BUS.register(new IntegratedCircuitScroll());
+            FMLCommonHandler.instance().bus().register(new ClientOreVeinStats.EventHandler());
         }
 
         File tFile = new File(new File(aEvent.getModConfigurationDirectory(), "GregTech"), "GregTech.cfg");
