@@ -62,7 +62,7 @@ public class GT_OreVeinStats {
         stats.oresCurrent(updatedCount);
 
         val packet = new GT_Packet_ClientOreVeinStatsUpdate(stats, chunkX, chunkZ);
-        GT_Values.NW.sendPacketToAllPlayersInRange(world, packet, chunkX, chunkZ);
+        GT_Values.NW.sendPacketToAllPlayersInRange(world, packet, chunkX << 4, chunkZ << 4);
     }
 
     public static void addOreVeins(List<GT_Worldgen_GT_Ore_Layer> oreLayers) {
