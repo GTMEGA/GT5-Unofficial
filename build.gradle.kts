@@ -41,9 +41,10 @@ minecraft_fp {
 
 repositories {
     ic2EX()
+    mavenLocal()
     cursemavenEX()
     exclusive(mavenpattern(), "com.falsepattern")
-    exclusive(mega(), "mega", "gtmega", "team.chisel", "matt159") {
+    exclusive(mega(), "mega", "gtmega", "team.chisel") {
         includeModule("codechicken", "notenoughitems-mc1.7.10")
         includeModule("codechicken", "codechickencore-mc1.7.10")
         includeModule("codechicken", "forgemultipart-mc1.7.10")
@@ -58,6 +59,7 @@ repositories {
 }
 
 dependencies {
+    implementation("com.github.matt159:mcqlite-mc1.7.10:0.1.0-mega")
     implementation("mega:structurelib-mc1.7.10:1.4.1-mega:dev")
     implementation("codechicken:codechickencore-mc1.7.10:1.4.0-mega:dev")
     devOnlyNonPublishable("codechicken:notenoughitems-mc1.7.10:2.3.0-mega:dev")
