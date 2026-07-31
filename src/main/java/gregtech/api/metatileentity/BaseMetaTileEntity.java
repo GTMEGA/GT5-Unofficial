@@ -35,7 +35,6 @@ import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_Client;
-import gregtech.common.GT_Pollution;
 import lombok.val;
 import org.jetbrains.annotations.Nullable;
 
@@ -1390,7 +1389,6 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                 }
             }
 
-            GT_Pollution.addPollution(this, 100000);
             mMetaTileEntity.doExplosion(aAmount);
         }
     }

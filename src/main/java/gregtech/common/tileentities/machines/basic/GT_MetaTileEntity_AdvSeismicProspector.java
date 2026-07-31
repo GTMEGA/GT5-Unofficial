@@ -17,18 +17,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
-
 
 public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_BasicMachine {
     boolean ready = false;
@@ -103,18 +96,12 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
 
                 prospectOres(tOres);
 
-                // prospecting oils
-                ArrayList<String> tOils = new ArrayList<>();
-                prospectOils(tOils);
-
                 GT_Utility.ItemNBT.setAdvancedProspectionData(mTier,
                     aStack,
                     this.getBaseMetaTileEntity().getXCoord(),
                     this.getBaseMetaTileEntity().getYCoord(),
                     this.getBaseMetaTileEntity().getZCoord(),
-                    this.getBaseMetaTileEntity().getWorld().provider.dimensionId,
-                    tOils,
-                    GT_Utility.sortByValueToList(tOres),
+                    this.getBaseMetaTileEntity().getWorld().provider.dimensionId, GT_Utility.sortByValueToList(tOres),
                     radius);
             }
         }
@@ -133,46 +120,6 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
             if (GT_Utility.isStringValid(this.mSound)) this.sendLoopStart((byte) 1);
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
-    }
-
-    private void prospectOils(ArrayList<String> aOils) {
-
-        int xChunk = (getBaseMetaTileEntity().getXCoord() >> 7) << 3; // oil field aligned chunk coords
-        int zChunk = (getBaseMetaTileEntity().getZCoord() >> 7) << 3;
-
-        LinkedHashMap<ChunkCoordIntPair, FluidStack> tFluids = new LinkedHashMap<>();
-        int oilFieldCount = 0;
-
-        try {
-            final int oilfieldSize = 8;
-            for (int z = -1; z <= 1; ++z) {
-                for (int x = -1; x <= 1; ++x) {
-                    ChunkCoordIntPair cInts = new ChunkCoordIntPair(x, z);
-                    int min = Integer.MAX_VALUE;
-                    int max = Integer.MIN_VALUE;
-
-                    for (int i = 0; i < oilfieldSize; i++) {
-                        for (int j = 0; j < oilfieldSize; j++) {
-                            Chunk tChunk = getBaseMetaTileEntity().getWorld().getChunkFromChunkCoords(
-                                    xChunk + i + x * oilfieldSize,
-                                    zChunk + j + z * oilfieldSize);
-                            FluidStack tFluid = undergroundOilReadInformation(tChunk);
-                            if (tFluid != null) {
-                                if (tFluid.amount > max)
-                                    max = tFluid.amount;
-                                if (tFluid.amount < min)
-                                    min = tFluid.amount;
-                                if (!tFluids.containsKey(cInts)) {
-                                    tFluids.put(cInts, tFluid);
-                                }
-                            }
-                        }
-                    }
-
-                    aOils.add(++oilFieldCount + "," + min + "-" + max + "," + tFluids.get(cInts).getLocalizedName());
-                }
-            }
-        } catch (Exception ignored) {}
     }
 
     private void prospectOres(Map<String, Integer> aOres) {

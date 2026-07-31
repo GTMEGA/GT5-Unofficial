@@ -9,7 +9,6 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.GT_Pollution;
 import gregtech.common.gui.GT_Container_Boiler;
 import gregtech.common.gui.GT_GUIContainer_Boiler;
 import net.minecraft.block.Block;
@@ -88,9 +87,6 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if ((aBaseMetaTileEntity.isServerSide()) && (aTick > 20L) && this.mProcessingEnergy > 0 && (aTick % 20L == 0L)) {
-            GT_Pollution.addPollution(getBaseMetaTileEntity(), getPollution());
-        }
     }
 
     @Override

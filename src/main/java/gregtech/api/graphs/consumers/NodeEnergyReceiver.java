@@ -6,15 +6,13 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.GT_Pollution;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
-
-import static gregtech.api.enums.GT_Values.V;
 
 //consumer for RF machines
 public class NodeEnergyReceiver extends ConsumerNode {
@@ -51,9 +49,6 @@ public class NodeEnergyReceiver extends ConsumerNode {
             World tWorld = mTileEntity.getWorldObj();
             GT_Utility.sendSoundToPlayers(tWorld, GregTech_API.sSoundList.get(209), 1.0F, -1, tX, tY, tZ);
             tWorld.setBlock(tX, tY, tZ, Blocks.air);
-            if (GregTech_API.sMachineExplosions)
-                if (GT_Mod.gregtechproxy.mPollution)
-                    GT_Pollution.addPollution(tWorld.getChunkFromBlockCoords(tX, tZ), 100000);
 
             new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder()
                     .setStrength(GT_Values.MachineExplosionPower)

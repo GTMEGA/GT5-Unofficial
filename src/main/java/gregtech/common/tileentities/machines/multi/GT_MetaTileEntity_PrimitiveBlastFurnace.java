@@ -8,7 +8,6 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.GT_Pollution;
 import gregtech.common.gui.GT_Container_PrimitiveBlastFurnace;
 import gregtech.common.gui.GT_GUIContainer_PrimitiveBlastFurnace;
 import net.minecraft.block.Block;
@@ -224,12 +223,6 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                 } else if (aBaseMetaTileEntity.isAllowedToWork()) {
                     checkRecipe();
                 }
-            }
-            if (this.mMaxProgresstime > 0 && (aTimer % 20L == 0L)) {
-                GT_Pollution.addPollution(this.getBaseMetaTileEntity().getWorld(),
-                        new ChunkPosition(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(),
-                                this.getBaseMetaTileEntity().getZCoord()),
-                        200);
             }
 
             aBaseMetaTileEntity.setActive((this.mMaxProgresstime > 0) && (this.mMachine));
