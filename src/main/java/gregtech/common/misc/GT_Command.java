@@ -4,7 +4,7 @@ import com.gtnewhorizon.structurelib.StructureLib;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.objects.GT_ChunkManager;
-import gregtech.common.GT_Pollution;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
@@ -103,19 +103,6 @@ public final class GT_Command extends CommandBase {
                 GT_ChunkManager.printTickets();
                 sender.addChatMessage(new ChatComponentText("Forced chunks logged to GregTech.log"));
                 break;
-            case "pollution": {
-                ChunkCoordinates coordinates = sender.getPlayerCoordinates();
-                int amount = (strings.length < 2) ? GT_Mod.gregtechproxy.mPollutionSmogLimit : Integer.parseInt(strings[1]);
-                GT_Pollution.addPollution(sender
-                                .getEntityWorld()
-                                .getChunkFromBlockCoords(
-                                        coordinates.posX,
-                                        coordinates.posZ
-                                ),
-                        amount
-                );
-                break;
-            }
             default:
                 printHelp(sender);
         }

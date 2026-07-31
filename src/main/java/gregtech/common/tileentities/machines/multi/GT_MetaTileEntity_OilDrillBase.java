@@ -27,8 +27,6 @@ import static gregtech.api.enums.GT_Values.debugDriller;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_DRILL;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_DRILL_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
-import static gregtech.common.GT_UndergroundOil.undergroundOil;
-import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
 
 public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_DrillerBase {
     private final ArrayList<Chunk> mOilFieldChunks = new ArrayList<>();
@@ -169,104 +167,11 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
     }
 
     private boolean tryFillChunkList(){
-        FluidStack tFluid, tOil;
-        if (mOilId <= 0) {
-            tFluid = undergroundOilReadInformation(getBaseMetaTileEntity());
-            if (tFluid == null) return false;
-            mOilId = tFluid.getFluidID();
-        }
-        if (debugDriller) {
-            GT_Log.out.println(
-                " Driller on  fluid = " + mOilId
-            );
-        }
-
-        tOil = new FluidStack(FluidRegistry.getFluid(mOilId), 0);
-
-        if (mOilFieldChunks.isEmpty()) {
-            Chunk tChunk = getBaseMetaTileEntity().getWorld().getChunkFromBlockCoords(getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getZCoord());
-            int range = chunkRangeConfig;
-            int xChunk = Math.floorDiv(tChunk.xPosition,range) * range; //Java was written by idiots.  For negative values, / returns rounded towards zero. Fucking morons.
-            int zChunk = Math.floorDiv(tChunk.zPosition,range) * range;
-            if (debugDriller) {
-                GT_Log.out.println(
-                    "tChunk.xPosition = " + tChunk.xPosition +
-                    " tChunk.zPosition = " + tChunk.zPosition +
-                    " xChunk = " + xChunk  +
-                    " zChunk = " + zChunk
-                );
-            }
-            for (int i = 0; i < range; i++) {
-                for (int j = 0; j < range; j++) {
-                    if (debugDriller) {
-                        GT_Log.out.println(
-                            " getChunkX = " + (xChunk + i) +
-                            " getChunkZ = " + (zChunk + j)
-                        );
-                    }
-                    tChunk = getBaseMetaTileEntity().getWorld().getChunkFromChunkCoords(xChunk + i, zChunk + j);
-                    tFluid = undergroundOilReadInformation(tChunk);
-                    if (debugDriller) {
-                        GT_Log.out.println(
-                            " Fluid in chunk = " + tFluid.getFluid().getID()
-                        );
-                    }
-                    if (tOil.isFluidEqual(tFluid) && tFluid.amount > 0) {
-                        mOilFieldChunks.add(tChunk);
-                        if (debugDriller) {
-                            GT_Log.out.println(
-                                " Matching fluid, quantity = " + tFluid.amount
-                            );
-                        }
-                    }
-                }
-            }
-        }
-        if (debugDriller) {
-            GT_Log.out.println(
-                "mOilFieldChunks.size = " + mOilFieldChunks.size()
-            );
-        }
-        return !mOilFieldChunks.isEmpty();
+        return false;
     }
 
     private FluidStack pumpOil(float speed){
-        if (mOilId <= 0) return null;
-        FluidStack tFluid, tOil;
-        tOil = new FluidStack(FluidRegistry.getFluid(mOilId), 0);
-        if (debugDriller) {
-            GT_Log.out.println(
-                " pump speed = " + speed
-             );
-        }
-
-        ArrayList<Chunk> emptyChunks = new ArrayList<>();
-        
-        for (Chunk tChunk : mOilFieldChunks) {
-            tFluid = undergroundOil(tChunk,speed);
-            if (debugDriller) {
-                GT_Log.out.println(
-                    " chunkX = " + tChunk.getChunkCoordIntPair().chunkXPos + 
-                    " chunkZ = " + tChunk.getChunkCoordIntPair().chunkZPos 
-                );
-                if( tFluid != null ) {
-                    GT_Log.out.println(
-                        "     Fluid pumped = " + tFluid.amount
-                    );
-                } else {
-                    GT_Log.out.println(
-                        "     No fluid pumped " 
-                    );
-                }
-                
-            }
-            if (tFluid == null || tFluid.amount<1) emptyChunks.add(tChunk);
-            if (tOil.isFluidEqual(tFluid)) tOil.amount += tFluid.amount;
-        }
-        for( Chunk tChunk : emptyChunks) {
-            mOilFieldChunks.remove( tChunk );
-        }
-        return tOil.amount == 0 ? null : tOil;
+        return null;
     }
 
     @Override

@@ -202,7 +202,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public int mPollutionPoisonLimit = 750000;
     public int mPollutionVegetationLimit = 1000000;
     public int mPollutionSourRainLimit = 2000000;
-    public final GT_UO_DimensionList mUndergroundOil = new GT_UO_DimensionList();
     public int mTicksUntilNextCraftSound = 0;
     public double mMagneticraftBonusOutputPercent = 100.0d;
     private World mUniverse = null;
@@ -561,7 +560,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     }
 
     public void onServerAboutToStart(){
-        dimensionWisePollution.clear();//!!! IMPORTANT for map switching...
         GT_ChunkAssociatedData.clearAll();
     }
 
@@ -1311,8 +1309,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                     GT_Log.out.println("CRAM: Time spent checking " + (System.nanoTime() - startTime )/1000 + " microseconds" );
                 }
             }
-
-            GT_Pollution.onWorldTick(aEvent);
         }
     }
 
@@ -1832,7 +1828,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     @Deprecated
     public static final HashMap<Integer,HashMap<ChunkCoordIntPair,int []>> dimensionWiseChunkData = new HashMap<>(16);//stores chunk data that is loaded/saved
-    public static final HashMap<Integer,GT_Pollution> dimensionWisePollution = new HashMap<>(16);//stores GT_Polluttors objects
 	public static final byte GTOIL=3,GTOILFLUID=2,GTPOLLUTION=1,GTMETADATA=0,NOT_LOADED=0,LOADED=1;//consts
 
     //TO get default's fast
@@ -1847,8 +1842,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     @SubscribeEvent
     public void handleChunkLoadEvent(ChunkDataEvent.Load event) {
-        GT_UndergroundOil.migrate(event);
-        GT_Pollution.migrate(event);
         GT_OreVeinStats.migrate(event);
     }
 

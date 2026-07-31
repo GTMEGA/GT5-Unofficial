@@ -9,7 +9,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.common.GT_Pollution;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -67,7 +67,6 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
             mEfficiency = 10000;
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = Math.max(1, mMaxProgresstime);
-            GT_Pollution.addPollution(getBaseMetaTileEntity(), mMaxProgresstime * 10);
             return true;
         } else {
             mEfficiency = 0;

@@ -9,7 +9,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.GT_Pollution;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -108,17 +108,11 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
         boolean chk1, chk2, chk3;
         float ran1 = XSTR_INSTANCE.nextFloat(), ran2, ran3;
         chk1 = ran1 * 100 < calculatePollutionReduction(100);
-        if (GT_Pollution.getPollution(getBaseMetaTileEntity()) >= GT_Mod.gregtechproxy.mPollutionSmogLimit) {
-            ran2 = XSTR_INSTANCE.nextFloat();
-            ran3 = XSTR_INSTANCE.nextFloat();
-            chk2 = ran2 * 100 < calculatePollutionReduction(100);
-            chk3 = ran3 * 100 < calculatePollutionReduction(100);
-            if (!(chk1 || chk2 || chk3)) return;
-        } else {
-            if (!chk1) return;
-            ran2 = ran3 = 0.0F;
-            chk2 = chk3 = false;
+        if (!chk1) {
+            return;
         }
+        ran2 = ran3 = 0.0F;
+        chk2 = chk3 = false;
 
         IGregTechTileEntity aMuffler = this.getBaseMetaTileEntity();
         ForgeDirection aDir = ForgeDirection.getOrientation(aMuffler.getFrontFacing());
@@ -180,10 +174,6 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
      * @return pollution success
      */
     public boolean polluteEnvironment(MetaTileEntity mte) {
-        if (getBaseMetaTileEntity().getAirAtSide(getBaseMetaTileEntity().getFrontFacing())) {
-            GT_Pollution.addPollution(getBaseMetaTileEntity(), calculatePollutionReduction(10000));
-            return true;
-        }
         return false;
     }
 

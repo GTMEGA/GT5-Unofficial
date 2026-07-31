@@ -61,7 +61,6 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
@@ -89,7 +88,6 @@ import java.util.function.Supplier;
 
 import static gregtech.GT_Mod.gregtechproxy;
 import static gregtech.api.enums.GT_Values.*;
-import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -2054,14 +2052,6 @@ public class GT_Utility {
             }
         }
 
-        Chunk currentChunk = aWorld.getChunkFromBlockCoords(aX, aZ);
-        if (aPlayer.capabilities.isCreativeMode) {
-            FluidStack tFluid = undergroundOilReadInformation(currentChunk);//-# to only read
-            if (tFluid != null)
-                tList.add(EnumChatFormatting.GOLD + tFluid.getLocalizedName() + EnumChatFormatting.RESET + ": " + EnumChatFormatting.YELLOW + formatNumbers(tFluid.amount) + EnumChatFormatting.RESET + " L");
-            else
-                tList.add(EnumChatFormatting.GOLD + trans("201", "Nothing") + EnumChatFormatting.RESET + ": " + EnumChatFormatting.YELLOW + '0' + EnumChatFormatting.RESET + " L");
-        }
 //      if(aPlayer.capabilities.isCreativeMode){
 
         try {
@@ -2343,11 +2333,9 @@ public class GT_Utility {
             return tNBT.getString("author");
         }
 
-        public static void setProspectionData(ItemStack aStack, int aX, int aY, int aZ, int aDim, FluidStack aFluid, String... aOres) {
+        public static void setProspectionData(ItemStack aStack, int aX, int aY, int aZ, int aDim, String... aOres) {
             NBTTagCompound tNBT = getNBT(aStack);
             StringBuilder tData = new StringBuilder(aX + "," + aY + "," + aZ + "," + aDim + ",");
-            if (aFluid != null)
-                tData.append(aFluid.amount).append(",").append(aFluid.getLocalizedName()).append(",");//TODO CHECK IF THAT /5000 is needed (Not needed)
             for (String tString : aOres) {
                 tData.append(tString).append(",");
             }
@@ -2358,9 +2346,7 @@ public class GT_Utility {
         public static void setAdvancedProspectionData(
                 byte aTier,
                 ItemStack aStack,
-                int aX, short aY, int aZ, int aDim,
-                ArrayList<String> aOils,
-                ArrayList<String> aOres,
+                int aX, short aY, int aZ, int aDim, ArrayList<String> aOres,
                 int aRadius) {
 
             setBookTitle(aStack, "Raw Prospection Data");
@@ -2373,44 +2359,6 @@ public class GT_Utility {
             // ores
             Collections.sort(aOres);
             tNBT.setString("prospection_ores", joinListToString(aOres));
-
-            // oils
-            ArrayList<String> tOilsTransformed = new ArrayList<>(aOils.size());
-            for (String aStr : aOils) {
-                String[] aStats = aStr.split(",");
-                tOilsTransformed.add(aStats[0] + ": " + aStats[1] + "L " + aStats[2]);
-            }
-
-            tNBT.setString("prospection_oils", joinListToString(tOilsTransformed));
-
-            String tOilsPosStr = "X: " + Math.floorDiv(aX, 16 * 8) * 16 * 8 + " Z: " + Math.floorDiv(aZ, 16 * 8) * 16 * 8 + "\n";
-            int xOff = aX - Math.floorDiv(aX, 16 * 8) * 16 * 8;
-            xOff = xOff / 16;
-            int xOffRemain = 7 - xOff;
-
-            int zOff = aZ - Math.floorDiv(aZ, 16 * 8) * 16 * 8;
-            zOff = zOff / 16;
-            int zOffRemain = 7 - zOff;
-
-            for (; zOff > 0; zOff--) {
-                tOilsPosStr = tOilsPosStr.concat("--------\n");
-            }
-            for (; xOff > 0; xOff--) {
-                tOilsPosStr = tOilsPosStr.concat("-");
-            }
-
-            tOilsPosStr = tOilsPosStr.concat("P");
-
-            for (; xOffRemain > 0; xOffRemain--) {
-                tOilsPosStr = tOilsPosStr.concat("-");
-            }
-            tOilsPosStr = tOilsPosStr.concat("\n");
-            for (; zOffRemain > 0; zOffRemain--) {
-                tOilsPosStr = tOilsPosStr.concat("--------\n");
-            }
-            tOilsPosStr = tOilsPosStr.concat("            X: " + (Math.floorDiv(aX, 16 * 8) + 1) * 16 * 8 + " Z: " + (Math.floorDiv(aZ, 16 * 8) + 1) * 16 * 8); // +1 oilfied to find bottomright of [5]
-
-            tNBT.setString("prospection_oils_pos", tOilsPosStr);
 
             tNBT.setString("prospection_radius", String.valueOf(aRadius));
 

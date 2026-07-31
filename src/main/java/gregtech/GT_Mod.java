@@ -414,13 +414,7 @@ public class GT_Mod implements IGT_Mod {
         gregtechproxy.mTEMachineRecipes = tMainConfig.get("general", "TEMachineRecipes", false).getBoolean(false);
         gregtechproxy.mEnableAllMaterials = tMainConfig.get("general", "EnableAllMaterials", false).getBoolean(false);
         gregtechproxy.mEnableAllComponents = tMainConfig.get("general", "EnableAllComponents", false).getBoolean(false);
-        gregtechproxy.mPollution = tMainConfig.get("Pollution", "EnablePollution", false).getBoolean(false);
-        gregtechproxy.mPollutionSmogLimit = tMainConfig.get("Pollution", "SmogLimit", Integer.MAX_VALUE).getInt(Integer.MAX_VALUE);
-        gregtechproxy.mPollutionPoisonLimit = tMainConfig.get("Pollution", "PoisonLimit", Integer.MAX_VALUE).getInt(Integer.MAX_VALUE);
-        gregtechproxy.mPollutionVegetationLimit = tMainConfig.get("Pollution", "VegetationLimit", Integer.MAX_VALUE).getInt(Integer.MAX_VALUE);
-        gregtechproxy.mPollutionSourRainLimit = tMainConfig.get("Pollution", "SourRainLimit", Integer.MAX_VALUE).getInt(Integer.MAX_VALUE);
         gregtechproxy.mExplosionItemDrop = tMainConfig.get("general", "ExplosionItemDrops", false).getBoolean(false);
-        gregtechproxy.mUndergroundOil.getConfig(tMainConfig, "undergroundfluid");
         gregtechproxy.mEnableCleanroom = tMainConfig.get("general", "EnableCleanroom", true).getBoolean(true);
         if (gregtechproxy.mEnableCleanroom)
             GT_MetaTileEntity_Cleanroom.loadConfig(tMainConfig);

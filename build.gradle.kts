@@ -109,7 +109,7 @@ dependencies {
         excludeDeps()
     }
 
-    runtimeOnlyNonPublishable("matt159:dws-mc1.7.10:0.8.9-beta:dev")
+//    runtimeOnlyNonPublishable("matt159:dws-mc1.7.10:0.11.0-beta:dev")
 
     //Plonk 10.0.4
 //    runtimeOnly(deobfCurse("plonk-345779:4480767"))

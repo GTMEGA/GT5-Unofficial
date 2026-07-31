@@ -12,7 +12,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.GT_Pollution;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -226,8 +226,6 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        pollute(aTick);
-
         if (isNotAllowedToWork(aBaseMetaTileEntity, aTick))
             return;
 
@@ -235,7 +233,6 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
         pushSteamToInventories(aBaseMetaTileEntity);
 
         if (canNotCreateSteam(aBaseMetaTileEntity, aTick)) {
-            pollute(aTick);
             return;
         }
 
@@ -246,12 +243,6 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
 
     private boolean isNotAllowedToWork(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         return (!aBaseMetaTileEntity.isServerSide()) || (aTick <= 20L);
-    }
-
-    private void pollute(long aTick) {
-        if (this.mProcessingEnergy > 0 && (aTick % 20L == 0L)) {
-            GT_Pollution.addPollution(getBaseMetaTileEntity(), getPollution());
-        }
     }
 
     private void calculateHeatUp(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
