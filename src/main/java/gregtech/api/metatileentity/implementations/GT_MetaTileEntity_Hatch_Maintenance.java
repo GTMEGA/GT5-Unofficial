@@ -122,7 +122,7 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        if (aTileEntity.getMetaTileID() == 111)
+        if (aTileEntity.getMetaTileID() == 111 || aTileEntity.getMetaTileID() == 8999)
             return new GT_MetaTileEntity_Hatch_Maintenance(mName, mTier, mDescriptionArray, mTextures, true);
         return new GT_MetaTileEntity_Hatch_Maintenance(mName, mTier, mDescriptionArray, mTextures, false);
     }
@@ -136,13 +136,15 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        if (mAuto) return new GT_Container_1by1(aPlayerInventory, aBaseMetaTileEntity);
+        if (mAuto && mTier==3) return new GT_Container_2by2(aPlayerInventory, aBaseMetaTileEntity);
+        else new GT_Container_1by1(aPlayerInventory, aBaseMetaTileEntity);
         return new GT_Container_MaintenanceHatch(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        if (mAuto) return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
+        if (mAuto && mTier==3) return new GT_GUIContainer_2by2(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
+        else new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
         return new GT_GUIContainer_MaintenanceHatch(aPlayerInventory, aBaseMetaTileEntity);
     }
 

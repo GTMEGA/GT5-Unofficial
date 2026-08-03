@@ -1607,6 +1607,7 @@ public enum ItemList implements IItemContainer {
     MNqCell_4,
 
     Hatch_AutoMaintenance,
+    Hatch_AutoMaintenance_HV,
     Machine_Multi_Cleanroom,
 
     Circuit_Silicon_Ingot,
