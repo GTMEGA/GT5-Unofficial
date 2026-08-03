@@ -45,17 +45,17 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     }
 
     public GT_MetaTileEntity_Hatch_Maintenance(int aID, String aName, String aNameRegional, int aTier, boolean aAuto) {
-        super(aID, aName, aNameRegional, aTier, 4, "For automatically maintaining Multiblocks.");
+        super(aID, aName, aNameRegional, aTier, aTier > 2 ? 4 : 1, "For automatically maintaining Multiblocks.");
         mAuto = aAuto;
     }
 
     public GT_MetaTileEntity_Hatch_Maintenance(String aName, int aTier, String aDescription, ITexture[][][] aTextures, boolean aAuto) {
-        super(aName, aTier, aAuto ? 4 : 1, aDescription, aTextures);
+        super(aName, aTier, aTier > 2 ? 4 : 1, aDescription, aTextures);
         mAuto = aAuto;
     }
 
     public GT_MetaTileEntity_Hatch_Maintenance(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, boolean aAuto) {
-        super(aName, aTier, aAuto ? 4 : 1, aDescription, aTextures);
+        super(aName, aTier, aTier > 2 ? 4 : 1, aDescription, aTextures);
         mAuto = aAuto;
     }
 
@@ -137,14 +137,14 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         if (mAuto && mTier==3) return new GT_Container_2by2(aPlayerInventory, aBaseMetaTileEntity);
-        else new GT_Container_1by1(aPlayerInventory, aBaseMetaTileEntity);
+        else if (mAuto && mTier==2) return new GT_Container_1by1(aPlayerInventory, aBaseMetaTileEntity);
         return new GT_Container_MaintenanceHatch(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         if (mAuto && mTier==3) return new GT_GUIContainer_2by2(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-        else new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
+        else if (mAuto && mTier==2) return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
         return new GT_GUIContainer_MaintenanceHatch(aPlayerInventory, aBaseMetaTileEntity);
     }
 
