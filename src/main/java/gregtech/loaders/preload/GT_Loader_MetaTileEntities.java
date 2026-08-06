@@ -104,9 +104,9 @@ public final class GT_Loader_MetaTileEntities implements Runnable {
         Seismic_Prospector_Adv_EV.set(new GT_MetaTileEntity_AdvSeismicProspector(1173, "basicmachine.seismicprospector.04", "Advanced Seismic Prospector EV", 4, sSoundList.get(Integer.valueOf(228)), 27 * 16 / 2, 2).getStackForm(1));
 
 //        addCraftingRecipe(Seismic_Prospector_Adv_LV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WWW", "EME", "CXC", 'M', Hull_LV, 'W', plate.get(Steel), 'E', circuitLogic.get(LOGIC_LV), 'C', Sensor_LV, 'X', cableGt01.get(Tin)});
-        addCraftingRecipe(Seismic_Prospector_Adv_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WWW", "EME", "CXC", 'M', Hull_MV, 'W', plate.get(StainlessSteel), 'E', circuitLogic.get(LOGIC_MV), 'C', Sensor_MV, 'X', cableGt01.get(Copper)});
-        addCraftingRecipe(Seismic_Prospector_Adv_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WWW", "EME", "CXC", 'M', Hull_HV, 'W', plate.get(Aluminium), 'E', circuitLogic.get(LOGIC_HV), 'C', Sensor_HV, 'X', cableGt01.get(Gold)});
-        addCraftingRecipe(Seismic_Prospector_Adv_EV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WWW", "EME", "CXC", 'M', Hull_EV, 'W', plate.get(VanadiumSteel), 'E', circuitLogic.get(LOGIC_EV), 'C', Sensor_EV, 'X', cableGt01.get(Aluminium)});
+        addCraftingRecipe(Seismic_Prospector_Adv_MV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WWW", "EME", "CXC", 'M', Hull_MV, 'W', plate.get(StainlessSteel), 'E', circuitLogic.get(LOGIC_MV), 'C', Emitter_MV, 'X', cableGt01.get(Copper)});
+        addCraftingRecipe(Seismic_Prospector_Adv_HV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WWW", "EME", "CXC", 'M', Hull_HV, 'W', plate.get(Aluminium), 'E', circuitLogic.get(LOGIC_HV), 'C', Emitter_HV, 'X', cableGt01.get(Gold)});
+        addCraftingRecipe(Seismic_Prospector_Adv_EV.get(1L), DISMANTLEABLE_RECIPE_MASK, new Object[]{"WWW", "EME", "CXC", 'M', Hull_EV, 'W', plate.get(VanadiumSteel), 'E', circuitLogic.get(LOGIC_EV), 'C', Emitter_EV, 'X', cableGt01.get(Aluminium)});
     }
 
     private static void loadFrames() {

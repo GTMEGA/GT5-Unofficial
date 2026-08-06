@@ -107,7 +107,7 @@ public class GT_Worldgenloader implements Runnable {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.tin", true, 55, 60, 50, 4, 32, true, false, false, Materials.Tin, Materials.Zinc, Materials.Cassiterite, Materials.Chalcopyrite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.copper", true, 40, 50, 100, 5, 32, true, false, false, Materials.Copper, Materials.Chalcopyrite, Materials.Pyrite, Materials.Iron);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.owbauxite", true, 10, 30, 25, 4, 32, true, false, false, Materials.Bauxite, Materials.Bauxite, Materials.Bauxite, Materials.Bauxite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.salts", true, 40, 45, 50, 2, 24, true, false, false, Materials.Salt, Materials.Saltpeter, Materials.Spodumene, Materials.Salt);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.salts", true, 40, 45, 50, 5, 24, true, false, false, Materials.Salt, Materials.Saltpeter, Materials.Spodumene, Materials.Salt);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.redstone", true, 5, 15, 60, 3, 24, true, false, false, Materials.Redstone, Materials.Ruby, Materials.Redstone, Materials.Cinnabar);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.nickel", true, 10, 40, 50, 3, 24, true, false, false, Materials.Nickel, Materials.Cobaltite, Materials.Pentlandite, Materials.Cobaltite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.manganese", true, 20, 30, 30, 2, 20, true, false, false, Materials.Spessartine, Materials.Spessartine, Materials.Tantalite, Materials.Pyrolusite);
