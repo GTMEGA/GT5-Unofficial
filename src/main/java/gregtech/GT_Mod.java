@@ -6,6 +6,7 @@ import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.SideOnly;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Radioactivity;
@@ -29,7 +30,6 @@ import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.items.GT_MEGAnet;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gregtech.common.misc.ClientOreVeinStats;
 import gregtech.common.misc.commands.MEGA_Commands;
 import gregtech.common.misc.explosions.GT_Explosion_Info;
@@ -53,7 +53,6 @@ import gregtech.loaders.postload.*;
 import gregtech.loaders.preload.*;
 import gregtech.nei.DragHandler;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -94,6 +93,7 @@ import static gregtech.api.enums.GT_Values.*;
 @Mod(modid = "gregtech", name = "GregTech", version = "MC1710", useMetadata = false,
         dependencies = " required-after:structurelib;" +
                 " required-after:YAMCore;" +
+                " required-after:mcqlite;" +
                 " after:dreamcraft;" +
                 " after:Forestry;" +
                 " after:PFAAGeologica;" +
@@ -127,10 +127,8 @@ import static gregtech.api.enums.GT_Values.*;
                 " after:RedPowerControl;" +
                 " after:UndergroundBiomes;" +
                 " after:TConstruct;" +
-                " after:Translocator;" +
-                " after:MCqlite")
+                " after:Translocator;" )
 public class GT_Mod implements IGT_Mod {
-
     @Deprecated // Keep for use in BaseMetaTileEntity
     public static final int VERSION = 509, SUBVERSION = 41;
     @Deprecated
@@ -188,7 +186,7 @@ public class GT_Mod implements IGT_Mod {
             }
         }
 
-        MinecraftForge.EVENT_BUS.register(new GT_OreVeinStats.GT_OreSlurryEventHandler());
+        MinecraftForge.EVENT_BUS.register(new GT_OreVeinStats.EventHandler());
 
         if (FMLCommonHandler.instance().getSide() == CLIENT) {
             MinecraftForge.EVENT_BUS.register(new ExtraIcons());

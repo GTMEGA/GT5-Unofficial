@@ -1,6 +1,7 @@
 package gregtech.common;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.OreVein;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
@@ -234,7 +235,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
 
                                         validOreveins.put(oreveinSeed, tWorldGen);
                                         oreVeinMix = GT_OreVeinStats.Stats.builder()
-                                                                          .oreMix(tWorldGen.mWorldGenName)
+                                                                          .oreMix(OreVein.LOOKUP.get(tWorldGen.mWorldGenName))
                                                                           .oresPlaced(result.blocksPlaced).oresCurrent(result.blocksPlaced)
                                                                           .build();
                                         break;
@@ -319,7 +320,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                 }
 
                 oreVeinMix = GT_OreVeinStats.Stats.builder()
-                                                  .oreMix(tWorldGen.mWorldGenName)
+                                                  .oreMix(OreVein.LOOKUP.get(tWorldGen.mWorldGenName))
                                                   .oresPlaced(result.blocksPlaced)
                                                   .oresCurrent(result.blocksPlaced)
                                                   .build();

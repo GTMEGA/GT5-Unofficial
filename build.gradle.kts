@@ -8,8 +8,9 @@ group = "gtmega"
 
 minecraft_fp {
     java {
-        compatibility = jvmDowngrader
-        jvmDowngraderShade = ProjectIsLgpl21PlusCompatible
+        compatibility = modern
+//        compatibility = jvmDowngrader
+//        jvmDowngraderShade = ProjectIsLgpl21PlusCompatible
     }
 
     mod {
@@ -59,7 +60,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.matt159:mcqlite-mc1.7.10:0.1.0-mega")
+    implementationSplit("com.github.matt159:mcqlite-mc1.7.10:0.1.4")
     implementation("mega:structurelib-mc1.7.10:1.4.1-mega:dev")
     implementation("codechicken:codechickencore-mc1.7.10:1.4.0-mega:dev")
     devOnlyNonPublishable("codechicken:notenoughitems-mc1.7.10:2.3.0-mega:dev")

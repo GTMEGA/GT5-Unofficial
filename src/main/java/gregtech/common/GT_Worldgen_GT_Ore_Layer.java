@@ -2,6 +2,7 @@ package gregtech.common;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OreVein;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.blocks.GT_Block_Ore_Abstract;
@@ -24,7 +25,7 @@ import static gregtech.api.enums.GT_Values.oreveinPlacerOresMultiplier;
 
 public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
     // This is probably not going to work.  Trying to create a fake orevein to put into hashtable when there will be no ores in a vein.
-    public static GT_Worldgen_GT_Ore_Layer EMPTY_VEIN = new GT_Worldgen_GT_Ore_Layer("empty_vein", false, 0, 255, 0, 255, 16, false, false, false, Materials.Empty, Materials.Empty, Materials.Empty, Materials.Empty);
+    public static GT_Worldgen_GT_Ore_Layer EMPTY_VEIN = new GT_Worldgen_GT_Ore_Layer(OreVein.empty_vein.unlocalizedName(), false, 0, 255, 0, 255, 16, false, false, false, Materials.Empty, Materials.Empty, Materials.Empty, Materials.Empty);
 
     public static ArrayList<GT_Worldgen_GT_Ore_Layer> sList = new ArrayList<>();
     public static int sWeight = 0;

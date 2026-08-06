@@ -1,6 +1,7 @@
 package gregtech.api.net;
 
 import com.google.common.io.ByteArrayDataInput;
+import gregtech.api.enums.OreVein;
 import gregtech.common.GT_OreVeinStats;
 import gregtech.common.misc.ClientOreVeinStats;
 import io.netty.buffer.ByteBuf;
@@ -36,7 +37,7 @@ public class GT_Packet_ClientOreVeinStatsUpdate extends GT_Packet_New {
         aOut.writeInt(this.stats.oresPlaced());
         aOut.writeInt(this.stats.oresCurrent());
         
-        ByteBufUtils.writeUTF8String(aOut, this.stats.oreMix());
+        aOut.writeInt(this.stats.oreMix().ordinal());
     }
 
     @Override
@@ -47,7 +48,7 @@ public class GT_Packet_ClientOreVeinStatsUpdate extends GT_Packet_New {
         val stats = GT_OreVeinStats.Stats.builder()
                                          .oresPlaced(aData.readInt())
                                          .oresCurrent(aData.readInt())
-                                         .oreMix(aData.readLine())
+                                         .oreMix(OreVein.values()[aData.readInt()])
                                          .build();
 
         return new GT_Packet_ClientOreVeinStatsUpdate(stats, chunkX, chunkZ);

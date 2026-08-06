@@ -1,17 +1,20 @@
 package gregtech.common;
 
+import com.github.matt159.mcqlite.api.Database;
+import com.github.matt159.mcqlite.api.events.DatabaseLoadEvent;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.OreVein;
 import gregtech.api.net.GT_Packet_ClientOreVeinStatsUpdate;
 import gregtech.api.util.GT_ChunkAssociatedData;
 import gregtech.common.blocks.GT_Block_Ore;
 import gregtech.common.blocks.GT_Block_Ore_Abstract;
 import gregtech.common.fluids.GT_OreSlurry;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.experimental.SuperBuilder;
 import lombok.val;
+import org.apache.commons.lang3.time.StopWatch;
 
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
@@ -19,25 +22,27 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class GT_OreVeinStats {
-    private static final byte VERSION = 0;
     public static final Map<String, GT_Worldgen_GT_Ore_Layer> ORE_MIX_LOOKUP = new HashMap<>();
-    private static final Storage STORAGE = new Storage();
+    private static final ThreadLocal<Storage> STORAGE = ThreadLocal.withInitial(Storage::new);
 
     public static GT_OreVeinStats.Stats getOreVeinStatsInChunk(World world, int chunkX, int chunkZ) {
-        return STORAGE.get(world, chunkX, chunkZ);
+        return STORAGE.get().get(world, chunkX, chunkZ);
     }
 
     public static void recordOreVeinStats(World world, int chunkX, int chunkZ, Stats stats) {
@@ -45,7 +50,8 @@ public class GT_OreVeinStats {
             return;
         }
 
-        STORAGE.get(world, chunkX, chunkZ)
+        STORAGE.get()
+               .get(world, chunkX, chunkZ)
                .oreMix(stats.oreMix())
                .oresCurrent(stats.oresCurrent())
                .oresPlaced(stats.oresPlaced());
@@ -56,7 +62,7 @@ public class GT_OreVeinStats {
             return;
         }
 
-        val stats = STORAGE.get(world, chunkX, chunkZ);
+        val stats = STORAGE.get().get(world, chunkX, chunkZ);
         val updatedCount = Math.max(0, stats.oresCurrent() - 1);
 
         stats.oresCurrent(updatedCount);
@@ -133,7 +139,7 @@ public class GT_OreVeinStats {
                            oreTypeFrequency.getOrDefault(d, 0);
 
             stats = GT_OreVeinStats.Stats.builder()
-                                         .oreMix(currentVein.mWorldGenName)
+                                         .oreMix(OreVein.LOOKUP.get(currentVein.mWorldGenName))
                                          .oresPlaced(oreCount)
                                          .oresCurrent(oreCount)
                                          .build();
@@ -151,18 +157,37 @@ public class GT_OreVeinStats {
         return stats;
     }
 
-    public static class GT_OreSlurryEventHandler {
+    public static class EventHandler {
+        @SubscribeEvent
+        public void onDatabaseLoad(DatabaseLoadEvent event) {
+            if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+                return;
+            }
+
+            try (val connection = Database.getConnection()){
+                val statement = connection.prepareStatement(Queries.CREATE_ORE_VEIN_STATS_TABLE);
+
+                statement.execute();
+            } catch (SQLException e) {
+                GT_Mod.GT_FML_LOGGER.error("Failed to create ore_vein_stats table", e);
+            }
+        }
+
         @SubscribeEvent
         public void chunkWatch(ChunkWatchEvent.Watch event) {
             val world = event.player.worldObj;
 
-            if (!GT_OreVeinStats.STORAGE.isCreated(world, event.chunk)) {
+            if (world.isRemote) {
                 return;
             }
 
-            val stats = GT_OreVeinStats.STORAGE.get(world, event.chunk);
+            if (!GT_OreVeinStats.STORAGE.get().isCreated(world, event.chunk)) {
+                return;
+            }
 
-            if (stats.isSameAsDefault()) {
+            val stats = GT_OreVeinStats.STORAGE.get().get(world, event.chunk);
+
+            if (stats.isDirty()) {
                 return;
             }
 
@@ -176,7 +201,7 @@ public class GT_OreVeinStats {
         public void onWorldLoad(WorldEvent.Load e) {
             // super class loads everything lazily. We force it to load them all.
             if (!e.world.isRemote) {
-                GT_OreVeinStats.STORAGE.loadAll(e.world);
+                GT_OreVeinStats.STORAGE.get().loadAll(e.world);
             }
         }
     }
@@ -184,7 +209,7 @@ public class GT_OreVeinStats {
     @ParametersAreNonnullByDefault
     private static final class Storage extends GT_ChunkAssociatedData<Stats> {
         private Storage() {
-            super("ore_slurry", Stats.class, 1, VERSION, false);
+            super("ore_vein_stats", Stats.class);
         }
 
         public boolean isCreated(World world, ChunkCoordIntPair chunk) {
@@ -192,60 +217,130 @@ public class GT_OreVeinStats {
         }
 
         @Override
-        public void loadAll(World world) {
-            super.loadAll(world);
+        protected void writeElements(Connection connection, Queue<Stats> writeQueue) throws SQLException {
+            val values = writeQueue.stream()
+                                   .map(entry -> Queries.UPSERT_ORE_VEIN_STATS_VALUES_TEMPLATE
+                                                             .formatted(entry.location(),
+                                                                        entry.oreMix().ordinal(),
+                                                                        entry.oresPlaced(),
+                                                                        entry.oresCurrent()))
+                                   .collect(Collectors.joining(","));
+
+            val query = Queries.UPSERT_ORE_VEIN_STATS.formatted(values);
+
+            val stopWatch = StopWatch.createStarted();
+
+            val upsert = connection.prepareStatement(query);
+
+            upsert.executeUpdate();
+
+            stopWatch.stop();
+
+            GT_Mod.GT_FML_LOGGER.info("Recorded {} chunks in {} ms", writeQueue.size(), stopWatch.getNanoTime() / 1e6);
+
+            while (!writeQueue.isEmpty()) {
+                val stats = writeQueue.poll();
+
+                stats.isDirty(false);
+            }
         }
 
         @Override
-        protected void writeElement(DataOutput output, Stats element, World world, int chunkX, int chunkZ)
-                throws IOException {
-            output.writeUTF(element.oreMix());
-            output.writeInt(element.oresCurrent());
-            output.writeInt(element.oresPlaced());
-        }
+        protected void readAllElementsInWorld(Connection connection, int dimId) throws SQLException {
+            val stopWatch = StopWatch.createStarted();
 
-        @Override
-        protected Stats readElement(DataInput input, int version, World world, int chunkX, int chunkZ)
-                throws IOException {
-            if (version != VERSION) {
-                throw new IOException("Region file corrupted");
+            val countQuery = connection.prepareStatement(Queries.QUERY_ORE_VEIN_STATS_COUNT);
+            countQuery.setInt(1, dimId);
+
+            val countQueryResult = countQuery.executeQuery();
+            countQueryResult.next();
+
+            val count = countQueryResult.getInt(1);
+
+            for (int offset = 0; offset < count; offset += PAGE_SIZE) {
+                val pagedQuery = connection.prepareStatement(Queries.QUERY_ORE_VEIN_STATS_BY_DIMENSION_PAGED);
+
+                pagedQuery.setInt(1, dimId);
+                pagedQuery.setInt(2, PAGE_SIZE);
+                pagedQuery.setInt(3, offset);
+
+                val resultSet = pagedQuery.executeQuery();
+
+                val map = this.masterMap.getOrDefault(dimId, new ConcurrentHashMap<>());
+
+                while (resultSet.next()) {
+                    val stats = Stats.builder()
+                                     .location(resultSet.getInt(1))
+                                     .oreMix(OreVein.values()[resultSet.getInt(2)])
+                                     .oresPlaced(resultSet.getInt(3))
+                                     .oresCurrent(resultSet.getInt(4))
+                                     .isDirty(false)
+                                     .build();
+
+                    map.put(keyToChunkCoord(stats.location()), stats);
+                }
+
+                pagedQuery.close();
             }
 
-            return Stats.builder()
-                        .oreMix(input.readUTF())
-                        .oresCurrent(input.readInt())
-                        .oresPlaced(input.readInt())
-                        .build();
+            countQuery.close();
+
+            stopWatch.stop();
+
+            GT_Mod.GT_FML_LOGGER.info("Read {} rows in {} ms", masterMap.get(dimId).size(), stopWatch.getNanoTime() / 1e6);
+        }
+
+        @Override
+        protected void readElements(Connection connection, Queue<Long> keys) throws SQLException {
+
         }
 
         @Override
         protected Stats createElement(World world, int chunkX, int chunkZ) {
+            val dimId = world.provider.dimensionId;
+            val location = makeKey(dimId, chunkX, chunkZ);
+
             return Stats.DEFAULT.toBuilder()
+                                .location(location)
                                 .build();
         }
     }
 
     @Getter
-    @Setter
     @Accessors(fluent = true)
-    @Builder(toBuilder = true)
-    public static final class Stats implements GT_ChunkAssociatedData.IData {
-        public static final GT_OreVeinStats.Stats DEFAULT = GT_OreVeinStats.Stats.builder()
-                                                                                 .oreMix(GT_Worldgen_GT_Ore_Layer.EMPTY_VEIN.mWorldGenName)
-                                                                                 .oresPlaced(0)
-                                                                                 .oresCurrent(0)
-                                                                                 .build();
-        private String oreMix;
+    @SuperBuilder(toBuilder = true)
+    public static final class Stats extends GT_ChunkAssociatedData.IData {
+        public static final GT_OreVeinStats.Stats DEFAULT = Stats.builder()
+                                                                 .location(0L)
+                                                                 .oreMix(OreVein.LOOKUP.get(GT_Worldgen_GT_Ore_Layer.EMPTY_VEIN.mWorldGenName))
+                                                                 .oresPlaced(0)
+                                                                 .oresCurrent(0)
+                                                                 .isDirty(true)
+                                                                 .build();
+
+        private OreVein oreMix;
         private int oresPlaced;
         private int oresCurrent;
 
-        @Override
-        public boolean isSameAsDefault() {
-            return DEFAULT.oreMix().equals(this.oreMix)
-                   &&
-                   DEFAULT.oresPlaced() == this.oresPlaced
-                   &&
-                   DEFAULT.oresCurrent() == this.oresCurrent;
+        public Stats oreMix(OreVein oreMix) {
+            this.oreMix = oreMix;
+
+            this.markDirty();
+            return this;
+        }
+
+        public Stats oresPlaced(int oresPlaced) {
+            this.oresPlaced = oresPlaced;
+
+            this.markDirty();
+            return this;
+        }
+
+        public Stats oresCurrent(int oresCurrent) {
+            this.oresCurrent = oresCurrent;
+
+            this.markDirty();
+            return this;
         }
     }
 
@@ -264,9 +359,9 @@ public class GT_OreVeinStats {
             return;
         }
 
-        var chunkData = STORAGE.get(e.getChunk());
+        var chunkData = STORAGE.get().get(e.getChunk());
 
-        if (chunkData.isSameAsDefault()) {
+        if (chunkData.isDirty()) {
             GT_Mod.GT_FML_LOGGER.info("Migrating chunk: [{}, {}] in dim: {} to new system",
                                       e.getChunk().xPosition,
                                       e.getChunk().zPosition,
@@ -279,7 +374,7 @@ public class GT_OreVeinStats {
                                       oresPlaced,
                                       oresCurrent);
 
-            chunkData.oreMix(oreMix)
+            chunkData.oreMix(OreVein.LOOKUP.get(oreMix))
                      .oresPlaced(oresPlaced)
                      .oresCurrent(oresCurrent);
         }
