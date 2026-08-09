@@ -1,7 +1,7 @@
 import com.falsepattern.fpgradle.FPMinecraftProjectExtension.Java.JvmDowngraderShade.ProjectIsLgpl21PlusCompatible
 
 plugins {
-    id("com.falsepattern.fpgradle-mc") version "4.0.2"
+    id("com.falsepattern.fpgradle-mc") version "4.1.0"
 }
 
 group = "gtmega"
