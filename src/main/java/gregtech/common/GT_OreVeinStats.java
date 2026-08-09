@@ -54,7 +54,8 @@ public class GT_OreVeinStats {
                .get(world, chunkX, chunkZ)
                .oreMix(stats.oreMix())
                .oresCurrent(stats.oresCurrent())
-               .oresPlaced(stats.oresPlaced());
+               .oresPlaced(stats.oresPlaced())
+               .isDirty(true);
     }
 
     public static void decrementOreVeinCount(World world, int chunkX, int chunkZ) {
@@ -266,7 +267,7 @@ public class GT_OreVeinStats {
 
                 val resultSet = pagedQuery.executeQuery();
 
-                val map = this.masterMap.getOrDefault(dimId, new ConcurrentHashMap<>());
+                val map = this.masterMap.computeIfAbsent(dimId, key -> new ConcurrentHashMap<>());
 
                 while (resultSet.next()) {
                     val stats = Stats.builder()
