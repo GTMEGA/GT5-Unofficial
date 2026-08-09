@@ -14,7 +14,7 @@ public final class Queries {
         SELECT
             count(*)
         FROM
-            ore_vein_stats
+            ore_vein_stats ovs
         WHERE
             (ovs.location >> 54) = ?
         """;
