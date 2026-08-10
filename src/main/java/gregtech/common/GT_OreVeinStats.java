@@ -11,6 +11,7 @@ import gregtech.common.blocks.GT_Block_Ore;
 import gregtech.common.blocks.GT_Block_Ore_Abstract;
 import gregtech.common.fluids.GT_OreSlurry;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 import lombok.val;
@@ -39,10 +40,10 @@ import java.util.stream.Collectors;
 
 public class GT_OreVeinStats {
     public static final Map<String, GT_Worldgen_GT_Ore_Layer> ORE_MIX_LOOKUP = new HashMap<>();
-    private static final ThreadLocal<Storage> STORAGE = ThreadLocal.withInitial(Storage::new);
+    private static final Storage STORAGE = new Storage();
 
     public static GT_OreVeinStats.Stats getOreVeinStatsInChunk(World world, int chunkX, int chunkZ) {
-        return STORAGE.get().get(world, chunkX, chunkZ);
+        return STORAGE.get(world, chunkX, chunkZ);
     }
 
     public static void recordOreVeinStats(World world, int chunkX, int chunkZ, Stats stats) {
@@ -50,11 +51,13 @@ public class GT_OreVeinStats {
             return;
         }
 
-        STORAGE.get()
-               .get(world, chunkX, chunkZ)
+        val location = GT_ChunkAssociatedData.makeKey(world.provider.dimensionId, chunkX, chunkZ);
+
+        STORAGE.get(world, chunkX, chunkZ)
                .oreMix(stats.oreMix())
                .oresCurrent(stats.oresCurrent())
                .oresPlaced(stats.oresPlaced())
+               .location(location)
                .isDirty(true);
     }
 
@@ -63,7 +66,7 @@ public class GT_OreVeinStats {
             return;
         }
 
-        val stats = STORAGE.get().get(world, chunkX, chunkZ);
+        val stats = STORAGE.get(world, chunkX, chunkZ);
         val updatedCount = Math.max(0, stats.oresCurrent() - 1);
 
         stats.oresCurrent(updatedCount);
@@ -182,15 +185,15 @@ public class GT_OreVeinStats {
                 return;
             }
 
-            if (!GT_OreVeinStats.STORAGE.get().isCreated(world, event.chunk)) {
+            if (!GT_OreVeinStats.STORAGE.isCreated(world, event.chunk)) {
                 return;
             }
 
-            val stats = GT_OreVeinStats.STORAGE.get().get(world, event.chunk);
+            val stats = GT_OreVeinStats.STORAGE.get(world, event.chunk);
 
-            if (stats.isDirty()) {
-                return;
-            }
+//            if (stats.isDirty()) {
+//                return;
+//            }
 
             val chunk = event.chunk;
             val packet = new GT_Packet_ClientOreVeinStatsUpdate(stats, chunk.chunkXPos, chunk.chunkZPos);
@@ -202,7 +205,11 @@ public class GT_OreVeinStats {
         public void onWorldLoad(WorldEvent.Load e) {
             // super class loads everything lazily. We force it to load them all.
             if (!e.world.isRemote) {
-                GT_OreVeinStats.STORAGE.get().loadAll(e.world);
+                GT_Mod.GT_FML_LOGGER.info("Loading all chunk info for dimension: {}", e.world.provider.dimensionId);
+
+                GT_OreVeinStats.STORAGE.loadAll(e.world);
+
+                GT_Mod.GT_FML_LOGGER.info("Finished loading all chunk info for dimension: {}", e.world.provider.dimensionId);
             }
         }
     }
@@ -308,8 +315,8 @@ public class GT_OreVeinStats {
     }
 
     @Getter
-    @Accessors(fluent = true)
     @SuperBuilder(toBuilder = true)
+    @Accessors(fluent = true, chain = true)
     public static final class Stats extends GT_ChunkAssociatedData.IData {
         public static final GT_OreVeinStats.Stats DEFAULT = Stats.builder()
                                                                  .location(0L)
@@ -360,7 +367,7 @@ public class GT_OreVeinStats {
             return;
         }
 
-        var chunkData = STORAGE.get().get(e.getChunk());
+        var chunkData = STORAGE.get(e.getChunk());
 
         if (chunkData.isDirty()) {
             GT_Mod.GT_FML_LOGGER.info("Migrating chunk: [{}, {}] in dim: {} to new system",
@@ -375,9 +382,15 @@ public class GT_OreVeinStats {
                                       oresPlaced,
                                       oresCurrent);
 
+            val location = GT_ChunkAssociatedData.makeKey(e.world.provider.dimensionId,
+                                                          e.getChunk().xPosition,
+                                                          e.getChunk().zPosition);
+
             chunkData.oreMix(OreVein.LOOKUP.get(oreMix))
                      .oresPlaced(oresPlaced)
-                     .oresCurrent(oresCurrent);
+                     .oresCurrent(oresCurrent)
+                     .location(location)
+                     .markDirty();
         }
     }
 }
