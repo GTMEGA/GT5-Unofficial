@@ -49,7 +49,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 @ParametersAreNonnullByDefault
 public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.IData> {
-	private static final ThreadLocal<Map<String, GT_ChunkAssociatedData<?>>> instances = ThreadLocal.withInitial(ConcurrentHashMap::new);
+	private static final Map<String, GT_ChunkAssociatedData<?>> INSTANCES = new ConcurrentHashMap<>();
 	protected static final int PAGE_SIZE = 250;
 
 	static {
@@ -83,7 +83,7 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
 
 		this.mId = aId;
 
-		if (instances.get().putIfAbsent(aId, this) != null)
+		if (INSTANCES.putIfAbsent(aId, this) != null)
 			throw new IllegalArgumentException("Duplicate GT_ChunkAssociatedData: " + aId);
 	}
 
@@ -184,7 +184,7 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
 	 * Clear all mappings, regardless of whether they are dirty
 	 */
 	public static void clearAll() {
-		for (GT_ChunkAssociatedData<?> d : instances.get().values()) {
+		for (GT_ChunkAssociatedData<?> d : INSTANCES.values()) {
 			d.clear();
 		}
 	}
@@ -230,8 +230,11 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
 		val xMask = 0x003FFFFFF8000000L;
 		val zMask = 0x0000000007FFFFFFL;
 
-		val chunkX = (key & xMask) >> 27;
-		val chunkZ = key & zMask;
+		// slide to the left
+		// now slide to the right
+		// (performs sign extension as needed)
+		val chunkX = (key << 10) >> 37;
+		val chunkZ = (key << 37) >> 37;
 
 		return new ChunkCoordIntPair((int) chunkX, (int) chunkZ);
 	}
@@ -270,7 +273,7 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
 				return;
 			}
 
-			for (GT_ChunkAssociatedData<?> d : instances.get().values()) {
+			for (GT_ChunkAssociatedData<?> d : INSTANCES.values()) {
 				d.save(e.world);
 			}
 		}
@@ -281,7 +284,7 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
 				return;
 			}
 
-			for (GT_ChunkAssociatedData<?> d : instances.get().values()) {
+			for (GT_ChunkAssociatedData<?> d : INSTANCES.values()) {
 				// there is no need to explicitly do a save here
 				// forge will send a WorldEvent.Save on server thread before this event is distributed
 				d.masterMap.remove(e.world.provider.dimensionId);
