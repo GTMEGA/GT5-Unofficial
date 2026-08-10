@@ -214,7 +214,7 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
 		});
 	}
 
-	protected static long makeKey(int dimId, int chunkX, int chunkZ) {
+	public static long makeKey(int dimId, int chunkX, int chunkZ) {
 		val mask = 0x07FFFFFF;
 
 		// create a long primary key. dimId gets 10 bits and chunk x/z each get 27 bits.
@@ -226,9 +226,9 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
 		return ((long) dimId << 54) | (((long) chunkX & mask) << 27) | (chunkZ & mask);
 	}
 
-	protected static ChunkCoordIntPair keyToChunkCoord(long key) {
-		val xMask = 0x07FFFFFFL << 27;
-		val zMask = 0x07FFFFFFL;
+	public static ChunkCoordIntPair keyToChunkCoord(long key) {
+		val xMask = 0x003FFFFFF8000000L;
+		val zMask = 0x0000000007FFFFFFL;
 
 		val chunkX = (key & xMask) >> 27;
 		val chunkZ = key & zMask;
