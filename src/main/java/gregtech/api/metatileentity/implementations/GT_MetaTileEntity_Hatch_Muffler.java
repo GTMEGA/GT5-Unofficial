@@ -174,7 +174,10 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
      * @return pollution success
      */
     public boolean polluteEnvironment(MetaTileEntity mte) {
-        return false;
+        var bmte = this.getBaseMetaTileEntity();
+        var frontFace = bmte.getFrontFacing();
+
+        return bmte.getAirAtSide(frontFace);
     }
 
     /**
