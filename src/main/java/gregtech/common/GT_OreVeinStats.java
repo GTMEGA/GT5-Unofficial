@@ -168,11 +168,9 @@ public class GT_OreVeinStats {
                 return;
             }
 
-            try (val connection = Database.getConnection()){
-                val statement = connection.prepareStatement(Queries.CREATE_ORE_VEIN_STATS_TABLE);
-
-                statement.execute();
-            } catch (SQLException e) {
+            try (val statement = event.connection.prepareStatement(Queries.CREATE_ORE_VEIN_STATS_TABLE)) {
+                statement.executeUpdate();
+            } catch (Exception e) {
                 GT_Mod.GT_FML_LOGGER.error("Failed to create ore_vein_stats table", e);
             }
         }
@@ -242,15 +240,11 @@ public class GT_OreVeinStats {
 
             upsert.executeUpdate();
 
+            upsert.close();
+
             stopWatch.stop();
 
             GT_Mod.GT_FML_LOGGER.info("Recorded {} chunks in {} ms", writeQueue.size(), stopWatch.getNanoTime() / 1e6);
-
-            while (!writeQueue.isEmpty()) {
-                val stats = writeQueue.poll();
-
-                stats.isDirty(false);
-            }
         }
 
         @Override
@@ -265,6 +259,8 @@ public class GT_OreVeinStats {
 
             val count = countQueryResult.getInt(1);
 
+            val map = new ConcurrentHashMap<ChunkCoordIntPair, Stats>();
+
             for (int offset = 0; offset < count; offset += PAGE_SIZE) {
                 val pagedQuery = connection.prepareStatement(Queries.QUERY_ORE_VEIN_STATS_BY_DIMENSION_PAGED);
 
@@ -273,8 +269,6 @@ public class GT_OreVeinStats {
                 pagedQuery.setInt(3, offset);
 
                 val resultSet = pagedQuery.executeQuery();
-
-                val map = this.masterMap.computeIfAbsent(dimId, key -> new ConcurrentHashMap<>());
 
                 while (resultSet.next()) {
                     val stats = Stats.builder()
@@ -285,17 +279,23 @@ public class GT_OreVeinStats {
                                      .isDirty(false)
                                      .build();
 
-                    map.put(keyToChunkCoord(stats.location()), stats);
+                    val chunkCoord = keyToChunkCoord(stats.location());
+
+                    map.put(chunkCoord, stats);
                 }
 
                 pagedQuery.close();
             }
 
+            this.masterMap.put(dimId, map);
+
             countQuery.close();
 
             stopWatch.stop();
 
-            GT_Mod.GT_FML_LOGGER.info("Read {} rows in {} ms", masterMap.get(dimId).size(), stopWatch.getNanoTime() / 1e6);
+            if (count > 0) {
+                GT_Mod.GT_FML_LOGGER.info("Read {} rows in {} ms", masterMap.get(dimId).size(), stopWatch.getNanoTime() / 1e6);
+            }
         }
 
         @Override
@@ -349,6 +349,12 @@ public class GT_OreVeinStats {
 
             this.markDirty();
             return this;
+        }
+
+        @Override
+        public Object clone() {
+            return this.toBuilder()
+                       .build();
         }
     }
 
