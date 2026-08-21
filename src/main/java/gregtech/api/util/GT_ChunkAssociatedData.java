@@ -3,6 +3,7 @@ package gregtech.api.util;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 import com.github.matt159.mcqlite.api.Database;
+import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import lombok.Getter;
@@ -149,6 +150,7 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
 		masterMap.clear();
 	}
 
+	@SuppressWarnings("unchecked")
 	public void save(World world) {
 		val dimId = world.provider.dimensionId;
 		val worldChunkData = masterMap.get(dimId);
@@ -161,9 +163,18 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
 					  .values()
 					  .stream()
 					  .filter(T::isDirty)
+					  .map(t -> {
+						  t.isDirty(false);
+
+						  return (T) t.clone();
+					  })
 					  .forEach(this.writeQueue::offer);
 
-		val workerThread = CompletableFuture.runAsync(() -> {
+		if (this.writeQueue.isEmpty()) {
+			return;
+		}
+
+		CompletableFuture.runAsync(() -> {
 			val currentThread = Thread.currentThread();
 			val currentName = currentThread.getName();
 
@@ -173,6 +184,8 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
 
 				this.writeQueue.clear();
             } catch (SQLException e) {
+				GT_Mod.GT_FML_LOGGER.error("Failed to write data to the db", e);
+
                 throw new RuntimeException(e);
             } finally {
 				currentThread.setName(currentName);
@@ -191,27 +204,17 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
 
 	/**
 	 * Load data for all chunks for a given world.
-	 * Current data for that world will be discarded. If this is what you intended, call {@link #save(World)} beforehand.
-	 * <p>
-	 * Be aware of the memory consumption though.
+	 *
+	 * TODO: Change to non-blocking mutexes
 	 */
 	public void loadAll(World world) {
 		val dimId = world.provider.dimensionId;
 
-		val workerThread = CompletableFuture.runAsync(() -> {
-			val currentThread = Thread.currentThread();
-			val currentName = currentThread.getName();
-
-			currentThread.setName("Server thread");
-
-			try (val connection = Database.getConnection()) {
-				this.readAllElementsInWorld(connection, dimId);
-			} catch (SQLException e) {
-				throw new RuntimeException(e);
-			} finally {
-				currentThread.setName(currentName);
-			}
-		});
+		try (val connection = Database.getConnection()) {
+			this.readAllElementsInWorld(connection, dimId);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static long makeKey(int dimId, int chunkX, int chunkZ) {
@@ -242,7 +245,7 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
 	@Setter
 	@Accessors(fluent = true)
 	@SuperBuilder(toBuilder = true)
-	public static abstract class IData {
+	public static abstract class IData implements Cloneable {
 		@Getter
 		protected long location;
 		protected boolean isDirty;
@@ -260,6 +263,9 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
 		public boolean isDirty() {
 			return this.isDirty;
 		}
+
+		@Override
+		public abstract Object clone();
 	}
 
 	public static class EventHandler {

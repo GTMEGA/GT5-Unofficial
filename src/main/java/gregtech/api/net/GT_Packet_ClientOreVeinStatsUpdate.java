@@ -61,6 +61,6 @@ public class GT_Packet_ClientOreVeinStatsUpdate extends GT_Packet_New {
 
         val chunkPos = new ChunkCoordIntPair(this.chunkX, this.chunkZ);
 
-        ClientOreVeinStats.updateClientData(dimId, chunkPos, this.stats);
+         ClientOreVeinStats.updateClientData(dimId, chunkPos, this.stats);
     }
 }

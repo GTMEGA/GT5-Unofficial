@@ -47,7 +47,7 @@ public final class Queries {
             ovs.location in (%s)
         """;
 
-    public static final String UPSERT_ORE_VEIN_STATS_VALUES_TEMPLATE = "(%d, '%d', %d, %d)";
+    public static final String UPSERT_ORE_VEIN_STATS_VALUES_TEMPLATE = "(%d, %d, %d, %d)";
 
     public static final String UPSERT_ORE_VEIN_STATS = """
         INSERT INTO
@@ -56,6 +56,9 @@ public final class Queries {
             %s
         ON CONFLICT
             (location)
-        DO UPDATE SET ores_current = excluded.ores_current
+        DO UPDATE SET
+            ore_mix = excluded.ore_mix,
+            ores_placed = excluded.ores_placed,
+            ores_current = excluded.ores_current
         """;
 }
