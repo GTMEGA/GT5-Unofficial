@@ -236,11 +236,13 @@ public class GT_OreVeinStats {
 
             val stopWatch = StopWatch.createStarted();
 
-            val upsert = connection.prepareStatement(query);
+            try (val upsert = connection.prepareStatement(query)) {
+                upsert.executeUpdate();
+            } catch (SQLException e) {
+                GT_Mod.GT_FML_LOGGER.error("Upsert query: {}", query);
 
-            upsert.executeUpdate();
-
-            upsert.close();
+                throw e;
+            }
 
             stopWatch.stop();
 
@@ -272,14 +274,21 @@ public class GT_OreVeinStats {
 
                 while (resultSet.next()) {
                     val stats = Stats.builder()
-                                     .location(resultSet.getInt(1))
-                                     .oreMix(OreVein.values()[resultSet.getInt(2)])
-                                     .oresPlaced(resultSet.getInt(3))
-                                     .oresCurrent(resultSet.getInt(4))
+                                     .location(resultSet.getLong(1))
+                                     .oreMix(OreVein.values()[resultSet.getShort(2)])
+                                     .oresPlaced(resultSet.getShort(3))
+                                     .oresCurrent(resultSet.getShort(4))
                                      .isDirty(false)
                                      .build();
 
                     val chunkCoord = keyToChunkCoord(stats.location());
+
+                    GT_Mod.GT_FML_LOGGER.debug("[{}, {}] -> ({}, {} / {})",
+                                               chunkCoord.chunkXPos,
+                                               chunkCoord.chunkZPos,
+                                               stats.oreMix.unlocalizedName(),
+                                               stats.oresCurrent,
+                                               stats.oresPlaced);
 
                     map.put(chunkCoord, stats);
                 }

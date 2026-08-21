@@ -59,9 +59,7 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
 	}
 
 	/**
-	 * Data is stored as a `(world id -> (super region id -> super region data))` hash map.
-	 * where super region's size is determined by regionSize.
-	 * Here it is called super region, to not confuse with vanilla's regions.
+	 * Data is stored as a `(world id -> chunkCoord -> data)` hash map.
 	 */
 	protected final Map<Integer, Map<ChunkCoordIntPair, T>> masterMap = new ConcurrentHashMap<>();
 	private final Queue<T> writeQueue = new ConcurrentLinkedQueue<>();
@@ -236,8 +234,8 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
 		// slide to the left
 		// now slide to the right
 		// (performs sign extension as needed)
-		val chunkX = (key << 10) >> 37;
-		val chunkZ = (key << 37) >> 37;
+		val chunkX = ((key & xMask) << 10) >> 37;
+		val chunkZ = ((key & zMask) << 37) >> 37;
 
 		return new ChunkCoordIntPair((int) chunkX, (int) chunkZ);
 	}

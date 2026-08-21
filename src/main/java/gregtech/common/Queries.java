@@ -3,10 +3,10 @@ package gregtech.common;
 public final class Queries {
     public static final String CREATE_ORE_VEIN_STATS_TABLE = """
         CREATE TABLE IF NOT EXISTS ore_vein_stats (
-            location integer primary key not null,
-            ore_mix integer,
-            ores_placed integer,
-            ores_current integer
+            location int8 primary key not null,
+            ore_mix int2,
+            ores_placed int2,
+            ores_current int2
         );
         """;
 
