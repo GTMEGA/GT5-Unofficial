@@ -103,8 +103,9 @@ public class GT_Worldgenloader implements Runnable {
             //Ore veins are 7 blocks tall, Primary, Between, and Secondary overlap by 1 block. Sporadic Spawns anywhere.
             new GT_Worldgen_GT_Ore_Layer("ore.mix.coal", true, 50, 80, 130, 7, 30, true, false, false, Materials.Coal, Materials.Coal, Materials.Coal, Materials.Coal);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.magnetite", true, 55, 70, 180, 6, 32, true, false, false, Materials.Magnetite, Materials.Magnetite, Materials.VanadiumMagnetite, Materials.Magnetite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.zinc", true, 70, 80, 150, 6, 32, true, false, false, Materials.Zinc, Materials.Tin, Materials.Sphalerite, Materials.Cassiterite);
-            new GT_Worldgen_GT_Ore_Layer("ore.mix.tin", true, 55, 60, 50, 4, 32, true, false, false, Materials.Tin, Materials.Zinc, Materials.Cassiterite, Materials.Chalcopyrite);
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.zinc", true, 55, 80, 60, 6, 32, true, false, false, Materials.Zinc, Materials.Tin, Materials.Sphalerite, Materials.Cassiterite);
+            //Deprecate dual tin veins
+            new GT_Worldgen_GT_Ore_Layer("ore.mix.tin", true, 55, 60, 10, 4, 32, false, false, false, Materials.Tin, Materials.Zinc, Materials.Cassiterite, Materials.Chalcopyrite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.copper", true, 40, 50, 100, 5, 32, true, false, false, Materials.Copper, Materials.Chalcopyrite, Materials.Pyrite, Materials.Iron);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.owbauxite", true, 10, 30, 25, 4, 32, true, false, false, Materials.Bauxite, Materials.Bauxite, Materials.Bauxite, Materials.Bauxite);
             new GT_Worldgen_GT_Ore_Layer("ore.mix.salts", true, 40, 45, 50, 5, 24, true, false, false, Materials.Salt, Materials.Saltpeter, Materials.Spodumene, Materials.Salt);
@@ -122,8 +123,6 @@ public class GT_Worldgenloader implements Runnable {
 
             //Required For recipes and compat for now.
             //TODO: Remove for 1.8.x
-//            new GT_Worldgen_GT_Ore_Layer("ore.mix.apatite", true, 40, 60, 40, 2, 16, false, false, false, Materials.Apatite, Materials.Apatite, Materials.TricalciumPhosphate, Materials.Pyrochlore);
-//            new GT_Worldgen_GT_Ore_Layer("ore.mix.lapis", true, 5, 30, 45, 4, 16, false, false, false, Materials.Lapis, Materials.Calcite, Materials.Calcite, Materials.Lapis);
 
             //Twilight Forest-Only Veins
             new GT_Worldgen_GT_Ore_Layer("ore.mix.olivine", true, 10, 40, 30, 2, 16, false, false, false, Materials.Magnesium, Materials.Olivine, Materials.Olivine, Materials.Bismuth);
