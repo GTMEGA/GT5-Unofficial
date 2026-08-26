@@ -46,10 +46,9 @@ minecraft_fp {
 
 repositories {
     ic2EX()
-    mavenLocal()
     cursemavenEX()
     exclusive(mavenpattern(), "com.falsepattern")
-    exclusive(mega(), "mega", "gtmega", "team.chisel") {
+    exclusive(mega(), "mega", "gtmega", "team.chisel", "com.github.matt159") {
         includeModule("codechicken", "notenoughitems-mc1.7.10")
         includeModule("codechicken", "codechickencore-mc1.7.10")
         includeModule("codechicken", "forgemultipart-mc1.7.10")
