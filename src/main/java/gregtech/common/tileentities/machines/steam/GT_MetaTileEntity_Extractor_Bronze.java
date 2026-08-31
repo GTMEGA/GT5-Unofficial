@@ -11,6 +11,8 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 
+import net.minecraftforge.fluids.FluidStack;
+
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaTileEntity_Extractor_Bronze extends GT_MetaTileEntity_BasicMachine_Bronze {
@@ -28,7 +30,7 @@ public class GT_MetaTileEntity_Extractor_Bronze extends GT_MetaTileEntity_BasicM
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_BasicMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "BronzeExtractor.png", GT_Recipe.GT_Recipe_Map.sExtractorRecipes.mUnlocalizedName);
+        return new GT_GUIContainer_BasicMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "BronzeExtractor.png", GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes.mUnlocalizedName);
     }
 
     @Override
@@ -37,15 +39,8 @@ public class GT_MetaTileEntity_Extractor_Bronze extends GT_MetaTileEntity_BasicM
     }
 
     @Override
-    public int checkRecipe() {
-        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sExtractorRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[1], null, getAllInputs());
-        if ((tRecipe != null) && (canOutput(tRecipe.mOutputs)) && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
-            this.mOutputItems[0] = tRecipe.getOutput(0);
-            this.mEUt = tRecipe.mEUt;
-            this.mMaxProgresstime = (tRecipe.mDuration * 2);
-            return 2;
-        }
-        return 0;
+    public GT_Recipe.GT_Recipe_Map getRecipeList() {
+        return GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes;
     }
 
     @Override
@@ -54,6 +49,11 @@ public class GT_MetaTileEntity_Extractor_Bronze extends GT_MetaTileEntity_BasicM
         if (aIndex == 1) {
             GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(200), 10, 1.0F, aX, aY, aZ);
         }
+    }
+
+    @Override
+    public int getCapacity() {
+        return 16_000;
     }
 
     @Override

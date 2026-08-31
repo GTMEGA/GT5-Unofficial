@@ -28,7 +28,7 @@ public class GT_MetaTileEntity_Extractor_Steel extends GT_MetaTileEntity_BasicMa
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_BasicMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "SteelExtractor.png", GT_Recipe.GT_Recipe_Map.sExtractorRecipes.mUnlocalizedName);
+        return new GT_GUIContainer_BasicMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "SteelExtractor.png", GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes.mUnlocalizedName);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class GT_MetaTileEntity_Extractor_Steel extends GT_MetaTileEntity_BasicMa
 
     @Override
     public int checkRecipe() {
-        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sExtractorRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[2], null, getAllInputs());
+        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[2], null, getAllInputs());
         if ((tRecipe != null) && (canOutput(tRecipe.mOutputs)) && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
             this.mOutputItems[0] = tRecipe.getOutput(0);
             this.mEUt = (tRecipe.mEUt * 2);

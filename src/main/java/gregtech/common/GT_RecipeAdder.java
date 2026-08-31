@@ -1351,12 +1351,12 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aDuration = GregTech_API.sRecipeFile.get("extractor", aInput, aDuration)) <= 0) {
             return null;
         }
-        return GT_Recipe.GT_Recipe_Map.sExtractorRecipes.addRecipe(true, new ItemStack[]{aInput}, new ItemStack[]{aOutput}, null, null, null, aDuration, aEUt, 0);
+        return GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes.addRecipe(true, new ItemStack[]{aInput}, new ItemStack[]{aOutput}, null, null, null, aDuration, aEUt, 0);
     }
 
     @Override
     public void removeExtractorRecipe(GT_Recipe recipe) {
-        GT_Recipe.GT_Recipe_Map.sExtractorRecipes.remove(recipe);
+        GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes.remove(recipe);
     }
 
     @Override
