@@ -43,7 +43,7 @@ public class GT_MetaTileEntity_Extractor_Steel extends GT_MetaTileEntity_BasicMa
 
     @Override
     public int getCapacity() {
-        return 16_000;
+        return 6_000;
     }
 
     @Override
