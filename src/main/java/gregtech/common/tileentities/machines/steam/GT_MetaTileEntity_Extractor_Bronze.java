@@ -53,7 +53,7 @@ public class GT_MetaTileEntity_Extractor_Bronze extends GT_MetaTileEntity_BasicM
 
     @Override
     public int getCapacity() {
-        return 16_000;
+        return 4_000;
     }
 
     @Override
