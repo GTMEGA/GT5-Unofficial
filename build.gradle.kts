@@ -63,7 +63,7 @@ repositories {
 }
 
 dependencies {
-    implementationSplit("com.github.matt159:mcqlite-mc1.7.10:0.1.0")
+    implementationSplit("com.github.matt159:mcqlite-mc1.7.10:0.1.1")
     implementation("mega:structurelib-mc1.7.10:1.4.1-mega:dev")
     implementation("codechicken:codechickencore-mc1.7.10:1.4.0-mega:dev")
     devOnlyNonPublishable("codechicken:notenoughitems-mc1.7.10:2.3.0-mega:dev")
