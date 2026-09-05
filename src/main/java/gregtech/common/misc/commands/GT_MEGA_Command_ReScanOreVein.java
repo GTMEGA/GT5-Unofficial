@@ -4,12 +4,15 @@ import com.gtnewhorizon.structurelib.commands.SubCommand;
 import gregtech.common.GT_OreVeinStats;
 import lombok.val;
 
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 
 public class GT_MEGA_Command_ReScanOreVein extends SubCommand {
+    private static final int MAX_SCAN_RADIUS = 20;
+
     public GT_MEGA_Command_ReScanOreVein() {
         super("rescan");
     }
@@ -76,6 +79,12 @@ public class GT_MEGA_Command_ReScanOreVein extends SubCommand {
     }
 
     private void regenAroundPosition(World world, int x, int z, int radius) {
+        if (radius < 1) {
+            throw new CommandException("Radius must be 1 or greater");
+        } else if (radius > MAX_SCAN_RADIUS) {
+            throw new CommandException("Radius cannot be greater than %d".formatted(MAX_SCAN_RADIUS));
+        }
+
         val centerChunkX = x >> 4;
         val centerChunkZ = z >> 4;
 
