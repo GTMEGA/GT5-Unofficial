@@ -242,15 +242,16 @@ public class ItemComb extends Item {
 		addChemicalProcess(CombType.STEEL, Materials.BrownLimonite, Materials.YellowLimonite, Voltage.LV);
 		addChemicalProcess(CombType.STEEL, Materials.YellowLimonite, Materials.BrownLimonite, Voltage.LV);
 		if(GT_Mod.gregtechproxy.mNerfedCombs) {
-			addCentrifugeToMaterial(CombType.SLAG, new Materials[] {Materials.Stone, Materials.GraniteBlack, Materials.GraniteRed}, new int[] {50 * 100, 20 * 100, 20 * 100}, new int[] { 9, 9, 9}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.COPPER, new Materials[] {Materials.Copper}, new int[] {70 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.TIN, new Materials[] {Materials.Tin}, new int[] {60 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.LEAD, new Materials[] {Materials.Lead}, new int[] {45 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.IRON, new Materials[] {Materials.Iron}, new int[] {30 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.STEEL, new Materials[] {Materials.Steel}, new int[] {40 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.SILVER, new Materials[] {Materials.Silver}, new int[] {80 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
+			addCentrifugeToMaterial(CombType.SLAG, new Materials[] {Materials.Stone, Materials.Magnetite, Materials.GarnetSand}, new int[] {4500, 2500, 1000}, new int[] { 1, 1, 1}, Voltage.ULV, NI, 30 * 100);
+			addCentrifugeToMaterial(CombType.COPPER, new Materials[] {Materials.Copper}, new int[] {2500}, new int[] {}, Voltage.ULV, NI, 3000);
+			addCentrifugeToMaterial(CombType.TIN, new Materials[] {Materials.Tin}, new int[] {2500}, new int[] {}, Voltage.ULV, NI, 3000);
+			addCentrifugeToMaterial(CombType.LEAD, new Materials[] {Materials.Lead}, new int[] {2500}, new int[] {}, Voltage.ULV, NI, 3000);
+			addCentrifugeToMaterial(CombType.IRON, new Materials[] {Materials.Iron}, new int[] {2500}, new int[] {}, Voltage.ULV, NI, 3000);
+			addCentrifugeToMaterial(CombType.STEEL, new Materials[] {Materials.Steel}, new int[] {2500}, new int[] {}, Voltage.ULV, NI, 3000);
+			addCentrifugeToMaterial(CombType.SILVER, new Materials[] {Materials.Silver}, new int[] {2500}, new int[] {}, Voltage.ULV, NI, 3000);
+			addCentrifugeToMaterial(CombType.ZINC, new Materials[] {Materials.Zinc}, new int[] {2500}, new int[] {}, Voltage.ULV, NI, 3000);
 		}else {
-			addCentrifugeToMaterial(CombType.SLAG, new Materials[] {Materials.Salt, Materials.RockSalt, Materials.Lepidolite, Materials.Spodumene, Materials.Monazite}, new int[] {100 * 100, 100 * 100, 100 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
+//			addCentrifugeToMaterial(CombType.SLAG, new Materials[] {Materials.Salt, Materials.RockSalt, Materials.Lepidolite, Materials.Spodumene, Materials.Monazite}, new int[] {100 * 100, 100 * 100, 100 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
 			addCentrifugeToMaterial(CombType.COPPER, new Materials[] {Materials.Copper, Materials.Tetrahedrite, Materials.Chalcopyrite, Materials.Malachite, Materials.Pyrite, Materials.Stibnite}, new int[] {100 * 100, 85 * 100, 95 * 100, 80 * 100, 75 * 100, 65 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
 			addCentrifugeToMaterial(CombType.TIN, new Materials[] {Materials.Tin, Materials.Cassiterite, Materials.CassiteriteSand}, new int[] {100 * 100, 85 * 100, 65 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
 			addCentrifugeToMaterial(CombType.LEAD, new Materials[] {Materials.Lead, Materials.Galena}, new int[] {100 * 100, 75 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
@@ -267,21 +268,21 @@ public class ItemComb extends Item {
 		}
 
 		// Rare Metals Line
-		addProcessGT(CombType.BAUXITE, new Materials[] {Materials.Bauxite, Materials.Aluminium}, Voltage.LV);
+		addProcessGT(CombType.BAUXITE, new Materials[] {Materials.Bauxite}, Voltage.LV);
 		addProcessGT(CombType.ALUMINIUM, new Materials[] {Materials.Aluminium, Materials.Bauxite}, Voltage.LV);
-		addProcessGT(CombType.MANGANESE, new Materials[] {Materials.Manganese, Materials.Grossular, Materials.Spessartine, Materials.Pyrolusite, Materials.Tantalite}, Voltage.LV);
-		addProcessGT(CombType.TITANIUM, new Materials[] {Materials.Titanium, Materials.Ilmenite, Materials.Bauxite, Materials.Rutile}, Voltage.EV);
+		addProcessGT(CombType.MANGANESE, new Materials[] {Materials.Manganese,Materials.Spessartine, Materials.Pyrolusite, Materials.Tantalite}, Voltage.LV);
+		addProcessGT(CombType.TITANIUM, new Materials[] {Materials.Titanium, Materials.Ilmenite, Materials.Rutile}, Voltage.EV);
 		addProcessGT(CombType.MAGNESIUM, new Materials[] {Materials.Magnesium, Materials.Magnesite}, Voltage.LV);
-		addProcessGT(CombType.CHROME, new Materials[] {Materials.Chrome, Materials.Ruby, Materials.Chromite, Materials.Redstone, Materials.Neodymium, Materials.Bastnasite}, Voltage.HV);
-		addProcessGT(CombType.TUNGSTEN, new Materials[] {Materials.Tungsten, Materials.Tungstate, Materials.Scheelite, Materials.Lithium}, Voltage.IV);
-		addProcessGT(CombType.PLATINUM, new Materials[] {Materials.Platinum, Materials.Cooperite, Materials.Palladium}, Voltage.HV);
+		addProcessGT(CombType.CHROME, new Materials[] {Materials.Ruby, Materials.Redstone}, Voltage.HV);
+		addProcessGT(CombType.TUNGSTEN, new Materials[] {Materials.Tungsten, Materials.Tungstate, Materials.Scheelite}, Voltage.IV);
+		addProcessGT(CombType.PLATINUM, new Materials[] {Materials.Platinum, Materials.Palladium}, Voltage.HV);
 		addProcessGT(CombType.MOLYBDENUM, new Materials[] {Materials.Molybdenum, Materials.Molybdenite, Materials.Powellite, Materials.Wulfenite}, Voltage.LV);
 		addChemicalProcess(CombType.MOLYBDENUM, Materials.Osmium, Materials.Osmium, Voltage.IV);
 		addAutoclaveProcess(CombType.MOLYBDENUM, Materials.Osmium, Voltage.IV, 5);
 		addProcessGT(CombType.IRIDIUM, new Materials[] {Materials.Iridium, Materials.Osmium}, Voltage.IV);
 		addProcessGT(CombType.OSMIUM, new Materials[] {Materials.Osmium, Materials.Iridium}, Voltage.IV);
-		addProcessGT(CombType.LITHIUM, new Materials[] {Materials.Lithium, Materials.Aluminium}, Voltage.MV);
-		addProcessGT(CombType.SALT, new Materials[] {Materials.Salt, Materials.RockSalt, Materials.Saltpeter}, Voltage.MV);
+		addProcessGT(CombType.LITHIUM, new Materials[] {Materials.Lithium}, Voltage.MV);
+		addProcessGT(CombType.SALT, new Materials[] {Materials.Salt, Materials.Saltpeter, Materials.Saltpeter}, Voltage.MV);
 		addProcessGT(CombType.ELECTROTINE, new Materials[] {Materials.Electrotine, Materials.Electrum, Materials.Redstone}, Voltage.MV);
 		if(GT_Mod.gregtechproxy.mNerfedCombs) {
 			addCentrifugeToItemStack(CombType.SALT, new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Salt, 1), GT_ModHandler.getModItem(MOD_ID_DC, "item.EdibleSalt", 1L, 0), ItemList.FR_Wax.get(1) }, new int[] {100 * 100, 50 * 100, 50 * 100}, Voltage.MV, 160);

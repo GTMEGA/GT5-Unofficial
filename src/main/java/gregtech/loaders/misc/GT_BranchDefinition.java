@@ -57,29 +57,32 @@ public enum GT_BranchDefinition {
     }
     ),
     GEM("Ornamentis", alleles -> {
-        AlleleHelper.instance.set(alleles, TEMPERATURE_TOLERANCE, Tolerance.NONE);
+        AlleleHelper.instance.set(alleles, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
+        AlleleHelper.instance.set(alleles, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
+        AlleleHelper.instance.set(alleles, CAVE_DWELLING, true);
         AlleleHelper.instance.set(alleles, NOCTURNAL, false);
         AlleleHelper.instance.set(alleles, FLOWER_PROVIDER, Flowers.NETHER);
         AlleleHelper.instance.set(alleles, FLOWERING, Flowering.AVERAGE);
     }
     ),
     METAL("Metaliferis", alleles -> {
-        AlleleHelper.instance.set(alleles, TEMPERATURE_TOLERANCE, Tolerance.DOWN_2);
+        AlleleHelper.instance.set(alleles, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
+        AlleleHelper.instance.set(alleles, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
         AlleleHelper.instance.set(alleles, CAVE_DWELLING, true);
-        AlleleHelper.instance.set(alleles, NOCTURNAL, false);
-        AlleleHelper.instance.set(alleles, FLOWER_PROVIDER, Flowers.JUNGLE);
+        AlleleHelper.instance.set(alleles, FLOWER_PROVIDER, getFlowers(EXTRABEES, "rock"));
         AlleleHelper.instance.set(alleles, FLOWERING, Flowering.SLOWER);
     }
     ),
     RAREMETAL("Mineralis", alleles -> {
         AlleleHelper.instance.set(alleles, TEMPERATURE_TOLERANCE, Tolerance.DOWN_1);
+        AlleleHelper.instance.set(alleles, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
         AlleleHelper.instance.set(alleles, NOCTURNAL, false);
-        AlleleHelper.instance.set(alleles, FLOWER_PROVIDER, Flowers.CACTI);
+        AlleleHelper.instance.set(alleles, FLOWER_PROVIDER, getFlowers(EXTRABEES, "rock"));
         AlleleHelper.instance.set(alleles, FLOWERING, Flowering.FAST);
     }
     ),
     RADIOACTIVE("Criticalis", alleles -> {
-        AlleleHelper.instance.set(alleles, TEMPERATURE_TOLERANCE, Tolerance.NONE);
+        AlleleHelper.instance.set(alleles, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
         AlleleHelper.instance.set(alleles, NOCTURNAL, false);
         AlleleHelper.instance.set(alleles, FLOWER_PROVIDER, Flowers.END);
         AlleleHelper.instance.set(alleles, FLOWERING, Flowering.AVERAGE);
