@@ -63,9 +63,9 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     //organic
     CLAY(GT_BranchDefinition.ORGANIC, "Clay", true, new Color(0xC8C8DA), new Color(0x0000FF),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 0), 0.30f);
-                beeSpecies.addProduct(new ItemStack(Items.clay_ball, 1), 0.15f);
-                beeSpecies.addSpecialty(GT_ModHandler.getModItem("BiomesOPlenty", "mudball", 1, 0), 0.05f);
+                beeSpecies.addProduct(GT_ModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 0), 0.10f);
+                beeSpecies.addProduct(new ItemStack(Items.clay_ball, 1), 0.80f);
+                beeSpecies.addSpecialty(GT_ModHandler.getModItem("BiomesOPlenty", "mudball", 1, 0), 0.20f);
                 beeSpecies.setHumidity(DAMP);
                 beeSpecies.setTemperature(EnumTemperature.NORMAL);
             },
@@ -82,8 +82,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     SLIMEBALL(GT_BranchDefinition.ORGANIC, "SlimeBall", true, new Color(0x4E9E55), new Color(0x00FF15),
             beeSpecies -> {
                 beeSpecies.addProduct(GT_ModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 15), 0.30f);
-                beeSpecies.addProduct(new ItemStack(Items.slime_ball, 1), 0.15f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.STICKY), 0.05f);
+                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STICKY), 0.15f);
+                beeSpecies.addSpecialty(new ItemStack(Items.slime_ball, 1), 0.05f);
                 beeSpecies.setHumidity(DAMP);
                 beeSpecies.setTemperature(EnumTemperature.NORMAL);
                 /*if (Loader.isModLoaded("TConstruct")) {
@@ -141,8 +141,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     ),
     COAL(GT_BranchDefinition.ORGANIC, "Coal", true, new Color(0x666666), new Color(0x525252),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.LIGNIE), 0.30f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.COAL), 0.15f);
+                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.COAL), 0.5f);
+                beeSpecies.addSpecialty(new ItemStack(Items.coal, 1), 0.25f);
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(EnumTemperature.NORMAL);
             },
@@ -182,10 +182,10 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     ),
     SANDWICH(GT_BranchDefinition.ORGANIC, "Sandwich", true, new Color(0x32CD32), new Color(0xDAA520),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem("ExtraBees", "honeyComb", 1, 9), 0.15f);
-                beeSpecies.addSpecialty(ItemList.Food_Sliced_Cucumber.get(1), 0.05f);
-                beeSpecies.addSpecialty(ItemList.Food_Sliced_Onion.get(1), 0.05f);
-                beeSpecies.addSpecialty(ItemList.Food_Sliced_Tomato.get(1), 0.05f);
+//                beeSpecies.addProduct(GT_ModHandler.getModItem("ExtraBees", "honeyComb", 1, 9), 0.15f);
+                beeSpecies.addProduct(ItemList.Crop_Drop_Cucumber.get(1), 0.1f);
+                beeSpecies.addProduct(ItemList.Crop_Drop_Onion.get(1), 0.1f);
+                beeSpecies.addProduct(ItemList.Crop_Drop_Tomato.get(1), 0.1f);
                 beeSpecies.addSpecialty(ItemList.Food_Sliced_Cheese.get(1), 0.05f);
                 beeSpecies.addSpecialty(new ItemStack(Items.cooked_porkchop, 1, 0), 0.05f);
                 beeSpecies.addSpecialty(new ItemStack(Items.cooked_beef, 1, 0), 0.05f);
@@ -245,8 +245,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     FERTILIZER(GT_BranchDefinition.ORGANIC, "Fertilizer", true, new Color(0x7fcef5), new Color(0x654525),
             beeSpecies -> {
                 beeSpecies.addProduct(GT_ModHandler.getModItem("ExtraBees", "honeyComb", 1, 9), 0.15f);
-                beeSpecies.addSpecialty(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1), 0.2f);
-                beeSpecies.addSpecialty(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1), 0.2f);
+                beeSpecies.addSpecialty(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1), 0.2f);
                 beeSpecies.addSpecialty(ItemList.FR_Fertilizer.get(1), 0.3f);
                 beeSpecies.addSpecialty(ItemList.Fertilizer.get(1), 0.3f);
                 beeSpecies.setHumidity(DAMP);

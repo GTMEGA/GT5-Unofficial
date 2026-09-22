@@ -60,6 +60,9 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
                 "Once finished, r-click to add new ore data to your map."};
     }
 
+    @Override
+    public void doExplosion(long aExplosionPower) {}//stop rain explosions
+
     protected GT_MetaTileEntity_AdvSeismicProspector(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
             String aGUIName, String aNEIName, String aSound, int aRadius, int aStep) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
