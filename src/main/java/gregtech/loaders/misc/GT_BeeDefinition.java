@@ -51,6 +51,9 @@ import static gregtech.loaders.misc.GT_BeeDefinitionReference.*;
  * Bride Class for Lambdas
  */
 class GT_BeeDefinitionReference {
+    //Divider for all output amounts
+    public static final int nerfAmount = 10;
+
     protected final static byte FORESTRY = 0;
     protected final static byte EXTRABEES = 1;
     protected final static byte GENDUSTRY = 2;
@@ -506,8 +509,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     //Metal Line
     COPPER(GT_BranchDefinition.METAL, "Copper", true, new Color(0xFF6600), new Color(0xE65C00),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.25f);
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.COPPER), 0.30f);
+                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.25f / nerfAmount);
+                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.COPPER), 0.30f / nerfAmount);
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(EnumTemperature.NORMAL);
             },
@@ -1612,4 +1615,6 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     public final IBeeDefinition getRainResist() {
         return new BeeVariation.RainResist(this);
     }
+
+
 }
