@@ -5,31 +5,31 @@ import gregtech.api.util.GT_LanguageManager;
 
 public enum CombType {
     //Organic Line
-    LIGNIE("lignite", true, Materials.Lignite, 100,0x58300B, 0x906237),
-    COAL("coal", true, Materials.Coal, 100,0x525252, 0x666666),
-    STICKY("stickyresin", true, Materials._NULL, 50,0x2E8F5B, 0xDCC289),
-    OIL("oil", true, Materials._NULL, 100,0x333333, 0x4C4C4C),
-    APATITE("apatite", true, Materials.Apatite, 100,0xc1c1f6, 0x676784),
+    LIGNIE("lignite", false, Materials.Lignite, 100,0x58300B, 0x906237),
+    COAL("coal", true, Materials.Coal, 100,0x272727, 0x494949),
+    STICKY("stickyresin", true, Materials._NULL, 50,0xD28B4D, 0x2C6627),
+    OIL("oil", true, Materials._NULL, 100,0xE7D52A, 0x4C4C4C),
+    APATITE("apatite", true, Materials.Apatite, 100,0xc1c1f6, 0x5959B1),
     ASH("ash", true, Materials.Ash, 100,0x1e1a18, 0xc6c6c6),
 
-    //IC2 Line
-    COOLANT("coolant", true, Materials._NULL, 100,0x144F5A, 0x2494A2),
-    ENERGY("energy", true, Materials._NULL, 80,0xC11F1F, 0xEBB9B9),
-    LAPOTRON("lapotron", true, Materials._NULL, 60,0x1414FF, 0x6478FF),
-    PYROTHEUM("pyrotheum", true, Materials.Pyrotheum, 50,0xffebc4, 0xe36400),
-    CRYOTHEUM("cryotheum", true, Materials.Pyrotheum, 50,0x2660ff, 0x5af7ff),
+    //IC2 Line (unused)
+    COOLANT("coolant", false, Materials._NULL, 100,0x144F5A, 0x2494A2),
+    ENERGY("energy", false, Materials._NULL, 80,0xC11F1F, 0xEBB9B9),
+    LAPOTRON("lapotron", false, Materials._NULL, 60,0x1414FF, 0x6478FF),
+    PYROTHEUM("pyrotheum", false, Materials.Pyrotheum, 50,0xffebc4, 0xe36400),
+    CRYOTHEUM("cryotheum", false, Materials.Pyrotheum, 50,0x2660ff, 0x5af7ff),
 
-    //Alloy Line
-    REDALLOY("redalloy", true, Materials.RedAlloy, 100,0xE60000, 0xB80000),
-    REDSTONEALLOY("redstonealloy", true, Materials.RedstoneAlloy, 90,0xB80000, 0xA50808),
-    CONDUCTIVEIRON("conductiveiron", true, Materials.ConductiveIron, 80,0x817671, 0xCEADA3),
-    VIBRANTALLOY("vibrantalloy", true, Materials.VibrantAlloy, 50,0x86A12D, 0xC4F2AE),
-    ENERGETICALLOY("energeticalloy", true, Materials.EnergeticAlloy, 70,0xFF9933, 0xFFAD5C),
-    ELECTRICALSTEEL("electricalsteel", true, Materials.ElectricalSteel, 90,0x787878, 0xD8D8D8),
-    DARKSTEEL("darksteel", true, Materials.DarkSteel, 80,0x252525, 0x443B44),
-    PULSATINGIRON("pulsatingiron", true, Materials.PulsatingIron, 80,0x006600, 0x6DD284),
-    STAINLESSSTEEL("stainlesssteel", true, Materials.StainlessSteel, 75,0x778899, 0xC8C8DC),
-    ENDERIUM("enderium", true, Materials.Enderium, 40,0x2E8B57, 0x599087),
+    //Alloy Line (unused)
+    REDALLOY("redalloy", false, Materials.RedAlloy, 100,0xE60000, 0xB80000),
+    REDSTONEALLOY("redstonealloy", false, Materials.RedstoneAlloy, 90,0xB80000, 0xA50808),
+    CONDUCTIVEIRON("conductiveiron", false, Materials.ConductiveIron, 80,0x817671, 0xCEADA3),
+    VIBRANTALLOY("vibrantalloy", false, Materials.VibrantAlloy, 50,0x86A12D, 0xC4F2AE),
+    ENERGETICALLOY("energeticalloy", false, Materials.EnergeticAlloy, 70,0xFF9933, 0xFFAD5C),
+    ELECTRICALSTEEL("electricalsteel", false, Materials.ElectricalSteel, 90,0x787878, 0xD8D8D8),
+    DARKSTEEL("darksteel", false, Materials.DarkSteel, 80,0x252525, 0x443B44),
+    PULSATINGIRON("pulsatingiron", false, Materials.PulsatingIron, 80,0x006600, 0x6DD284),
+    STAINLESSSTEEL("stainlesssteel", false, Materials.StainlessSteel, 75,0x778899, 0xC8C8DC),
+    ENDERIUM("enderium", false, Materials.Enderium, 40,0x2E8B57, 0x599087),
 
     //Thaumcraft Line
     THAUMIUMDUST("thaumiumdust", true, Materials.Thaumium, 100,0x7A007A, 0x5C005C),
@@ -42,7 +42,7 @@ public enum CombType {
     ASTRALSILVER("astralsilver", true, Materials.AstralSilver, 70,0xAFEEEE, 0xE6E6FF),
     THAUMINITE("thauminite", true, Materials._NULL, 50,0x2E2D79, 0x7581E0),
     SHADOWMETAL("shadowmetal", true, Materials.Shadow, 50,0x100322, 0x100342),
-    DIVIDED("divided", true, Materials.Unstable, 40,0xF0F0F0, 0xDCDCDC),
+    DIVIDED("divided", false, Materials.Unstable, 40,0xF0F0F0, 0xDCDCDC),
     SPARKELING("sparkling", true, Materials.NetherStar, 40,0x7A007A, 0xFFFFFF),
 
     //Gem Line
@@ -59,8 +59,8 @@ public enum CombType {
     DIAMOND("diamond", true, Materials.Diamond, 100,0xCCFFFF, 0xA3CCCC),
     OLIVINE("olivine", true, Materials.Olivine, 100,0x248F24, 0xCCFFCC),
     EMERALD("emerald", true, Materials.Emerald, 100,0x248F24, 0x2EB82E),
-    PYROPE("pyrope", true, Materials.Pyrope, 100,0x763162, 0x8B8B8B),
-    GROSSULAR("grossular", true, Materials.Grossular, 100,0x9B4E00, 0x8B8B8B),
+    PYROPE("pyrope", false, Materials.Pyrope, 100,0x763162, 0x8B8B8B),
+    GROSSULAR("grossular", false, Materials.Grossular, 100,0x9B4E00, 0x8B8B8B),
     FIRESTONE("firestone", true, Materials.Firestone, 100,0xC00000, 0xFF0000),
 
     //Metals Line
@@ -93,7 +93,7 @@ public enum CombType {
     LITHIUM("lithium", true, Materials.Lithium, 75,0xF0328C, 0xE1DCFF),
     SALT("salt", true, Materials.Salt, 90,0xF0C8C8, 0xFAFAFA),
     ELECTROTINE("electrotine", true, Materials.Electrotine, 75,0x1E90FF, 0x3CB4C8),
-    ALMANDINE("almandine", true, Materials.Almandine, 85,0xC60000, 0x8B8B8B),
+    ALMANDINE("almandine", false, Materials.Almandine, 85,0xC60000, 0x8B8B8B),
 
     //Radioactive Line
     URANIUM("uranium", true, Materials.Uranium, 50,0x19AF19, 0x169E16),
@@ -114,26 +114,26 @@ public enum CombType {
     SNOWQUEEN("snowqueen", true, Materials._NULL, 60,0x9C0018, 0xD02001),
 
     //Space
-    SPACE("space", true, Materials._NULL, 100,0x003366, 0xC0C0C0),
-    TRINIUM("trinium",true, Materials.Trinium, 25,0xB0E0E6, 0xC8C8D2),
+    SPACE("space", false, Materials._NULL, 100,0x003366, 0xC0C0C0),
+    TRINIUM("trinium",false, Materials.Trinium, 25,0xB0E0E6, 0xC8C8D2),
 
     //Infinity
-    COSMICNEUTRONIUM("cosmicneutronium",true, Materials._NULL, 5,0x484848, 0x323232),
-    INFINITYCATALYST("infinitycatalyst",true, Materials._NULL, 2,0xFFFFFF, 0xFFFFFF),
-    INFINITY("infinity",true, Materials._NULL, 1,0xFFFFFF, 0xFFFFFF),
+    COSMICNEUTRONIUM("cosmicneutronium",false, Materials._NULL, 5,0x484848, 0x323232),
+    INFINITYCATALYST("infinitycatalyst",false, Materials._NULL, 2,0xFFFFFF, 0xFFFFFF),
+    INFINITY("infinity",false, Materials._NULL, 1,0xFFFFFF, 0xFFFFFF),
 
     //HEE
-    ENDDUST("enddust", true, Materials._NULL, 50,0x003A7D, 0xCC00FA),
-    ECTOPLASMA("ectoplasma", true, Materials._NULL, 35,0x381C40, 0xDCB0E5),
-    ARCANESHARD("arcaneshard", true, Materials._NULL, 35,0x333D82, 0x9010AD),
-    STARDUST("stardust", true, Materials._NULL, 60,0xDCBE13, 0xffff00),
-    DRAGONESSENCE("dragonessence", true, Materials._NULL, 30,0x911ECE, 0xFFA12B),
-    ENDERMAN("enderman", true, Materials._NULL, 25,0x6200e7, 0x161616),
-    SILVERFISH("silverfish", true, Materials._NULL, 25,0x0000000, 0xEE053D),
-    ENDIUM("endium", true, Materials.HeeEndium, 50,0x2F5A6C, 0xa0ffff),
-    RUNEI("rune1", true, Materials._NULL, 10,0x0104D9, 0xE31010),
-    RUNEII("rune2", true, Materials._NULL, 10,0xE31010, 0x0104D9),
-    FIREESSENSE("fireessence", true, Materials._NULL, 30,0xFFA157, 0xD41238);
+    ENDDUST("enddust", false, Materials._NULL, 50,0x003A7D, 0xCC00FA),
+    ECTOPLASMA("ectoplasma", false, Materials._NULL, 35,0x381C40, 0xDCB0E5),
+    ARCANESHARD("arcaneshard", false, Materials._NULL, 35,0x333D82, 0x9010AD),
+    STARDUST("stardust", false, Materials._NULL, 60,0xDCBE13, 0xffff00),
+    DRAGONESSENCE("dragonessence", false, Materials._NULL, 30,0x911ECE, 0xFFA12B),
+    ENDERMAN("enderman", false, Materials._NULL, 25,0x6200e7, 0x161616),
+    SILVERFISH("silverfish", false, Materials._NULL, 25,0x0000000, 0xEE053D),
+    ENDIUM("endium", false, Materials.HeeEndium, 50,0x2F5A6C, 0xa0ffff),
+    RUNEI("rune1", false, Materials._NULL, 10,0x0104D9, 0xE31010),
+    RUNEII("rune2", false, Materials._NULL, 10,0xE31010, 0x0104D9),
+    FIREESSENSE("fireessence", false, Materials._NULL, 30,0xFFA157, 0xD41238);
 
     public boolean showInList;
     public Materials material;

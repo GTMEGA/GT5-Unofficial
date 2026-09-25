@@ -25,9 +25,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.bees.GT_AlleleBeeSpecies;
 import gregtech.common.bees.GT_Bee_Mutation;
 import gregtech.common.items.CombType;
-import gregtech.common.items.DropType;
-import gregtech.common.items.PropolisType;
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -43,7 +40,6 @@ import static forestry.api.core.EnumHumidity.ARID;
 import static forestry.api.core.EnumHumidity.DAMP;
 import static forestry.api.core.EnumTemperature.*;
 import static forestry.core.genetics.alleles.EnumAllele.*;
-import static gregtech.api.enums.GT_Values.MOD_ID_DC;
 import static gregtech.loaders.misc.GT_BeeDefinitionReference.*;
 
 @SuppressWarnings("ALL")
@@ -123,11 +119,11 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             },
             dis -> dis.registerMutation(getSpecies(FORESTRY, "Rural"), CLAY, 15)
     ),
-    STICKYRESIN(GT_BranchDefinition.ORGANIC, "StickyResin", true, new Color(0x2E8F5B), new Color(0xDCC289),
+    RESINOUS(GT_BranchDefinition.ORGANIC, "StickyResin", true, new Color(0xD28B4D), new Color(0x2C6627),
             beeSpecies -> {
                 beeSpecies.addProduct(GT_ModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 0), 0.30f / nerfAmount);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.STICKY), 0.30f / nerfAmount);
-                beeSpecies.addSpecialty(ItemList.Resin.get(1), 0.15f / nerfAmount);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.STICKY), 0.8f / nerfAmount);
+                beeSpecies.addSpecialty(ItemList.Resin.get(1), 0.2f / nerfAmount);
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(EnumTemperature.NORMAL);
             },
@@ -143,9 +139,9 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     ),
     COAL(GT_BranchDefinition.ORGANIC, "Coal", true, new Color(0x666666), new Color(0x525252),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.10f / nerfAmount);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.COAL), 0.5f / nerfAmount);
-                beeSpecies.addSpecialty(new ItemStack(Items.coal, 1), 0.25f / nerfAmount);
+                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.1f / nerfAmount);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.COAL), 0.45f * 2 / nerfAmount);
+//                beeSpecies.addSpecialty(new ItemStack(Items.coal, 1), 0.25f / nerfAmount);
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(EnumTemperature.NORMAL);
             },
@@ -162,10 +158,10 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 tMutation.requireResource("oreCoal");
             }
     ),
-    OIL(GT_BranchDefinition.ORGANIC, "Oil", true, new Color(0x4C4C4C), new Color(0x333333),
+    NITRO(GT_BranchDefinition.ORGANIC, "Nitro", true, new Color(0xE7D52A), new Color(0x383827),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 0), 0.30f / nerfAmount);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.OIL), 0.30f / nerfAmount);
+                beeSpecies.addProduct(GT_ModHandler.getModItem("ExtraBees", "honeyComb", 1, 5), 0.2f / nerfAmount);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.OIL), 0.5f / nerfAmount);
                 beeSpecies.setHumidity(DAMP);
                 beeSpecies.setTemperature(EnumTemperature.NORMAL);
                 beeSpecies.setHasEffect();
@@ -184,7 +180,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             },
 
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(COAL, STICKYRESIN, 10);
+                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(EXTRABEES, "fuel"), getSpecies(EXTRABEES, "creosote"), 5);
                 tMutation.requireResource("oreOilsands");
             }
     ),
@@ -216,7 +212,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     ASH(GT_BranchDefinition.ORGANIC, "Ash", true, new Color(0x1e1a18), new Color(0xc6c6c6),
             beeSpecies -> {
                 beeSpecies.addProduct(GT_ModHandler.getModItem("ExtraBees", "honeyComb", 1, 9), 0.15f / nerfAmount);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.ASH), 0.15f / nerfAmount);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.ASH), 0.75f / nerfAmount);
                 beeSpecies.setHumidity(ARID);
                 beeSpecies.setTemperature(HOT);
             },
@@ -237,15 +233,14 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     ),
     APATITE(GT_BranchDefinition.ORGANIC, "Apatite", true, new Color(0xc1c1f6), new Color(0x676784),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem("ExtraBees", "honeyComb", 1, 9), 0.20f / nerfAmount);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.APATITE), 0.30f / nerfAmount);
+                beeSpecies.addProduct(GT_ModHandler.getModItem("ExtraBees", "honeyComb", 1, 9), 0.10f / nerfAmount);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.APATITE), 0.50f / nerfAmount);
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(WARM);
             },
             template -> {
                 AlleleHelper.instance.set(template, SPEED, Speed.FASTEST);
                 AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGER);
-                AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.WHEAT);
                 AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
                 AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
                 AlleleHelper.instance.set(template, CAVE_DWELLING, true);
@@ -968,7 +963,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.NONE);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(THAUMIUMDUST, STICKYRESIN, 10);
+                IBeeMutationCustom tMutation = dis.registerMutation(THAUMIUMDUST, RESINOUS, 10);
                 tMutation.requireResource("oreAmber");
             }
     ),

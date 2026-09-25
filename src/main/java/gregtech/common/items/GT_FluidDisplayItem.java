@@ -72,8 +72,8 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
                 aList.add(EnumChatFormatting.BLUE + String.format(this.trans("016", "Amount: %s L"), "" + tToolTipAmount) + EnumChatFormatting.GRAY);
             }
 
-            aList.add(EnumChatFormatting.RED + String.format(this.trans("017", "Temperature: %s K"), "" + aNBT.getLong("mFluidDisplayHeat")) + EnumChatFormatting.GRAY);
-            aList.add(EnumChatFormatting.GREEN + String.format(this.trans("018", "State: %s"), aNBT.getBoolean("mFluidState") ? "Gas" : "Liquid") + EnumChatFormatting.GRAY);
+//            aList.add(EnumChatFormatting.RED + String.format(this.trans("017", "Temperature: %s K"), "" + aNBT.getLong("mFluidDisplayHeat")) + EnumChatFormatting.GRAY);
+//            aList.add(EnumChatFormatting.GREEN + String.format(this.trans("018", "State: %s"), aNBT.getBoolean("mFluidState") ? "Gas" : "Liquid") + EnumChatFormatting.GRAY);
         }
     }
 

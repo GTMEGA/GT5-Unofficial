@@ -523,7 +523,7 @@ public class GT_ModHandler {
     public static boolean addOreWasherRecipe(ItemStack aInput, int[] aChances, int aWaterAmount, Object... aOutput) {
         if (aInput == null || aOutput == null || aOutput.length <= 0 || aOutput[0] == null) return false;
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.orewashing, aInput, true)) return false;
-        RA.addOreWasherRecipe(aInput, (ItemStack) aOutput[0], (ItemStack) aOutput[1], (ItemStack) aOutput[2], GT_ModHandler.getWater((aWaterAmount * 4L) / 10), aChances, 400, 16);
+        RA.addOreWasherRecipe(aInput, (ItemStack) aOutput[0], (ItemStack) aOutput[1], (ItemStack) aOutput[2], Materials.NitricAcid.getFluid(100), aChances, 400, 16);
         return true;
     }
 

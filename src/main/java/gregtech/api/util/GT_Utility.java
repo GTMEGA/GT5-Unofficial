@@ -1018,8 +1018,8 @@ public class GT_Utility {
         ItemStack rStack = ItemList.Display_Fluid.getWithDamage(1, tmp);
         NBTTagCompound tNBT = new NBTTagCompound();
         tNBT.setLong("mFluidDisplayAmount", aUseStackSize ? aFluid.amount : 0);
-        tNBT.setLong("mFluidDisplayHeat", aFluid.getFluid().getTemperature(aFluid));
-        tNBT.setBoolean("mFluidState", aFluid.getFluid().isGaseous(aFluid));
+//        tNBT.setLong("mFluidDisplayHeat", aFluid.getFluid().getTemperature(aFluid)); Temperature is now defunct
+//        tNBT.setBoolean("mFluidState", aFluid.getFluid().isGaseous(aFluid)); wood pipe memee
         tNBT.setBoolean("mHideStackSize", aHideStackSize);
         rStack.setTagCompound(tNBT);
         return rStack;

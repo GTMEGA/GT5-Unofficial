@@ -40,15 +40,15 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
 
         if (aPrefix == OrePrefixes.crushed) {
             GT_ModHandler.addOreWasherRecipe(GT_Utility.copyAmount(1L, aStack),
-                                             new int[]{10000, 4000, 1000},
-                                             1000,
+                                             new int[]{10000, 7500, 500},
+                                             100,
                                              GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1L),
                                              GT_OreDictUnificator.get(OrePrefixes.dust, GT_Utility.selectItemInList(0, aMaterial.mMacerateInto), 1L * aMaterial.mOreMultiplier),
                                              GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L));
         } else {
             GT_ModHandler.addOreWasherRecipe(GT_Utility.copyAmount(1L, aStack),
-                                             new int[]{10000, 4000, 1000},
-                                             1000,
+                                             new int[]{10000, 7500, 500},
+                                             100,
                                              GT_OreDictUnificator.get(OrePrefixes.dustPure, aMaterial, 1L),
                                              GT_OreDictUnificator.get(OrePrefixes.dust, GT_Utility.selectItemInList(0, aMaterial.mMacerateInto), 1L * aMaterial.mOreMultiplier),
                                              GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L));
