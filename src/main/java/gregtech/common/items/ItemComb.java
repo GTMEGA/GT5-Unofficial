@@ -106,147 +106,40 @@ public class ItemComb extends Item {
 
 		addCentrifugeToMaterial(CombType.ASH, new Materials[] {Materials.DarkAsh, Materials.Ash}, new int[] { 5000, 5000}, new int[] {}, Voltage.ULV, NI, 100);
 
-
 		//Thaumic
-		addCombOreDuplication(CombType.THAUMIUMDUST, new Materials[] {Materials.Thaumium, Materials.Iron }, Voltage.MV);
+		addCombOreDuplication(CombType.THAUMIUMDUST, new Materials[] {Materials.Thaumium}, Voltage.MV);
 		addCentrifugeToItemStack(CombType.THAUMIUMSHARD, new ItemStack[] {GT_ModHandler.getModItem("MagicBees", "propolis", 1, 1), GT_ModHandler.getModItem("MagicBees", "propolis", 1, 2), GT_ModHandler.getModItem("MagicBees", "propolis", 1, 3), GT_ModHandler.getModItem("MagicBees", "propolis", 1, 4), GT_ModHandler.getModItem("MagicBees", "propolis", 1, 5), GT_ModHandler.getModItem("MagicBees", "propolis", 1, 6), GT_ModHandler.getModItem("MagicBees", "wax", 1, 0) }, new int[] {20 * 100, 20 * 100, 20 * 100, 20 * 100, 20 * 100, 20 * 100, 50 * 100 }, Voltage.ULV);
 		addCombOreDuplication(CombType.AMBER, new Materials[] {Materials.Amber}, Voltage.LV);
-		addCombOreDuplication(CombType.QUICKSILVER, new Materials[] {Materials.Cinnabar }, Voltage.LV);
 		addCentrifugeToItemStack(CombType.SALISMUNDUS, new ItemStack[] {GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1, 14), GT_ModHandler.getModItem("MagicBees", "wax", 1, 0)}, new int[] {100 * 100, 50 * 100}, Voltage.MV);
 		addCentrifugeToItemStack(CombType.TAINTED, new ItemStack[] {GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1, 11), GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1, 12), GT_ModHandler.getModItem("Thaumcraft", "blockTaintFibres", 1, 0),  GT_ModHandler.getModItem("Thaumcraft", "blockTaintFibres", 1, 1), GT_ModHandler.getModItem("Thaumcraft", "blockTaintFibres", 1, 2), GT_ModHandler.getModItem("MagicBees", "wax", 1, 0)}, new int[] {15 * 100, 15 * 100, 15 * 100, 15 * 100, 15 * 100, 50 * 100}, Voltage.ULV);
 		addCentrifugeToItemStack(CombType.THAUMINITE, new ItemStack[] {GT_ModHandler.getModItem("thaumicbases", "resource", 1, 0), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thaumium, 1), GT_ModHandler.getModItem("MagicBees", "wax", 1, 0)}, new int[] {20 * 100, 10 * 100, 50 *100}, Voltage.HV);
 		addCombOreDuplication(CombType.SHADOWMETAL, new Materials[] {Materials.Shadow, Materials.ShadowSteel }, Voltage.HV);
 		addCentrifugeToMaterial(CombType.SHADOWMETAL, new Materials[] {Materials.Shadow, Materials.ShadowSteel}, new int[] {(GT_Mod.gregtechproxy.mNerfedCombs ? 20:75) * 100, 10 * 100}, new int[] {}, Voltage.HV, GT_ModHandler.getModItem("MagicBees", "wax", 1, 0) , 50 * 100);
-		addCentrifugeToItemStack(CombType.DIVIDED, new ItemStack[] { GT_ModHandler.getModItem("MagicBees", "wax", 1, 0), GT_ModHandler.getModItem("ExtraUtilities", "unstableingot", 1, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1)}, new int[] {50 * 100, 20 * 100, (GT_Mod.gregtechproxy.mNerfedCombs ? 10:75) * 100, (GT_Mod.gregtechproxy.mNerfedCombs ? 5:55) * 100}, Voltage.HV);
 		addCombOreDuplication(CombType.SPARKELING, new Materials[] {Materials.NetherStar}, Voltage.EV);
 		addCentrifugeToItemStack(CombType.SPARKELING, new ItemStack[] { GT_ModHandler.getModItem("MagicBees", "wax", 1, 0), GT_ModHandler.getModItem("MagicBees", "miscResources", 2, 5), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 1)}, new int[] {50 * 100, 10 * 100, (GT_Mod.gregtechproxy.mNerfedCombs ? 10:50) * 100}, Voltage.EV);
 		if(GT_Mod.gregtechproxy.mNerfedCombs) {
-			addCentrifugeToMaterial(CombType.THAUMIUMDUST, new Materials[] {Materials.Thaumium }, new int[] {100 * 100}, new int[] {}, Voltage.MV, GT_ModHandler.getModItem("MagicBees", "wax", 1, 0), 50 * 100);
-			addCentrifugeToItemStack(CombType.QUICKSILVER, new ItemStack[] {GT_ModHandler.getModItem("MagicBees", "wax", 1, 0), GT_ModHandler.getModItem("Thaumcraft", "ItemNugget", 1, 5) }, new int[] {50 * 100, 100 * 100 }, Voltage.ULV);
+			addCentrifugeToMaterial(CombType.THAUMIUMDUST, new Materials[] {Materials.Thaumium }, new int[] {100 * 100}, new int[] {}, Voltage.MV, GT_ModHandler.getModItem("MagicBees", "wax", 1, 0), 800);
 		}else {
-			addCentrifugeToMaterial(CombType.THAUMIUMDUST, new Materials[] {Materials.Thaumium, Materials.Iron }, new int[] {100 * 100, 75 * 100 }, new int[] {}, Voltage.MV, GT_ModHandler.getModItem("MagicBees", "wax", 1, 0), 50 * 100);
+			addCentrifugeToMaterial(CombType.THAUMIUMDUST, new Materials[] {Materials.Thaumium, Materials.Steel }, new int[] {1000, 750 }, new int[] {}, Voltage.MV, GT_ModHandler.getModItem("MagicBees", "wax", 1, 0), 800);
 			addCentrifugeToMaterial(CombType.AMBER, new Materials[] {Materials.Amber }, new int[] {100 * 100 }, new int[] {}, Voltage.ULV, GT_ModHandler.getModItem("MagicBees", "wax", 1, 0), 50 * 100);
-			addCentrifugeToItemStack(CombType.QUICKSILVER, new ItemStack[] {GT_ModHandler.getModItem("MagicBees", "wax", 1, 0), GT_ModHandler.getModItem("Thaumcraft", "ItemNugget", 1, 5), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cinnabar, 1) }, new int[] {50 * 100, 100 * 100, 85 * 100 }, Voltage.ULV);
 		}
 		
 		//Gem Line
 		addCombOreDuplication(CombType.CERTUS, new Materials[] {Materials.CertusQuartz, Materials.Quartzite, Materials.Barite}, Voltage.LV);
 		addCombOreDuplication(CombType.FLUIX, new Materials[] {Materials.CertusQuartz, Materials.NetherQuartz}, Voltage.LV);
-		addCombOreDuplication(CombType.REDSTONE, new Materials[] {Materials.Redstone, Materials.Cinnabar}, Voltage.LV);
 		addCentrifugeToMaterial(CombType.RAREEARTH, new Materials[] {Materials.RareEarth}, new int[] {100 * 100}, new int[] { 1}, Voltage.ULV, NI, 30 * 100);
-		addCombOreDuplication(CombType.LAPIS, new Materials[] {Materials.Lapis, Materials.Calcite }, Voltage.LV);
-		addCombOreDuplication(CombType.RUBY, new Materials[] {Materials.Ruby}, Voltage.LV);
-		addCombOreDuplication(CombType.REDGARNET, new Materials[] {Materials.GarnetRed, Materials.GarnetYellow }, Voltage.LV);
-		addCombOreDuplication(CombType.YELLOWGARNET, new Materials[] {Materials.GarnetYellow, Materials.GarnetRed }, Voltage.LV);
-		addCombOreDuplication(CombType.SAPPHIRE, new Materials[] {Materials.Sapphire, Materials.GreenSapphire}, Voltage.LV);
-		addCombOreDuplication(CombType.DIAMOND, new Materials[] {Materials.Diamond, Materials.Graphite}, Voltage.LV);
-		addCombOreDuplication(CombType.OLIVINE, new Materials[] {Materials.Olivine, Materials.Magnesite}, Voltage.LV);
-		addCombOreDuplication(CombType.EMERALD, new Materials[] {Materials.Emerald}, Voltage.LV);
-		addCombOreDuplication(CombType.FIRESTONE, new Materials[] {Materials.Firestone}, Voltage.LV);
+
+
 		if(GT_Mod.gregtechproxy.mNerfedCombs) {
 			addCentrifugeToMaterial(CombType.FLUIX, new Materials[] {Materials.Fluix}, new int[] {25 * 100}, new int[] { 9}, Voltage.ULV, NI, 30 * 100);
 		}else {
 			addCentrifugeToMaterial(CombType.CERTUS, new Materials[] {Materials.CertusQuartz, Materials.Quartzite}, new int[] {100 * 100, 80 * 100}, new int[] {}, Voltage.ULV, NI, 50 * 100);
-			addCentrifugeToMaterial(CombType.FLUIX, new Materials[] {Materials.Fluix, Materials.Redstone, Materials.CertusQuartz, Materials.NetherQuartz}, new int[] {25 * 100, 90 * 100, 90 * 100, 90 * 100}, new int[] { 9, 1, 1, 1}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.LAPIS, new Materials[] {Materials.Lapis, Materials.Calcite }, new int[] {100 * 100, 85 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.RUBY, new Materials[] {Materials.Ruby}, new int[] {100 * 100, 90 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.REDGARNET, new Materials[] {Materials.GarnetRed, Materials.GarnetYellow }, new int[] {100 * 100, 75 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.YELLOWGARNET, new Materials[] {Materials.GarnetYellow, Materials.GarnetRed }, new int[] {100 * 100, 75 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.SAPPHIRE, new Materials[] {Materials.Sapphire}, new int[] {100 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.DIAMOND, new Materials[] {Materials.Diamond, Materials.Graphite}, new int[] {100 * 100, 75 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.OLIVINE, new Materials[] {Materials.Olivine, Materials.Bentonite, Materials.Magnesite, Materials.Glauconite}, new int[] {100 * 100, 90 * 100, 80 * 100, 75 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.EMERALD, new Materials[] {Materials.Emerald}, new int[] {100 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.FIRESTONE, new Materials[] {Materials.Firestone}, new int[] {100 * 100}, new int[] {}, Voltage.ULV, ItemList.FR_RefractoryWax.get(1), 30 * 100);
+			addCentrifugeToMaterial(CombType.FLUIX, new Materials[] {Materials.Fluix, Materials.CertusQuartz, Materials.NetherQuartz}, new int[] {25 * 100, 90 * 100, 90 * 100, 90 * 100}, new int[] { 9, 1, 1, 1}, Voltage.ULV, NI, 30 * 100);
 		}
 		
 		// Metals Line
-		addCombOreDuplication(CombType.COPPER, new Materials[] {Materials.Copper, Materials.Chalcopyrite, Materials.Malachite}, Voltage.LV);
-		addCombOreDuplication(CombType.TIN, new Materials[] {Materials.Tin, Materials.Cassiterite}, Voltage.LV);
-		addCombOreDuplication(CombType.LEAD, new Materials[] {Materials.Lead, Materials.Galena}, Voltage.LV);
-		addCombOreDuplication(CombType.NICKEL, new Materials[] {Materials.Nickel, Materials.Pentlandite, Materials.Cobaltite}, Voltage.LV);
-		addCombOreDuplication(CombType.ZINC, new Materials[] {Materials.Zinc, Materials.Sphalerite}, Voltage.LV);
-		addCombOreDuplication(CombType.SILVER, new Materials[] {Materials.Silver, Materials.Galena}, Voltage.LV);
-		addCombOreDuplication(CombType.GOLD, new Materials[] {Materials.Gold, Materials.Magnetite}, Voltage.LV);
-		addChemicalProcess(CombType.GOLD, Materials.Magnetite, Materials.Gold, Voltage.LV);
-		addCombOreDuplication(CombType.ARSENIC, new Materials[] {Materials.Arsenic}, Voltage.LV);
-		addCombOreDuplication(CombType.IRON, new Materials[] {Materials.Magnetite, Materials.VanadiumMagnetite, Materials.Pyrite}, Voltage.LV);
-		addCombOreDuplication(CombType.STEEL, new Materials[] {Materials.Iron, Materials.Magnetite, Materials.BrownLimonite, Materials.VanadiumMagnetite, Materials.Pyrolusite}, Voltage.LV);
-		if(GT_Mod.gregtechproxy.mNerfedCombs) {
-			addCentrifugeToMaterial(CombType.SLAG, new Materials[] {Materials.Stone, Materials.Magnetite, Materials.GarnetSand}, new int[] {4500, 2500, 1000}, new int[] { 1, 1, 1}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.COPPER, new Materials[] {Materials.Copper}, new int[] {2500}, new int[] {}, Voltage.ULV, NI, 3000);
-			addCentrifugeToMaterial(CombType.TIN, new Materials[] {Materials.Tin}, new int[] {2500}, new int[] {}, Voltage.ULV, NI, 3000);
-			addCentrifugeToMaterial(CombType.LEAD, new Materials[] {Materials.Lead}, new int[] {2500}, new int[] {}, Voltage.ULV, NI, 3000);
-			addCentrifugeToMaterial(CombType.IRON, new Materials[] {Materials.Iron}, new int[] {2500}, new int[] {}, Voltage.ULV, NI, 3000);
-			addCentrifugeToMaterial(CombType.STEEL, new Materials[] {Materials.Steel}, new int[] {2500}, new int[] {}, Voltage.ULV, NI, 3000);
-			addCentrifugeToMaterial(CombType.SILVER, new Materials[] {Materials.Silver}, new int[] {2500}, new int[] {}, Voltage.ULV, NI, 3000);
-			addCentrifugeToMaterial(CombType.ZINC, new Materials[] {Materials.Zinc}, new int[] {2500}, new int[] {}, Voltage.ULV, NI, 3000);
-		}else {
-//			addCentrifugeToMaterial(CombType.SLAG, new Materials[] {Materials.Salt, Materials.RockSalt, Materials.Lepidolite, Materials.Spodumene, Materials.Monazite}, new int[] {100 * 100, 100 * 100, 100 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.COPPER, new Materials[] {Materials.Copper, Materials.Tetrahedrite, Materials.Chalcopyrite, Materials.Malachite, Materials.Pyrite, Materials.Stibnite}, new int[] {100 * 100, 85 * 100, 95 * 100, 80 * 100, 75 * 100, 65 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.TIN, new Materials[] {Materials.Tin, Materials.Cassiterite, Materials.CassiteriteSand}, new int[] {100 * 100, 85 * 100, 65 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.LEAD, new Materials[] {Materials.Lead, Materials.Galena}, new int[] {100 * 100, 75 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
+		addCentrifugeToMaterial(CombType.SLAG, new Materials[] {Materials.Stone, Materials.Pyrite, Materials.GarnetSand}, new int[] {500, 250, 100}, new int[] { 1, 1, 1}, Voltage.ULV, NI, 100);
 
-			addCentrifugeToMaterial(CombType.IRON, new Materials[] {Materials.Iron, Materials.Magnetite, Materials.BrownLimonite, Materials.YellowLimonite, Materials.VanadiumMagnetite, Materials.BandedIron}, new int[] {100 * 100, 90 * 100, 85 * 100, 85 * 100, 80 * 100, 85 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.STEEL, new Materials[] {Materials.Steel, Materials.Magnetite, Materials.VanadiumMagnetite, Materials.BandedIron, Materials.Molybdenite, Materials.Molybdenum }, new int[] {100 * 100, 90 * 100, 80 * 100, 85 * 100, 65 * 100, 65 * 100 }, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.NICKEL, new Materials[] {Materials.Nickel, Materials.Garnierite, Materials.Pentlandite, Materials.Cobaltite, Materials.Wulfenite, Materials.Powellite}, new int[] {100 * 100, 85 * 100, 85 * 100, 80 * 100, 75 * 100, 75 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.ZINC, new Materials[] {Materials.Zinc, Materials.Sphalerite, Materials.Sulfur}, new int[] {100 * 100, 80 * 100, 75 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.SILVER, new Materials[] {Materials.Silver, Materials.Galena}, new int[] {100 * 100, 80 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.GOLD, new Materials[] {Materials.Gold}, new int[] {100 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.SULFUR, new Materials[] {Materials.Sulfur, Materials.Pyrite, Materials.Sphalerite}, new int[] {100 * 100, 90 * 100, 80 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.GALLIUM, new Materials[] {Materials.Gallium, Materials.Niobium}, new int[] { 80 * 100, 75 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.ARSENIC, new Materials[] {Materials.Arsenic, Materials.Bismuth, Materials.Antimony}, new int[] {80 * 100, 70 * 100, 70 * 100}, new int[] {}, Voltage.ULV , NI, 30 * 100);
-		}
-
-		// Rare Metals Line
-		addCombOreDuplication(CombType.BAUXITE, new Materials[] {Materials.Bauxite}, Voltage.LV);
-		addCombOreDuplication(CombType.ALUMINIUM, new Materials[] {Materials.Aluminium, Materials.Bauxite}, Voltage.LV);
-		addCombOreDuplication(CombType.MANGANESE, new Materials[] {Materials.Manganese,Materials.Spessartine, Materials.Pyrolusite, Materials.Tantalite}, Voltage.LV);
-		addCombOreDuplication(CombType.TITANIUM, new Materials[] {Materials.Titanium, Materials.Ilmenite, Materials.Rutile}, Voltage.EV);
-		addCombOreDuplication(CombType.MAGNESIUM, new Materials[] {Materials.Magnesium, Materials.Magnesite}, Voltage.LV);
-		addCombOreDuplication(CombType.CHROME, new Materials[] {Materials.Ruby, Materials.Redstone}, Voltage.HV);
-		addCombOreDuplication(CombType.TUNGSTEN, new Materials[] {Materials.Tungsten, Materials.Tungstate, Materials.Scheelite}, Voltage.IV);
-		addCombOreDuplication(CombType.PLATINUM, new Materials[] {Materials.Platinum, Materials.Palladium}, Voltage.HV);
-		addCombOreDuplication(CombType.IRIDIUM, new Materials[] {Materials.Iridium, Materials.Osmium}, Voltage.IV);
-		addCombOreDuplication(CombType.OSMIUM, new Materials[] {Materials.Osmium, Materials.Iridium}, Voltage.IV);
-		addCombOreDuplication(CombType.LITHIUM, new Materials[] {Materials.Lithium}, Voltage.MV);
-		addCombOreDuplication(CombType.SALT, new Materials[] {Materials.Salt, Materials.Saltpeter, Materials.Saltpeter}, Voltage.MV);
-		if(GT_Mod.gregtechproxy.mNerfedCombs) {
-			addCentrifugeToItemStack(CombType.SALT, new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Salt, 1), GT_ModHandler.getModItem(MOD_ID_DC, "item.EdibleSalt", 1L, 0), ItemList.FR_Wax.get(1) }, new int[] {100 * 100, 50 * 100, 50 * 100}, Voltage.MV, 160);
-		}else {
-			addCentrifugeToMaterial(CombType.BAUXITE, new Materials[] {Materials.Bauxite, Materials.Aluminium}, new int[] { 75 * 100, 55 * 100}, new int[] {}, Voltage.ULV , NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.ALUMINIUM, new Materials[] {Materials.Aluminium, Materials.Bauxite}, new int[] { 60 * 100, 80 * 100}, new int[] {}, Voltage.ULV , NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.MANGANESE, new Materials[] {Materials.Manganese, Materials.Grossular, Materials.Spessartine, Materials.Pyrolusite, Materials.Tantalite}, new int[] { 30 * 100, 100 * 100, 100 * 100, 100 * 100, 100 * 100}, new int[] {}, Voltage.ULV , NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.TITANIUM, new Materials[] {Materials.Titanium, Materials.Ilmenite, Materials.Bauxite, Materials.Rutile}, new int[] { 90 * 100, 80 * 100, 75 * 100, 75 * 100}, new int[] {}, Voltage.EV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.MAGNESIUM, new Materials[] {Materials.Magnesium, Materials.Magnesite}, new int[] { 100 * 100, 80 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.CHROME, new Materials[] {Materials.Chrome, Materials.Ruby, Materials.Chromite, Materials.Redstone, Materials.Neodymium, Materials.Bastnasite}, new int[] { 50 * 100, 100 * 100, 50 * 100, 100 * 100, 80 * 100, 80 * 100}, new int[] {}, Voltage.HV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.TUNGSTEN, new Materials[] {Materials.Tungsten, Materials.Tungstate, Materials.Scheelite, Materials.Lithium}, new int[] { 50 * 100, 80 * 100, 75 * 100, 75 * 100}, new int[] {}, Voltage.IV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.PLATINUM, new Materials[] {Materials.Platinum, Materials.Cooperite, Materials.Palladium}, new int[] { 40 * 100, 40 * 100, 40 * 100}, new int[] {}, Voltage.HV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.MOLYBDENUM, new Materials[] {Materials.Molybdenum, Materials.Molybdenite, Materials.Powellite, Materials.Wulfenite}, new int[] { 100 * 100, 80 * 100, 75 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.IRIDIUM, new Materials[] {Materials.Iridium, Materials.Osmium}, new int[] { 20 * 100, 15 * 100}, new int[] {}, Voltage.IV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.OSMIUM, new Materials[] {Materials.Osmium, Materials.Iridium}, new int[] { 25 * 100, 15 * 100}, new int[] {}, Voltage.IV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.LITHIUM, new Materials[] {Materials.Lithium}, new int[] { 85 * 100}, new int[] {}, Voltage.MV, NI, 30 * 100);
-			addCentrifugeToItemStack(CombType.SALT, new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Salt, 1),GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RockSalt, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 1), ItemList.FR_Wax.get(1) }, new int[] {100 * 100, 50 * 100, 75 * 100, 65 * 100, 50 * 100}, Voltage.MV, 160);
-		}
-		
-		//Radioactive Line
-		addCombOreDuplication(CombType.URANIUM, new Materials[] {Materials.Uranium, Materials.Pitchblende, Materials.Uraninite, Materials.Uranium235}, Voltage.EV);
-		addCombOreDuplication(CombType.PLUTONIUM,new Materials[] {Materials.Plutonium, Materials.Uranium235}, Voltage.EV);
-		addChemicalProcess(CombType.PLUTONIUM, Materials.Uranium235, Materials.Plutonium, Voltage.EV);
-		addCombOreDuplication(CombType.NAQUADAH,new Materials[] {Materials.Naquadah, Materials.NaquadahEnriched, Materials.Naquadria}, Voltage.IV);
-		addCombOreDuplication(CombType.NAQUADRIA,new Materials[] {Materials.Naquadria, Materials.NaquadahEnriched, Materials.Naquadah}, Voltage.LUV);
-		addCombOreDuplication(CombType.LUTETIUM,new Materials[] {Materials.Lutetium, Materials.Thorium}, Voltage.IV);
-		addCombOreDuplication(CombType.AMERICIUM,new Materials[] {Materials.Americium, Materials.Lutetium}, Voltage.LUV);
-		addCombOreDuplication(CombType.NEUTRONIUM,new Materials[] {Materials.Neutronium, Materials.Americium}, Voltage.UV);
-		if(!GT_Mod.gregtechproxy.mNerfedCombs) {
-			addCentrifugeToMaterial(CombType.URANIUM, new Materials[] {Materials.Uranium, Materials.Pitchblende, Materials.Uraninite, Materials.Uranium235}, new int[] { 50 * 100, 65 * 100, 75 * 100, 50 * 100}, new int[] {}, Voltage.EV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.PLUTONIUM,new Materials[] {Materials.Plutonium, Materials.Uranium235}, new int[] {10, 5}, new int[] {}, Voltage.EV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.NAQUADAH,new Materials[] {Materials.Naquadah, Materials.NaquadahEnriched, Materials.Naquadria}, new int[] {10 * 100, 5 * 100, 5 * 100}, new int[] {}, Voltage.IV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.NAQUADRIA,new Materials[] {Materials.Naquadria, Materials.NaquadahEnriched, Materials.Naquadah}, new int[] {10 * 100, 10 * 100, 15 * 100}, new int[] {}, Voltage.LUV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.LUTETIUM,new Materials[] {Materials.Lutetium, Materials.Thorium}, new int[] {35 * 100, 55 * 100}, new int[] {}, Voltage.IV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.AMERICIUM,new Materials[] {Materials.Americium, Materials.Lutetium}, new int[] {25 * 100, 45 * 100}, new int[] {}, Voltage.LUV, NI, 30 * 100);
-			addCentrifugeToMaterial(CombType.NEUTRONIUM,new Materials[] {Materials.Neutronium, Materials.Americium}, new int[] {15 * 100, 35 * 100}, new int[] {}, Voltage.UV, NI, 30 * 100);
-		}
-		
 		// Twilight
 		addCentrifugeToItemStack(CombType.NAGA, new ItemStack[] { GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 4), ItemList.FR_Wax.get(1)}, new int[]{5 * 100, 33 * 100, 30 * 100}, Voltage.MV);
 		addCentrifugeToItemStack(CombType.LICH, new ItemStack[] { GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 5), ItemList.FR_Wax.get(1)}, new int[]{5 * 100, 33 * 100, 30 * 100}, Voltage.HV);

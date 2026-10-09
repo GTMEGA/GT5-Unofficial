@@ -51,49 +51,49 @@ public enum OrePrefixes {
     crystalline("Crystallised Metals", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1),
     cleanGravel("Clean Gravels", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1),
     dirtyGravel("Dirty Gravels", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1, 64, -1),
-    ingotQuintuple("5x Ingots", "Quintuple ", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 5, 12, 16), // A quintuple Ingot.
-    ingotQuadruple("4x Ingots", "Quadruple ", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 4, 16, 15), // A quadruple Ingot.
+    @Deprecated ingotQuintuple("5x Ingots", "Quintuple ", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 5, 12, 16), // A quintuple Ingot.
+    @Deprecated ingotQuadruple("4x Ingots", "Quadruple ", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 4, 16, 15), // A quadruple Ingot.
     @Deprecated ingotQuad("4x Ingots", "Quadruple ", " Ingot", false, false, false, false, false, false, false, false, false, false, B[1], -1, 16, 15),
-    ingotTriple("3x Ingots", "Triple ", " Ingot", true, true, false, false, false, false, false, false, false, false, B[1], M * 3, 21, 14), // A triple Ingot.
-    ingotDouble("2x Ingots", "Double ", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 2, 32, 13), // A double Ingot. Introduced by TerraFirmaCraft
-    ingotHot("Hot Ingots", "Hot ", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 1, 64, 12), // A hot Ingot, which has to be cooled down by a Vacuum Freezer.
+    @Deprecated ingotTriple("3x Ingots", "Triple ", " Ingot", true, true, false, false, false, false, false, false, false, false, B[1], M * 3, 21, 14), // A triple Ingot.
+    @Deprecated ingotDouble("2x Ingots", "Double ", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 2, 32, 13), // A double Ingot. Introduced by TerraFirmaCraft
+    @Deprecated ingotHot("Hot Ingots", "Hot ", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 1, 64, 12), // A hot Ingot, which has to be cooled down by a Vacuum Freezer.
     ingot("Ingots", "", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 1, 64, 11), // A regular Ingot. Introduced by Eloraam
-    gemChipped("Chipped Gemstones", "Chipped ", "", true, true, true, false, false, false, false, true, false, false, B[2], M / 4, 64, 59), // A regular Gem worth one small Dust. Introduced by TerraFirmaCraft
-    gemFlawed("Flawed Gemstones", "Flawed ", "", true, true, true, false, false, false, false, true, false, false, B[2], M / 2, 64, 60), // A regular Gem worth two small Dusts. Introduced by TerraFirmaCraft
+    @Deprecated gemChipped("Chipped Gemstones", "Chipped ", "", true, true, true, false, false, false, false, true, false, false, B[2], M / 4, 64, 59), // A regular Gem worth one small Dust. Introduced by TerraFirmaCraft
+    @Deprecated gemFlawed("Flawed Gemstones", "Flawed ", "", true, true, true, false, false, false, false, true, false, false, B[2], M / 2, 64, 60), // A regular Gem worth two small Dusts. Introduced by TerraFirmaCraft
     gemFlawless("Flawless Gemstones", "Flawless ", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 2, 32, 61), // A regular Gem worth two Dusts. Introduced by TerraFirmaCraft
     gemExquisite("Exquisite Gemstones", "Exquisite ", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 4, 16, 62), // A regular Gem worth four Dusts. Introduced by TerraFirmaCraft
     gem("Gemstones", "", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 1, 64, 8), // A regular Gem worth one Dust. Introduced by Eloraam
     @Deprecated dustDirty("Impure Dusts", "", "", false, false, false, false, false, false, false, false, false, true, B[3], -1, 64, 3),
-    dustTiny("Tiny Dusts", "Tiny Pile of ", " Dust", true, true, false, false, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], M / 9, 64, 0), // 1/9th of a Dust.
-    dustSmall("Small Dusts", "Small Pile of ", " Dust", true, true, false, false, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], M / 4, 64, 1), // 1/4th of a Dust.
+    @Deprecated dustTiny("Tiny Dusts", "Tiny Pile of ", " Dust", true, true, false, false, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], M / 9, 64, 0), // 1/9th of a Dust.
+    @Deprecated dustSmall("Small Dusts", "Small Pile of ", " Dust", true, true, false, false, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], M / 4, 64, 1), // 1/4th of a Dust.
     dustImpure("Impure Dusts", "Impure Pile of ", " Dust", true, true, false, false, false, false, false, true, false, true, B[3], M * 1, 64, 3), // Dust with impurities. 1 Unit of Main Material and 1/9 - 1/4 Unit of secondary Material
     dustRefined("Refined Dusts", "Refined Pile of ", " Dust", true, true, false, false, false, false, false, true, false, true, B[3], M * 1, 64, 2),
     dustPure("Purified Dusts", "Purified Pile of ", " Dust", true, true, false, false, false, false, false, true, false, true, B[3], M * 1, 64, 4),
     dust("Dusts", "", " Dust", true, true, false, false, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], M * 1, 64, 2), // Pure Dust worth of one Ingot or Gem. Introduced by Alblaka.
-    nugget("Nuggets", "", " Nugget", true, true, false, false, false, false, false, true, false, false, B[1], M / 9, 64, 9), // A Nugget. Introduced by Eloraam
+    @Deprecated nugget("Nuggets", "", " Nugget", true, true, false, false, false, false, false, true, false, false, B[1], M / 9, 64, 9), // A Nugget. Introduced by Eloraam
     plateAlloy("Alloy Plates", "", "", true, false, false, false, false, false, false, false, false, false, B[1], -1, 64, 17), // Special Alloys have this prefix.
     plateSteamcraft("Steamcraft Plates", "", "", false, false, false, false, false, false, false, false, false, false, B[1], -1, 64, 17),
     plateDense("Dense Plates", "Dense ", " Plate", true, true, false, false, false, false, false, true, false, false, B[1], M * 9, 8, 22), // 9 Plates combined in one Item.
-    plateQuintuple("5x Plates", "Quintuple ", " Plate", true, true, false, false, false, false, false, true, false, false, B[1], M * 5, 12, 21),
-    plateQuadruple("4x Plates", "Quadruple ", " Plate", true, true, false, false, false, false, false, true, false, false, B[1], M * 4, 16, 20),
+    @Deprecated plateQuintuple("5x Plates", "Quintuple ", " Plate", true, true, false, false, false, false, false, true, false, false, B[1], M * 5, 12, 21),
+    @Deprecated plateQuadruple("4x Plates", "Quadruple ", " Plate", true, true, false, false, false, false, false, true, false, false, B[1], M * 4, 16, 20),
     @Deprecated plateQuad("4x Plates", "", "", false, false, false, false, false, false, false, false, false, false, B[1], -1, 16, 20),
-    plateTriple("3x Plates", "Triple ", " Plate", true, true, false, false, false, false, false, true, false, false, B[1], M * 3, 21, 19),
+    @Deprecated plateTriple("3x Plates", "Triple ", " Plate", true, true, false, false, false, false, false, true, false, false, B[1], M * 3, 21, 19),
     plateDouble("2x Plates", "Double ", " Plate", true, true, false, false, false, false, false, true, false, false, B[1], M * 2, 32, 18),
     plate("Plates", "", " Plate", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M * 1, 64, 17), // Regular Plate made of one Ingot/Dust. Introduced by Calclavia
-    itemCasing("Casings", "", " Casing", true, true, false, false, false, false, false, true, false, false, B[1] | B[2], M / 2, 64, 10), // Casing made of 1/2 Ingot/Dust
-    foil("Foils", "", " Foil", true, true, false, false, false, false, false, true, false, false, B[1], M / 4, 64, 29), // Foil made of 1/4 Ingot/Dust.
-    stickLong("Long Sticks/Rods", "Long ", " Rod", true, true, false, false, false, false, false, true, false, false, B[1] | B[2], M * 1, 64, 54), // Stick made of an Ingot.
+    @Deprecated itemCasing("Casings", "", " Casing", true, true, false, false, false, false, false, true, false, false, B[1] | B[2], M / 2, 64, 10), // Casing made of 1/2 Ingot/Dust
+    @Deprecated foil("Foils", "[Deprecated] ", "", true, true, false, false, false, false, false, true, false, false, B[1], M / 4, 64, 29), // Foil made of 1/4 Ingot/Dust.
+    @Deprecated stickLong("Long Sticks/Rods", "Long ", " Rod", true, true, false, false, false, false, false, true, false, false, B[1] | B[2], M * 1, 64, 54), // Stick made of an Ingot.
     stick("Sticks/Rods", "", " Rod", true, true, false, false, false, false, false, true, false, false, B[1] | B[2], M / 2, 64, 23), // Stick made of half an Ingot. Introduced by Eloraam
-    round("Rounds", "", " Round", true, true, false, false, false, false, false, true, false, false, B[1], M / 9, 64, 25), // consisting out of one Nugget.
+    @Deprecated round("Rounds", "", " Round", true, true, false, false, false, false, false, true, false, false, B[1], M / 9, 64, 25), // consisting out of one Nugget.
     bolt("Bolts", "", " Bolt", true, true, false, false, false, false, false, true, false, false, B[1] | B[2], M / 8, 64, 26), // consisting out of 1/8 Ingot or 1/4 Stick.
     comb("Combs", "", " Comb", false, false, false, false, false, false, false, true, false, false, B[1] | B[2], M, 64, 101), // contain dusts
-    screw("Screws", "", " Screw", true, true, false, false, false, false, false, true, false, false, B[1] | B[2], M / 9, 64, 27), // consisting out of a Bolt.
+    @Deprecated screw("Screws", "", " Screw", true, true, false, false, false, false, false, true, false, false, B[1] | B[2], M / 9, 64, 27), // consisting out of a Bolt.
     ring("Rings", "", " Ring", true, true, false, false, false, false, false, true, false, false, B[1], M / 4, 64, 28), // consisting out of 1/2 Stick.
-    springSmall("Small Springs", "Small ", " Spring", true, true, false, false, false, false, false, true, false, false, B[1], M / 4, 64, 55), // consisting out of 1 Fine Wire.
-    spring("Springs", "", " Spring", true, true, false, false, false, false, false, true, false, false, B[1], M * 1, 64, 56), // consisting out of 2 Sticks.
-    wireFine("Fine Wires", "Fine ", " Wire", true, true, false, false, false, false, false, true, false, false, B[1], M / 8, 64, 51), // consisting out of 1/8 Ingot or 1/4 Wire.
+    @Deprecated springSmall("Small Springs", "Small ", " Spring", true, true, false, false, false, false, false, true, false, false, B[1], M / 4, 64, 55), // consisting out of 1 Fine Wire.
+    @Deprecated spring("Springs", "", " Spring", true, true, false, false, false, false, false, true, false, false, B[1], M * 1, 64, 56), // consisting out of 2 Sticks.
+    @Deprecated wireFine("Fine Wires", "Fine ", " Wire", true, true, false, false, false, false, false, true, false, false, B[1], M / 8, 64, 51), // consisting out of 1/8 Ingot or 1/4 Wire.
     rotor("Rotors", "", " Rotor", true, true, false, false, false, false, true, true, false, false, B[7], M * 4, 16, 53), // consisting out of 4 Plates, 1 Ring and 1 Screw.
-    gearGtSmall("Gears", "", " Gear", true, true, false, false, false, false, true, true, false, false, B[7], M * 1, 64, 52),
+    @Deprecated gearGtSmall("Gears", "", " Gear", true, true, false, false, false, false, true, true, false, false, B[7], M * 1, 64, 52),
     gearGt("Old Gears", "Deprecated ", " Gear", true, true, false, false, false, false, false, true, false, false, B[7], M * 4, 16, 63), // Introduced by me because BuildCraft has ruined the gear Prefix...
     lens("Lenses", "", " Lens", true, true, false, false, false, false, false, true, false, false, B[2], (M * 3) / 4, 64, 24), // 3/4 of a Plate or Gem used to shape a Lense. Normally only used on Transparent Materials.
     crateGtDust("Crates of Dust", "Crate of ", " Dust", true, true, false, true, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], -1, 64, 96), // consisting out of 16 Dusts.

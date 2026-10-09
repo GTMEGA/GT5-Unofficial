@@ -368,25 +368,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 tMutation.requireResource("oreDiamond");
             }
     ),
-    RUBY(GT_BranchDefinition.GEM, "Ruby", false, new Color(0xE6005C), new Color(0xCC0052),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f / nerfAmount);
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.RUBY), 0.30f / nerfAmount);
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.REDGARNET), 0.05f / nerfAmount);
-                beeSpecies.setHumidity(DAMP);
-                beeSpecies.setTemperature(HOT);
-            },
-            template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
-                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
-                AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
-                AlleleHelper.instance.set(template, CAVE_DWELLING, true);
-            },
-            dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(REDSTONE, CLAY, 10);
-                tMutation.requireResource("oreRuby");
-            }
-    ),
+
     SAPPHIRE(GT_BranchDefinition.GEM, "Sapphire", true, new Color(0x0033CC), new Color(0x00248F),
             beeSpecies -> {
                 beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f / nerfAmount);
@@ -439,10 +421,11 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 tMutation.requireResource("oreEmerald");
             }
     ),
-    YELLOWGARNET(GT_BranchDefinition.GEM, "YellowGarnet", false, new Color(0xA3A341), new Color(0xEDEDCE),
+    GARNET(GT_BranchDefinition.GEM, "Garnet", false, new Color(0x911717), new Color(0xBB8018),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f / nerfAmount);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.YELLOWGARNET), 0.30f / nerfAmount);
+                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.10f / nerfAmount);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.REDGARNET), 0.50f / nerfAmount);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.YELLOWGARNET), 0.50f / nerfAmount);
                 beeSpecies.setHumidity(DAMP);
                 beeSpecies.setTemperature(WARM);
                 beeSpecies.setHasEffect();
@@ -455,30 +438,48 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, CAVE_DWELLING, true);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(COAL, RUBY, 10);
-                tMutation.requireResource("oreGarnetYellow");
-            }
-    ),
-    REDGARNET(GT_BranchDefinition.GEM, "RedGarnet", false, new Color(0xBD4C4C), new Color(0xECCECE),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f / nerfAmount);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.REDGARNET), 0.30f / nerfAmount);
-                beeSpecies.setHumidity(DAMP);
-                beeSpecies.setTemperature(WARM);
-                beeSpecies.setHasEffect();
-            },
-            template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.FAST);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTENED);
-                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
-                AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
-                AlleleHelper.instance.set(template, CAVE_DWELLING, true);
-            },
-            dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(YELLOWGARNET, RUBY, 10);
+                IBeeMutationCustom tMutation = dis.registerMutation(OLIVINE, REDSTONE, 10);
                 tMutation.requireResource("oreGarnetRed");
             }
     ),
+    RUBY(GT_BranchDefinition.GEM, "Ruby", false, new Color(0xE6005C), new Color(0xCC0052),
+            beeSpecies -> {
+                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.10f / nerfAmount);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.RUBY), 0.40f / nerfAmount);
+                beeSpecies.setHumidity(DAMP);
+                beeSpecies.setTemperature(HOT);
+            },
+            template -> {
+                AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
+                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
+                AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
+                AlleleHelper.instance.set(template, CAVE_DWELLING, true);
+            },
+            dis -> {
+                IBeeMutationCustom tMutation = dis.registerMutation(GARNET, REDSTONE, 10);
+                tMutation.requireResource("oreRuby");
+            }
+    ),
+//    REDGARNET(GT_BranchDefinition.GEM, "RedGarnet", false, new Color(0xBD4C4C), new Color(0xECCECE),
+//            beeSpecies -> {
+//                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f / nerfAmount);
+//                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.REDGARNET), 0.30f / nerfAmount);
+//                beeSpecies.setHumidity(DAMP);
+//                beeSpecies.setTemperature(WARM);
+//                beeSpecies.setHasEffect();
+//            },
+//            template -> {
+//                AlleleHelper.instance.set(template, SPEED, Speed.FAST);
+//                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTENED);
+//                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
+//                AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
+//                AlleleHelper.instance.set(template, CAVE_DWELLING, true);
+//            },
+//            dis -> {
+//                IBeeMutationCustom tMutation = dis.registerMutation(YELLOWGARNET, RUBY, 10);
+//                tMutation.requireResource("oreGarnetRed");
+//            }
+//    ),
     FIRESTONE(GT_BranchDefinition.GEM, "Firestone", false, new Color(0xC00000), new Color(0xFF0000),
             beeSpecies -> {
                 beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f / nerfAmount);
@@ -585,9 +586,9 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     ),
     STEEL(GT_BranchDefinition.METAL, "Steel", true, new Color(0x808080), new Color(0x999999),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.25f / nerfAmount);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.IRON), 0.35f / nerfAmount);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.STEEL), 0.05f / nerfAmount);
+                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.1f / nerfAmount);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.IRON), 0.60f / nerfAmount);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.COAL), 0.20f / nerfAmount);
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(WARM);
             },
@@ -712,9 +713,9 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     //Rare Metals
     ALUMINIUM(GT_BranchDefinition.RAREMETAL, "Aluminium", true, new Color(0xB8B8FF), new Color(0xD6D6FF),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.25f / nerfAmount);
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.BAUXITE), 0.30f / nerfAmount);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.ALUMINIUM), 0.30f / nerfAmount);
+                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.BAUXITE), 1.0f / nerfAmount);
+                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.10f / nerfAmount);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.ALUMINIUM), 0.10f / nerfAmount);
                 beeSpecies.setHumidity(ARID);
                 beeSpecies.setTemperature(HOT);
             },
@@ -733,8 +734,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     ),
     TITANIUM(GT_BranchDefinition.RAREMETAL, "Titanium", true, new Color(0xCC99FF), new Color(0xDBB8FF),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.25f / nerfAmount);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.TITANIUM), 0.30f / nerfAmount);
+                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.05f / nerfAmount);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.TITANIUM), 0.10f / nerfAmount);
                 beeSpecies.setHumidity(ARID);
                 beeSpecies.setTemperature(HELLISH);
             },
@@ -867,8 +868,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     ),
     SALTY(GT_BranchDefinition.RAREMETAL, "Salt", true, new Color(0xF0C8C8), new Color(0xFAFAFA),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.25f / nerfAmount);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.SALT), 0.30f / nerfAmount);
+                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.05f / nerfAmount);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.SALT), 1.0f / nerfAmount);
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(WARM);
             },
@@ -886,7 +887,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     ),
     LITHIUM(GT_BranchDefinition.RAREMETAL, "Lithium", false, new Color(0xF0328C), new Color(0xE1DCFF),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.25f / nerfAmount);
+                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.15f / nerfAmount);
                 beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.LITHIUM), 0.30f / nerfAmount);
                 beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.SALT), 0.05f / nerfAmount);
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);

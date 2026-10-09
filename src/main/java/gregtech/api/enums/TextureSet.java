@@ -30,7 +30,8 @@ public class TextureSet {
             SET_METALLIC = new TextureSet("METALLIC"),
             SET_NETHERSTAR = new TextureSet("NETHERSTAR"),
             SET_GEM_VERTICAL = new TextureSet("GEM_VERTICAL"),
-            SET_GEM_HORIZONTAL = new TextureSet("GEM_HORIZONTAL");
+            SET_GEM_HORIZONTAL = new TextureSet("GEM_HORIZONTAL"),
+            SET_COPPER= new TextureSet("COPPER");
 
     /**
      * For the Indices of OrePrefixes you need to look into the OrePrefix Enum.

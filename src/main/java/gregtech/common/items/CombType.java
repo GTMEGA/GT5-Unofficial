@@ -12,6 +12,7 @@ public enum CombType {
     APATITE("apatite", true, Materials.Apatite, 100,0xc1c1f6, 0x5959B1),
     ASH("ash", true, Materials.Ash, 100,0x1e1a18, 0xc6c6c6),
 
+    //region
     //IC2 Line (unused)
     COOLANT("coolant", false, Materials._NULL, 100,0x144F5A, 0x2494A2),
     ENERGY("energy", false, Materials._NULL, 80,0xC11F1F, 0xEBB9B9),
@@ -30,6 +31,7 @@ public enum CombType {
     PULSATINGIRON("pulsatingiron", false, Materials.PulsatingIron, 80,0x006600, 0x6DD284),
     STAINLESSSTEEL("stainlesssteel", false, Materials.StainlessSteel, 75,0x778899, 0xC8C8DC),
     ENDERIUM("enderium", false, Materials.Enderium, 40,0x2E8B57, 0x599087),
+    //endregion
 
     //Thaumcraft Line
     THAUMIUMDUST("thaumiumdust", true, Materials.Thaumium, 100,0x7A007A, 0x5C005C),
@@ -54,7 +56,7 @@ public enum CombType {
     LAPIS("lapis", true, Materials.Lapis, 100,0x1947D1, 0x476CDA),
     RUBY("ruby", true, Materials.Ruby, 100,0xE6005C, 0xCC0052),
     REDGARNET("redgarnet", true, Materials.GarnetRed,100,0xBD4C4C, 0xECCECE),
-    YELLOWGARNET("yellowgarnet", true, Materials.GarnetYellow,100,0xA3A341, 0xEDEDCE),
+    YELLOWGARNET("yellowgarnet", true, Materials.GarnetYellow,100,0xA3A341, 0xBB8018),
     SAPPHIRE("sapphire", true, Materials.Sapphire, 100,0x0033CC, 0x00248F),
     DIAMOND("diamond", true, Materials.Diamond, 100,0xCCFFFF, 0xA3CCCC),
     OLIVINE("olivine", true, Materials.Olivine, 100,0x248F24, 0xCCFFCC),
@@ -92,7 +94,7 @@ public enum CombType {
     OSMIUM("osmium", true, Materials.Osmium, 15,0x2B2BDA, 0x8B8B8B),
     LITHIUM("lithium", true, Materials.Lithium, 75,0xF0328C, 0xE1DCFF),
     SALT("salt", true, Materials.Salt, 90,0xF0C8C8, 0xFAFAFA),
-    ELECTROTINE("electrotine", true, Materials.Electrotine, 75,0x1E90FF, 0x3CB4C8),
+    ELECTROTINE("electrotine", false, Materials.Electrotine, 75,0x1E90FF, 0x3CB4C8),
     ALMANDINE("almandine", false, Materials.Almandine, 85,0xC60000, 0x8B8B8B),
 
     //Radioactive Line
