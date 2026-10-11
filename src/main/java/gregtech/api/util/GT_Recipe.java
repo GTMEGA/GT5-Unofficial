@@ -134,57 +134,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         for (int i = 0; i < aFluidOutputs.length; i++)
             aFluidOutputs[i] = new GT_FluidStack(aFluidOutputs[i]);
 
-        for (ItemStack aInput : aInputs)
-            if (aInput != null && Items.feather.getDamage(aInput) != W)
-                for (int j = 0; j < aOutputs.length; j++) {
-                    if (GT_Utility.areStacksEqual(aInput, aOutputs[j])) {
-                        if (aInput.stackSize >= aOutputs[j].stackSize) {
-                            aInput.stackSize -= aOutputs[j].stackSize;
-                            aOutputs[j] = null;
-                        } else {
-                            aOutputs[j].stackSize -= aInput.stackSize;
-                        }
-                    }
-                }
-
-        if (aOptimize && aDuration >= 32) {
-            ArrayList<ItemStack> tList = new ArrayList<>();
-            tList.addAll(Arrays.asList(aInputs));
-            tList.addAll(Arrays.asList(aOutputs));
-            for (int i = 0; i < tList.size(); i++) if (tList.get(i) == null) tList.remove(i--);
-
-            for (byte i = (byte) Math.min(64, aDuration / 16); i > 1; i--)
-                if (aDuration / i >= 16) {
-                    boolean temp = true;
-                    for (ItemStack stack : tList)
-                        if (stack.stackSize % i != 0) {
-                            temp = false;
-                            break;
-                        }
-                    if (temp)
-                        for (FluidStack aFluidInput : aFluidInputs)
-                            if (aFluidInput.amount % i != 0) {
-                                temp = false;
-                                break;
-                            }
-                    if (temp)
-                        for (FluidStack aFluidOutput : aFluidOutputs)
-                            if (aFluidOutput.amount % i != 0) {
-                                temp = false;
-                                break;
-                            }
-                    if (temp) {
-                        for (ItemStack itemStack : tList)
-                            itemStack.stackSize /= i;
-                        for (FluidStack aFluidInput : aFluidInputs)
-                            aFluidInput.amount /= i;
-                        for (FluidStack aFluidOutput : aFluidOutputs)
-                            aFluidOutput.amount /= i;
-                        aDuration /= i;
-                    }
-                }
-        }
-
         mInputs = aInputs;
         mOutputs = aOutputs;
         mSpecialItems = aSpecialItems;
