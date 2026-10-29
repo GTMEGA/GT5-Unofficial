@@ -878,7 +878,7 @@ public class GT_Mod implements IGT_Mod {
 
         if (Loader.isModLoaded(MOD_ID_FR)) {
             GT_Forestry_Compat.transferCentrifugeRecipes();
-            GT_Forestry_Compat.transferSqueezerRecipes();
+//            GT_Forestry_Compat.transferSqueezerRecipes();
         }
         if (GregTech_API.mAE2)
             GT_MetaTileEntity_DigitalChestBase.registerAEIntegration();

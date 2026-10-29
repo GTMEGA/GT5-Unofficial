@@ -62,8 +62,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     //organic
     CLAY(GT_BranchDefinition.ORGANIC, "Clay", true, new Color(0xC8C8DA), new Color(0x0000FF),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 0), 0.30f / nerfAmount);
-                beeSpecies.addProduct(new ItemStack(Items.clay_ball, 3), 0.75f / nerfAmount);
+                beeSpecies.addProduct(GT_ModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 0), 0.05f / nerfAmount);
+                beeSpecies.addProduct(new ItemStack(Items.clay_ball, 2), 0.50f / nerfAmount);
                 beeSpecies.addSpecialty(GT_ModHandler.getModItem("BiomesOPlenty", "mudball", 1, 0), 0.25f / nerfAmount);
                 beeSpecies.setHumidity(DAMP);
                 beeSpecies.setTemperature(EnumTemperature.NORMAL);
@@ -324,7 +324,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 beeSpecies.setTemperature(EnumTemperature.NORMAL);
             },
             template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
+                AlleleHelper.instance.set(template, SPEED, Speed.FASTER);
                 AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
                 AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
                 AlleleHelper.instance.set(template, CAVE_DWELLING, true);
@@ -342,7 +342,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(EnumTemperature.NORMAL);
             },
-            template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER),
+            template -> AlleleHelper.instance.set(template, SPEED, Speed.FASTEST),
             dis -> {
                 IBeeMutationCustom tMutation = dis.registerMutation(REDSTONE, LAPIS, 10);
                 if (Loader.isModLoaded("appliedenergistics2"))

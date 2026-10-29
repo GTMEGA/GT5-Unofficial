@@ -64,17 +64,17 @@ public class GT_Forestry_Compat {
         }
     }
     
-    public static void transferSqueezerRecipes(){
-        try {
-            for (ISqueezerRecipe tRecipe : RecipeManagers.squeezerManager.recipes()) {
-                if ((tRecipe.getResources().length == 1) && (tRecipe.getFluidOutput() != null)) {
-                    GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes.addRecipe(true, new ItemStack[]{tRecipe.getResources()[0]}, new ItemStack[]{tRecipe.getRemnants()}, null, new int[]{(int) (tRecipe.getRemnantsChance() * 10000)}, null, new FluidStack[]{tRecipe.getFluidOutput()}, 32, 8, 0);
-                }
-            }
-        } catch (Throwable e) {
-            if (GT_Values.D1) {
-                e.printStackTrace(GT_Log.err);
-            }
-        }
-    }
+//    public static void transferSqueezerRecipes(){
+//        try {
+//            for (ISqueezerRecipe tRecipe : RecipeManagers.squeezerManager.recipes()) {
+//                if ((tRecipe.getResources().length == 1) && (tRecipe.getFluidOutput() != null)) {
+//                    GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes.addRecipe(true, new ItemStack[]{tRecipe.getResources()[0]}, new ItemStack[]{tRecipe.getRemnants()}, null, new int[]{(int) (tRecipe.getRemnantsChance() * 10000)}, null, new FluidStack[]{tRecipe.getFluidOutput()}, 32, 8, 0);
+//                }
+//            }
+//        } catch (Throwable e) {
+//            if (GT_Values.D1) {
+//                e.printStackTrace(GT_Log.err);
+//            }
+//        }
+//    }
 }
